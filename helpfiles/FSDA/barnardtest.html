@@ -19,7 +19,11 @@ The p-value a resolution 0.001 is: 0.1528
     rownam={'OutcomeI', 'OutcomeII'};
     colnam={'TreatmentI' 'TreatmentII'};
     N=[40,14;10,30];
-    Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);
+    if verLessThan('matlab','8.2.0') ==0
+        Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);
+    else
+        Ntable=N;
+    end
     pval=barnardtest(Ntable);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example when the input is a datamatrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[40,14;10,30];
     % Recreate the orginal data matrix
@@ -82,7 +86,7 @@ The p-value a resolution 0.001 is: 0.1528
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Barnard, G.A. (1945), A new test for 2x2 tables. Nature, pp. 156-177.</p></div><div><p>Barnard, G.A. (1947), Significance tests for 2x2 tables, Biometrika,
- 34:123-138.</p></div><div><p>Suissa, S. and Shuster, J. J. (1985), Exact Unconditional Sample Sizes
+ 34, pp. 123-138.</p></div><div><p>Suissa, S. and Shuster, J. J. (1985), Exact Unconditional Sample Sizes
  for the 2x2 Binomial Trial, Journal of the Royal Statistical Society,
  Ser. A, 148, pp. 317-327.</p></div><div><p>Lin C.Y., Yang M.C. (2009), Improved p-value tests for comparing two
  independent binomial proportions. Communications in Statistics-Simulation

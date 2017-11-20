@@ -81,7 +81,7 @@ function pval=barnardtest(N,varargin)
 %
 % Barnard, G.A. (1945), A new test for 2x2 tables. Nature, pp. 156-177.
 % Barnard, G.A. (1947), Significance tests for 2x2 tables, Biometrika,
-% 34:123-138.
+% 34, pp. 123-138.
 % Suissa, S. and Shuster, J. J. (1985), Exact Unconditional Sample Sizes
 % for the 2x2 Binomial Trial, Journal of the Royal Statistical Society,
 % Ser. A, 148, pp. 317-327.
@@ -143,7 +143,11 @@ function pval=barnardtest(N,varargin)
     rownam={'OutcomeI', 'OutcomeII'};
     colnam={'TreatmentI' 'TreatmentII'};
     N=[40,14;10,30];
-    Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);
+    if verLessThan('matlab','8.2.0') ==0
+        Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);
+    else
+        Ntable=N;
+    end
     pval=barnardtest(Ntable);
 %}
 
