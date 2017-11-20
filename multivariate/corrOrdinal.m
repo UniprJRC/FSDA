@@ -204,7 +204,7 @@ function out=corrOrdinal(N, varargin)
 % number of pairs not tied on the independent variable. More precisely
 %
 % \[
-%  d_{y|x} = \frac{C-D}{(0.5 n(n-1)-T_x)}
+%  d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
 % \]
 %
 % Null hypothesis:
@@ -213,7 +213,7 @@ function out=corrOrdinal(N, varargin)
 %
 %
 %
-% In order to compute the confidence intervals and test hypothesis this
+% In order to compute confidence intervals and test hypotheses, this
 % routine computes the standard error of the various indexes.
 % Note that the expression of the standard errors which is used to compute
 % the confidence intervals is different from the expression which is used

@@ -114,8 +114,8 @@ function out=corrNominal(N, varargin)
 %                        \[
 %                        V_U=\sqrt{\frac{\Delta_U+ df }{n \min[(I-1),(J-1)]}}
 %                        \]
-%    out.GKlambdayx  =   1 x 4 vector which contains index Goodman and Kruskall $\lambda_{y|x}$,
-%                        standard error, z test, and p-value.
+%    out.GKlambdayx  =   1 x 4 vector which contains index  $\lambda_{y|x}$
+%                        of Goodman and Kruskal standard error, z test, and p-value.
 %                        \[
 %                        \lambda_{y|x} = \sum_{i=1}^I \frac{r_i- r}{n-r}
 %                        \]
@@ -189,8 +189,8 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       V(y)=1 -\sum_{j=1}^J f_{.j} \qquad V(y|i)=1 -\sum_{j=1}^J f_{j|i}
 %                       \]
-%                       we obtain index the proportionl reduction in
-%                       variation $\tau_{y|x}$ of Goodman and Kruskall.
+%                       we obtain the index of proportional reduction in
+%                       variation $\tau_{y|x}$ of Goodman and Kruskal.
 %                       \[
 %                       \tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
 %                       \]
@@ -199,8 +199,8 @@ function out=corrNominal(N, varargin)
 %                       \[
 %                       V(y)=-\sum_{j=1}^J f_{.j} \log f_{.j}  \qquad V(y|i) -\sum_{j=1}^J f_{j|i} \log f_{j|i}
 %                       \]
-%                       we obtain the index $H_{y|x}$, the uncertainty
-%                       coefficient of Theil.
+%                       we obtain the index $H_{y|x}$, (uncertainty
+%                       coefficient of Theil).
 %                       \[
 %                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
 %                       \]
@@ -437,7 +437,7 @@ Phi=sqrt(Chi2/n);
 % Cramer index
 CramerV=Phi/sqrt(min([I-1 J-1]));
 
-% Goodman and Kruskall lambda
+% Goodman and Kruskal lambda
 ndotjmax=max(ndotj);
 nidotmax=max(nidot);
 
@@ -449,7 +449,7 @@ ndotjmat=repmat(ndotj,I,1);
 sumdotj2=sum(ndotj.^2);
 boo=(N(:)~=0);
 
-% tau index (proportional reduction in variation of Goodman and Kruskall),
+% tau index (proportional reduction in variation of Goodman and Kruskal),
 % when variation is mesured using Gini's coefficient
 tauyx= (  n*sum(N(:).^2./nidotmat(:))-sumdotj2)/(n^2-sumdotj2);
 
@@ -613,7 +613,7 @@ end
 % if dispresults == true
 %
 %     if NoStandardErrors == false
-%         disp('Goodmand and Kruskall lambda')
+%         disp('Goodmand and Kruskal lambda')
 %         disp(GKlambdayx)
 %         disp('tau index')
 %         disp(tauyx)

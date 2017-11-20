@@ -39,26 +39,26 @@
     % zero, this indicates a strong positive association between the
     % written and the oral examination.</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
 The standard errors are computed under H_0
-                   Coeff                  se                 zscore                 pval        
-             _________________    __________________    ________________    ____________________
+              Coeff        se       zscore       pval   
+             _______    ________    ______    __________
 
-    gamma                  0.5    0.0982393322972438    5.08961113952958    3.58798521116199e-07
-    taua     0.183417085427136    0.0475531968711181     3.8570926351018    0.000114743685497798
-    taub     0.305570422113724    0.0600380684764785    5.08961113952958    3.58798521116199e-07
-    tauc               0.27375     0.053786034432741    5.08961113952958    3.58798521116199e-07
-    dyx      0.314655172413793    0.0618230280836103    5.08961113952958    3.58798521116199e-07
+    gamma        0.5    0.098239    5.0896     3.588e-07
+    taua     0.18342    0.047553    3.8571    0.00011474
+    taub     0.30557    0.060038    5.0896     3.588e-07
+    tauc     0.27375    0.053786    5.0896     3.588e-07
+    dyx      0.31466    0.061823    5.0896     3.588e-07
 
 -----------------------------------------
 Indexes and 95% confidence limits
 The standard error are computed under H_1
-                   Value            StandardError           ConflimL             ConflimU     
-             _________________    __________________    _________________    _________________
+              Value     StandardError    ConflimL    ConflimU
+             _______    _____________    ________    ________
 
-    gamma                  0.5    0.0876003030710639    0.328306560945921    0.671693439054079
-    taua     0.183417085427136    0.0119035115192981    0.160086631559754    0.206747539294518
-    taub     0.305570422113724    0.0585200228867991    0.190873284881139     0.42026755934631
-    tauc               0.27375     0.053786034432741    0.168331309640596    0.379168690359404
-    dyx      0.314655172413793    0.0598987454374704    0.197255788637218    0.432054556190368
+    gamma        0.5      0.0876         0.32831     0.67169 
+    taua     0.18342    0.011904         0.16009     0.20675 
+    taub     0.30557     0.05852         0.19087     0.42027 
+    tauc     0.27375    0.053786         0.16833     0.37917 
+    dyx      0.31466    0.059899         0.19726     0.43205 
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
      Matlab function corr.</li></span></a></span></h3><div class="collapse"><p>
@@ -263,7 +263,7 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
  number of pairs not tied on the independent variable. More precisely
 
  </p>\[
-  d_{y|x} = \frac{C-D}{(0.5 n(n-1)-T_x)}
+  d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
  \]<p>
 
  Null hypothesis:</p> <p>
@@ -272,7 +272,7 @@ pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
 
 
 
- In order to compute the confidence intervals and test hypothesis this
+ In order to compute confidence intervals and test hypotheses, this
  routine computes the standard error of the various indexes.</p> <p>
  Note that the expression of the standard errors which is used to compute
  the confidence intervals is different from the expression which is used

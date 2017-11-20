@@ -102,7 +102,7 @@ function [PD , pval] = CressieRead(N,varargin)
 % test for "spikes" is discussed by Levin (1983); he also derives the
 % appropriate distributional results for hypothesis testing.
 %
-% See also CorAna, crosstab, rcontFS, CressieRead
+% See also CorAna, crosstab, rcontFS, corrNominal, corrOrdinal
 %
 % References:
 %
