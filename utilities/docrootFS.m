@@ -31,7 +31,7 @@ if str2double(a.Version)>7.14
         % make sure the component is opaque
         r.setOpaque(true);
         % add the component
-        javacomponent(r, [120 49 100 30], h);
+        javacomponent(r, [120 49 150 30], h);
         %[left, bottom, width, height]
         
         error('FSDA:docrootFS:wrongSetUp','Please read warning above and take appropriate action!')
