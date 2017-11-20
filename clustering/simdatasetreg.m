@@ -24,7 +24,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %  Required input arguments:
 %
 %         n   : sample size  of the dataset. Scalar.
-%        Pi   : vector of length k defining mixing proportions. Vector. \sum_{j=1}^k Pi=1
+%        Pi   : vector of length k defining mixing proportions. Vector.
+%               $\sum_{j=1}^k \pi=1$.
 %      Beta   : p-by-k matrix containing (in the columns) regression
 %               coefficients for the k groups. Matrix.
 %         S   : vector of length k containing the variances of the k
