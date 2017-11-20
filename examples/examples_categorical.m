@@ -7,19 +7,29 @@
 %% Correpondence analysis of the smoke data (1)
 % Input is the contingency table
 load smoke
+X=smoke.data;
 N=crosstab(X(:,1),X(:,2));
 % All rows and columns of n are active points (no supplementary unit)
 out=CorAna(N);
 
 %% Correpondence analysis of the smoke data (2)
 load smoke
-N=crosstab(X(:,1),X(:,2));
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
 % Input is the contingency table, labels for rows and columns are supplied
 out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
 
 %% Correpondence analysis of the smoke data (3)
 load smoke
-N=crosstab(X(:,1),X(:,2));
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 % Input is the contingency table, first row is used as supplementary point
 % In this case the list of supplementary units is passed using field .r
 % passed as non negative number  which identifies  the row to use as
@@ -30,7 +40,12 @@ out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 
 %% Correpondence analysis of the smoke data (4)
 load smoke
-N=crosstab(X(:,1),X(:,2));
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 % Input is the contingency table, rows 2 and 3 are used as supplementary
 % points.
 % In this case the list of supplementary units is passed using field .r
@@ -41,7 +56,12 @@ out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 
 %% Correpondence analysis of the smoke data (5)
 load smoke
-N=crosstab(X(:,1),X(:,2));
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 % Input is the contingency table, 2 rows are used as supplementary poitns.
 % In this case the list of supplementary units is passed using field .r
 % passed as a cell of characters.
@@ -52,11 +72,17 @@ out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 %% Correpondence analysis of the smoke data (6)
 % The input is the original data matrix.
 load smoke
-out=CorAna(X,'Lr',labels_rows,'Lc',labels_columns,'datamatrix',true);
-
+X=smoke.data;
+out=CorAna(X,'datamatrix',true);
 
 %% Correpondence analysis of the smoke data (7)
 load smoke
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 % In this section we reproduce Figure 3.6 of Greenacre, (1984). Theory and
 % Applications of Correspondence Analysis p. 71.
 % The input is the original data matrix.
@@ -73,7 +99,12 @@ out=CorAna(X,'Lr',labels_rows,'Lc',labels_columns,'datamatrix',true,'Sup',Sup);
 %% Correpondence analysis of the smoke data (8)
 % In this section we explore options inside input structure plots
 load smoke
-N=crosstab(X(:,1),X(:,2));
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 plots=struct;
 plots.alpha='rowprincipal';
 plots.alpha='colprincipal';
@@ -211,22 +242,15 @@ end
 % disp(out.TotalInertia)
 
 
-%% Dati infortuni
-[a, b, raw] = xlsread('D:\research-projects\BRIC2017\analisi_corrispondenze.xlsx','Foglio1','E1:G424');
-[tbl,chi2,p,labels]=crosstab(raw(2:end,2),raw(2:end,3));
-
-emptyCells = cellfun(@isempty,labels(:,1));
-labels_rows=labels(~emptyCells,1);
-
-emptyCells = cellfun(@isempty,labels(:,2));
-labels_columns=labels(~emptyCells,2);
-
-out=CorAna(tbl,'Lr',labels_rows,'Lc',labels_columns);
-
-
 %% CorAna using plots as structure
 % Input is the contingency table, labels for rows and columns are supplied
 load smoke
+X=smoke.data;
+[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+[I,J]=size(N);
+labels_rows=labels(1:I,1);
+labels_columns=labels(1:J,2);
+
 plots=struct;
 plots.FontSize=20;
 N=crosstab(X(:,1),X(:,2));
