@@ -68,7 +68,7 @@ pause
 
 set miadata=%date:/=-%
 
-"C:\cygwin64\bin\sed.exe"  -i "s/AppVerName=FSDA toolbox Release 2017a .*/AppVerName=FSDA toolbox Release 2017a (%miadata%) for MATLAB (not earlier than R2009b) /" FSDAscript.iss
+"C:\cygwin64\bin\sed.exe"  -i "s/AppVerName=FSDA toolbox Release .*/AppVerName=FSDA toolbox Release 2017b (%miadata%) for MATLAB (not earlier than R2009b) /" FSDAscript.iss
 
 "C:\cygwin64\bin\unix2dos.exe" FSDAscript.iss
 
