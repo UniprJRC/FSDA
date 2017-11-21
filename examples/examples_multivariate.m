@@ -1,7 +1,8 @@
 %examples_multivariate shows a series of analysis of multivariate datasets
 % Copyright 2008-2017.
 % Written by FSDA team
-
+%
+%$LastChangedDate::                      $: Date of the last commit
 
 %% HD (Heads data) analysis using univariate boxplots
 clearvars;close all;
