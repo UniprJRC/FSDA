@@ -29,6 +29,8 @@ echo "												Patrizia Calcaterra"
 echo "												Andrea Cerasa"
 echo "												Massimiliano Gusmini"
 echo ""
+echo "  University of Milan: Silvia Salini (from 2016)"
+echo ""                    	
 echo "The sources are open and the use is regulated by EUPL."
 echo ""
 

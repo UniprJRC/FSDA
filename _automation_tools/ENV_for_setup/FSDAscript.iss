@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId=FSDA
 AppName=FSDA toolbox for MATLAB
-AppVerName=FSDA toolbox Release 2017a (03-jun-16) for MATLAB >R2009b
+AppVerName=FSDA toolbox Release 2017b (03-jun-16) for MATLAB >R2009b
 AppPublisher=University of Parma and European Union
 AppPublisherURL=http://www.riani.it/MATLAB.htm
 AppSupportURL=http://www.riani.it/MATLAB.htm
@@ -45,13 +45,13 @@ Source: "FSDA\*"; DestDir: "{app}\FSDA"; Flags: ignoreversion recursesubdirs cre
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{group}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} "" "
+Name: "{group}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_categorical.m' ; {code:doc_func} "" "
 Name: "{group}\{cm:UninstallProgram,FSDA toolbox for MATLAB}"; Filename: "{uninstallexe}" ; IconFilename: "{app}\FSDA\logo.ico"
-Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; {code:doc_func} "" " ; Tasks: desktopicon
+Name: "{commondesktop}\FSDA toolbox for MATLAB"; Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_categorical.m' ; {code:doc_func} "" " ; Tasks: desktopicon
 
 [Run]
 Filename: "{code:MyMatlabVersion}"; Parameters: " -wait -automation -nodesktop -r "" addpath '{app}\FSDA\examples' ; addpath '{app}\FSDA\utilities' ; addpath '{app}\FSDA\combinatorial' ; addpath '{app}\FSDA\FSDAdemos' ; addpath '{app}\FSDA\graphics' ; addpath '{app}\FSDA\utilities_stat' ; addpath '{app}\FSDA\utilities_help' ;addpath '{app}\FSDA\datasets\multivariate' ; addpath '{app}\FSDA\datasets\regression' ; addpath '{app}\FSDA\datasets\multivariate_regression' ; addpath '{app}\FSDA\datasets\clustering' ; addpath '{app}\FSDA\clustering' ;addpath '{app}\FSDA\regression' ; addpath '{app}\FSDA\multivariate' ; addpath '{app}\FSDA' ; savepath ; exit "" " ; StatusMsg: "Setting MATLAB environment ..." ; Flags: shellexec waituntilterminated
-Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; {code:doc_func} "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
+Filename: "{code:MyMatlabVersion}"; Parameters: " -r "" open '{app}\FSDA\examples\examples_multivariate.m' ; open '{app}\FSDA\examples\examples_regression.m' ; open '{app}\FSDA\examples\examples_categorical.m' ; {code:doc_func} "" " ; Description: "{cm:LaunchProgram,MATLAB and FSDA toolbox with a set of examples and open documentation pages}"; Flags: shellexec postinstall skipifsilent
 Filename: "{code:adobe_name}"; Parameters: " /n ""{app}\FSDA\InstallationNotes.pdf"" " ; Description: "{cm:OpenProgram, Installation Notes ( Acrobat Reader is required )}"; Flags: shellexec postinstall skipifsilent unchecked
 
 [UninstallRun]
