@@ -16,6 +16,9 @@ European Commission, Joint Research Centre:
                     Patrizia Calcaterra
                     Andrea Cerasa
                     Massimiliano Gusmini
+					
+University of Milan:
+                    Silvia Salini (from 2016)					
 
 The sources are open and the use is regulated by EUPL.
 
