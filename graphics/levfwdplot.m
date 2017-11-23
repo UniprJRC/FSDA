@@ -11,6 +11,10 @@ function plotopt=levfwdplot(out,varargin)
 %               the forward search. Every row is associated with a unit.
 %               This matrix can be created using function FSReda
 %               (compulsory argument)
+%     out.RES   =   matrix containing the residuals monitored in each step of
+%               the forward search. Every row is associated with a unit.
+%               This matrix can be created using function FSReda
+%               (compulsory argument)
 %       out.Un  =   matrix containing the order of entry of each unit
 %               (necessary only if datatooltip or databrush are not empty)
 %       out.y   =   a vector containing the response (necessary only if
