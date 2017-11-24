@@ -23,9 +23,51 @@ function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
 %             that is html file is created
 %             Example - 'write2file','false'
 %             Data Types - Boolean
+% webhelp :   Option to create web page version of local html help file. Logical.
+%             This option substitutes the MATLAB search form component with 
+%             a Google local search form, enabling Google to create an index
+%             of online documentation help.
+%             In this case 'outputDir' and 'imagesDir' should be populated to
+%             avoid overwriting local help files with WEB help files.
+%             Default values for 'outputDir' and 'imagesDir' are these namepairs: 
+%             'outputDir','(FSDA root) filesep helpfiles filesep webhelpfiles'
+%             'imagesDir','(FSDA root) filesep helpfiles filesep webhelpfiles filesep images'
+%             It is worth noting that setting up folders different form default
+%             values, implies that the user should manually create them.
+%             The default value of webhelp is false.
+%             Example - 'webhelp',true
+%             Data Types - logical
+% outputDir : Output folder. String.
+%             Output folder to which the HTML document is saved, specified
+%             as the comma-separated pair consisting of 'outputDir' and the
+%             full path. You must specify the full path as a string, for
+%             example 'C:\PublishedOutput'.
+%             if input option webhelp is false the default value, '',
+%             specifies the (FSDA root)\helpfiles\FSDA path,
+%             else if the input option webhelp is true the default value,
+%             '', specifies the (FSDA root)\helpfiles\FSDAweb path,
+%             Remark - outputDir must be a valid path.
+%             Example - 'outputDir','C:'
+%             Data Types - string
+% imagesDir : Output folder of png images. String.
+%             Output folder to which the images attached to the HTML
+%             document are saved, specified as the comma-separated pair
+%             consisting of 'outputDir' and the full path. You must specify
+%             the full path as a string, for example
+%             'C:\PublishedOutput'.
+%             if input option webhelp is false the default value, '',
+%             specifies the "(FSDA root)\helpfiles\FSDA\images" path,
+%             else if the input option webhelp is true the default value,
+%             '', specifies the "(FSDA root)\helpfiles\FSDAweb\images"
+%             path.
+%             Remark - if imageDir is not specified but outputDir is
+%             specified images will be saved into the same folder of the
+%             HTML output file
+%             Remark - imagesDir must be a valid path.
+%             Example - 'imagesDir','C:'
+%             Data Types - string
 %
 %
-
 % Output:
 %
 %    FilesWithProblems : information about files whose automatic HTML
@@ -68,11 +110,42 @@ function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
 
 %% Beginning of code
 
+% % Use file separator of current operating system
+% % \ = Windows
+% % / = Unix
+fsep=filesep;
+
+% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
+FileWithFullPath=which('docsearchFS.m');
+[pathFSDAstr]=fileparts(FileWithFullPath);
+
 evalCode=true;
 write2file=true;
+Display='none';
 
 if nargin>1
-    options=struct('evalCode',evalCode,'write2file',write2file);
+    UserOptions=varargin(1:2:length(varargin));
+    checklms2 = strcmp(UserOptions,'webhelp');
+    if sum(checklms2)
+        webhelp = varargin{2*find(checklms2)};
+    else
+        webhelp=false;
+    end
+else
+    webhelp=false;
+end
+
+if webhelp == false
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+    imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
+else
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb'];
+    imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb' fsep 'images'];
+end
+
+if nargin>1
+    options=struct('evalCode',evalCode,'write2file',write2file,'Display',Display,...
+       'webhelp',webhelp,'outputDir',outputDir,'imagesDir',imagesDir);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -89,9 +162,13 @@ if nargin>1
         end
         
     end
-    
+    % set the options chosen by the user
     evalCode=options.evalCode;
     write2file=options.write2file;
+    Display=options.Display;
+    webhelp=options.webhelp;
+    outputDir=options.outputDir;
+    imagesDir=options.imagesDir;
 end 
     
 FilesWithProblems=cell(1000,6);
@@ -102,7 +179,11 @@ for i=1:size(InputCell,1)
     disp(['Processing file: ' dirpathi filesep InputCell{i,1}])
     try
         % call publishFS
-        out=publishFS(InputCell{i,1},'evalCode',evalCode,'write2file',write2file);
+        %out=publishFS(InputCell{i,1},'evalCode',evalCode,'write2file',write2file);
+        
+        out=publishFS(InputCell{i,1},'evalCode',evalCode,'Display',Display,...
+        'webhelp',webhelp,'outputDir',outputDir,...
+        'imagesDir',imagesDir,'write2file',write2file);
         % Store output cell out inside OUT
         OUT{i}=out;
         
