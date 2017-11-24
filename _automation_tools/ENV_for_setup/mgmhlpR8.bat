@@ -1,4 +1,4 @@
-@echo off
+rem @echo off
 set where=%1
 
 set mathpath=%2
@@ -10,8 +10,6 @@ set drv=%where:~1,2%
 cd "%where%"
 
 rem echo "SONO IN mgmhlpR8 . I parametri sono  " %where% " e " %mathpath%
-
-rem %mathpath%\bin\matlab.exe -wait -automation -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\FSDA') ; quit "
 
 cd FSDA
 mkdir _tmp_helpfiles
@@ -45,25 +43,36 @@ set matdocroot=%mathpath%\help
 rem echo "matdocroot " %matdocroot%
 
 
-move FSDA %matdocroot%\.
+rem move FSDA %matdocroot%\.
+
+mkdir %matdocroot%\FSDA
+xcopy FSDA %matdocroot%\FSDA /S /E
 
 cd ..
-set tmphelp=%where%\FSDA\_tmp_helpfiles\FSDA
+rem set tmphelp=%where%\FSDA\_tmp_helpfiles\FSDA
 
-IF EXIST %tmphelp%  (
+rem IF EXIST %tmphelp%  (
 rem move non riuscita
 rem echo "move non riuscita"
-) ELSE (
+rem ) ELSE (
+rem rmdir /S /Q %where%\FSDA\_tmp_helpfiles
+rem )
+
+
+set mathelp=%matdocroot%\FSDA\demos
+
+IF EXIST %mathelp% (
 rmdir /S /Q %where%\FSDA\_tmp_helpfiles
+) ELSE (
+rem echo "move non riuscita"
 )
 
 set mathpath=%mathpath:~1,-1%
 set where=%where:~1,-1%
 
-rem "%mathpath%"\bin\matlab.exe -nodesktop -r " builddocsearchdb ('%matdocroot%\FSDA\helpfiles\pointersHTML') "
 "%mathpath%\bin\matlab.exe" -nodesktop -r " builddocsearchdb ('%where%\FSDA\helpfiles\pointersHTML');quit"
 
 rem echo "dopo builddocserachdb"
-rem pause
+
 del /f mgmhlpR7.bat
 (goto) 2>nul & del "%~f0"
