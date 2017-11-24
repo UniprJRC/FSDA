@@ -124,14 +124,63 @@ fileCate=publishFunctionCate(FilesIncluded);
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
-%% STEP 5: create HTML pointer files
+%%%%%%%%%%%%%%%%%%%
+%% NOW Repeat steps 2, 3 and 4 in order to generate the documentation files for the web site
+%%%%%%%%%%%%%%%%%%
+
+%% STEP 2bis: create HTML for all files filtered using makecontentsFilesFS
+[FilesWithProblems,OUT]=publishFSallFiles(FilesIncluded,'webhelp',true);
+
+% Check correctness of HTML file creation
+boo=~cellfun('isempty',FilesWithProblems(:,5));
+seq=1:size(FilesWithProblems,1);
+IndexesofFiles=seq(boo);
+if ~isempty(IndexesofFiles)
+    disp('Files whose HTML reference page could not be created')
+    for i=1:length(IndexesofFiles)
+        disp(FilesWithProblems{IndexesofFiles(i),1})
+    end
+    error('FSDA:CreateFSDAhelpFiles','Files without HTML web page')
+end
+
+%% STEP 3bis: create alphabetical list of functions and txt file
+fsep=filesep;
+
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+% Create HTML file containing alphabetical list of functions
+fileAlpha=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true);
+% open html file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-alpha.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+fsep=filesep;
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-alpha.txt'];
+% open outfile txt in web browser
+disp('Check .txt file')
+web(outputOFHtmlHelpFile,'-browser');
+
+
+%% STEP 4bis: create categorical list of functions
+fsep=filesep;
+
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+% Create HTML file containing categorical list of functions
+fileCate=publishFunctionCate(FilesIncluded);
+% open outfile file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+
+%% STEP 6: create HTML pointer files
 
  h=CreateFSDApointerFiles(FilesIncluded,OUT);
 if h
     disp('Successful creation of pointer files')
 end
 
-%% STEP 6: create searchable database with different versions of MATLAB
+%% STEP 7: create searchable database with different versions of MATLAB
 FileName='addFSDA2path';
 FullPath=which(FileName);
 %Navigate to the main folder of FSDA
