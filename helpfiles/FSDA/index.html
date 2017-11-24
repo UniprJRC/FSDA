@@ -1,15 +1,18 @@
 <!DOCTYPE HTML>
-<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml"><head>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
 
-
-
-
-
-<script src="includesFS/headJS.js" type="text/javascript"></script><!--headJS loads all required javascripts-->
-
+<head>
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
 <script type="text/javascript">
 document.write(headJS);
-</script><!--Insert title of the page--><title>FSDA main page</title><!--Beginning of body--></head><body id="responsive_offcanvas">
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+</head>
+
+<body id="responsive_offcanvas">
 
 <div id="doc_header_spacer" class="header">
 </div>
@@ -19,13 +22,11 @@ document.write(engine);
 </script>
 <!--Include left bar menu-->
 <div class="row-offcanvas row-offcanvas-left">
-	
-<script type="text/javascript">
+	<script type="text/javascript">
 	document.write(lbar);
 	</script>
 	<!--Include divs before FSDA text-->
-	
-<script type="text/javascript">
+	<script type="text/javascript">
 document.write(divsbefore);
 </script>
 	<!--BEGINNING OF FSDA TEXT-->
@@ -39,48 +40,54 @@ document.write(divsbefore);
 	<div class="row add_margin_20">
 		<div class="col-sm-4 col-sm-push-8 add_border_left">
 			<ul class="list-unstyled">
-				<li><a href="developers.html"><strong>The developers</strong></a></li>
-				<li><a href="group.html"><strong>The forward search group</strong></a></li>
-				<li><a href="license.txt"><strong>Terms of use</strong></a></li>
-				<li><a href="acknowledgments.html"><strong>Acknowledgements</strong></a></li>
+				<li>
+				<a href="#" onclick="window.open('developers.html','pagename','resizable,height=260,width=370'); return false;">
+				Developers </a></li>
+				<li>
+				<a href="#" onclick="window.open('group.html','pagename','resizable,height=260,width=370'); return false;">
+				The forward search group</a> </li>
+				<li>
+				<a href="#" onclick="window.open('license.txt','pagename','resizable,height=260,width=370'); return false;">
+				License</a> </li>
+				<li>
+				<a href="#" onclick="window.open('acknowledgments.html','pagename','resizable,height=260,width=370'); return false;">
+				Acknowledgments</a> </li>
+							<li>
+							<a href="#" onclick="window.open('links.html','pagename','resizable,height=260,width=370'); return false;">
+							Relevant links</a> </li>
+
 			</ul>
 		</div>
 		<div class="col-sm-8 col-sm-pull-4">
-			<p>Flexible Statistics and Data Analysis Toolbox; extends MATLAB
-			and statistics toolbox to support a robust and efficient 
-			analysis of complex data sets affected by different sources of heterogeneity. 
-			The toolbox contains three categories of tools:</p>
-			
-				
-<ol>
-  <li><a href="regression_intro.html">Robust Regression Analysis routines</a> 
+			<p>Flexible Statistics and Data Analysis Toolbox; extends MATLAB and 
+			statistics toolbox to support a robust and efficient analysis of complex 
+			data sets affected by different sources of heterogeneity. The toolbox 
+			contains three categories of tools:</p>
+			<ol>
+				<li><a href="regression_intro.html">Robust Regression Analysis routines</a> 
 				(including transformations)</li>
-  <li><a href="multivariate_intro.html">Robust Multivariate Analysis routines</a> 
-				(including transformations).</li>
-  <li><a href="cluster_intro.html">Robust Cluster Analysis routines</a> (regression 
-				and multivariate)</li>
-</ol>
-<ul>
-  
-  
-  
-</ul>
-<p>Code for any function inside the toolbox is open and extensible. 
+				<li><a href="multivariate_intro.html">Robust Multivariate Analysis 
+				routines</a> (including transformations).</li>
+				<li><a href="cluster_intro.html">Robust Cluster Analysis routines</a> 
+				(regression and multivariate)</li>
+			</ol>
+			<ul>
+			</ul>
+			<p>Code for any function inside the toolbox is open and extensible. 
 			Use the MATLAB Editor to review, copy, and edit M-file code for any 
 			function. Extend the toolbox by copying code to new M-files or by writing 
 			M-files that call toolbox functions.</p>
 		</div>
 	</div>
-	
-<h3><span style="color: rgb(51, 51, 255);">Awards</span><a href="getting-started.html"> </a></h3>
-
-
-	
-<p class="category_desc">Flexible Statistics and Data Analysis 
-	Toolbox was awarded by the participants of the MATLAB EXPO 2016 Italia.<br>
-</p>
-<h3><a href="getting-started.html">Getting Started </a></h3>
-
+	<h3 class="r2016a" itemprop="title content">Awards<a href="getting-started.html">
+	</a></h3>
+	<p class="category_desc">Flexible Statistics and Data Analysis Toolbox was awarded 
+	by the participants of the MATLAB EXPO 2016 Italia. The associated
+	<a href="http://www.matlabexpo.com/it/2016/proceedings/proceedings.html" target="_blank">
+	presentation</a>&nbsp; can be downloaded from Mathworks web site and the related 
+	poster, also exposed at the event, is downloadable <a href="poster_FSDA.pdf">
+	here</a>.<br></p>
+	<h3><a href="getting-started.html">Getting Started </a></h3>
 	<p class="category_desc">Learn the basics of Flexible Statistics and Data Analysis 
 	Toolbox</p>
 	<h3><a href="introrob.html">Introduction to Robust Statistics </a></h3>
@@ -104,9 +111,7 @@ document.write(divsbefore);
 	<h3><a href="release_notes.html">Release notes </a></h3>
 	<p class="category_desc">What's new in the different versions of FSDA</p>
 	<h3><a href="examples.html">Examples </a></h3>
-	
-<p class="category_desc">List of Examples apps and videos attached to the toolbox</p>
-
+	<p class="category_desc">List of Examples apps and videos attached to the toolbox</p>
 	<!-- -->
 	<!-- -->
 	<!-- -->
@@ -123,4 +128,6 @@ document.write(barra);
 	<!--close row-offcanvas--></div>
 <!--close class="row-offcanvas row-offcanvas-left" -->
 
-</body></html>
+</body>
+
+</html>
