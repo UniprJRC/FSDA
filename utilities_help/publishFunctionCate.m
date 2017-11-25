@@ -1,18 +1,18 @@
-function fstring=publishFunctionCate(InputCell)
+function fstring=publishFunctionCate(InputCell, varargin)
 %publishFunctionCate enables to create web page which contains the categorical list of functions
 %
 % This routins uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-cateEmpty.html
-% which is contained inside: 
-% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA; 
+% which is contained inside:
+% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
 % to create in a fully automatic way the categorical list of
-% functions with automatic links for each category. 
+% functions with automatic links for each category.
 % The output file will be created inside
-% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA; 
+% (main root of FSDA) filesep 'helpfiles' filesep 'FSDA;
 % and will have name function-cate.html
 % The automatic help file starting from structured .m file can be created
 % using function publishFS.m
-% 
+%
 %
 %<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
 %
@@ -20,9 +20,34 @@ function fstring=publishFunctionCate(InputCell)
 %
 %   InputCell: Cell created by function makecontentsfileFS.m. Cell. Cell
 %              containing information about all files which have to be
-%              included inside the categorical HTML file.
+%              included inside the categorical list of functions HTML file.
 %
 % Optional input arguments:
+%
+% webhelp :   Option to create web page version of categorical list of functions. 
+%             Logical.
+%             If webhelp is true, this option substitutes the MATLAB search
+%             form component with a Google local search form, enabling
+%             Google to create an index of online documentation help. The
+%             default value of webhelp is false.
+%             Example - 'webhelp',true
+%             Data Types - logical
+% outputDir : Output folder. String.
+%             Output folder to which the HTML document is saved and where
+%             template file function-cateEmpty.html is located, specified
+%             as the comma-separated pair consisting of 'outputDir' and the
+%             full path. You must specify the full path as a string, for
+%             example 'C:\PublishedOutput'. Note that inside outputDir
+%             there must be a file named "function-cateEmpty.html" which
+%             contains the template to create the categorical list of
+%             functions. The defaults of 'outputDir' are as follows:
+%             if input option webhelp is false  outputDir is 
+%             (FSDA root)\helpfiles\FSDA path,
+%             else if input option webhelp is true  outputDir is 
+%             (FSDA root)\helpfiles\FSDAweb path.
+%             Remark - outputDir must be a valid path.
+%             Example - 'outputDir','C:'
+%             Data Types - string
 %
 %
 % Output:
@@ -30,8 +55,8 @@ function fstring=publishFunctionCate(InputCell)
 %       fstring:  string containing list of files in categorical order.
 %                String. This string contains the full HTML files which all
 %                hypertextual links to all HTML files for each category.
-%                The HTML file function-cate.html also produced inside 
-%                folder (main root of FSDA)\helpfiles\FSDA
+%                The HTML file function-cate.html also produced inside
+%                input option "outputDir" folder.
 %
 % See also:    publishfunctionAlpha.m, publishFS.m
 %
@@ -46,12 +71,12 @@ function fstring=publishFunctionCate(InputCell)
 %
 % Examples:
 %
-% 
+%
 %{
     % Interactive_example
     % Creation of HTML file containing categorical list of functions.
     % Make sure you are inside the main folder of FSDA.
-    % Create contents file for each .m file 
+    % Create contents file for each .m file
     % findDir with optional arguments 'InclDir' and 'ExclDir'.
     FileName='addFSDA2path';
     FullPath=which(FileName);
@@ -73,23 +98,66 @@ function fstring=publishFunctionCate(InputCell)
 %}
 
 %% Beginning of code
-
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
 fsep=filesep;
 
-% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
+
+if nargin>1
+    UserOptions=varargin(1:2:length(varargin));
+    checklms2 = strcmp(UserOptions,'webhelp');
+    if sum(checklms2)
+        webhelp = varargin{2*find(checklms2)};
+    else
+        webhelp=false;
+    end
+else
+    webhelp=false;
+end
+
 FileWithFullPath=which('docsearchFS.m');
 [pathFSDAstr]=fileparts(FileWithFullPath);
 
-outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA\'];
+if webhelp == false
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+else
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb'];
+end
+
+if nargin>1
+    options=struct('outputDir',outputDir,'webhelp',webhelp);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    % Check if number of supplied options is valid
+    if length(varargin) ~= 2*length(UserOptions)
+        error('FSDA:publishFunctionCate:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    end
+    % Check if user options are valid options
+    chkoptions(options,UserOptions)
+    
+    % Write in structure 'options' the options chosen by the user
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+    
+    outputDir=options.outputDir;
+ %    webhelp=options.webhelp;
+end
+
 
 %% Open input function-cateEmpty.html file, put it in a string and do a series of preliminary operations
 
-FileWithFullPath=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA\function-cateEmpty.html'];
+
+% Open input function-cateEmpty.html file, put it in a string and do a series of preliminary operations
+FileWithFullPath=[outputDir fsep 'function-cateEmpty.html'];
 fileID = fopen(char(FileWithFullPath), 'r');
 
+if fileID==-1
+    disp(['Output path: '''  char(outputDir) ''' must  contain a file named  ''function-cateEmpty.html'''])
+    error('FSDA:publishFunctionCate:WrongPath','Output path does not have the input file')
+end
+        
 % Insert the file into fstring
 fstring=fscanf(fileID,'%c');
 
@@ -108,7 +176,7 @@ for i=1:length(seqCAT)
     if strcmp(letterINI,'GUI')
         ini=ini(1);
     else
-    assert(length(ini)==1,['Category: ' letterINI 'is duplicated'])
+        assert(length(ini)==1,['Category: ' letterINI 'is duplicated'])
     end
     
     fin=regexp(fstring,letterFIN);

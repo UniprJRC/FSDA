@@ -67,12 +67,16 @@ ExclDir={'privateFS'  'datasets'};
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
-force=true;
+force=false;
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
 
 %% STEP 2: create HTML for all files filtered using makecontentsFilesFS
+
+% Make sure that the format is short
+format short
+
 [FilesWithProblems,OUT]=publishFSallFiles(FilesIncluded);
 
 % Check correctness of HTML link inside each .m file
@@ -129,18 +133,21 @@ web(outputOFHtmlHelpFile,'-browser');
 %%%%%%%%%%%%%%%%%%
 
 %% STEP 2bis: create HTML for all files filtered using makecontentsFilesFS
-[FilesWithProblems,OUT]=publishFSallFiles(FilesIncluded,'webhelp',true);
+FilesIncluded=FilesIncluded(1:3,:);
+
+
+[FilesWithProblemsweb,OUTweb]=publishFSallFiles(FilesIncluded,'webhelp',true);
 
 % Check correctness of HTML file creation
-boo=~cellfun('isempty',FilesWithProblems(:,5));
-seq=1:size(FilesWithProblems,1);
+boo=~cellfun('isempty',FilesWithProblemsweb(:,5));
+seq=1:size(FilesWithProblemsweb,1);
 IndexesofFiles=seq(boo);
 if ~isempty(IndexesofFiles)
     disp('Files whose HTML reference page could not be created')
     for i=1:length(IndexesofFiles)
-        disp(FilesWithProblems{IndexesofFiles(i),1})
+        disp(FilesWithProblemsweb{IndexesofFiles(i),1})
     end
-    error('FSDA:CreateFSDAhelpFiles','Files without HTML web page')
+    error('FSDA:CreateFSDAhelpFiles','Files without HTML web page for WEB')
 end
 
 %% STEP 3bis: create alphabetical list of functions and txt file
@@ -149,7 +156,7 @@ fsep=filesep;
 % Make sure one more time you are inside main root of FSDA
 cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing alphabetical list of functions
-fileAlpha=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true);
+fileAlphaweb=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true,'webhelp',true);
 % open html file in web browser
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-alpha.html'];
 web(outputOFHtmlHelpFile,'-browser');
@@ -167,7 +174,7 @@ fsep=filesep;
 % Make sure one more time you are inside main root of FSDA
 cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing categorical list of functions
-fileCate=publishFunctionCate(FilesIncluded);
+fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true,'outputDir','D:\temp');
 % open outfile file in web browser
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
@@ -180,7 +187,7 @@ if h
     disp('Successful creation of pointer files')
 end
 
-%% STEP 7: create searchable database with different versions of MATLAB
+%% STEP 7: (not compulsory) create searchable database with different versions of MATLAB
 FileName='addFSDA2path';
 FullPath=which(FileName);
 %Navigate to the main folder of FSDA

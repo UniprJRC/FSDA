@@ -36,6 +36,30 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %                     current file in alphabetical order.
 %                 Example - 'CreateTxtFile',false
 %                 Data Types - boolean
+% webhelp :   Option to create web page version of categorical list of functions. 
+%             Logical.
+%             If webhelp is true, this option substitutes the MATLAB search
+%             form component with a Google local search form, enabling
+%             Google to create an index of online documentation help. The
+%             default value of webhelp is false.
+%             Example - 'webhelp',true
+%             Data Types - logical
+% outputDir : Output folder. String.
+%             Output folder to which the HTML document is saved and where
+%             template file function-alphaEmpty.html is located, specified
+%             as the comma-separated pair consisting of 'outputDir' and the
+%             full path. You must specify the full path as a string, for
+%             example 'C:\PublishedOutput'. Note that inside outputDir
+%             there must be a file named "function-alphaEmpty.html" which
+%             contains the template to create the alphabetical list of
+%             functions. The defaults of 'outputDir' are as follows:
+%             if input option webhelp is false  outputDir is 
+%             (FSDA root)\helpfiles\FSDA path,
+%             else if input option webhelp is true  outputDir is 
+%             (FSDA root)\helpfiles\FSDAweb path.
+%             Remark - outputDir must be a valid path.
+%             Example - 'outputDir','C:'
+%             Data Types - string
 %
 %
 % Output:
@@ -117,13 +141,36 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 fsep=filesep;
 CreateTxtFile=false;
 
+
 if nargin>1
-    options=struct('CreateTxtFile',CreateTxtFile);
+    UserOptions=varargin(1:2:length(varargin));
+    checklms2 = strcmp(UserOptions,'webhelp');
+    if sum(checklms2)
+        webhelp = varargin{2*find(checklms2)};
+    else
+        webhelp=false;
+    end
+else
+    webhelp=false;
+end
+
+FileWithFullPath=which('docsearchFS.m');
+[pathFSDAstr]=fileparts(FileWithFullPath);
+
+if webhelp == false
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+else
+    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb'];
+end
+
+
+if nargin>1
+    options=struct('CreateTxtFile',CreateTxtFile,'outputDir',outputDir,'webhelp',webhelp);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSMbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:publishFunctionAlpha:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -134,14 +181,22 @@ if nargin>1
     end
     
     CreateTxtFile=options.CreateTxtFile;
+    outputDir=options.outputDir;
+%    webhelp=options.webhelp;
 end
 
 
 % Open input function-alphaEmpty.html file, put it in a string and do a series of preliminary operations
-FileWithFullPath=which('docsearchFS.m');
-pathFSDAstr=fileparts(FileWithFullPath);
+FileWithFullPath=[outputDir fsep 'function-alphaEmpty.html'];
 
-FileWithFullPath=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA\function-alphaEmpty.html'];
+fileID = fopen(char(FileWithFullPath), 'r');
+
+if fileID==-1
+    disp(['Output path: '''  char(outputDir) ''' must  contain a file named  ''function-alphaEmpty.html'''])
+    error('FSDA:publishFunctionAlpha:WrongPath','Output path does not have the input file')
+end
+
+
 fileID = fopen(char(FileWithFullPath), 'r');
 
 % Insert the file into fstring
@@ -187,9 +242,7 @@ for i=1:length(seqAZ)
     fstring=[fstring(1:iniHTMLTEXT-1) strInsert fstring(iniHTMLTEXT+8:end)];
 end
 
-% Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
-
-outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA\'];
+% Write output file 
 
 % Pring fstring in new HTML file named function-alpha.html
 name='function-alpha';
