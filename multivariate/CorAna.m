@@ -617,10 +617,8 @@ d1=1;
 % d2= dimension to show in the y axis of correspondence analysis plot
 d2=2;
 
-options=struct('k',k,'Sup',Sup,'plots',plots,'datamatrix',false,...
+options=struct('Lr',{Lr},'Lc',{Lc},'k',k,'Sup',Sup,'plots',plots,'datamatrix',false,...
     'dispresults',dispresults,'d1',d1,'d2',d2);
-options.Lr=Lr;
-options.Lc=Lc;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

@@ -356,10 +356,8 @@ dispresults=true;
 NoStandardErrors=false;
 conflev=0.95;
 
-options=struct('datamatrix',false,...
+options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
     'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,'conflev',conflev);
-options.Lr=Lr;
-options.Lc=Lc;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
