@@ -67,7 +67,7 @@ function out=publishFS(file,varargin)
 %             Example - 'write2file',false
 %             Data Types - logical
 % webhelp :   Option to create web page version of local html help file. Logical.
-%             This option substitute the MATLAB search form component with
+%             This option substitutes the MATLAB search form component with
 %             a Google local search form, enabling Google to create an index
 %             of online documentation help.
 %             In this case 'outputDir' and 'imagesDir' should be populated to
