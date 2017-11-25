@@ -197,7 +197,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %   out.bopt           = $p-1 \times k$ matrix containing the regression
 %                        parameters.
-%   out.sigmaopt0      = $k$ row vector containing the estimated group
+%   out.sigmaopt_0      = $k$ row vector containing the estimated group
 %                        variances.
 %   out.sigmaopt_cons  = $k$ row vector containing the estimated group
 %                        variances corrected with  asymptotic consistency factor
@@ -230,14 +230,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                    rows) the indices of the subsamples extracted for
 %                    computing the estimate.
 %
-% See also: tclust, tkmeans, estepFS
+% See also: tclust, tkmeans, rlga
 %
 % References:
 %
 % Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 % A General Trimming Approach to Robust Cluster Analysis. Annals
 % of Statistics, Vol.36, 1324-1345. Technical Report available at:
-% www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 % Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
 % Lines with High Density Regions". Advances in Data Analysis and

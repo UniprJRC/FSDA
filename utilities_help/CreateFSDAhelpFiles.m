@@ -41,8 +41,8 @@ function outHELP=CreateFSDAhelpFiles()
 %                                       does not have to be created
 %            outHELP.FilesWithProblems = list of files with problems in the
 %                                        generation of HTML help files
-%              outHELP.fileAlpha    = string containing fucntion-alpha.html
-%              outHELP.fileCate    = string containing fucntion-cate.html
+%              outHELP.fileAlpha    = string containing function-alpha.html
+%              outHELP.fileCate    = string containing function-cate.html
 %
 %
 % Copyright 2008-2017.
