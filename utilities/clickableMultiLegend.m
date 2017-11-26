@@ -46,7 +46,7 @@ function [varargout] = clickableMultiLegend(varargin)
 % Examples
 
 %{
-     % clickableMultiLegend applied to a single plot
+     % clickableMultiLegend applied to a single plot.
      z = peaks(100);
      plot(z(:,26:5:50))
      grid on;
