@@ -195,48 +195,51 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %  out :  structure containing the following fields
 %
-%   out.bopt           = $p-1 \times k$ matrix containing the regression
-%                        parameters.
-%   out.sigmaopt_0      = $k$ row vector containing the estimated group
-%                        variances.
-%   out.sigmaopt_cons  = $k$ row vector containing the estimated group
-%                        variances corrected with  asymptotic consistency factor
-%   out.sigmaopt_pison = $k$ row vector containing the estimated group
-%                            variances corrected with  asymptotic consistency factor
-%                            and small sample correction factor of Pison et al.
-%   out.numopt         = $k$ column vector containing the number of
-%                        observations in each cluster
-%                        after the second trimming.                                         .
-%   out.vopt           = Scalar. The value of the target function.
-%   out.weopt       = $n$ vector containing the weigths of each
+%   out.bopt             = $p-1 \times k$ matrix containing the regression
+%                          parameters.
+%   out.sigmaopt_0       = $k$ row vector containing the estimated group
+%                          variances.
+%   out.sigmaopt_cons    = $k$ row vector containing the estimated group
+%                          variances corrected with  asymptotic consistency 
+%                          factor.
+%   out.sigmaopt_pison   = $k$ row vector containing the estimated group
+%                          variances corrected with  asymptotic consistency 
+%                          factor and small sample correction factor of 
+%                          Pison et al.
+%   out.numopt           = $k$ column vector containing the number of
+%                          observations in each cluster
+%                          after the second trimming.                                         .
+%   out.vopt             = Scalar. The value of the target function.
+%   out.weopt            = $n$ vector containing the weigths of each
 %                           observation, i.e. its contribution to the
 %                           estimates.
-%   out.asig_obs_to_group   = $n$ vector containing the  cluster assigments
-%                       of all n observations (trimmed observations
-%                       excluded).
-% out.asig_obs_to_group_before_tr = $n$ vector containing the  cluster assigments
-%                       of all n observations (trimmed observations
-%                       included).
-%   out.trim1levelopt       = $n$ vector containing the 1st level trimmed units (0) and
-%                       1st level untrimmed (1) units.
-%   out.trim2levelopt       = $n$ vector containing the 2nd level trimmed units (0) and
-%                           2nd level untrimmed (1) units.
-%   out.postprob       = $n$ vector containing the final posterior probability
+%   out.asig_obs_to_group= $n$ vector containing the  cluster assigments
+%                          of all n observations (trimmed observations
+%                          excluded).
+% out.asig_obs_to_group_before_tr = $n$ vector containing the  cluster 
+%                          assigments of all n observations (trimmed 
+%                          observations included).
+%   out.trim1levelopt     = $n$ vector containing the 1st level trimmed 
+%                           units (0) and 1st level untrimmed (1) units.
+%   out.trim2levelopt     = $n$ vector containing the 2nd level trimmed 
+%                           units (0) and 2nd level untrimmed (1) units.
+%   out.postprobopt       = $n$ vector containing the final posterior 
+%                           probability
 %
 %  Optional Output:
 %
 %            C     : Indexes of extracted subsamples. Matrix.
-%                    Matrix of size nsamp-by-k*p containing (in the
-%                    rows) the indices of the subsamples extracted for
-%                    computing the estimate.
+%                    Matrix of size nsamp-by-k*p containing (in the rows) 
+%                    the indices of the subsamples extracted for computing
+%                    the estimate.
 %
 % See also: tclust, tkmeans, rlga
 %
 % References:
 %
-% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
-% A General Trimming Approach to Robust Cluster Analysis. Annals
-% of Statistics, Vol.36, 1324-1345. Technical Report available at:
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.
+% (2008), A General Trimming Approach to Robust Cluster Analysis. Annals of
+% Statistics, Vol.36, 1324-1345. Technical Report available at:
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 % Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
@@ -451,8 +454,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %% REMARK: trimming vs thinning
 %
 % - trimming is the key feature of TCLUST, giving robustness to the model.
-% - thinning is a new denoising feature introduced to mitigate the distorting effect of
-%   very dense data areas. It is implemented via observation weighting.
+% - thinning is a new denoising feature introduced to mitigate the
+%   distorting effect of very dense data areas. It is implemented via
+%   observation weighting.
 %
 % For the sake of code readability, the relevant sections of the code will
 % be identified with a "TRIMMING" or "THINNING" tag.
