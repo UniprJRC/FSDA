@@ -1,0 +1,30 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>barnardtest</title> <meta content="refpage" name="chunktype"><meta content="function:barnardtest " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="barnardtest Barnard's unconditional test" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/barnardtest.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: barnardtest</em></p><h1 itemprop="title">barnardtest</h1><h1 class="reftitle">barnardtest Barnard's unconditional test</h1><h2>Description</h2><P>This function computes the Barnard's unconditional test.
+ The Barnard test is a powerful alternative
+ of Fisher's exact test for 2x2 contingency tables.</P><h2>More About</h2><P>
+ For a 2x2 contingency table, such as $N=[n_{11},n_{12};n_{21},n_{22}]$, the normalized
+ difference in proportions between the two categories, given in each
+ column, can be written with pooled variance (Score statistic) as
+ \[
+ T(X)=\frac{\hat{p}_2-\hat{p}_1}{\sqrt{\hat{p}(1-\hat{p})(\frac{1}{c_1}+\frac{1}{c_2})}},
+ \]
+
+ where $\hat{p}=(n_{11}+n_{21})/n$ , $\hat{p}_2=n_{12}/(n_{12}+n_{22})$,
+ $\hat{p}_1=n_{11}/(n_{11}+n_{21})$, $c_1=n_{11}+n_{21}$ and $c_2=n_{12}+n_{22}$.
+
+ The probability of observing $N$ (the input contingency table) is
+
+ \[
+ P(N)=\frac{c_1!c_2!}{n_{11}!n_{12}!n_{21}!n_{22}!} p^{n_{11}+n_{12}}(1-p)^{n_{21}+n_{22}},
+ \]
+
+ where $p$ is the unknown nuisance parameter.
+
+ Barnard's test considers all tables with category sizes $c_1$ and $c_2$ for a
+ given $p$. The p-value is the sum of probabilities of the tables having a
+ score in the rejection region, e.g. having significantly large difference
+ in proportions for a two-sided test. The p-value of the test is the
+ maximum p-value calculated over all $p$ between 0 and 1. The input
+ resolution parameter controls the resolution to search for.
+
+
+</P><h2>References</h2><P>Barnard, G.A. (1945), A new test for 2x2 tables. Nature, pp. 156-177.</P></html>

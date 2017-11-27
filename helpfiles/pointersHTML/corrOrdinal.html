@@ -1,0 +1,195 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>corrOrdinal</title> <meta content="refpage" name="chunktype"><meta content="function:corrOrdinal " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="corrOrdinal Measures strength of association between two ordered categorical variables" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/corrOrdinal.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: corrOrdinal</em></p><h1 itemprop="title">corrOrdinal</h1><h1 class="reftitle">corrOrdinal Measures strength of association between two ordered categorical variables</h1><h2>Description</h2><P>corrOrdinal computes Goodman-Kruskal's $\gamma$, $\tau_a$,
+ $\tau_b$, $\tau_c$ of Kendall and $d_{y|x}$ of Somers.
+ All these indexes measure the correlation among two ordered qualitative
+ variables and go between -1 and 1. The sign of the coefficient indicates
+ the direction of the relationship, and its absolute value indicates the
+ strength, with larger absolute values indicating stronger
+ relationships. Values close to an absolute value of 1 indicate a strong
+ relationship between the two variables. Values close to 0 indicate little
+ or no relationship. More in detail:
+ $\gamma$ is a symmetric measure of association.
+ Kendall's $\tau_a$ is a symmetric measure of association that does not
+ take ties into account. Ties happen when both members of the data pair
+ have the same value.
+ Kendall's $\tau_b$ is a symmetric measure of association which takes ties
+ into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
+ +1 can be obtained only from square tables.
+ $\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of
+ association which makes an adjustment for table size in addition to a
+ correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1
+ or +1 can be obtained only from square tables.
+ Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a
+ correction only for pairs that are tied on the independent variable
+ (which in this implementation it is assumed to be on the rows of the
+ contingency table).
+ Additional details about these indexes can be found in the "More About"
+ section of this document.</P><h2>More About</h2><P>
+
+ All these indexes are based on concordant and discordant pairs.
+ A pair of observations is concordant if the subject who is higher on one
+ variable also is higher on the other variable, and a pair of observations
+ is discordant if the subject who is higher on one variable is lower on
+ the other variable.
+ Let $C$ be the total number of concordant pairs (concordances) and $D$
+ the total number of discordant pairs (discordances) . If $C &gt; D$ the
+ variables have a positive association, but if $C &lt; D$ then the variables
+ have a negative association.
+
+ In symbols, given an $I \times J$ contingency table the concordant pairs
+ with cell $i,j$ are
+ \[
+ a_{ij} = \sum_{k&lt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&gt;i} \sum_{l&gt;j}   n_{kl}
+ \]
+
+ the number of discordant pairs is
+
+ \[
+ b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
+ \]
+
+
+ Twice the number of concordances, $C$ is given by:
+ \[
+ 2 \times C = \sum_{i=1}^I \sum_{j=1}^J n_{ij} a_{ij}
+ \]
+ Twice the number of discordances, $D$ is given by:
+ \[
+ 2 \times D = \sum_{i=1}^I \sum_{j=1}^J n_{ij} b_{ij}
+ \]
+
+ Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:
+
+ \[
+ \gamma= \frac{C-D}{C+D}
+ \]
+
+
+ $\tau_a$ is equal to concordant minus discordant pairs, divided by a
+ factor which takes into account the total number of pairs.
+
+ \[
+  \tau_a= \frac{C-D}{0.5 n(n-1)}
+ \]
+
+ $\tau_b$ is equal to concordant minus discordant
+ pairs divided by a term representing the geometric mean between the
+ number of pairs not tied on x and the number not tied on y.
+ More precisely:
+ \[
+  \tau_b= \frac{C-D}{\sqrt{ (0.5 n(n-1)-T_x)(0.5 n(n-1)-T_y)}}
+ \]
+ where $T_x= \sum_{i=1}^I 0.5 n_{i.}(n_{i.}-1)$ and
+ $T_y=\sum_{j=1}^J 0.5 n_{.j}(n_{.j}-1)$
+ Note that $\tau_b \leq \gamma$.
+
+ $\tau_c$ is equal to concordant minus discordant pairs multiplied by a factor that adjusts
+ for table size.
+ \[
+  \tau_c= \frac{C-D}{ n^2(m-1)/(2m)}
+ \]
+ where $m= min(I,J)$;
+
+ Somers' $d_{y|x}$ is an
+ asymmetric extension of $\gamma$ that differs only in the inclusion of the
+ number of pairs not tied on the independent variable. More precisely
+
+ \[
+  d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
+ \]
+
+ Null hypothesis:
+ corresponding index = 0. Alternative hypothesis (one-sided) index &lt; 0 or
+ index &gt; 0.
+
+
+
+ In order to compute confidence intervals and test hypotheses, this
+ routine computes the standard error of the various indexes.
+ Note that the expression of the standard errors which is used to compute
+ the confidence intervals is different from the expression which is used
+ to test the null hypothesis of no association (no relationship or independence)
+ between the two variables.
+
+As concerns the Goodman-Kruskal's $\gamma$ index we have that:
+ \[
+  var(\gamma) =   \frac{4}{(C + D)^4}  \sum_{i=1}^I \sum_{j=1}^J
+  n_{ij} (D a_{ij} - C b_{ij} )^2
+ \]
+ where
+ \[
+ d_{ij}=a_{ij}- b_{ij}
+ \]
+
+ The variance of $\gamma$  assuming the independence hypothesis is:
+ \[
+ var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
+  n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
+ \]
+
+ As concerns $\tau_a$ we have that:
+ \[
+ var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2}  \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\}
+ \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
+ \]
+ where
+
+ \[
+ \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
+ \]
+
+ The variance of $\tau_a$  assuming the independence hypothesis is:
+ \[
+ var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
+ \]
+
+
+ As concerns $\tau_b$ we have that:
+ \[
+ var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J  n_{ij}\tau_{ij}\right)^2  \right\}
+ \]
+ where
+
+ \[
+  \tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{
+  w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
+ \]
+
+ The variance of $\tau_b$  assuming the independence hypothesis is:
+ \[
+ var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+ \]
+
+
+ As concerns Stuart's $\tau_c$ we have that:
+ \[
+ var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+ \]
+
+
+
+ The variance of $\tau_c$  assuming the independence hypothesis is:
+ \[
+ var_0(\tau_c) =var(\tau_c)
+ \]
+
+
+ As concerns $d_{y|x}$ we have that:
+ \[
+ var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij}
+ (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
+ \]
+ where
+ \[
+ w_r= n^2- \sum_{i=1}^I n_{i.}^2
+ \]
+
+ The variance of $d_{y|x}$  assuming the independence hypothesis is:
+ \[
+ var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+ \]
+
+ From the theoretical point of view, Simon (1978) showed that all sample
+ measures having the same numerator $(C-D)$ have the same efficacy and hence
+ the same local power, for testing independence.
+
+</P><h2>References</h2><P>Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 57-59.</P></html>
