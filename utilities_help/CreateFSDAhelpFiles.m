@@ -133,7 +133,7 @@ web(outputOFHtmlHelpFile,'-browser');
 %%%%%%%%%%%%%%%%%%
 
 %% STEP 2bis: create HTML for all files filtered using makecontentsFilesFS
-FilesIncluded=FilesIncluded(1:3,:);
+% FilesIncluded=FilesIncluded(1:3,:);
 
 
 [FilesWithProblemsweb,OUTweb]=publishFSallFiles(FilesIncluded,'webhelp',true);
@@ -174,7 +174,7 @@ fsep=filesep;
 % Make sure one more time you are inside main root of FSDA
 cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing categorical list of functions
-fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true,'outputDir','D:\temp');
+fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true);
 % open outfile file in web browser
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
