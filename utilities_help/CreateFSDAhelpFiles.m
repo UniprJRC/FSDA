@@ -1,5 +1,5 @@
 function outHELP=CreateFSDAhelpFiles()
-%CreateFSDAhelpFiles prepares all documentation files 
+%CreateFSDAhelpFiles prepares all documentation files
 
 % The purpose of this function is to automatize all steps which lead to the
 % HTML documentation
@@ -21,11 +21,11 @@ function outHELP=CreateFSDAhelpFiles()
 % separated by commas. This file is necessary in order to create the right
 % and left buttons which enable us to navigate in alphabetical order inside the
 % HTML navigation system
-% 
+%
 % 5) Creare all pointer files using routine CreateFSDApointerFiles
 %
 % Remark: remember that your setup program must execaute command
-% builddocsearchdb in folder [FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'] 
+% builddocsearchdb in folder [FSDAroot filesep 'helpfiles'  filesep 'pointersHTML']
 % to create a searchable help
 %
 %
@@ -36,7 +36,7 @@ function outHELP=CreateFSDAhelpFiles()
 %         outHELP:   structure which contains the following fields
 %
 %            outHELP.FilesIncluded  = list of files for which HTML help has
-%                                       to be created 
+%                                       to be created
 %           outHELP.FilesIncluded   = list of files for which HTML help
 %                                       does not have to be created
 %            outHELP.FilesWithProblems = list of files with problems in the
@@ -60,7 +60,7 @@ FSDAroot=fileparts(FullPath);
 cd(FSDAroot)
 % Specify subfolders of main folders for which contents file has to be
 % created
-    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat' 'utilities_help'};
 ExclDir={'privateFS'  'datasets'};
 % Create list of folders which must have the personalized contents file
@@ -179,10 +179,46 @@ fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true);
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
+%% STEP 5: Patch with Google Search module all static files. Then copy
+%  external static files: acknowledgments.html, developers.html, group.html
+%  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
+
+ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
+    'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html' 'empty.html'...
+    'examples.html' ...
+    'getting-started.html' 'index.html' 'introFS.html' 'introrob.html' ...
+    'introrobmulttech.html' 'introrobregtech.html' 'mult_fsm.html' ...
+    'mult_fsmeda.html' 'mult_fsmfan.html' 'mult_fsmtra.html' 'mult_mcd.html'...
+    'mult_sandmm.html' 'mult_unibiv.html' 'multivariate_intro.html'...
+    'multivariatetransf_intro.html' ...
+    'regression_fsr.html' 'regression_fsreda.html' 'regression_intro.html'...
+    'regression_lxs.html' 'regression_mms.html' 'regression_mscp.html'...
+    'regression_mst.html' 'regressionms_intro.html' 'release_notes.html'...
+    'statistical_visualizationFS.html' 'statistical_visualization_cds.html'...
+    'statistical_visualization_fan.html' 'statistical_visualization_intro.html'...
+    'statistical_visualization_mdr.html' 'statistical_visualization_monres.html'...
+    'statistical_visualization_resindex.html' 'statistical_visualization_yx.html'...
+    'transf_fsrfan.html' 'transf_intro.html' 'transf_score.html' 'tutorials.html'};
+
+[issuesweb,OUTweb]=insertGoogleSearchEngine(ListofFiles);
+
+extFiles= {'acknowledgments.html' 'developers.html' 'group.html' 'license.txt' ...
+    'links_relevant.html' 'poster_fsda.pdf'};
+
+for i=1:length(extFiles)
+    inputFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep extFiles{i}];
+    status=copyfile(inputFile, ...
+        [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep extFiles{i}]);
+    if status==0
+        disp(['File: ' inputFile ' not found'])
+        error('FSDA:CreateFSDAhelpFiles',['File: not found'])
+    end
+    
+end
 
 %% STEP 6: create HTML pointer files
 
- h=CreateFSDApointerFiles(FilesIncluded,OUT);
+h=CreateFSDApointerFiles(FilesIncluded,OUT);
 if h
     disp('Successful creation of pointer files')
 end
