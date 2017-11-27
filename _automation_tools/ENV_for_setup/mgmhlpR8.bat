@@ -1,4 +1,4 @@
-rem @echo off
+@echo off
 set where=%1
 
 set mathpath=%2
@@ -46,7 +46,7 @@ rem echo "matdocroot " %matdocroot%
 rem move FSDA %matdocroot%\.
 
 mkdir %matdocroot%\FSDA
-xcopy FSDA %matdocroot%\FSDA /S /E
+xcopy FSDA %matdocroot%\FSDA /S /E /Y
 
 cd ..
 rem set tmphelp=%where%\FSDA\_tmp_helpfiles\FSDA
