@@ -182,6 +182,8 @@ web(outputOFHtmlHelpFile,'-browser');
 %% STEP 5: Patch with Google Search module all static files. Then copy
 %  external static files: acknowledgments.html, developers.html, group.html
 %  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
+%  In the end create a sitemap for Google Search module.
+%
 
 ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
     'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html' 'empty.html'...
@@ -215,6 +217,27 @@ for i=1:length(extFiles)
     end
     
 end
+% copy various files ....
+inputFile=[FSDAroot fsep 'InstallationNotes.pdf'];
+status=copyfile(inputFile, ...
+    [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'InstallationNotes.pdf']);
+if status==0
+    disp(['File: ' inputFile ' not found'])
+    error('FSDA:CreateFSDAhelpFiles',['File: not found'])
+end
+
+
+% Create a simple URL Sitemap in txt format
+allWebFiles=getWebMatlabFiles();
+allHttpUrl=cell(length(allWebFiles),1);
+
+for i=1:length(allWebFiles)
+    allHttpUrl{i,1}=['http://rosa.unipr.it/FSDA/' allWebFiles{i}];
+end
+
+fileSitemap=cell2table(allHttpUrl);
+writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.txt']);
+
 
 %% STEP 6: create HTML pointer files
 
