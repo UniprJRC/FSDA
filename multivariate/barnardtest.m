@@ -261,8 +261,7 @@ end
 
 
 % PREPARE data for the FOR cycles.
-
-P = zeros(1/resolution,1);
+P = zeros(ceil(1/resolution),1);
 iP=1;
 
 % 2. The required factorials.
@@ -286,8 +285,6 @@ px=cInt/C;
 % 4. To store the #'p' S and TX.
 S = zeros(PC,1);
 TX =  S;
-Schk=S;
-TXchk=TX;
 
 c2seq=(0:c2)';
 c2seq1=c2seq+1;
@@ -329,14 +326,14 @@ for p=0:resolution:1
         q2store(~isfinite(q2store))=0;
         
         indexes=i*(c2+1)+1:+(i+1)*(c2+1);
-        Schk(indexes) = q2store;
+        S(indexes) = q2store;
         
         % Schk(i*(c2+1)+1:+(i+1)*(c2+1)) = exp(F1(end)-F1(end-i)-F1(i+1)+ F2(end)-F2(end-c2seq)-F2(c2seq+1) +(i+c2seq)*log(p)+(C-(i+c2seq))*log(1-p));
         pxic2=px(i+c2seq1);
-        TXchk(indexes)= (pa(i+1)-pb(c2seq1))./sqrt(pxic2.*(1-pxic2)*IC);
+        TX(indexes)= (pa(i+1)-pb(c2seq1))./sqrt(pxic2.*(1-pxic2)*IC);
         
     end
-    P(iP) = sum(Schk(TXchk>=TX0));
+    P(iP) = sum(S(TX>=TX0));
     iP=iP+1;
 end
 
