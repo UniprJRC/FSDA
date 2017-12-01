@@ -2782,8 +2782,12 @@ for i=1:nseealso
                     
                     % replace '\' with '/'
                     addSubPath=strrep(addSubPath,'\','/') ;
-                    % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
-                    DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+                    if webhelp==true
+                        DestHyperLink=['https://www.mathworks.com/help/' addSubPath '" ' 'target="_blank" ' 'title="help from MathWorks website'];
+                    else
+                        % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
+                        DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+                    end
                 else
                     DestHyperLink='';
                 end
