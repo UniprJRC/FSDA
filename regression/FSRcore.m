@@ -174,12 +174,11 @@ function [out]=FSRcore(INP,model,options)
 %
 % References:
 %
-% Copyright 2008-2017.
+% Copyright 2008-2016.
 % Written by FSDA team
 %
 %
-%
-%$LastChangedDate::                      $: Date of the last commit
+% Last modified 31-05-2016
 
 %% Beginning of code
 
@@ -217,6 +216,13 @@ msg=options.msg;
 bonflev=options.bonflev;
 seq=1:n;
 
+% correction in case of Bayesian model to account for number of
+% (fictitious) observations in the prior
+if strcmp(model,'B')
+    nori = n;
+    n    = nori + INP.n0;
+end
+
 if ~isempty(bonflev)
     if bonflev<1
         [gbonf] = FSRbonfbound(n,p,'prob',bonflev,'init',init);
@@ -224,6 +230,15 @@ if ~isempty(bonflev)
     else
         bonfthresh=bonflev*ones(n-init,1);
     end
+    
+    % correction in case of Bayesian model to account for prior
+    % observations
+    if strcmp(model,'B')
+        bonfthresh(1:INP.n0,:)=[];
+        bonfthresh(:,1) = bonfthresh(:,1) - INP.n0;
+        n = nori;
+    end
+    
 else
     
     exact=1;
@@ -244,7 +259,16 @@ else
     % 5th col of gmin = 99.999% envelope
     % 6th col of gmin = 1% envelope
     % 7th col of gmin = 50% envelope
-    % Thus, Set the columns of gmin where the theoretical quantiles are located.
+    
+    % correction in case of Bayesian model to account for number of
+    % (fictitious) observations in the prior
+    if strcmp(model,'B')
+        gmin(1:INP.n0,:)=[];
+        gmin(:,1) = gmin(:,1) - INP.n0;
+        n = nori;
+    end
+    
+    % Thus, set the columns of gmin where the theoretical quantiles are located.
     [c99 , c999 , c9999 , c99999 , c001 , c50] = deal(2,3,4,5,6,7);
     
     
