@@ -185,7 +185,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                  betadistrib.type = string which identifies the kind of distribution. 
 %                   Possibile values are:
 %                   'Normal'; NORMAL DISTRIBUTION N(mu, sigma); In this
-%                   case the use must supply mu and sigma.
+%                   case the user must supply mu and sigma.
 %                   'Uniform'; UNIFORM DISTRIBUTION U(a, b).
 %                   'HalfNormal'; HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|.
 %                   'User'.  OTHER DISTRIBUTION. 
