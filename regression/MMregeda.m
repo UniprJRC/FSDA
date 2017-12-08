@@ -24,7 +24,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               Data Types - double
 %  InitialEst : starting values of the MM-estimator. [] (default) or structure.
 %               InitialEst must contain the following fields
-%               InitialEst.loc =  v x 1 vector (estimate of the centroid)
+%               InitialEst.beta =  p x 1 vector (estimate of the beta)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default)
 %               program uses S estimators. In this last case it is
@@ -293,6 +293,9 @@ end
 % S-estimation
 InitialEst=options.InitialEst;
 
+Srhofunc = options.Srhofunc;
+rhofunc = options.Srhofunc;
+    
 if isempty(InitialEst)
     
     bdp = options.Sbdp;              % break down point
@@ -306,7 +309,6 @@ if isempty(InitialEst)
     
     rhofunc=options.Srhofunc;           % rho function which must be used
     rhofuncparam=options.Srhofuncparam;    % eventual additional parameters associated to the rho function
-    
     
     % first compute S-estimator with a fixed breakdown point
     
@@ -363,7 +365,8 @@ out = struct;
 
 for jj=1:length(eff)
     outIRW = MMregcore(y,X,bs,ss,'eff',eff(jj),'effshape',effshape,...
-        'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',1);
+        'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',1,...
+        'Srhofunc',Srhofunc);
     residuals=(y-X*outIRW.beta)/ss;
     Residuals(:,jj)=residuals;
     Beta(:,jj)=outIRW.beta;
@@ -383,6 +386,7 @@ out.auxscale = ss;
 out.Ssingsub=singsub;
 out.conflev=conflev;
 out.class='MMregeda';
+
 out.rhofunc=rhofunc;
 % In case of Hampel or hyperbolic tangent estimator store the additional
 % parameters which have been used

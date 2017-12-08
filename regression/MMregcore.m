@@ -251,11 +251,12 @@ refstepsdef = 100;
 reftoldef = 1e-7;
 % rho (psi) function which has to be used to weight the residuals
 rhofuncdef='bisquare';
-
+Srhofuncdef=rhofuncdef;
 % store default values in the structure options
 options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
     'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
     'rhofunc',rhofuncdef,'rhofuncparam','',...
+    'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
     'plots',0,'nocheck',0,'yxsave',0,'intercept',1,'msg',1);
 
 % check user options and update structure options
