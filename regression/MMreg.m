@@ -53,7 +53,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%     effshape : location or scale effiicency. dummy scalar.
+%     effshape : location or scale efficiency. dummy scalar.
 %                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
