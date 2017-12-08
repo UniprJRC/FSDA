@@ -215,7 +215,7 @@ if nargin > 1
             % if the user has chosen a bandwidth, we may want to provide
             % a support too. For the moment we leave it unbounded, which is
             % the default of ksdensity.
-            support = 'positive';
+            support = 'unbounded';%'positive';
             %Remark: if we want to provide the support for the density
             %estimation, then the support should include the data values
             %interval. The quantity 'e' that exceeds the interval should
