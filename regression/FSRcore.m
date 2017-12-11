@@ -224,19 +224,24 @@ if strcmp(model,'B')
 end
 
 if ~isempty(bonflev)
+    
     if bonflev<1
         [gbonf] = FSRbonfbound(n,p,'prob',bonflev,'init',init);
         bonfthresh=gbonf;
+        % correction in case of Bayesian model to account for prior
+        % observations
+        if strcmp(model,'B')
+            bonfthresh(1:INP.n0,:)=[];
+            bonfthresh(:,1) = bonfthresh(:,1) - INP.n0;
+            n = nori;
+        end
     else
-        bonfthresh=bonflev*ones(n-init,1);
-    end
-    
-    % correction in case of Bayesian model to account for prior
-    % observations
-    if strcmp(model,'B')
-        bonfthresh(1:INP.n0,:)=[];
-        bonfthresh(:,1) = bonfthresh(:,1) - INP.n0;
-        n = nori;
+        % in this case the threshold is constant therefore there is no need
+        % to change n
+        if strcmp(model,'B')
+            n = nori;
+        end
+        bonfthresh=[(init:n-1)' bonflev*ones(n-init,1)];
     end
     
 else
@@ -557,7 +562,7 @@ if isempty(bonflev)
 else
     for i=1:nmdr
         % Outlier detection based on Bonferroni threshold
-        if (mdr(i,2)>bonfthresh(i,end)) % TODO TODO && mdr(i,1)>floor(0.5*n);
+        if (mdr(i,2)>bonfthresh(i,end))
             if msg
                 disp(['mdr(' int2str(mdr(i,1)) ',' int2str(n) ')>99% Bonferroni level']);
             end
@@ -602,8 +607,8 @@ if plo==1 || plo ==2
             yl1=min([gmin(:,c001);mdr(:,2)]);
             yl2=max([gmin(:,c999);mdr(:,2)]);
         else
-            yl1=min([bonfthresh(:,2);mdr(:,2)]);
-            yl2=max([bonfthresh(:,2);mdr(:,2)]);
+            yl1=min([bonfthresh(:,end);mdr(:,2)]);
+            yl2=max([bonfthresh(:,end);mdr(:,2)]);
         end
     else
         yl1=ylimy(1);
@@ -755,9 +760,7 @@ if plo==1 || plo ==2
         PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
         PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
         
-        
-        
-        if size(bonfthresh,2)>1
+        if bonflev<1
             % latex annotations informing that the envelopes are based on
             % all the observations
             strmin='Exceedance based on Bonferroni threshold';
