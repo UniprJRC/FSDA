@@ -610,6 +610,16 @@ if plo==1 || plo ==2
             yl1=min([bonfthresh(:,end);mdr(:,2)]);
             yl2=max([bonfthresh(:,end);mdr(:,2)]);
         end
+        
+        % Set upper limit to 20 of the plot if it is greater
+        if yl2>20
+            if msg
+                % Inform the user about automatic upper limit
+                warning('FSDA:FSRcore:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+            end
+            yl2=20;
+        end
+        
     else
         yl1=ylimy(1);
         yl2=ylimy(2);

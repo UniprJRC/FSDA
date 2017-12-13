@@ -484,9 +484,16 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
             
         end
         
+        out.ListOut=NaN;
+        out.outliers=NaN;
         out.mdr = NaN;
         out.Un  = NaN;
         out.nout= NaN;
+        out.beta=NaN;
+        out.scale=NaN;
+        out.fittedvalues=NaN;
+        out.residuals=NaN;
+        out.class='FSR';
         return
     end
 else % initial subset is not supplied by the user
