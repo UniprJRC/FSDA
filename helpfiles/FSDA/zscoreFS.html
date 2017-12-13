@@ -3,7 +3,7 @@
    Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
    as X. For vector input X, Z is the vector of z-scores
 
-      (X-median(X)) ./ mad(X).</p> <p>
+      (X-median(X)) ./ (1.4826* mad(X)).</p> <p>
 
    Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the
    same size as X using location and scale are specified in input
@@ -12,7 +12,9 @@
 
       (X-location(X)) ./ scale(X).</p> <p>
 
-
+   where scaled(X) is the corrected estimator of scale (corrected in the
+   sense that it is multiplied by a coefficient to achieve consistency for 
+   normally distributed data).</p> <p>  
 
 
    Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the
@@ -144,17 +146,21 @@
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'median'
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>character</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scale" class="clearfix"> </div> <h3 id="input_argument_scale" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scale</code> &#8212; scale measure to use. </span>  </a><span class="example_desc">'mad' (default) or 'Qn' or 'Sn' or 'std' or
          moddmadp'.</span></span></h3> <div class="collapse"> <p><p>String which specifies the dispersion measure to use
-           'mad' is the default. Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4);</p> <p>
-           'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m;</p> <p>  
-           'Sn' robust Gini's average difference index. See function Sn.m;</p> <p>
+           'mad' is the default. Traditional (corrected) mad is
+           $Me(|x_i-Me(X)|)/norminv(3/4)$;</p> <p>
+           'Qn' first quartile of interpoint distances $|x_i-x_j|$ corrected
+           by the consistency factor. See function Qn.m;</p> <p>
+           'Sn' robust Gini's average difference index corrected by the
+           consistency factor. See function Sn.m;</p> <p>
            'std' Unbiased standard deviations. See function std.m;</p> <p> 
            'modmadp'. Modified mad where the last letter(s) p of string modmap
                  is (are) a number converted to string necessary to
                  compute the modified MAD.</p> <p> 
-       Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)|
-                 + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|)
-                 / (2* \sigma) where \sigma= norminv(0.5*((n+p-1)/(2*n)+1))
-                  Note that p is different from v (columns of X if X is a
+       Modified MAD = (order statistic $ceil((n+p-1)/2)$ of $|x_i-Me(X)|$
+                 + order statistic $floor((n+p-1)/2+1)$ of $|x_i-Me(X)|)$
+                 / $(2 \sigma)$ where $\sigma=
+                 norminv(0.5*((n+p-1)/(2*n)+1))$.</p> <p>
+                  Note that $p$ is different from $v$ (columns of X if X is a
                   matrix) and must be supplied by the user.</p> <p>
                    For example if p=5 then the user can supply the string 'modmad5'
                    as follows.  p=5; modmadp=['modmap' num2str(p)];</p><p>
@@ -169,4 +175,4 @@
             z-scores
            (X-location(X)) ./ scale(X).</p></div></div><div class="expandableContent"><div id="outputarg_mu" class="clearfix"></div><h3 id="output_argument_mu" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mu</code> &#8212;location estimate.</span></a><span class="example_desc"><code><code> Scalar, </code>vector or </code>matrix depending on the size of input matrix X</span></span></h3><div class="collapse"><p>
            Estimates of location specified in loc input string.</p></div></div><div class="expandableContent"><div id="outputarg_sigma" class="clearfix"></div><h3 id="output_argument_sigma" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>sigma</code> &#8212;scale estimate.</span></a><span class="example_desc"><code><code> Scalar, </code>vector or </code>matrix depending on the size of input matrix X</span></span></h3><div class="collapse"><p>
-           Estimates of scale specified in scale input string.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/zscore.html'))" itemprop="url"><span itemprop="name"><code>zscore</code></span></a></span> | <span itemprop="seealso"><a href="MCD.html" itemprop="url"><span itemprop="name"><code>MCD</code></span></a></span> | <span itemprop="seealso"><a href="Smult.html" itemprop="url"><span itemprop="name"><code>Smult</code></span></a></span> | <span itemprop="seealso"><a href="MMmult.html" itemprop="url"><span itemprop="name"><code>MMmult</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+           Estimates of scale specified in scale input string.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/zscore.html'))" itemprop="url"><span itemprop="name"><code>zscore</code></span></a></span> | <span itemprop="seealso"><a href="Qn.html" itemprop="url"><span itemprop="name"><code>Qn</code></span></a></span> | <span itemprop="seealso"><a href="Sn.html" itemprop="url"><span itemprop="name"><code>Sn</code></span></a></span> | <span itemprop="seealso"><a href="MCD.html" itemprop="url"><span itemprop="name"><code>MCD</code></span></a></span> | <span itemprop="seealso"><a href="Smult.html" itemprop="url"><span itemprop="name"><code>Smult</code></span></a></span> | <span itemprop="seealso"><a href="MMmult.html" itemprop="url"><span itemprop="name"><code>MMmult</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

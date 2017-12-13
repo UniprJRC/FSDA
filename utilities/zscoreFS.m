@@ -9,7 +9,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %   Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
 %   as X. For vector input X, Z is the vector of z-scores
 %
-%      (X-median(X)) ./ mad(X).
+%      (X-median(X)) ./ (1.4826* mad(X)).
 %
 %   Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the
 %   same size as X using location and scale are specified in input
@@ -18,7 +18,9 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %
 %      (X-location(X)) ./ scale(X).
 %
-%
+%   where scaled(X) is the corrected estimator of scale (corrected in the
+%   sense that it is multiplied by a coefficient to achieve consistency for 
+%   normally distributed data).  
 %
 %
 %   Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the
@@ -79,17 +81,21 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 % scale : scale measure to use. 'mad' (default) or 'Qn' or 'Sn' or 'std' or
 %         moddmadp'.
 %         String which specifies the dispersion measure to use
-%           'mad' is the default. Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4);
-%           'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m;  
-%           'Sn' robust Gini's average difference index. See function Sn.m;
+%           'mad' is the default. Traditional (corrected) mad is
+%           $Me(|x_i-Me(X)|)/norminv(3/4)$;
+%           'Qn' first quartile of interpoint distances $|x_i-x_j|$ corrected
+%           by the consistency factor. See function Qn.m;
+%           'Sn' robust Gini's average difference index corrected by the
+%           consistency factor. See function Sn.m;
 %           'std' Unbiased standard deviations. See function std.m; 
 %           'modmadp'. Modified mad where the last letter(s) p of string modmap
 %                 is (are) a number converted to string necessary to
 %                 compute the modified MAD. 
-%       Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)|
-%                 + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|)
-%                 / (2* \sigma) where \sigma= norminv(0.5*((n+p-1)/(2*n)+1))
-%                  Note that p is different from v (columns of X if X is a
+%       Modified MAD = (order statistic $ceil((n+p-1)/2)$ of $|x_i-Me(X)|$
+%                 + order statistic $floor((n+p-1)/2+1)$ of $|x_i-Me(X)|)$
+%                 / $(2 \sigma)$ where $\sigma=
+%                 norminv(0.5*((n+p-1)/(2*n)+1))$.
+%                  Note that $p$ is different from $v$ (columns of X if X is a
 %                  matrix) and must be supplied by the user.
 %                   For example if p=5 then the user can supply the string 'modmad5'
 %                   as follows.  p=5; modmadp=['modmap' num2str(p)];
@@ -115,7 +121,7 @@ function [Z,mu,sigma] = zscoreFS(X,loc,scale,dim)
 %  sigma : scale estimate. Scalar, vector or matrix depending on the size of input matrix X.
 %           Estimates of scale specified in scale input string.
 %
-% See also: zscore, MCD, Smult, MMmult, FSM
+% See also: zscore, Qn, Sn, MCD, Smult, MMmult, FSM
 %
 %
 % References:
@@ -327,10 +333,10 @@ end
         half = floor(n/2);
         
         if strcmp(loc,'median')
-            x = sort(x);
-            locest = x(half+1,:);
+            xsor = sort(x);
+            locest = xsor(half+1,:);
             if 2*half == n       % Average if even number of elements
-                locest =(x(half,:)+locest)/2;
+                locest =(xsor(half,:)+locest)/2;
             end
         elseif strcmp(loc,'mean')
             locest =sum(x,1)/n;
@@ -371,13 +377,16 @@ end
             end
             
             if strcmp(loc,'mean')
-                x = sort(x);
-                locestmean = x(half+1,:);
+              % In this case the median has not been calculated yet
+                xsor = sort(x);
+                locestmedian = xsor(half+1,:);
                 if 2*half == n       % Average if even number of elements
-                    locestmean =(x(half,:)+locestmean)/2;
+                    locestmedian =(xsor(half,:)+locestmedian)/2;
                 end
-                signres = bsxfun(@minus,x, locestmean);
+                signres = bsxfun(@minus,x, locestmedian);
             else
+                % in this case the median had already been calculated and
+                % put in variable locest.
                 signres = bsxfun(@minus,x, locest);
             end
             
