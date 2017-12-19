@@ -673,7 +673,9 @@ else
         end
     end
     if verMatlab==0
-        Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
+        Lrvalid=matlab.lang.makeValidName(Lr);
+        Lcvalid=matlab.lang.makeValidName(Lc);
+        Ntable=array2table(N,'RowNames',Lrvalid,'VariableNames',Lcvalid);
     end
 end
 
@@ -852,14 +854,14 @@ out.Nhat=Nhat;
 
 if verMatlab==0
     % Store Nhat in table format
-    Nhattable=array2table(Nhat,'RowNames',Lr,'VariableNames',Lc);
+    Nhattable=array2table(Nhat,'RowNames',Lrvalid,'VariableNames',Lcvalid);
     out.Nhattable=Nhattable;
 end
 
 out.P=P;
 if verMatlab==0
     % Store P in table format
-    Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
+    Ptable=array2table(P,'RowNames',Lrvalid,'VariableNames',Lcvalid);
     out.Ptable=Ptable;
 end
 
