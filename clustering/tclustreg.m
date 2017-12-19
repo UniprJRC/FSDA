@@ -190,46 +190,79 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %           information at iteration level.
 %             Example - 'msg',1
 %             Data Types - single | double
-%
+% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                random numbers which are used to initialize the
+%                proportions of the groups. This option is effective just
+%                if nsamp is a matrix which contains pre-extracted
+%                subsamples. The purpose of this option is to enable to
+%                user to replicate the results in case routine tclust is
+%                called using a parfor instruction (as it happens for
+%                example in routine IC, where tclust is called through a
+%                parfor for different values of the restriction factor).
+%                The default value of RandNumbForNini is empty that is
+%                random numbers from uniform are used.
+%                   Example - 'RandNumbForNini',''
+%                   Data Types - single | double
 %  Output:
 %
 %  out :  structure containing the following fields
 %
-%   out.bopt             = $p-1 \times k$ matrix containing the regression
+%   out.bopt             = $p \times k$ matrix containing the regression
 %                          parameters.
-%   out.sigmaopt_0       = $k$ row vector containing the estimated group
+%   out.sigma2opt       = $k$ row vector containing the estimated group
 %                          variances.
-%   out.sigmaopt_cons    = $k$ row vector containing the estimated group
-%                          variances corrected with  asymptotic consistency 
+%   out.sigma2opt_corr    = $k$ row vector containing the estimated group
+%                          variances corrected with  asymptotic consistency
 %                          factor.
-%   out.sigmaopt_pison   = $k$ row vector containing the estimated group
-%                          variances corrected with  asymptotic consistency 
-%                          factor and small sample correction factor of 
-%                          Pison et al.
-%   out.numopt           = $k$ column vector containing the number of
-%                          observations in each cluster
-%                          after the second trimming.                                         .
+%         out.muXopt= k-by-p matrix containing cluster centroid
+%                       locations. Robust estimate of final centroids of
+%                       the groups. This output is present just if input
+%                       option alphaX is 1.
+%         out.sigmaXopt= p-by-p-by-k array containing estimated constrained
+%                       covariance covariance matrices of the explanatory
+%                       variables for the k groups. This output is present
+%                       just if input option alphaX is 1.
+%            out.idx  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups. Cluster names are integer
+%                       numbers from -2 to k. 
+%                       -1 indicates first level trimmed units.
+%                       -2 indicated second level trimmed units.
+%            out.siz  = Matrix of size k-by-3.
+%                       1st col = sequence from -2 to k;
+%                       2nd col = number of observations in each cluster;
+%                       3rd col = percentage of observations in each
+%                       cluster;
+%                       Remark: 0 denotes thinned units (if the weights are
+%                       to find thinned units are 0 or 1, -1 indicates
+%                       first level trimmed units and -2 indicates second
+%                       level trimmed units).
+% out.idx_before_tr = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups before applying first (and
+%                       second level trimming). Cluster names are integer
+%                       numbers from 1 to k. Note that while out.idx
+%                       contains number which go from -2 to k,
+%                       out.idx_before_tr only contains numbers which go
+%                       from 1 to k.
+%            out.post = n-by-k matrix containing posterior probabilities
+%                       out.post(i,j) contains posterior probabilitiy of unit
+%                       i from component (cluster) j. For the trimmed units
+%                       posterior probabilities are 0.
 %   out.vopt             = Scalar. The value of the target function.
-%   out.weopt            = $n$ vector containing the weigths of each
+%   out.weopt            = n-by-1 vector  containing the weigths of each
 %                           observation, i.e. its contribution to the
 %                           estimates.
-%   out.asig_obs_to_group= $n$ vector containing the  cluster assigments
-%                          of all n observations (trimmed observations
-%                          excluded).
-% out.asig_obs_to_group_before_tr = $n$ vector containing the  cluster 
-%                          assigments of all n observations (trimmed 
-%                          observations included).
-%   out.trim1levelopt     = $n$ vector containing the 1st level trimmed 
-%                           units (0) and 1st level untrimmed (1) units.
-%   out.trim2levelopt     = $n$ vector containing the 2nd level trimmed 
-%                           units (0) and 2nd level untrimmed (1) units.
-%   out.postprobopt       = $n$ vector containing the final posterior 
-%                           probability
+%   out.postprobopt       = $n \times k$ matrix containing the final posterior
+%                           probabilities.
+%                           out.postprobopt(i,j) contains posterior probabilitiy of unit
+%                           i from component (cluster) j. For the trimmed units
+%                           posterior probabilities are 0.
+%
 %
 %  Optional Output:
 %
 %            C     : Indexes of extracted subsamples. Matrix.
-%                    Matrix of size nsamp-by-k*p containing (in the rows) 
+%                    Matrix of size nsamp-by-k*p containing (in the rows)
 %                    the indices of the subsamples extracted for computing
 %                    the estimate.
 %
@@ -422,6 +455,20 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',C);
 %}
 
+%{
+    % Example of nsamp passed as a matrix.
+    X  = load('X.txt');
+    y1 = X(:,end);
+    X1 = X(:,1:end-1);
+
+    k = 2 ;
+
+    restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
+    nsamp=200;
+    Cnsamp=subsets(nsamp,n,(size(X1,2)+1)*k);
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);
+%}
+
 %% Beginning of code
 
 %%  computational issues to be addressed in future releases
@@ -612,7 +659,7 @@ if nargin>6
         
     end
 else
-    % if nargin ==6 for use the user has not supplied prior subsets.
+    % if nargin ==6 for sure the user has not supplied prior subsets.
     NoPriorSubsets=1;
 end
 
@@ -648,7 +695,7 @@ seqk=1:k;
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
     'we',wedef,'wtrim',wtrimdef,...
-    'msg',1,'plots',1,'equalweights',0);
+    'msg',1,'plots',1,'equalweights',0,'RandNumbForNini','');
 
 if nargin > 6
     
@@ -802,6 +849,14 @@ if msg == 1
     end
 end
 
+RandNumbForNini=options.RandNumbForNini;
+if isempty(RandNumbForNini)
+    NoPriorNini=1;
+else
+    NoPriorNini=0;
+end
+
+
 %% Additional variables depending on user options
 
 % First level trimming
@@ -844,11 +899,11 @@ if nargout==2
 end
 
 ll                  = zeros(n,k);
-sigmaini            = ones(1,k);
+sigma2ini            = ones(1,k);
 %initialize the output of tclustreg, i.e. the parameters obtained in the best (optimum) subset
 bopt             = zeros(p,k);
 %initialization of besta sigmas
-sigmaopt=NaN(1,k);
+sigma2opt=NaN(1,k);
 
 if cwm==1
     % Initialize muX = matrix of size (p-intercept)-by-k which contains
@@ -869,7 +924,7 @@ end
 w4trimopt=ones(n,1);
 % indmax_before_tropt = indexes of beloging of each obsevation to groups
 % (before trimming)
-indmax_before_tropt = w4trimopt;
+idxopt_before_tropt = w4trimopt;
 
 
 %numopt = (kX1) vector containing the number of observations in each of
@@ -887,7 +942,7 @@ trim2levelopt       = w4trimopt;
 %indmaxopt = (nx1) vector of 1, ... , k, indicating the assignement of
 %all the n observations (trimmed observations included) to one of the k
 %groups  in the optimal subset
-indmaxopt           = zeros(n,1);
+idxopt           = zeros(n,1);
 
 postprobopt     = zeros(n,k);
 
@@ -917,24 +972,43 @@ for i =1:nselected
     % rng(1234);
     %the number of observations in each group is randomly assigned
     
-    
-    % Initialize mixiing proportions making sure that
-    % a) minimum group size is a positive integer
-    % b) sum of group sizes is equal to h
-    niin=0;
-    itermax=0;
-    while min(niin)==0 && itermax<1000
-        randk=rand(k,1);
+    if NoPriorNini==1
+        % Initialize mixiing proportions making sure that
+        % a) minimum group size is a positive integer
+        % b) sum of group sizes is equal to h
+        niin=0;
+        itermax=0;
+        while min(niin)==0 && itermax<1000
+            randk=rand(k,1);
+            niin=floor(h*randk/sum(randk));
+            diffh=sum(niin)-h;
+            [~,imin]=min(niin);
+            niin(imin)=niin(imin)-diffh;
+            itermax=itermax+1;
+        end
+        if itermax ==1000
+            error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
+        end
+        niini=niin;
+    else
+        randk=RandNumbForNini(:,i);
+        itermax=0;
+        
+        % Make sure that the sum of niin is h
         niin=floor(h*randk/sum(randk));
-        diffh=sum(niin)-h;
-        [~,imin]=min(niin);
-        niin(imin)=niin(imin)-diffh;
-        itermax=itermax+1;
+        if sum(niin)<h
+            niin(1)=niin(1)+h-sum(niin);
+        end
+        % Make sure that minimum group size is strictly positive
+        while min(niin)==0 && itermax<1000
+            ntoreplace=seqk(niin==0);
+            niin(ntoreplace(1))=1;
+            [~,posmax]=max(niin);
+            niin(posmax)=niin(posmax)-1;
+            itermax=itermax+1;
+        end
+        niini=niin;
     end
-    if itermax ==1000
-        error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
-    end
-    niini=niin;
     
     %given the current subsets extracted observations (C(iter,:)),
     %X and y are identified for each group and the
@@ -952,9 +1026,9 @@ for i =1:nselected
         Beta(:,j) = Xb\yb;
         % Initialize sigmas
         if length(yb)==1
-            sigmaini(j)= var(y);
+            sigma2ini(j)= var(y);
         else
-            sigmaini(j) =var(yb);
+            sigma2ini(j) =var(yb);
         end
         
         if cwm==1
@@ -973,13 +1047,13 @@ for i =1:nselected
     % if equalweights =1 then equal proportions are supplied for group
     % sizes
     if equalweights==1
-        sigmaini= restreigen(sigmaini,ones(k,1),restrfact,tolrestreigen,userepmat);
+        sigma2ini= restreigen(sigma2ini,ones(k,1),restrfact,tolrestreigen,userepmat);
         
         if cwm==1
             autovalues= restreigen(Lambda_pk,ones(k,1),restrfactX,tolrestreigen,userepmat);
         end
     else
-        sigmaini= restreigen(sigmaini,niini,restrfact,tolrestreigen,userepmat);
+        sigma2ini= restreigen(sigma2ini,niini,restrfact,tolrestreigen,userepmat);
         if cwm==1
             autovalues= restreigen(Lambda_pk,niini,restrfactX,tolrestreigen,userepmat);
         end
@@ -1003,14 +1077,14 @@ for i =1:nselected
     % Given starting values of parameters (coming from a subset)
     if equalweights == 1
         for jj = 1:k
-            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
                 ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
             end
         end
     else
         for jj = 1:k
-            ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+            ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
                 ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
             end
@@ -1197,14 +1271,14 @@ for i =1:nselected
             % Discriminant functions for the assignments
             if equalweights == 1
                 for jj = 1:k
-                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
                         ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
                     end
                 end
             else
                 for jj = 1:k
-                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj));
+                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
                         ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
                     end
@@ -1238,7 +1312,7 @@ for i =1:nselected
             disc(w4trim==0)=1e+20;
             % Assign 0 to thinned units
             indmax(w4trim==0)=0;
-
+            
             % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
             % contributions
             [~,qq] = sort(disc,'ascend');
@@ -1268,15 +1342,15 @@ for i =1:nselected
             % indmax of the units subject to first level trimming
             % is set equal to -1
             indmax(qqunassigned)=-1;
-          
-              % Put equal to zero the posterior probability of unassigned
+            
+            % Put equal to zero the posterior probability of unassigned
             % units
             postprob(qqunassigned,:)=0;
             
             % Now multiply posterior probabilities (n-by-k matrix) by
             % weights (n-by-1 vector) obtained using thinning
             Z=bsxfun(@times,postprob,w4trim);
-
+            
             %% 3) Second level of trimming (inside concentration steps) or cwm model
             % FS or MCD are used to find units to trim
             % Using untrimmed units find beta coefficients and
@@ -1368,6 +1442,10 @@ for i =1:nselected
                 % Set to zeros the rows of matrix Z which were trimmed based on
                 % second level
                 Z(indmax==-2,:)=0;
+                % Set to zeros the rows of matrix postprob which were
+                % trimmed based on second level
+                postprob(indmax==-2,:)=0;
+
             end
             
             if lessthankgroups==1
@@ -1401,7 +1479,7 @@ for i =1:nselected
                     res2=(yw-Xw*breg).^2;
                     sigma2=sum(res2)/nj;
                     
-                    sigmaini(jj) = sigma2;
+                    sigma2ini(jj) = sigma2;
                     
                     if cwm ==1
                         muX(:,jj)=sum(bsxfun(@times, X(:,intercept+1:end), Z(:,jj)),1)/sum(Z(:,jj))';
@@ -1435,13 +1513,13 @@ for i =1:nselected
             % if equalweights =1 then equal proportions are supplied for group
             % sizes
             if equalweights==1
-                sigmaini= restreigen(sigmaini,ones(k,1),restrfact,tolrestreigen,userepmat);
+                sigma2ini= restreigen(sigma2ini,ones(k,1),restrfact,tolrestreigen,userepmat);
                 
                 if cwm==1
                     autovalues= restreigen(Lambda_pk,ones(k,1),restrfactX,tolrestreigen,userepmat);
                 end
             else
-                sigmaini= restreigen(sigmaini,niini,restrfact,tolrestreigen,userepmat);
+                sigma2ini= restreigen(sigma2ini,niini,restrfact,tolrestreigen,userepmat);
                 if cwm==1
                     autovalues= restreigen(Lambda_pk,niini,restrfactX,tolrestreigen,userepmat);
                 end
@@ -1479,10 +1557,10 @@ for i =1:nselected
                     
                     if equalweights ==1
                         obj = obj + log(1/k) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj)).*Z(:,jj));
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
                     else
                         obj = obj + niini(jj)*log(niini(jj)/sum(niini))+...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigmaini(jj)).*Z(:,jj));
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
                     end
                     
                     if cwm==1
@@ -1503,11 +1581,11 @@ for i =1:nselected
                 for jj = 1:k
                     if equalweights ==1
                         log_lh(:,jj) = ...
-                            log(1/k) + (logmvnpdfFS(y -X * Beta(:,jj),0,sigmaini(jj) ) );
+                            log(1/k) + (logmvnpdfFS(y -X * Beta(:,jj),0,sigma2ini(jj) ) );
                     else
                         log_lh(:,jj) = ...
                             log(niini(jj)/sum(niini)) + (logmvnpdfFS(...
-                            y - X*Beta(:,jj),0,sigmaini(jj) ) );
+                            y - X*Beta(:,jj),0,sigma2ini(jj) ) );
                     end
                     if cwm==1
                         log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
@@ -1525,7 +1603,7 @@ for i =1:nselected
         %monitoring of obj, sigma and w4trim
         if bench == 1
             obj_all(i,cstep) = obj;
-            sigmaini_all(i,cstep,:) = sigmaini;
+            sigmaini_all(i,cstep,:) = sigma2ini;
             w4trim_all(i,cstep,:) = w4trim;
             Beta_all(i,cstep,:,:)=Beta;
             
@@ -1556,24 +1634,20 @@ for i =1:nselected
         vopt                    = obj;
         bopt                    = Beta;
         numopt                  = niini;
-        sigmaopt                = sigmaini;
+        sigma2opt                = sigma2ini;
         w4trimopt               = w4trim;
         weopt                   = we;
-        trim1levelopt           = find(indmax==-1);
-        trim2levelopt           = find(indmax==-2);
-        indmax_before_tropt     = indmax_before_tr;
-        indmaxopt               = indmax;
-        %                     not_empty_gopt          = not_empty_g;
-        %                     n_refsteps_lt_k_gropt       = n_refsteps_lt_k_gr;
-        %                     n_refsteps_eq_k_gropt       = n_refsteps_eq_k_gr;
-        %                     extra_inisubsopt        = nselected - nsampdef;
-        %                     good_subs_idopt            = good_subs_id;
-        %                     elim_subs_idopt            = elim_subs_id(1:count_elim,:);
-        %                     all_subs_idopt             = [elim_subs_id(1:count_elim,:); good_subs_id];
+        idxopt_before_tropt     = indmax_before_tr;
+        idxopt               = indmax;
+
         if mixt ==2
             postprobopt = postprob;
         end
         
+        if cwm==1
+            muXopt=muX;
+            sigmaXopt=sigmaX;
+        end
     end
     
     if msg==1
@@ -1601,34 +1675,16 @@ hh = sum(numopt);
 vt = norminv(0.5*(1+hh/n));
 
 %factor=1/sqrt(1-(2*vt.*normpdf(vt))./(2*normcdf(vt)-1));
+if hh<n
 factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
-% Note that factor=sqrt(factor1)
-%     v=1;
-%     a=chi2inv(hh/n,1);
-%     factor1=(hh/n)/(chi2cdf(a,1+2));
-
-% Apply the asymptotic consistency factor to the preliminary scale estimate
-if ~isnan(factor)
-    sigmaopt_cons=sigmaopt*factor;
-    % Apply small sample correction factor of Pison et al.
-    sigmaopt_pison=sigmaopt_cons*sqrt(corfactorRAW(1,n,hh/n));
 else
-    sigmaopt_cons=sigmaopt;
-    sigmaopt_pison=sigmaopt_cons;
+    factor=1;
 end
 
-%     % units classification: 0 if trimmed at the 1st step, 1 otherwise
-%     trim1level_01opt = ones(n,1);
-%     trim1level_01opt(trim1levelopt) = 0;
-%
-%     % units classification: 0 if trimmed at the 2st step, 1 otherwise
-%     trim2level_01opt = ones(n,1);
-%     trim2level_01opt(trim2levelopt) = 0;
-%
-%     % final cluster assigments after first trimming ('0' means a trimmed observation)
-%     asig1 = indmaxopt .* weopt .* trim1level_01opt ;
-%     % final cluster assigments after first and second trimming ('0' means a trimmed observation)
-%     asig2 = asig1 .* trim2level_01opt ;
+% Apply the asymptotic consistency factor to the preliminary squared scale estimate
+    sigma2opt_corr=sigma2opt*factor;
+    % Apply small sample correction factor of Pison et al.
+    sigma2opt_corr=sigma2opt_corr*corfactorRAW(1,n,hh/n);
 
 %%  Set the output structure
 
@@ -1636,31 +1692,38 @@ out                     = struct;
 %   bopt           = regression parameters
 out.bopt                = bopt;
 %   sigmaopt0      = estimated group variances
-out.sigmaopt_0          = sigmaopt;
-%   sigmaopt_cons  = estimated group variances corrected with  asymptotic consistency factor
-out.sigmaopt_cons       = sigmaopt_cons;
-%   sigmaopt_pison = estimated group variances corrected with  asymptotic consistency factor and small sample correction factor of Pison et al.
-out.sigmaopt_pison      = sigmaopt_pison;
-%   numopt         = number of observations in each cluster after the second trimming
-out.numopt              = numopt;
-%   vopt           = value of the target function
-out.vopt                = vopt;
-out.asig_obs_to_group   = indmaxopt;
-out.asig_obs_to_group_before_tr   = indmax_before_tropt;
-out.trim1levelopt       = trim1levelopt;
-out.trim2levelopt           = trim2levelopt;
+out.sigma2opt          = sigma2opt;
+%   sigma2opt_corr  = estimated group variances corrected with  asymptotic
+%   consistency factor and small sample correction factor
+out.sigma2opt_corr       = sigma2opt_corr;
+
+if cwm==1
+%            out.muXopt= k-by-p matrix containing cluster centroid
+%                       locations. Robust estimate of final centroids of
+%                       the groups.
+out.muXopt=muXopt;
+%         out.sigmaXopt= p-by-p-by-k array containing estimated constrained
+%                       covariance covariance matrices of the explanatory variables for the k groups.
+out.sigmaXopt=sigmaXopt;
+end
+
+%   obj           = value of the target function
+out.obj                = vopt;
+% out.idx = final allocation vector
+% out.idx==1 for units allocated to group 1
+% out.idx==2 for units allocated to group 2
+%.....
+% out.idx==k for units allocated to group k
+% out.idx==-1 for first  level trimmed units
+% out.idx==-2 for second level trimmed units
+out.idx   = idxopt;
+% frequency distribution of the allocations
+out.siz=tabulateFS(idxopt);
+
+out.idx_before_tr   = idxopt_before_tropt;
+
 out.weopt               =weopt;
 
-%     out.asig1               = asig1;
-%     out.asig2               = asig2;
-%     out.trim2levelopt       = trim2level_01opt;
-%     out.count1_ng_lt_k      = n_refsteps_lt_k_gropt;
-%     out.count1_ng_eq_k      = n_refsteps_eq_k_gropt;
-%     out.numb_opt_sample_with_lt_k_gr = ntclust_no_opt_subs;
-%     out.extra_inisubs       = extra_inisubsopt;
-%     out.selj_good           = good_subs_idopt;
-%     out.selj_elim           = elim_subs_idopt;
-%     out.selj_all            = all_subs_idopt;
 if mixt == 2
     out.postprobopt     = postprobopt;
 end
@@ -1676,18 +1739,88 @@ if nargout==2
     varargout={C};
 end
 
+%% Compute INFORMATION CRITERIA
 
-%   asig1          = cluster assigments after first trimming ('0' means a trimmed observation)
-%   asig2          = (-final-) cluster assigments after second trimming ('0' means a trimmed observation)
-%   postprob       = posterior probability
-%   count1_ng_lt_k = number of times that, after the first level of trimming, in a group there are not enought observations to compute the sigma
-%   count1_eq_lt_k = number of times that, after the first level of trimming, in a group there are enought observations to compute the sigma
-%   count2_ng_lt_k = number of times that, after the second level of trimming, in a group there are not enought observations to compute the sigma
-%   count2_eq_lt_k = number of times that, after the second level of trimming, in a group there are enought observations to compute the sigma
-%   extra_inisubs  = number of subsets generated above the number specified by the user (nsamp) because of small difference between pairwise regression parameters
-%   out.selj_good  = list of valid subsets and observations inside them
-%   out.selj_elim  =  list of not-valid subsets and observations inside them
-%   out.selj_all   =  list of all subsets (valid and not) and observations inside them
+% Discriminant functions for the assignments
+if equalweights == 1
+    for jj = 1:k
+        ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+        if cwm==1
+            ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(:,jj),sigmaXopt(:,:,jj));
+        end
+    end
+else
+    for jj = 1:k
+        ll(:,jj) = log((numopt(jj)/sum(numopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+        if cwm==1
+            ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(:,jj),sigmaXopt(:,:,jj));
+        end
+    end
+end
+
+% Now remove the rows which refer to first, or second level trimmed units
+% or thinned units
+
+delunits=false(n,1);
+delunits(idxopt<0)=true;
+delunits(w4trim==0)=true;
+
+ll(delunits,:)=[];
+
+if mixt>=1
+    [NlogLmixt]=estepFS(ll);
+    % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
+    % Note that if there was convergence NlogLmixt should be exactly equal to
+    % -vopt
+    NlogLmixt = -NlogLmixt;
+end
+
+loglik= max(ll,[],2);
+
+
+% NlogL is the negative of the CLASSIFICATION LOG-LIKELIHOOD  of the
+% untrimmed units
+% NlogL=-sum(max(ll(untrimmed units,[],2));
+% Note that if there was convergence NlogL should be exactly equal to
+% -vopt
+NlogL =-sum(loglik);
+
+
+npar=p*k;
+
+if equalweights==false
+    npar=npar +(k-1);
+end
+
+% Add paramters referred to sigma2 restrictions
+nParam=npar+ (k-1)*((1-1/restrfact)^(1-1/k)) +1;
+
+if cwm==1
+    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*((1-1/restrfactX)^(1-1/(p*k))) +1;
+end
+
+logh=log(h);
+
+if mixt>0
+    % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
+    % and the maximized mixture likelihood as goodness of fit measure (New BIC)
+    MIXMIX  = 2*NlogLmixt +nParam*logh;
+    
+    % MIXCLA = BIC which uses the classification likelihood based on
+    % parameters estimated using the mixture likelihood (New ICL)
+    MIXCLA  = 2*NlogL +nParam*logh;
+    
+    out.MIXMIX=MIXMIX;
+    out.MIXCLA=MIXCLA;
+else
+    % CLACLA = BIC which uses parameters estimated using the classification
+    % likelihood and the maximized classification likelihood as goodness of fit
+    % measure (New New)
+    CLACLA  = 2*NlogL +nParam*logh;
+    
+    out.CLACLA=CLACLA;
+end
+
 
 %% Generate plots
 
@@ -1696,7 +1829,7 @@ if plots
     % this is just for rotating colors in the plots
     clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
     symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
-
+    
     % The following plots are for the bi-variate case (i.e. v=1)
     if p-intercept < 2
         
@@ -1704,9 +1837,9 @@ if plots
         fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
-
+        
         title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_1=' num2str(alphaLik) '\quad \alpha_2=' num2str(alphaX) '$'] , ...
-               ['$ obj=' num2str(out.vopt) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
+            ['$ obj=' num2str(out.obj) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
             'interpreter' , 'latex', 'fontsize' , 18);
         
         for jj = 1:k
@@ -1715,7 +1848,7 @@ if plots
             % plot of the good units allocated to the current group.
             % Indices are taken after the second level trimming.
             % Trimmed points are not plotted by group.
-            ucg = find(indmaxopt==jj);
+            ucg = find(idxopt==jj);
             
             
             % misteriously text does not show a legend. This is why
@@ -1748,12 +1881,12 @@ if plots
         end
         
         % Plot the outliers (trimmed points)
-        ucg = find(indmaxopt==-1);
+        ucg = find(idxopt==-1);
         plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
             'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
         
         % Second level trimming points
-        ucg = find(indmaxopt==-2);
+        ucg = find(idxopt==-2);
         plot(X(ucg,end),y(ucg),'*','color','c',...
             'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
         
@@ -1797,8 +1930,8 @@ if plots
         plo=struct;
         plo.nameY=nameY;
         plo.sym = [symdef(1:k) , 'o' ];
-        plo.clr = [clrdef(1:k) , 'r' ]; 
-        if sum(indmaxopt==-2)>0
+        plo.clr = [clrdef(1:k) , 'r' ];
+        if sum(idxopt==-2)>0
             plo.sym = [plo.sym , 's'];
             plo.clr = [plo.clr , 'r'];
         end
@@ -1806,10 +1939,10 @@ if plots
         
         % group names in the legend
         group = cell(n,1);
-        group(indmaxopt==-1) = {'Trimmed units'};
-        group(indmaxopt==-2) = {'Trimmed units level 2'};
+        group(idxopt==-1) = {'Trimmed units'};
+        group(idxopt==-2) = {'Trimmed units level 2'};
         for iii = 1:k
-            group(indmaxopt==iii) = {['Group ' num2str(iii)]};
+            group(idxopt==iii) = {['Group ' num2str(iii)]};
         end
         
         % scatterplot
