@@ -699,7 +699,7 @@ if nargin>4
             end
         end
     else
-        % If option nsamp is no supplied then for sure there are no prior
+        % If option nsamp is not supplied then for sure there are no prior
         % subsets
         NoPriorSubsets=1;
         
@@ -746,11 +746,11 @@ tolrestreigen=1e-08;
 % Default
 if nargin<3
     alpha=0.05;
-    warning('You have not specified alpha: it is set to 0.05 by default');
+    warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
 else
     if isempty(alpha)
         alpha=0.05;
-        warning('You have not specified alpha: it is set to 0.05 by default');    
+        warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');    
     end
 end
 
@@ -763,7 +763,7 @@ end
 
 if nargin<4
     restrfactor=12;
-    warning('You have not specified restrfactor: it is set to 12 by default');
+    warning('FSDA:tclust:Wrongrestrfact','You have not specified restrfactor: it is set to 12 by default');
 end
 
 % h = number of untrimmed units
