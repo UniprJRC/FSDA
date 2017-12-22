@@ -1,5 +1,5 @@
 %% EXAMPLES OF CATEGORICAL DATA ANALYSIS
-% examples_categorical shows a series of analysis of regression datasets 
+% examples_categorical shows a series of analysis of regression datasets
 % Copyright 2008-2017.
 % Written by FSDA team
 %
@@ -85,18 +85,21 @@ X=smoke.data;
 labels_rows=labels(1:I,1);
 labels_columns=labels(1:J,2);
 
-% In this section we reproduce Figure 3.6 of Greenacre, (1984). Theory and
-% Applications of Correspondence Analysis p. 71.
-% The input is the original data matrix.
-% Supplementary rows and columns are passed as tables.
-supr=[0.42 0.29 0.20 0.09];
-Nsupr=array2table(supr,'RowNames',{'nationwide average'},'VariableNames',labels_columns);
-supc=[0 11; 1 17; 5 46; 10 78; 7 18];
-Nsupc=array2table(supc,'RowNames',labels_rows,'VariableNames',{'do_not_drink' 'drink'});
-Sup.r=Nsupr;
-Sup.c=Nsupc;
-out=CorAna(X,'Lr',labels_rows,'Lc',labels_columns,'datamatrix',true,'Sup',Sup);
-
+if ~verLessThan('matlab','8.3.0')
+    % In this section we reproduce Figure 3.6 of Greenacre, (1984). Theory and
+    % Applications of Correspondence Analysis p. 71.
+    % The input is the original data matrix.
+    % Supplementary rows and columns are passed as tables.
+    supr=[0.42 0.29 0.20 0.09];
+    Nsupr=array2table(supr,'RowNames',{'nationwide average'},'VariableNames',labels_columns);
+    supc=[0 11; 1 17; 5 46; 10 78; 7 18];
+    Nsupc=array2table(supc,'RowNames',labels_rows,'VariableNames',{'do_not_drink' 'drink'});
+    Sup.r=Nsupr;
+    Sup.c=Nsupc;
+    out=CorAna(X,'Lr',labels_rows,'Lc',labels_columns,'datamatrix',true,'Sup',Sup);
+else
+    disp('This example runs only from MATLAB R2014A')
+end
 
 %% Correpondence analysis of the smoke data (8)
 % In this section we explore options inside input structure plots
@@ -163,20 +166,37 @@ rowslab={'money','future','unemployment','circumstances',...
 colslab={'unqualified','cep','bepc','high_school_diploma','university',...
     'thirty','fifty','more_fifty'};
 
-tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-% Extract just active rows
-Nactive=tableN(1:14,1:5);
-% Correspondence analysis
-out=CorAna(Nactive);
+if ~verLessThan('matlab','8.3.0')
+    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    % Extract just active rows
+    Nactive=tableN(1:14,1:5);
+    % Correspondence analysis
+    out=CorAna(Nactive);
+else
+    Nactive=N(1:14,1:5);
+    out=CorAna(Nactive,'Lr',rowslab(1:14),'Lc',colslab(1:5));
+end
+
 
 %% Correspondence analysis of the children dataset (2)
 % Supplementary rows and columns are passed as table
-Nsupr=tableN(15:18,1:5);
-Nsupc=tableN(1:14,6:8);
-Sup=struct;
-Sup.r=Nsupr;
-Sup.c=Nsupc;
-out=CorAna(Nactive,'Sup',Sup);
+if ~verLessThan('matlab','8.3.0')
+    Nsupr=tableN(15:18,1:5);
+    Nsupc=tableN(1:14,6:8);
+    Sup=struct;
+    Sup.r=Nsupr;
+    Sup.c=Nsupc;
+    out=CorAna(Nactive,'Sup',Sup);
+else
+    Sup=struct;
+    Sup.r=N(15:18,1:5);
+    Sup.c=N(1:14,6:8);
+    Sup.Lr=rowslab(15:18);
+    Sup.Lc=colslab(6:8);
+    out=CorAna(Nactive,'Sup',Sup);
+    
+end
+
 
 %% Correspondence analysis of the housetasks dataset (1)
 % The data are a contingency table containing 13 housetasks and their
@@ -206,18 +226,27 @@ rowslab={'Laundry' 'Main_meal' 'Dinner' 'Breakfeast' 'Tidying' 'Dishes' ...
     'Shopping' 'Official' 'Driving' 'Finances' 'Insurance'...
     'Repairs' 'Holidays'};
 colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
-tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
 
 % In this section we explore options inside input structure plots
 plots.alpha='colgreen';
 plots.alpha='rowprincipal';
 plots.alpha='rowgab';
-out=CorAna(tableN,'plots',plots);
+
+if ~verLessThan('matlab','8.3.0')
+    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    out=CorAna(tableN,'plots',plots);
+else
+    out=CorAna(N,'Lr',rowslab,'Lc',colslab,'plots',plots);
+end
 
 %% Correspondence analysis of the housetasks dataset (2)
 %  Option plots supplied as input structure and alpha as numeric
 plots.alpha=0.7;
-out=CorAna(tableN,'plots',plots);
+if ~verLessThan('matlab','8.3.0')
+    out=CorAna(tableN,'plots',plots);
+else
+    out=CorAna(N,'Lr',rowslab,'Lc',colslab,'plots',plots);
+end
 % Compute the distance between row profiles
 % \[
 % d^2(row_1, row_2) = \sum{\frac{(row.profile_1 - row.profile_2)^2}{average.profile}}

@@ -378,9 +378,9 @@ function out=CorAna(N, varargin)
 %                           given dimension, any row with a contribution
 %                           larger than this threshold could be considered
 %                           as important in contributing to that dimension.
-% out.Point2InertiaCols = $J$-by-$K$ matrix containing relative 
-%                         contributions of columns to inertia of the 
-%                         dimension. The sum of each column of matrix 
+% out.Point2InertiaCols = $J$-by-$K$ matrix containing relative
+%                         contributions of columns to inertia of the
+%                         dimension. The sum of each column of matrix
 %                         Point2InertiaCols is equal to 1.
 % out.Dim2InertiaRows  =  $I$-by-$K$ matrix containing relative
 %                         contributions of latent dimensions to inertia of
@@ -511,7 +511,7 @@ function out=CorAna(N, varargin)
 % CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
 % Journal of Statistical Software, Volume 31, Issue 8.
 %
-% Acknowledgements: 
+% Acknowledgements:
 %
 % This function has been written following code developed by:
 % Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
@@ -563,9 +563,9 @@ function out=CorAna(N, varargin)
 
 %% Beginning of code
 
-% Check MATLAB version. If it is not smaller than 2013b than output is
-% shown in table format
-verMatlab=verLessThan('matlab','8.2.0');
+% Check MATLAB version. If it is not smaller than 2014a, output is
+% also shown in table format
+verMatlab=verLessThan('matlab','8.3.0');
 
 % Check whether N is a contingency table or a n-by-p input dataset (in this
 % last case the contingency table is built using the first two columns of the
@@ -591,6 +591,11 @@ if datamatrix == true
     Lr=labels(1:I,1);
     % default labels for columns of contingency table
     Lc=labels(1:J,2);
+    if ~verMatlab
+        % Make valid names
+        Lr=matlab.lang.makeValidName(Lr);
+        Lc=matlab.lang.makeValidName(Lc);
+    end
 else
     [I,J]=size(N);
     % Size of N
@@ -646,10 +651,15 @@ if ~isempty(UserOptions)
     dispresults=options.dispresults;
     d1  = options.d1;
     d2  = options.d2;
+    if ~verMatlab
+        Lr=matlab.lang.makeValidName(Lr);
+        Lc=matlab.lang.makeValidName(Lc);
+    end
+    
 end
 
 % Extract labels for rows and columns
-if verMatlab ==0 && istable(N)
+if ~verMatlab && istable(N)
     Lc=N.Properties.VariableNames;
     Lr=N.Properties.RowNames;
     Ntable=N;
@@ -660,7 +670,7 @@ else
     else
         % Check that the length of Lr is equal to I
         if length(Lr)~=I
-            error('Wrong length of row labels');
+            error('FSDA:CorAna:WrongInputOpt','Wrong length of row labels');
         end
     end
     
@@ -669,13 +679,11 @@ else
     else
         % Check that the length of Lc is equal to J
         if length(Lc)~=J
-            error('Wrong length of column labels');
+            error('FSDA:CorAna:WrongInputOpt','Wrong length of column labels');
         end
     end
-    if verMatlab==0
-        Lrvalid=matlab.lang.makeValidName(Lr);
-        Lcvalid=matlab.lang.makeValidName(Lc);
-        Ntable=array2table(N,'RowNames',Lrvalid,'VariableNames',Lcvalid);
+    if ~verMatlab
+        Ntable=array2table(N,'RowNames',Lr,'VariableNames',Lc);
     end
 end
 
@@ -683,7 +691,7 @@ end
 % and columns (if supplementary rows and columns belong to the table)
 Nred = N;
 
-if verMatlab==0
+if ~verMatlab
     Nredtable = Ntable;
 end
 
@@ -700,6 +708,10 @@ if ~isempty(Sup)
         if iscell(Sup.r) || ischar(Sup.r)
             % find the indexes of the rows of matrix N to delete (rows to
             % use as supplementary rows)
+            if ~verMatlab
+                Sup.r=matlab.lang.makeValidName(Sup.r);
+            end
+            
             Indexesr=zeros(length(Sup.r),1);
             for i=1:length(Sup.r)
                 if iscell(Sup.r)
@@ -715,10 +727,16 @@ if ~isempty(Sup)
             % supplementary rows
             Lr(Indexesr) = [];
             
-        elseif istable(Sup.r)
+        elseif ~verMatlab && istable(Sup.r)
             Indexesr='';
             Nsupr=table2array(Sup.r);
             labels.sr=Sup.r.Properties.RowNames;
+        elseif  ~isvector(Sup.r)
+             Indexesr='';
+            % In this case there is a matrix (not a table) and labels are supplied separately 
+            Nsupr=Sup.r;
+            labels.sr=Sup.Lr;
+            
         else
             Indexesr=Sup.r;
             if min(Indexesr)<1 || max(Indexesr)> size(N,1)
@@ -738,6 +756,10 @@ if ~isempty(Sup)
     % beginning of part referred to labels for supplementary columns
     if isfield(Sup,'c')
         if iscell(Sup.c) || ischar(Sup.c)
+            if ~verMatlab
+                Sup.c=matlab.lang.makeValidName(Sup.c);
+            end
+            
             % find the indexes of the rows to delete (rows to use as
             % supplementary rows)
             Indexesc=zeros(length(Sup.c),1);
@@ -754,10 +776,17 @@ if ~isempty(Sup)
             % supplementary rows
             Lc(Indexesc)=[];
             
-        elseif istable(Sup.c)
+        elseif ~verMatlab && istable(Sup.c)
             Indexesc='';
             Nsupc=table2array(Sup.c);
             labels.sc=Sup.c.Properties.VariableNames; %#ok<STRNU>
+            
+        elseif  ~isvector(Sup.c)
+                         Indexesc='';
+            % In this case there is a matrix (not a table) and labels are supplied separately 
+            Nsupc=Sup.c;
+            labels.sc=Sup.Lc; %#ok<STRNU>
+
         else
             
             Indexesc=Sup.c;
@@ -782,10 +811,14 @@ if ~isempty(Sup)
         % Contingency table referred to supplementary rows.
         if ~isempty(Indexesc)
             Nsupr=N(Indexesr,Indexesc);
-            Nsuprtable=Ntable(Indexesr,Indexesc);
+            if ~verMatlab
+                Nsuprtable=Ntable(Indexesr,Indexesc);
+            end
         else
             Nsupr=N(Indexesr,:);
-            Nsuprtable=Ntable(Indexesr,:);
+            if ~verMatlab
+                Nsuprtable=Ntable(Indexesr,:);
+            end
         end
     else
         Nsuprtable='';
@@ -797,10 +830,14 @@ if ~isempty(Sup)
         % Contingency table referred to supplementary columns.
         if ~isempty(Indexesr)
             Nsupc=N(Indexesr,Indexesc);
-            Nsupctable=Ntable(Indexesr,Indexesc);
+            if ~verMatlab
+                Nsupctable=Ntable(Indexesr,Indexesc);
+            end
         else
             Nsupc=N(:,Indexesc);
-            Nsupctable=Ntable(:,Indexesc);
+            if ~verMatlab
+                Nsupctable=Ntable(:,Indexesc);
+            end
         end
     else
         Nsupctable='';
@@ -810,12 +847,16 @@ if ~isempty(Sup)
     % supplementary rows and/or associated to supplementary columns
     if ~isempty(Indexesr)
         Nred(Indexesr,:)=[];
-        Nredtable(Indexesr,:)=[];
+        if ~verMatlab
+            Nredtable(Indexesr,:)=[];
+        end
     end
     
     if ~isempty(Indexesc)
         Nred(:,Indexesc)=[];
-        Nredtable(:,Indexesc)=[];
+        if ~verMatlab
+            Nredtable(:,Indexesc)=[];
+        end
     end
 end
 
@@ -854,14 +895,14 @@ out.Nhat=Nhat;
 
 if verMatlab==0
     % Store Nhat in table format
-    Nhattable=array2table(Nhat,'RowNames',Lrvalid,'VariableNames',Lcvalid);
+    Nhattable=array2table(Nhat,'RowNames',Lr,'VariableNames',Lc);
     out.Nhattable=Nhattable;
 end
 
 out.P=P;
 if verMatlab==0
     % Store P in table format
-    Ptable=array2table(P,'RowNames',Lrvalid,'VariableNames',Lcvalid);
+    Ptable=array2table(P,'RowNames',Lr,'VariableNames',Lc);
     out.Ptable=Ptable;
 end
 
@@ -1019,9 +1060,11 @@ out.sqrtDim2InertiaCols = sqrtDim2InertiaCols;
 if exist('Sup','var')
     %Supplementary rows
     if isfield(Sup,'r')
+         if ~verMatlab
         % Store table referred to supplementary rows
         out.SupRowsN = Nsuprtable;
-        
+         end
+         
         % The sum of each row of h must be equal to 1
         % h=Nsup(Indexesr,:)/(diag(sum(Nsup(Indexesr,:))));
         h=bsxfun(@rdivide,Nsupr,sum(Nsupr,2));
@@ -1037,9 +1080,11 @@ if exist('Sup','var')
     
     %Supplementary columns
     if isfield(Sup,'c')
+         if ~verMatlab
         % Store table referred to supplementary columns
         out.SupColsN = Nsupctable;
-        
+         end
+         
         % The sum of each column of h must be equal to 1
         h=Nsupc/(diag(sum(Nsupc)));
         ColsPriSup=h'*RowsSta;                              %Principal coordinates of supplementary columns
@@ -1135,14 +1180,14 @@ if isstruct(plots) || plots==1
                         typeC=ExtractVariableName(ColsAlpha);
                         titl=['$\alpha='  num2str(plots.alpha) '\qquad   X=D_r^{-1/2} U \Gamma^{' num2str(plots.alpha) '}$ and $Y= D_c^{-1/2} V \Gamma^{1-'  num2str(plots.alpha) '}$'];
                     else
-                        error('Value of plots.alpha must lie in the interval [0 1]')
+                        error('FSDA:CorAna:WrongInputOpt','Value of plots.alpha must lie in the interval [0 1]')
                     end
                 else
                     listStrings={'rowprincipal'; 'colprincipal'; 'symbiplot'; 'bothprincipal'; 'rowgab'; 'colgab'; 'rowgreen'; 'colgreen'};
-                    warning(['Input string ''' plots.alpha ''' is  not found'])
+                    warning('FSDA:CorAna:WrongInputOpt',['Input string ''' plots.alpha ''' is  not found'])
                     disp('Possible strings are')
                     disp(listStrings)
-                    error('Please use one of the above strings')
+                    error('FSDA:CorAna:WrongInputOpt','Please use one of the above strings')
                 end
             end
         else
