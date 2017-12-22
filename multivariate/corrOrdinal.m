@@ -671,8 +671,6 @@ else
     
     zgam = gam/segamH0; % z-score
     pvalgam = 2*(1 - normcdf(abs(zgam))); %p-value (two-sided)
-    % Store results for Goodman-Kruskal's gamma statistic
-    out.gam=[gam segamH0 zgam pvalgam];
     
     %% tau-a statistic
     % Find standard error of tau-a
@@ -743,6 +741,9 @@ else
     zsom = som/sesomH0; % z-score
     pvalsom = 2*(1 - normcdf(abs(zsom))); %p-value (two-sided)
 end
+
+% Store results for Goodman-Kruskal's gamma statistic
+out.gam=[gam segamH0 zgam pvalgam];
 
 % Store results for tau-a statistic
 out.taua=[taua setauaH0 ztaua pvaltaua];
