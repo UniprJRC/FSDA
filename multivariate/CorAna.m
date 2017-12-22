@@ -2,7 +2,11 @@ function out=CorAna(N, varargin)
 %CorAna performs correspondence analysis
 %
 % Correspondence analysis is a statistical technique that provides a
-% graphical representation of contingency tables.
+% graphical representation of contingency tables. 
+% The function also deals with "supplementary points", that is additional
+% rows and columns which have meaningful profiles that are projected onto
+% the low-dimensional subspace and their positions relative to the active
+% elements is determined.
 %
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
@@ -36,43 +40,60 @@ function out=CorAna(N, varargin)
 %               Data Types - cell array of strings
 %       Sup  :  Structure containing indexes or names of supplementary rows
 %               or columns. Structure. Structure with the following fields.
-%               Sup.r = numeric vector containing row indexes or cell
-%                       array of strings or table containing supplementary
-%                       rows. If indexes or cell array of strings are
-%                       supplied, we assume that supplementary rows belong
-%                       to contingency table N. For example, if Sup.r=[2 5]
-%                       (that is Sup.r is a numeric vector which contains
-%                       row indexes) we use rows 2 and 5 of the input
-%                       contingency table as supplementary rows. For
-%                       example, if Sup.r={'Junior-Managers'
-%                       'Senior-Employees'} (that is Sup.r is a cell array
-%                       of strings) we use rows named 'Junior-Managers' and
-%                       'Senior-Employees' of the input contingency table
-%                       as supplementary rows. Of course the length of
-%                       Sup.r must be smaller than the number of rows of
-%                       the contigencey matrix divided by 2. If, on the
-%                       other hand, Sup.r is a table, supplementary rows do
-%                       not belong to N.
-%               Sup.c = numeric vector containing column indexes or cell
-%                       array of strings containing names of the columns to
-%                       use as supplementary columns, or table.
-%                       If indexes or cell array of strings are supplied,
-%                       we assume that supplementary columns belong to
-%                       contingency table N.
-%                       For example, if Sup.c=[2 3] (that is Sup.c is a
+%               Sup.r = vector containing row indexes or vector of cell
+%                       array of strings or table or 2D numeric array, 
+%                       containing supplementary rows.
+%                       If indexes or cell array of strings are supplied in
+%                       a vector, we assume that supplementary rows belong
+%                       to contingency table N. For example:
+%                       - if Sup.r=[2 5] (that is Sup.r is a numeric vector
+%                         which contains row indexes) we use rows 2 and 5
+%                         of the input contingency table as supplementary
+%                         rows.
+%                       - if Sup.r={'Junior-Managers' 'Senior-Employees'}
+%                         (that is Sup.r is a cell array of strings) we use
+%                         rows named 'Junior-Managers' and
+%                         'Senior-Employees' of the input contingency table
+%                         as supplementary rows. Of course the length of
+%                         Sup.r must be smaller than the number of rows of
+%                         the contigencey matrix divided by 2. 
+%                      - if Sup.r is a table, or a 2D array
+%                         supplementary rows do not belong to N. Note that
+%                         if Sup.r is a table, the labels of the rows are
+%                         taken directly from the table. If on the other
+%                         hand Sup.r is a matrix the names of the rows 
+%                         of the supplementary units can be given using
+%                         Sup.Lr as a cell array of strings.
+%               Sup.Lr = cell array of strings containing the labels of the
+%                       supplementary units if Sup.r is a 2D numeric array.
+%               Sup.c = vector containing column indexes or vector of cell
+%                       array of strings or table or 2D numeric array 
+%                       use as supplementary columns, or table or 2D
+%                       numeric array containing supplementary rows.
+%                       If indexes or cell array of strings are supplied in
+%                       a vector, we assume that supplementary columns belong
+%                       to contingency table N. For example:
+%                       - if Sup.c=[2 3] (that is Sup.c is a
 %                       numeric vector which contains column indexes) we use
 %                       columns 2 and 3 of the input contingency table as
 %                       supplementary columns.
-%                       For example, if Sup.c={'Smokers' 'NonSmokers'}
-%                       (that is Sup.c is a cell array of strings) we use
-%                       columns of the contingency table labelled 'Smokers'
-%                       and 'NonSmokers' of the input contingency table N
-%                       as supplementary columns.
-%                       Of course the length of Sup.c must be smaller than
-%                       the number of columns of the contigencey matrix
-%                       divided by 2.
-%                       If, on the other hand, Sup.c is a table,
-%                       supplementary columns do not belong to N.
+%                       - if Sup.c={'Smokers' 'NonSmokers'}
+%                        (that is Sup.c is a cell array of strings) we use
+%                        columns of the contingency table labelled
+%                        'Smokers' and 'NonSmokers' of the input
+%                        contingency table N as supplementary columns.
+%                        Of course the length of Sup.c must be smaller than
+%                        the number of columns of the contigencey matrix
+%                        divided by 2.
+%                       - If Sup.c is a table, or a 2D array
+%                         supplementary columns do not belong to N. Note that
+%                         if Sup.c is a table, the labels of the columns are
+%                         taken directly from the table. If on the other
+%                         hand Sup.c is a matrix the names of the columns 
+%                         of the supplementary units can be given using
+%                         Sup.Lc as a cell array of strings.
+%               Sup.Lc = cell array of strings containing the labels of the
+%                       supplementary units if Sup.r is a 2D numeric array.
 %                       Example - 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
 %                       Data Types - struct
 %                       REMARK: The default value of Sup is a missing value
