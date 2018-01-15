@@ -83,7 +83,7 @@ MATPAT=${MATEXE%%/bin/matlab}
 
 # matlab -wait -automation -nodesktop -r " builddocsearchdb ('${where}/FSDA/helpfiles/FSDA') ; quit"
 
-if [ $REL == 8 ]
+if [ $REL == 8 ] || [ $REL -gt 8 ] 
 then
     mv $where/helpfiles/FSDA $where/helpfiles/FSDAtomove
 	mkdir $where/helpfiles/FSDA
@@ -100,7 +100,7 @@ echo "Setting MATLAB environment ..."
 matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utilities' ; addpath '$where/combinatorial' ; addpath '$where/FSDAdemos' ; addpath '$where/graphics' ; addpath '$where/utilities_stat' ; addpath '$where/utilities_help' ; addpath '$where/datasets/multivariate' ; addpath '$where/datasets/regression' ; addpath '$where/datasets/multivariate_regression' ; addpath '$where/datasets/clustering' ; addpath '$where/clustering' ; addpath '$where/regression' ; addpath '$where/multivariate' ; addpath '$where' ; savepath ; exit "
 
 
-if [ $REL == 8 ]
+if [ $REL == 8 ] || [ $REL -gt 8 ] 
 then
 	matlab -nodesktop -r " cd $where; matlab.apputil.install('brushRES'); matlab.apputil.install('brushFAN'); matlab.apputil.install('brushROB'); quit; "
 fi 
