@@ -86,7 +86,8 @@ end
 pivotIndex = k;
 
 position = -999;
-while ((left < right) && (position ~= k))
+while (position ~= k)
+%while ((left < right) && (position ~= k))
     
     pivot = A(pivotIndex);
     
