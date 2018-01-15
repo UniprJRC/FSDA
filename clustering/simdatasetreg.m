@@ -466,7 +466,6 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %{
     %% Example with user defined explanatory variables values.
-
     clear all
     close all
 
@@ -483,15 +482,15 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     betadistrib.type='HalfNormal';
     betadistrib.sigma=3;
 
-    % explanatory variables distribution chosen by the User from a beta 
+    % explanatory variables distribution chosen by the User from a beta
     XdistribB=struct;
     XdistribB.intercept=intercept;
     XdistribB.type='User';
 
-    X1=random('beta',1,10,n,1);            % data generation: user distribution is a beta
-    XdistribB.BarX = mean(X1);             % mean of the generated data
+    X1=random('beta',1,5,n,1);             % data generation: user distribution is a beta
+    XdistribB.BarX = ones(1,k)*mean(X1);   % mean of the generated data: one per group
 
-    % overlap level baromega: chosen at random here, in a given range 
+    % overlap level baromega: chosen at random here, in a given range
     mino = 0.01; maxo = 0.1;
     baromega = mino + (maxo-mino).*rand(1,1);
 
@@ -500,7 +499,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
     % Simulate the data from the mixim parameters and the user values for X
     if intercept
-        Q.Xdistrib.X = [ones(k*n,1) X1];
+        Q.Xdistrib.X = [ones(n,1) X1];
     else
         Q.Xdistrib.X = X1;
     end
@@ -509,8 +508,6 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     yXplot(y,X,'group',id,'tag','X_beta');
     set(gcf,'Name','X Beta distributed');
     title('User-defined distribution for X');
-
-
 %}
 
 
