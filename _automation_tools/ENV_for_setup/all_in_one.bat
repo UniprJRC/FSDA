@@ -99,19 +99,19 @@ echo "---> FSDA.tar.gz generato in " %TEMP% " !!!!!!!!!!!!!!"
 pause
 
 
-echo "FTP  MR_webserver ........"
+echo "FTP  ROSA_webserver ........"
 pause
 
-ftp -s:%TOOL%\ftp.txt
+ftp -s:%TOOL%\ftpROSA.txt
 pause
 
 
-echo "RICORDA INVIO MAIL A enrico.rossi@ext.ec.europa.eu"
+rem echo "RICORDA INVIO MAIL A enrico.rossi@ext.ec.europa.eu"
 rem echo "FTP  MASTROBUONO server ........"
-pause
+rem pause
 
 rem ftp -s:ftpIPSCsite.txt
-pause
+rem pause
 
 
 exit 0

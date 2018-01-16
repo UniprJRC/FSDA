@@ -1,0 +1,9 @@
+open 160.78.46.100
+patrizia
+FSDAupload2018
+bin
+put FSDAtoolbox_for_MATLAB-setup.exe 
+put FSDA.tar.gz
+dir
+close
+quit
