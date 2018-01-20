@@ -320,7 +320,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     %% Generate 4 groups in 4 dimensions and add outliers from uniform distribution.
     rng('default')
     rng(10000)
-    p=3;
+    p=2;
     k=4;
     out=MixSimreg(k,p,'BarOmega',0.01);
     n=300;
@@ -1057,10 +1057,10 @@ end
             end
             
             % If there is the intercep the column of Xout is always equal
-            % to 1
-            if intercept==1
-                Xout(i,1)=1;
-            end
+            % to 1 : DOME DOME is this correct?????
+%             if intercept==1
+%                 Xout(i,1)=1;
+%             end
             
             % calculate the distance of each potential outlier from the k
             % linear regression components. Each distance must be greater
