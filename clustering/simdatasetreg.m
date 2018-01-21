@@ -138,7 +138,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                         freedom;
 %                       * pointmass, if the outliers are concentrated on a
 %                         particular point;
-%                       * by_comp, if the outliers are distributed along a 
+%                       * by_comp, if the outliers are distributed along a
 %                         linear component. The option was introduced to add
 %                         dense area in one linear component.
 %                       * componentwise, if the outliers must have the same
@@ -284,7 +284,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % mu=0 and sigma=1;
     % 2) X in each dimension and each group is generated according to U(0, 1);
     % 3) regression hyperplanes contain intercepts.
-    p=5;
+    p=5;  % p includes the intercept
     k=3;
     Q=MixSimreg(k,p,'BarOmega',0.01);
     n=200;
@@ -305,7 +305,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     %% Generate 2 groups in 4 dimensions and add outliers from uniform distribution.
     rng('default')
     rng(100)
-    p=4;
+    p=4; % p includes the intercept
     k=2;
     out=MixSimreg(k,p,'BarOmega',0.01);
     n=300;
@@ -318,9 +318,11 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %{
     %% Generate 4 groups in 4 dimensions and add outliers from uniform distribution.
+    clear all
+    close all
     rng('default')
     rng(10000)
-    p=2;
+    p=2;  % p includes the intercept
     k=4;
     out=MixSimreg(k,p,'BarOmega',0.01);
     n=300;
@@ -423,6 +425,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %{
     %% Add outliers from Chi2 and point mass contamination and add one noise variable.
+    n=300;
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -435,6 +438,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %{
     %% Example of the use of personalized interval to generate outliers.
+    n=300;
     noiseunits=struct;
     noiseunits.number=1000;
     noiseunits.typeout={'uniform'};
@@ -524,7 +528,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     intercept = 0;      % 1/0 = intercept yes/no
     n=200;
     p=1+intercept;
-    k=2;                %do not change k: it would not work (see below to generalise) 
+    k=2;                %do not change k: it would not work (see below to generalise)
 
     % beta distributed as halfnormal
     betadistrib=struct;
@@ -569,23 +573,27 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %}
 
-
-
 %% Beginning of code
 
 if (n < 1)
     error('FSDA:simdatasetreg:Wrongn','Wrong sample size n...')
 end
 
+% If the user selects a X distribution with more units than n, than we
+% change the number of units to generate.
+if strcmp(Xdistrib.type,'User') && size(Xdistrib.X,1) > n 
+     n = size(Xdistrib.X,1);
+     disp('Warning: size of Xdistrib.X is greater than n: ');
+     disp(['         We generate size(Xdistrib.X,1) = ' num2str(n) ' units']);
+end      
+        
 if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
     error('FSDA:simdatasetreg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
-
 noiseunitsdef   = '';
 noisevarsdef    = '';
 lambdadef='';
-
 
 options=struct('noisevars',noisevarsdef,'noiseunits',noiseunitsdef,...
     'lambda',lambdadef);
@@ -622,7 +630,7 @@ noisevars  = options.noisevars;
 
 [p,k]=size(Beta);
 
-if (n >= k)
+if (n >= k) 
     mrr = mnrnd( n-k, Pi);
     
     % Nk contains the sizes of the clusters
@@ -681,10 +689,17 @@ for j=1:k
             Xab=bsxfun(@times, abs(randn(Nk(j),p)),(Xdistrib.sigma(:,j))');
             X(aa:bb,:)=Xab;
         end
+        
     elseif find(strcmp('User',Xdistrib.type))
         d=find(strcmp(fieldnames(Xdistrib),'X'),1);
         if ~isempty(d)
-            X= Xdistrib.X;
+            X = Xdistrib.X;
+            % Lines below added just in case the user forgets to put the
+            % constant column to account for the intercept
+            constcols = find(max(X,[],1)-min(X,[],1) == 0);
+            if intercept==1 && numel(constcols)==0
+                X = [ones(n,1) , Xdistrib.X];
+            end
         else
             error('FSDA:simdatasetreg:MissingField','If string Xdistrib = ''User'' then the user must provide input matrix X')
         end
@@ -692,10 +707,8 @@ for j=1:k
         error('FSDA:simdatasetreg:Wrongbetadistrib','Possible values for option betadistrib are ''Normal'' ''Uniform'' ''HalfNormal'' and ''User'' ')
     end
     
-    
-    
+    % generation of the data
     y(aa:bb)=X(aa:bb,:)*Beta(:,j)+sqrt(S(j))*randn(Nk(j),1);
-    
     
     %    X(a:b,:) = rand(Nk(j),p)*BarX(j)*2;
     %     y(a:b)=X(a:b,:)   +sqrt(S(j))*randn(Nk(j),1);
@@ -703,7 +716,7 @@ for j=1:k
     
 end
 
-
+% Now, we add contamination
 if isstruct(noiseunits) || ~isempty(noiseunits)
     
     % Set all default values for outlier generation
@@ -719,8 +732,6 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
     % interval to simulate outliers (if it is empty than min(X) and max(X)
     % will be used
     fnoiseunitsdef.interval='';
-    
-    
     
     if isstruct(noiseunits)
         
@@ -754,8 +765,6 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
         else
             intervalout='';
         end
-        
-        
         
         d=find(strcmp('typeout',fnoiseunits));
         if d>0
@@ -836,8 +845,6 @@ if isstruct(noiseunits) || ~isempty(noiseunits)
 else
     noiseunits=0;
 end
-
-
 
 if isstruct(noisevars) || ~isempty(noisevars)
     % Set all default values for noise variable generation
@@ -924,7 +931,6 @@ if isstruct(noisevars) || ~isempty(noisevars)
             error('FSDA:simdatasetreg:WrongDistrib','Variable distribution type not supported')
         end
     end
-    
     
     % Values of noise variables were constrained to lie in the interval [0 1]
     % Now we rescale them to the interval [L U]
@@ -1052,15 +1058,12 @@ end
                     yout(i) = (Uouty-Louty).*rry+Louty;
                 end
                 
-                
-                
             end
             
-            % If there is the intercep the column of Xout is always equal
-            % to 1 : DOME DOME is this correct?????
-%             if intercept==1
-%                 Xout(i,1)=1;
-%             end
+            % With the intercep, the first column of Xout is always 1 (constant)
+            if intercept==1
+                Xout(i,1)=1;
+            end
             
             % calculate the distance of each potential outlier from the k
             % linear regression components. Each distance must be greater
@@ -1071,7 +1074,7 @@ end
                 for jj=1:k
                     yhatij=Xout(i,:)*Beta(:,jj);
                     if ((yout(i)-yhatij)^2)/(S(:,:,jj)) <critval
-
+                        
                         ij=1;
                         break
                     end
