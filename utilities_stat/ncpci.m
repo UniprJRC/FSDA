@@ -144,7 +144,7 @@ function ci=ncpci(x,fType,df,varargin)
     % A 99 per cent confidence interval is requested.
     confint=0.99;
     ci=ncpci(52,'X2',8,'confLevel',confint);
-    disp([ num2str(100*confint) ' per cent confidence interval for the non centrality paramter'])
+    disp([ num2str(100*confint) ' per cent confidence interval for the non centrality parameter'])
     disp(ci)
 %}
 
@@ -153,7 +153,7 @@ function ci=ncpci(x,fType,df,varargin)
     % Increase the precision.
     prec=1e-12;
     ci=ncpci(52,'X2',8,'prec',prec);
-    disp(['95 per cent confidence interval for the non centrality paramter'])
+    disp(['95 per cent confidence interval for the non centrality parameter'])
     disp(ci)
 %}
 
@@ -326,7 +326,7 @@ for iIx=loopStartIx:2
         ph=plotPdf(ncp,ph,curPdf,df,iIx,nIter,abscissLim,ti);
     end
     % while desired precision is not reached...
-    while ~any(abs(deltaP)<=prec)
+    while ~any(abs(deltaP)<=prec) && ~any(isnan(deltaP))     
         if all(deltaP>0)
             % shift interval to the right by one interval length
             ncp=[ncp(2) ncp(2)+abs(diff(ncp))];
