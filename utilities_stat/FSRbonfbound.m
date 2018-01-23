@@ -107,7 +107,7 @@ prob=options.prob;
 
 % Check that the specified starting point is not greater than n-1
 if m0>n-1
-    error(['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    error('FSDA:FSRbonfbound:InvalidArg',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
 end
 
 %% Bonferroni bound generation

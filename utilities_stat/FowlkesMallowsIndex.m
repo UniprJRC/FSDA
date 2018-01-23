@@ -173,14 +173,14 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 
 if nargin < 2 || isempty(c2)
     if size(c1,2)<2
-        error('FowlkesMallowsIndex: Requires a contingency table with at least two columns')
+        error('FSDA:FowlkesMallowsIndex:InvalidArg','FowlkesMallowsIndex: Requires a contingency table with at least two columns')
     end
     % Supplied input is the contingency table
     M=c1;
 else
     
     if min(size(c1)) > 1 || min(size(c2)) > 1
-        error('FowlkesMallowsIndex: Requires two vector arguments')
+        error('FSDA:FowlkesMallowsIndex:InvalidArg','FowlkesMallowsIndex: Requires two vector arguments')
     end
     
     if nargin>2

@@ -61,7 +61,7 @@ classdef ProgressBar < handle
             
             f = fopen(obj.fname, 'w');
             if f<0
-                error('Do you have write permissions for %s?', pwd);
+                error('FSDA:ProgressBar:InvalidArg','Do you have write permissions for %s?', pwd);
             end
             fprintf(f, '%d\n', N); % Save N at the top of progress.txt
             fclose(f);
@@ -71,7 +71,7 @@ classdef ProgressBar < handle
         
         function percent = progress(obj)
             if ~exist(obj.fname, 'file')
-                error([obj.fname ' not found. It must have been deleted.']);
+                error('FSDA:ProgressBar:InvalidArg',[obj.fname ' not found. It must have been deleted.']);
             end
 
             f = fopen(obj.fname, 'a');

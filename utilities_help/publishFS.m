@@ -1299,7 +1299,6 @@ if ~isempty(OptArgsvvarargin)
 end
 
 [commasIn] = regexp(InputArgs,',');
-j=1;
 
 % nTOTargin= total number of input arguments (requested + optional),
 % excluding name-value pairs arguments

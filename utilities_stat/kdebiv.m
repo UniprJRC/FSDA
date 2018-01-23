@@ -264,10 +264,10 @@ if ~isempty(Xlim)
         % transpose the matrix
         Xlim = Xlim';
         c = r;
-        warning('Xlim has been transposed.');
+        warning('FSDA:kdebiv:InvalidArg','Xlim has been transposed.');
     end
     if c ~= 2
-        error('Xlim has to be a 2-columns matrix.');
+        error('FSDA:kdebiv:InvalidArg','Xlim has to be a 2-columns matrix.');
     end
 end
 

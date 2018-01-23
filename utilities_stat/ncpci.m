@@ -267,7 +267,7 @@ switch fType
         abscissLim=x+[-4 2;-2 4]*sqrt(abs(x));
         
     otherwise
-        error('illegal distribution function specified');
+        error('FSDA:ncpci:InvalidArg','illegal distribution function specified');
 end
 %
 % if prec>.001

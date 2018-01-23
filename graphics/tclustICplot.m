@@ -497,7 +497,7 @@ if ~isempty(databrush) || isstruct(databrush)
             Xcla=IC.CLACLA;
             IDX=IC.IDXCLA;
         else
-            error('wrong option')
+            error('FSDA:tclustICplot:InvalidArg','wrong option')
         end
     elseif typeIC==2
         Xcla=IC.MIXMIX;
@@ -754,7 +754,7 @@ end
             ICsel=IC.CLACLA;
             ICIDXsel=IC.IDXCLA;
         else
-            warning('Supplied plot is not supported.')
+            warning('FSDA:tclustICplot:InvalidArg','Supplied plot is not supported.')
             error('FSDA:tclustICplot:WrongIC','title of plot must be ''MIXMIX'' , ''MIXCLA'', ''CLACLA''')
         end
         

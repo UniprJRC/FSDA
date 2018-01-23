@@ -92,19 +92,19 @@ function Xwins = winsor(X, p, dim)
 %% Beginning of code
 
 if nargin < 2
-   error('Input argument "p" is undefined')
+   error('FSDA:winsor:InvalidArg','Input argument "p" is undefined')
 end 
 if ~isvector(p)
-   error('Input argument "p" must be a vector')
+   error('FSDA:winsor:InvalidArg','Input argument "p" must be a vector')
 end  
 if p(1) < 0 || p(1) > 100
-   error('Left cut-off percentile is out of [0,100] range')
+   error('FSDA:winsor:InvalidArg','Left cut-off percentile is out of [0,100] range')
 end  
 if p(2) < 0 || p(2) > 100
-   error('Right cut-off percentile is out of [0,100] range')
+   error('FSDA:winsor:InvalidArg','Right cut-off percentile is out of [0,100] range')
 end  
 if p(1) > p(2)
-   error('Left cut-off percentile exceeds right cut-off percentile')
+   error('FSDA:winsor:InvalidArg','Left cut-off percentile exceeds right cut-off percentile')
 end
 
 if nargin == 2 && isvector(X) % Input is a  vector
