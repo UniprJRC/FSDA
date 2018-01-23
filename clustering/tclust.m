@@ -1,5 +1,5 @@
 function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
-%tclust computes trimmed clustering with scatter restrictions 
+%tclust computes trimmed clustering with scatter restrictions
 %
 %<a href="matlab: docsearchFS('tclust')">Link to the help function</a>
 %
@@ -20,10 +20,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               Missing values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values will
 %               automatically be excluded from the computations.
-% 
+%
 %            k: Number of groups. Scalar.
 %               Scalar which specifies the number of groups.
-% 
+%
 %        alpha: Global trimming level. Scalar. alpha is a scalar between 0 and 0.5
 %               or an integer specifying the number of observations which have to
 %               be trimmed. If alpha=0 tclust reduces to traditional model
@@ -33,13 +33,17 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                h=fix(n*(1-alpha)) observations,
 %               else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
-% 
-%  restrfactor: Restriction factor. Scalar. Positive scalar which constrains the allowed differences
+%
+%  restrfactor: Restriction factor. Scalar. Positive scalar which
+%               constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
 %               strongest restriction forcing all eigenvalues/determinants
 %               to be equal and so the method looks for similarly scattered
-%               (respectively spherical) clusters.
+%               (respectively spherical) clusters. The default is to apply
+%               restrfactor to eigenvalues. In order to apply restrfactor
+%               to determinants it is is necessary to use optional input
+%               argument restr.
 %
 %  Optional input arguments:
 %
@@ -147,9 +151,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               associated with the largest h numbers are untrimmed.
 %                   Example - 'mixt',1
 %                   Data Types - single | double
-% 
-% plots    :    Plot on the screen. Scalar, character, cell or struct. 
-%               - If plots=0 (default), plots are not generated. 
+%
+% plots    :    Plot on the screen. Scalar, character, cell or struct.
+%               - If plots=0 (default), plots are not generated.
 %               - If plot=1, a plot with the classification is shown on
 %                 the screen (using the spmplot function). The plot can be:
 %                   * for v=1, an histogram of the univariate data.
@@ -160,36 +164,36 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               - plots='contourf' adds in the background of the bivariate
 %                 scatterplots a filled contour plot. The colormap of the
 %                 filled contour is based on grey levels as default.
-%                 This argument may also be inserted in a field named 'type' 
-%                 of a structure. In the latter case it is possible to 
-%                 specify the additional field 'cmap', which changes the 
+%                 This argument may also be inserted in a field named 'type'
+%                 of a structure. In the latter case it is possible to
+%                 specify the additional field 'cmap', which changes the
 %                 default colors of the color map used. The field 'cmap'
-%                 may be a three-column matrix of values in the range [0,1] 
+%                 may be a three-column matrix of values in the range [0,1]
 %                 where each row is an RGB triplet that defines one color.
 %                 Check the colormap function for additional informations.
 %               - plots='contour' adds in the background of the bivariate
-%                 scatterplots a contour plot. The colormap of the contour 
-%                 is based on grey levels as default. This argument may 
+%                 scatterplots a contour plot. The colormap of the contour
+%                 is based on grey levels as default. This argument may
 %                 also be inserted in a field named 'type' of a structure.
-%                 In the latter case it is possible to specify the additional 
-%                 field 'cmap', which changes the default colors of the 
-%                 color map used. The field 'cmap' may be a three-column 
-%                 matrix of values in the range [0,1] where each row is an 
+%                 In the latter case it is possible to specify the additional
+%                 field 'cmap', which changes the default colors of the
+%                 color map used. The field 'cmap' may be a three-column
+%                 matrix of values in the range [0,1] where each row is an
 %                 RGB triplet that defines one color.
 %                 Check the colormap function for additional informations.
 %               - plots='ellipse' superimposes confidence ellipses to
-%                 each group in the bivariate scatterplots. The size of the 
-%                 ellipse is chi2inv(0.95,2), i.e. the confidence level used 
-%                 by default is 95%. This argument may also be inserted in 
+%                 each group in the bivariate scatterplots. The size of the
+%                 ellipse is chi2inv(0.95,2), i.e. the confidence level used
+%                 by default is 95%. This argument may also be inserted in
 %                 a field named 'type' of a structure. In the latter case it
 %                 is possible to specify the additional field 'conflev',
-%                 which specifies the confidence level to use and it is a 
-%                 value between 0 and 1.   
+%                 which specifies the confidence level to use and it is a
+%                 value between 0 and 1.
 %               - plots='boxplotb' superimposes on the bivariate scatterplots
-%                 the bivariate boxplots for each group, using the boxplotb 
-%                 function. This argument may also be inserted in a field 
+%                 the bivariate boxplots for each group, using the boxplotb
+%                 function. This argument may also be inserted in a field
 %                 named 'type' of a structure.
-%               REMARK - The labels=0 are automatically excluded from the 
+%               REMARK - The labels=0 are automatically excluded from the
 %                          overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | string
@@ -273,11 +277,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       out.post(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
 %                       posterior probabilities are 0.
-%             out.emp = "Empirical" statistics computed on final classification. 
+%             out.emp = "Empirical" statistics computed on final classification.
 %                       Scalar or structure. When convergence is reached,
 %                       out.emp=0. When convergence is not obtained, this
 %                       field is a structure which contains the statistics
-%                       of interest: idxemp (ordered from 0 to k*, k* being 
+%                       of interest: idxemp (ordered from 0 to k*, k* being
 %                       the number of groups with at least one observation
 %                       and 0 representing the possible group of outliers),
 %                       muemp, sigmaemp and sizemp, which are the empirical
@@ -355,7 +359,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
 % A General Trimming Approach to Robust Cluster Analysis. Annals
-% of Statistics, Vol.36, 1324-1345. 
+% of Statistics, Vol.36, 1324-1345.
 % Technical Report available at:
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
@@ -630,7 +634,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     close all
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
-    out=tclust(Y,3,0.1,10,'restr','deter','refsteps',20,'plots',1)
+    out=tclust(Y,3,0.01,20,'restr','deter','refsteps',20,'plots',1)
 %}
 
 %{
@@ -750,7 +754,7 @@ if nargin<3
 else
     if isempty(alpha)
         alpha=0.05;
-        warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');    
+        warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
     end
 end
 
@@ -835,7 +839,6 @@ if nargin > 4
         restrnum=1;
     elseif strcmp(restr,'deter')==1
         restrnum=2;
-        detthresh=1e-12;
     else
         error('FSDA:tclust:Wrongrestr','Wrong restriction');
     end
@@ -862,8 +865,6 @@ end
 %Initialize the objective function (trimmed variance) by a
 %large  value
 vopt=-1e+30;
-
-resh=[1 3 2];
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
@@ -917,23 +918,9 @@ eyk=repmat(ey,[1 1 k]);
 
 onev1=ones(v,1);
 
-if restrnum==1
-    % Lambda_vk = matrix which will contain in column j the v (unrestricted)
-    % eigevalues of covariance matrix of group j (j=1, ..., k)
-    Lambda_vk=ones(v,k);
-    % Initialize vector of ones which will be used in subroutine restreigen
-    one1v=ones(1,v);
-    onekv1=ones(k*v,1);
-    vinsiderestr=v;
-else
-    % Lambda_vk = row vector which will contain in column j the
-    % determinant of covariance matrix of group j (j=1, ..., k) raised to
-    % (1/v)
-    Lambda_vk=ones(1,k);
-    vinsiderestr=1;
-    one1v=1;
-    onekv1=ones(k,1);
-end
+% Lambda_vk = matrix which will contain in column j the v (unrestricted)
+% eigevalues of covariance matrix of group j (j=1, ..., k)
+Lambda_vk=ones(v,k);
 
 % sigmaopt = 3 dimensional array which will contain the estimates of the
 % covariance matrices for the best solution
@@ -1007,87 +994,52 @@ for i=1:nselected
         end
         
         niini=floor(h*randk/sum(randk));
+        
+        cini=zeros(k,v);
+        for j=1:k
+            ilow=(j-1)*(v+1)+1;
+            iup=j*(v+1);
+            index=C(i,:);
+            selj=index(ilow:iup);
+            % cini(j,:)=mean(Y(selj,:));
+            Yselj=Y(selj,:);
+            cini(j,:)=sum(Yselj)/(v+1);
+            
+            Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+            sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
+            % lines above are a faster solution for instruction below
+            % sigmaini(:,:,j)=cov(Y(selj,:));
+            
+            % Eigenvalue eigenvector decomposition for group j
+            [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+            % Store eigenvectors and eigenvalues of group j
+            U(:,:,j)=Uj;
+            Lambda_vk(:,j)=diag(Lambdaj);
+        end
+        
+        Lambda_vk(Lambda_vk<0)=0;
+        
         if restrnum==1
-            cini=zeros(k,v);
-            for j=1:k
-                ilow=(j-1)*(v+1)+1;
-                iup=j*(v+1);
-                index=C(i,:);
-                selj=index(ilow:iup);
-                % cini(j,:)=mean(Y(selj,:));
-                Yselj=Y(selj,:);
-                cini(j,:)=sum(Yselj)/(v+1);
-                
-                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
-                sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
-                % lines above are a faster solution for instruction below
-                % sigmaini(:,:,j)=cov(Y(selj,:));
-                
-                % Eigenvalue eigenvector decomposition for group j
-                [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                % Store eigenvectors and eigenvalues of group j
-                U(:,:,j)=Uj;
-                Lambda_vk(:,j)=diag(Lambdaj);
-            end
-            
-            Lambda_vk(Lambda_vk<0)=0;
-            
             
             % Restriction on the eigenvalue
             autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints on the eigenvalues
-            for j=1:k
-                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                
-                % Alternative code: in principle more efficient but slower
-                % because diag is a built in function
-                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            end
-        elseif restrnum==2
-            % restriction on the determinants
-            cini=zeros(k,v);
-            for j=1:k
-                ilow=(j-1)*(v+1)+1;
-                iup=j*(v+1);
-                index=C(i,:);
-                selj=index(ilow:iup);
-                % cini(j,:)=mean(Y(selj,:));
-                Yselj=Y(selj,:);
-                cini(j,:)=sum(Yselj)/(v+1);
-                
-                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
-                sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
-                % lines above are a faster solution for instruction below
-                % sigmaini(:,:,j)=cov(Y(selj,:));
-                
-                detj1v=det(sigmaini(:,:,j))^(1/v);
-                if detj1v<detthresh
-                    detj1v=detthresh;
-                end
-                
-                Uj=sigmaini(:,:,j)/detj1v;
-                % Store shape matrix of group j
-                U(:,:,j)=Uj;
-                Lambda_vk(:,j)=detj1v;
-            end
-            
-            Lambda_vk(Lambda_vk<0)=0;
-            
-            
-            % Restriction on the detrerminants
-            autovalues=restreigen(Lambda_vk,niini,restrfactor^(1/v),tolrestreigen,userepmat);
-            
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints on the determinant
-            for j=1:k
-                sigmaini(:,:,j) = autovalues(j)*U(:,:,j);
-            end
-            
         else
-            % restriciton on both
+            % Restrictions on the determinants
+            autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
         end
+        
+        
+        % Covariance matrices are reconstructed keeping into account the
+        % constraints on the eigenvalues
+        for j=1:k
+            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+            
+            % Alternative code: in principle more efficient but slower
+            % because diag is a built in function
+            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+        end
+        
     else
         
         % initialization of niini with equal proportions
@@ -1236,26 +1188,12 @@ for i=1:nselected
                     
                     sigmaini(:,:,j) = (Ytric' * Ytric) / niini(j);
                     
-                    if restrnum==1
-                        % Eigenvalue eigenvector decomposition for group j
-                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                        
-                        % Store eigenvectors and eigenvalues of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(:,j)=diag(Lambdaj);
-                    elseif restrnum==2
-                        detj1v=det(sigmaini(:,:,j))^(1/v);
-                        if detj1v<detthresh
-                            detj1v=detthresh;
-                        end
-                        
-                        Uj=sigmaini(:,:,j)/detj1v;
-                        % Store shape matrix of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(:,j)=detj1v;
-                        
-                    else
-                    end
+                    % Eigenvalue eigenvector decomposition for group j
+                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                    
+                    % Store eigenvectors and eigenvalues of group j
+                    U(:,:,j)=Uj;
+                    Lambda_vk(:,j)=diag(Lambdaj);
                 else
                     sigmaini(:,:,j)=ey;
                     U(:,:,j)=ey;
@@ -1297,24 +1235,13 @@ for i=1:nselected
                     DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
                     
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
-                    if restrnum==1
-                        % Eigenvalue eigenvector decomposition for group j
-                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                        % Store eigenvectors and eigenvalues of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(:,j)=diag(Lambdaj);
-                    elseif restrnum==2
-                        detj1v=det(sigmaini(:,:,j))^(1/v);
-                        if detj1v<detthresh
-                            detj1v=detthresh;
-                        end
-                        Uj=sigmaini(:,:,j)/detj1v;
-                        % Store shape matrix of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(j)=detj1v;
-                        
-                    else
-                    end
+                    
+                    % Eigenvalue eigenvector decomposition for group j
+                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                    % Store eigenvectors and eigenvalues of group j
+                    U(:,:,j)=Uj;
+                    Lambda_vk(:,j)=diag(Lambdaj);
+                    
                 else
                     sigmaini(:,:,j)=ey;
                     U(:,:,j)=ey;
@@ -1336,42 +1263,37 @@ for i=1:nselected
         if restrnum==1
             autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints of the eigenvalues
-            for j=1:k
-                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                
-                % Alternative code: in principle more efficient but slower
-                % because diag is a built in function
-                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            end
             
-            % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
-            % Note that the implementation below uses mex function mtimes
-            %         autov=(autovalues(:)');
-            %         if userepmat==1
-            %             autov1=repmat(autov,v,1,1);
-            %             ULambda=U.*reshape(autov1,v,v,k);
-            %         else
-            %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
-            %         end
-            %         sigmainichk=mtimesx(ULambda,U,'T');
-            
-            
-            % Alternative code based on gpuArrary
-            % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         elseif restrnum==2
             % Restriction on the determinants
-            autovalues=restreigen(Lambda_vk,niini,restrfactor^(1/v),tolrestreigen,userepmat);
-            
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints on the determinant
-            for j=1:k
-                sigmaini(:,:,j) = autovalues(j)*U(:,:,j);
-            end
-            
-        else
+            autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
         end
+        
+        % Covariance matrices are reconstructed keeping into account the
+        % constraints of the eigenvalues
+        for j=1:k
+            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+            
+            % Alternative code: in principle more efficient but slower
+            % because diag is a built in function
+            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+        end
+        
+        % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
+        % Note that the implementation below uses mex function mtimes
+        %         autov=(autovalues(:)');
+        %         if userepmat==1
+        %             autov1=repmat(autov,v,1,1);
+        %             ULambda=U.*reshape(autov1,v,v,k);
+        %         else
+        %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
+        %         end
+        %         sigmainichk=mtimesx(ULambda,U,'T');
+        
+        
+        % Alternative code based on gpuArrary
+        % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
+        
         % Calculus of the objective function (E-step)
         % oldobj=obj;
         obj = 0;
@@ -1489,12 +1411,12 @@ end
 
 % Procedure to order the non-empty components
 if any(any(isnan(muopt)))
-
+    
     % restore apropriate order of the components
     NanGroups = isnan(muopt(:,1)); % missing components
     
     % order of the components in nopt, muopt and sigmaopt
-    nopt = [nopt(~NanGroups); nopt(NanGroups)];    
+    nopt = [nopt(~NanGroups); nopt(NanGroups)];
     muopt = [muopt(~NanGroups,:); muopt(NanGroups,:)];
     sigmaopt(:,:,NanGroups) = NaN; % assign NaN on the empty clusters
     sigmaopt = cat(3, sigmaopt(:,:,~NanGroups), sigmaopt(:,:,NanGroups));
@@ -1527,9 +1449,9 @@ else
         if any(~isnan(muopt(j,:)))
             ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
         else
-            % avoid the computation for empty components and assign NaN            
+            % avoid the computation for empty components and assign NaN
             ll(:,j) = NaN;
-        end            
+        end
     end
 end
 
@@ -1692,7 +1614,7 @@ end
 % unique ID found which are not outliers
 UniqID = unique(idx(idx>0));
 
-if length(UniqID) ~= k  
+if length(UniqID) ~= k
     % Compute the empirical statistics when the algorithm does not reach
     % convergence (i.e. some cluster are missing)
     
@@ -1713,10 +1635,10 @@ if length(UniqID) ~= k
         else
             % when one unit is in the jj-th cluster
             muemp(jj,:)      = Y(idx==jj,:);
-            sigmaemp(:,:,jj) = 0;            
+            sigmaemp(:,:,jj) = 0;
         end
     end
-
+    
     % restore apropriate order of the ID
     realID = 1:k;                           % searched clusters
     NanGroups = ~ismember(realID, UniqID);  % missing clusters
@@ -1725,7 +1647,7 @@ if length(UniqID) ~= k
     % order the clusters found
     for i = 1:k-sum(NanGroups)
         posChang = idx==UniqID(i);
-        UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i))); 
+        UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i)));
         idxemp(posChang) = UniqID(i);
     end
     
@@ -1735,7 +1657,7 @@ if length(UniqID) ~= k
     sizemp=tabulate(idxemp);
     misSiz = k-length(UniqID) ; % missing rows in siz
     sizemp = [sizemp; nan(misSiz, 3)];
-
+    
     % Store empirical centroids, covariance matrices, mixing proportions
     % and ID
     emp = struct;
@@ -1746,7 +1668,7 @@ if length(UniqID) ~= k
     
     % save the structure in the structure out
     out.emp = emp;
-
+    
 else
     % assign zero to the field when convergence is obtained
     emp = 0;
@@ -1827,24 +1749,24 @@ end
 % Plot the groups. Depending on v (univariate, bivariate, multivariate),
 % we generate different plot types.
 if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % integer equal to 1 or structure
-    ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
-    (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
-
-    % The following statement is necessary because if mixt>0 
+        ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
+        (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
+    
+    % The following statement is necessary because if mixt>0
     % idx was called idxmixt;
     idx=out.idx;
     
     % change the ID used if empirical values are evaluated
-    if isstruct(emp) 
+    if isstruct(emp)
         idx = idxemp;
-    end    
+    end
     
     if v==1
         
         % Univariate case: plot the histogram
         figure;
         histFS(Y,length(Y),idx);
-                
+        
     elseif v>=2
         
         % Bivariate plot, optionally with confidence ellipses, density
@@ -1853,16 +1775,16 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
         % extract char or struct fro the cell if needed
         if iscell(plots)
             plots = cell2mat(plots);
-        end 
+        end
         
-        % define what to superimpose on the plot 
-        if ischar(plots) 
-            overlay.type = plots; 
+        % define what to superimpose on the plot
+        if ischar(plots)
+            overlay.type = plots;
         elseif isstruct(plots)
             overlay = plots;
-        elseif plots==1         
+        elseif plots==1
             % if plots=1 do not add anything to the scatter plot
-            overlay ='';                                  
+            overlay ='';
         end
         
         % exclude outliers if present (when plots is char or struct)
@@ -1877,9 +1799,9 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
         else
             undock = '';
         end
-                
-        % show axes label 
-        plo.labeladd=1;   
+        
+        % show axes label
+        plo.labeladd=1;
         
         % use black color for outliers (i.e. k is the first color, used for group 0)
         if any(idx==0)
@@ -1887,8 +1809,8 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
             plo.clr = plo.clr(1:length(unique(idx)));
         end
         
-        % Add Labels Names        
-        % [To Enhance if used we lose the labels' order, it needs to  
+        % Add Labels Names
+        % [To Enhance if used we lose the labels' order, it needs to
         % change on the spmplot call idx with id]
         % id=cellstr(num2str(idx));
         % id(idx==0)=cellstr('Trimmed units');
@@ -1896,362 +1818,19 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
         % bivariate scatter
         figure;
         spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
-     
+        
     end
     
     % add title
     str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor);
     title(str,'Interpreter','Latex'); % , 'fontsize', 14
-   
+    
 elseif isscalar(plots) && plots == 0
     % does anything
 else
-    warning('The parameter ''plots'' is not valid.');
+    warning('FSDA:tclust:WrongInp','The parameter ''plots'' is not valid.');
 end
 
-    function [out]  = restreigen(eigenvalues,niini,restr,tol,userepmat)
-        %restreigen computes eigenvalues restriction (without Dykstra algorithm)
-        %
-        %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-        %
-        %   restreigen restricts the eigenvalues according to the constraint
-        %   specified in scalar restr This function is called in every
-        %   concentration step of function tclust
-        %
-        %  Required input arguments:
-        %
-        %eigenvalues: v x k matrix containing the eigenvalues of the covariance matrices of the k groups
-        %            v= number of variables of the dataset which has to be clustered
-        %     niini: k x 1 vector containing the size of the k clusters
-        %     restr: scalar containing the restr parameter in tclust program.
-        %            More in detail parameter restr defines the cluster's shape
-        %            restrictions, which are applied on all clusters during each
-        %            iteration.
-        %            Setting restr to 1, yields the strongest restriction,
-        %            forcing all eigenvalues/determinants to be equal and so the
-        %            method looks for similarly scattered (respectively spherical)
-        %            clusters.
-        %      tol : scalar defining the tolerance of the procedure.
-        %            The default value is 1e-8
-        %
-        % userepmat : scalar. If userepmat is true function repmat is used instead
-        %             of bsxfun inside the procedure. Remark: repmat is builkt in
-        %             from MATLAB 2013b so it is faster to use repmat if the
-        %             current version of MATLAB is >2013a
-        %
-        %  Output:
-        %
-        %
-        %            out      : v-by-k matrix containing restricted eigenvalues
-        %                       The ratio between two possible elements in matrix
-        %                       out not greater than restr
-        %
-        % See also tclust
-        %
-        % References:
-        %
-        % This function implements the algorithm described in
-        % Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A.
-        % (2012), A fast algorithm for robust constrained
-        % clustering. Available at
-        % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf%
-        %
-        % Copyright 2008-2017.
-        % Written by FSDA team
-        %
-        % DETAILS. This algorithm solves the minimization problem with constraints
-        % without resorting to the Dykstra algorithm. This implementation is based
-        % on the paper  "A fast algorithm for robust constrained clustering" by
-        % Fritz H., Garcia Escudero L.A. and Mayo-Iscar A. (2012). (FGM2012 in the
-        % code below)
-        %
-        %
-        %
-        %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
-        
-        % Examples:
-        %
-        %{
-            % Suppose matrix eigenvalues is 3-by-4
-            % that is there are four groups and the number of variables is equal to 3
-            % First column of matrix eigenvalues contains the eigenvalues of the first group
-            % Second column of matrix eigenvalues contains the eigenvalues of the second group
-            % Thrid column of matrix eigenvalues contains the eigenvalues of the third group
-            % Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group
-            eigenvalues=abs(randn(3,4));
-            % niini is the vector containing the sizes of the 4 groups
-            niini=[30;40;20;10];
-            restreigen(eigenvalues,niini,1.1)
-        %}
-        %
-        %
-        %{
-            eigenvalues=abs(randn(3,4));
-            eigenvalues(:,3)=0;
-            restreigen(eigenvalues,niini,1.1)
-            eigenvalues(:,3)=1;
-            restreigen(eigenvalues,niini,1.1)
-        %}
-        
-        %% Beginning of code
-        
-        if nargin<4
-            tol =1e-8;
-        end
-        
-        % userepmat specifies if it is necessary to use function repmat or bsxfun
-        % Remark: repmat has become biult in from Release 2013b so it is faster to
-        % use it
-        if nargin<5
-            userepmat=0;
-        end
-        
-        
-        % Initializations
-        c=restr;
-        d=eigenvalues';
-        
-        % We assume that niini is a column vector
-        % nis is a matrix which replicates in the columns the sizes of the goups
-        % First row of nis = size of first group repated v times
-        % Second row of nis = size of second group repated v times
-        % ....
-        % kth row of nis = size of kth group repeated v times
-        nis=niini*one1v;
-        
-        % Below is the alternative inefficient code
-        % nis = repmat(niini,1,v);
-        
-        % niini=niini';
-        
-        % dsor is 2*k*v the ordered set of values in which the restriction objective
-        % function change the definition The elements in dsor correspond to  the
-        % frontiers for the intervals in which this objective function has the same
-        % definition
-        % In other words
-        % dsor=(d_{11}, ........, d_{kv},d_{11}/restr, ........, d_{kv}/restr)
-        
-        dsor=sort([eigenvalues(:);eigenvalues(:)/c])';
-        dimsor=length(dsor);
-        
-        % d1 is like dsor but contains an additional element which is larger than the largest element of dsor
-        d1=dsor;
-        d1(dimsor+1)=d1(dimsor)*2;
-        
-        % d2 is like dsor but contains an additional element which smaller than the smallest element of dsor
-        d2=[0,dsor];
-        
-        % ed is a set with the middle points of these intervals
-        ed=(d1+d2)/2;
-        dimsor=dimsor+1;
-        
-        % the only relevant eigenvalues are those belong to a clusters with sample
-        % size greater than 0. eigenvalues corresponding to a cluster with 0
-        % elements has no influence in the objective function
-        dnis=d(nis>0);
-        
-        maxdnis=max(dnis);
-        
-        if maxdnis <= tol
-            % if all the eigenvalues are 0 this means all points are concentrated
-            % in k groups and there is a perfect fit
-            % no further changes on the eigenvalues required, so return them
-            % immediately and stop the procedure!
-            out = eigenvalues;
-        else
-            % we check if the  eigenvalues verify the restrictions
-            
-            if maxdnis/min(dnis)<=c
-                % If all eigenvalues satisy the constraint
-                % no further changes on the eigenvalues required, so return them immediately!
-                % Simply replace the 0 eigenvalues with the mean of the eigenvalues
-                % which are greater than zero
-                d(nis==0)=mean(dnis);
-                out=d';
-            else
-                %         % ----------------------------------------------------------------------
-                %         % t, s and r are matrices of size k-times-2*k*v+1
-                %         % Each column of matrices r s and t is associated to a candidate
-                %         % value of m
-                %         % Each row of matrices r s and t is associated to a group
-                %         % The final candidate value of m will be obtained as a weighted sum
-                %         % of the rows (the weights are given by the group sizes)
-                %         % Each element of r, s and t respectively contains
-                %         % r = \sum_{l=1}^v (d_l <m) + \sum_{l=1}^v (d_l >cm)
-                %         % s = \sum_{l=1}^v (d_l <m)
-                %         % t = \sum_{l=1}^v (d_l >c m)
-                %         t=zeros(k,dimsor);
-                %         s=t;
-                %         r=t;
-                %
-                %         % sol and obj are two column vectors of size 2*k*v+1
-                %         % sol contains all the candidates solutions of m
-                %         % Vector sol contains the
-                %         % critical values of the interval functions which define the m
-                %         % objective function we use the centers of the interval to get a
-                %         % definition for the function in each interval this set with the
-                %         % critical values (in the array sol) contains the optimum m value
-                %         sol=zeros(dimsor,1);
-                %
-                %         % obj is the vector which contains the function which must be
-                %         % minized
-                %         % There is one value of the objective function for each candidate
-                %         % solution m
-                %         % The optimum value of obj is the smallest
-                %         % The optmimum m is the one associated to the smallest value of
-                %         % function obj
-                %
-                %         obj=sol;
-                %         % The candidates values of mp which minimize the objective function are
-                %         dimsor=2*k*v+1;
-                %         for mp =1:dimsor
-                %             edmp=ed(mp);
-                %             edmpc=edmp*c;
-                %
-                %             % Computation of r s and t
-                %             % Note that the sum goes from 1 to v
-                %             r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2);
-                %             s(:,mp)=sum(d.*(d<edmp),2);
-                %             t(:,mp)=sum(d.*(d>edmpc),2);
-                %
-                %             % The natural loop is clearly slower
-                %             %             for i=1:k
-                %             %                 di=d(i,:);
-                %             %                 r(i,mp)=sum(di<edmp)+sum(di>edmpc);
-                %             %                 s(i,mp)=sum(di.*(di<edmp));
-                %             %                 t(i,mp)=sum(di.*(di>edmpc));
-                %             %             end
-                %
-                %
-                %             % Note that here the sum goes from 1 to k
-                %             % sol(mp) \sum_{j=1}^k n_j (s_j +t_j/c)  / \sum_{j=1}^k n_j r_j
-                %             solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))));
-                %             sol(mp)=solmp;
-                %
-                %             %             solnum(mp)=sum(niini/n.*(s(:,mp)+t(:,mp)/c));
-                %             %             solden(mp)=(sum(niini/n.*(r(:,mp))));
-                %
-                %             e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-                %             o=nis/n.*(log(e)+d./e);
-                %
-                %             % sol (mp) contains \sum_{j=1}^k \sum_{l=1}^v ( log d_{jl} + d_{jl}^m / d_{jl}
-                %             % equation (3.4)
-                %             obj(mp)=sum(sum(o));
-                %         end
-                %
-                %         [~,indmax]=min(obj);
-                %         % m is the optimum value for the eigenvalues procedure
-                %         m=sol(indmax);
-                %         outtmp= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
-                %
-                %         % ---------------------------------------------------------------
-                
-                
-                % REMARK: the following exploits matrix coperations for avoiding
-                % loops. Given that the code below is difficult to interpret we
-                % left above the iterative counterpart for a better comprehension
-                % of the underlying algorithm
-                
-                dvec=d(:);
-                ninin=niini/n;
-                % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
-                dltm=bsxfun(@lt,dvec,ed);
-                dgtcm=bsxfun(@gt,dvec,ed*c);
-                rr=sum(permute(reshape(dltm+dgtcm,k,vinsiderestr,dimsor),resh),3);
-                
-                % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
-                ddltm=bsxfun(@times,dltm,dvec);
-                ss=sum(permute(reshape(ddltm,k,vinsiderestr,dimsor),resh),3);
-                
-                % Matrix version of t(:,mp)=sum(d.*(d>edmpc),2) for mp=1, ..., dimsor
-                ddgtcm=bsxfun(@times,dgtcm,dvec);
-                tt=sum(permute(reshape(ddgtcm,k,vinsiderestr,dimsor),resh),3);
-                
-                % Vector version of
-                % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
-                % Note that solmp corresponds to m* of the equation below (5.4) of
-                % FGM2012
-                % There are dimsor values of m*. We must choose the one which is
-                % associated to the smallest value of the objective function
-                % implemented in vector obj
-                
-                if userepmat
-                    nininmat=repmat(ninin,1,dimsor);
-                    solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
-                else
-                    solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
-                end
-                
-                % Now find vector version of
-                % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-                % which correponds to equation of FGM2012 which defines the
-                % truncated eigenvalues
-                % The following gets rid of the repmat, which is slow
-                % Find solmp*(d<solmp). This is expression is called sdlts which
-                % stands for "sol (d less than sol)"
-                dlts = reshape(bsxfun(@lt,dvec,solmp),k,vinsiderestr,dimsor);
-                dlts = reshape(dlts,k*vinsiderestr,dimsor);
-                sdlts = bsxfun(@times,dlts,solmp);
-                sdlts  = reshape(sdlts,k,vinsiderestr,dimsor);
-                
-                % d.*(d>=solmp)
-                dges = reshape(bsxfun(@ge,dvec,solmp),k,vinsiderestr,dimsor);
-                ddges = bsxfun(@times,dges,d);
-                
-                % cs is c*solmp
-                cs=solmp*c;
-                % csr is a reshaped version of cs
-                csr = reshape(onekv1 * cs,k,vinsiderestr,dimsor);
-                % less efficient code to obtain csr
-                % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
-                
-                % (d<=c*solmp)
-                dltcs = reshape(bsxfun(@le,dvec,cs),k,vinsiderestr,dimsor);
-                
-                % (d>c*solmp)
-                dgtcs=reshape(bsxfun(@gt,dvec,cs),k,vinsiderestr,dimsor);
-                
-                % Array e contains the modified eigenvalues given a particular m
-                % evaluted in correspondence of the dimsor points
-                % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-                ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
-                
-                
-                if userepmat
-                    dmat=repmat(d,1,1,dimsor);
-                    logede=log(ee)+dmat./ee;
-                    nismat=repmat(nis/n,1,1,dimsor);
-                    oo=nismat.*logede;
-                else
-                    % Now find vector version of o
-                    % logede=log(ee)+bsxfun(@rdivide,d,ee);
-                    logede=log(ee)+bsxfun(@times,d,1./ee);
-                    % oo=nis/n.*(log(e)+d./e);
-                    oo=bsxfun(@times,nis/n,logede);
-                end
-                
-                % obj is a vector of size dimsor
-                obj=sum(sum(oo,1));
-                [~,indmax]=min(obj);
-                
-                % m is the optimum value for the eigenvalues procedure
-                m=solmp(indmax);
-                
-                % plot(1:dimsor,obj)
-                
-                % Based on the m value we get the restricted eigenvalues
-                % The new eigenvalues are equal to
-                % old eigenvalues (d) if old eigenvalues \in [m , c*m]
-                % m                   if old eigenvalues < m
-                % cm                  if old eigenvalues > c*m
-                % Old inefficient code
-                % out= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
-                out=eigenvalues;
-                out(out<m)=m;
-                out(out>c*m)=c*m;
-                
-            end
-        end
-    end
+
 end
 %FScategory:CLUS-RobClaMULT

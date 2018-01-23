@@ -29,28 +29,28 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %
 %      tol : tolerance. Scalar defining the tolerance of the procedure.
 %            The default value is 1e-8
-%               Example - 'tol',[1e-18] 
+%               Example - 'tol',[1e-18]
 %               Data Types - double
 % userepmat : use builtin repmat. Scalar. If userepmat is true function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
 %             current version of MATLAB is >2013a
-%               Example - 'userepmat',1 
+%               Example - 'userepmat',1
 %               Data Types - double
 %
 %  Output:
 %
 %
-%            out      : Restricted eigenvalues. Matrix. v-by-k matrix 
-%                       containing restricted eigenvalues. 
+%            out      : Restricted eigenvalues. Matrix. v-by-k matrix
+%                       containing restricted eigenvalues.
 %                       The ratio between two possible elements in matrix
 %                       out is not greater than restr
 %
-% See also tclust, tclustreg
+% See also tclust, restrdeter, tclustreg
 %
 % References:
 %
-% This function implements the algorithm described in 
+% This function implements the algorithm described in
 % Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A. (2012), A fast
 % algorithm for robust constrained clustering. Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf
@@ -186,7 +186,9 @@ else
         % no further changes on the eigenvalues required, so return them immediately!
         % Simply replace the 0 eigenvalues with the mean of the eigenvalues
         % which are greater than zero
-        d(nis==0)=mean(dnis);
+        if min(nis)==0
+            d(nis==0)=mean(dnis);
+        end
         out=d';
     else
         %         % ----------------------------------------------------------------------
@@ -354,7 +356,7 @@ else
         end
         
         % obj is a vector of size dimsor
-       %  obj=sum(sum(oo,1));
+        %  obj=sum(sum(oo,1));
         obj=sum(sum(oo,1),2);
         
         [~,indmax]=min(obj);
