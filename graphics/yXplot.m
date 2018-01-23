@@ -624,7 +624,7 @@ one=ones(n,1);
 % of legend
 clr='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
 sym={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
-siz='';
+siz=[];
 doleg='on';
 plo='';
 tag='pl_yX';
@@ -806,8 +806,8 @@ else
     group=ones(n,1);
     datatooltip=0;
     databrush='';
-%     xlimx='';
-%     ylimy='';
+    %     xlimx='';
+    %     ylimy='';
     units='';
     
 end
@@ -1416,8 +1416,6 @@ if ~isempty(databrush) || iscell(databrush)
                 %new gplotmatrix which takes into consideration the
                 %selection coming out from selectdataFS, in all scatterplots
                 
-                % OLDOLD
-                % [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
                 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),siz,doleg,[],nameX,namey);
                 
                 % Set the legenda properties of the gplotmatrix
@@ -1444,149 +1442,7 @@ if ~isempty(databrush) || iscell(databrush)
                 hLegend=zeros(size(AX));
                 hLegend(1,end)=legend;
                 
-                % % %                 %fig is the handle of the closest ancestor figure of BigAx.
-                % % %                 fig = ancestor(BigAx,'figure');
-                % % %
-                % % %                 %In order to add new graphics objects without clearing or
-                % % %                 %resetting the current figure we set the figure and axes
-                % % %                 %NextPlot properties to 'add'.
-                % % %                 set(fig,'NextPlot','add');
-                % % %                 set(AX,'NextPlot','add');
-                % % %
-                % % %                 % Now, for each plot of y|X do:
-                % % %                 for i = 1:length(AX)
-                % % %                     % Make the axes of the scatterplot identified by the handle
-                % % %                     % AX(i) the current axes.
-                % % %                     set(fig,'CurrentAxes',AX(i));
-                % % %                     % Remark: axes(AX(i)) would also do the job, but would restack
-                % % %                     % the axes above all other axes in the figure.
-                % % %
-                % % %                     % Fit least square line(s) to the scatterplot AX(i).
-                % % %                     switch bivarfit
-                % % %                         case ''
-                % % %                             %do nothing: no line is fit.
-                % % %                         case '0'
-                % % %                             h=olsline(0); % fit a line to each group
-                % % %                             if length(h)==1
-                % % %                                 set(h,'DisplayName','fit on unbrushed units of y|Xi');
-                % % %                             else
-                % % %                                 for brugrp = 1:size(h,1)-1
-                % % %                                     set(h(brugrp),'DisplayName',['fit on brushed units ' num2str(size(h,1)-brugrp)]);
-                % % %                                 end
-                % % %                                 %set(h(2),'DisplayName','fit on unbrushed units of y|Xi');
-                % % %                                 set(h(size(h,1)),'DisplayName','fit on unbrushed units of y|Xi');
-                % % %                             end
-                % % %                         case '1'
-                % % %                             h=olsline;    % fit 1 line to all data, regardless the groups
-                % % %                             set(h,'DisplayName','fit on all units of y|Xi');
-                % % %                         case '2'
-                % % %                             h=olsline;    % fit a line to all data
-                % % %                             set(h,'DisplayName','fit on all units of y|Xi');
-                % % %                             h=olsline(size(H,3)); % fit a line to the unselected data, i.e. the last group among the handles H
-                % % %                             set(h,'DisplayName','fit on unbrushed units of y|Xi');
-                % % %                         otherwise
-                % % %                             if strncmp('i',bivarfit,1)
-                % % %                                 token = strtok(bivarfit, 'i');
-                % % %                                 selgroup=str2double(token);
-                % % %                                 if ~isnan(selgroup) && selgroup > 0.5 && selgroup <= size(H,3)
-                % % %                                     h=olsline(size(H,3)-round(selgroup)+1); % fit one group only: the one with index round(bivarfit)
-                % % %                                     set(h,'DisplayName','fit on a group of y|Xi');
-                % % %                                 else
-                % % %                                     %do nothing: no line is fit.
-                % % %                                 end
-                % % %                             else
-                % % %                                 error('FSDA:yXplot:WrongBivarfit','''Valid values for option ''bivarfit'' are: '''', ''0'', ''1'', ''2'', ''i1'', ''i2'', ... , ''ig'', ... being ''g'' the index of a selected group.')
-                % % %                                 %do nothing: no line is fit
-                % % %                             end
-                % % %                     end
-                % % %
-                % % %                     % Add the labels of the last selected group.
-                % % %                     if strcmp('1',labeladd)
-                % % %                         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-                % % %                         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-                % % %                         text(Xsel(brushcum,i)+dx,y(brushcum)+dy,numtext(brushcum),'HorizontalAlignment', 'Left');
-                % % %                     end
-                % % %                     % Add the (fix) labels eventually set in selunit.
-                % % %                     if ~isempty(units)
-                % % %                         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-                % % %                         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-                % % %                         text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
-                % % %                     end
-                % % %
-                % % %                     % Add to each scatterplot AX(i) the line(s) based on the hyperplane
-                % % %                     % fit to y|X.
-                % % %                     switch multivarfit
-                % % %                         case {'1' , '2'}
-                % % %                             %int = out.beta(intcolumn,1); % the intercept value
-                % % %                             coef =regress(y,X);
-                % % %
-                % % %                             % indcoef = vector which contains the indexes of columns of X
-                % % %                             % except that which is about to be plotted
-                % % %                             if intercept==1
-                % % %                                 indcoef=setdiff(1:p,i+1);
-                % % %                             else
-                % % %                                 indcoef=setdiff(1:p,i);
-                % % %                             end
-                % % %                             % Find the mean value of the columns of matrix X using all
-                % % %                             % the units
-                % % %                             meaot=mean(X(:,indcoef))*coef(indcoef);
-                % % %
-                % % %                             coef(intcolumn)=[]; % the other coefficients
-                % % %                             xlimits = get(AX(i),'Xlim');
-                % % %                             hline1 = line(xlimits , meaot + coef(i).*xlimits);
-                % % %                             datacolor = [.3 .3 .3]; %Dark grey;  [1 .62 .40] == %Copper
-                % % %                             set(hline1,'Color',datacolor,'LineWidth',2,...
-                % % %                                 'DisplayName','fit on all units of y|X');
-                % % %                             if strcmp(multivarfit, '2')
-                % % %                                 % Notice that group==1 is the group of the
-                % % %                                 % unselected units
-                % % %                                 Xgood = X(logical(group==1),:);
-                % % %                                 ygood = y(logical(group==1));
-                % % %
-                % % %                                 coef = regress(ygood,Xgood);
-                % % %
-                % % %                                 % Find the mean of all the other variables
-                % % %                                 % considering just good units
-                % % %                                 meaot=mean(Xgood(:,indcoef))*coef(indcoef);
-                % % %
-                % % %                                 coef(intcolumn)=[];
-                % % %                                 hline2 = line(xlimits , meaot  + coef(i).*xlimits);
-                % % %                                 datacolor = get(H(1,i,1),'Color');
-                % % %                                 %datacolor = [1 .40 .80]; %Copper verso rosso
-                % % %                                 set(hline2,'Color',datacolor,'LineWidth',2,...
-                % % %                                     'DisplayName','fit on unbrushed units of y|X');
-                % % %                             end
-                % % %                         otherwise
-                % % %                             %do nothing
-                % % %                     end
-                % % %
-                % % %                 end
-                % % %
-                % % %                 % Now update the legends and make them clickable.
-                % % %
-                % % %                 hLines = findobj(AX(1), 'type', 'line');
-                % % %                 hLegend = zeros(size(AX));
-                % % %                 for iAxes = 1:length(AX)
-                % % %                     % Find all lines in current axes and get their DisplayName
-                % % %                     hLines = findobj(AX(iAxes), 'type', 'line');
-                % % %                     eLegend = cell(length(hLines), 1);
-                % % %                     for iLines = 1:length(hLines)
-                % % %                         eLegend{iLines} = get(hLines(iLines), 'DisplayName');
-                % % %                     end
-                % % %                     %%hLegend(iAxes) = clickableLegend(hLines, eLegend{:});
-                % % %                     legend_h = legend(hLines);
-                % % %                     if iAxes < length(AX)
-                % % %                         %                         if verMatlab
-                % % %                         %                             legend(legend_h,'hide');
-                % % %                         %                         else
-                % % %                         %                             legend_h.Visible='off';
-                % % %                         %                         end
-                % % %                         set(legend_h,'Visible','off')
-                % % %
-                % % %                     end
-                % % %                 end
-                % % %                 hLegend(iAxes) = clickableMultiLegend(hLines, eLegend{:});
-                % % %
+                
                 %% - display the resfwdplot with the corresponding groups of trajectories highlighted.
                 
                 % creates the resfwdplot
@@ -1815,9 +1671,11 @@ if ~isempty(databrush) || iscell(databrush)
                     % - the standard MATLAB function to be executed on figure
                     %   close is recovered
                     set(gcf,'CloseRequestFcn','closereq');
+                    Open_yX = findobj(0, 'type', 'figure','tag','pl_yX');
                     Open_res = findobj(0, 'type', 'figure','tag','pl_resfwd');
                     Open_mdr = findobj(0, 'type', 'figure','tag','pl_mdr');
-                    if isempty(Open_res)  % User closed the main brushing window
+                    
+                    if isempty(Open_yX)  % User closed the main brushing window
                         if ~isempty(Open_res); delete(Open_res); end    % resfwdplot is deleted
                         if ~isempty(Open_mdr); delete(Open_mdr); end  % mdr plot is deleted
                         delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
