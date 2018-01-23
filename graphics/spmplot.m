@@ -1079,7 +1079,7 @@ if ~isempty(overlay)
         overlay.type = 'contourf';
         
     elseif ~(isstruct(overlay) && isfield(overlay, 'include') && isfield(overlay, 'type'))
-        error('The argument overlay is wrongly specified.');
+        error('FSDA:spmplot:InvalidArg','The argument overlay is wrongly specified.');
         
     end
     
@@ -1087,11 +1087,11 @@ if ~isempty(overlay)
     if isstruct(overlay)
         
         if length(overlay.include)~=length(unique(group))
-            error('The field include in not correctly specified.');
+            error('FSDA:spmplot:InvalidArg','The field include is not correctly specified.');
         end
         
         if ~islogical(overlay.include)
-            warning('The field was not logical and it has been trasformed to logical.');
+            warning('FSDA:spmplot:InvalidArg','The field was not logical and it has been trasformed to logical.');
         end
         
         % rename the structure's values
@@ -1149,7 +1149,7 @@ if ~isempty(overlay)
                     min(min(cmap))>=0 && max(max(cmap))<=1) && ~ischar(cmap)
                 % invalid colormap: revert it to gray
                 cmap = gray;
-                warning('Some value of the colormap matrix is invalid and it is set to ''gray''.');
+                warning('FSDA:spmplot:InvalidArg','Some value of the colormap matrix is invalid and it is set to ''gray''.');
             end
             
         else
@@ -1173,7 +1173,7 @@ if ~isempty(overlay)
         if ~(isscalar(conflev) && conflev>0 && conflev<1 )
             % invalid confidence level: revert it to default
             conflev = [];
-            warning('The ellipses confidence level is invalid and it is set to default.');
+            warning('FSDA:spmplot:InvalidArg','The ellipse confidence level is invalid and it is set to default.');
         end
         
     elseif strcmp(type, 'ellipse')
@@ -2094,10 +2094,10 @@ end
         pos = get(event_obj,'Position');
         
         % x and y, plot coordinates of the mouse
-        x = pos(1); y = pos(2);
+        xcoord = pos(1); ycoord = pos(2);
         
-        if isempty(x)
-            output_txt{1}=['no observation has coordinates x,y' num2str(x) '' num2str(y)] ;
+        if isempty(xcoord)
+            output_txt{1}=['no observation has coordinates x,y' num2str(xcoord) '' num2str(ycoord)] ;
         else
             
             % Find index to retrieve obs. name
@@ -2115,11 +2115,11 @@ end
             %uno=vector of zeros and ones of the same length of X and
             %y. The ones are reported in the rows where the X values
             %are equal to the X selected
-            uno=ord(:,indc)==x;
+            uno=ord(:,indc)==xcoord;
             %due=same idea of uno: vector of zeros and ones of the same
             %length of X and y. The ones are reported in the rows where
             %the y values are equal to the y selected
-            due=ord(:,indr)==y;
+            due=ord(:,indr)==ycoord;
             %find observations that have satisfied both (AND)
             %conditions uno and due, i.e. observations with both X and
             %y equal to the X and y selected.
@@ -2135,9 +2135,9 @@ end
             
             output_txt=cell(length(row)*2+2,1);
             % output_txt is what it is shown on the screen
-            output_txt(1) = {['Y(,:' num2str(indr) ') value equal to: ',num2str(y,4)]};
+            output_txt(1) = {['Y(,:' num2str(indr) ') value equal to: ',num2str(ycoord,4)]};
             
-            output_txt(2) = {['Y(,:' num2str(indc) ') value equal to: ',num2str(x,4)]};
+            output_txt(2) = {['Y(,:' num2str(indc) ') value equal to: ',num2str(xcoord,4)]};
             
             % Add information about the corresponding row label of
             % what has been selected
@@ -2195,7 +2195,7 @@ end
             if ~islogical(undock) && vv~=2  % to avoid possible mistakes in 2-by-2 matrix
                 % if is not logical
                 undock = logical(undock);
-                warning('undock was not logical and it has been trasformed to logical.');
+                warning('FSDA:spmplot:InvalidArg','undock was not logical and it has been trasformed to logical.');
             end
             
             % if undock is a boolean matrix
@@ -2211,7 +2211,7 @@ end
             panels = undock;
             
         else
-            error('The argument undock is not correctly specified.');
+            error('FSDA:spmplot:InvalidArg','The argument undock is not correctly specified.');
         end
         
         % iterate rowwise through all pairs of panels to undock
