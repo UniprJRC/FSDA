@@ -135,12 +135,12 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'startv1',1
 %                 Data Types - single | double
 %
-%       restr : type of restriction. Character. The type of restriction to
+%     restrtype : type of restriction. Character. The type of restriction to
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
-%               implies restrictions on the determinant.
-%                 Example - 'restr','deter'
+%               implies restriction on the determinants.
+%                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
 %       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
@@ -431,7 +431,7 @@ UnitsSameGroup='';
 
 options=struct('kk',kk,'cc',cc,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'plots',plots,'nocheck',0,...
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
-    'reftol',reftol,'startv1',startv1,'restr',restr,...
+    'reftol',reftol,'startv1',startv1,'restrtype',restr,...
     'UnitsSameGroup',UnitsSameGroup,...
     'numpool',numpool, 'cleanpool', cleanpool);
 
@@ -465,7 +465,7 @@ if nargin > 1
     end
     
     
-    restr=options.restr;
+    restr=options.restrtype;
     alpha=options.alpha;
     kk=options.kk;
     cc=options.cc;
@@ -547,7 +547,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         % tclust using mixtures
         if typeIC>0
             outMixt=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',2, ...
-                'restr',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
                 'reftol',reftol,'RandNumbForNini',RandNumbForNini);
             IDXMIX{k,c}=outMixt.idx;
             if typeIC==2 || typeIC==3
@@ -561,7 +561,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
             outCla=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0, ...
-                'restr',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
                 'reftol',reftol,'RandNumbForNini',RandNumbForNini);
             CLACLA(k,c)=outCla.CLACLA;
             IDXCLA{k,c}=outCla.idx;

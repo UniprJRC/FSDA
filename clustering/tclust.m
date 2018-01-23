@@ -241,12 +241,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
-%    restr    : The type of restriction to be applied on the cluster
-%               scatter matrices. String. Valid values are 'eigen' (default), or
-%               'deter'. eigen implies restriction on the eigenvalues while
-%               deter implies restrictions on the determinant.
-%                   Example - 'restr','deter'
-%                   Data Types - char
+%     restrtype : type of restriction. Character. The type of restriction to
+%               be applied on the cluster scatter
+%               matrices. Valid values are 'eigen' (default), or 'deter'.
+%               eigen implies restriction on the eigenvalues while deter
+%               implies restriction on the determinants.
+%                 Example - 'restrtype','deter'
+%                 Data Types - char
 %       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to request that the input matrix Y
 %               is saved into the output structure out. Default is 0, id
 %               est no saving is done.
@@ -634,14 +635,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     close all
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
-    out=tclust(Y,3,0.01,20,'restr','deter','refsteps',20,'plots',1)
+    out=tclust(Y,3,0.01,20,'restrtype','deter','refsteps',20,'plots',1)
 %}
 
 %{
     % tclust applied to the Geyser data imposing determinant restriciton.
     close all
     Y=load('geyser2.txt');
-    out=tclust(Y,4,0.1,10,'restr','deter','refsteps',20,'plots',1)
+    out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1)
 %}
 
 %% Input parameters checking
@@ -782,7 +783,7 @@ restrnum=1;
 
 options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
-    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restr','eigen');
+    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -834,7 +835,7 @@ if nargin > 4
     % restrnum=2 ==> restriction on the determinants
     % restrnum=3 ==> restriction on both
     
-    restr=options.restr;
+    restr=options.restrtype;
     if strcmp(restr,'eigen')
         restrnum=1;
     elseif strcmp(restr,'deter')==1
