@@ -477,21 +477,21 @@ end
 
 % check consistency
 if size(Mu, 1)~=k || size(S, 3)~=k
-    error('The number of rows in k, Mu and S do not correspond');
+    error('FSDA:overlapmap:wrongInputs','The number of rows in k, Mu and S do not correspond');
 end
 
 % Give an error if any covariance matrix of the components is close to zero
 % (because the eigenvalues wouldn't be computable)
 if any(sum(sum(S))<=eps) 
     errS = UniqID(sum(sum(S))<=eps);
-    error('The component number %d has a null coariance matrix. Change the components.', errS);
+    error('FSDA:overlapmap:notfullrank','The component number %d has a null coariance matrix. Change the components.', errS);
 end
 
 % Evaluation of misclassification probabilities 
 try
     [OmegaMap, ~, ~, ~, ~] = overlap(k, v, Pi, Mu, S);
 catch
-    error('Numerical issues in computing the overlap: try with different parameters.');
+    error('FSDA:overlapmap:wrongInputs','Numerical issues in computing the overlap: try with different parameters.');
 end
     
 % Sum of misclassification probailities in order to obtain an overlap matrix

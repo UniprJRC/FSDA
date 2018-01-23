@@ -687,9 +687,9 @@ elseif 0<g && g<1
     
     % Check for errors in g
 elseif g >= 1 && g<=k && mod(g, 1)~=0
-    error('For hierarchical clustering the argument ''g'' has to be an integer.')
+    error('FSDA:dempk:wrongInputs','For hierarchical clustering the argument ''g'' has to be an integer.')
 elseif g>k
-    error('The argument g has to be smaller than the number of components k.')
+    error('FSDA:dempk:wrongInputs','The argument g has to be smaller than the number of components k.')
 end
 
 

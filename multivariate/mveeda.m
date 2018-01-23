@@ -345,7 +345,7 @@ mad=mad(hmin,:);
 ii=find(mad < eps, 1 );
 if ~isempty(ii)
     % The h-th order statistic is zero for the ii-th variable. The array plane contains
-    error('MAD is 0')
+    error('FSDA:mveeda:wrongInputs','MAD is 0')
 end
 % Standardization of the data with location estimate (median) and scale
 % estimate (mad)

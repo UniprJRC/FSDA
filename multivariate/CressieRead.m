@@ -216,11 +216,11 @@ if verMatlab ==0 && istable(N)
 end
 
 if any(any(N < 0))
-    error('Test expects counts that are nonnegative values');
+    error('FSDA:CressieRead:wrongInputs','Test expects counts that are nonnegative values');
 end
 
 if I < 2 || J < 2
-    error('Matrix of observation must at least be of size 2-by-2');
+    error('FSDA:CressieRead:wrongInputs','Matrix of observation must at least be of size 2-by-2');
 end
 
 % default value of lambda

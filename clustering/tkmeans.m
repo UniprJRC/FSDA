@@ -310,7 +310,7 @@ reftoldef=1e-14;
 % Default
 if nargin<3
     alpha=0.05;
-    warning('alpha was not specified and it is set to 0.05 by default');
+    warning('FSDA:tkmeans:wrongInputs','alpha was not specified and it is set to 0.05 by default');
 end
 
 % Fix alpha equal to the trimming size
@@ -758,7 +758,7 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
 elseif isscalar(plots) && plots == 0
     % does anything
 else
-    warning('The parameter ''plots'' is not valid.');
+    warning('FSDA:tkmeans:wrongInputs','The parameter ''plots'' is not valid.');
 end
 
 end
