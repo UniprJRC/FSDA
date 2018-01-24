@@ -176,7 +176,7 @@ eigenvalues(eigenvalues<1e-15)=0;
 % Eigenvalue restriction using a restriction facto 10^10 is initially
 % applied separately to each group
 for j=1:k
-    eigenvalues(:,j) = restreigen(eigenvalues(:,j), 1, 10^10);
+    eigenvalues(:,j) = restreigen(eigenvalues(:,j), 1, 10^10,tol,userepmat);
 end
 % product of the elements of all columns
 es=prod(eigenvalues,1);

@@ -150,8 +150,14 @@ nis=niini*ones(1,v);
 % In other words
 % dsor=(d_{11}, ........, d_{kv},d_{11}/restr, ........, d_{kv}/restr)
 
-dsor=sort([eigenvalues(:);eigenvalues(:)/c])';
-dimsor=length(dsor);
+% OLD was
+% dsor=sort([eigenvalues(:);eigenvalues(:)/c])';
+ eigvector=eigenvalues(:);
+ dsor=sort([eigvector/c;eigvector])';
+kv=k*v;
+% dimsor=length(dsor);
+dimsor=kv*2;
+
 
 % d1 is like dsor but contains an additional element which is larger than the largest element of dsor
 d1=dsor;
@@ -159,6 +165,7 @@ d1(dimsor+1)=d1(dimsor)*2;
 
 % d2 is like dsor but contains an additional element which smaller than the smallest element of dsor
 d2=[0,dsor];
+
 
 % ed is a set with the middle points of these intervals
 ed=(d1+d2)/2;
@@ -269,11 +276,11 @@ else
         %         % ---------------------------------------------------------------
         
         
-        % REMARK: the following exploits matrix coperations for avoiding
+        % REMARK: the following exploits matrix operations for avoiding
         % loops. Given that the code below is difficult to interpret we
         % left above the iterative counterpart for a better comprehension
         % of the underlying algorithm
-        
+    
         dvec=d(:);
         ninin=niini/n;
         % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
@@ -315,7 +322,7 @@ else
         % Find solmp*(d<solmp). This is expression is called sdlts which
         % stands for "sol (d less than sol)"
         dlts = reshape(bsxfun(@lt,dvec,solmp),k,v,dimsor);
-        dlts = reshape(dlts,k*v,dimsor);
+        dlts = reshape(dlts,kv,dimsor);
         sdlts = bsxfun(@times,dlts,solmp);
         sdlts  = reshape(sdlts,k,v,dimsor);
         
@@ -326,7 +333,7 @@ else
         % cs is c*solmp
         cs=solmp*c;
         % csr is a reshaped version of cs
-        csr = reshape(ones(k*v,1) * cs,k,v,dimsor);
+        csr = reshape(ones(kv,1) * cs,k,v,dimsor);
         % less efficient code to obtain csr
         % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
         
