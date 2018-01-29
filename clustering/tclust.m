@@ -268,14 +268,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k. 0 indicates trimmed
 %                       observations.
-%            out.siz  = Matrix of size k-by-3.
+%            out.siz  = Matrix of size (k+1)-by-3.
 %                       1st col = sequence from 0 to k;
 %                       2nd col = number of observations in each cluster;
 %                       3rd col = percentage of observations in each
 %                       cluster;
 %                       Remark: 0 denotes unassigned units.
-%            out.post = n-by-k matrix containing posterior probabilities
-%                       out.post(i,j) contains posterior probabilitiy of unit
+%         out.postprob = n-by-k matrix containing posterior probabilities
+%                       out.postprob(i,j) contains posterior probabilitiy of unit
 %                       i from component (cluster) j. For the trimmed units
 %                       posterior probabilities are 0.
 %             out.emp = "Empirical" statistics computed on final classification.
@@ -1557,7 +1557,7 @@ out.siz=siz;
 
 % Store n x k matrix containing posterior probability
 % of each row from each component (cluster)
-out.post=postprob;
+out.postprob=postprob;
 
 % Number of estimated parameters
 % k centroids of size v
