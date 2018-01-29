@@ -281,7 +281,8 @@ if isstruct(residuals)
     out=residuals;
     residuals=out.residuals;
 end
-
+% The following line is to make sure residuals is always a column vector
+residuals = residuals(:);
 
 % Close existing pl_residual figure.
 % Remark: existing figures containing subplots generated with resindexplot
