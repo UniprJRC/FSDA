@@ -2068,13 +2068,16 @@ out = Q;
         
         
         if find(strcmp('Uniform',betadistrib.type))
-            Beta=betadistrib.a+rand(p,k)*(betadistrib.b-betadistrib.a);
+            %Beta=betadistrib.a+rand(p,k)*(betadistrib.b-betadistrib.a);
+            Beta=betadistrib.a+bsxfun(@times,randn(p,k),(betadistrib.b-betadistrib.a));
             
         elseif find(strcmp('Normal',betadistrib.type))
-            Beta=betadistrib.mu+randn(p,k)*betadistrib.sigma;
+            %Beta=betadistrib.mu+randn(p,k)*betadistrib.sigma;
+            Beta=repmat(betadistrib.mu,p,1)+bsxfun(@times,randn(p,k),betadistrib.sigma);
             
         elseif find(strcmp('HalfNormal',betadistrib.type))
-            Beta=abs(randn(p,k))*betadistrib.sigma;
+            %Beta=abs(randn(p,k))*betadistrib.sigma;
+            Beta=bsxfun(@times,abs(randn(p,k)),betadistrib.sigma);
             
         elseif find(strcmp('User',betadistrib.type))
             Beta=betadistrib.Beta;
