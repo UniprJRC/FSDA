@@ -925,7 +925,7 @@ else % in this case plo is not a structure
     %     end
     
     if plo==1
-        nameX = cellstr(num2str((1:p)','X%d'));
+        nameX = cellstr(num2str((1:p1)','X%d'));
         namey=char('y');
     else
         nameX = '';
