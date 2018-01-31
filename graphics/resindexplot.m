@@ -26,7 +26,7 @@ function resindexplot(residuals,varargin)
 %                   with residuals from a robust regression: see example
 %                   below).
 %                   Example -'h',h1 where h1=subplot(2,1,1)
-%                   Data Types - Axes object (supplied as a scalar) 
+%                   Data Types - Axes object (supplied as a scalar)
 %              x :  the vector to be plotted on the x-axis. Numeric vector.
 %                   As default the sequence 1:length(residuals) will be
 %                   used
@@ -42,15 +42,24 @@ function resindexplot(residuals,varargin)
 %                   'Index plot of residuals'
 %                   Example -'title','scaled residuals'
 %                   Data Types - char
-%          numlab:  number of points to be identified in plots. 
-%                   [] | cell ({5} default) | numeric vector.
+%          numlab:  number of points to be identified in plots.
+%                   [] | cell ({5}) default) | numeric vector | structure.
+%                   NUMLAB IS A CELL.
 %                   If numlab is a cell containing scalar k, the units
 %                   with the k largest residuals are labelled in the plots.
+%                   The default value of numlab is {5}, that is the units
+%                   with the 5 largest residuals are labelled.
+%                   For no labelling leave it empty.
+%                   NUMLAB IS A VECTOR.
 %                   If numlab is a vector, the units inside vector numlab are
-%                   labelled in the plots.
-%                   The default value of numlab is {5}. that is units with the 5
-%                   largest residuals are labelled.
-%                   For no labelling leave it empty
+%                   labelled in the plots. If numlab is a struct it is
+%                   possible to control the size of the points identified.
+%                   NUMLAB IS A STRUCTURE.
+%                   If numlab is a struct, it contains the following fields:
+%                   numlab.numlab = number of points to be identified (cell
+%                   or vector, see above);
+%                   numlab.FontSize = fontsize of the labels of the
+%                   points. The default value is 12.
 %                   Example -'numlab',[3,10,35]
 %                   Data Types - double
 %        conflev :  confidence interval for the horizontal bands. Numeric
@@ -70,23 +79,23 @@ function resindexplot(residuals,varargin)
 %                   Data Types - double
 %           ylimy:  Vector with two elements which controla minimum and maximum
 %                   value of the y axis. Default is '', automatic scale.
-%                   Example -'SizeAxesNum',10
+%                   Example -'ylimy',[-5 5]
 %                   Data Types - double
 %           xlimx:  Vector with two elements controlling minimum and maximum
 %                   on the x axis. Default value is '' (automatic scale).
-%                   Example -'SizeAxesNum',10
+%                   Example -'xlimx',[-5 5]
 %                   Data Types - double
 %          lwdenv:  width of the lines associated
 %                   with the envelopes. Scalar. Default is lwdenv=1.
-%                   Example -'SizeAxesNum',10
+%                   Example -'lwdenv',2
 %                   Data Types - double
 %      MarkerSize:  size of the marker in points. Scalar.
 %                   The default value for MarkerSize is 6 points (1 point =
 %                   1/72 inch).
-%                   Example -'SizeAxesNum',10
+%                   Example -'MarkerSize',10
 %                   Data Types - double
 % MarkerFaceColor:  Marker fill color.
-%                   'none' | 'auto' | RGB triplet | color string. 
+%                   'none' | 'auto' | RGB triplet | color string.
 %                   Fill color for markers that are closed shapes
 %                   (circle, square, diamond, pentagram, hexagram, and the
 %                   four triangles).
@@ -127,7 +136,7 @@ function resindexplot(residuals,varargin)
 %                     If persist='off' every time a new brush is performed
 %                     units previously brushed are removed.
 %                   - databrush.labeladd = add labels of brushed units.
-%                     Character. [] (default) | '1'. 
+%                     Character. [] (default) | '1'.
 %                     If databrush.labeladd='1', we label the units
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
@@ -175,25 +184,25 @@ function resindexplot(residuals,varargin)
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
-%                   Data Types - single | double | struct 
+%                   Data Types - single | double | struct
 %       nameX   :   regressor labels. Cell array of strings of length p containing the labels
 %                   of the variables of the regression dataset. If it is
 %                   empty (default) the sequence X1, ..., Xp will be created
 %                   automatically
 %                   Example - 'nameX',{'Age','Income','Married','Profession'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %       namey   :   response label. Character. Character containing the
 %                   label of the response. If it is
 %                   empty (default) label 'y' will be used.
 %                   Example - 'namey','response'
 %                   Data Types - char
-%           tag  :  Figure tag. Character.  
+%           tag  :  Figure tag. Character.
 %                   Tag of the figure which will host the malindexplot. The
 %                   default tag is pl_resindex
 %                   Example - 'tag','indexPlot'
 %                   Data Types - character
 %
-% Output: 
+% Output:
 %
 %
 % See also resfwdplot.m
@@ -271,6 +280,27 @@ function resindexplot(residuals,varargin)
     resindexplot(out.residuals,'numlab',{3});
 %}
 
+%{
+    % First example in which numlab is passed as structure.
+    % In this case we control the FontSize of the associated labels.
+    numlab=struct;
+    % Set a font size for the labels equal to 20
+    numlab.FontSize=20;
+    resindexplot(randn(100,1),'numlab',numlab)
+%}
+
+%{
+    % Second example in which numlab is passed as structure.
+    % In this case we control both the number of units to label and
+    % also the FontSize of the associated labels.
+    numlab=struct;
+    % Show just the two most important residuals.
+    numlab.numlab={2}; 
+    % Set a font size for the labels equal to 20
+    numlab.FontSize=20;
+    resindexplot(randn(100,1),'numlab',numlab)
+%}
+
 %% Initialization
 
 if nargin<1
@@ -281,6 +311,7 @@ if isstruct(residuals)
     out=residuals;
     residuals=out.residuals;
 end
+
 % The following line is to make sure residuals is always a column vector
 residuals = residuals(:);
 
@@ -293,9 +324,9 @@ end
 
 % n is the number of observations, as usual;
 n=length(residuals);
-
+numlabdef={{5}};
 % Set standard options
-options=struct('h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
+options=struct('h','','x',1:n,'labx','','laby','','numlab',numlabdef,'conflev',0.975,...
     'title','Index plot of residuals','FontSize',12,'SizeAxesNum',10,...
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
     'databrush','','tag','pl_resindex','nameX','','namey','');
@@ -326,6 +357,25 @@ end
 numconflev = length(conflev);
 conflev = sort(conflev,'descend');
 
+numlabFontSizedef=10;
+if isstruct(numlab)
+    if isfield(numlab,'FontSize')
+        numlabFontSize=numlab.FontSize;
+    else
+        numlabFontSize=numlabFontSizedef;
+    end
+    
+    if isfield(numlab,'numlab')
+        numlab=numlab.numlab;
+    else
+        numlab=numlabdef{:};
+    end
+    
+else
+    numlabFontSize=numlabFontSizedef;
+end
+
+
 % numlab: if it is a cell, extract the number
 if iscell(numlab)
     numlab=numlab{:};
@@ -345,14 +395,15 @@ hfig = figure('Name', 'Residual plot', 'NumberTitle', 'off',...
 
 % Get figure's axis
 afig = axes('Parent',hfig);
-% Set the font size for the axes numbers
-set(afig,'FontSize',SizeAxesNum);
 
 % Plot the resindexplot and add relevant labels
 plot(afig,x,residuals,'bo','MarkerFaceColor',MarkerFaceColor,...
     'MarkerSize',MarkerSize,'tag','data_res');
 
-text(x(ind),residuals(ind),int2str(ind),'VerticalAlignment','Baseline');
+% Set the font size for the axes numbers
+set(afig,'FontSize',SizeAxesNum);
+
+text(x(ind),residuals(ind),int2str(ind),'VerticalAlignment','Baseline', 'FontSize',numlabFontSize);
 % dx=(max(x)-min(x))/80; dy=(max(residuals)-min(residuals))/80;
 % Displacement: baseline does already well the job of displacing the text.
 
@@ -390,9 +441,9 @@ if ~isempty(h)
     hfigh = get(h,'Parent');
     
     set(hfigh,'Name','Residual plots','NumberTitle','off');
-    set(h,'Tag','res_subplot'); 
-    copyobj(allchild(afig),h); 
-    pause(0.0000001); 
+    set(h,'Tag','res_subplot');
+    copyobj(allchild(afig),h);
+    pause(0.0000001);
     delete(hfig);
     hline2 = findobj(h, 'Tag','conflevline');
     hlineh = flipud(hline2);
@@ -417,7 +468,7 @@ if ~isempty(h)
     ylabel(gca,laby,'Fontsize',FontSize);
     % Set the font size for the axes numbers
     set(gca,'FontSize',SizeAxesNum);
-
+    
 else
     % If the resindexplot has not to be sent in a different figure/subplot
     % add the figure title and axis labels, and set their FontSize
