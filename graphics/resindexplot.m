@@ -52,10 +52,11 @@ function resindexplot(residuals,varargin)
 %                   For no labelling leave it empty.
 %                   NUMLAB IS A VECTOR.
 %                   If numlab is a vector, the units inside vector numlab are
-%                   labelled in the plots. If numlab is a struct it is
-%                   possible to control the size of the points identified.
+%                   labelled in the plots. 
 %                   NUMLAB IS A STRUCTURE.
-%                   If numlab is a struct, it contains the following fields:
+%                   If numlab is a struct it is possible to control the
+%                   size of the points identified. It contains the
+%                   following fields:
 %                   numlab.numlab = number of points to be identified (cell
 %                   or vector, see above);
 %                   numlab.FontSize = fontsize of the labels of the
