@@ -27,7 +27,7 @@ function w = TBwei(u,c)
 % \[
 % TBwei(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
+%  (c^2/6) \psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
 %  0                     &  |u/c|>1   \\
 % \end{array}
 %    \right.
