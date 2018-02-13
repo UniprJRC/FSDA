@@ -512,7 +512,7 @@ S2b=numS2b/dfe;
 % we have (1+h)).
 studres2=zeros(n,1);
 
-mAm=Xb'*Xb;
+mAm=Xb'*Xb + bayes.R;
 
 if ~isempty(ListOut)
     % Take units not belonging to bsb
