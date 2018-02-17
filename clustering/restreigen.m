@@ -31,10 +31,14 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %            The default value is 1e-8
 %               Example - 'tol',[1e-18]
 %               Data Types - double
-% userepmat : use builtin repmat. Scalar. If userepmat is true function repmat is used instead
+% userepmat : use repmat, bsxfun or implicit expansion. Scalar. 
+%             If userepmat is equal to 1, function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
-%             current version of MATLAB is >2013a
+%             current version of MATLAB is >2013a. 
+%             If userepmat is 2, implicit expansion is used instead of
+%             bsxfun. Note that implicit expansion has been introduced only
+%             in 2017a therefore it will not work with previous releases.
 %               Example - 'userepmat',1
 %               Data Types - double
 %
@@ -104,7 +108,47 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
     restreigen(eigenvalues,niini,1.1)
 %}
 
+%{
+    % Compare speed.
+    % We compare the speed of restreigneasy with that of restreigen. We use
+    % userepmat=2 is the current MATLAB version if >=R2017a or userepmat =1 if
+    % MATLAB version is >=2013a but <2017a else userepmat =0
+    v=10;
+    k=8;
+    tol=1e-8;
 
+    if verLessThanFS(9.2)== false
+        % If MATLAB version is at least 2017a
+        userepmat=2;
+    elseif verLessThanFS(8.1) == false
+        % if MATLAB version is at least R2013b  
+        userepmat=1;
+    else
+        userepmat=0;
+    end
+
+    oldroutinetime=0;
+    newroutinetime=0;
+    rng(1)
+    for j=1:10000
+        eigenvalues=100*abs(randn(v,k));
+        % niini is the vector containing the sizes of the 4 groups
+        niini=randi(100,[k,1]);
+        tic;
+        outold=restreigeneasy(eigenvalues,niini,1.1);
+        % Uncomment the line below if you want 
+        % outold=restreigen(eigenvalues,niini,1.1,tol,1);
+        oldroutinetime=oldroutinetime+toc;
+        tic;
+        outnew=restreigen(eigenvalues,niini,1.1,tol,userepmat);
+        newroutinetime=newroutinetime+toc;
+        if max(max(abs(outold-outnew)))>1e-7
+            error('The two routines are different')
+        end
+    end
+    disp(['Computing time of restreigeneasy: ' num2str(oldroutinetime)])
+    disp(['Computing time of restreigen: ' num2str(newroutinetime)])
+%}
 
 %% Beginning of code
 
@@ -127,6 +171,7 @@ d=eigenvalues';
 % Get number of variables (v) and number of clusters (k)
 [v,k]=size(eigenvalues);
 
+
 % Get number of units of the dataset
 n=sum(niini);
 
@@ -136,7 +181,9 @@ n=sum(niini);
 % Second row of nis = size of second group repated v times
 % ....
 % kth row of nis = size of kth group repated v times
-nis=niini*ones(1,v);
+
+nis=repmat(niini,1,v);
+
 % Below is the alternative inefficient code
 % nis = repmat(niini,1,v);
 
@@ -152,8 +199,9 @@ nis=niini*ones(1,v);
 
 % OLD was
 % dsor=sort([eigenvalues(:);eigenvalues(:)/c])';
- eigvector=eigenvalues(:);
- dsor=sort([eigvector/c;eigvector])';
+eigvector=eigenvalues(:);
+dsor=sort([eigvector/c;eigvector])';
+
 kv=k*v;
 % dimsor=length(dsor);
 dimsor=kv*2;
@@ -178,214 +226,290 @@ dnis=d(nis>0);
 
 maxdnis=max(dnis);
 
-if maxdnis <= tol
-    % if all the eigenvalues are 0 this means all points are concentrated
-    % in k groups and there is a perfect fit
-    % no further changes on the eigenvalues required, so return them
-    % immediately and stop the procedure!
-    out = eigenvalues;
-else
-    % we check if the  eigenvalues verify the restrictions
+if userepmat==2
     
-    % abs here is just for computational purposes
-    if abs(maxdnis/min(dnis))<=c
-        % If all eigenvalues satisy the constraint
-        % no further changes on the eigenvalues required, so return them immediately!
-        % Simply replace the 0 eigenvalues with the mean of the eigenvalues
-        % which are greater than zero
-        if min(nis)==0
-            d(nis==0)=mean(dnis);
-        end
-        out=d';
+    if maxdnis <= tol
+        % if all the eigenvalues are 0 this means all points are concentrated
+        % in k groups and there is a perfect fit
+        % no further changes on the eigenvalues required, so return them
+        % immediately and stop the procedure!
+        out = eigenvalues;
     else
-        %         % ----------------------------------------------------------------------
-        %         % t, s and r are matrices of size k-times-2*k*v+1
-        %         % Each column of matrices r s and t is associated to a candidate
-        %         % value of m
-        %         % Each row of matrices r s and t is associated to a group
-        %         % The final candidate value of m will be obtained as a weighted sum
-        %         % of the rows (the weights are given by the group sizes)
-        %         % Each element of r, s and t respectively contains
-        %         % r = \sum_{l=1}^v (d_l <m) + \sum_{l=1}^v (d_l >cm)
-        %         % s = \sum_{l=1}^v (d_l <m)
-        %         % t = \sum_{l=1}^v (d_l >c m)
-        %         t=zeros(k,dimsor);
-        %         s=t;
-        %         r=t;
-        %
-        %         % sol and obj are two column vectors of size 2*k*v+1
-        %         % sol contains all the candidates solutions of m
-        %         % Vector sol contains the
-        %         % critical values of the interval functions which define the m
-        %         % objective function we use the centers of the interval to get a
-        %         % definition for the function in each interval this set with the
-        %         % critical values (in the array sol) contains the optimum m value
-        %         sol=zeros(dimsor,1);
-        %
-        %         % obj is the vector which contains the function which must be
-        %         % minized
-        %         % There is one value of the objective function for each candidate
-        %         % solution m
-        %         % The optimum value of obj is the smallest
-        %         % The optmimum m is the one associated to the smallest value of
-        %         % function obj
-        %
-        %         obj=sol;
-        %         % The candidates values of mp which minimize the objective function are
-        %         dimsor=2*k*v+1;
-        %         for mp =1:dimsor
-        %             edmp=ed(mp);
-        %             edmpc=edmp*c;
-        %
-        %             % Computation of r s and t
-        %             % Note that the sum goes from 1 to v
-        %             r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2);
-        %             s(:,mp)=sum(d.*(d<edmp),2);
-        %             t(:,mp)=sum(d.*(d>edmpc),2);
-        %
-        %             % The natural loop is clearly slower
-        %             %             for i=1:k
-        %             %                 di=d(i,:);
-        %             %                 r(i,mp)=sum(di<edmp)+sum(di>edmpc);
-        %             %                 s(i,mp)=sum(di.*(di<edmp));
-        %             %                 t(i,mp)=sum(di.*(di>edmpc));
-        %             %             end
-        %
-        %
-        %             % Note that here the sum goes from 1 to k
-        %             % sol(mp) \sum_{j=1}^k n_j (s_j +t_j/c)  / \sum_{j=1}^k n_j r_j
-        %             solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))));
-        %             sol(mp)=solmp;
-        %
-        %             %             solnum(mp)=sum(niini/n.*(s(:,mp)+t(:,mp)/c));
-        %             %             solden(mp)=(sum(niini/n.*(r(:,mp))));
-        %
-        %             e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-        %             o=nis/n.*(log(e)+d./e);
-        %
-        %             % sol (mp) contains \sum_{j=1}^k \sum_{l=1}^v ( log d_{jl} + d_{jl}^m / d_{jl}
-        %             % equation (3.4)
-        %             obj(mp)=sum(sum(o));
-        %         end
-        %
-        %         [~,indmax]=min(obj);
-        %         % m is the optimum value for the eigenvalues procedure
-        %         m=sol(indmax);
-        %         outtmp= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
-        %
-        %         % ---------------------------------------------------------------
+        % we check if the  eigenvalues verify the restrictions
         
-        
-        % REMARK: the following exploits matrix operations for avoiding
-        % loops. Given that the code below is difficult to interpret we
-        % left above the iterative counterpart for a better comprehension
-        % of the underlying algorithm
-    
-        dvec=d(:);
-        ninin=niini/n;
-        % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
-        dltm=bsxfun(@lt,dvec,ed);
-        dgtcm=bsxfun(@gt,dvec,ed*c);
-        rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
-        
-        
-        
-        % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
-        ddltm=bsxfun(@times,dltm,dvec);
-        ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
-        
-        % Matrix version of t(:,mp)=sum(d.*(d>edmpc),2) for mp=1, ..., dimsor
-        ddgtcm=bsxfun(@times,dgtcm,dvec);
-        tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
-        
-        % Vector version of
-        % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
-        % Note that solmp corresponds to m* of the equation below (5.4) of
-        % FGM2012
-        % There are dimsor values of m*. We must choose the one which is
-        % associated to the smallest value of the objective function
-        % implemented in vector obj
-        
-        if userepmat
-            nininmat=repmat(ninin,1,dimsor);
-            solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
+        % abs here is just for computational purposes
+        if abs(maxdnis/min(dnis))<=c
+            % If all eigenvalues satisy the constraint
+            % no further changes on the eigenvalues required, so return them immediately!
+            % Simply replace the 0 eigenvalues with the mean of the eigenvalues
+            % which are greater than zero
+            if min(nis)==0
+                d(nis==0)=mean(dnis);
+            end
+            out=d';
         else
-            solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
+            
+            dvec=d(:);
+            ninin=niini/n;
+            % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
+            
+            dltm=dvec<ed;
+            dgtcm=dvec>ed*c;
+            
+            ddltm=dltm.*dvec;
+            ddgtcm=dgtcm.*dvec;
+            
+            rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
+            
+            % Do permute and reshape just once
+            %         ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
+            %         tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
+            ssttc=sum(permute(reshape(ddltm+ddgtcm/c,k,v,dimsor),[1 3 2]),3);
+            
+            %         % sum with a loop (less efficient)
+            %             rrchk=zeros(v,dimsor);
+            %             sschk=rrchk;
+            %             ttchk=sschk;
+            %             dltmdgtcm=dltm+dgtcm;
+            %         for jj=1:k
+            %             seqjj=jj:k:k*(v-1)+jj;
+            %             rrchk(jj,:)=sum(dltmdgtcm(seqjj,:),1);
+            %             sschk(jj,:)=sum(ddltm(seqjj,:),1);
+            %             ttchk(jj,:)=sum(ddgtcm(seqjj,:),1);
+            %         end
+            
+            % Vector version of
+            % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
+            % Note that solmp corresponds to m* of the equation below (5.4) of
+            % FGM2012
+            % There are dimsor values of m*. We must choose the one which is
+            % associated to the smallest value of the objective function
+            % implemented in vector obj
+            
+            %         if userepmat ==1
+            %             % nininmat=repmat(ninin,1,dimsor);
+            %             % solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
+            %             solmp=sum((ss+tt/c).*ninin,1)./sum(rr.*ninin,1);
+            %         else
+            %             solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
+            %         end
+            
+            % nininmat=repmat(ninin,1,dimsor);
+            % solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
+            solmp=sum(ssttc.*ninin,1)./sum(rr.*ninin,1);
+            
+            
+            
+            % Now find vector version of
+            % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
+            % which correponds to equation of FGM2012 which defines the
+            % truncated eigenvalues
+            % The following gets rid of the repmat, which is slow
+            % Find solmp*(d<solmp). This is expression is called sdlts which
+            % stands for "sol (d less than sol)"
+            
+            dvecsolmpboo=dvec<solmp;
+            dlts=reshape(dvecsolmpboo,k,v,dimsor);
+            
+            dlts = reshape(dlts,kv,dimsor);
+            sdlts=dlts.*solmp;
+            sdlts  = reshape(sdlts,k,v,dimsor);
+            
+            %dges = reshape(dvec>=solmp,k,v,dimsor);
+            
+            dges = reshape(~dvecsolmpboo,k,v,dimsor);
+            ddges=dges.*d;
+            
+            
+            % cs is c*solmp
+            cs=solmp*c;
+            
+            csr=reshape(cs,1,1,dimsor);
+            
+            
+            % less efficient code to obtain csr
+            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
+            
+            dveccsboo=dvec<=cs;
+            dltcs = reshape(dveccsboo,k,v,dimsor);
+            
+            % More efficient to use not rather than the instruction below
+            % dgtcs=reshape(dvec>cs,k,v,dimsor);
+            dgtcs=reshape(~dveccsboo,k,v,dimsor);
+            
+            % Array e contains the modified eigenvalues given a particular m
+            % evaluted in correspondence of the dimsor points
+            % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
+            ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            
+            % Alternative way of computing oo
+            % nisn=nis/n;
+            % oo=nisn.*log(ee)+(nisn.*d)./ee;
+            
+            % dmat=repmat(d,1,1,dimsor);
+            % logede=log(ee)+dmat./ee;
+            logede=log(ee)+d./ee;
+            % nismat=repmat(nis/n,1,1,dimsor);
+            % oo=nismat.*logede;
+            oo=(nis/n).*logede;
+            
+            % obj is a vector of size dimsor
+            %  obj=sum(sum(oo,1));
+            obj=sum(sum(oo,1),2);
+            
+            [~,indmax]=min(obj);
+            
+            % m is the optimum value for the eigenvalues procedure
+            m=solmp(indmax);
+            
+            
+            % plot(1:dimsor,obj)
+            
+            % Based on the m value we get the restricted eigenvalues
+            % The new eigenvalues are equal to
+            % old eigenvalues (d) if old eigenvalues \in [m , c*m]
+            % m                   if old eigenvalues < m
+            % cm                  if old eigenvalues > c*m
+            % Old inefficient code
+            % out= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
+            out=eigenvalues;
+            out(out<m)=m;
+            out(out>c*m)=c*m;
+            
         end
-        
-        
-        % Now find vector version of
-        % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-        % which correponds to equation of FGM2012 which defines the
-        % truncated eigenvalues
-        % The following gets rid of the repmat, which is slow
-        % Find solmp*(d<solmp). This is expression is called sdlts which
-        % stands for "sol (d less than sol)"
-        dlts = reshape(bsxfun(@lt,dvec,solmp),k,v,dimsor);
-        dlts = reshape(dlts,kv,dimsor);
-        sdlts = bsxfun(@times,dlts,solmp);
-        sdlts  = reshape(sdlts,k,v,dimsor);
-        
-        % d.*(d>=solmp)
-        dges = reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor);
-        ddges = bsxfun(@times,dges,d);
-        
-        % cs is c*solmp
-        cs=solmp*c;
-        % csr is a reshaped version of cs
-        csr = reshape(ones(kv,1) * cs,k,v,dimsor);
-        % less efficient code to obtain csr
-        % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
-        
-        % (d<=c*solmp)
-        dltcs = reshape(bsxfun(@le,dvec,cs),k,v,dimsor);
-        
-        % (d>c*solmp)
-        dgtcs=reshape(bsxfun(@gt,dvec,cs),k,v,dimsor);
-        
-        % Array e contains the modified eigenvalues given a particular m
-        % evaluted in correspondence of the dimsor points
-        % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-        ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
-        
-        
-        if userepmat
-            dmat=repmat(d,1,1,dimsor);
-            logede=log(ee)+dmat./ee;
-            nismat=repmat(nis/n,1,1,dimsor);
-            oo=nismat.*logede;
-        else
-            % Now find vector version of o
-            % logede=log(ee)+bsxfun(@rdivide,d,ee);
-            logede=log(ee)+bsxfun(@times,d,1./ee);
-            % oo=nis/n.*(log(e)+d./e);
-            oo=bsxfun(@times,nis/n,logede);
-        end
-        
-        % obj is a vector of size dimsor
-        %  obj=sum(sum(oo,1));
-        obj=sum(sum(oo,1),2);
-        
-        [~,indmax]=min(obj);
-        
-        % m is the optimum value for the eigenvalues procedure
-        m=solmp(indmax);
-        
-        
-        % plot(1:dimsor,obj)
-        
-        % Based on the m value we get the restricted eigenvalues
-        % The new eigenvalues are equal to
-        % old eigenvalues (d) if old eigenvalues \in [m , c*m]
-        % m                   if old eigenvalues < m
-        % cm                  if old eigenvalues > c*m
-        % Old inefficient code
-        % out= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
-        out=eigenvalues;
-        out(out<m)=m;
-        out(out>c*m)=c*m;
-        
     end
+else
+    if maxdnis <= tol
+        % if all the eigenvalues are 0 this means all points are concentrated
+        % in k groups and there is a perfect fit
+        % no further changes on the eigenvalues required, so return them
+        % immediately and stop the procedure!
+        out = eigenvalues;
+    else
+        % we check if the  eigenvalues verify the restrictions
+        
+        % abs here is just for computational purposes
+        if abs(maxdnis/min(dnis))<=c
+            % If all eigenvalues satisy the constraint
+            % no further changes on the eigenvalues required, so return them immediately!
+            % Simply replace the 0 eigenvalues with the mean of the eigenvalues
+            % which are greater than zero
+            if min(nis)==0
+                d(nis==0)=mean(dnis);
+            end
+            out=d';
+        else
+            
+            % REMARK: the following exploits matrix operations for avoiding
+            % loops. Given that the code below is difficult to interpret we
+            % refer to routine restreigeneasy for a better comprehension
+            % of the underlying algorithm
+            
+            dvec=d(:);
+            ninin=niini/n;
+            % Matrix version of r(:,mp)=sum(d<edmp,2)+sum(d>edmpc,2) for mp=1, ..., dimsor
+            dltm=bsxfun(@lt,dvec,ed);
+            dgtcm=bsxfun(@gt,dvec,ed*c);
+            rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
+            
+            % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
+            ddltm=bsxfun(@times,dltm,dvec);
+            ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
+            
+            % Matrix version of t(:,mp)=sum(d.*(d>edmpc),2) for mp=1, ..., dimsor
+            ddgtcm=bsxfun(@times,dgtcm,dvec);
+            tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
+            
+            % Vector version of
+            % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
+            % Note that solmp corresponds to m* of the equation below (5.4) of
+            % FGM2012
+            % There are dimsor values of m*. We must choose the one which is
+            % associated to the smallest value of the objective function
+            % implemented in vector obj
+            
+            if userepmat ==1
+                nininmat=repmat(ninin,1,dimsor);
+                solmp=sum((ss+tt/c).*nininmat,1)./sum(rr.*nininmat,1);
+            else
+                solmp=sum(bsxfun(@times,ss+tt/c,ninin),1)./sum(bsxfun(@times,rr,ninin),1);
+            end
+            
+            
+            % Now find vector version of
+            % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
+            % which correponds to equation of FGM2012 which defines the
+            % truncated eigenvalues
+            % The following gets rid of the repmat, which is slow
+            % Find solmp*(d<solmp). This is expression is called sdlts which
+            % stands for "sol (d less than sol)"
+            dlts = reshape(bsxfun(@lt,dvec,solmp),k,v,dimsor);
+            dlts = reshape(dlts,kv,dimsor);
+            sdlts = bsxfun(@times,dlts,solmp);
+            sdlts  = reshape(sdlts,k,v,dimsor);
+            
+            % d.*(d>=solmp)
+            dges = reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor);
+            ddges = bsxfun(@times,dges,d);
+            
+            % cs is c*solmp
+            cs=solmp*c;
+            % csr is a reshaped version of cs
+            csr = reshape(ones(kv,1) * cs,k,v,dimsor);
+            % less efficient code to obtain csr
+            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
+            
+            % (d<=c*solmp)
+            dltcs = reshape(bsxfun(@le,dvec,cs),k,v,dimsor);
+            
+            % (d>c*solmp)
+            dgtcs=reshape(bsxfun(@gt,dvec,cs),k,v,dimsor);
+            
+            % Array e contains the modified eigenvalues given a particular m
+            % evaluted in correspondence of the dimsor points
+            % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
+            ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            
+            
+            if userepmat ==1
+                dmat=repmat(d,1,1,dimsor);
+                logede=log(ee)+dmat./ee;
+                nismat=repmat(nis/n,1,1,dimsor);
+                oo=nismat.*logede;
+            else
+                % Now find vector version of o
+                % logede=log(ee)+bsxfun(@rdivide,d,ee);
+                logede=log(ee)+bsxfun(@times,d,1./ee);
+                % oo=nis/n.*(log(e)+d./e);
+                oo=bsxfun(@times,nis/n,logede);
+            end
+            
+            % obj is a vector of size dimsor
+            %  obj=sum(sum(oo,1));
+            obj=sum(sum(oo,1),2);
+            
+            [~,indmax]=min(obj);
+            
+            % m is the optimum value for the eigenvalues procedure
+            m=solmp(indmax);
+            
+            
+            % plot(1:dimsor,obj)
+            
+            % Based on the m value we get the restricted eigenvalues
+            % The new eigenvalues are equal to
+            % old eigenvalues (d) if old eigenvalues \in [m , c*m]
+            % m                   if old eigenvalues < m
+            % cm                  if old eigenvalues > c*m
+            % Old inefficient code
+            % out= ((m*(d<m)+d.*(d>=m).*(d<=c*m)+(c*m)*(d>c*m)))';
+            out=eigenvalues;
+            out(out<m)=m;
+            out(out>c*m)=c*m;
+            
+        end
+    end
+    
 end
 end
 %FScategory:CLUS-RobClaMULT
