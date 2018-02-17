@@ -111,8 +111,8 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %{
     % Compare speed.
     % We compare the speed of restreigneasy with that of restreigen. We use
-    % userepmat=2 is the current MATLAB version if >=R2017a or userepmat =1 if
-    % MATLAB version is >=2013a but <2017a else userepmat =0
+    % userepmat=2 if the current MATLAB version if >=R2017a or userepmat =1
+    % if MATLAB version is >=R2013a but <R2017a else we use userepmat =0
     v=10;
     k=8;
     tol=1e-8;
@@ -142,7 +142,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
         tic;
         outnew=restreigen(eigenvalues,niini,1.1,tol,userepmat);
         newroutinetime=newroutinetime+toc;
-        if max(max(abs(outold-outnew)))>1e-7
+        if max(max(abs(outold-outnew)))>1e-5
             error('The two routines are different')
         end
     end
