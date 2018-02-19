@@ -790,7 +790,7 @@ singsub=0;
 % initialize brob which will be the vector of estimated robust regression
 % coefficients
 brob=-99;
-
+chktrim=1;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -809,9 +809,7 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-end
 
-if nargin > 1
     
     % Extract the names of the optional arguments
     chklist=varargin(1:2:length(varargin));
