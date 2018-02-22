@@ -388,14 +388,20 @@ function [out , varargout] = FSRBr(y, X, varargin)
 
 %% Beginning of code
 
-% The first four options below are specific for this function, all the others
-% refer to routine FSRB
-n=length(y);
+%% Input parameters checking
+
+nnargin=nargin;
+vvarargin=varargin;
+[y,X,n,p] = chkinputRB(y,X,nnargin,vvarargin);
 if n<40
     init=0;
 else
     init=min([3*p+1 floor(0.5*(n+p+1)) n-1]);
 end
+
+
+% The first four options below are specific for this function, all the others
+% refer to routine FSRB
 
 options     = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
     'plots',1,'init',init,...
@@ -621,21 +627,33 @@ SSR0=(n0-p)/tau0;
 X0y0=X0X0*beta0;
 % Calculating y0'y0 
 y0y0=SSR0+beta0'*X0y0;
-% Sum of squared residuals of current observations
-SSres=(y-X*beta)'*(y-X*beta);
 % Sum of squared residuals of prior obs considering the bayesian beta, i.e. 
 % (y0-X0*beta)'(y0-X0*beta)
 SSres0=y0y0-2*(beta'*X0y0)+beta'*X0X0*beta;
+% Sum of squared residuals and deviance of current observations
+if ~isempty(y)
+    % Sum of squared residuals of current observations
+    SSres=(y-X*beta)'*(y-X*beta);
+    % Deviance of current observations
+    if intercept==0
+        yy=y'*y;
+    else
+        yy=(y-mean(y))'*(y-mean(y));
+    end
+else
+    SSres=0;
+    yy=0;
+end
 % Total sum of squared residuals considering the bayesian beta
 numS2b=SSres0+SSres;
 if intercept==0
     % No mean adjustment for total deviance
-    devtotb=y0y0+y'*y;
+    devtotb=y0y0+yy;
 else
     % Mean adjustment for total deviance
     mu0=(X0X0(1,:)*beta0)/n0;
     y0y0=y0y0-n0*mu0^2;
-    devtotb=y0y0+(y-mean(y))'*(y-mean(y));
+    devtotb=y0y0+yy;
 end
 % Calculating the R2 of the bayesian regression (including also prior
 % information)
