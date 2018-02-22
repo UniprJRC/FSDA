@@ -486,7 +486,7 @@ yb=y(ListIn);
 res=y-X*beta;
 % resb= raw residuals for good observations
 resb=res(ListIn);
-dfe=n0+nlistIn-p;
+dfe=bayes.n0+nlistIn-p;
 
 % studres= vector which will contain squared (appropriately studentized) residuals for all n units.
 % For the units non declared as outliers by FS they will be squared studentized
