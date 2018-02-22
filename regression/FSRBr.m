@@ -391,7 +391,11 @@ function [out , varargout] = FSRBr(y, X, varargin)
 % The first four options below are specific for this function, all the others
 % refer to routine FSRB
 n=length(y);
-init       = round(n*0.5);
+if n<40
+    init=0;
+else
+    init=min([3*p+1 floor(0.5*(n+p+1)) n-1]);
+end
 
 options     = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
     'plots',1,'init',init,...
