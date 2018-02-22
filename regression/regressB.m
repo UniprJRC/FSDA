@@ -497,8 +497,13 @@ if nbsb<n1
     % hi = X(i,:)* (c*R + Xbsb'*Xbsb)^{-1} * X(i,:)'
     % with i \not in bsb
     hi = sum((Xncl*cRXXinv).*Xncl,2);   %#ok<MINV>
-    
-    res(ncl,2) = sqrt(tau1)*(res(ncl,1)./sqrt(1+hi))/corr;
+    % Calulation of global corr that depends on (n0+nbsb; n0+n1) for the
+    % correction of the residuals of the observations not used for the
+    % fit
+    aco=norminv(0.5*(1+(n0+nbsb)/(n0+n1)));
+    corrg=1-2*((n0+n1)./(n0+nbsb)).*aco.*normpdf(aco);
+    corrg=sqrt(corrg);
+    res(ncl,2) = sqrt(tau1)*(res(ncl,1)./sqrt(1+hi))/corrg;
 end
 
 
