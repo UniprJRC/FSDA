@@ -470,7 +470,7 @@ nlistIn=length(ListIn);
 
 
 % Find S2 using units not declared as outliers using FSR
-%in case intercept=1:
+% in case intercept=1:
 if intercept == 1
     X = [ones(n,1) X];
 end
@@ -478,32 +478,15 @@ end
 p=size(X,2);
 % Xb = subset of X referred to good units
 Xb=X(ListIn,:);
+yb=y(ListIn);
+% Correct the value of the deviance of residuals (numerator of S2) if R2
+% is greater than R2th
+[S2b,R2b]=R2correction(yb,Xb,beta,bayes,intercept,R2th);
 % res=raw residuals for all observartions
 res=y-X*beta;
 % resb= raw residuals for good observations
 resb=res(ListIn);
-% numS2b = numerator of the estimate of the error variance (referred to
-% subset)
-numS2b=(resb'*resb);
-%ytildeb = deviation from the mean (if intercept is present) for subset
-if intercept==1
-    ytildeb=y(ListIn)-mean(y(ListIn));
-else
-    ytildeb=y(ListIn);
-end
-
-% devtotb = total deviance referred to subset
-devtotb=ytildeb'*ytildeb;
-% compute R2b = R squared referred to susbet;
-R2b=1-numS2b/devtotb;
-
-% Correct the value of the deviance of residuals (numerator of S2) if R2
-% is greater than R2th
-if R2b >R2th
-    numS2b=devtotb*(1-R2th);
-end
 dfe=nlistIn-p;
-S2b=numS2b/dfe;
 
 % studres= vector which will contain squared (appropriately studentized) residuals for all n units.
 % For the units non declared as outliers by FS they will be squared studentized
@@ -613,6 +596,53 @@ end
 
 out.class  =  'FSRBr';
 
+end
+
+
+function [S2b,R2b]=R2correction(y,X,beta,bayes,intercept,R2th)
+% Function for adjusting the standard error of bayesian regression in case of perfect fit
+
+n=length(y);
+p=length(beta);
+
+% Prior information
+n0=bayes.n0;
+beta0=bayes.beta0;  % inv(X0'X0)*X0'y0
+X0X0=bayes.R;       % (X0'X0)
+tau0=bayes.tau0;    % (n0-p)/[(y0-X0*beta0)'(y0-X0*beta0)]
+
+% Calculating the SSR of the prior regression: (y0-X0*beta0)'(y0-X0*beta0)
+SSR0=(n0-p)/tau0;
+% Calculating X0'y0 = (X0'X0)*beta0
+X0y0=X0X0*beta0;
+% Calculating y0'y0 
+y0y0=SSR0+beta0'*X0y0;
+% Sum of squared residuals of current observations
+SSres=(y-X*beta)'*(y-X*beta);
+% Sum of squared residuals of prior obs considering the bayesian beta, i.e. 
+% (y0-X0*beta)'(y0-X0*beta)
+SSres0=y0y0-2*(beta'*X0y0)+beta'*X0X0*beta;
+% Total sum of squared residuals considering the bayesian beta
+numS2b=SSres0+SSres;
+if intercept==0
+    % No mean adjustment for total deviance
+    devtotb=y0y0+y'*y;
+else
+    % Mean adjustment for total deviance
+    mu0=(X0X0(1,:)*beta0)/n0;
+    y0y0=y0y0-n0*mu0^2;
+    devtotb=y0y0+(y-mean(y))'*(y-mean(y));
+end
+% Calculating the R2 of the bayesian regression (including also prior
+% information)
+R2b=1-numS2b/devtotb;
+% Correct the value of the deviance of residuals (numerator of S2) if R2
+% is greater than R2th
+if R2b>R2th
+    numS2b=devtotb*(1-R2th);
+end
+dfe=n0+n-p;
+S2b=numS2b/dfe;
 end
 
 %FScategory:REG-Bayes
