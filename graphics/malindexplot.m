@@ -264,6 +264,9 @@ if isstruct(md)
     md=out.md;
 end
 
+% The following line is to ensure md is always a column vector
+md = md(:);
+
 % n = number of observations;
 n=length(md);
 
