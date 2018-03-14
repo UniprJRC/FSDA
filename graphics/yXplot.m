@@ -9,7 +9,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %       the response variable or a structure 'out' coming from function FSReda.
 %       If y is a vector it can be either a row or a column vector.
 %
-%  OPTIONAL INPUT ARGUMENTS IF y IS A VECTOR:
+%     INPUT ARGUMENT y IS A VECTOR:
 %
 %     If y is a vector, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
@@ -18,75 +18,17 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %       yXplot(y,X,group, plo);
 %
-%       yXplot(y,X, 'name1',value1, 'name2', value2, ...); % y vector call  through name value pairs
+%       yXplot(y,X, 'name1',value1, 'name2', value2, ...);
 %
 %     If varargin{1} is a n-elements vector, then it is interpreted
 %     as a grouping variable vector 'group'. In this case, it can only be
-%     followed by 'plo'. Otherwise, the program expects a
+%     followed by 'plo' (see the name pairs section for a full
+%         description of plo). Otherwise, the program expects a
 %     sequence of name/value pairs.
 %
-%  List of optional input arguments if first argument y is a vector:
+%     INPUT ARGUMENT y IS A STRUCTURE:
 %
-%  group: vector with n elements. It is a grouping variable that determines
-%         the marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings.
-%         Remark: if 'group' is used to distinguish a set of outliers from
-%         a set of good units, the id number for the outliers should be the
-%         larger (see optional field 'labeladd' of option 'plo' for details).
-%
-%
-%    plo: empty value, scalar of structure which controls the names which
-%         are displayed in the margins of the yX matrix and the
-%         labels of the legend.
-%
-%         If plo is the empty vector [], then namey, nameX and labeladd are
-%           both set to the empty string '' (default), and no label and
-%           no name is added to the plot.
-%
-%         If plo = 1 the names y, and X1,..., Xp are added to the margins of the
-%           the scatter plot matrix else nothing is added.
-%
-%         If plo is a structure it may contain the following fields:
-%         - labeladd: if it is '1', the elements belonging to the max(group)
-%                in the spm are labelled with their unit row index.
-%                The default value is labeladd = '', i.e. no label is added.
-%         - clr: a string of color specifications. By default, the colors
-%                are 'brkmgcy'.
-%         - sym: a string or a cell of marker specifications. For example,
-%                if sym = 'o+x', the first group will be plotted with a
-%                circle, the second with a plus, and the third with a 'x'.
-%                This is obtained with the assignment plo.sym = 'o+x'
-%                or equivalently with plo.sym = {'o' '+' 'x'}.
-%                By default the sequence of marker types is:
-%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'.
-%         - siz: scalar, a marker size to use for all plots. By default the
-%                marker size depends on the number of plots and the size of
-%                the figure window. Default is siz = '' (empty value).
-%       - doleg: a string to control whether legends are created or not.
-%                Set doleg to 'on' (default) or 'off'.
-%       - nameX:   explanatory variables names. Cell. Cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is empty
-%                 	(default) the sequence X1, ..., Xp will be created
-%                   automatically.
-%       - namey   :   response variable name. Character. Character containing the label of the response
-%       - ylimy    :   y limits. Vector. vector with two elements controlling
-%                   minimum and maximum on the y axis. Default value is ''
-%                   (automatic scale).
-%       - xlimx    :   x limits. Vector. vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale).
-%   tag  :   plot tag. String. string which identifies the handle of the plot which
-%           is about to be created. The default is to use tag
-%           'pl_yX'. Notice that if the program finds a plot which
-%           has a tag equal to the one specified by the user, then
-%           the output of the new plot overwrites the existing one
-%           in the same window else a new window is created.
-%
-%  OPTIONAL INPUT ARGUMENTS IF y IS A STRUCTURE:
-%
-%  If first input argument y is a structure (generally created by function FSReda),
-%  then this structure must have the following fields:
-%
-%       Required fields in input structure y.
+%       Required fields in input structure y to obtain a static plot.
 %
 %       y.y   =   a vector containing the response of length n.
 %       y.X   =   a matrix containing the explanatory variables of size nxp.
@@ -103,7 +45,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               option datatooltip it is possible to retrieve information
 %               about a particular unit once selected with the mouse).
 %
-%       Optional fields in input structure y.
+%       Required fields in input structure y to enable dynamic brushing and linking.
 %
 %       y.RES =   matrix containing the residuals monitored in each
 %               step of the forward search. Every row is associated with a
@@ -119,6 +61,10 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               automatically created and included in the pop up
 %               datatooltip window)
 %
+%           Note that the structure described above is automatically
+%           generated from function FSReda
+%
+%
 %
 %    X: Predictor variables. Matrix.  Matrix.  Data matrix of explanatory
 %       variables (also called 'regressors') of
@@ -127,146 +73,259 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %       Data Types - single|double
 %
 %
-%   Optional input arguments: (if the first argument of yXplot is a
-%                               structure)
+%   Optional input arguments:
 %
-%       The options which follow can only be used if the input is a
-%       structure which contains information about the fwd search (i.e. the
-%       two fields RES and Un and eventually label)
+%  group: grouping variable. Vector with n elements.
+%         It is a grouping variable that determines
+%         the marker and color assigned to each point. It can be a categorical
+%         variable, vector, string matrix, or cell array of strings.
+%         Note that if 'group' is used to distinguish a set of outliers from
+%         a set of good units, the id number for the outliers should be the
+%         larger (see optional field 'labeladd' of option 'plo' for details).
+%         Example - 'group',ones(n,1)
+%         Data Types - double.
 %
-%   datatooltip :   personalized tooltip. Empty value or structure.
-%                    The default is datatooltip=''
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit selected,
-%                   the step in which the unit enters the search and the
-%                   associated label.
-%                   If datatooltip is a structure, it is possible to
-%                   control the aspect of the data cursor (see function
-%                   datacursormode for more details or the examples below).
-%                   The default options of the structure are
-%                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip',''
-%                   Data Types - char
-%     databrush :   interactive brushing. Empty value, scalar or cell.
-%                   DATABRUSH IS AN EMPTY VALUE.
-%                   If databrush is an empty value (default), no brushing
-%                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a cell) enables the user  to select a set of
-%                   observations in the current plot and to see them
-%                   highlighted in the resfwdplot, i.e. the plot of the
-%                   trajectories of all observations, grouped according
-%                   to the selection(s) done by brushing. If the resfwdplot
-%                   does not exist it is automatically created.
-%                   In addition, brushed units can be highlighted in the
-%                   other following plots (only if they are already open):
-%                   - minimum deletion residual plot;
-%                   - monitoring leverage plot;
-%                   - maximum studentized residual;
-%                   - s^2 and R^2;
-%                   - Cook distance and modified Cook distance;
-%                   - deletion t statistics.
-%                   Remark. The window style of the other figures is set
-%                   equal to that which contains the monitoring residual
-%                   plot. In other words, if the scatterplot matrix plot
-%                   is docked all the other figures will be docked too.
-%                   DATABRUSH IS A SCALAR.
-%                   If databrush is a scalar the default selection tool is
-%                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='').
-%                   DATABRUSH IS A CELL.
-%                   If databrush is a cell, it is possible to use all
-%                   optional arguments of function selectdataFS.m and the
-%                   following optional argument:
-%                   - persist. Persist is an empty value or a scalar
-%                     containing the strings 'on' or 'off'.
-%                     The default value of persist is '', that is brushing
-%                     is allowed only once.
-%                     If persist is 'on' or 'off' brushing can be done as
-%                     many time as the user requires.
-%                     If persist='on' then the unit(s) currently brushed
-%                     are added to those previously brushed. It is
-%                     possible, every time a new brushing is done, to use a
-%                     different color for the brushed units.
-%                     If persist='off' every time a new brush is performed
-%                     units previously brushed are removed.
-%                   - bivarfit. This option is to add one or more least
-%                     square lines to the plots of y|X, depending on the
-%                     selected groups.
-%                     bivarfit = '';
-%                       is the default: no line is fitted.
-%                     bivarfit = '1';
-%                       fits a single ols line to all points of each
-%                       bivariate plot in the scatter matrix y|X.
-%                     bivarfit = '2';
-%                       fits two ols lines: one to all points and another
-%                       to the last selected group. This is useful when
-%                       there are only two groups, of which one refers to a
-%                       set of potential outliers.
-%                     bivarfit = '0';
-%                       fits one ols line for each selected group. This is
-%                       useful for the purpose of fitting mixtures of
-%                       regression lines.
-%                     bivarfit = 'i1' or 'i2' or 'i3' etc.
-%                       fits a ols line to a specific group, the one with
-%                       index 'i' equal to 1, 2, 3 etc.
-%                   - multivarfit. If this option is '1', we add to each scatter
-%                     plot of y|X a line based on the fitted hyperplane
-%                     coefficients. The line added to the scatter plot y|Xi
-%                     is mean(y)+Ci*Xi, being Ci the coefficient of Xi.
-%                     The default value of multivarfit is '', i.e. no line is
-%                     added.
-%                   - labeladd. If this option is '1', we label the units
-%                     of the last selected group with the unit row index in
-%                     matrices X and y. The default value is labeladd='',
-%                     i.e. no label is added.
-%                   Example - 'databrush',1
-%                   Data Types - single | double | struct
+%    plo: yXplot personalization. Empty value, scalar of structure.
+%         This option controls the names which
+%         are displayed in the margins of the yX matrix and the
+%         labels of the legend.
 %
-%       The options which follow work in connection with previous option
-%       databrush and produce their effect on the monitoring residuals plot
+%         If plo is the empty vector [], then namey, nameX and labeladd are
+%           both set to the empty string '' (default), and no label and
+%           no name is added to the plot.
 %
-%       subsize :   x axis control. Numeric vector. Numeric vector
-%                   containing the subset size with length
-%                   equal to the number of columns of matrix residuals.
-%                   If it is not specified it will be set equal to
-%                   size(residuals,1)-size(residuals,2)+1:size(residuals,1)
-%                   Example - 'subsize',10:100
-%                   Data Types - single | double
-%       selstep :   text in selected steps. Numeric vector. Numeric vector
-%                   which specifies for which steps of the
-%                   forward search textlabels are added in the monitoring
-%                   residual plot after a brushing action in the yXplot.
-%                   The default is to write the labels at the initial and
-%                   final step. The default is selstep=[m0 n] where m0 and
-%                   n are respectively the first and final step of the
-%                   search.
-%                   Example - 'selstep',100
-%                   Data Types - single | double
-%       selunit :   unit labelling. Cell array of strings, string, or numeric vector for
-%                   labelling units. If out is a structure the threshold is
-%                   associated with the trajectories of the residuals
-%                   monitored along the search else it refers to the values
-%                   of the response variable.
-%                   If it is a cell array of strings, only
-%                   the lines associated with the units that in at least
-%                   one step of the search had a residual smaller than
-%                   selunit{1} or greater than selline{2} will have a
-%                   textbox.
-%                   If it is a string it specifies the threshold
-%                   above which labels have to be put. For example
-%                   selunit='2.6' means that the text labels are written
-%                   only for the units which have in at least one step of
-%                   the search a value of the scaled residual greater than
-%                   2.6 in absolute value.
-%                   If it is a numeric vector it
-%                   contains the list of the units for which it is
-%                   necessary to put the text labels.
-%                   The default value of
-%                   selunit is string '2.5' if y is a structure
-%                   else it is an empty value if y is a vector
-%                   Example - 'selunit','3'
-%                   Data Types - numeric or character
+%         If plo = 1 the names y, and X1,..., Xp are added to the margins of the
+%           the scatter plot matrix else nothing is added.
+%
+%         If plo is a structure it may contain the following fields:
+%         plo.labeladd = if it is '1', the elements belonging to the max(group)
+%                in the spm are labelled with their unit row index.
+%                The default value is labeladd = '', i.e. no label is added.
+%         plo.clr = a string of color specifications. By default, the colors
+%                are 'brkmgcy'.
+%         plo.sym = a string or a cell of marker specifications. For example,
+%                if sym = 'o+x', the first group will be plotted with a
+%                circle, the second with a plus, and the third with a 'x'.
+%                This is obtained with the assignment plo.sym = 'o+x'
+%                or equivalently with plo.sym = {'o' '+' 'x'}.
+%                By default the sequence of marker types is:
+%                '+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'.
+%         plo.siz = scalar, a marker size to use for all plots. By default the
+%                marker size depends on the number of plots and the size of
+%                the figure window. Default is siz = '' (empty value).
+%       plo.doleg = a string to control whether legends are created or not.
+%                Set doleg to 'on' (default) or 'off'.
+%       plo.nameX =  explanatory variables names. Cell. Cell array of
+%                   strings of length p containing the labels
+%                   of the varibles of the regression dataset. If it is empty
+%                 	(default) the sequence X1, ..., Xp will be created
+%                   automatically.
+%                   Note that the names can also be specified
+%                   using the optional option nameX.
+%      plo.namey  = response variable name. Character. Character containing the label of the response
+%                   Note that the names can also be specified
+%                   using optional option namey.
+%      plo.ylimy  = y limits. Vector. vector with two elements controlling
+%                   minimum and maximum on the y axis. Default value is ''
+%                   (automatic scale).
+%                   Note that the y limits can also be specified
+%                   using optional option ylimy.
+%      plo.xlimx  =  x limits. Vector. vector with two elements controlling minimum and maximum
+%                   on the x axis. Default value is '' (automatic scale).
+%                   Note that the x limits can also be specified
+%                   using optional option xlimx.
+%                   Example - 'plo','1'
+%                   Data Types - scalar or structure.
+%
+%     tag  :   plot tag. String.
+%              String which identifies the handle of the plot which
+%              is about to be created. The default is to use tag
+%              'pl_yX'. Notice that if the program finds a plot which
+%              has a tag equal to the one specified by the user, then
+%              the output of the new plot overwrites the existing one
+%              in the same window else a new window is created.
+%                 Example - 'tag',''
+%                 Data Types - char.   
+%
+%    nameX :  explanatory variables names. Cell. Cell array of
+%              strings of length p containing the labels
+%              of the varibles of the regression dataset. If it is empty
+%            	(default) the sequence X1, ..., Xp will be created
+%              automatically.
+%              Example - 'nameX', {'First var' 'Second var'}
+%              Data Types - cell     
+%
+%    namey  :  response variable name. Character or cell. 
+%              Character containing the label of the response
+%              Example - 'namey', {'response'}
+%              Data Types - char or cell        
+%
+%  ylimy    :  y limits. Vector. vector with two elements controlling
+%              minimum and maximum on the y axis. Default value is ''
+%              (automatic scale).
+%              Example - 'ylimy',[-2 6]
+%              Data Types - double   
+%
+%  xlimx   :  x limits. Vector. vector with two elements controlling minimum and maximum
+%              on the x axis. Default value is '' (automatic scale).
+%              Example - 'xlimx',[-2 3]
+%              Data Types - double   
+%
+% datatooltip : personalized tooltip. Empty value or structure.
+%               The default is datatooltip=''.
+%               Note that this option can be used only if the input
+%               argument y is a structure which contains information
+%               about the fwd search (i.e. the two fields RES and Un
+%               and eventually label).
+%               If datatooltip is not empty the user can use the mouse
+%               in order to have information about the unit selected,
+%               the step in which the unit enters the search and the
+%               associated label.
+%               If datatooltip is a structure, it is possible to
+%               control the aspect of the data cursor (see function
+%               datacursormode for more details or the examples below).
+%               datatooltip.DisplayStyle= controls the display style;
+%               datatooltip.SnapToDataVertex= controls the display style;
+%               The default options of the structure are
+%               DisplayStyle='Window' and SnapToDataVertex='on'.
+%               Example - 'datatooltip',''
+%               Data Types - char 
+%
+% databrush :   interactive brushing. Empty value, scalar or cell.
+%               Note that this option can be used only if the input
+%               argument y is a structure which contains information
+%               about the fwd search (i.e. the two fields RES and Un
+%               and eventually label).
+%               DATABRUSH IS AN EMPTY VALUE.
+%               If databrush is an empty value (default), no brushing
+%               is done.
+%               The activation of this option (databrush is a scalar or
+%               a cell) enables the user  to select a set of
+%               observations in the current plot and to see them
+%               highlighted in the resfwdplot, i.e. the plot of the
+%               trajectories of all observations, grouped according
+%               to the selection(s) done by brushing. If the resfwdplot
+%               does not exist it is automatically created.
+%               In addition, brushed units can be highlighted in the
+%               other following plots (only if they are already open):
+%               - minimum deletion residual plot;
+%               - monitoring leverage plot;
+%               - maximum studentized residual;
+%               - s^2 and R^2;
+%               - Cook distance and modified Cook distance;
+%               - deletion t statistics.
+%               Remark. The window style of the other figures is set
+%               equal to that which contains the monitoring residual
+%               plot. In other words, if the scatterplot matrix plot
+%               is docked all the other figures will be docked too.
+%               DATABRUSH IS A SCALAR.
+%               If databrush is a scalar the default selection tool is
+%               a rectangular brush and it is possible to brush only
+%               once (that is persist='').
+%               DATABRUSH IS A CELL.
+%               If databrush is a cell, it is possible to use all
+%               optional arguments of function selectdataFS.m and the
+%               following optional argument:
+%               - persist. Persist is an empty value or a scalar
+%                 containing the strings 'on' or 'off'.
+%                 The default value of persist is '', that is brushing
+%                 is allowed only once.
+%                 If persist is 'on' or 'off' brushing can be done as
+%                 many time as the user requires.
+%                 If persist='on' then the unit(s) currently brushed
+%                 are added to those previously brushed. It is
+%                 possible, every time a new brushing is done, to use a
+%                 different color for the brushed units.
+%                 If persist='off' every time a new brush is performed
+%                 units previously brushed are removed.
+%               - bivarfit. This option is to add one or more least
+%                 square lines to the plots of y|X, depending on the
+%                 selected groups.
+%                 bivarfit = '';
+%                   is the default: no line is fitted.
+%                 bivarfit = '1';
+%                   fits a single ols line to all points of each
+%                   bivariate plot in the scatter matrix y|X.
+%                 bivarfit = '2';
+%                   fits two ols lines: one to all points and another
+%                   to the last selected group. This is useful when
+%                   there are only two groups, of which one refers to a
+%                   set of potential outliers.
+%                 bivarfit = '0';
+%                   fits one ols line for each selected group. This is
+%                   useful for the purpose of fitting mixtures of
+%                   regression lines.
+%                 bivarfit = 'i1' or 'i2' or 'i3' etc.
+%                   fits a ols line to a specific group, the one with
+%                   index 'i' equal to 1, 2, 3 etc.
+%               - multivarfit. If this option is '1', we add to each scatter
+%                 plot of y|X a line based on the fitted hyperplane
+%                 coefficients. The line added to the scatter plot y|Xi
+%                 is mean(y)+Ci*Xi, being Ci the coefficient of Xi.
+%                 The default value of multivarfit is '', i.e. no line is
+%                 added.
+%               - labeladd. If this option is '1', we label the units
+%                 of the last selected group with the unit row index in
+%                 matrices X and y. The default value is labeladd='',
+%                 i.e. no label is added.
+%               Example - 'databrush',1
+%               Data Types - single | double | struct
+%
+%   subsize :   x axis control in resfwdplot. Numeric vector. Numeric vector
+%               containing the subset size with length
+%               equal to the number of columns of matrix residuals.
+%               If it is not specified it will be set equal to
+%               size(residuals,1)-size(residuals,2)+1:size(residuals,1).
+%               Note that this option can be used just if previous
+%               option databrush is not empty.
+%               Note also the option subsize produces its effect on the
+%               monitoring residuals plot.
+%               Example - 'subsize',10:100
+%               Data Types - single | double  
+%
+%   selstep :   text in selected steps in resfwdplot. Numeric vector. Numeric vector
+%               which specifies for which steps of the
+%               forward search textlabels are added in the monitoring
+%               residual plot after a brushing action in the yXplot.
+%               The default is to write the labels at the initial and
+%               final step. The default is selstep=[m0 n] where m0 and
+%               n are respectively the first and final step of the
+%               search.
+%               Note that this option can be used just if previous
+%               option databrush is not empty.
+%               Note also the option selstep produces its effect on the
+%               monitoring residuals plot.
+%               Example - 'selstep',100
+%               Data Types - single | double   
+%
+%   selunit :   unit labelling in resfwdplot. Cell array of strings, string, or numeric vector for
+%               labelling units. If out is a structure the threshold is
+%               associated with the trajectories of the residuals
+%               monitored along the search else it refers to the values
+%               of the response variable.
+%               If it is a cell array of strings, only
+%               the lines associated with the units that in at least
+%               one step of the search had a residual smaller than
+%               selunit{1} or greater than selline{2} will have a
+%               textbox.
+%               If it is a string it specifies the threshold
+%               above which labels have to be put. For example
+%               selunit='2.6' means that the text labels are written
+%               only for the units which have in at least one step of
+%               the search a value of the scaled residual greater than
+%               2.6 in absolute value.
+%               If it is a numeric vector it
+%               contains the list of the units for which it is
+%               necessary to put the text labels.
+%               The default value of
+%               selunit is string '2.5' if y is a structure
+%               else it is an empty value if y is a vector
+%               Note that this option can be used just if previous
+%               option databrush is not empty.
+%               Note also the option selunit produces its effect on the
+%               monitoring residuals plot.
+%               Example - 'selunit','3'
+%               Data Types - numeric or character
 %
 %
 %  Output:
@@ -348,7 +407,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %}
 
 %{
-    % yXplot with first argument vector y, third argument group and fourth argument plo (Ex1).
+    % yXplot with first argument vector y, third argument group and fourth argument plo (Ex2).
     % In this case plo is a structure
     n=100;
     p=3;
@@ -403,6 +462,28 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     yXplot(y,X,'group',group,'tag','myfig');
 %}
 
+
+%{
+    % yXplot with first input argument a vector, varargin is name/value pairs Ex4.
+    % In this case options xlimx, ylimy, nameX and namey are used
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    group=ones(n,1);
+    group(sel)=2;
+    % Control scale of the x axes
+    xlimx=[-1 4];
+    % Control scale of the y axis
+    ylimy=[99 101];
+    % Personalized labels for the x axes
+    nameX={'one' 'two'};
+    % Personalized labels for y axis
+    namey='Response';
+    yXplot(y,X,'group',group,'xlimx',xlimx,'ylimy',ylimy,'namey',namey,'nameX',nameX);
+%}
 
 %{
     % yXplot when first input argument y is a structure. Ex1.
@@ -609,7 +690,7 @@ linewidthStd = 0.5;
 
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
 
-if intcolumn==1
+if ~isempty(intcolumn) && p>1
     p1=p-numel(intcolumn);
     Xsel=X;
     Xsel(:,intcolumn)=[];
@@ -628,6 +709,10 @@ siz=[];
 doleg='on';
 plo='';
 tag='pl_yX';
+namey=[];
+nameX=[];
+xlimx='';
+ylimy='';
 
 if nargin>2
     if length(varargin{1})==n
@@ -650,9 +735,8 @@ if nargin>2
         units='';
     else
         
-        %         % In the case the user has called function yXplot with the new
-        %         % format name/value pairs
-        %         namevaluepairs=1;
+        % In the case the user has called function yXplot with the new
+        % format name/value pairs
         
         if isnotstructy==0
             % x= vector which contains the subset size (numbers on the x axis)
@@ -680,7 +764,7 @@ if nargin>2
         
         
         options= struct('group',one,'plo',[],'subsize',x,'selstep',x([1 end]),'selunit',selthdef,...
-            'tag','pl_yX','namey','','nameX','','xlim','','ylim','',...
+            'tag','pl_yX','namey','','nameX','','xlimx',xlimx,'ylimy',ylimy,...
             'datatooltip',0,'databrush','');
         
         UserOptions=varargin(1:2:length(varargin));
@@ -705,6 +789,10 @@ if nargin>2
         units=options.selunit;
         tag=options.tag;
         plo=options.plo;
+        nameX=options.nameX;
+        namey=options.namey;
+        xlimx=options.xlimx;
+        ylimy=options.ylimy;
         
         % extract the vector associated with the subset size (x)
         x=options.subsize;
@@ -730,9 +818,12 @@ if nargin>2
     
     if isnotstructy ==1
         
-        nameX = cellstr(num2str((1:p1)','X%d'));
-        namey='y';
-        
+        if isempty(nameX)
+            nameX = cellstr(num2str((1:p1)','X%d'));
+        end
+        if isempty(namey)
+            namey='y';
+        end
         
         if ~isempty(databrush)
             disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
@@ -812,10 +903,6 @@ else
     
 end
 
-
-
-
-
 % seq= column vector containing the sequence 1 to n
 seq= (1:n)';
 
@@ -838,24 +925,35 @@ if isstruct(plo)
     
     d=find(strcmp('namey',fplo));
     if d>0
+        if ~isempty(namey)
+            warning('FSDA:yXplot:Duplication','namey specified twice: both directly and using plo.namey (plo.namey is used)')
+        end
         namey=plo.namey;
     end
+    
     d=find(strcmp('nameX',fplo));
     if d>0
+        if ~isempty(nameX)
+            warning('FSDA:yXplot:Duplication','nameX specified twice: both directly and using plo.nameX (plo.nameX is used)')
+        end
+        
         nameX=plo.nameX;
     end
+    
     d=find(strcmp('ylimy',fplo));
     if d>0
+        if ~isempty(ylimy)
+            warning('FSDA:yXplot:Duplication','ylimy specified twice: both directly and using plo.ylimy (plo.ylimy is used)')
+        end
         ylimy=plo.ylimy;
-    else
-        ylimy='';
     end
     
     d=find(strcmp('xlimx',fplo));
     if d>0
+        if ~isempty(xlimx)
+            warning('FSDA:yXplot:Duplication','xlimx specified twice: both directly and using plo.xlimx (plo.xlimx is used)')
+        end
         xlimx=plo.xlimx;
-    else
-        xlimx='';
     end
     
     
@@ -920,51 +1018,17 @@ if isstruct(plo)
     end
 else % in this case plo is not a structure
     
-    %     if ischar(plo) && namevaluepairs==0
-    %         error('FSDA:spmplot:InvalidArg3',' Third argument must be a structure, or a scalar or an empty value []')
-    %     end
-    
-    if plo==1
-        nameX = cellstr(num2str((1:p1)','X%d'));
+    if isempty(namey)
         namey=char('y');
-    else
-        nameX = '';
-        namey='';
     end
+    if isempty(nameX)
+        nameX = cellstr(num2str((1:p1)','X%d'));
+    end
+    
     labeladd='';
-    ylimy='';
-    xlimx='';
+    %ylimy='';
+    %xlimx='';
 end
-
-%% The yX matrix  generalised to groups
-
-
-
-% % labeladd option
-% d=find(strcmp('labeladd',options.databrush));
-% if d>0
-%     labeladd=options.databrush(d+1);
-%     labeladd=labeladd{1};
-%     % This option must be removed from cell options.databrush because it is
-%     % not a valid option for the function selectdataFS.
-%     options.databrush(d:d+1)=[];
-% else
-%     labeladd='';
-% end
-
-% FlagColor option
-% Initialize colors: default colors are blue (unbrushed unit)
-% and red (brushed units)
-% d=find(strcmp('FlagColor',options.databrush));
-% if d>0
-%     flagcol=options.databrush{d+1};
-%     clr=['b' flagcol 'cmykgbrcmykg'];
-% else
-%     clr='brcmykgbrcmykgbrcmykg';
-%
-% end
-
-
 
 
 %% Display the yXplot
@@ -986,14 +1050,6 @@ hold('all');
 ngroups=length(unique(group));
 unigrouplist = 1:ngroups;
 
-
-% % sym can be either a cell array or a character
-% if iscell(sym)
-%     charsym=char(sym{unigroup});
-% else
-%     charsym=sym(unigroup);
-% end
-%
 % sym can be either a cell array or a character
 if iscell(sym)
     charsym=char(sym{unigrouplist});
@@ -1003,39 +1059,13 @@ end
 
 styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
-
-%
-% if isempty(options.nameX)
-%     nameX=cellstr(num2str(p1','X%d'));
-% else
-%     nameX=options.nameX;
-% end
-%
-% if isempty(options.namey)
-%     namey=char('y');
-% else
-%     namey=options.namey;
-% end
-
 % Display the initial gplotmatrix
-% [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),char(styp{unigrouplist}),siz,doleg,[],nameX,namey);
-
 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),charsym,siz,doleg,[],nameX,namey);
 
 % default legenda
 if isnotstructy ~=1
     set(H,'DisplayName','Units');
 end
-
-% if ~isempty(units)
-%     for i = 1:length(AX)
-%         set(gcf,'CurrentAxes',AX(i));
-%         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
-%         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-%         text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
-%     end
-% end
-
 
 for i = 1:length(AX)
     set(gcf,'CurrentAxes',AX(i));
