@@ -233,9 +233,11 @@ else % inverse transformation
             Ytra(negs,cj) = -expm1(-Y(negs,cj));
         end
         
-    end
-    
-    
+     end
+     
+    % insert a NaN every time there is a number which is not real
+    Ytra(imag(Ytra(:))~=0)=NaN;
+
 %             ans[index] <- (y[index] * lambda[index] + 1)^(1/lambda[index]) - 
 %                 1
 %         if (any(index <- y >= 0 & abs(lambda) <= epsilon)) 

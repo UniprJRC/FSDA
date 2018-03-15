@@ -59,16 +59,20 @@ function [out]=FSRfan(y,X,varargin)
 %                 Data Types - double
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
-%                   (default) or 'YJ'.
+%                   (default), 'YJ' or 'YJpn'.
 %                   The Box-Cox family of power transformations equals
 %                   $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
 %                   and $\log(y)$ if $\lambda = 0$.
 %                   The Yeo-Johnson (YJ) transformation is the Box-Cox
 %                   transformation of $y+1$ for nonnegative values, and of
-%                   $|y|+1$ with parameter 2-lambda for y negative.
-%                   Remark. BoxCox can be used just
+%                   $|y|+1$ with parameter $2-\lambda$ for $y$ negative.
+%                   Remember that BoxCox can be used just
 %                   if input y is positive. Yeo-Johnson family of
 %                   transformations does not have this limitation.
+%                   If family is 'YJpn' Yeo-Johnson family is applied but in
+%                   this case it is also possible to monitor (in the output
+%                   arguments out.Scorep and out.Scoren) the score test
+%                   respectively for positive and negative observations.
 %                   Example - 'family','YJ'
 %                   Data Types - char
 %       init    :   Search initialization. Scalar.
@@ -154,21 +158,43 @@ function [out]=FSRfan(y,X,varargin)
 %         out:   structure which contains the following fields
 %
 %  out.Score  = (n-init) x length(la)+1 matrix containing the values of the
-%               score test for each value of the transformation parameter
-%               1st col = fwd search index
+%               score test for each value of the transformation parameter:
+%               1st col = fwd search index;
 %               2nd col = value of the score test in each step of the
-%               fwd search for la(1)
+%               fwd search for la(1);
 %               ...........
 %               end col = value of the score test in each step of the fwd
-%               search for la(end)
+%               search for la(end).
+%  out.Scorep = (n-init) x length(la)+1 matrix containing the values of the
+%               score test for positive observations for each value of the
+%               transformation parameter. 
+%               1st col = fwd search index;
+%               2nd col = value of the (positive) score test in each step
+%               of the fwd search for la(1);
+%               ...........
+%               end col = value of the (positive) score test in each step
+%               of the fwd search for la(end).
+%               Note that this output is present only if input option
+%               family is 'YJpn'
+% out.Scoren  = (n-init) x length(la)+1 matrix containing the values of the
+%               score test for positive observations for each value of the
+%               transformation parameter: 
+%               1st col = fwd search index;
+%               2nd col = value of the (negative) score test in each step
+%               of the fwd search for la(1);
+%               ...........
+%               end col = value of the (negative) score test in each step
+%               of the fwd search for la(end).
+%               Note that this output is present only if input option
+%               family is 'YJpn'
 %  out.la     = vector containing the values of lambda for which fan plot
 %               is constructed
 %  out.bs     = matrix of size p x length(la) containing the units forming
 %               the initial subset for each value of lambda
 %  out.Un     = cell of size length(la).
-%               out.Un{i} is a n-init) x 11 matrix which contains the unit(s) included in
-%               the subset at each step in the search associated with
-%               la(i).
+%               out.Un{i} is a n-init) x 11 matrix which contains the
+%               unit(s) included in the subset at each step in the search
+%               associated with la(i).
 %               REMARK: in every step the new subset is compared with the old subset. Un
 %               contains the unit(s) present in the new subset but not in
 %               the old one Un(1,:) for example contains the unit included
@@ -181,7 +207,7 @@ function [out]=FSRfan(y,X,varargin)
 %               input option intercept was missing or equal to 1)
 %
 %
-% See also
+% See also: Score, ScoreYJ, ScoreYJpn
 %
 % References:
 %
@@ -295,7 +321,45 @@ function [out]=FSRfan(y,X,varargin)
     fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
     disp(max(max(abs(outYJ.Score-outBC.Score))))
+%}
 
+
+%{
+    %% Example of monitoring of score test for positive and negative obseravations.
+    rng(10)
+    close all
+    n=200;
+
+    X=randn(n,3);
+    beta=[ 1; 1; 1];
+    sig=0.5;
+    y=X*beta+sig*randn(n,1);
+
+    disp('Fit in the true scale')
+    outlmori=fitlm(X,y);
+    disp('R2 of the model in the true scale')
+    disp(outlmori.Rsquared.Ordinary)
+    [~,~,BigAx]=yXplot(y,X,'tag','ori');
+    title(BigAx,'Data in the original scale')
+
+
+    % Find the data to transform 
+    la=-0.25;
+    ytra=normYJ(y,[],la,'inverse',true);
+    if any(isnan(ytra))
+        disp('response with missing values')
+    end
+
+    disp('Fit in the transformed scale')
+    outlmtra=fitlm(X,ytra);
+    disp('R2 of the model in the wrong (inverse) scale')
+    disp(outlmtra.Rsquared.Ordinary)
+    [~,~,BigAx]=yXplot(ytra,X,'tag','tra','namey','Data to transform (zoom of y [0 500])','ylimy',[0 500]);
+    title(BigAx,'Data in the inverse scale')
+
+    la=[ -0.5 -0.25 0];
+    out=FSRfan(ytra,X,'la',la,'family','YJpn','plots',1,'init',round(n/2),'msg',0);
+    title('Extended fan plot')
 %}
 
 %% Input parameters checking
@@ -356,10 +420,11 @@ if strcmp(family,'BoxCox')
     BoxCox=1;
 elseif strcmp(family,'YJ')
     BoxCox=0;
-    
+elseif strcmp(family,'YJpn')
+    BoxCox=-1;
 else
     warning('FSDA:FSRfan:WrongFamily','Transformation family which has been chosen is not supported')
-    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YeoJohnson')
+    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YJ or YJpn')
 end
 
 % Specify where to send the output of the current procedure if options plot
@@ -400,6 +465,11 @@ lla=length(la);
 
 % Initialize matrix which will contain the score test
 Sco=[((init):n)'  NaN(n-init+1,lla)];
+
+if BoxCox==-1
+    Scop=Sco;
+    Scon=Sco;
+end
 
 % The second column of matrix r will contain the OLS residuals at each step
 % of the forward search
@@ -467,10 +537,17 @@ for i=1:lla
                     % Compute and store the value of the score test using Yeo
                     % and Johnson transformation
                     [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
+                    if BoxCox==-1
+                        [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
+                    end
                 end
                 
                 % Store S2 for the units belonging to subset
                 Sco(mm-init+1,i+1)=outSC.Score;
+                if BoxCox==-1
+                    Scop(mm-init+1,i+1)=outSCpn.Score(1,1);
+                    Scon(mm-init+1,i+1)=outSCpn.Score(1,2);
+                end
             end
             
             % Compute b using transformed vector zb
@@ -535,6 +612,10 @@ out.bs=binit;
 out.Un=Un;
 out.y=y;
 out.X=X;
+if BoxCox==-1
+    out.Scorep=Scop;
+    out.Scoren=Scon;
+end
 
 if plo==1
     
@@ -547,7 +628,29 @@ if plo==1
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(lla/4),1);
     
+    % Specify the color for the trajectories
+    ColorOrd=[{[0 0 1]}; {[0 0 0]}; {[1 0 0]};{[0 1 1]}; {[1 0 1]}; {[1 1 0]}; {[0 1 0]}; ];
+    ColorOrd=repmat(ColorOrd,4,1);
+    
+    set(plot1,{'Color'}, ColorOrd(1:lla,:));
+    
     set(plot1,{'LineStyle'},slin(1:lla));
+    
+    if BoxCox == -1
+        hold('on')
+        plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
+        set(plotp,{'LineStyle'},{'--'});
+        % set(plotp,{'LineStyle'},slin(1:lla));
+        set(plotp,{'Color'}, ColorOrd(1:lla,:));
+        
+        plotn=plot(Scon(:,1),Scon(:,2:end),'LineWidth',lwd);
+        set(plotn,{'LineStyle'},slin(1:lla));
+        set(plotn,{'LineStyle'},{'--'});
+        set(plotn,{'Color'}, ColorOrd(1:lla,:));
+        
+        set(plot1,{'LineStyle'},{'-'});
+        
+    end
     
     % set the x and y axis
     xlimx=options.xlimx;
@@ -602,7 +705,9 @@ if plo==1
     SizeAxesNum=options.SizeAxesNum;
     set(gca,'FontSize',SizeAxesNum)
     box on
-    
+    hold('on')
+    %   plot(Sco(:,1),Scop(:,2:end),'LineWidth',lwd,'LineStyle','--','Color','r');
+    %  plot(Sco(:,1),Scon(:,2:end),'LineWidth',lwd,'LineStyle','--','Color','r');
 end
 
 end
