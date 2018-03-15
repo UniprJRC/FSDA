@@ -1270,7 +1270,7 @@ if ndecl>0
     % Note that the S2 which comes out from procedure FSRBmdr (differently
     % from FSRmdr and FSRHmdr is rescaled, that is it has been inflated by
     % the consistency term, therefore in order to find the unrescaled one
-    % we have to recal procedure regressB). Given that the estimate of beta
+    % we have to recall procedure regressB). Given that the estimate of beta
     % is also affected we also need to recompute it
     if strcmp(model,'B')
         goodobs=setdiff(seq,ListOut);
