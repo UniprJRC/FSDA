@@ -5,8 +5,11 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %  Required input arguments:
 %
-%    y: Response variable. Vector or struct. A vector with n elements that contains
-%       the response variable or a structure 'out' coming from function FSReda.
+%    y: Response variable or structure containing y, X and possibly other
+%       fields to link with monitoring plots.
+%       Vector or struct. 
+%       A vector with n elements that contains the response variable or a
+%       structure containing monitoring information (see the examples).
 %       If y is a vector it can be either a row or a column vector.
 %
 %     INPUT ARGUMENT y IS A VECTOR:
@@ -23,7 +26,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %     If varargin{1} is a n-elements vector, then it is interpreted
 %     as a grouping variable vector 'group'. In this case, it can only be
 %     followed by 'plo' (see the name pairs section for a full
-%         description of plo). Otherwise, the program expects a
+%     description of plo). Otherwise, the program expects a
 %     sequence of name/value pairs.
 %
 %     INPUT ARGUMENT y IS A STRUCTURE:
@@ -36,7 +39,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               If the input structure y contains just the data matrix, a
 %               standard static yXplot matrix  will be created.
 %
-%               On the other hand, if Y also contains information on
+%               On the other hand, if y also contains information on
 %               statistics monitored along a search, then the scatter plots
 %               will be linked with other (forward) plots with interaction
 %               possibilities, enabled via brushing and datatooltip. More

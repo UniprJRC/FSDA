@@ -189,8 +189,9 @@
     % In this case datatooltip will display the rowname and not the default
     % string row...
     out.label=cellstr(Model);
-    yXplot(out,'datatooltip',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector or struct.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains
-       the response variable or a structure 'out' coming from function FSReda.</p> <p>
+    yXplot(out,'datatooltip',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable or structure containing y, X and possibly other
+       fields to link with monitoring plots. </span>  </a><span class="example_desc">Vector or struct.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable or a
+       structure containing monitoring information (see the examples).</p> <p>
        If y is a vector it can be either a row or a column vector.</p> <p>
 
      INPUT ARGUMENT y IS A VECTOR:</p> <p>
@@ -207,7 +208,7 @@
      If varargin{1} is a n-elements vector, then it is interpreted
      as a grouping variable vector 'group'. In this case, it can only be
      followed by 'plo' (see the name pairs section for a full
-         description of plo). Otherwise, the program expects a
+     description of plo). Otherwise, the program expects a
      sequence of name/value pairs.</p> <p>
 
      INPUT ARGUMENT y IS A STRUCTURE:</p> <p>
@@ -220,7 +221,7 @@
                If the input structure y contains just the data matrix, a
                standard static yXplot matrix  will be created.</p> <p>
 
-               On the other hand, if Y also contains information on
+               On the other hand, if y also contains information on
                statistics monitored along a search, then the scatter plots
                will be linked with other (forward) plots with interaction
                possibilities, enabled via brushing and datatooltip. More
