@@ -9,6 +9,25 @@ pth_fsda=`cygpath -a -w ${WORKSPACE}/FSDA`
 
 # cat flist 
 
+# MATLAB R2009b
+rm -f test_runner2009b.m
+rm -f execution_log2009b.txt
+
+echo -e "\n" >>test_runner2009b.m
+
+cat flist | while read func_file
+do 
+
+    x=`cygpath -w $func_file`
+
+    y="try; run('$x'); diary('execution_log2009b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2009b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+	
+    echo $y >>test_runner2009b.m
+	  echo -e "\n" >>test_runner2009b.m
+done
+echo -e "exit(0);\n" >>test_runner2009b.m
+# END MATLAB R2009b
+
 # MATLAB R2016b
 rm -f test_runner2016b.m
 rm -f execution_log2016b.txt
@@ -19,9 +38,6 @@ do
 
     x=`cygpath -w $func_file`
 
-    #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-    # NO_EXITS    
-    # clearvars 
     y="try; run('$x'); diary('execution_log2016b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2016b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2016b.m
@@ -41,10 +57,6 @@ do
 
     x=`cygpath -w $func_file`
 
-    #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-    # NO_EXITS    
-    # clearvars 
-    # y="try; run('$x'); diary('execution_log2014b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end; clear all;" 	
     y="try; run('$x'); diary('execution_log2014b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2014b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2014b.m
@@ -64,10 +76,6 @@ do
 
     x=`cygpath -w $func_file`
 
-    #    y="clearvars; try; run('$x'); diary('execution_log.txt'); disp('Execution of $x completed successfully'); diary('off'); exit(0); catch error; diary('execution_log.txt'); disp(['Execution of $x FAILED: ' error.message]); diary('off'); exit(0); end;" 
-    # NO_EXITS    
-    # clearvars 
-    # y="try; run('$x'); diary('execution_log2012a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end; clear all;" 	
     y="try; run('$x'); diary('execution_log2012a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2012a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2012a.m
@@ -76,25 +84,27 @@ done
 echo -e "exit(0);\n" >>test_runner2012a.m
 # END MATLAB R2012a
 
-# MATLAB R2017b
-rm -f test_runner2017b.m
-rm -f execution_log2017b.txt
+# MATLAB R2018a
+rm -f test_runner2018a.m
+rm -f execution_log2018a.txt
 
-echo -e "\n" >>test_runner2017b.m
+echo -e "\n" >>test_runner2018a.m
 
 cat flist | while read func_file
 do 
 
     x=`cygpath -w $func_file`
-    y="try; run('$x'); diary('execution_log2017b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2017b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2018a.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2018a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
-    echo $y >>test_runner2017b.m
-	  echo -e "\n" >>test_runner2017b.m
+    echo $y >>test_runner2018a.m
+	  echo -e "\n" >>test_runner2018a.m
 done
-echo -e "exit(0);\n" >>test_runner2017b.m
-# END MATLAB R2017b
+echo -e "exit(0);\n" >>test_runner2018a.m
+# END MATLAB R2018a
 
-
+if [ $TEST_2009b == "YES" ]; then
+'/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
+fi 
 
 if [ $TEST_2016b == "YES" ]; then
 '/cygdrive/C/Program Files/MATLAB/R2016b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2016b"
@@ -108,6 +118,6 @@ if [ $TEST_2012a == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
 fi 
 
-if [ $TEST_2017b == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2017b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2017b"
+if [ $TEST_2018a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2018a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2018a"
 fi 
