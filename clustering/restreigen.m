@@ -472,9 +472,9 @@ else
             
             
             if userepmat ==1
-                dmat=repmat(d,1,1,dimsor);
+                dmat=repmat(d,[1,1,dimsor]);
                 logede=log(ee)+dmat./ee;
-                nismat=repmat(nis/n,1,1,dimsor);
+                nismat=repmat(nis/n,[1,1,dimsor]);
                 oo=nismat.*logede;
             else
                 % Now find vector version of o
