@@ -336,9 +336,14 @@ function [out]=FSRfan(y,X,varargin)
     y=X*beta+sig*randn(n,1);
 
     disp('Fit in the true scale')
-    outlmori=fitlm(X,y);
     disp('R2 of the model in the true scale')
-    disp(outlmori.Rsquared.Ordinary)
+    if verLessThanFS(8.1)
+        out=regstats(y,X,'linear',{'rsquare'});
+        disp(out.rsquare)
+    else
+        outlmori=fitlm(X,y);
+        disp(outlmori.Rsquared.Ordinary)
+    end
     [~,~,BigAx]=yXplot(y,X,'tag','ori');
     title(BigAx,'Data in the original scale')
 
@@ -351,9 +356,14 @@ function [out]=FSRfan(y,X,varargin)
     end
 
     disp('Fit in the transformed scale')
-    outlmtra=fitlm(X,ytra);
     disp('R2 of the model in the wrong (inverse) scale')
-    disp(outlmtra.Rsquared.Ordinary)
+    if verLessThanFS(8.1)
+        out=regstats(ytra,X,'linear',{'rsquare'});
+        disp(out.rsquare)
+    else
+        outlmtra=fitlm(X,ytra);
+        disp(outlmtra.Rsquared.Ordinary)
+    end
     [~,~,BigAx]=yXplot(ytra,X,'tag','tra','namey','Data to transform (zoom of y [0 500])','ylimy',[0 500]);
     title(BigAx,'Data in the inverse scale')
 
