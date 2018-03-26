@@ -599,7 +599,7 @@ function [out, varargout] = LTSts(y,varargin)
 %}
 
 %{
-    % Model with an explantory variable using logged series.
+    % Model with an explanatory variable using logged series.
     y1=log(y);
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
