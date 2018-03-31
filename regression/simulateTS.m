@@ -166,6 +166,10 @@ function [out] = simulateTS(T,varargin)
 %               Example - 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
 %               Data Types - Character
 %
+% samescale :   if true, all plots have the same y-scale. Logical.
+%               Example - 'samescale',false
+%               Data Types - logical
+%
 %  Output:
 %
 %         out:   structure which contains the following fields:
@@ -226,6 +230,13 @@ function [out] = simulateTS(T,varargin)
     % to 20
     out=simulateTS(100,'plots',1);
 %}
+
+%{
+    % Same as above, but without homogenizing the y-scale.
+    close;
+    out=simulateTS(100,'plots',1,'samescale',false);
+%}
+
 
 %{
     %% Simulated time series with a linear time varying seasonal component.
@@ -369,7 +380,7 @@ StartDate         = '';
 
 options=struct('model',modeldef,'nocheck',nocheck,'plots',plots,...
     'FileNameOutput',FileNameOutput,...
-    'StartDate',StartDate);
+    'StartDate',StartDate,'samescale',true);
 
 
 %% User options
@@ -395,10 +406,11 @@ if ~isempty(UserOptions)
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    nocheck=options.nocheck;
-    plots=options.plots;
-    FileNameOutput=options.FileNameOutput;
-    StartDate=options.StartDate;
+    nocheck         = options.nocheck;
+    plots           = options.plots;
+    FileNameOutput  = options.FileNameOutput;
+    StartDate       = options.StartDate;
+    samescale       = options.samescale;
 end
 
 % Default values for the optional parameters are set inside structure
@@ -671,12 +683,14 @@ end
 
 %% Create plots
 if plots==1
-    % yscale to keep uniform across the plots
-    [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatlshift,yhatX,y-signal);
+    if samescale
+        % yscale to keep uniform across the plots
+        [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatlshift,yhatX,y-signal);
+    end
     % Time series + fitted values
     subplot(2,3,1);
     plot(datesnumeric,y);
-    ylim([minV,maxV]);
+    if samescale, ylim([minV,maxV]); end
     title({'Final simulated data',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -684,7 +698,7 @@ if plots==1
     end
     subplot(2,3,2);
     plot(datesnumeric,signal);
-    ylim([minV,maxV]);
+    if samescale, ylim([minV,maxV]); end
     title({'Signal=TR+SE+LS+X',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -693,7 +707,7 @@ if plots==1
     
     subplot(2,3,3);
     plot(datesnumeric,yhattrend);
-    ylim([minV,maxV]);
+    if samescale, ylim([minV,maxV]); end
     title({'Trend (TR)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -702,7 +716,7 @@ if plots==1
     
     subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
-    ylim([minV,maxV]);
+    if samescale, ylim([minV,maxV]); end
     title({'Seasonal (SE)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -711,7 +725,7 @@ if plots==1
     
     subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
-    ylim([minV,maxV]);
+    if samescale, ylim([minV,maxV]); end
     title({'Level shift (LS)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -721,11 +735,11 @@ if plots==1
     subplot(2,3,6);
     if yhatX~=0
         plot(datesnumeric,yhatX);
-        ylim([minV,maxV]);
+        if samescale, ylim([minV,maxV]); end
         title({'Explanatory variables (X)',''},'Interpreter','LaTex');
     else
         plot(datesnumeric,y-signal);
-        ylim([minV,maxV]);
+        if samescale, ylim([minV,maxV]); end
         title({'Irregular (I)',''},'Interpreter','LaTex');
     end
     if ~isempty(StartDate)
