@@ -166,7 +166,9 @@ function [out] = simulateTS(T,varargin)
 %               Example - 'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']
 %               Data Types - Character
 %
-% samescale :   if true, all plots have the same y-scale. Logical.
+% samescale :   same ylim  in the output plot.  Logical.
+%               If true (default), all underlying components of the time
+%               series are shown in the plot with the same scale.
 %               Example - 'samescale',false
 %               Data Types - logical
 %
@@ -348,6 +350,12 @@ function [out] = simulateTS(T,varargin)
     StartDate=[2016 2];
     % The x axis of the plots contains the dates using format mmm-yyyy
     out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);
+%}
+
+%{
+    % Example of the use of option samescale.
+    % Use a different scale for each panel in the output plot.
+    out=simulateTS(T,'model',model,'plots',1,'samescale',false);
 %}
 
 
@@ -685,7 +693,7 @@ end
 if plots==1
     if samescale
         % yscale to keep uniform across the plots
-        [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatlshift,yhatX,y-signal);
+        [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatX,y-signal);
     end
     % Time series + fitted values
     subplot(2,3,1);
@@ -747,13 +755,6 @@ if plots==1
         set(gca,'XTickLabelRotation',90);
     end
 end
-
-% %% The part below contains subfunctions which are used only inside this file
-%
-%     function [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(beta0)
-%
-%
-%     end
     function [minV,maxV]=minmax(varargin)
         % returns the minimum and the maximum of all vectors in varargin,
         % omitting vectors with only one value (scalars).
