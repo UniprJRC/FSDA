@@ -671,57 +671,66 @@ end
 
 %% Create plots
 if plots==1
+    % yscale to keep uniform across the plots
+    [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatlshift,yhatX,y-signal);
     % Time series + fitted values
     subplot(2,3,1);
     plot(datesnumeric,y);
+    ylim([minV,maxV]);
     title({'Final simulated data',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90)
+        set(gca,'XTickLabelRotation',90);
     end
-    subplot(2,3,2)
-    plot(datesnumeric,signal)
-    title({'Signal=TR+SE+LS+X',''},'Interpreter','LaTex')
+    subplot(2,3,2);
+    plot(datesnumeric,signal);
+    ylim([minV,maxV]);
+    title({'Signal=TR+SE+LS+X',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90)
+        set(gca,'XTickLabelRotation',90);
     end
     
-    subplot(2,3,3)
-    plot(datesnumeric,yhattrend)
-    title({'Trend (TR)',''},'Interpreter','LaTex')
+    subplot(2,3,3);
+    plot(datesnumeric,yhattrend);
+    ylim([minV,maxV]);
+    title({'Trend (TR)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90)
+        set(gca,'XTickLabelRotation',90);
     end
     
-    subplot(2,3,4)
-    plot(datesnumeric,yhatseaso)
-    title({'Seasonal (SE)',''},'Interpreter','LaTex')
+    subplot(2,3,4);
+    plot(datesnumeric,yhatseaso);
+    ylim([minV,maxV]);
+    title({'Seasonal (SE)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90)
+        set(gca,'XTickLabelRotation',90);
     end
     
-    subplot(2,3,5)
-    plot(datesnumeric,yhatlshift)
-    title({'Level shift (LS)',''},'Interpreter','LaTex')
+    subplot(2,3,5);
+    plot(datesnumeric,yhatlshift);
+    ylim([minV,maxV]);
+    title({'Level shift (LS)',''},'Interpreter','LaTex');
     if ~isempty(StartDate)
-        datetick('x','mmm-yy')
-        set(gca,'XTickLabelRotation',90)
+        datetick('x','mmm-yy');
+        set(gca,'XTickLabelRotation',90);
     end
     
-    subplot(2,3,6)
+    subplot(2,3,6);
     if yhatX~=0
-        plot(datesnumeric,yhatX)
-        title({'Explanatory variables (X)',''},'Interpreter','LaTex')
+        plot(datesnumeric,yhatX);
+        ylim([minV,maxV]);
+        title({'Explanatory variables (X)',''},'Interpreter','LaTex');
     else
-        plot(datesnumeric,y-signal)
-        title({'Irregular (I)',''},'Interpreter','LaTex')
+        plot(datesnumeric,y-signal);
+        ylim([minV,maxV]);
+        title({'Irregular (I)',''},'Interpreter','LaTex');
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90)
+        set(gca,'XTickLabelRotation',90);
     end
 end
 
@@ -731,5 +740,19 @@ end
 %
 %
 %     end
+    function [minV,maxV]=minmax(varargin)
+        % returns the minimum and the maximum of all vectors in varargin,
+        % omitting vectors with only one value (scalars).
+        N = nargin;
+        minmaxout = nan(N,2);
+        for i1 = 1:N
+            p1 = varargin{i1};
+            if length(p1)>1
+                minmaxout(i1,:) = [min(p1) max(p1)];
+            end
+        end
+        minV = nanmin(minmaxout(:,1));
+        maxV = nanmax(minmaxout(:,2));
+    end
 end
 %FScategory:REG-Regression
