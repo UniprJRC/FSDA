@@ -699,7 +699,7 @@ if plots==1
     subplot(2,3,1);
     plot(datesnumeric,y);
     if samescale, ylim([minV,maxV]); end
-    title({'Final simulated data',''},'Interpreter','LaTex');
+    title({'Final simulated data',''},'Interpreter','LaTex','FontSize',14);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         set(gca,'XTickLabelRotation',90);
@@ -707,7 +707,7 @@ if plots==1
     subplot(2,3,2);
     plot(datesnumeric,signal);
     if samescale, ylim([minV,maxV]); end
-    title({'Signal=TR+SE+LS+X',''},'Interpreter','LaTex');
+    title({'Signal=TR+SE+LS+X',''},'Interpreter','LaTex','FontSize',14);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         set(gca,'XTickLabelRotation',90);
@@ -716,7 +716,7 @@ if plots==1
     subplot(2,3,3);
     plot(datesnumeric,yhattrend);
     if samescale, ylim([minV,maxV]); end
-    title({'Trend (TR)',''},'Interpreter','LaTex');
+    title({'Trend (TR)',''},'Interpreter','LaTex','FontSize',14);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         set(gca,'XTickLabelRotation',90);
@@ -725,7 +725,7 @@ if plots==1
     subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
     if samescale, ylim([minV,maxV]); end
-    title({'Seasonal (SE)',''},'Interpreter','LaTex');
+    title({'Seasonal (SE)',''},'Interpreter','LaTex','FontSize',14);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         set(gca,'XTickLabelRotation',90);
@@ -734,7 +734,7 @@ if plots==1
     subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
     if samescale, ylim([minV,maxV]); end
-    title({'Level shift (LS)',''},'Interpreter','LaTex');
+    title({'Level shift (LS)',''},'Interpreter','LaTex','FontSize',14);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         set(gca,'XTickLabelRotation',90);
@@ -744,11 +744,11 @@ if plots==1
     if yhatX~=0
         plot(datesnumeric,yhatX);
         if samescale, ylim([minV,maxV]); end
-        title({'Explanatory variables (X)',''},'Interpreter','LaTex');
+        title({'Explanatory variables (X)',''},'Interpreter','LaTex','FontSize',14);
     else
         plot(datesnumeric,y-signal);
         if samescale, ylim([minV,maxV]); end
-        title({'Irregular (I)',''},'Interpreter','LaTex');
+        title({'Irregular (I)',''},'Interpreter','LaTex','FontSize',14);
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
