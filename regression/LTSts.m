@@ -380,6 +380,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       just if input option model.lshift>0.
 %            out.yhat = vector of fitted values after final (NLS=non linear
 %                       least squares) step.
+%                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
 %       out.residuals = Vector T-by-1 containing the scaled residuals from
 %                       after final NLS step.
 %         out.weights = Vector containing weights after adaptive
@@ -388,6 +389,14 @@ function [out, varargout] = LTSts(y,varargin)
 %                       observations which are used to compute the final
 %                       NLS estimate.
 %           out.scale = Final scale estimate of the residuals using final weights.
+%                     \[
+%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)  
+%                     \]
+%                     where $S_m$ is a set of cardinality $m$ which
+%                     contains the units not declared as outliers, $p$
+%                     is the total number of estimated parameters and cor
+%                     is a correction factor to make the estimator
+%                     consistent.
 %         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used to draw the
 %                       horizontal lines (confidence bands) in the plots
@@ -397,12 +406,26 @@ function [out, varargout] = LTSts(y,varargin)
 %         out.singsub = Number of subsets wihtout full rank. Notice that if
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen
-%           out.class = 'LTSts'.
-%            out.y    = response vector y. The field is present only if
-%                       option yxsave is set to 1.
+%            out.invXX = $cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.
+%                       If the model is linear out.invXX  is equal to
+%                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
+%                       where $A$ is the matrix of partial derivatives. More
+%                       precisely:
+%                       \[
+%                       a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}
+%                       \]
+%                       where
+%                       \begin{eqnarray}
+%                       y_i & = & \eta(x_i,\beta)+ \epsilon_i  \\
+%                           & = & \eta_i +\epsilon_i \\
+%                           & = & \eta(x_i,\hat \beta)+ e_i  \\
+%                           & = & \hat \eta_i + e_i
+%                       \end{eqnarray}
+%            out.y    = response vector y.
 %            out.X    = data matrix X containing trend+seasonal+expl+lshift.
 %                       The field is present only if option
 %                       yxsave is set to 1.
+%           out.class = 'LTSts'.
 %
 %  Optional Output:
 %
@@ -809,7 +832,7 @@ if ~isempty(UserOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
-
+    
     
     % Extract the names of the optional arguments
     chklist=varargin(1:2:length(varargin));
@@ -901,6 +924,7 @@ else
     nseaso=0;
     varampl=0;
     yhatseaso=0;
+    Xseaso=[];
 end
 
 X=model.X;
@@ -1552,7 +1576,7 @@ if abs(s0) > 1e-7
     elseif SmallSampleCor==4
         weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
     else
-        error('wrong small sample cor factor')
+        error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
     end
     % weights is a boolean vector.
     bsb=seq(weights);
@@ -1572,7 +1596,8 @@ if abs(s0) > 1e-7
         % find fitted values using all observations
         yhat =  Xsel * betaout;
         s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
-        covB=s2*inv(Xsel'*Xsel); %#ok<MINV>
+        invXX=inv(Xsel'*Xsel);
+        covB=s2*invXX; %#ok<MINV>
         
         
     elseif   varampl==0 && lshift>0
@@ -1586,7 +1611,8 @@ if abs(s0) > 1e-7
         % find fitted values using all observations
         yhat =  Xseldum * betaout;
         s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
-        covB=s2*inv(Xseldum'*Xseldum); %#ok<MINV>
+        invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
+        covB=s2*invXX; %#ok<MINV>
         
     else % model is non linear because there is time varying amplitude in seasonal component
         Xtrendf=Xtrend(bsb,:);
@@ -1604,10 +1630,21 @@ if abs(s0) > 1e-7
         
         if lshift>0
             Xlshiftf=Xlshift(bsb);
-            [betaout,~,~,covB,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+            [betaout,~,~,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
         else
-            [betaout,~,~,covB,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            [betaout,~,~,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            %
+            % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            % Note that MSE*inv(J'*J) = covB
         end
+        
+        % yfitFS = likyhat(betaout,Xtrendf);
+        % nans=false(length(yfitFS),1);
+        % sqweights=ones(length(yfitFS),1);
+        % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
+        % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
+        
+        invXX=covB/MSE;
         
         % Now compute again vector yhat using final vector betaout
         bsb=seq;
@@ -1632,7 +1669,7 @@ if abs(s0) > 1e-7
     % Computation of reweighted residuals.
     residuals=yin-yhat;
     
-    
+    % s0 =sqrt(MSE)
     s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
     % Compute new standardized residuals.
     
@@ -1734,6 +1771,9 @@ if lsh>0
     out.Likloc=Likloc;
 end
 
+    % Store response
+    out.y=yin;
+
 if options.yxsave
     if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
@@ -1741,10 +1781,9 @@ if options.yxsave
     else
         out.X=X;
     end
-    % Store response
-    out.y=yin;
 end
 
+out.invXX=invXX;
 
 dispresults=options.dispresults;
 
@@ -1803,11 +1842,12 @@ if plots>=1
     subplot(2,1,1)
     plot([yin yhat])
     xlabel('Time')
+    ylabel('Real and fitted values')
     
     % Index plot of robust residuals
     h2=subplot(2,1,2);
     laby='Robust lts residuals';
-    resindexplot(out.residuals,'conflev',conflev,'laby',laby,'numlab',out.outliers,'h',h2);
+    resindexplot(out.residuals,'conflev',conflev,'laby',laby,'numlab',out.outliers,'h',h2,'title','');
 end
 
 if plots==2 && lsh>0
@@ -2039,6 +2079,7 @@ end
     function objyhat=likyhat(beta0,Xtrendf)
         
         yhattrend=Xtrendf*beta0(1:trend+1);
+        
         npar=trend+1;
         
         if seasonal >0
@@ -2084,6 +2125,20 @@ end
         objyhat=yhattrend+yhatseaso+yhatX+yhatlshift;
         % obj = sum of squares of residuals/2 = negative log likelihood
     end
+
+
+%     function J = getjacobianFS(beta,fdiffstep,modelFS,yfit,nans,sweights)
+%         function yplus = call_model_nested(betaNew)
+%             yplus = modelFS(betaNew, Xtrendf);
+%             yplus(nans) = [];
+%         end
+%         J = statjacobianFS(@call_model_nested, beta, fdiffstep, yfit(~nans));
+%         if ~isempty(sweights)
+%             sweights = sweights(~nans);
+%             J = bsxfun(@times,sweights(:),J);
+%         end
+%     end % function getjacobian
+
 
 % -------------------------------------------------------------------
 % subfunction IRWLSreg
