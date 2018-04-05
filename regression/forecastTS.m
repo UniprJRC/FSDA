@@ -44,7 +44,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %          outEST.posLS = scalar associated with best tentative level shift
 %                       position. If this field does not exist, forecasts
 %                       are done assuming no level shift.
-%         outEST.invXX = $cov(\beta)/\sigma^2$. p-by-p, square matrix.
+%         outEST.invXX = $cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.
 %                       If the model is linear out.invXX  is equal to
 %                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
 %                       where $A$ is the matrix of partial derivatives. More
@@ -62,7 +62,15 @@ function [outFORE] = forecastTS(outEST,varargin)
 %         outEST.yhat = vector of fitted values after final (NLS=non linear
 %                       least squares) step:
 %                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
-%        outEST.scale = Final scale estimate of the residuals.
+%        outEST.scale = Final scale estimate of the residuals 
+%                     \[
+%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)  
+%                     \]
+%                     where $S_m$ is a set of cardinality $m$ which
+%                     contains the units not declared as outliers and $p$
+%                     is the total number of estimated parameters and cor
+%                     is a correction factor to make the estimator
+%                     consistent.
 %                     REMARK: structure outEST can be conveniently created
 %                     by function LTSts.
 %                 Data Types - struct
@@ -560,6 +568,7 @@ outFORE.trend=yhattrend;
 outFORE.seaso=yhatseaso;
 outFORE.X=yhatX;
 outFORE.lshift=yhatlshift;
+outFORE.confband=confband;
 
 yhatwithbands=[yhat confband];
 
