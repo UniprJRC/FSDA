@@ -649,7 +649,7 @@ if plots==1
     % plot the signal (TR+LS+X)
     % plot(datesnumeric,outFORE.trend+outFORE.lshift+outFORE.X,'color','m')
     
-    title('Fitted and forecasts from LTS','interpreter','LaTex','FontSize',14)
+    title('Fit and forecasts from LTS','interpreter','LaTex','FontSize',14)
     plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'r--')
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
