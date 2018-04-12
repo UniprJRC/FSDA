@@ -26,9 +26,9 @@ function wei = HUwei(u,c)
 %
 % Function HUwei transforms vector u as follows 
 % \[
-% HUpsi(u)= \left\{
+% HUwei(u)= \left\{
 %    \begin{array}{cc}
-%  1                            &  \mbox{if  }  |u/c| \leq 1 \\
+%  1                                      &   |u/c| \leq 1 \\
 %  c \times \frac{\mbox{sign}(u)}{u}      &  |u/c|>1   \\
 % \end{array}
 %    \right.

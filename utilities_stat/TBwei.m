@@ -27,8 +27,8 @@ function w = TBwei(u,c)
 % \[
 % TBwei(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) \psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
-%  0                     &  |u/c|>1   \\
+%  (c^2/6) \psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 &  |u/c| \leq 1 \\
+%  0                                                    &  |u/c|>1   \\
 % \end{array}
 %    \right.
 %  \]
@@ -38,7 +38,7 @@ function w = TBwei(u,c)
 %
 % Remark: Tukey's biweight  psi-function is almost linear around u = 0 in accordance with
 % Winsor's principle that all distributions are normal in the middle.
-% This means that  $\psi (u)/u$ is approximately constant over the linear region of \psi,
+% This means that  $\psi (u)/u$ is approximately constant over the linear region of $\psi$,
 % so the points in that region tend to get equal weight.
 %
 % See also HYPwei, HAwei, OPTwei
