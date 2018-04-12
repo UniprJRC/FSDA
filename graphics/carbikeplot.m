@@ -152,7 +152,7 @@ function h  = carbikeplot(RelSol,varargin)
 %}
 
 %{
-    %% car-bike plot fot the gyeser data.
+    %% car-bike plot for the geyser data.
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
 
