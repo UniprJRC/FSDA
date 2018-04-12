@@ -1017,7 +1017,9 @@ if ndims(H) == 3
     if isnumeric(group)
         set(H(:,:,end), 'UserData' , seq(group==max(group)));
     else
-        set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
+        if isnumeric(groupv)
+            set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
+        end
     end
     
     if strcmp(doleg,'on')
