@@ -199,6 +199,15 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                outFORE.lshift = vector of length (length(y)+nfore) containing
 %                   level shift (LS) in sample and out of sample.
 %                   If this component is not present, it is equal to 0. 
+%                outFORE.X = vector of length (length(y)+nfore)
+%                   containing the effecf of the explanatory variables. 
+%                   If this component is not present, it is equal to 0. 
+%                outFORE.confband  = matrix of size (length(y)+nfore)-by-2
+%                   containing lower and upper confidence bands of the
+%                   forecasts. The confidence level of the bands is
+%                   splecified is input parameter conflev. Note that the
+%                   first length(y) rows of this matrix are equal to NaN.
+%
 %
 %
 % See also LTSts, wedgeplot, simulateTS
@@ -206,7 +215,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 % References:
 %
 % Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2018), Robust
-% Monitoring of Many Time Series with Application to Fraud Detection.
+% Monitoring of Time Series with Application to Fraud Detection,
 % Submitted.
 %
 %
@@ -565,7 +574,7 @@ end
 outFORE=struct;
 outFORE.signal=yhat;
 outFORE.trend=yhattrend;
-outFORE.seaso=yhatseaso;
+outFORE.seasonal=yhatseaso;
 outFORE.X=yhatX;
 outFORE.lshift=yhatlshift;
 outFORE.confband=confband;
