@@ -152,7 +152,8 @@ minX = min(X);
 % This is to avoid the string comparison in the 'switch' statement.
 if nargin<2 %|| d > 1
     
-    % Scott's rule (optimal for normal distribution, with robust sigma estimate)
+    %  Scott's rule (optimal for normal distribution, with robust sigma estimate)
+    %  Scott p. 164
     sig = mad(X,1) / 0.6745;
     if sig <= 0, sig = maxX - minX; end
     if sig > 0
@@ -161,12 +162,14 @@ if nargin<2 %|| d > 1
         bw = 1;
     end
     
+    if d==1 , bw=1.06 * bw ; end % Univ. Normal rule - Scott p. 144 + p. 154   
+    
 else
     
     switch bwopt
         case 'scott'
-            %Scott's rule is the default: just call again the function with no
-            %bwopt option.
+            %Scott's rule is the default (Scott p. 164): just call again
+            %the function with no bwopt option.
             bw = bwe(X);
             
         case 'normal'
