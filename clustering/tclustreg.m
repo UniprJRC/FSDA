@@ -46,19 +46,24 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %   alphaX : Second-level trimming or constrained weighted model for X. Scalar.
 %            alphaX is a value between [0 and 1).
+%            - If alphaX=0 there is no second-level trimming.
 %            - If alphaX is in the interval [0 0.5] it indicates the
-%               proportion of units subject to second level trimming. In
-%               particular, if alphaX=0 there is no second-level trimming.
-%               Note that alphaX is usually smaller than alphaLik.
-%            -  If alphaX is in the interval (0.5 1) it indicates a
+%               fixed proportion of units subject to second level trimming. 
+%               In this case alphaX is usually smaller than alphaLik.
+%               For further details see Garcia-Escudero et. al. (2010).
+%            -  If alphaX is in the interval (0.5 1), it indicates a
 %               Bonferronized confidence level to be used to identify the
-%               units subject to second level trimming.
-%            -  If alphaX is 1 constrained weighted model for X is assumed
-%               (see Gershenfeld (1997)). The CWM estimator is able to
+%               units subject to second level trimming. In this case the
+%               proportion of units subject to second level trimming is not
+%               fixed a priori, but is determined adaptively. 
+%               For further details see Torti et al. (2018).
+%            -  If alphaX=1, constrained weighted model for X is assumed
+%               (Gershenfeld, 1997). The CWM estimator is able to
 %               take into account different distributions for the explanatory
 %               variables across groups, so overcoming an intrinsic limitation
-%               of mixtures of regression, where they are implicitly
-%               assumed equally distributed.
+%               of mixtures of regression, because they are implicitly
+%               assumed equally distributed. 
+%               For further details about CWM see Garcia-Escudero et al. (2017).
 %            Data Types - single|double
 %
 %
@@ -270,15 +275,21 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A.
-% (2008), A General Trimming Approach to Robust Cluster Analysis. Annals of
-% Statistics, Vol.36, 1324-1345. Technical Report available at:
-% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
-%
-% Cerioli, A. and Perrotta, D. (2014). "Robust Clustering Around Regression
-% Lines with High Density Regions". Advances in Data Analysis and
+% Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and Mayo-Iscar A. (2016), 
+% The joint role of trimming and constraints in robust estimation
+% for mixtures of gaussian factor analyzers. Computational Statistics & Data
+% Analysis 99, p. 131-147.
+% Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S. and Mayo-Iscar A. (2017), Robust estimation of mixtures of regressions with random
+% covariates, via trimming and constraints. Statistics and Computing 27, 
+% p. 377-402.
+% Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R. (2010), 
+% Robust clusterwise linear regression through trimming. Computational
+% Statistics and Data Analysis 54, 3057-3069.
+% Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
+% Lines with High Density Regions. Advances in Data Analysis and
 % Classification, Volume 8, Issue 1, p. 5-26.
-%
+% Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+% Methodologies for Clustering Linear Regression Data. Submitted.
 %
 % Copyright 2008-2017.
 % Written by FSDA team
