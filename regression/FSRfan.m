@@ -296,12 +296,13 @@ function [out]=FSRfan(y,X,varargin)
     % Store the score test statistics for the specified values of lambda
     % and automatically produce the fan plot
     [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);
-   %The fan plot shows the even if the third root is the best value of the
-   %transformation parameter at the end of the search in earlier steps it
-    %lies very close to the upper rejection region. The best value of the
-    %transformation parameter seems to be the one associated with l=0.4
-    %which is always the confidence bands but at the end of search, due to
-  %the presence of particular observations it goes below the lower rejection line.
+    % The fan plot shows the even if the third root is the best value of the
+    % transformation parameter at the end of the search in earlier steps it
+    % lies very close to the upper rejection region. The best value of the
+    % transformation parameter seems to be the one associated with l=0.4
+    % which is always the confidence bands but at the end of search, due to
+    % the presence of particular observations it goes below the lower
+    % rejection line.
 %}
 
 %{
@@ -326,6 +327,7 @@ function [out]=FSRfan(y,X,varargin)
 
 %{
     %% Example of monitoring of score test for positive and negative obseravations.
+    rng('default')
     rng(10)
     close all
     n=200;
