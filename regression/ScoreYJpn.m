@@ -79,6 +79,7 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 
 %{
     %% Ex in which positive and negative observations require the same lambda.
+    rng('default')
     rng(1)
     n=100;
     y=randn(n,1);
