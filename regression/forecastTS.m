@@ -62,9 +62,9 @@ function [outFORE] = forecastTS(outEST,varargin)
 %         outEST.yhat = vector of fitted values after final (NLS=non linear
 %                       least squares) step:
 %                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
-%        outEST.scale = Final scale estimate of the residuals 
+%        outEST.scale = Final scale estimate of the residuals
 %                     \[
-%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)  
+%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
 %                     \]
 %                     where $S_m$ is a set of cardinality $m$ which
 %                     contains the units not declared as outliers and $p$
@@ -131,7 +131,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                 Example - 'model', model
 %                 Data Types - struct
 %
-%       nfore  : number of forecasts. Scalar. 
+%       nfore  : number of forecasts. Scalar.
 %               Positive integer which defines the number of forecasts. The
 %               default value of nfore is 24.
 %               Example - 'nfore',12
@@ -191,17 +191,17 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                   predictive values in sample and out of sample.
 %                   Predictive values = TR+SE+X+LS.
 %                outFORE.trend = vector of length (length(y)+nfore) containing
-%                   estimated trend (TR) in sample and out of sample. 
-%                   If this component is not present, it is equal to 0. 
+%                   estimated trend (TR) in sample and out of sample.
+%                   If this component is not present, it is equal to 0.
 %                outFORE.seasonal = vector of length (length(y)+nfore) containing
 %                   estimated seasonal component (SE) in sample and out of sample.
-%                   If this component is not present, it is equal to 0. 
+%                   If this component is not present, it is equal to 0.
 %                outFORE.lshift = vector of length (length(y)+nfore) containing
 %                   level shift (LS) in sample and out of sample.
-%                   If this component is not present, it is equal to 0. 
+%                   If this component is not present, it is equal to 0.
 %                outFORE.X = vector of length (length(y)+nfore)
-%                   containing the effecf of the explanatory variables. 
-%                   If this component is not present, it is equal to 0. 
+%                   containing the effecf of the explanatory variables.
+%                   If this component is not present, it is equal to 0.
 %                outFORE.confband  = matrix of size (length(y)+nfore)-by-2
 %                   containing lower and upper confidence bands of the
 %                   forecasts. The confidence level of the bands is
@@ -299,7 +299,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model.lshift=5;
     outEST=LTSts(ySIM,'model',model,'plots',1,'msg',0);
     % Forecast
-    outFORE=forecastTS(outEST,'model',model,'plots',1); 
+    outFORE=forecastTS(outEST,'model',model,'plots',1);
 %}
 
 %{
@@ -326,8 +326,8 @@ function [outFORE] = forecastTS(outEST,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=103;         % six harmonics with linear time varying seasonality
-    model.lshift=10;             % search for level shift
+    model.seasonal=103;         % three harmonics with linear time varying seasonality
+    model.lshift=10;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -362,8 +362,8 @@ function [outFORE] = forecastTS(outEST,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=[];         % no seasonal component
-    model.lshift=10;           % search for level shift
+    model.seasonal=[];          % no seasonal component
+    model.lshift=10;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -506,9 +506,9 @@ one   = ones(T,1);
 Seq = [one seq seq.^2 seq.^3];
 
 % Define matrix which contains linear quadratic of cubic trend
-    Xtrend = Seq(:,1:trend+1);
+Xtrend = Seq(:,1:trend+1);
 
-    ntrend = size(Xtrend,2);
+ntrend = size(Xtrend,2);
 
 % seasonal component
 if seasonal >0
@@ -598,13 +598,13 @@ end
 
 confband=NaN(length(yhat),2);
 if ~isempty(conflev)
-invXX=outEST.invXX;
-quant=tinv(1-(1-conflev)/2,n-length(betaout));
-for i=n+1:n+nfore
-    se=quant*outEST.scale*sqrt(J(i,:)*invXX*(J(i,:)'));
-    confband(i,1)=yhat(i)-se;
-    confband(i,2)=yhat(i)+se;
-end
+    invXX=outEST.invXX;
+    quant=tinv(1-(1-conflev)/2,n-length(betaout));
+    for i=n+1:n+nfore
+        se=quant*outEST.scale*sqrt(J(i,:)*invXX*(J(i,:)'));
+        confband(i,1)=yhat(i)-se;
+        confband(i,2)=yhat(i)+se;
+    end
 end
 
 outFORE=struct;
@@ -686,7 +686,7 @@ if plots==1
     % Plot original time series
     plot(datesnumeric(1:n),y,'k')
     hold('on')
-    % plot the original series 
+    % plot the original series
     plot(datesnumeric(1:n),yfore(1:n),'b-')
     % plot the forecasts
     plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'r')
@@ -698,7 +698,9 @@ if plots==1
     plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'r--')
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
     end
     ax=axis;
     ylimits=ax(3:4);
