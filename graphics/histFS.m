@@ -1,4 +1,4 @@
-function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
+function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %histFS plots a histogram with the elements in each bin grouped according to a vector of labels.
 %
 %<a href="matlab: docsearchFS('histFS')">Link to the help function</a>
@@ -6,12 +6,12 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %  Required input arguments:
 %
 %     y        : vector of n elements to bin. Vector. Vector which contains
-%                the elements which have to be binned
-%     nbins    : the number of bins. Scalar. The elements of of input vector y are binned
-%                into nbins equally spaced containers
-%     gy       : idenitifier vector. Vector. Vector of n numeric 
-%                identifiers for the group of each
-%                element in y. If there are k groups in y, unique(gy) = k.
+%                the elements which have to be binned.
+%     nbins    : the number of bins. Scalar. The elements of of input vector
+%                y are binned into nbins equally spaced containers.
+%     gy       : identifier vector. Vector. Vector of n numeric identifiers
+%                for the group of each element in y. If there are k groups
+%                in y, unique(gy) = k.
 %
 %  Optional input arguments:
 %
@@ -39,6 +39,8 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %               Example - rgy
 %               Data Types - character or numeric matrix
 %
+%     W         : Weights. Vector. Vector which contains optional weights
+%                 associated to the elements of y.
 %  Output:
 %
 %       ng      : number of elements in each container for each group.
@@ -55,7 +57,8 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983). The visual display of quantitative information.
+%   Graphics Press, Cheshire
 %
 % Copyright 2008-2017.
 % Written by FSDA team
@@ -77,8 +80,19 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %}
 
 %{
-      % Example with default clickable legends.
-      [ng, hb] = histFS(y,nbins,groups,{});
+        % Example of weighted histogram.
+        X = crosstab2datamatrix([10 20 30]); X=X(:,2);
+        X1 = 444*ones(60,1); X1(40:60)= 999; X1 = shuffling(X1);
+        X = X+5;
+        if verLessThan('matlab','8.5')
+            groups = num2str(X1);
+        else
+            groups = categorical(X1);
+        end
+        histFS(X,10,groups);
+        W = ones(size(X,1),1); W(12) = 100;
+        figure;
+        histFS(X,10,groups,[],[],[],W);
 %}
 
 %{
@@ -90,7 +104,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %{
       % Apply to the grouped histogram the legends of a different plot.
       % Create a scatterplot
-      hs = gscatter(1:numel(y),y,groups);     
+      hs = gscatter(1:numel(y),y,groups);
       hfs = gcf;                              % get the handle of the scatterplot
       has = get(hfs,'CurrentAxes');           % it is the same as has = gca
       hlegends  = get(has,'Children');        % get the legend entries
@@ -115,7 +129,10 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors)
 %}
 
 %% Beginning of code
-if nargin < 6
+if nargin < 7 || not(isvector(W) && ~isscalar(W))
+    W = [];
+end
+if nargin < 6 || isempty(barcolors)
     barcolors = 'brcmykgbrcmykgbrcmykg';
 end
 if nargin <5 || isempty(ax)
@@ -167,12 +184,24 @@ dist    = abs(yr-xc);          % distance between data and bin centers
 % use dist to assign data to bins
 [~,bins] = min(dist,[],2);
 
-% build matrix of labels of groups in each bin
 ng  = zeros(nbins,ngroups);
+Wempty = isempty(W);
+
 for i = 1 : nbins
     bing = gy(bins==i); % groups in bin i
+    if ~Wempty
+        bingW=W(bins==i);
+    end
+    
     for j=1:ngroups
-        ng(i,j)=numel(find(bing==groups(j)));
+        
+        if Wempty
+            % build matrix of labels of groups in each bin
+            ng(i,j)=sum(bing==groups(j));
+        else
+            % build matrix of weights of groups in each bin
+            ng(i,j)=sum(bingW(bing==groups(j)));
+        end
     end
 end
 
@@ -215,7 +244,10 @@ colormap(ax,Crgb(1:ngroups,:));
 % bars. Function bar groups the elements of each row in bm at corresponding
 % locations in x.
 
+% plot the histogram using the number of units in each bin or its weighted
+% version
 hb = bar(ax,x,ng,'stacked','FaceColor','flat','BarWidth',1);
+
 % REMARK: as an alternative to the above Colormap instruction, one can
 % create an empty bar and color it by setting with a loop the FaceColor
 % property. This is shown in the next 4 lines.
