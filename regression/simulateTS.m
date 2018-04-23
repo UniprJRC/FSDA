@@ -703,7 +703,10 @@ if plots==1
     title({'Final simulated data',''},'Interpreter','LaTex','FontSize',12);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
+        
     end
     subplot(2,3,2);
     plot(datesnumeric,signal);
@@ -712,7 +715,12 @@ if plots==1
     title({'TR+SE+LS+X',''},'Interpreter','LaTex','FontSize',12);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
+        
+        
     end
     
     subplot(2,3,3);
@@ -722,7 +730,9 @@ if plots==1
     title({'Trend (TR)',''},'Interpreter','LaTex','FontSize',12);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
     end
     
     subplot(2,3,4);
@@ -732,7 +742,9 @@ if plots==1
     title({'Seasonal (SE)',''},'Interpreter','LaTex','FontSize',12);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
     end
     
     subplot(2,3,5);
@@ -742,7 +754,9 @@ if plots==1
     title({'Level shift (LS)',''},'Interpreter','LaTex','FontSize',12);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
     end
     
     subplot(2,3,6);
@@ -759,7 +773,9 @@ if plots==1
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        set(gca,'XTickLabelRotation',90);
+        if ~verLessThanFS(8.4)
+            set(gca,'XTickLabelRotation',90);
+        end
     end
 end
     function [minV,maxV]=minmax(varargin)
