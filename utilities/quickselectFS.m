@@ -53,7 +53,7 @@ function kE = quickselectFS(A,k,kiniindex)
     [out]=quickselectFS(Y,k);
     % Check the result
     sorY=sort(Y);
-    disp(out-sorY(k))
+    disp([out,sorY(k)])
 %}
 
 %{
@@ -65,7 +65,7 @@ function kE = quickselectFS(A,k,kiniindex)
     [out]=quickselectFS(Y,k,20);
     % Check the result
     sorY=sort(Y);
-    disp(out-sorY(k))
+    disp([out,sorY(k)])
 %}
 
 %% Beginning of code

@@ -762,7 +762,7 @@ else
 end
 caxis([0 max(max(overMorder))]); % set equal for both subplots
 % Add text
-if verLessThan('matlab', '8.5')
+if verLessThan('matlab', '8.4')
     axes(co)
     ylabel('Pairwise overlap values','FontSize',14,'Interpreter','Latex');        
 else
