@@ -80,28 +80,6 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %}
 
 %{
-        % Example of weighted histogram.
-        X = crosstab2datamatrix([10 20 30]); X=X(:,2);
-        X1 = 444*ones(60,1); X1(40:60)= 999; X1 = shuffling(X1);
-        X = X+5;
-        if verLessThan('matlab','8.5')
-            groups = num2str(X1);
-        else
-            groups = categorical(X1);
-        end
-        histFS(X,10,groups);
-        W = ones(size(X,1),1); W(12) = 100;
-        figure;
-        histFS(X,10,groups,[],[],[],W);
-%}
-
-%{
-      % Example with personalised clickable legends.
-      myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4'};
-      [ng, hb] = histFS(y,nbins,groups,myleg);
-%}
-
-%{
       % Apply to the grouped histogram the legends of a different plot.
       % Create a scatterplot
       hs = gscatter(1:numel(y),y,groups);
@@ -117,6 +95,12 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %}
 
 %{
+      % Example with personalised clickable legends.
+      myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4' };
+      [ng, hb] = histFS(y,nbins,groups,myleg);
+%}
+
+%{
       % An example of bar color supplied as string.
       y = randn(500,1);
       % four groups
@@ -126,6 +110,22 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
       % Bar colors supplied as character string
       col='rgyb';
       [ng, hb] = histFS(y,nbins,groups,[],[],col);
+%}
+
+%{
+        % Example of weighted histogram.
+        X = crosstab2datamatrix([10 20 30]); X=X(:,2);
+        X1 = 444*ones(60,1); X1(40:60)= 999; X1 = shuffling(X1);
+        X = X+5;
+        if verLessThan('matlab','8.5')
+            groups = num2str(X1);
+        else
+            groups = categorical(X1);
+        end
+        histFS(X,10,groups);
+        W = ones(size(X,1),1); W(12) = 100;
+        figure;
+        histFS(X,10,groups,[],[],[],W);
 %}
 
 %% Beginning of code
