@@ -1,7 +1,7 @@
 function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrnum,restrfactor,userepmat,nParam)
-% 
+% This function is called by tclusteda and it is not intended to be called directly 
 
-
+%% Beginning of code
 [n,v]=size(Y);
 
 % tolrestreigen = tolerance to use in function restreigen
