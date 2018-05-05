@@ -362,14 +362,13 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % More About:
 %
-%
-% This iterative algorithm initializes k clusters randomly and
-% performs "concentration steps" in order to improve the current cluster
-% assignment. The number of maximum concentration steps to be performed is
-% given by input parameter refsteps. For approximately obtaining the global
-% optimum, the system is initialized nsamp times and concentration steps
-% are performed until convergence or refsteps is reached. When processing
-% more complex data sets higher values of nsamp and refsteps have to be
+% This iterative algorithm initializes k clusters randomly and performs
+% concentration steps in order to improve the current cluster assignment.
+% The number of maximum concentration steps to be performed is given by
+% input parameter refsteps. For approximately obtaining the global optimum,
+% the system is initialized nsamp times and concentration steps are
+% performed until convergence or refsteps is reached. When processing more
+% complex data sets higher values of nsamp and refsteps have to be
 % specified (obviously implying extra computation time). However, if more
 % then 10 per cent of the iterations do not converge, a warning message is
 % issued, indicating that nsamp has to be increased.

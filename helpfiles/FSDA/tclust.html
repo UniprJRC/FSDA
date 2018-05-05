@@ -39,29 +39,29 @@
     title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 
     cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.15 seconds 
+Total estimated time to complete tclust:  1.14 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 22.3333%
+Warning: Number of subsets without convergence equal to 17.6667%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.02 seconds 
+Total estimated time to complete tclust:  0.84 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 20.3333%
+Warning: Number of subsets without convergence equal to 21.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.81 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 16.3333%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.77 seconds 
+Total estimated time to complete tclust:  0.88 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 19.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.92 seconds 
+Total estimated time to complete tclust:  0.72 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 17.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.71 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 19.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.75 seconds 
+Total estimated time to complete tclust:  0.89 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 22.3333%
+Warning: Number of subsets without convergence equal to 19.3333%
 </pre><img vspace="5" hspace="5" src="images/tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_06.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     nsamp=20;
@@ -85,17 +85,17 @@ Warning: Number of subsets without convergence equal to 22.3333%
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
     cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.69 seconds 
+Total estimated time to complete tclust:  2.24 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 20.4%
+Warning: Number of subsets without convergence equal to 19.6%
 ClaLik with untrimmed units selected using crisp criterion
 Total estimated time to complete tclust:  1.28 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 25.6%
+Warning: Number of subsets without convergence equal to 22.8%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.71 seconds 
+Total estimated time to complete tclust:  1.41 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 21.6%
+Warning: Number of subsets without convergence equal to 21%
 </pre><img vspace="5" hspace="5" src="images/tclust_07.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images/tclust_09.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
@@ -567,17 +567,16 @@ Warning: Number of subsets without convergence equal to 21.6%
                     Matrix of size nsamp-by-(v+1)*k containing (in the
                     rows) the indices of the subsamples extracted for
                     computing the estimate.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-
- This iterative algorithm initializes k clusters randomly and
- performs "concentration steps" in order to improve the current cluster
- assignment. The number of maximum concentration steps to be performed is
- given by input parameter refsteps. For approximately obtaining the global
- optimum, the system is initialized nsamp times and concentration steps
- are performed until convergence or refsteps is reached. When processing
- more complex data sets higher values of nsamp and refsteps have to be
+ This iterative algorithm initializes k clusters randomly and performs
+ concentration steps in order to improve the current cluster assignment.</p> <p>
+ The number of maximum concentration steps to be performed is given by
+ input parameter refsteps. For approximately obtaining the global optimum,
+ the system is initialized nsamp times and concentration steps are
+ performed until convergence or refsteps is reached. When processing more
+ complex data sets higher values of nsamp and refsteps have to be
  specified (obviously implying extra computation time). However, if more
  then 10 per cent of the iterations do not converge, a warning message is
- issued, indicating that nsamp has to be increased.</p> <p>
+ issued, indicating that nsamp has to be increased.</p><p>
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
  A General Trimming Approach to Robust Cluster Analysis. Annals
