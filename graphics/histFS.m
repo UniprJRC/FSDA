@@ -25,22 +25,26 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %                 {'G1' 'G2' 'G3'}, such strings are used for the legends.
 %               Example - {'G1' 'G2'}
 %               Data Types - cell array of strings or char
+%
 %     ax        : plots into ax instead of gca. Axis handle. The axis handle
 %                 where to plot the grouped histogram (e.g. a traditional
 %                 histogram plot to be superimposed). Default is gca.
 %               Example - gca
 %               Data Types - graphics handle
+%
 %     barcolors : colors of the bars. char or matrix.
 %                Vector containing the strings of the colors to use (e.g.
 %                'rgy') or RGB matrix of the colors used for the groups
 %                (e.g. [1 0 0; 0 0 1]). If the number of colors supplies is
 %                smaller than the number of groups the program displays an
 %                error.
-%               Example - rgy
+%               Example - 'rgy'
 %               Data Types - character or numeric matrix
 %
 %     W         : Weights. Vector. Vector which contains optional weights
 %                 associated to the elements of y.
+%               Example - [10 20 3000]
+%               Data Types - numeric vector
 %  Output:
 %
 %       ng      : number of elements in each container for each group.
@@ -71,17 +75,35 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %
 %{
       %% An example with 4 groups.
+      close all;
       y = randn(500,1);
       % four groups
       groups = randi(4,500,1);
       % number of bins
       nbins = 10;
       [ng, hb] = histFS(y,nbins,groups);
+      title('Histogram with default color rotation (brcmykg)','interpreter','latex','FontSize',18);
+
+%}
+
+%{
+      %% The same histogram is now plot with different legends.
+      figure;
+      [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'});
+      title('The same, with personalized legends','interpreter','latex','FontSize',18);
+%}
+
+%{
+      %% The same histogram is now plot with different colors.
+      figure;
+      [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'},gca,'kgbr');
+      title('FERRARI must be red! Color sequence changed to kgbr','interpreter','latex','FontSize',18);
 %}
 
 %{
       % Apply to the grouped histogram the legends of a different plot.
       % Create a scatterplot
+      close all;
       hs = gscatter(1:numel(y),y,groups);
       hfs = gcf;                              % get the handle of the scatterplot
       has = get(hfs,'CurrentAxes');           % it is the same as has = gca
@@ -92,28 +114,19 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 
       figure;
       [ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm);
+      title('Color sequence is taken frpom the scatterplot','interpreter','latex','FontSize',18);
 %}
 
 %{
       % Example with personalised clickable legends.
       myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4' };
       [ng, hb] = histFS(y,nbins,groups,myleg);
+      title('Example with personalised clickable legends','interpreter','latex','FontSize',18);
 %}
 
 %{
-      % An example of bar color supplied as string.
-      y = randn(500,1);
-      % four groups
-      groups = randi(4,500,1);
-      % number of bins
-      nbins = 10;
-      % Bar colors supplied as character string
-      col='rgyb';
-      [ng, hb] = histFS(y,nbins,groups,[],[],col);
-%}
-
-%{
-        % Example of weighted histogram.
+        %% Example of weighted histogram.
+        close all;clear all;
         X = crosstab2datamatrix([10 20 30]); X=X(:,2);
         X1 = 444*ones(60,1); X1(40:60)= 999; X1 = shuffling(X1);
         X = X+5;
@@ -122,10 +135,18 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
         else
             groups = categorical(X1);
         end
-        histFS(X,10,groups);
         W = ones(size(X,1),1); W(12) = 100;
-        figure;
+
         histFS(X,10,groups,[],[],[],W);
+        title({'Weighted histograms:' , 'please check with tabulateFS(W) and tabulateFS(X)'},'interpreter','latex','FontSize',18);
+        figure;
+        histFS(X,10,groups);
+        title('Standard histogram','interpreter','latex','FontSize',18);
+        cascade;
+        disp('tabulateFS(X)');
+        tabulateFS(X);
+        disp('tabulateFS(W)');
+        tabulateFS(W);
 %}
 
 %% Beginning of code
@@ -237,24 +258,25 @@ else
         Crgb(i,:)=rgb;
     end
 end
-colormap(ax,Crgb(1:ngroups,:));
+
+%{
+    colormap(ax,Crgb(1:ngroups,:));
+%}
 
 % Draw a bar for each element in bm at locations specified in x.
 % Notice that x is a vector defining the x-axis intervals for the vertical
 % bars. Function bar groups the elements of each row in bm at corresponding
-% locations in x.
-
-% plot the histogram using the number of units in each bin or its weighted
-% version
+% locations in x. 
 hb = bar(ax,x,ng,'stacked','FaceColor','flat','BarWidth',1);
 
-% REMARK: as an alternative to the above Colormap instruction, one can
-% create an empty bar and color it by setting with a loop the FaceColor
-% property. This is shown in the next 4 lines.
-% hb = bar(ax,x,ng,'stacked','FaceColor','none','BarWidth',1);
-% for i=1:numel(hb)
-%     set(hb(i),'FaceColor',Crgb(i,:));
-% end
+% In the next 4 lines we color the bar by setting with a loop the FaceColor
+% property. An alternative which was working with previous MATLAB versions
+% was to set the colormap with the instruction commented above.
+%hb = bar(ax,x,ng,'stacked','FaceColor','none','BarWidth',1);
+for i=1:numel(hb)
+    set(hb(i),'FaceColor',Crgb(i,:));
+    %set(hb(i),'FaceColor',C(i));
+end
 
 % add clickable legends, so that to show/hide grouped bins
 if doleg
@@ -262,7 +284,7 @@ if doleg
     clickableMultiLegend(hb, gylab{:});
     axis(axis);
     for i=1:numel(hb)
-        set(findobj(hb(i),'Type','patch'),'DisplayName',gylab{i});
+        set(findobj(hb(i),'Type','patch'),'DisplayName',gylab{i},'EdgeColor','k');
     end
 end
 
