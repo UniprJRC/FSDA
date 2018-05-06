@@ -33,11 +33,11 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %               Data Types - graphics handle
 %
 %     barcolors : colors of the bars. char or matrix.
-%                Vector containing the strings of the colors to use (e.g.
-%                'rgy') or RGB matrix of the colors used for the groups
-%                (e.g. [1 0 0; 0 0 1]). If the number of colors supplies is
-%                smaller than the number of groups the program displays an
-%                error.
+%                Vector containing the strings of the colors to use 
+%                (e.g. 'rgy') or RGB matrix of the colors used for the
+%                groups (e.g. [1 0 0; 0 0 1]). If the number of colors
+%                supplied is smaller than the number of groups the program
+%                displays an error.
 %               Example - 'rgy'
 %               Data Types - character or numeric matrix
 %
@@ -61,7 +61,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information.
+%   Tufte E.R. (1983). The visual display of quantitative information,
 %   Graphics Press, Cheshire
 %
 % Copyright 2008-2017.
@@ -87,14 +87,14 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %}
 
 %{
-      %% The same histogram is now plot with different legends.
+      %% The same histogram is now plotted with different legends.
       figure;
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'});
       title('The same, with personalized legends','interpreter','latex','FontSize',18);
 %}
 
 %{
-      %% The same histogram is now plot with different colors.
+      %% The same histogram is now plotted with different colors.
       figure;
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'},gca,'kgbr');
       title('FERRARI must be red! Color sequence changed to kgbr','interpreter','latex','FontSize',18);
@@ -114,7 +114,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 
       figure;
       [ng, hb] = histFS(y,nbins,groups,getleg,gca,getcolm);
-      title('Color sequence is taken frpom the scatterplot','interpreter','latex','FontSize',18);
+      title('Color sequence is taken from the scatterplot','interpreter','latex','FontSize',18);
 %}
 
 %{
