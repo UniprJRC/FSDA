@@ -7,12 +7,12 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %  Required input arguments:
 %
 %         IDX   : Assignment of units to groups for different values of c
-%                   (restriction factor) and k (number of groups. Cell.
+%                   (restriction factor) and k (number of groups). Cell.
 %                   Cell of size length(kk)-times length(cc), where kk is
 %                   the vector which contains the number of groups which
 %                   have been considered and cc is the vector which
 %                   contains the values of the restriction factor.  Each
-%                   element of the cell is a vector of length n containinig
+%                   element of the cell is a vector of length n containing
 %                   the assignment number of each unit using a particular
 %                   classification model.
 %                 Data Types -  cell
@@ -30,6 +30,9 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %                   1, 2, ..., r-1).
 %
 %  Optional input arguments:
+%
+%       PostProb :
+%
 %
 %  Output:
 %
@@ -80,61 +83,62 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 
 %% Beginning of code
 
-
-if ~iscell(IDX)
+if iscell(IDX)
+    
+    [kk,cc]=size(IDX);
+    
+    % Initialize IDXwithConsistentLabels with IDX
+    IDXwithConsistentLabels=IDX;
+    
+    for i=1:kk
+        for j=1:cc
+            
+            idx=IDX{i,j};
+            uniqvar=unique(idx);
+            % Remove values of uniqvar which are equal to 0 because they denote
+            % unassigned units whose label does not have to change.
+            uniqvar(uniqvar==0)=[];
+            
+            % Preliminary operation: make sure that the number contained inside
+            % idx goes from 1 to length(uniqvar).
+            missingnumb=setdiff(1:length(uniqvar),uniqvar);
+            if ~isempty(missingnumb)
+                for ii=1:length(missingnumb)
+                    idx(idx==max(idx))=missingnumb(ii);
+                end
+            end
+            
+            
+            if length(uniqvar)>1
+                mineqv=min([length(UnitsSameGroup) length(uniqvar)-1]);
+                for jj=1:mineqv % length(uniqvar)-1
+                    % Find old labels for group which contains  UnitsSameGroup(jj)
+                    OldLabel=idx(UnitsSameGroup(jj));
+                    
+                    idxtmp=idx;
+                    if  OldLabel > jj
+                        
+                        
+                        
+                        % The new label for units whose old label was OldLabel
+                        % becomes jj
+                        idx(idxtmp==OldLabel)=jj;
+                        
+                        % The new label for units whose previous label was jj
+                        % becomes OldLabel
+                        idx(idxtmp==jj)=OldLabel;
+                    end
+                end
+            end
+            
+            IDXwithConsistentLabels{i,j}=idx;
+        end
+    end
+else
     error('FSDA:UnitsSameCluster:WrongInput','Input must be a cell.');
 end
 
-[kk,cc]=size(IDX);
-
-% Initialize IDXwithConsistentLabels with IDX
-IDXwithConsistentLabels=IDX;
-
-for i=1:kk
-    for j=1:cc
-        
-        idx=IDX{i,j};
-        uniqvar=unique(idx);
-        % Remove values of uniqvar which are equal to 0 because they denote
-        % unassigned units whose label does not have to change.
-        uniqvar(uniqvar==0)=[];
-        
-        % Preliminary operation: make sure that the number contained inside
-        % idx go from 1 to length(uniqvar).
-        missingnumb=setdiff(1:length(uniqvar),uniqvar);
-        if ~isempty(missingnumb)
-            for ii=1:length(missingnumb)
-                idx(idx==max(idx))=missingnumb(ii);
-            end
-        end
-        
-        
-        if length(uniqvar)>1
-            mineqv=min([length(UnitsSameGroup) length(uniqvar)-1]);
-            for jj=1:mineqv % length(uniqvar)-1
-                % Find old labels for group which contains  UnitsSameGroup(jj)
-                OldLabel=idx(UnitsSameGroup(jj));
-                
-                idxtmp=idx;
-                if  OldLabel > jj
-                    
-                    
-                    
-                    % The new label for units whose old label was OldLabel
-                    % becomes jj
-                    idx(idxtmp==OldLabel)=jj;
-                    
-                    % The new label for units whose previous label was jj
-                    % becomes OldLabel
-                    idx(idxtmp==jj)=OldLabel;
-                end
-            end
-        end
-        
-        IDXwithConsistentLabels{i,j}=idx;
-        
-    end
 end
-end
+
 
 %FScategory:UTISTAT
