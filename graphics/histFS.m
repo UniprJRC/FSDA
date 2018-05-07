@@ -259,9 +259,10 @@ else
     end
 end
 
-%{
-    colormap(ax,Crgb(1:ngroups,:));
-%}
+% the use of colormap with the bar object seems to not work in recent
+% matlab releases. Read the comments of the next code segments for details.
+% colormap(ax,Crgb(1:ngroups,:));
+
 
 % Draw a bar for each element in bm at locations specified in x.
 % Notice that x is a vector defining the x-axis intervals for the vertical
