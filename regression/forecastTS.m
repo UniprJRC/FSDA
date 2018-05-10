@@ -207,6 +207,8 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                   forecasts. The confidence level of the bands is
 %                   splecified is input parameter conflev. Note that the
 %                   first length(y) rows of this matrix are equal to NaN.
+%               outFORE.datesnumeric = vector of length (length(y)+nfore)
+%                   containing the dates in numeric format.
 %
 %
 %
@@ -634,6 +636,9 @@ if ~isempty(StartDate)
 else
     datesnumeric=1:T;
 end
+
+% Raw numbers associated with the dates on the x axis
+outFORE.datesnumeric=datesnumeric;
 
 
 if dispresults
