@@ -61,7 +61,7 @@
     model.lshift=5;
     outEST=LTSts(ySIM,'model',model,'plots',1,'msg',0);
     % Forecast
-    outFORE=forecastTS(outEST,'model',model,'plots',1); </pre></div></div><img vspace="5" hspace="5" src="images\forecastTS_07.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_08.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_09.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (1).</li></span></a></span></h3><div class="collapse"><p>
+    outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\forecastTS_07.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_08.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_09.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (1).</li></span></a></span></h3><div class="collapse"><p>
        1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan
         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -84,8 +84,8 @@
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=103;         % six harmonics with linear time varying seasonality
-    model.lshift=10;             % search for level shift
+    model.seasonal=103;         % three harmonics with linear time varying seasonality
+    model.lshift=10;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -131,8 +131,8 @@ Level shift position t=21
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=[];         % no seasonal component
-    model.lshift=10;           % search for level shift
+    model.seasonal=[];          % no seasonal component
+    model.lshift=10;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
     % 3 years forecasts
@@ -225,9 +225,9 @@ Level shift position t=21
                            & = & \hat \eta_i + e_i
                        \end{eqnarray}</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of fitted values after final (NLS=non linear
                        least squares) step:</p> <p>
-                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Final scale estimate of the residuals 
+                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Final scale estimate of the residuals
                      \[
-                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)  
+                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
                      \]<p>
                      where $S_m$ is a set of cardinality $m$ which
                      contains the units not declared as outliers and $p$
@@ -328,17 +328,18 @@ Level shift position t=21
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>signal</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    predictive values in sample and out of sample.</p> <p>
                    Predictive values = TR+SE+X+LS.</p></p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>vector of length (length(y)+nfore) containing
-                   estimated trend (TR) in sample and out of sample.</p> <p> 
+                   estimated trend (TR) in sample and out of sample.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    estimated seasonal component (SE) in sample and out of sample.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>vector of length (length(y)+nfore) containing
                    level shift (LS) in sample and out of sample.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>vector of length (length(y)+nfore)
-                   containing the effecf of the explanatory variables.</p> <p> 
+                   containing the effecf of the explanatory variables.</p> <p>
                    If this component is not present, it is equal to 0.</p></p></td></tr><tr valign="top"><td><code>confband</code></td><td><p>matrix of size (length(y)+nfore)-by-2
                    containing lower and upper confidence bands of the
                    forecasts. The confidence level of the bands is
                    splecified is input parameter conflev. Note that the
-                   first length(y) rows of this matrix are equal to NaN.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2018), Robust
+                   first length(y) rows of this matrix are equal to NaN.</p></td></tr><tr valign="top"><td><code>datesnumeric</code></td><td><p>vector of length (length(y)+nfore)
+                   containing the dates in numeric format.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2018), Robust
  Monitoring of Time Series with Application to Fraud Detection,
  Submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span> | <span itemprop="seealso"><a href="simulateTS.html" itemprop="url"><span itemprop="name"><code>simulateTS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

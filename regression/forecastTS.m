@@ -634,7 +634,7 @@ if ~isempty(StartDate)
     % Convert date and time to serial date number
     datesnumeric=datenum(years(:), months(:), 1);
 else
-    datesnumeric=1:T;
+    datesnumeric=(1:T)';
 end
 
 % Raw numbers associated with the dates on the x axis
