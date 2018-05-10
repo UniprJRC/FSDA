@@ -152,11 +152,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                   Example - 'mixt',1
 %                   Data Types - single | double
 %
-% plots    :    Plot on the screen. Scalar, character, or struct.
+% plots    :    Plot on the screen. Scalar or character or structure.
 %
 %               Case 1: plots option used as scalar.
 %               - If plots=0 (default), plots are not generated.
-%               - If plot=1, a plot with the classification is shown on
+%               - If plots=1, a plot with the classification is shown on
 %                 the screen (using the spmplot function). The plot can be:
 %                   * for v=1, an histogram of the univariate data.
 %                   * for v=2, a bivariate scatterplot.
@@ -198,25 +198,26 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                 function. This argument may also be inserted in a field
 %                 named 'type' of a structure.
 %
-%               Case 3: plots option used as struct, with these fields:
-%               - plots = structname.type: in this case the 'type' filed 
+%               Case 3: plots option used as struct.
+%                 If plots is a structure it may contain the following fields:
+%                 plots.type = in this case the 'type' supplied 
 %                 is used to set the type of plot as when plots option is
-%                 a character array. Therefore, structname.type can be:
+%                 a character array. Therefore, plots.type can be:
 %                 'contourf', 'contour', 'ellipse' or 'boxplotb'.
-%               - plots = structname.cmap: the field is used to set a colormap
-%                 for the plot type. For example, structname.cmap = 'autumn'.
+%                 plots.cmap = this field is used to set a colormap
+%                 for the plot type. For example, plots.cmap = 'autumn'.
 %                 See the MATLAB help of colormap for a list of colormap
 %                 possiblilites.
-%               - plots = structname.conflev: this is the confidence level
+%                 plots.conflev = this is the confidence level
 %                 for the confidence ellipses. It must me a scalar between
 %                 0 and 1. For example, one can set:
-%                 structname.type = 'ellipse';
-%                 structname.conflev = 0.5;
+%                 plots.type = 'ellipse';
+%                 plots.conflev = 0.5;
 %
 %               REMARK - The labels=0 are automatically excluded from the
 %                          overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
-%                   Data Types - single | double | string
+%                   Data Types - single | double | character | struct
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen.
@@ -373,7 +374,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % then 10 per cent of the iterations do not converge, a warning message is
 % issued, indicating that nsamp has to be increased.
 %
-% See also: tkmeans, estepFS
+% See also: tkmeans, tclustIC, tclusteda
 %
 % References:
 %
