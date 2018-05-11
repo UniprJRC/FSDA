@@ -1,4 +1,4 @@
-function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
+function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,UnitsSameGroup)
 %UnitsSameCluster enables to control the labels of the clusters which contain predefined units
 %
 %<a href="matlab: docsearchFS('UnitsSameCluster')">Link to the help function</a>
@@ -28,10 +28,10 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 %                   labelled with number r (unless it is found that unit
 %                   UnitsSameGroup(r) has already been assigned to groups
 %                   1, 2, ..., r-1).
+%                 Data Types -  integer vector
 %
 %  Optional input arguments:
 %
-%       PostProb :
 %
 %
 %  Output:
@@ -82,6 +82,8 @@ function IDXwithConsistentLabels  = UnitsSameCluster(IDX,UnitsSameGroup)
 
 
 %% Beginning of code
+OldAndNewIndexes=zeros(length(UnitsSameGroup),2);
+jk=1;
 
 if iscell(IDX)
     
@@ -117,9 +119,7 @@ if iscell(IDX)
                     
                     idxtmp=idx;
                     if  OldLabel > jj
-                        
-                        
-                        
+                       
                         % The new label for units whose old label was OldLabel
                         % becomes jj
                         idx(idxtmp==OldLabel)=jj;
@@ -127,6 +127,10 @@ if iscell(IDX)
                         % The new label for units whose previous label was jj
                         % becomes OldLabel
                         idx(idxtmp==jj)=OldLabel;
+                        if i==1 && j==1
+                        OldAndNewIndexes(jk,:)=[OldLabel jj];
+                        jk=jk+1;
+                        end
                     end
                 end
             end
@@ -136,6 +140,12 @@ if iscell(IDX)
     end
 else
     error('FSDA:UnitsSameCluster:WrongInput','Input must be a cell.');
+end
+
+if jk>1
+    OldAndNewIndexes=OldAndNewIndexes(1:jk-1,:);
+else
+    OldAndNewIndexes=[];
 end
 
 end

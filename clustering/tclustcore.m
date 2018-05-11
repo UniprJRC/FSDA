@@ -138,9 +138,14 @@ for i=1:nselected
             qqunassigned=qq(h+1:end);
             qq=qq(1:h);
             
+           % try
             % Ytri = n(1-alpha)-by-v matrix associated with the units
             % which have the largest n(1-alpha) likelihood contributions
             Ytri=Y(qq,:);
+            %catch
+            %    jjj=1;
+            %end
+            
             % Ytriind = grouping indicator vector (of size n(1-alpha))
             % associated to Ytri
             groupind=ind(qq);
