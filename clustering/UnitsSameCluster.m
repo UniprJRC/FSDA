@@ -36,7 +36,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %
 %  Output:
 %
-%   IDXwithConsistentLabels = cell with the same size as input cell IDX and with
+% IDXwithConsistentLabels : cell with the same size as input cell IDX and with
 %                   the same meaning of input cell IDX but with consistent
 %                   labels. Cell. Group which contains unit
 %                   UnitsSameGroup(1)  is labelled with number 1. In
@@ -45,7 +45,15 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %                   it is found that unit UnitsSameGroup(r) has already
 %                   been assigned to groups 1, 2, ..., r-1).
 %
-%
+%   OldAndNewIndexes   : indexes of the permuatios associated with IDX{1,1}. 
+%                       r-by-2 matrix. 
+%                       Matrix of size r-by-2 which keeps track of all the
+%                       permutations which have been done. For example if 
+%                       OldAndNewIndexes is equal to  [3, 1; 3, 2],
+%                       it means that in the first iteration labels 1 and 3
+%                       have swapped, while in the second iteration label 3
+%                       and 2 have swapped. If no swapping was necessary
+%                       OldAndNewIndexes is empty.
 %
 %
 % See also tclustIC, tclustICplot
@@ -77,6 +85,34 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
     % cluster 1 and 2
     UnitsSameGroup=[23 54];
     IDXCLAnew=UnitsSameCluster(out.IDXCLA,UnitsSameGroup);
+%}
+
+%{
+    %% Example with detailed description of output element OldAndNewIndexes.
+    % Random seed to be example ro replicate the results. 
+    rng(1000)
+    Y=load('geyser2.txt');
+    k=3;
+    [out]=tclust(Y,k,0.10,10);
+    % Make sure that group which contains
+    % unit 10 is always labelled with number 1. Similarly,
+    % make sure that the group which contains unit 12 is always labelled
+    % with number 2, 
+    UnitsSameGroup=[10;12];
+    [idxnew, OldNewIndexes]=UnitsSameCluster({out.idx}, UnitsSameGroup);
+    % In this case OldNewIndexes is equal to 
+    % 3 1 
+    % 3 2 
+    % It means that in the first iteration labels 1 and 3 have swapped
+    % while in the second iteration label 3 and 2 have swapped
+    subplot(1,2,1)
+    gscatter(Y(:,1),Y(:,2),out.idx)
+    text(Y(UnitsSameGroup,1),Y(UnitsSameGroup,2),num2str(UnitsSameGroup))
+    subplot(1,2,2)
+    gscatter(Y(:,1),Y(:,2),idxnew{:})
+    text(Y(UnitsSameGroup,1),Y(UnitsSameGroup,2),num2str(UnitsSameGroup))
+    % Now (as is evident from the right panel) unit which contains group 10
+    % has label '1' while group which contains unit 12 has label '2'.
 %}
 
 
