@@ -77,7 +77,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 
 % Examples:
 %{
-    % Start with labelling produced by tclustIC and produce consist labels.
+    % Start with labelling produced by tclustIC and produce consistent labels.
     Y=load('geyser2.txt');
     % A small number of subsamples just to show whow the procedure works.
     nsamp=10;

@@ -1,4 +1,4 @@
-function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
+function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %tclusteda computes tclust for a series of values of the trimming factor
 %
 %<a href="matlab: docsearchFS('tclusteda')">Link to the help function</a>
@@ -20,15 +20,16 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %            k: Number of groups. Scalar.
 %               Scalar which specifies the number of groups.
 %
-%      alphavec: trimming level to monitor. Vector. vector which specifies the
+%        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
 %               alpha is a vector which contains decresing elements which
 %               lie in the interval 0 and 0.5.
-%               For example is alphavec=[0.1 0.05 0] tclust considers these 3
-%               values of trmming level.
-%               If alphavec=0 tclust reduces to traditional model
+%               For example is alpha=[0.1 0.05 0] tclusteda considers these 3
+%               values of trimming level.
+%               If alpha=0 tclusteda reduces to traditional model
 %               based or mixture clustering (mclust): see Matlab function
-%               gmdistribution. The default value of alphavec is [0.1 0.05 0]
+%               gmdistribution. The default for alpha is vector [0.1 0.05
+%               0]. The sequence is forced to be monotonically decreasing.
 %
 %  restrfactor: Restriction factor. Scalar. Positive scalar which
 %               constrains the allowed differences
@@ -356,8 +357,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 
 %{
     %% Monitoring using geyser data (all default options).
-    % Clear all persistent variables inside tclustcore
-    clear tclustcore
     close all
     Y=load('geyser2.txt');
     % alpha and restriction factor are not specified therefore for alpha
@@ -370,8 +369,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %{
     % Monitoring using geyser data with alpha and c specified.
     Y=load('geyser2.txt');
-    % Clear all persistent variables inside tclustcore
-    clear tclustcore
     close all
     % alphavec= vector which contains the trimming levels to consider
     alphavec=0.10:-0.01:0;
@@ -385,8 +382,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %{
     %% Monitoring using geyser data with option plots supplied as structure.
     Y=load('geyser2.txt');
-    % Clear all persistent variables inside tclustcore
-    clear tclustcore
     close all
     % alphavec= vector which contains the trimming levels to consider
     % in this case 31 values of alpha are considered
@@ -405,8 +400,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %{
     %% Monitoring geyser data with option UnitsSameGroup.
     Y=load('geyser2.txt');
-    % Clear all persistent variables inside tclustcore
-    clear tclustcore
     close all
     % alphavec= vector which contains the trimming levels to consider
     % in this case 31 values of alpha are considered
@@ -425,8 +418,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 
 %{
     %% tclusteda with M5 data.
-    % Clear all persistent variables inside tclustcore
-    clear tclustcore
     close all
     Y=load('M5data.txt');
 
@@ -438,8 +429,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 
 %{
     % Structured noise data ex1.
-    % Clear all persistent variables inside tclustcore.
-    clear tclustcore
     close all
     Y=load('structurednoise.txt');
     alphavec=0.20:-0.01:0;
@@ -448,8 +437,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 
 %{
     % Structured noise data ex2.
-    % Clear all persistent variables inside tclustcore.
-    clear tclustcore
     close all
     Y=load('structurednoise.txt');
     alphavec=0.20:-0.01:0;
@@ -462,8 +449,6 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %{
     % mixture100 data.
     close all
-    % Clear all persistent variables inside tclustcore.
-    clear tclustcore
     Y=load('mixture100.txt');
     % Traditional tclust
     alphavec=0.20:-0.01:0;
@@ -474,11 +459,9 @@ function [out,varargout]  = tclusteda(Y,k,alphavec,restrfactor,varargin)
 %}
 
 %{
-    %% tclust using simulated data.
-    % Clear all persistent variables inside tclustcore.
-    clear tclustcore
+    %% tclustcore using simulated data.
     % 5 groups and 5 variables
-    rng(100)
+    rng(100,'twister')
     n1=100;
     n2=80;
     n3=50;
@@ -629,11 +612,11 @@ tolrestreigen=1e-08;
 
 % Default
 if nargin<3
-    alphavec=[0.10 0.05 0];
+    alpha=[0.10 0.05 0];
     warning('FSDA:tclusteda:Wrongalpha','You have not specified alpha: it is set to [0.10 0.05 0] by default');
 else
-    if isempty(alphavec)
-        alphavec=[0.10 0.05 0];
+    if isempty(alpha)
+        alpha=[0.10 0.05 0];
         warning('FSDA:tclusteda:Wrongalpha','You have not specified alpha: it is set to [0.10 0.05 0] by default');
     end
 end
@@ -641,7 +624,7 @@ end
 % Fix alpha equal to the trimming size
 % h = number of observations which is used to compute the centroids
 
-if min(alphavec)<0
+if min(alpha)<0
     error('FSDA:tclusteda:WrongAlpha','alpha must a vector with numbers in the interval [0 0.5]')
 end
 
@@ -652,7 +635,7 @@ end
 
 % hh= vector containing number of untrimmed units for each value of alpha
 % h = number of untrimmed units
-hh=fix(n*(1-alphavec));
+hh=fix(n*(1-alpha));
 
 % restrnum=1 implies eigenvalue restriction
 restrnum=1;
@@ -906,6 +889,8 @@ for i=1:nselected
     Niini{i}=niini;
 end
 
+nnargout=nargout;
+
 % Number of estimated parameters
 % k centroids of size v
 % 0.5*v*(v+1) estimates for each of the k covariance matrices
@@ -917,7 +902,7 @@ if equalweights==false
 end
 nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor)^(1-1/(v*k))) +1;
 
-lalpha=length(alphavec);
+lalpha=length(alpha);
 if msg == 1
     progbar = ProgressBar(lalpha);
 else
@@ -933,7 +918,11 @@ SIGMA=cell(lalpha,1);
 parfor (j=1:lalpha, numpool)
     outj  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt, ...
         equalweights,hh(j),nselected,k,restrnum,restrfactor,userepmat,nParam);
-    outcell{j}=outj;
+    
+    if nnargout==2
+        outcell{j}=outj;
+    end
+    
     IDX(:,j)=outj.idx;
     
     MU(:,:,j)=outj.muopt;
@@ -977,7 +966,7 @@ end
 % 2nd col = ARI index
 % 3rd col = squared Euclidean distance between consecutive centroids
 % 4th col = squared Euclidean distance between consecutive covariance matrices
-Amon=[alphavec(2:end)' zeros(lalpha-1,3)];
+Amon=[alpha(2:end)' zeros(lalpha-1,3)];
 
 noisecluster=0;
 
@@ -1009,7 +998,7 @@ for j=2:lalpha
         end
     else
         newlab(indmaxdist)=setdiff(seqk,newlab);
-        disp(['Preliminary relabelling not possible when alpha=' num2str(alphavec(j))])
+        disp(['Preliminary relabelling not possible when alpha=' num2str(alpha(j))])
         if isequal(sort(newlab),seqk)
             MU(:,:,j)=MU(newlab,:,j);
             SIGMA(j)= {SIGMA{j}(:,:,newlab)};
@@ -1017,7 +1006,7 @@ for j=2:lalpha
                 IDX(IDXold(:,j)==newlab(r),j)=r;
             end
         else
-            disp(['Automatic relabelling not possible when alpha=' num2str(alphavec(j))])
+            disp(['Automatic relabelling not possible when alpha=' num2str(alpha(j))])
         end
     end
 end
@@ -1056,9 +1045,10 @@ out.SIGMA=SIGMA;
 out.Amon=Amon;
 
 % Store the indices in varargout
-if nargout==2
+if nnargout==2
     varargout=outcell;
 end
+
 
 
 %% Plotting part
@@ -1079,11 +1069,11 @@ if isstruct(plots)
     if d>0
         alphasel=plots.alphasel;
     else
-        alphasel=alphavec;
+        alphasel=alpha;
     end
 else
     name={'gscatter' 'monitor'};
-    alphasel=alphavec;
+    alphasel=alpha;
 end
 
 
@@ -1125,7 +1115,7 @@ if d>0
     % versions of MATLAB. For the new versions the instruction would have
     % been:
     % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
-    [~,alphasel]=intersect(round(alphavec*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
+    [~,alphasel]=intersect(round(alpha*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
     lalphasel=length(alphasel);
     
     %% Monitoring of allocation
@@ -1181,12 +1171,14 @@ if d>0
         end
         jk=jk+1;
         
+        
         if v>=2
-            if alphavec(alphasel(j))~=0
+            if alpha(alphasel(j))~=0
                 hh=gscatter(Ypca(:,1),Ypca(:,2),IDX(:,alphasel(j)),colord,[symdef{1:k+1}]);
             else
                 hh=gscatter(Ypca(:,1),Ypca(:,2),IDX(:,alphasel(j)),colord(2:k+1),[symdef{2:k+1}]);
             end
+            
             if v>2
                 xlabel(['PCA1 - ' num2str(explained(1)) '%'])
                 ylabel(['PCA2 - ' num2str(explained(2)) '%'])
@@ -1194,17 +1186,26 @@ if d>0
                 xlabel('y1')
                 ylabel('y2')
             end
+            
             clickableMultiLegend(hh)
+            if jk>2
+                legend hide
+            end
+            axis manual
         else
             % Univariate case: plot the histogram
-            if alphavec(alphasel(j))~=0
+            if alpha(alphasel(j))~=0
                 histFS(Y,10,IDX(:,alphasel(j)),[],[],colord)
             else
                 histFS(Y,10,IDX(:,alphasel(j)),[],[],colord(2:k+1))
             end
         end
-        title(['$\alpha=$' num2str(alphavec(alphasel(j)))],'Interpreter','Latex')
+        title(['$\alpha=$' num2str(alpha(alphasel(j)))],'Interpreter','Latex')
     end
 end
+
+% Clear all persistent variables inside tclustcore
+clear tclustcore
+
 end
 %FScategory:CLUS-RobClaMULT

@@ -25,7 +25,9 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
 %               than 0 but smaller or equal than 0.5 will do fine.
-%               The default value of bdp is a sequence from 0.5 to 0.01 with step 0.01
+%               The default for bdp is a sequence from 0.5 to 0.01
+%               with step -0.01. The sequence is forced to be monotonically
+%               decreasing.
 %                 Example - 'bdp',[0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
 %     rhofunc : rho function. String. String which specifies the rho function which must be used to
@@ -367,7 +369,13 @@ reftolbestr=options.reftolbestr;      % tolerance for refining steps for the bes
 msg=options.msg;                % Scalar which controls the messages displayed on the screen
 rhofunc=options.rhofunc;        % String which specifies the function to use to weight the residuals
 
-
+if min(bdp)<0
+    error('FSDA:Sregeda:Wrongbdp','elements of bdp must lie in the interval [0 0.5]')
+elseif max(bdp)>0.5
+    error('FSDA:Sregeda:Wrongbdp','elements of bdp must lie in the interval [0 0.5]')
+else
+   bdp=sort(bdp,'descend');
+end
 
 %% Extract in the rows of matrix C the indexes of all required subsets
 [C,nselected] = subsets(nsamp,n,p,ncomb,msg);
