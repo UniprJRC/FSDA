@@ -459,7 +459,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %}
 
 %{
-    %% tclustcore using simulated data.
+    %% tclusteda using simulated data.
     % 5 groups and 5 variables
     rng(100,'twister')
     n1=100;
@@ -975,6 +975,8 @@ IDXold=IDX;
 maxdist=zeros(lalpha,1);
 seqk=(1:k)';
 
+%verMatlab=verLessThanFS('9.2');
+
 for j=2:lalpha
     newlab=zeros(k,1);
     mindist=newlab;
@@ -982,7 +984,14 @@ for j=2:lalpha
         % centroid of group ii for previous alpha value
         muii=MU(ii,:,j-1);
         % MU(:,:,j) =matrix of centroids for current alpha value
-        [mind,indmin]=min(sum((muii-MU(:,:,j)).^2,2));
+        
+        %if verMatlab==true;
+            muij=bsxfun(@minus,muii,MU(:,:,j));
+        %else
+        %    muij=muii-MU(:,:,j);
+        %end
+        
+        [mind,indmin]=min(sum(muij.^2,2));
         newlab(ii)=indmin;
         mindist(ii)=mind;
     end
