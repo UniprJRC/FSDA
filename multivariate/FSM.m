@@ -1129,7 +1129,7 @@ if (signal==1)
                 gposcurax=get(gca,'position');
                 % set the width and the height of the current pane but keep
                 % unaltered the distance from bottom left corner
-                set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.3]);
+                set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.21]);
                 % Subplots located on the left hand side
                 plleft=1:nc:(nr*(nc-1)+1);
                 % Subplots located on the right hand side
