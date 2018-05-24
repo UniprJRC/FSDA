@@ -2,7 +2,7 @@ function out=CorAna(N, varargin)
 %CorAna performs correspondence analysis
 %
 % Correspondence analysis is a statistical technique that provides a
-% graphical representation of contingency tables. 
+% graphical representation of contingency tables.
 % The function also deals with "supplementary points", that is additional
 % rows and columns which have meaningful profiles that are projected onto
 % the low-dimensional subspace and their positions relative to the active
@@ -41,7 +41,7 @@ function out=CorAna(N, varargin)
 %       Sup  :  Structure containing indexes or names of supplementary rows
 %               or columns. Structure. Structure with the following fields.
 %               Sup.r = vector containing row indexes or vector of cell
-%                       array of strings or table or 2D numeric array, 
+%                       array of strings or table or 2D numeric array,
 %                       containing supplementary rows.
 %                       If indexes or cell array of strings are supplied in
 %                       a vector, we assume that supplementary rows belong
@@ -56,18 +56,18 @@ function out=CorAna(N, varargin)
 %                         'Senior-Employees' of the input contingency table
 %                         as supplementary rows. Of course the length of
 %                         Sup.r must be smaller than the number of rows of
-%                         the contigencey matrix divided by 2. 
+%                         the contigencey matrix divided by 2.
 %                      - if Sup.r is a table, or a 2D array
 %                         supplementary rows do not belong to N. Note that
 %                         if Sup.r is a table, the labels of the rows are
 %                         taken directly from the table. If on the other
-%                         hand Sup.r is a matrix the names of the rows 
+%                         hand Sup.r is a matrix the names of the rows
 %                         of the supplementary units can be given using
 %                         Sup.Lr as a cell array of strings.
 %               Sup.Lr = cell array of strings containing the labels of the
 %                       supplementary units if Sup.r is a 2D numeric array.
 %               Sup.c = vector containing column indexes or vector of cell
-%                       array of strings or table or 2D numeric array 
+%                       array of strings or table or 2D numeric array
 %                       use as supplementary columns, or table or 2D
 %                       numeric array containing supplementary rows.
 %                       If indexes or cell array of strings are supplied in
@@ -89,7 +89,7 @@ function out=CorAna(N, varargin)
 %                         supplementary columns do not belong to N. Note that
 %                         if Sup.c is a table, the labels of the columns are
 %                         taken directly from the table. If on the other
-%                         hand Sup.c is a matrix the names of the columns 
+%                         hand Sup.c is a matrix the names of the columns
 %                         of the supplementary units can be given using
 %                         Sup.Lc as a cell array of strings.
 %               Sup.Lc = cell array of strings containing the labels of the
@@ -222,10 +222,17 @@ function out=CorAna(N, varargin)
 %  out :     A structure containing the following fields
 %
 %
+% 		out.Lr         =  cell of length $I$ containing the labels of
+%                         active rows (i.e. the rows which participated to
+%                         the fit).
+% 		out.Lc         =  cell of length $J$ containing the labels of
+%                         active columns (i.e. the columns which participated to
+%                         the fit).
 % 		out.N         =   $I$-by-$J$-array containing contingency table
-%                         referred to active rows (i.e. referred to the rows which
-%                         participated to the fit).
-%                         The $(i,j)$-th element is equal to $n_{ij}$,
+%                         referred to active rows and active columns (i.e.
+%                         referred to the rows/columns which participated
+%                         to the fit). The $(i,j)$-th element is equal to
+%                         $n_{ij}$,
 %                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
 %                         sum of the elements of out.P is $n$ (the grand
 %                         total).
@@ -314,6 +321,16 @@ function out=CorAna(N, varargin)
 %                         V=\sqrt{Chi2stat/(n (\min(I,J)-1))}
 %                         \]
 %                         Cramer's index goes between 0 and 1.
+% out.InertiaExplained =  matrix with 4 columnn.
+%                         - First column contains the singular values (the
+%                           sum of the squared singular values is the total
+%                           inertia).
+%                         - Second column contains the eigenvalues (the sum
+%                           of the eigenvalues is the total inertia).
+%                         - Third column contains the variance explained by
+%                           each latent dimension.
+%                         - Fourth column contains the cumulative variance
+%                           explained by each dimension.
 % 		out.RowsPri   =   $I$-by-$K$ matrix containing principal coordinates
 %                         of rows.
 %                         \[
@@ -435,22 +452,6 @@ function out=CorAna(N, varargin)
 % out.sqrtDim2InertiaCols = $I$-by-$K$ matrix containing correlation of
 %                          column points with latent dimension axes. Similar
 %                          to component loadings in PCA.
-% 		out.SupRowsN   =  matlab table containing contingency table referred
-%                         to supplementary rows. If there are no
-%                         supplementary rows this field is empty.
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
-% 		out.SupColsN  =   matlab table containing contingency table related
-%                         to supplementary columns. If there are no
-%                         supplementary columns this field is empty.
-%                         This output is present just if your MATLAB
-%                         version is not<2013b.
-% 	out.RowsPriSup    =   Principal coordinates of supplementary rows.
-% 	out.RowsStaSup    =   Standard coordinates of supplementary rows.
-%   out.RowsSymSup    =   Symmetrical coordinates of supplementary rows.
-% 	out.ColsPriSup    =   Principal coordinates of supplementary columns.
-% 	out.ColsStaSup    =   Standard coordinates of of supplementary columns.
-%   out.ColsSymSup    =   Symmetrical coordinates of supplementary columns.
 %      out.Summary    =   $K$-times-4 table containing summary results
 %                         for correpondence analysis.
 %                         First column contains the singular values (the
@@ -513,6 +514,50 @@ function out=CorAna(N, varargin)
 %                         explanation of the inertia of the point.
 %                         This output is present just if your MATLAB
 %                         version is not<2013b.
+% 		out.LrSup         =  cell containing the labels of the
+%                         supplementary rows (i.e. the rows whicg did not
+%                         participate to the fit).
+% 		out.LcSup         =  cell containing the labels of
+%                         supplementary columns (i.e. the columns which did
+%                         not participate to the fit).
+% 		out.SupRowsN   =  matrix of size length(LrSup)-by-c
+%                         referred to supplementary rows. If there are no
+%                         supplementary rows this field is not present.
+%  out.SupRowsNtable   =  Same as out.SupRowsN but in table format (with row and
+%                         column names). This is the contingency table referred
+%                         to supplementary rows. If there are no
+%                         supplementary rows this field is not present.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
+% 		out.SupColsN  =   matlab of size r-by-length(LcSup) referred to
+%                         supplementary columns.
+%                         If there are no supplementary columns this field
+%                         is not present.
+% out.SupColsNtable  =   Same as out.SupColsN but in table format (with row and
+%                         column names). This is the contingency table referred
+%                         to supplementary columns.
+%                         If there are no supplementary columns this field
+%                         is not present.
+%                         This output is present just if your MATLAB
+%                         version is not<2013b.
+% 	out.RowsPriSup    =   Principal coordinates of supplementary rows.
+%                         If there are no supplementary rows this field
+%                         is not present.
+% 	out.RowsStaSup    =   Standard coordinates of supplementary rows.
+%                         If there are no supplementary rows this field
+%                         is not present.
+%   out.RowsSymSup    =   Symmetrical coordinates of supplementary rows.
+%                         If there are no supplementary rows this field
+%                         is not present.
+% 	out.ColsPriSup    =   Principal coordinates of supplementary columns.
+%                         If there are no supplementary columns this field
+%                         is not present.
+% 	out.ColsStaSup    =   Standard coordinates of of supplementary columns.
+%                         If there are no supplementary columns this field
+%                         is not present.
+%   out.ColsSymSup    =   Symmetrical coordinates of supplementary columns.
+%                         If there are no supplementary columns this field
+%                         is not present.
 %
 % See also crosstab, rcontFS, CressieRead
 %
@@ -534,7 +579,7 @@ function out=CorAna(N, varargin)
 %
 % Acknowledgements:
 %
-% This function has been written following code developed by:
+% This function has been inspired by the code developed by:
 % Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
 % Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
 % and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
@@ -577,9 +622,52 @@ function out=CorAna(N, varargin)
 %}
 
 %{
-    %% CorAna with original data matrix as input.
+    % CorAna with original data matrix as input.
     load smoke
     out=CorAna(smoke.data,'datamatrix',true);
+%}
+
+%{
+    %% CorAna with supplementary rows and supplementary columns.
+    % Children data
+    % Active rows = 1:15
+    % Active columns = 1:5
+    N=[51	64	32	29	17	59	66	70;
+    53	90	78	75	22	115	117	86;
+    71	111	50	40	11	79	88	177;
+    1	7	5	5	4	9	8	5;
+    7	11	4	3	2	2	17	18;
+    7	13	12	11	11	18	19	17;
+    21	37	14	26	9	14	34	61;
+    12	35	19	6	7	21	30	28;
+    10	7	7	3	1	8	12	8;
+    4	7	7	6	2	7	6	13;
+    8	22	7	10	5	10	27	17;
+    25	45	38	38	13	48	59	52;
+    18	27	20	19	9	13	29	53;
+    35	61	29	14	12	30	63	58;
+    2	4	3	1	4	nan  nan	nan	  ;
+    2	8	2	5	2	nan  nan	nan;
+    1	5	4	6	3	nan  nan	nan;
+    3	3	1	3	4	nan  nan	nan];
+    % rowslab = cell containing row labels
+    rowslab={'money','future','unemployment','circumstances',...
+    'hard','economic','egoism','employment','finances',...
+    'war','housing','fear','health','work','comfort','disagreement',...
+    'world','to_live'};
+    % colslab = cell containing column labels
+    colslab={'unqualified','cep','bepc','high_school_diploma','university',...
+    'thirty','fifty','more_fifty'};
+    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+    % Extract just active rows and active columns
+    Nactive=tableN(1:14,1:5);
+    % Define tables containing supplementary rows and supplementary cols
+    Nsupr=tableN(15:18,1:5);
+    Nsupc=tableN(1:14,6:8);
+    Sup=struct;
+    Sup.r=Nsupr;
+    Sup.c=Nsupc;
+    out=CorAna(Nactive,'Sup',Sup);
 %}
 
 %% Beginning of code
@@ -606,12 +694,12 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    [N,~,~,labels] =crosstab(N(:,1),N(:,2));
+    [N,~,~,labelsTab] =crosstab(N(:,1),N(:,2));
     [I,J]=size(N);
     % default labels for rows of contingency table
-    Lr=labels(1:I,1);
+    Lr=labelsTab(1:I,1);
     % default labels for columns of contingency table
-    Lc=labels(1:J,2);
+    Lc=labelsTab(1:J,2);
     if ~verMatlab
         % Make valid names
         Lr=matlab.lang.makeValidName(Lr);
@@ -716,8 +804,9 @@ if ~verMatlab
     Nredtable = Ntable;
 end
 
+
+
 if ~isempty(Sup)
-    labels=struct;
     
     % if Sup.r (Sup.c) is a cell or is character or it is a numeric vector,
     % then the supplementary rows (columns) belong to the the actual
@@ -742,35 +831,39 @@ if ~isempty(Sup)
                 end
             end
             
-            labels.sr = Lr;
-            labels.sr = labels.sr(Indexesr);
+            LrSup = Lr;
+            LrSup = LrSup(Indexesr);
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lr(Indexesr) = [];
             
         elseif ~verMatlab && istable(Sup.r)
             Indexesr='';
-            Nsupr=table2array(Sup.r);
-            labels.sr=Sup.r.Properties.RowNames;
+            SupRowsN=table2array(Sup.r);
+            LrSup=Sup.r.Properties.RowNames;
+            SupRowsNtable=Sup.r;
         elseif  ~isvector(Sup.r)
-             Indexesr='';
-            % In this case there is a matrix (not a table) and labels are supplied separately 
-            Nsupr=Sup.r;
-            labels.sr=Sup.Lr;
+            Indexesr='';
+            % In this case there is a matrix (not a table) and labels are supplied separately
+            SupRowsN=Sup.r;
+            LrSup=Sup.Lr;
+            if ~verMatlab
+                SupRowsNtable=array2table(SupRowsN,'RowNames',labels.sr,'VariableNames',Lc);
+            end
             
         else
             Indexesr=Sup.r;
             if min(Indexesr)<1 || max(Indexesr)> size(N,1)
                 error('FSDA:CorAna:wrongInput',['Numeric indexes of supplementary rows must be integers between 1 and ' num2str(size(N,1))])
             end
-            labels.sr=Lr;
-            labels.sr = labels.sr(Indexesr);
+            LrSup=Lr;
+            LrSup = LrSup(Indexesr);
             % Delete the labels of contingency table associated to supplementary rows
             Lr(Indexesr)=[];
         end
-        % out.labels.sr = labels.sr;
     else
         Indexesr='';
+        LrSup='';
     end
     % end of part referred to labels for supplementary rows
     
@@ -791,97 +884,112 @@ if ~isempty(Sup)
                     Indexesc(i)=find(strcmp(Sup.c(i),Lc),1);
                 end
             end
-            labels.sc=Lc;
-            labels.sc = labels.sc(Indexesc); %#ok<STRNU>
+            LcSup=Lc;
+            LcSup = LcSup(Indexesc);
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lc(Indexesc)=[];
             
         elseif ~verMatlab && istable(Sup.c)
             Indexesc='';
-            Nsupc=table2array(Sup.c);
-            labels.sc=Sup.c.Properties.VariableNames; %#ok<STRNU>
+            SupColsN=table2array(Sup.c);
+            LcSup=Sup.c.Properties.VariableNames;
+            SupColsNtable=Sup.c;
             
         elseif  ~isvector(Sup.c)
-                         Indexesc='';
-            % In this case there is a matrix (not a table) and labels are supplied separately 
-            Nsupc=Sup.c;
-            labels.sc=Sup.Lc; %#ok<STRNU>
-
+            Indexesc='';
+            % In this case there is a matrix (not a table) and labels are supplied separately
+            SupColsN=Sup.c;
+            LcSup=Sup.Lc;
+            if ~verMatlab
+                SupColsNtable=array2table(SupColsN,'RowNames',Lr,'VariableNames',LcSup);
+            end
         else
             
             Indexesc=Sup.c;
             if min(Indexesc)<1 || max(Indexesc)> size(N,2)
                 error('FSDA:CorAna:wrongInput',['Numeric indexes of supplementary columns must be integers between 1 and ' num2str(size(N,2))])
             end
-            labels.sc=Lc;
-            labels.sc = labels.sc(Indexesc); %#ok<STRNU>
+            LcSup=Lc;
+            LcSup = LcSup(Indexesc);
             % Delete the labels of contingency table associated to
             % supplementary rows
             Lc(Indexesc)=[];
             
         end
-        %  out.labels.sc = labels.sc;
     else
         Indexesc='';
+        LcSup='';
     end
+    
     
     % if ~isempty(Indexesr) this means that supplementary rows belong to
     % matrix N
     if ~isempty(Indexesr)
         % Contingency table referred to supplementary rows.
         if ~isempty(Indexesc)
-            Nsupr=N(Indexesr,Indexesc);
+            SupRowsN=N(Indexesr,Indexesc);
             if ~verMatlab
-                Nsuprtable=Ntable(Indexesr,Indexesc);
+                SupRowsNtable=Ntable(Indexesr,Indexesc);
             end
         else
-            Nsupr=N(Indexesr,:);
+            SupRowsN=N(Indexesr,:);
             if ~verMatlab
-                Nsuprtable=Ntable(Indexesr,:);
+                SupRowsNtable=Ntable(Indexesr,:);
             end
         end
-    else
-        Nsuprtable='';
-    end
-    
-    % if ~isempty(Indexesc) this means that supplementary columns belong to
-    % matrix N
-    if ~isempty(Indexesc)
-        % Contingency table referred to supplementary columns.
-        if ~isempty(Indexesr)
-            Nsupc=N(Indexesr,Indexesc);
-            if ~verMatlab
-                Nsupctable=Ntable(Indexesr,Indexesc);
-            end
-        else
-            Nsupc=N(:,Indexesc);
-            if ~verMatlab
-                Nsupctable=Ntable(:,Indexesc);
-            end
-        end
-    else
-        Nsupctable='';
-    end
-    
-    % Delete the rows and columns of contingency table associated to
-    % supplementary rows and/or associated to supplementary columns
-    if ~isempty(Indexesr)
+        % 2020
+        % %     else
+        % %     end
+        %
+        %         %  Delete the rows and columns of contingency table associated to
+        %         %  supplementary rows
+        % %     if ~isempty(Indexesr)
         Nred(Indexesr,:)=[];
         if ~verMatlab
             Nredtable(Indexesr,:)=[];
         end
     end
     
+    
+    % if ~isempty(Indexesc) this means that supplementary columns belong to
+    % matrix N
     if ~isempty(Indexesc)
+        % Contingency table referred to supplementary columns.
+        if ~isempty(Indexesr)
+            SupColsN=N(Indexesr,Indexesc);
+            if ~verMatlab
+                SupColsNtable=Ntable(Indexesr,Indexesc);
+            end
+        else
+            SupColsN=N(:,Indexesc);
+            if ~verMatlab
+                SupColsNtable=Ntable(:,Indexesc);
+            end
+        end
+        %2020
+        %     else
+        %         %   SupColsNtable='';
+        %     end
+        %
+        %
+        %     if ~isempty(Indexesc)
+        %         %  Delete the columns of contingency table associated to
+        %         %  supplementary columns
+        
         Nred(:,Indexesc)=[];
         if ~verMatlab
             Nredtable(:,Indexesc)=[];
         end
     end
+else
+    LrSup='';
+    LcSup='';
 end
+out.Lr=Lr;
+out.Lc=Lc;
 
-if verMatlab==0
+if ~verMatlab
     % Store contingency table (in Matlab table format)
     out.N=Nred;
     % Store contingency table (in Matlab table format)
@@ -996,6 +1104,7 @@ cumsumTotalInertia = cumsum(diag(Gam2))/TotalInertia;
 % - Fourth column contains the cumulative variance explained by each
 %   dimension.
 InertiaExplained=[diag(Gam) diag(Gam2) diag(Gam2 / TotalInertia) cumsumTotalInertia];
+out.InertiaExplained=InertiaExplained;
 
 % Principal coordinates of rows  (alpha=1 for the rows) F=...
 RowsPri     = Dr^(-1/2) * U*Gam;
@@ -1081,42 +1190,32 @@ out.sqrtDim2InertiaCols = sqrtDim2InertiaCols;
 if exist('Sup','var')
     %Supplementary rows
     if isfield(Sup,'r')
-         if ~verMatlab
-        % Store table referred to supplementary rows
-        out.SupRowsN = Nsuprtable;
-         end
-         
+        
         % The sum of each row of h must be equal to 1
         % h=Nsup(Indexesr,:)/(diag(sum(Nsup(Indexesr,:))));
-        h=bsxfun(@rdivide,Nsupr,sum(Nsupr,2));
+        h=bsxfun(@rdivide,SupRowsN,sum(SupRowsN,2));
         
         RowsPriSup=h*ColsSta;             %Principal coordinates of supplementary rows
         RowsStaSup=h*ColsSta*Gam^(-1);    %Standard coordinates of supplementary rows
         RowsSymSup=h*ColsSta*Gam^(-1/2);  %Symmetrical coordinates of supplementary rows
-        out.RowsPriSup=RowsPriSup;
-        out.RowsStaSup=RowsStaSup;
-        out.RowsSymSup=RowsSymSup;
         % rrc=(Gsup(:,1:k).*Gsup(:,1:k))/trace(Gsup(:,1:k)'*Gsup(:,1:k));
     end
     
     %Supplementary columns
     if isfield(Sup,'c')
-         if ~verMatlab
-        % Store table referred to supplementary columns
-        out.SupColsN = Nsupctable;
-         end
-         
+        
+        
         % The sum of each column of h must be equal to 1
-        h=Nsupc/(diag(sum(Nsupc)));
+        h=SupColsN/(diag(sum(SupColsN)));
         ColsPriSup=h'*RowsSta;                              %Principal coordinates of supplementary columns
         ColsStaSup=h'*RowsSta*Gam^(-1);                     %Standard coordinates of supplementary columns
         ColsSymSup=h'*RowsSta*Gam^(-1/2);                   %Symmetrical coordinates of supplementary columns
-        out.ColsPriSup=ColsPriSup;
-        out.ColsStaSup=ColsStaSup;
-        out.ColsSymSup=ColsSymSup;
         %     rrc=(Gsup(:,1:k).*Gsup(:,1:k))/trace(Gsup(:,1:k)'*Gsup(:,1:k));
     end
 end
+
+d1str=num2str(d1);
+d2str=num2str(d2);
 
 if isstruct(plots) || plots==1
     FontName='Times';
@@ -1251,8 +1350,6 @@ if isstruct(plots) || plots==1
     % Color for symbols and text for supplementary column points
     colorsupcols='r';
     
-    d1str=num2str(d1);
-    d2str=num2str(d2);
     
     figure
     hold('on')
@@ -1286,8 +1383,8 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeR 'Sup(:,d1),' typeR 'Sup(:,d2),' propsupR ')'])
-        %         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),''' labels.sr{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
-        eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),labels.sr,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
+        %         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),''' LrSup{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
+        eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),LrSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
         
     end
     
@@ -1297,8 +1394,8 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeC 'Sup(:,d1),' typeC 'Sup(:,d2),' propsupC ')'])
-        % eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),''' labels.sc{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
-        eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),labels.sc,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
+        % eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),''' LcSup{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
+        eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),LcSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
     end
     
     % Make axis equal and add cartesian axes
@@ -1307,6 +1404,9 @@ if isstruct(plots) || plots==1
     vv=axis;
     line([vv(1);vv(2)],[0;0])
     line([0;0],[vv(3);vv(4)])
+else
+    typeR='RowsPri';        % rows are in principal coordinates
+    typeC='ColsPri';        % columns are in principal coordinates
     
 end
 % Score Rows and ScoreCols respectively contain scores for rows and columns
@@ -1441,7 +1541,7 @@ if dispresults==true
     %    if isstruct(Sup) && isfield(Sup,'r')
     %         propsupR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsuprows ,''',''Color'',''', colorsuprows , ''',''MarkerFaceColor'',''', colorsuprows ,'''');
     %         eval(['plot(' typeR 'sup(:,d1),' typeR 'sup(:,d2),' propsupR ')'])
-    %         eval(['text(' typeR 'sup(:,d1),' typeR 'sup(:,d2),labels.sr,''Interpreter'',''None'')'])
+    %         eval(['text(' typeR 'sup(:,d1),' typeR 'sup(:,d2),LrSup,''Interpreter'',''None'')'])
     %
     %
     %     disp(['Results for dimension: ' d1str])
@@ -1477,6 +1577,42 @@ if dispresults==true
     % The values of the cos2 are forced to be between 0 and 1
     % If a row item is well represented by two dimensions, the sum of the
     % Dim2Inertia is close to one.
+    
+    
+    % Store labels of supplementary rows and supplementary units
+    out.LrSup = LrSup;
+    out.LcSup = LcSup;
+    
+    % Store information for supplementary rows and columns (if they are present)
+    if exist('Sup','var')
+        %Supplementary rows
+        if isfield(Sup,'r')
+            % Store supplementary rows in matrix format
+            out.SupRowsN=SupRowsN;
+            if ~verMatlab
+                % Store supplementary rows in table format
+                out.SupRowsNtable = SupRowsNtable;
+            end
+            out.RowsPriSup=RowsPriSup;
+            out.RowsStaSup=RowsStaSup;
+            out.RowsSymSup=RowsSymSup;
+        end
+        
+        %Supplementary columns
+        if isfield(Sup,'c')
+            % Store supplementary columns in matrix format
+            out.SupColsN=SupColsN;
+            if ~verMatlab
+                % Store table referred to supplementary columns
+                out.SupColsNtable = SupColsNtable;
+            end
+            
+            out.ColsPriSup=ColsPriSup;
+            out.ColsStaSup=ColsStaSup;
+            out.ColsSymSup=ColsSymSup;
+        end
+    end
+    
 end
 
 end
