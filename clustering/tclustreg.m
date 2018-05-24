@@ -1140,7 +1140,7 @@ for i =1:nselected
     
     
     %% CONCENTRATION STEPS
-    
+
     indold = zeros(n,1)-1;
     for cstep = 1:refsteps
         
@@ -1312,6 +1312,7 @@ for i =1:nselected
                 
                 
                 [disc,indmax] = max(ll,[],2);
+
                 postprob=zeronk;
                 for j=1:k
                     postprob(indmax==j,j)=1;
@@ -1398,15 +1399,18 @@ for i =1:nselected
                             %The MCD is applied only when p=1, because in this case it is faster
                             %than the FS.
                             if p-intercept==1
-                                [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alphaX)/njj,'betathresh',1);
+
                                 %R2016a has introduced robustcov, which could be used here as below.
                                 %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
                                 %[~,~,mah,~,~] = robustcov(inliers,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
                                 %plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
                                 %close;
                                 if alphaX>0.5
+                                    [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alphaX)/njj,'betathresh',1);
                                     trimj=REW.outliers;
                                 else
+                                    [~,REW]      = mcd(Xjnointercept,'msg',0,'betathresh',1);
+
                                     [~,indmdsor] = sort(REW.md);
                                     % Trimmed units (after second level
                                     % trimming)
