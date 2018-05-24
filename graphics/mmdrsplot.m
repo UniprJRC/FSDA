@@ -153,7 +153,13 @@ function mmdrsplot(out,varargin)
 %       laby    :   y axis title. Character. A label for the y-axis (default: 'Minimum Mahalnobis distance')
 %                   Example - 'laby','mmd'
 %                   Data Types - char
-%        scaled :   scaled or unscaled envelopes. Boolean. Use reference envelopes scaled or unscaled).
+%       labenv  :   label the envelopes. Boolean. 
+%                   If labenv is true (default) labels of the confidence
+%                   envelopes which are used are added on the y axis.
+%                   Example - 'labenv',false
+%                   Data Types - boolean
+%        scaled :   scaled or unscaled envelopes. Boolean. 
+%                   Use reference envelopes scaled or unscaled).
 %                   If scaled=1 the envelopes are produced for
 %                   scaled Mahalanobis distances (no consistency factor is
 %                   applied) else the traditional consistency factor is applied
@@ -325,7 +331,7 @@ options=struct('quant', quant,...
     'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mmdrs',...
     'datatooltip','','databrush','',...
-    'titl','','labx',labx,'laby',laby,'nameY','','label','','envm',n,'scaled',0);
+    'titl','','labx',labx,'laby',laby,'nameY','','label','','envm',n,'scaled',0,'labenv',true);
 
 if nargin<1
     error('FSDA:mmdrsplot:missingInputs','A required input argument is missing.')
@@ -421,10 +427,14 @@ lwd=options.lwd;
 lwdenv=options.lwdenv;
 
 % FontSize = font size of the axes labels
-FontSize =options.FontSize;
+FontSize=options.FontSize;
 
 % FontSizeAxes = font size for the axes numbers
 SizeAxesNum=options.SizeAxesNum;
+
+% labenv = add labels to the nevelopes
+labenv=options.labenv;
+
 
 init=mmdrs(1,1);
 if init-v==0
@@ -488,7 +498,7 @@ for i=1:length(quant)
         end
     end
     
-    
+    if labenv == true
     annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
         'HorizontalAlignment','center',...
         'VerticalAlignment','middle',...
@@ -496,6 +506,7 @@ for i=1:length(quant)
         'BackgroundColor','none',...
         'FitBoxToText','off',...
         'FontSize',FontSize);
+    end
 end
 
 
@@ -567,7 +578,6 @@ end
 %% Brush mode (call to function selectdataFS)
 
 if ~isempty(options.databrush) || isstruct(options.databrush)
-    
     
     if isstruct(options.databrush)
         
