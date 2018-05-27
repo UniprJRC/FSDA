@@ -6,7 +6,13 @@ function out=CorAna(N, varargin)
 % The function also deals with "supplementary points", that is additional
 % rows and columns which have meaningful profiles that are projected onto
 % the low-dimensional subspace and their positions relative to the active
-% elements is determined.
+% elements is determined. The typical results consist of a set of
+% eigenvalues, a table with the row coordinates, and a table with the
+% column coordinates. The eigenvalues provide information of the
+% variability in the data. The row coordinates provide information about
+% the structure of the rows in the analyzed table. The column coordinates
+% provide information about the structure of the columns in the analyzed
+% table.
 %
 %<a href="matlab: docsearchFS('CorAna')">Link to the help function</a>
 %
@@ -189,9 +195,6 @@ function out=CorAna(N, varargin)
 %                   D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
 %                   \Gamma^{1-\alpha})^T D_c^{1/2}$ and
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.
-%              plots.dim = vector with two elements which specifies which
-%                   dimensions to show in the factor map. The default is to
-%                   show the first two dimensions, therefore plots.dim=[1 2]
 %              plots.FontSize = scalar which specifies the font size of row
 %                   (column) labels. The default value is 10.
 %              plots.MarkerSize = scalar which specifies the marker size
@@ -559,7 +562,7 @@ function out=CorAna(N, varargin)
 %                         If there are no supplementary columns this field
 %                         is not present.
 %
-% See also crosstab, rcontFS, CressieRead
+% See also crosstab, rcontFS, CressieRead, CorAnaplot
 %
 % References:
 %
@@ -848,7 +851,7 @@ if ~isempty(Sup)
             SupRowsN=Sup.r;
             LrSup=Sup.Lr;
             if ~verMatlab
-                SupRowsNtable=array2table(SupRowsN,'RowNames',labels.sr,'VariableNames',Lc);
+                SupRowsNtable=array2table(SupRowsN,'RowNames',LrSup,'VariableNames',Lc);
             end
             
         else
@@ -874,7 +877,7 @@ if ~isempty(Sup)
                 Sup.c=matlab.lang.makeValidName(Sup.c);
             end
             
-            % find the indexes of the rows to delete (rows to use as
+            % Find the indexes of the rows to delete (rows to use as
             % supplementary rows)
             Indexesc=zeros(length(Sup.c),1);
             for i=1:length(Sup.c)
@@ -938,13 +941,7 @@ if ~isempty(Sup)
                 SupRowsNtable=Ntable(Indexesr,:);
             end
         end
-        % 2020
-        % %     else
-        % %     end
-        %
-        %         %  Delete the rows and columns of contingency table associated to
-        %         %  supplementary rows
-        % %     if ~isempty(Indexesr)
+        
         Nred(Indexesr,:)=[];
         if ~verMatlab
             Nredtable(Indexesr,:)=[];
@@ -967,15 +964,6 @@ if ~isempty(Sup)
                 SupColsNtable=Ntable(:,Indexesc);
             end
         end
-        %2020
-        %     else
-        %         %   SupColsNtable='';
-        %     end
-        %
-        %
-        %     if ~isempty(Indexesc)
-        %         %  Delete the columns of contingency table associated to
-        %         %  supplementary columns
         
         Nred(:,Indexesc)=[];
         if ~verMatlab
@@ -1204,9 +1192,9 @@ if exist('Sup','var')
     %Supplementary columns
     if isfield(Sup,'c')
         
-        
         % The sum of each column of h must be equal to 1
-        h=SupColsN/(diag(sum(SupColsN)));
+        % h=SupColsN/(diag(sum(SupColsN)));
+        h=bsxfun(@rdivide,SupColsN,sum(SupColsN,1));
         ColsPriSup=h'*RowsSta;                              %Principal coordinates of supplementary columns
         ColsStaSup=h'*RowsSta*Gam^(-1);                     %Standard coordinates of supplementary columns
         ColsSymSup=h'*RowsSta*Gam^(-1/2);                   %Symmetrical coordinates of supplementary columns
@@ -1242,7 +1230,7 @@ if isstruct(plots) || plots==1
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
                 typeR='RowsSym';        % rows are in symmetrical coordinates
-                typeC='RowsSym';        % columns are in symmetrical coordinates
+                typeC='ColsSym';        % columns are in symmetrical coordinates
                 titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} \Gamma V^{1/2}$';
                 
             elseif strcmp(plots.alpha,'bothprincipal')
@@ -1383,7 +1371,6 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeR 'Sup(:,d1),' typeR 'Sup(:,d2),' propsupR ')'])
-        %         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),''' LrSup{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
         eval(['text(' typeR 'Sup(:,d1)+' num2str(addx) ',' typeR 'Sup(:,d2),LrSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorrows ''')'])
         
     end
@@ -1394,7 +1381,6 @@ if isstruct(plots) || plots==1
             ''',''MarkerSize'',', num2str(MarkerSize)   ,'');
         
         eval(['plot(' typeC 'Sup(:,d1),' typeC 'Sup(:,d2),' propsupC ')'])
-        % eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),''' LcSup{:} ''',''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
         eval(['text(' typeC 'Sup(:,d1)+' num2str(addx) ',' typeC 'Sup(:,d2),LcSup,''Interpreter'',''None'',''FontSize'',' num2str(FontSize) ',''Color'',''' colorcols ''')'])
     end
     
@@ -1578,42 +1564,43 @@ if dispresults==true
     % If a row item is well represented by two dimensions, the sum of the
     % Dim2Inertia is close to one.
     
-    
-    % Store labels of supplementary rows and supplementary units
-    out.LrSup = LrSup;
-    out.LcSup = LcSup;
-    
-    % Store information for supplementary rows and columns (if they are present)
-    if exist('Sup','var')
-        %Supplementary rows
-        if isfield(Sup,'r')
-            % Store supplementary rows in matrix format
-            out.SupRowsN=SupRowsN;
-            if ~verMatlab
-                % Store supplementary rows in table format
-                out.SupRowsNtable = SupRowsNtable;
-            end
-            out.RowsPriSup=RowsPriSup;
-            out.RowsStaSup=RowsStaSup;
-            out.RowsSymSup=RowsSymSup;
+end
+
+% Store labels of supplementary rows and supplementary units
+out.LrSup = LrSup;
+out.LcSup = LcSup;
+
+% Store information for supplementary rows and columns (if they are present)
+if exist('Sup','var')
+    %Supplementary rows
+    if isfield(Sup,'r')
+        % Store supplementary rows in matrix format
+        out.SupRowsN=SupRowsN;
+        if ~verMatlab
+            % Store supplementary rows in table format
+            out.SupRowsNtable = SupRowsNtable;
         end
-        
-        %Supplementary columns
-        if isfield(Sup,'c')
-            % Store supplementary columns in matrix format
-            out.SupColsN=SupColsN;
-            if ~verMatlab
-                % Store table referred to supplementary columns
-                out.SupColsNtable = SupColsNtable;
-            end
-            
-            out.ColsPriSup=ColsPriSup;
-            out.ColsStaSup=ColsStaSup;
-            out.ColsSymSup=ColsSymSup;
-        end
+        out.RowsPriSup=RowsPriSup;
+        out.RowsStaSup=RowsStaSup;
+        out.RowsSymSup=RowsSymSup;
     end
     
+    %Supplementary columns
+    if isfield(Sup,'c')
+        % Store supplementary columns in matrix format
+        out.SupColsN=SupColsN;
+        if ~verMatlab
+            % Store table referred to supplementary columns
+            out.SupColsNtable = SupColsNtable;
+        end
+        
+        out.ColsPriSup=ColsPriSup;
+        out.ColsStaSup=ColsStaSup;
+        out.ColsSymSup=ColsSymSup;
+    end
 end
+
+
 
 end
 %FScategory:MULT-Categorical
