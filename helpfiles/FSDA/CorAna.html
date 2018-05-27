@@ -353,57 +353,14 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
                    the relationships between categories of row and column
                    variables rather than in the distances among rows or
                    among columns. 'symbiplot' can also be specified
-                   setting plots.alpha=0.5;</p> <p>
+                   setting plots.alpha=0.5;</p><p>
                If $plots.alpha='bothprincipal'$, both the rows and columns
                    are depicted in principal coordinates. Such a plot is
                    often referred to as a symmetrical plot or French
                    symemtrical model. Note that such a symmetrical plot
                    does not provide a feasible solution in the sense that
                    it does not approximate matrix
-                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.</p> <p>
-               If $plots.alpha='rowgab'$, rows are in principal coordinates
-                   and columns are in standard coordinates multiplied by
-                   the mass. This biplot has been suggested by Gabriel and
-                   Odoroff (1990).</p> <p>
-               If $plots.alpha='colgab'$, columns are in principal coordinates
-                   and rows are in standard coordinates multiplied by the
-                   mass. This biplot has been suggested by Gabriel and
-                   Odoroff (1990).</p> <p>
-               If $plots.alpha='rowgreen'$, rows are in principal
-                   coordinates and columns are in standard coordinates
-                   multiplied by square root of the mass.</p> <p>
-                  This biplot has been suggested by Greenacre and
-                  incorporates the contribution of points. In this
-                  display, points that contribute very little to the
-                  solution, are close to the center of the biplot and are
-                  relatively unimportant to the interpretation. This
-                  biplot is often referred as contribution biplot because
-                  it visually shows the most contributing points
-                  (Greenacre 2006b).</p> <p>
-               If $plots.alpha='colgreen'$, columns in principal coordinates
-                   and rows in standard coordinates multiplied by the
-                   square root of the mass.</p> <p>
-                   This biplot has been suggested by Greenacre and
-                   incorporates the contribution of points. In this
-                   display, points that contribute very little to the
-                   solution, are close to the center of the biplot and are
-                   relatively unimportant to the interpretation. This
-                   biplot is often referred as contribution biplot because
-                   it shows visually the most contributing points
-                   (Greenacre 2006b).</p><p>
-               If $plots.alpha=scalar$ in the interval [0 1], row
-                   coordinates are given by $D_r^{-1/2} U \Gamma^\alpha$
-                   and column coordinates are given by $D_c^{-1/2} V
-                   \Gamma^{1-\alpha}$. Note that for any choice of $\alpha$
-                   the matrix product $ D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
-                   \Gamma^{1-\alpha})^T$ optimally approximates matrix
-                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$, in the sense that the
-                   sum of squared differences between $D_r^{1/2}
-                   D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
-                   \Gamma^{1-\alpha})^T D_c^{1/2}$ and
-                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.</p></p></td></tr><tr valign="top"><td><code>dim</code></td><td><p>vector with two elements which specifies which
-                   dimensions to show in the factor map. The default is to
-                   show the first two dimensions, therefore plots.dim=[1 2]</p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>scalar which specifies the font size of row
+                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.</p></p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>scalar which specifies the font size of row
                    (column) labels. The default value is 10.</p></td></tr><tr valign="top"><td><code>MarkerSize</code></td><td><p>scalar which specifies the marker size
                    of symbols associated with rows or columns. The default
                    value is 10.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
@@ -714,4 +671,4 @@ CntrbDim2In = relative contribution of latent dimension to explain total Inertia
  and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
  (See References).</p><p>
 
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="CorAnaplot.html" itemprop="url"><span itemprop="name"><code>CorAnaplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

@@ -154,47 +154,6 @@ function out=CorAna(N, varargin)
 %                   does not provide a feasible solution in the sense that
 %                   it does not approximate matrix
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.
-%               If $plots.alpha='rowgab'$, rows are in principal coordinates
-%                   and columns are in standard coordinates multiplied by
-%                   the mass. This biplot has been suggested by Gabriel and
-%                   Odoroff (1990).
-%               If $plots.alpha='colgab'$, columns are in principal coordinates
-%                   and rows are in standard coordinates multiplied by the
-%                   mass. This biplot has been suggested by Gabriel and
-%                   Odoroff (1990).
-%               If $plots.alpha='rowgreen'$, rows are in principal
-%                   coordinates and columns are in standard coordinates
-%                   multiplied by square root of the mass.
-%                  This biplot has been suggested by Greenacre and
-%                  incorporates the contribution of points. In this
-%                  display, points that contribute very little to the
-%                  solution, are close to the center of the biplot and are
-%                  relatively unimportant to the interpretation. This
-%                  biplot is often referred as contribution biplot because
-%                  it visually shows the most contributing points
-%                  (Greenacre 2006b).
-%               If $plots.alpha='colgreen'$, columns in principal coordinates
-%                   and rows in standard coordinates multiplied by the
-%                   square root of the mass.
-%                   This biplot has been suggested by Greenacre and
-%                   incorporates the contribution of points. In this
-%                   display, points that contribute very little to the
-%                   solution, are close to the center of the biplot and are
-%                   relatively unimportant to the interpretation. This
-%                   biplot is often referred as contribution biplot because
-%                   it shows visually the most contributing points
-%                   (Greenacre 2006b).
-%               If $plots.alpha=scalar$ in the interval [0 1], row
-%                   coordinates are given by $D_r^{-1/2} U \Gamma^\alpha$
-%                   and column coordinates are given by $D_c^{-1/2} V
-%                   \Gamma^{1-\alpha}$. Note that for any choice of $\alpha$
-%                   the matrix product $ D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
-%                   \Gamma^{1-\alpha})^T$ optimally approximates matrix
-%                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$, in the sense that the
-%                   sum of squared differences between $D_r^{1/2}
-%                   D_r^{-1/2} U \Gamma^\alpha (D_c^{-1/2} V
-%                   \Gamma^{1-\alpha})^T D_c^{1/2}$ and
-%                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.
 %              plots.FontSize = scalar which specifies the font size of row
 %                   (column) labels. The default value is 10.
 %              plots.MarkerSize = scalar which specifies the marker size
@@ -1238,46 +1197,6 @@ if isstruct(plots) || plots==1
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
                     'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
-                
-            elseif strcmp(plots.alpha,'rowgab')
-                %  If plots.alpha='rowgab'  rows are in principal coordinates
-                %  and columns are in standard coordinates multiplied by the
-                %  mass.
-                typeR='RowsPri';        % rows are in principal coordinates
-                ColsStaDc=Dc*ColsSta;
-                typeC=ExtractVariableName(ColsStaDc);
-                titl={'Rows principal coordinates, and column standard coordinates times masses' , ...
-                    '$\alpha=1$,$X=D_r^{-1/2}U\Gamma $ and $Y= D_c^{1/2} V$'};
-                
-            elseif strcmp(plots.alpha,'colgab')
-                % If plots.alpha='colgab'  columns are in principal coordinates
-                % and rows are in standard coordinates multiplied by the
-                % masses.
-                RowsStaDr=Dr*RowsSta;
-                typeR=ExtractVariableName(RowsStaDr);
-                typeC='ColsPri';        % columns are in principal coordinates
-                titl={'Rows standard coordinates multiplied by masses ' , ...
-                    'and column principal coordinates $X=D_r^{-1/2} U$ and $Y= D_c^{-1/2} V \Gamma$'};
-                
-            elseif strcmp(plots.alpha,'rowgreen')
-                %  If plots.alpha='rowgreen'  rows are in principal
-                %  coordinates and columns are in standard coordinates
-                %  multiplied by square root of the mass.
-                typeR='RowsPri';        % rows are in principal coordinates
-                ColsStaDcSqrt=(Dc^(1/2))*ColsSta;
-                typeC= ExtractVariableName(ColsStaDcSqrt);
-                titl={'Rows principal coordinates, and column standard coordinates ' , ...
-                    'times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$'};
-                
-            elseif strcmp(plots.alpha,'colgreen')
-                %  If plots.alpha='colgreen' columns in principal coordinates
-                %  and rows in standard coordinates multiplied by the square
-                %  root of the mass.
-                RowsStaDrSqrt=(sqrt(Dr))*RowsSta;
-                typeR=ExtractVariableName(RowsStaDrSqrt);
-                typeC='ColsPri';        % columns are in principal coordinates
-                titl={'Rows standard coordinates times sqrt of masses,' ...
-                    'and column principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$'};
                 
             else
                 if isnumeric(plots.alpha)
