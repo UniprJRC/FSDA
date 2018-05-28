@@ -110,15 +110,19 @@ X=smoke.data;
 labels_rows=labels(1:I,1);
 labels_columns=labels(1:J,2);
 
+
+out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'plots',0,'dispresults',false);
 plots=struct;
-plots.alpha='rowprincipal';
-plots.alpha='colprincipal';
-plots.alpha='bothprincipal';
 plots.alpha='rowgab';
 plots.alpha='colgab';
 plots.alpha='rowgreen';
 plots.alpha='colgreen';
-out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'plots',plots);
+% Add confidence ellipses
+confellipse=1;
+plots.alpha='bothprincipal';
+plots.alpha='rowprincipal';
+plots.alpha='colprincipal';
+CorAnaplot(out,'plots',plots,'confellipse',confellipse)
 
 %% Correspondence analysis of the children dataset (1)
 % The data used here are a contingency table that summarizes the answers
@@ -228,9 +232,7 @@ rowslab={'Laundry' 'Main_meal' 'Dinner' 'Breakfeast' 'Tidying' 'Dishes' ...
 colslab={'Wife'	'Alternating'	'Husband'	'Jointly'};
 
 % In this section we explore options inside input structure plots
-plots.alpha='colgreen';
 plots.alpha='rowprincipal';
-plots.alpha='rowgab';
 
 if ~verLessThan('matlab','8.3.0')
     tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
