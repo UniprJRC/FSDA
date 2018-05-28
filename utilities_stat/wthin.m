@@ -23,8 +23,8 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %
 %   retainby  :  retention method. String. The function used to retain the
 %                observations. It can be:
-%                - 'comp2one', i.e. 1 - pdfe/max(pdfe))
-%                - 'inverse' (default),  i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+%                - 'inverse' , i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+%                - 'comp2one' (default),  i.e. 1 - pdfe/max(pdfe))
 %                Data Types - char
 %                Example - 'method','comp2one'
 %
@@ -182,7 +182,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % for reasons of performance options are checked only if necessary
 if nargin > 1
     
-    options     = struct('retainby','inverse','bandwidth',0);
+    options     = struct('retainby','comp2one','bandwidth',0);
     UserOptions = varargin(1:2:length(varargin));
     if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
         error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -215,7 +215,7 @@ if nargin > 1
             % if the user has chosen a bandwidth, we may want to provide
             % a support too. For the moment we leave it unbounded, which is
             % the default of ksdensity.
-            support = 'unbounded';%'positive';
+            support = 'unbounded';%'positive ';
             %Remark: if we want to provide the support for the density
             %estimation, then the support should include the data values
             %interval. The quantity 'e' that exceeds the interval should
@@ -307,8 +307,8 @@ if retainby == 0
     % in this case the user has not provided optional arguments and accept
     % all defaults. For performance reasons, the 'switch' statement is
     % skipped and the default 'comp2one' function is applied.
-    %pretain = 1 - pdfe/max(pdfe);
-     pretain = (1 ./ pdfe) / max((1 ./ pdfe));
+    pretain = 1 - pdfe/max(pdfe);
+    % pretain = (1 ./ pdfe) / max((1 ./ pdfe));
 else
     switch retainby
         case 'comp2one'

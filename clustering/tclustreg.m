@@ -521,12 +521,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 
 
 
-% for benchmark purposes, set bench=1: four new output will be produced
-% containing, for each sample and for each refining step the value of the
-% (1) objective function (obj_all), (2) sigma2 in each group
-% (sigmaini_all), (3) beta in each group (Beta_all), (4) weights of each
-% observation (w4trim_all).
-bench = 0;
+
 
 %% initializations
 
@@ -554,15 +549,6 @@ end
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
-
-
-if bench == 1
-    obj_all = NaN(300,10);
-    sigmaini_all = NaN(300,10,k);
-    Beta_all = NaN(300,10,p,k);
-    w4trim_all = NaN(300,10,n);
-end
-
 
 
 
@@ -622,12 +608,6 @@ if nargin>6
                 y    = y(Wt4);
                 %recompute n
                 n = size(y,1);
-                if bench == 1
-                    obj_all = NaN(300,10);
-                    sigmaini_all = NaN(300,10,k);
-                    Beta_all = NaN(300,10,p,k);
-                    w4trim_all = NaN(300,10,n);
-                end
             end
         end
     end
@@ -1615,24 +1595,6 @@ for i =1:nselected
         
         % disp([cstep obj sum(indmax<=0)])
         
-        %monitoring of obj, sigma and w4trim
-        if bench == 1
-            obj_all(i,cstep) = obj;
-            sigmaini_all(i,cstep,:) = sigma2ini;
-            w4trim_all(i,cstep,:) = w4trim;
-            Beta_all(i,cstep,:,:)=Beta;
-            
-            %                     if p==1+intercept
-            %                         figure;
-            %                         gscatter(X(:,intercept+1),y,indmax);
-            %                         hold on;
-            %                         for ss =1:k
-            %                             line([0 max(X(:,intercept+1))],[Beta(1,ss) Beta(:,ss)*max(X)])
-            %                         end
-            %                         title(['nsamp=' num2str(iter) ', obj = ' num2str(obj) ', s1=' num2str(sigmaini(1)), ', s2=' num2str(sigmaini(2))])
-            %                     end
-            
-        end
         
     end % End of concentration steps
     
@@ -1743,12 +1705,6 @@ if mixt == 2
     out.postprobopt     = postprobopt;
 end
 out.restrfact           = restrfact;
-if bench ==1
-    out.obj_all = obj_all;
-    out.sigmaini_all = sigmaini_all;
-    out.w4trim_all = w4trim_all;
-    out.Beta_all = Beta_all;
-end
 % Store the indices in varargout
 if nargout==2
     varargout={C};
