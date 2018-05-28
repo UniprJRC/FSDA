@@ -45,7 +45,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %                   it is found that unit UnitsSameGroup(r) has already
 %                   been assigned to groups 1, 2, ..., r-1).
 %
-%   OldAndNewIndexes   : indexes of the permuatios associated with IDX{1,1}. 
+%   OldAndNewIndexes   : indexes of the permutations associated with IDX{1,1}. 
 %                       r-by-2 matrix. 
 %                       Matrix of size r-by-2 which keeps track of all the
 %                       permutations which have been done. For example if 

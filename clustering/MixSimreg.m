@@ -223,7 +223,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               The default value of resN is 100.
 %                 Example - 'resN',3 
 %                 Data Types - double
-%         tol : toleramce. Vector of length 2. 
+%         tol : tolerance. Vector of length 2. 
 %               - tol(1) (which will be called tolmap) specifies
 %                 the tolerance between the requested and empirical
 %                 misclassification probabilities (default is 1e-06).

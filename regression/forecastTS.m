@@ -3,9 +3,10 @@ function [outFORE] = forecastTS(outEST,varargin)
 %
 %<a href="matlab: docsearchFS('forecastTS')">Link to the help function</a>
 %
-% forecastTS produces forecasts for a time series with trend (up to third order),
-% seasonality (constant or of varying amplitude) with a different number of
-% harmonics and a level shifta and explanatory variables.
+% forecastTS produces forecasts with confidence bands for a time series
+% with trend (up to third order), seasonality (constant or of varying
+% amplitude) with a different number of harmonics, level shift and
+% explanatory variables.
 %
 %  Required input arguments:
 %
