@@ -1,5 +1,5 @@
 function CorAnaplot(out,varargin)
-%CorAnaplot draws the Correspondence Analysis (CA) graphs.
+%CorAnaplot draws the Correspondence Analysis (CA) graphs with confidence ellipses.
 %
 % The typical graphic in a correspondence analysis is to visualize the data
 % in a two dimensional space using the first two extracted coordinates from
