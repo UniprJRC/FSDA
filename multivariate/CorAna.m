@@ -939,9 +939,10 @@ end
 out.Lr=Lr;
 out.Lc=Lc;
 
+% Store contingency table (in 2D array format)
+out.N=Nred;
+
 if ~verMatlab
-    % Store contingency table (in Matlab table format)
-    out.N=Nred;
     % Store contingency table (in Matlab table format)
     out.Ntable = Nredtable;
 end

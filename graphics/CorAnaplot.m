@@ -379,18 +379,30 @@ function CorAnaplot(out,varargin)
     % colslab = cell containing column labels
     colslab={'unqualified','cep','bepc','high_school_diploma','university',...
         'thirty','fifty','more_fifty'};
-    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-    % Extract just active rows
-    Nactive=tableN(1:14,1:5);
-    Nsupr=tableN(15:18,1:5);
-    Nsupc=tableN(1:14,6:8);
-    Sup=struct;
-    Sup.r=Nsupr;
-    Sup.c=Nsupc;
-    % Compute Correspondence analysis
-    out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
-    % Rows and columns are show in princicipal coordinates
-    CorAnaplot(out)
+    if verLessThan('matlab','8.2.0')==0
+        tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+        % Extract just active rows
+        Nactive=tableN(1:14,1:5);
+        Nsupr=tableN(15:18,1:5);
+        Nsupc=tableN(1:14,6:8);
+        Sup=struct;
+        Sup.r=Nsupr;
+        Sup.c=Nsupc;
+        % Compute Correspondence analysis
+    else
+        Nactive=N(1:14,1:5);
+        Lr=rowslab(1:14);
+        Lc=colslab(1:5);
+        Sup=struct;
+        Sup.r=N(15:end,1:5);
+        Sup.Lr=rowslab(15:end);
+        Sup.c=N(1:14,6:8);
+        Sup.Lc=colslab(6:8);
+        
+        out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
+        % Rows and columns are showN in principal coordinates
+        CorAnaplot(out)
+    end
 %}
 
 %{
@@ -472,14 +484,26 @@ function CorAnaplot(out,varargin)
     % colslab = cell containing column labels
     colslab={'unqualified','cep','bepc','high_school_diploma','university',...
         'thirty','fifty','more_fifty'};
-    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-    % Extract just active rows
-    Nactive=tableN(1:14,1:5);
-    Nsupr=tableN(15:18,1:5);
-    Nsupc=tableN(1:14,6:8);
-    Sup=struct;
-    Sup.r=Nsupr;
-    Sup.c=Nsupc;
+    if verLessThan('matlab','8.2.0')==0
+        tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+        % Extract just active rows
+        Nactive=tableN(1:14,1:5);
+        Nsupr=tableN(15:18,1:5);
+        Nsupc=tableN(1:14,6:8);
+        Sup=struct;
+        Sup.r=Nsupr;
+        Sup.c=Nsupc;
+    else
+        Nactive=N(1:14,1:5);
+        Lr=rowslab(1:14);
+        Lc=colslab(1:5);
+        Sup=struct;
+        Sup.r=N(15:end,1:5);
+        Sup.Lr=rowslab(15:end);
+        Sup.c=N(1:14,6:8);
+        Sup.Lc=colslab(6:8);
+    end
+
     % Superimpose confidence ellipses for rows 2 and 4 and for column 3
     confellipse=struct;
     confellipse.selRows=[2 4];
@@ -529,15 +553,26 @@ function CorAnaplot(out,varargin)
     % colslab = cell containing column labels
     colslab={'unqualified','cep','bepc','high_school_diploma','university',...
         'thirty','fifty','more_fifty'};
-    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-    % Extract just active rows
-    Nactive=tableN(1:14,1:5);
-    Nsupr=tableN(15:18,1:5);
-    Nsupc=tableN(1:14,6:8);
-    Sup=struct;
-    Sup.r=Nsupr;
-    Sup.c=Nsupc;
-    % Superimpose confidence ellipses for rows 2 and 4 and for column 3
+    if verLessThan('matlab','8.2.0')==0
+        tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+        % Extract just active rows
+        Nactive=tableN(1:14,1:5);
+        Nsupr=tableN(15:18,1:5);
+        Nsupc=tableN(1:14,6:8);
+        Sup=struct;
+        Sup.r=Nsupr;
+        Sup.c=Nsupc;
+    else
+        Nactive=N(1:14,1:5);
+        Lr=rowslab(1:14);
+        Lc=colslab(1:5);
+        Sup=struct;
+        Sup.r=N(15:end,1:5);
+        Sup.Lr=rowslab(15:end);
+        Sup.c=N(1:14,6:8);
+        Sup.Lc=colslab(6:8);
+    end
+    % Superimpose confidence ellipses 
     confellipse=struct;
     % No confdence ellipse for row points
     confellipse.selRows=[];
@@ -557,7 +592,7 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    % Correpondence analysis plot with dimensions 3 and 4.
+    % Correpondence analysis plot using latent dimensions 3 and 4.
     N=[51	64	32	29	17	59	66	70;
         53	90	78	75	22	115	117	86;
         71	111	50	40	11	79	88	177;
@@ -584,19 +619,30 @@ function CorAnaplot(out,varargin)
     % colslab = cell containing column labels
     colslab={'unqualified','cep','bepc','high_school_diploma','university',...
         'thirty','fifty','more_fifty'};
-    tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
-    % Extract just active rows
-    Nactive=tableN(1:14,1:5);
-    Nsupr=tableN(15:18,1:5);
-    Nsupc=tableN(1:14,6:8);
-    Sup=struct;
-    Sup.r=Nsupr;
-    Sup.c=Nsupc;
-    % Superimpose confidence ellipses for rows 2 and 4 and for column 3
+    if verLessThan('matlab','8.2.0')==0
+        tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+        % Extract just active rows
+        Nactive=tableN(1:14,1:5);
+        Nsupr=tableN(15:18,1:5);
+        Nsupc=tableN(1:14,6:8);
+        Sup=struct;
+        Sup.r=Nsupr;
+        Sup.c=Nsupc;
+    else
+        Nactive=N(1:14,1:5);
+        Lr=rowslab(1:14);
+        Lc=colslab(1:5);
+        Sup=struct;
+        Sup.r=N(15:end,1:5);
+        Sup.Lr=rowslab(15:end);
+        Sup.c=N(1:14,6:8);
+        Sup.Lc=colslab(6:8);
+    end
+    % Superimpose ellipses 
     confellipse=struct;
     % Ellipse for the first 3 row points
     confellipse.selRows=1:3;
-    % Ellipse for all the column points using a Boolean vector
+    % Ellipse for selected column points using a Boolean vector
     confellipse.selCols=[ false false true true false];
 
     % Compare methods 'multinomial' and 'bootCols'
@@ -614,10 +660,10 @@ function CorAnaplot(out,varargin)
 %}
 
 %{
-    %% Correpondence analysis of the smoke data. 
-    % In this examples we compare the results which are obtained using
+    %% Correpondence analysis of the smoke data.
+    % In this example we compare the results which are obtained using
     % option  plots.alpha='colprincipal'; (which implicitly implies
-    % alpha=0) with those which come out imposing directly plots.alpha=0. 
+    % alpha=0) with those which come out imposing directly plots.alpha=0.
     load smoke
     X=smoke.data;
     [N,~,~,labels]=crosstab(X(:,1),X(:,2));
@@ -1451,9 +1497,14 @@ if isstruct(confellipse) || confellipse ==1
         'rows BootRows', 'cols BootRows';
         'rows BootCols' 'cols BootCols'};
     legallLEG=[legall{selmethods(:)}];
-    % hColsMultinomial hColsBootRows hColsBootCols
-    legend(legallLEG,...
-        legstring(selmethods(:)),'AutoUpdate','off')
+    
+    if verLessThanFS(9.2)==0
+        % hColsMultinomial hColsBootRows hColsBootCols
+        legend(legallLEG,...
+            legstring(selmethods(:)),'AutoUpdate','off')
+    else
+        legend(legallLEG,legstring(selmethods(:)))
+    end
     
     if methodcount ==0
         warning('FSDA:CorAnaplot:WrongInputOpt','Valid methods not found in input cell confellipse.method')
