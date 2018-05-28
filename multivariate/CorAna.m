@@ -890,9 +890,10 @@ if ~isempty(Sup)
     if ~isempty(Indexesr)
         % Contingency table referred to supplementary rows.
         if ~isempty(Indexesc)
-            SupRowsN=N(Indexesr,Indexesc);
+            selcols=setdiff(1:J,Indexesc);
+            SupRowsN=N(Indexesr,selcols);
             if ~verMatlab
-                SupRowsNtable=Ntable(Indexesr,Indexesc);
+                SupRowsNtable=Ntable(Indexesr,selcols);
             end
         else
             SupRowsN=N(Indexesr,:);
@@ -913,9 +914,11 @@ if ~isempty(Sup)
     if ~isempty(Indexesc)
         % Contingency table referred to supplementary columns.
         if ~isempty(Indexesr)
-            SupColsN=N(Indexesr,Indexesc);
+            selrows=setdiff(1:I,Indexesr);
+            
+            SupColsN=N(selrows,Indexesc);
             if ~verMatlab
-                SupColsNtable=Ntable(Indexesr,Indexesc);
+                SupColsNtable=Ntable(selrows,Indexesc);
             end
         else
             SupColsN=N(:,Indexesc);
@@ -1179,12 +1182,15 @@ if isstruct(plots) || plots==1
                 typeC='ColsSta'; % columns are in standard coordinates
                 titl={'Rows principal coordinates, and column standard coordinates' , ...
                     '$\alpha=1$, $X=D_r^{-1/2}U\Gamma$ and $Y= D_c^{-1/2} V$'};
-                
+                typeRdesc='Row scores in principal coordinates';
+                typeCdesc='Column scores in standard coordinates';
             elseif strcmp(plots.alpha,'colprincipal')
                 typeR='RowsSta'; % rows are in standard coordinates
                 typeC='ColsPri'; % columns are in principal coordinates
                 titl={'Rows standard coordinates, and column principal coordinates' , ...
                     '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$'};
+                typeRdesc='Row scores in standard coordinates';
+                typeCdesc='Column scores in principal coordinates';
                 
             elseif strcmp(plots.alpha,'symbiplot')
                 % equivalent to alpha=0.5
@@ -1192,11 +1198,16 @@ if isstruct(plots) || plots==1
                 typeC='ColsSym';        % columns are in symmetrical coordinates
                 titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} \Gamma V^{1/2}$';
                 
+                typeRdesc='Row scores in symmetric coordinates';
+                typeCdesc='Column scores in symmetric coordinates';
+                
             elseif strcmp(plots.alpha,'bothprincipal')
                 typeR='RowsPri';        % rows are in principal coordinates
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
                     'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+                typeCdesc='Column scores in principal coordinates';
+                typeRdesc='Row scores in principal coordinates';
                 
             else
                 if isnumeric(plots.alpha)
@@ -1209,6 +1220,10 @@ if isstruct(plots) || plots==1
                     else
                         error('FSDA:CorAna:WrongInputOpt','Value of plots.alpha must lie in the interval [0 1]')
                     end
+                    
+                    typeRdesc='Row scores in standard coordinates * \Gamma^alpha';
+                    typeCdesc='Column scores in standard coordinates*\Gamma^{1-alpha}';
+                    
                 else
                     listStrings={'rowprincipal'; 'colprincipal'; 'symbiplot'; 'bothprincipal'; 'rowgab'; 'colgab'; 'rowgreen'; 'colgreen'};
                     warning('FSDA:CorAna:WrongInputOpt',['Input string ''' plots.alpha ''' is  not found'])
@@ -1222,6 +1237,9 @@ if isstruct(plots) || plots==1
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'French symmetrical model: rows and cols in principal coordinates.' ...
                 'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+            typeRdesc='Row scores in principal coordinates';
+            typeCdesc='Column scores in principal coordinates';
+            
         end
         
         if isfield(plots,'FontSize')
@@ -1242,6 +1260,8 @@ if isstruct(plots) || plots==1
             'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
         FontSize=FontSizedef;
         MarkerSize=MarkerSizedef;
+        typeRdesc='Row scores in principal coordinates';
+        typeCdesc='Column scores in principal coordinates';
         
     end
     symbolrows='o';
@@ -1435,33 +1455,15 @@ if dispresults==true
     
     disp('-----------------------------------------------------------')
     disp('Legend')
+    disp(typeRdesc)
+    disp(typeCdesc)
+    
     disp('CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension')
     disp('              The sum of the numbers in a column is equal to 1')
     disp('CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point')
     disp('              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1')
     
-    %TODO
-    %     disp('SUPPLEMENTARY ROW POINTS')
-    %     disp(['Results for dimension: ' d1str])
-    %    if isstruct(Sup) && isfield(Sup,'r')
-    %         propsupR=strcat('''LineStyle'',','''none''',',''Marker'',''', symbolsuprows ,''',''Color'',''', colorsuprows , ''',''MarkerFaceColor'',''', colorsuprows ,'''');
-    %         eval(['plot(' typeR 'sup(:,d1),' typeR 'sup(:,d2),' propsupR ')'])
-    %         eval(['text(' typeR 'sup(:,d1),' typeR 'sup(:,d2),LrSup,''Interpreter'',''None'')'])
-    %
-    %
-    %     disp(['Results for dimension: ' d1str])
-    %     Tabresults=array2table(eval(strcat('[',typeR,'(:,', d1str ,') ARC(:,', d1str ,')    QCOR_r(:,', d1str ,')         ]')));
-    %     Tabresults.Properties.RowNames=Lr;
-    %     Tabresults.Properties.VariableNames={'Scores', 'ctr' 'cos2'};
-    %     disp(Tabresults)
-    %
-    %     disp(['Results for dimension: ' d2str])
-    %     Tabresults=array2table(eval(strcat('[',typeR,'(:,', d2str ,') ARC(:,', d2str ,')    QCOR_r(:,', d2str ,')         ]')));
-    %     Tabresults.Properties.RowNames=Lr;
-    %     Tabresults.Properties.VariableNames={'Scores', 'ctr' 'cos2'};
-    %     disp(Tabresults)
-    %
-    %    end
+    
     
     % Point2Inertia= relative contribution or each point to the inertia of the
     % dimension.
@@ -1483,6 +1485,12 @@ if dispresults==true
     % If a row item is well represented by two dimensions, the sum of the
     % Dim2Inertia is close to one.
     
+    
+    %TODO
+    % OverviewRowsSup
+    % Overview for supplementary row points
+    % OVerviewColsSup
+    % Overview for supplementary column points
 end
 
 % Store labels of supplementary rows and supplementary units
@@ -1518,8 +1526,6 @@ if exist('Sup','var')
         out.ColsSymSup=ColsSymSup;
     end
 end
-
-
 
 end
 %FScategory:MULT-Categorical
