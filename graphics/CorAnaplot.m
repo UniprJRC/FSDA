@@ -310,7 +310,13 @@ function CorAnaplot(out,varargin)
 %                 default value of d2 is 2.
 %                 Example - 'd2',3
 %                 Data Types - single | double%
-%
+%           h : the axis handle of a figure where to send the CorAnaplot.
+%               This can be used to host the CorAnaplot in a subplot of a
+%               complex figure formed by different panels (for example a panel
+%               with CorAnaplot from plots.alpha=0.2 and another
+%               with CorAnaplot from plots.alpha=0.5).
+%               Example -'h',h1 where h1=subplot(2,1,1)
+%               Data Types - Axes object (supplied as a scalar)
 % Output:
 %
 %
@@ -607,13 +613,43 @@ function CorAnaplot(out,varargin)
     CorAnaplot(out,'plots',1,'confellipse',confellipse,'d1',d1,'d2',d2)
 %}
 
+%{
+    %% Correpondence analysis of the smoke data. 
+    % In this examples we compare the results which are obtained using
+    % option  plots.alpha='colprincipal'; (which implicitly implies
+    % alpha=0) with those which come out imposing directly plots.alpha=0. 
+    load smoke
+    X=smoke.data;
+    [N,~,~,labels]=crosstab(X(:,1),X(:,2));
+    [I,J]=size(N);
+    labels_rows=labels(1:I,1);
+    labels_columns=labels(1:J,2);
+
+    out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'plots',0,'dispresults',false);
+    plots=struct;
+    plots.alpha='rowgab';
+    plots.alpha='colgab';
+    plots.alpha='rowgreen';
+    plots.alpha='colgreen';
+    % Add confidence ellipses
+    confellipse=1;
+    plots.alpha='bothprincipal';
+    plots.alpha='rowprincipal';
+    plots.alpha='colprincipal';
+    h1=subplot(1,2,1);
+    CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h1)
+    h2=subplot(1,2,2);
+    plots.alpha=0;
+    CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);
+%}
+
 %% Initialization
 % Default font size for labels of rows or colums to add to the plot
 FontSizedef=10;
 MarkerSizedef=10;
 
 options=struct('plots',1,'xlimx','','ylimy','','changedimsign',[false false],...
-    'addx',0.04,'confellipse',0,'d1',1,'d2',2);
+    'addx',0.04,'confellipse',0,'d1',1,'d2',2,'h','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -638,6 +674,8 @@ Lr=out.Lr;
 Lc=out.Lc;
 LrSup=out.LrSup;
 LcSup=out.LcSup;
+
+h=options.h;
 
 InertiaExplained=out.InertiaExplained;
 Gam=diag(InertiaExplained(:,1));
@@ -815,9 +853,10 @@ if isstruct(plots)
                 'times sqrt of masses $X=D_r^{-1/2}U\Gamma $ and $Y= V$'};
             typeRSup='RowsPriSup';        % rows are in principal coordinates
             
-            ColsStaDcSqrtSup=(diag(sum(SupColsN,1)/n))^(1/2)*ColsStaSup;
-            typeCSup= ExtractVariableName(ColsStaDcSqrtSup);
-            
+            if ~isempty(LcSup)
+                ColsStaDcSqrtSup=(diag(sum(SupColsN,1)/n))^(1/2)*ColsStaSup;
+                typeCSup= ExtractVariableName(ColsStaDcSqrtSup);
+            end
             
         elseif strcmp(plots.alpha,'colgreen')
             %  If plots.alpha='colgreen' columns in principal coordinates
@@ -828,11 +867,11 @@ if isstruct(plots)
             typeC='ColsPri';        % columns are in principal coordinates
             titl={'Rows standard coordinates times sqrt of masses,' ...
                 'and columns principal coordinates, $X=U $ and $G= D_c^{-1/2} V \Gamma$'};
-            RowsStaDrSqrtSup=sqrt(diag(sum(SupRowsN,2)/n))*RowsStaSup;
-            
-            typeRSup=ExtractVariableName(RowsStaDrSqrtSup);
+            if ~isempty(LrSup)
+                RowsStaDrSqrtSup=sqrt(diag(sum(SupRowsN,2)/n))*RowsStaSup;
+                typeRSup=ExtractVariableName(RowsStaDrSqrtSup);
+            end
             typeCSup='ColsPriSup';        % columns are in principal coordinates
-            
         else
             if isnumeric(plots.alpha)
                 if plots.alpha>=0 && plots.alpha<=1
@@ -841,13 +880,16 @@ if isstruct(plots)
                     typeR=ExtractVariableName(RowsAlpha);
                     typeC=ExtractVariableName(ColsAlpha);
                     titl=['$\alpha='  num2str(plots.alpha) '\qquad   X=D_r^{-1/2} U \Gamma^{' num2str(plots.alpha) '}$ and $Y= D_c^{-1/2} V \Gamma^{1-'  num2str(plots.alpha) '}$'];
-                    
-                    h=bsxfun(@rdivide,SupRowsN,sum(SupRowsN,2));
-                    RowsAlphaSup= h*ColsSta *Gam^(plots.alpha-1);
-                    h=bsxfun(@rdivide,SupColsN,sum(SupColsN,1));
-                    ColsAlphaSup= h'*RowsSta* Gam^(-plots.alpha);
-                    typeRSup=ExtractVariableName(RowsAlphaSup);
-                    typeCSup=ExtractVariableName(ColsAlphaSup);
+                    if ~isempty(LrSup)
+                        hm=bsxfun(@rdivide,SupRowsN,sum(SupRowsN,2));
+                        RowsAlphaSup= hm*ColsSta *Gam^(plots.alpha-1);
+                        typeRSup=ExtractVariableName(RowsAlphaSup);
+                    end
+                    if ~isempty(LcSup)
+                        hm=bsxfun(@rdivide,SupColsN,sum(SupColsN,1));
+                        ColsAlphaSup= hm'*RowsSta* Gam^(-plots.alpha);
+                        typeCSup=ExtractVariableName(ColsAlphaSup);
+                    end
                 else
                     error('FSDA:CorAnaplot:WrongInputOpt','Value of plots.alpha must lie in the interval [0 1]')
                 end
@@ -984,14 +1026,20 @@ end
 Carows= eval(typeR);
 Cacols= eval(typeC);
 
-figure
+% Create the figure that will host the CorAnaplot
+hfig = figure('Name', 'Correspondence analysis plot', 'NumberTitle', 'off',...
+    'Tag','pl_CorAna');
+
+% Get figure's axis
+afig = axes('Parent',hfig);
+
 hold('on')
 % Plot row points
-plot(Carows(:,d1),Carows(:,d2),'LineStyle','none','Marker',SymbolRows ,'Color', ColorRows , ...
+plot(afig,Carows(:,d1),Carows(:,d2),'LineStyle','none','Marker',SymbolRows ,'Color', ColorRows , ...
     'MarkerSize',MarkerSize,'MarkerFaceColor', MarkerFaceColorRows)
 
 % Plot column points
-plot(Cacols(:,d1),Cacols(:,d2),'LineStyle','none','Marker',SymbolCols ,'Color', ColorCols , ...
+plot(afig,Cacols(:,d1),Cacols(:,d2),'LineStyle','none','Marker',SymbolCols ,'Color', ColorCols , ...
     'MarkerSize',MarkerSize,'MarkerFaceColor', MarkerFaceColorCols)
 
 % Add labels for row points and column points
@@ -1001,16 +1049,11 @@ addx=options.addx;
 text(Carows(:,d1)+addx , Carows(:,d2), Lr,'Interpreter','None','FontSize',FontSize,'Color', ColorRows )
 text(Cacols(:,d1)+addx , Cacols(:,d2), Lc,'Interpreter','None','FontSize',FontSize,'Color', ColorCols )
 
-title(titl,'Interpreter','Latex');
-
-% Labels for axes
-xlabel(['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
-ylabel(['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'],'FontName', FontName, 'FontSize', FontSizeAxisLabels);
 
 % Add points and text associated to supplementary rows
 if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
-    plot(CarowsSup(:,d1),CarowsSup(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
+    plot(afig,CarowsSup(:,d1),CarowsSup(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
     text(CarowsSup(:,d1)+addx , CarowsSup(:,d2), LrSup,'Interpreter','None','FontSize',FontSize,'Color', ColorRowsSup )
 end
@@ -1018,7 +1061,7 @@ end
 % Add points and text associated to supplementary columns
 if ~isempty(LcSup)
     CacolsSup= eval(typeCSup);
-    plot(CacolsSup(:,d1),CacolsSup(:,d2),'LineStyle','none','Marker',SymbolColsSup ,...
+    plot(afig,CacolsSup(:,d1),CacolsSup(:,d2),'LineStyle','none','Marker',SymbolColsSup ,...
         'Color', ColorColsSup , 'MarkerFaceColor', MarkerFaceColorColsSup, 'MarkerSize',MarkerSize)
     text(CacolsSup(:,d1)+addx , CacolsSup(:,d2), LcSup,'Interpreter','None','FontSize',FontSize,'Color', ColorColsSup )
 end
@@ -1233,10 +1276,10 @@ if isstruct(confellipse) || confellipse ==1
                 outext.RowsStaDrSqrtSup=RowsStaDrSqrtSup;
                 
             elseif isnumeric(plots.alpha) && plots.alpha>=0 && plots.alpha<=1
-                h=bsxfun(@rdivide,Arows,sum(Arows,2));
-                outext.RowsAlphaSup=h*outext.ColsSta *Gam^(plots.alpha-1);
-                h=bsxfun(@rdivide,Acols,sum(Acols,1));
-                outext.ColsAlphaSup= h'*outext.RowsSta* Gam^(-plots.alpha);
+                hm=bsxfun(@rdivide,Arows,sum(Arows,2));
+                outext.RowsAlphaSup=hm*outext.ColsSta *Gam^(plots.alpha-1);
+                hm=bsxfun(@rdivide,Acols,sum(Acols,1));
+                outext.ColsAlphaSup= hm'*outext.RowsSta* Gam^(-plots.alpha);
             else
             end
         end
@@ -1420,7 +1463,7 @@ if isstruct(confellipse) || confellipse ==1
         listStrings={'multinomial', 'bootRows', 'bootCols'};
         disp(listStrings)
         error('FSDA:CorAnaplot:WrongInputOpt','Please use one of the above strings inside cell confellipse.method')
-    elseif methodcount < length(confellipse.method)
+    elseif isstruct(confellipse) && methodcount < length(confellipse.method)
         warning('FSDA:CorAnaplot:WrongInputOpt','Some methods specified in input cell confellipse.method are not valid')
         listStrings={'multinomial', 'bootRows', 'bootCols'};
         disp('Valid methods are')
@@ -1438,13 +1481,32 @@ if isstruct(confellipse) || confellipse ==1
     %     sup.r=A1suprow;
     %     Ntable=out.Ntable;
     %     outext=CorAna(Ntable,'Sup',sup,'plots',0);
+end
+
+
+if ~isempty(h)
+    % Eventually send the CorAnaxplot into a different figure/subplot
+    hfigh = get(h,'Parent');
     
-    
-    % Make axes equal and add cartesian axes
-    axis(gca,'equal')
-    vv=axis;
-    line([vv(1);vv(2)],[0;0])
-    line([0;0],[vv(3);vv(4)])
+    set(hfigh,'Name','Correspondene analysis plot','NumberTitle','off');
+    set(h,'Tag','pl_subplot');
+    copyobj(allchild(afig),h);
+    pause(0.0000001);
+    delete(hfig);
     
 end
 
+title(titl,'Interpreter','Latex');
+
+% Labels for axes
+xlab=['Dimension ',sprintf('%2.0f',d1),' (',sprintf('%5.1f',InertiaExplained(d1,3)*100),'%)'];
+xlabel(xlab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+ylab=['Dimension ',sprintf('%2.0f',d2),' (',sprintf('%5.1f',InertiaExplained(d2,3)*100),'%)'];
+ylabel(ylab,'FontName', FontName, 'FontSize', FontSizeAxisLabels);
+% Make axes equal and add cartesian axes
+axis(gca,'equal')
+vv=axis;
+line([vv(1);vv(2)],[0;0])
+line([0;0],[vv(3);vv(4)])
+
+end
