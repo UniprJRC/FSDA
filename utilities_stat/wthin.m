@@ -1,5 +1,5 @@
 function [Wt,pretain,varargout] = wthin(X,varargin)
-%WTHIN thin a uni/bi-dimensional dataset
+%Thins a uni/bi-dimensional dataset
 %
 %<a href="matlab: docsearchFS('wthin')">Link to the help page for this function</a>
 %

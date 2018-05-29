@@ -1,5 +1,5 @@
 function [out]=regressHhar(y,X,Z,varargin)
-%regressH fits a multiple linear regression model with Harvey heteroskedasticity
+%Fits a multiple linear regression model with Harvey heteroskedasticity
 %
 %<a href="matlab: docsearchFS('regressHhar')">Link to the help function</a>
 %

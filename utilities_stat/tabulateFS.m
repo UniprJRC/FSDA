@@ -1,5 +1,5 @@
 function tbl = tabulateFS(x)
-%Create frequency table of unique values of x, excluding possible 0 counts
+%Creates frequency table of unique values of x, excluding possible 0 counts
 %
 %<a href="matlab: docsearchFS('tabulateFS')">Link to the help function</a>
 %

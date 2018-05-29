@@ -1,5 +1,5 @@
 function [outSC]=ScoreYJ(y,X,varargin)
-%Score computes the score test for Yeo and Johnson transformation
+%Computes the score test for Yeo and Johnson transformation
 %
 %<a href="matlab: docsearchFS('ScoreYJ')">Link to the help function</a>
 %

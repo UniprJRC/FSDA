@@ -1,5 +1,5 @@
 function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
-%create an XML file passing through publishFS
+%creates an XML file passing through publishFS
 %
 %<a href="matlab: docsearchFS('xmlcreateFS')">Link to the help function</a>
 %

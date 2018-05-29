@@ -1,5 +1,5 @@
 function [outSC]=ScoreYJpn(y,X,varargin)
-%Score computes the score test for YJ transf separately for pos and neg observations
+%Computes the score test for YJ transformation separately for pos and neg observations
 %
 %
 %<a href="matlab: docsearchFS('ScoreYJpn')">Link to the help function</a>
