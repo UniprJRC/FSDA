@@ -228,7 +228,8 @@ end
 
 
 % Create a simple URL Sitemap in txt format
-allWebFiles=getWebMatlabFiles();
+outputOFHtmlHelpFileWeb=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb'];
+allWebFiles=getWebMatlabFiles(outputOFHtmlHelpFileWeb);
 allHttpUrl=cell(length(allWebFiles),1);
 
 for i=1:length(allWebFiles)
@@ -236,7 +237,8 @@ for i=1:length(allWebFiles)
 end
 
 fileSitemap=cell2table(allHttpUrl);
-writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.txt']);
+writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.txt'],...
+    'WriteVariableNames',false);
 
 
 %% STEP 6: create HTML pointer files

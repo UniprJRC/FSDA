@@ -1,7 +1,8 @@
-function outDiff=getWebMatlabFiles()
+function outDiff=getWebMatlabFiles(outputOFHtmlHelpFileWeb)
+% Creates a list of html files which are inside outputOFHtmlHelpFileWeb  
 
-s=ls('C:\FSDA\helpfiles\FSDA');
-[ri,co]=size(s);
+s=ls(outputOFHtmlHelpFileWeb);
+ri=size(s,1);
 ListofFiles2=cell(1,ri-2);
 j=1;
 for i=3:ri
