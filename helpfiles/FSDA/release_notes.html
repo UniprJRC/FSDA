@@ -106,55 +106,45 @@ document.write(divsbefore);</script>
 		<tr>
 			<td style="vertical-align: top;"><strong>V2018a</strong></td>
 			<td style="vertical-align: top;">
-			<p class="p1">(1) new function
-			<a href="tclusteda.html">tclusteda</a> which computes
-			<a href="tclust.html">tclust</a> for a series of values of the trimming 
-			factor. This function amkes use of the parallel processing toolbox. 
-			A new set of plots is produced in order to find the optimal level of 
-			trimming.
-			<p>(2) extension of the score test. New functions
-			<a href="ScoreYJpn.html">ScoreYJpn </a>&nbsp;which computes the score 
-			test for Yeo Johnson transformation separately for positiv and negative 
-			observations. <a href="FSRfan.html">FSRfan</a> in option family now 
-			also accepts "YJpn and it is possible to monitor (in the output arguments 
-			out.Scorep and out.Scoren) the score test respectively for positive 
-			and negative observations.</p>
-			
-			<p class="p5">(4) New functions <a href="simulateTS.html">simulateTS</a> 
-			and <a href="forecastTS.html">forecastTS</a>.
+			<p class="p1">(1) New function
+			<a href="tclusteda.html">tclusteda</a> that helps choosing the best tclust model. 
+			It computes <a href="tclust.html">tclust</a> for different values of the trimming 
+			factor and produces plots that allow to find the optimal level of 
+			trimming. This function uses the parallel processing toolbox, if available. 
+			<p>(2) Extension of the score test. New function
+			<a href="ScoreYJpn.html">ScoreYJpn </a>&nbsp;that computes the score 
+			test for Yeo Johnson transformation separately for positive and negative 
+			observations. <a href="FSRfan.html">FSRfan</a> now 
+			accepts the new option family "YJpn" and it is possible to monitor the score test for both positive 
+			and negative observations (output arguments	out.Scorep and out.Scoren).</p>
+			<p class="p5">(4) New  functions for time series analysis.
 			<a href="simulateTS.html">simulateTS</a> simulates a time series with 
-			trend (up to third order),<br>seasonality (constant or of varying amplitude) 
-			with a different number of<br>&nbsp;harmonics and a level shift.
+			trend (up to third order), seasonality (constant or of varying amplitude) 
+			with a different number of &nbsp;harmonics and a level shift.
 			<a href="forecastTS.html">forecastTS</a> produces forecasts with confidence 
 			bands for a time series estimated with function <a href="LTSts.html">
 			LTSts</a>.&nbsp;&nbsp; </p>
 			<p class="p5">(4) <a href="CorAna.html">CorAna</a> has an improved display 
-			of results. New function <a href="CorAnaplot.html">CorAnaplot</a> which 
-			draws a Correspondence Analysis (CA) graph which is fully personalizable 
-			and also enables to draw confidence ellipses (using three different 
-			methods) for selected rows and columns.</p>
-			
-						<p class="p5">(5) New function <a href="LTSts.html">verlessthanExt</a> 
-			&nbsp;added, which is a faster version than MATLAB function verlessthan.</p>
-
-			
-			<p class="p1">(6) documentation of <a href="yXplot.html">yXplot</a> 
-			significantly improved and new options (xlimx, ylimy, namey, nameX) 
-			added.</p>
+			of results. New function <a href="CorAnaplot.html">CorAnaplot</a> 
+			draws a rich Correspondence Analysis graph with different types of confidence ellipses 
+			for selected rows and columns.</p>
+		<p class="p5">(5) New function <a href="LTSts.html">verlessthanExt.</a> 
+			&nbsp;It is a faster version of MATLAB function verlessthan.</p>
+			<p class="p1">(6) Documentation of <a href="yXplot.html">yXplot</a> 
+			considerably improved. New options added (xlimx, ylimy, namey, nameX).</p>
 			<p class="p1">(7) <a href="MixSimreg.html">MixSimreg</a> extended to 
 			account for multiple parameter distribution (betadistrib option) </p>
-			<p class="p1">(8) <a href="histFS.html">histFS</a> has the new option 
-			weights </p>
+			<p class="p1">(8) <a href="histFS.html">histFS</a> has a new optional argument 
+			(weights) for plotting a weighted histogram.</p>
 			
 			<p class="p5">(9) options labenv has been added to
 			<a href="mmdrsplot.html">mmdrsplot</a>.<a href="ellipse.html"> </a>
 			</p>
 			<p class="p5">(10) option axesellipse added to <a href="histFS.html">
 			ellipse</a></p>
-			<p class="p5">(11) new output argument in function
-			<a href="UnitsSameCluster.html">OldAndNewIndexes</a> in order to keep 
-			track of all the permutations in the indexes which have been done in 
-			order to rearch the required labelling.</p>
+			<p class="p5">(11) New output argument in function
+			<a href="UnitsSameCluster.html">OldAndNewIndexes</a>, used to track 
+			the indexes permutations used to rearch a desired cluster labelling.</p>
 			</td>
 			<td style="vertical-align: top;">From release 2018a we support old 
 			releases up to 2012a. </td>
@@ -162,7 +152,7 @@ document.write(divsbefore);</script>
 			of problems associated to MATLAB 2018a. For example now empty 
 			variables which will contain numbers have been initialized with [], 
 			while empty variables which contain characters are initialized with 
-			''. See for exampls functions <a href="yXplot.html">yXplot</a> and
+			' '. See for exampls functions <a href="yXplot.html">yXplot</a> and
 			<a href="spmplot.html">spmplot</a>.</td>
 			<td style="vertical-align: top;">May&nbsp; 2018</td>
 		</tr>
