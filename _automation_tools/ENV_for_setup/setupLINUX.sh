@@ -102,9 +102,9 @@ matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utiliti
 
 if [ $REL -ge 8 ] 
 then
-	matlab -nodesktop -r " cd $where; matlab.apputil.install('brushRES'); quit;"
-	matlab -nodesktop -r " cd $where; matlab.apputil.install('brushFAN'); quit;"
-	matlab -nodesktop -r " cd $where; matlab.apputil.install('brushROB'); quit; "
+	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushRES'); catch; end; quit;"
+	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushFAN'); catch; end; quit;"
+	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushROB'); catch; end; quit; "
 fi 
 
 echo ""

@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId=FSDA
 AppName=FSDA toolbox for MATLAB
-AppVerName=FSDA toolbox Release 2017b (03-jun-16) for MATLAB >R2009b
+AppVerName=FSDA toolbox Release 2018a (03-jun-16) for MATLAB >R2009b
 AppPublisher=University of Parma and European Union
 AppPublisherURL=http://www.riani.it/MATLAB.htm
 AppSupportURL=http://www.riani.it/MATLAB.htm
@@ -387,7 +387,7 @@ end;
 function app_uninst(param: String): String;
 begin
   if (Rel8) then
-   command := ExpandConstant(' matlab.apputil.uninstall(''brushRESAPP''); matlab.apputil.uninstall(''brushFANAPP''); matlab.apputil.uninstall(''brushROBAPP''); ')
+   command := ExpandConstant(' try ; matlab.apputil.uninstall(''brushRESAPP''); matlab.apputil.uninstall(''brushFANAPP''); matlab.apputil.uninstall(''brushROBAPP''); catch ; end ;')
   else
    command := ExpandConstant(' ; ');
   Result := command;
@@ -419,7 +419,7 @@ begin
    if (Rel8) then
      begin
        Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode);
-       Exec(MatlabExe, ExpandConstant(' -wait -automation -nodesktop -r " cd ''{app}\FSDA'' ; matlab.apputil.install(''brushRES''); matlab.apputil.install(''brushFAN''); matlab.apputil.install(''brushROB''); quit; " '), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
+       Exec(MatlabExe, ExpandConstant(' -wait -automation -nodesktop -r " cd ''{app}\FSDA'' ; try ; matlab.apputil.install(''brushRES''); matlab.apputil.install(''brushFAN''); matlab.apputil.install(''brushROB''); catch; end; quit; " '), '', SW_SHOW, ewWaitUntilTerminated, ResultCode);
     
 // MsgBox('dopo app install' + ExpandConstant('"{app}\FSDA\mgmhlpR8.bat"') + ExpandConstant(' "{app}" '+'"'+ MatlabPath +'"') , mbInformation, MB_OK);
 //      if Exec(ExpandConstant('{app}\FSDA\mgmhlpR8.bat'), ExpandConstant('{app}'), '', SW_SHOW,ewWaitUntilTerminated, ResultCode) then

@@ -11,7 +11,7 @@ then
   echo "$from non esiste - ERRORE"
   exit 1
 fi
-echo " Verra' modificata la stringa di Copyright 2008-2015 con Copyright 2008-2016 "
+echo " Verra' modificata la stringa di Copyright 2008-2017 con Copyright 2008-2018 "
 echo " Continuo [s/n] ? \c"
 read risp
 if [ "$risp" == "" -o "$risp" == "n" ]
@@ -36,7 +36,7 @@ do
 dname=`dirname "$nomefile"`
 mkdir -p $to/$dname
 sed -e ' {
-	s/Copyright 2008-2015/Copyright 2008-2016/
+	s/Copyright 2008-2017/Copyright 2008-2018/
 	}' "$nomefile" >$to/"$nomefile"
 unix2dos $to/"$nomefile"
 done
