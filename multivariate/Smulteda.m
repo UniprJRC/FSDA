@@ -120,10 +120,10 @@ function [out , varargout] = Smulteda(Y,varargin)
 %                   estimate of the shape for each value of bdp. Remark det|shape|=1
 %         out.Scale= length(bdp) vector. Robust estimate of the scale for
 %                    each value of bdp
-%         out.Cov  = v-by-v-by-length(bdp) 3D array  containing robust estimate of
+%         out.cov  = v-by-v-by-length(bdp) 3D array  containing robust estimate of
 %                    Note that  out.scale(i)^2 * out.shape(:,:,i) = robust estimate of
 %                   covariance matrix
-%           out.Bs = (v+1)-by-length(bdp) matrix containing the units forming best subset
+%           out.BS = (v+1)-by-length(bdp) matrix containing the units forming best subset
 %                    for each value of bdp
 %           out.MAL= n-by-length(bdp) matrix containing the estimates of the robust
 %                       Mahalanobis distances (in squared units) for each value of bdp
@@ -457,11 +457,12 @@ out.Shape   = Shape;       % robust estimate of shape matrix
 out.Scale   = Scale;       % robust estimate of the scale
 out.cov     = Covar; %robust estimate of covariance matrix
 out.Weights = Weights;
+out.Outliers=Outliers;
 out.BS=BS;             % Store units formin best subset
 out.MAL=MAL;
 out.Y = Y;
 out.bdp=bdp;
-
+out.singsub=singsub;
 % Store in output structure the outliers found with confidence level conflev
 out.conflev = conflev;
 out.class   = 'Smulteda';

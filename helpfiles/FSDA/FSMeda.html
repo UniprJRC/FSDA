@@ -28,9 +28,7 @@
     %Mahalanobis Distance
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
-    [out]=FSMeda(Ycont,bs,'plots',1);</pre></div></div><pre class="codeoutput">Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
-RCOND =  4.471732e-19. 
-</pre><img vspace="5" hspace="5" src="images\FSMeda_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=FSMeda(Ycont,bs,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSMeda_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('swiss_banknotes')
     Y=swiss_banknotes.data;
     [fre]=unibiv(Y);

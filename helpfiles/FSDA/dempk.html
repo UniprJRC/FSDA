@@ -39,10 +39,10 @@
     g = 0.01;
     DEMP2 = dempk(X, k*5, g, 'plots', 'contour');
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 21.33 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 22.91 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36.6667%
-Total estimated time to complete trimmed k means:  1.53 seconds 
+Total estimated time to complete trimmed k means:  1.44 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
 </pre><img vspace="5" hspace="5" src="images\dempk_01.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_02.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
@@ -91,7 +91,7 @@ Warning: Number of subsets without convergence equal to 38.6667%
 
     DEMP = dempk(X, k, g, 'tkmeansOpt', tkmeansOpt, 'plots', 'ellipse');
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.64 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.61 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 21.6667%
 </pre><img vspace="5" hspace="5" src="images\dempk_04.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_05.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_06.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk with hierarchical merging on data obtained by
@@ -133,7 +133,7 @@ Warning: Number of subsets without convergence equal to 21.6667%
     DEMP = dempk(X, k, g, 'linkagearg', linkagearg, 'plots', 'ellipse');
 
     cascade;</pre></div></div><pre class="codeoutput">RUNNING TKMEANS WITH 18 COMPONENTS; THEN MERGING WITH dempk
-Total estimated time to complete trimmed k means:  0.69 seconds 
+Total estimated time to complete trimmed k means:  0.74 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 </pre><img vspace="5" hspace="5" src="images\dempk_07.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_08.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using dempk, both setting a threshold and performing a
@@ -177,10 +177,10 @@ Warning: Number of subsets without convergence equal to 37.3333%
     g = 0.025;
     DEMP = dempk(X, k, g, 'alpha', alpha, 'plots', 'contourf');
     
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  9.73 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  9.06 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38%
-Total estimated time to complete trimmed k means: 10.49 seconds 
+Total estimated time to complete trimmed k means:  9.52 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><img vspace="5" hspace="5" src="images\dempk_09.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_10.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_11.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using the M5 dataset and various setting for dempk, using
@@ -219,13 +219,13 @@ Warning: Number of subsets without convergence equal to 36%
     % setting alpha greater than the noise level (almost always appropriate)
     DEMP3 = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.21 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.26 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
-Total estimated time to complete trimmed k means:  3.31 seconds 
+Total estimated time to complete trimmed k means:  3.29 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 39%
-Total estimated time to complete trimmed k means:  3.24 seconds 
+Total estimated time to complete trimmed k means:  3.32 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 38.6667%
 </pre><img vspace="5" hspace="5" src="images\dempk_12.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_13.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_14.png" alt=""> <img vspace="5" hspace="5" src="images\dempk_15.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v

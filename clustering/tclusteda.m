@@ -1052,6 +1052,8 @@ out.SIGMA=SIGMA;
 % Store ARI index, variation in centroid location and
 % variation in covariance.
 out.Amon=Amon;
+% Store Y
+out.Y=Y;
 
 % Store the indices in varargout
 if nnargout==2

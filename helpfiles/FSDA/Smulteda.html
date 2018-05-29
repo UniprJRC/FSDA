@@ -14,9 +14,9 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.67 seconds 
-Total estimated time to complete S estimator:  0.64 seconds 
-Total estimated time to complete S estimator:  0.48 seconds 
+    [out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.58 seconds 
+Total estimated time to complete S estimator:  0.59 seconds 
+Total estimated time to complete S estimator:  0.49 seconds 
 </pre><img vspace="5" hspace="5" src="images\Smulteda_01.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smulteda with extracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -115,9 +115,9 @@ Total estimated time to complete S estimator:  0.48 seconds
  <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Loc</code></td><td><p>length(bdp)-by-v  matrix containing S estimate of
                    location for each value of bdp</p></td></tr><tr valign="top"><td><code>Shape</code></td><td><p>v-by-v-by-length(bdp) 3D array  containing robust
                    estimate of the shape for each value of bdp. Remark det|shape|=1</p></td></tr><tr valign="top"><td><code>Scale</code></td><td><p>length(bdp) vector. Robust estimate of the scale for
-                    each value of bdp</p></td></tr><tr valign="top"><td><code>Cov</code></td><td><p>v-by-v-by-length(bdp) 3D array  containing robust estimate of
+                    each value of bdp</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p>v-by-v-by-length(bdp) 3D array  containing robust estimate of
                     Note that  out.scale(i)^2 * out.shape(:,:,i) = robust estimate of
-                   covariance matrix</p></td></tr><tr valign="top"><td><code>Bs</code></td><td><p>(v+1)-by-length(bdp) matrix containing the units forming best subset
+                   covariance matrix</p></td></tr><tr valign="top"><td><code>BS</code></td><td><p>(v+1)-by-length(bdp) matrix containing the units forming best subset
                     for each value of bdp</p></td></tr><tr valign="top"><td><code>MAL</code></td><td><p>n-by-length(bdp) matrix containing the estimates of the robust
                        Mahalanobis distances (in squared units) for each value of bdp</p></td></tr><tr valign="top"><td><code>Outliers</code></td><td><p><p>n-by-length(bdp) matrix containing true for the outliers.</p> <p>
                     Boolean matrix containing the list of the

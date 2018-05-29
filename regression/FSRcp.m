@@ -257,9 +257,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   the three models 23, 24, and 27 always have Cp values
 %                   much greater than the threshold (that is variables
 %                   2,3,4,7 are considered unimportant).
-%    outCp.LABout  =   it is created only if option labout=1. LABout
-%                   is a cell array of strings which which contains as
-%                   strings the list of models which are inacceptable.
+%    outCp.LABout  = cell array of strings which contains as
+%                   strings the list of models which are unacceptable.
+%                   LABout is created only if input option labout=1.
 %
 % See also: FSR, FSReda
 %

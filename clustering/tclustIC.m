@@ -248,8 +248,9 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
-%                   The same output in MATLAB table format is present in
-%                   out.CLACLAtable (if your MATLAB version is not<2013b).
+%                out.CLACLAtable = same output of CLACLA but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
 %
 %                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -263,16 +264,18 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
-%                   The same output in MATLAB table format is present in
-%                   out.MIXMIXtable (if your MATLAB version is not<2013b).
+%                out.MIXMIXtable = same output of MIXMIX but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
 %
 %                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
 %                   specififed else it is a matrix of size length(kk)-times
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
-%                   The same output in MATLAB table format is present in
-%                   out.MIXCLAtable (if your MATLAB version is not<2013b).
+%                out.MIXCLAtable = same output of MIXCLA but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
 %
 %                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
 %                   specififed else it is a cell of size length(kk)-times
@@ -294,6 +297,9 @@ function out  = tclustIC(Y,varargin)
 %
 %                out.alpha = scalar containing the trimming level which has
 %                   been used.
+%
+%                out.Y  = Original data matrix Y. The field is present if
+%                   option Ysave is set to 1.
 %
 %
 % See also tclust, tclustICsol, tclustICplot, carbikeplot

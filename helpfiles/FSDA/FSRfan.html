@@ -13,19 +13,19 @@
     fanplot(out);
     %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 16.5%
+Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 16%
+Warning: Number of subsets without full rank equal to 17.9%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 14.9%
-Total estimated time to complete LMS:  0.02 seconds 
+Warning: Number of subsets without full rank equal to 15.2%
+Total estimated time to complete LMS:  0.07 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 16.3%
+Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
-Warning: Number of subsets without full rank equal to 15.6%
+Warning: Number of subsets without full rank equal to 17.9%
 </pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Produce a personalized fan plot with required font sizes
      for labels and axes.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -62,29 +62,30 @@ Warning: Number of subsets without full rank equal to 15.6%
     % Store the score test statistics for the specified values of lambda
     % and automatically produce the fan plot
     [out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);
-   %The fan plot shows the even if the third root is the best value of the
-   %transformation parameter at the end of the search in earlier steps it
-    %lies very close to the upper rejection region. The best value of the
-    %transformation parameter seems to be the one associated with l=0.4
-    %which is always the confidence bands but at the end of search, due to
-  %the presence of particular observations it goes below the lower rejection line.</pre></div></div><pre class="codeoutput">
+    % The fan plot shows the even if the third root is the best value of the
+    % transformation parameter at the end of the search in earlier steps it
+    % lies very close to the upper rejection region. The best value of the
+    % transformation parameter seems to be the one associated with l=0.4
+    % which is always the confidence bands but at the end of search, due to
+    % the presence of particular observations it goes below the lower
+    % rejection line.</pre></div></div><pre class="codeoutput">
 namey =
 
     'Sales'
 
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
 Total estimated time to complete LMS:  0.04 seconds 
+m=100
+m=200
+m=300
+m=400
+m=500
+Total estimated time to complete LMS:  0.03 seconds 
+m=100
+m=200
+m=300
+m=400
+m=500
+Total estimated time to complete LMS:  0.03 seconds 
 m=100
 m=200
 m=300
@@ -111,7 +112,16 @@ m=500
     fanplot(outBC,'titl','Box Cox');
     fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
-    disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.12 seconds 
+    disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.32 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.11 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.12 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.12 seconds 
@@ -120,16 +130,7 @@ Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.11 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
+Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.12 seconds 
@@ -142,9 +143,10 @@ Total estimated time to complete LMS:  0.11 seconds
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Maximum difference in absolute value
-   0.756375608836102
+    0.7564
 
 </pre><img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_04.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring of score test for positive and negative obseravations.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    rng('default')
     rng(10)
     close all
     n=200;
@@ -155,9 +157,14 @@ Maximum difference in absolute value
     y=X*beta+sig*randn(n,1);
 
     disp('Fit in the true scale')
-    outlmori=fitlm(X,y);
     disp('R2 of the model in the true scale')
-    disp(outlmori.Rsquared.Ordinary)
+    if verLessThanFS(8.1)
+        out=regstats(y,X,'linear',{'rsquare'});
+        disp(out.rsquare)
+    else
+        outlmori=fitlm(X,y);
+        disp(outlmori.Rsquared.Ordinary)
+    end
     [~,~,BigAx]=yXplot(y,X,'tag','ori');
     title(BigAx,'Data in the original scale')
 
@@ -170,9 +177,14 @@ Maximum difference in absolute value
     end
 
     disp('Fit in the transformed scale')
-    outlmtra=fitlm(X,ytra);
     disp('R2 of the model in the wrong (inverse) scale')
-    disp(outlmtra.Rsquared.Ordinary)
+    if verLessThanFS(8.1)
+        out=regstats(ytra,X,'linear',{'rsquare'});
+        disp(out.rsquare)
+    else
+        outlmtra=fitlm(X,ytra);
+        disp(outlmtra.Rsquared.Ordinary)
+    end
     [~,~,BigAx]=yXplot(ytra,X,'tag','tra','namey','Data to transform (zoom of y [0 500])','ylimy',[0 500]);
     title(BigAx,'Data in the inverse scale')
 
@@ -180,11 +192,11 @@ Maximum difference in absolute value
     out=FSRfan(ytra,X,'la',la,'family','YJpn','plots',1,'init',round(n/2),'msg',0);
     title('Extended fan plot')</pre></div></div><pre class="codeoutput">Fit in the true scale
 R2 of the model in the true scale
-   0.899312305970790
+    0.8993
 
 Fit in the transformed scale
 R2 of the model in the wrong (inverse) scale
-   0.047106364189240
+    0.0471
 
 </pre><img vspace="5" hspace="5" src="images\FSRfan_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_07.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response

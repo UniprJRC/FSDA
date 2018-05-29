@@ -162,7 +162,8 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c
+%                       a, b and c. This field is empty for the other rho
+%                       functions.
 %            out.y    = response vector Y. The field is present if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
@@ -663,6 +664,8 @@ if options.yxsave
     out.y=y;
 end
 
+out.class = 'Sreg';
+  
 % Plot resindexplot with outliers highlighted
 if options.plots==1
     laby='Scaled S residuals';
@@ -793,6 +796,7 @@ outIRWLS.betarw = newbeta;
 outIRWLS.scalerw = scale;
 % store final estimate of the weights for each observation
 outIRWLS.weights=weights;
+
 end
 %FScategory:REG-Regression
 

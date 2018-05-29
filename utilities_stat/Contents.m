@@ -5,12 +5,12 @@
 %   Name                - Description                                                                                                                     - Category        - Date last modified
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   basicPower          - Computes the basic power transformation                                                                                         - UTISTAT         - 2017 Nov 17
-%   bwe                 - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT         - 2017 Nov 17
+%   bwe                 - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT         - 2018 Apr 23
 %   crosstab2datamatrix - Recreates the original data matrix X from contingency table N                                                                   - MULT-Categorical- 2017 Nov 17
-%   ellipse             - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                      - UTISTAT         - 2017 Nov 17
-%   FowlkesMallowsIndex - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT         - 2017 Nov 17
+%   ellipse             - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                      - UTISTAT         - 2018 May 27
+%   FowlkesMallowsIndex - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT         - 2018 Jan 23
 %   FSMbonfbound        - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                      - UTISTAT         - 2017 Nov 17
-%   FSRbonfbound        - Computes Bonferroni bounds for each step of the search (in linear regression)                                                   - UTISTAT         - 2017 Nov 17
+%   FSRbonfbound        - Computes Bonferroni bounds for each step of the search (in linear regression)                                                   - UTISTAT         - 2018 Jan 23
 %   HAbdp               - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT         - 2017 Nov 17
 %   HAc                 - Computes breakdown point and efficiency associated with constant c                                                              - UTISTAT         - 2017 Nov 17
 %   HAeff               - Finds the tuning constant that guarrantees a requested asymptotic efficiency                                                    - UTISTAT         - 2017 Nov 17
@@ -24,7 +24,7 @@
 %   HUpsider            - Computes derivative of psi function (second derivative of rho function) for Huber                                               - UTISTAT         - 2017 Nov 17
 %   HUpsix              - Computes psi function (derivative of rho function) times x for Huber                                                            - UTISTAT         - 2017 Nov 17
 %   HUrho               - Computes rho function for Huber                                                                                                 - UTISTAT         - 2017 Nov 17
-%   HUwei               - Computes weight function psi(u)/u for Huber                                                                                     - UTISTAT         - 2017 Nov 17
+%   HUwei               - Computes weight function psi(u)/u for Huber                                                                                     - UTISTAT         - 2018 Apr 12
 %   HYPbdp              - Finds constant c which is associated to the requested breakdown point for hyp. tan. estimator                                   - UTISTAT         - 2017 Nov 17
 %   HYPc                - Computes breakdown point and efficiency associated with constant chyperbolic tangent estimator (for a given value of k=sup CVC) - UTISTAT         - 2017 Nov 17
 %   HYPck               - Computes values of the scalars A, B, d for hyperbolic tangent estimator                                                         - UTISTAT         - 2017 Nov 17
@@ -38,14 +38,14 @@
 %   inversegamcdf       - Computes inverse-gamma cumulative distribution function                                                                         - UTISTAT         - 2017 Nov 17
 %   inversegaminv       - Inversegampdf Inverse-gamma cumulative distribution function                                                                    - UTISTAT         - 2017 Nov 17
 %   inversegampdf       - Computes inverse-gamma probability density function                                                                             - UTISTAT         - 2017 Nov 17
-%   kdebiv              - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                  - UTISTAT         - 2017 Nov 17
+%   kdebiv              - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                  - UTISTAT         - 2018 Jan 23
 %   logmvnpdfFS         - Produces log of Multivariate normal probability density function (pdf)                                                          - UTISTAT         - 2017 Nov 17
 %   mahalFS             - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                      - UTISTAT         - 2017 Nov 17
 %   Mscale              - Finds the M estimator of the scale                                                                                              - UTISTAT         - 2017 Nov 17
-%   ncpci               - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                - UTISTAT         - 2017 Nov 19
-%   ncx2mixtcdf         - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                     - UTISTAT         - 2017 Nov 17
+%   ncpci               - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                - UTISTAT         - 2018 Jan 23
+%   ncx2mixtcdf         - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                     - UTISTAT         - 2018 Jan 15
 %   normBoxCox          - Computes (normalized) Box-Cox transformation                                                                                    - UTISTAT         - 2017 Nov 17
-%   normYJ              - Computes (normalized) Yeo-Johnson transformation                                                                                - UTISTAT         - 2017 Nov 17
+%   normYJ              - Computes (normalized) Yeo-Johnson transformation                                                                                - UTISTAT         - 2018 Mar 15
 %   OPTbdp              - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT         - 2017 Nov 17
 %   OPTc                - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                     - UTISTAT         - 2017 Nov 17
 %   OPTeff              - Finds the constant c which is associated to the requested efficiency                                                            - UTISTAT         - 2017 Nov 17
@@ -67,7 +67,7 @@
 %   TBpsider            - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT         - 2017 Nov 17
 %   TBpsix              - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                 - UTISTAT         - 2017 Nov 17
 %   TBrho               - Computes rho function for Tukey's biweight                                                                                      - UTISTAT         - 2017 Nov 17
-%   TBwei               - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT         - 2017 Nov 17
-%   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT         - 2017 Nov 17
+%   TBwei               - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT         - 2018 Apr 12
+%   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT         - 2018 Jan 23
 %   WNChygepdf          - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT         - 2017 Nov 17
-%   wthin               - Thin a uni/bi-dimensional dataset                                                                                               - UTISTAT         - 2017 Nov 17
+%   wthin               - Thin a uni/bi-dimensional dataset                                                                                               - UTISTAT         - 2018 May 28

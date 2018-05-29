@@ -424,21 +424,21 @@ out =
 --------------------------------------------------
 -------------------------
 Signal detection loop
-Tentative signal in central part of the search: step m=1763 because
-rmin(1763,1903)&gt;99.99% and rmin(1762,1903)&gt;99.99% and rmin(1764,1903)&gt;99.99%
+Tentative signal in central part of the search: step m=1830 because
+rmin(1830,1903)&gt;99.999%
 -------------------
 Signal validation exceedance of upper envelopes
 Validated signal
 -------------------------------
-Start resuperimposing envelopes from step m=1762
-Superimposition stopped because r_{min}(1830,1856)&gt;99.9% envelope
-Subsample of 1855 units is homogeneous
+Start resuperimposing envelopes from step m=1829
+Superimposition stopped because r_{min}(1851,1859)&gt;99.9% envelope
+Subsample of 1858 units is homogeneous
 ----------------------------
 Final output
-Number of units declared as outliers=48
+Number of units declared as outliers=45
 Summary of the exceedances
            1          99         999        9999       99999
-          78         180         150         124         102
+         838          77          76          73          73
 
 </pre><img vspace="5" hspace="5" src="images\FSRB_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_16.png" alt=""> <h2>Plot the outliers with a different symbol using a 3x3 layout<a name="5"></a></h2><pre class="codeinput">    selout=out.ListOut;
     selin=setdiff(1:n,selout);

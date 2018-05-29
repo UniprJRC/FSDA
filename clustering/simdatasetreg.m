@@ -284,7 +284,8 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % mu=0 and sigma=1;
     % 2) X in each dimension and each group is generated according to U(0, 1);
     % 3) regression hyperplanes contain intercepts.
-    p=5;  % p includes the intercept
+    % The value of p includes the intercept
+    p=5;  
     k=3;
     Q=MixSimreg(k,p,'BarOmega',0.01);
     n=200;
@@ -469,7 +470,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %}
 
 %{
-    %% Example with user defined explanatory variables values.
+    %% Example with user defined explanatory variables values (1).
     % Here the X distribution is the same for each component.
     clear all
     close all
@@ -516,7 +517,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %}
 
 %{
-    %% Example with user defined explanatory variables values.
+    %% Example with user defined explanatory variables values (2).
     % Here the X distribution is specific for each component.
 
     clear all
@@ -568,8 +569,6 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     yXplot(y,X,'group',id,'tag','X_beta');
     set(gcf,'Name','X Beta distributed');
     title('User-defined distribution for X');
-
-    %end
 
 %}
 

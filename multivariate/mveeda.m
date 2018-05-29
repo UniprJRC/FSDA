@@ -118,10 +118,10 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %
 %
 %         REW : structure which contains the following fields:
-%      REW.loc     = The robust location of the data, obtained after reweighting, if
+%      REW.Loc     = The robust location of the data, obtained after reweighting, if
 %                    the RAW.cov  is not singular.  Otherwise the raw MVE center is
 %                    given here.
-%       REW.cov    = The robust covariance matrix, obtained after reweighting and
+%       REW.Cov    = The robust covariance matrix, obtained after reweighting and
 %                    multiplying with a finite sample correction factor and an asymptotic
 %                    consistency factor, if the raw MVE is not singular.  Otherwise the
 %                    raw MVE covariance matrix is given here.
@@ -131,7 +131,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %                    reweighted MVE scatter of the data.  These distances allow
 %                    us to easily identify the outliers. If the reweighted MVE
 %                    is singular, RAW.md is given here.
-%     REW.outliers = A vector containing the list of the units declared as
+%     REW.Outliers = A vector containing the list of the units declared as
 %                    outliers after reweighting.
 %            REW.Y = Data matrix Y.
 %       REW.class = 'mvereda'

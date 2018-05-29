@@ -354,7 +354,7 @@ function out = dempk(Y, k, g, varargin)
     cascade;
 %}
 
-%
+
 
 %% Input parameters checking
 nnargin = nargin;
