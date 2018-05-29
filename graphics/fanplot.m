@@ -1000,7 +1000,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                 % 1 persist is off
                 % 2 persist is on but we are in the first iteration
                 if strcmp('off',persist) || (strcmp('on',persist)&& it==1)
-                    mdrplot(oute,'quant', [0.01;0.5;0.99],'exact',0,'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
+                    mdrplot(oute,'quant', [0.01;0.5;0.99],'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
                     
                     % Now check if the figure containing minimum deletion
                     % residual is open. If it is, units are brushed in this
@@ -1013,7 +1013,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     % on and we are not in the first iteration but the user has
                     % selected a new lambda trajectory
                     if strcmp(change_lambda,'yes') &&  it>1
-                        mdrplot(oute,'quant', [0.01;0.5;0.99],'exact',0,'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
+                        mdrplot(oute,'quant', [0.01;0.5;0.99],'sign',0,'mplus1',0,'envm',n,'tag','pl_mdr','databrush','');
                         
                         % Now check if the figure containing minimum deletion
                         % residual is open.

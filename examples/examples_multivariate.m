@@ -260,7 +260,7 @@ else
     set(plot1,{'Color'},fcol(1:nsimul));
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -579,7 +579,7 @@ set(plot1,{'Color'},fcol(1:nsimul));
 
 
 % Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+mmdT=FSMenvmmd(n,v,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
@@ -778,7 +778,7 @@ else
     
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -1089,7 +1089,7 @@ else
     set(plot1,{'Color'},fcol(1:nsimul));
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -1142,7 +1142,7 @@ set(plot1,{'LineStyle'},slintyp(1:nsimul));
 set(plot1,{'Color'},fcol(1:nsimul));
 
 % Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+mmdT=FSMenvmmd(n,v,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 % compare the output with Figure 5 of Atkinson and Riani (2007)
@@ -1223,7 +1223,7 @@ else
     
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -1297,7 +1297,7 @@ set(plot1,{'Color'},fcol(1:nsimul));
 
 
 % Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+mmdT=FSMenvmmd(n,v,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
@@ -1356,7 +1356,7 @@ else
     set(plot1,{'Color'},fcol(1:nsimul));
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -1429,7 +1429,7 @@ else
     
     
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,v,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 end
@@ -1504,7 +1504,7 @@ set(plot1,{'LineStyle'},slintyp(1:nsimul));
 set(plot1,{'Color'},fcol(1:nsimul));
 
 % Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+mmdT=FSMenvmmd(n,v,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');
 
@@ -1651,7 +1651,7 @@ set(plot1,{'LineStyle'},slintyp(1:nsimul));
 set(plot1,{'Color'},fcol(1:nsimul));
 
 % Plots lines of theoretical quantiles using order statistics
-mmdT=FSMenvmmd(n,v,'exact',1,'init',init);
+mmdT=FSMenvmmd(n,v,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m')
 

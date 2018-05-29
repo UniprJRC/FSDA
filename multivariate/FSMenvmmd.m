@@ -22,16 +22,6 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
 %                 Example - 'prob',[0.05 0.95] 
 %                 Data Types - double
-% exact:      It indicates how to calculate the quantiles of F
-%               distribution. Scalar. If it is equal to 1 (default)  is based on function
-%               finv and from the Matlab statistics toolbox, otherwise the
-%               calculations of the former quantiles is based on functions
-%               invcdff. The solution has a tolerance of 1e-8 (change
-%               variable tol in files invcdff.m)
-%               Remark. the use of function finv is more precise
-%               but requires more time.
-%                 Example - 'exact',0 
-%                 Data Types - double
 %   scaled:  It indicates how to compute the envelopes. Scalar. 
 %               If scaled>0 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
@@ -73,7 +63,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %{
     %% FSMenvmmd with all default options.
     % Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000
-    % observations and 5 explanatory variables using exact method.
+    % observations and 5 explanatory variables.
     MMDenv=FSMenvmmd(10000,5);
     plot(MMDenv(:,1),MMDenv(:,2:end))
 %}
@@ -134,7 +124,7 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
     % Plot lines of empirical quantiles
     line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');
     % Plots lines of theoretical quantiles using order statistics
-    mmdT=FSMenvmmd(n,p,'exact',1,'init',init);
+    mmdT=FSMenvmmd(n,p,'init',init);
     line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 %}
@@ -153,7 +143,7 @@ inisearch=floor(n*0.6);
 
 % Note that prob must be a row vector
 prob=[0.01 0.5 0.99];
-options=struct('init',inisearch,'prob',prob,'exact',1,'scaled',0);
+options=struct('init',inisearch,'prob',prob,'scaled',0);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -174,7 +164,6 @@ end
 
 m0=options.init;
 prob=options.prob;
-exact=options.exact;
 scaled=options.scaled;
 
 % Check that the initial subset size is not greater than n-1
@@ -200,13 +189,8 @@ lm=length(m);
 % mm = fwd search index replicated lp times.
 mm = repmat(m,1,lp);
 
-if exact
     % finv finds the inverse of the F distribution.
     quant=finv(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
-else
-    % invcdff finds the inverse of the F distribution.
-    quant=invcdff(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
-end
 
 
 % from the equivalence with the incomplete beta distribution.
@@ -218,11 +202,7 @@ cor=v*((mm+1)./mm).*(mm-1)./(mm-v);
 %cor=v*((mm.^2-1)./mm)./(mm-v);
 
 % Minsca = matrix of the scaled minMD envelopes in each step of the search.
-if exact
     MinSca= sqrt(cor.*finv(q,v, mm-v));
-else
-    MinSca= sqrt(cor.*invcdff(q,repmat(v,size(mm)), mm-v));
-end
 
 
 % Compute Tallis correction factor based on the chi^2 distribution
@@ -238,129 +218,5 @@ MMDenv=[m MinSca./sqrt(corr)];
 
 end
 
-
-%% Subfunction: invcdff
-%
-function [x0] = invcdff(p,n1,n2)
-%  INVCDFF - Inverse of the F Cumulative Distribution function
-%            with n1,n2 degrees of freedom
-%
-%  Usage: x0 = invcdff(p,n1,n2)
-%
-%  Input:  p  - matrix of percentage points ( 0 < p < 1 )
-%          n1 - matrix of numerator df (conformable with p)
-%          n2 - matrix of denominator df (conformable with p)
-%
-%  Output: X  - matrix of critical values st Pr(x < X) = P and x ~ F(n1,n2)
-%
-% Notes: the default tolerance is 1e-8
-
-tol = 1e-8 ;
-tol2 = tol^2 ;
-% Use Paulson normal approx to start
-t  = sqrt(-2*log(abs((p>0.5) - p)));
-z  = 2.515517 + t.*(0.802853 + t.*0.010328) ;
-d  = 1 + t.*(1.432788 + t.*(0.189269 + t.*0.001308)) ;
-z  = t - (z./d) ;
-z  = (p>0.5).*z - (p<=0.5).*z ;
-c  = 2./(9.*n2) ;
-d  = 2./(9.*n1) ;
-a  = 1 - c ;
-b  = 1 - d ;
-d  = (a.^2).*d + (b.^2).*c - c.*d.*(z.^2) ;
-c  = a.^2 - c.*(z.^2) ;
-x0 = abs((a.*b + z.*sqrt(d + (tol-d).*(d<0)))./(c + (1-c).*(c<0.3))).^3 ;
-x0 = x0 + (d<=0 |  c< 0.3).*(0.5.*(p<0.5) + 2.0.*(p>=0.5) - x0) ;
-p  = 1 - p ;
-converge=0;
-k=0;
-while (converge==0 && k<=50)
-    f0  = 1-pf(x0,n1,n2) ;
-    df0 = df(x0,n1,n2);
-    
-    % Routines from MATLAB programmers
-    %  f0  = 1-fcdf(x0,n1,n2) ;
-    % df0 = fpdf(x0,n1,n2);
-    
-    x1 = x0 - (p-f0)./df0 ;
-    negative = sum(sum(not((x1 > tol2)))) ;
-    if negative>0
-        x1 = x1 + (x1<=tol2).*(x0.*(0.5 + 1.5.*(p< f0)) - x1) ;
-    end
-    converge = max(max(abs(x0 - x1))) < tol & not(negative);
-    x0 = x1;
-    k = k + 1;
-end
-if not(converge)
-    disp('Warning: INVCDFF has not converged, exact routine finv is used');
-    x0=finv(1-p,n1,n2);
-end
-
-end
-
-%% Subfunction: df
-%
-function f = df(x,a,b)
-%   DF The F density function
-%         f = df(x,df1,df2)
-%
-c = b./a;
-xx = x./(x+c);
-f = dbeta(xx,a/2,b/2);
-f = f./(x+c).^2.*c;
-
-%% Nested function: dbeta
-    function d = dbeta(x,a,b)
-        %DBETA    The beta density function f = dbeta(x,a,b)
-        %
-        
-        if any(any((a<=0)|(b<=0)))
-            error('FSDA:FSMenvmmd:WrongAorB','Parameter a or b is nonpositive')
-        end
-        
-        I = find((x<0)|(x>1));
-        
-        d = x.^(a-1) .* (1-x).^(b-1) ./ beta(a,b);
-        d(I) = 0*I;
-    end
-end
-
-%% Subfunction: pf
-%
-function F = pf(x,a,b)
-%PF       The F distribution function
-%
-%         F = pf(x,df1,df2)
-%
-
-x = x./(x+b./a);
-F = pbeta(x,a./2,b./2);
-
-%% Nested function: pbeta
-    function F = pbeta(x,a,b)
-        %PBETA    The beta distribution function
-        %
-        %         F = pbeta(x,a,b)
-        %
-        
-        if any(any((a<=0)|(b<=0)))
-            error('FSDA:FSMenvmmd:WrongAorB','Parameter a or b is nonpositive')
-        end
-        
-        % Il = find(x<=0);
-        % Iu = find(x>=1);
-        Ii = find(x>0 & x<1);
-        
-        F = 0*(x+a+b); % Stupid allocation trick
-        % F(Il) = 0*Il; % zeros for all values x<=0
-        F(x>=1) = 1;  % 0*Iu + 1; % one for all values x>=1
-        % Computation of the cdf for all values 0<x<1
-        if ~isempty(Ii)
-            F(Ii) = betainc(x(Ii),a(Ii),b(Ii));
-        end
-        
-    end
-
-end
 %FScategory:MULT-Multivariate
 

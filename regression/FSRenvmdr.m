@@ -19,27 +19,15 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %               be set equal to
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %  prob:    quantiles for which envelopes have
 %               to be computed. Vector.
 %               1 x k vector containing quantiles for which envelopes have
 %               to be computed. The default is to produce 1%, 50% and 99%
 %               envelopes.
-%               Example - 'prob',[0.01 0.99] 
+%               Example - 'prob',[0.01 0.99]
 %               Data Types - double
-%  exact:    Method for the calculation of the quantiles. Scalar.
-%                If it is equal to 1 (default) the calculation of the quantiles
-%               of the T and F distribution is based on functions finv and
-%               tinv from the Matlab statistics toolbox, otherwise the
-%               calculations of the former quantiles is based on functions
-%               finvFS and tinvFS. The solution has a tolerance of 1e-8
-%               (change variable tol in files finvFS.m and tinvFS.m if
-%               required.
-%               Example - 'exact',0
-%               Data Types - double
-%               Remark: the use of functions tinv and finv is more precise
-%               but requires more time.
 %
 %  Output:
 %
@@ -51,11 +39,8 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %               ...
 %               (k+1) col = envelope for quantile prob(k).
 %
-% Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS. 
 %
-% Other function dependencies: none.
-%
-% See also LXS.m, FSREDA.m
+% See also: LXS.m, FSReda.m
 %
 % References:
 %
@@ -76,34 +61,24 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 
 % Examples:
 
-%{  
+%{
     % FSRenvmdr with all default options.
-    % Example of creation of 1 per cent, 50 per cent and 99 per cent 
-    % envelopes based on 1000 observations and 5 explanatory variables using 
-    % exact method.
+    % Example of creation of 1 per cent, 50 per cent and 99 per cent
+    % envelopes based on 1000 observations and 5 explanatory variables
     MDRenv=FSRenvmdr(10000,5);
-%}
-
-%{  
-    % FSRenvmdr with optional argument.
-    % Example of creation of 1%, 50% and 99% 
-    % envelopes based on 1000 observations and 5 explanatory variables 
-    % using approximate method.
-    MDRenv1=FSRenvmdr(10000,5,'exact',0);
 %}
 
 %{
     % Example with plot of the envelopes.
     % Example of creation of 1%, 50% and 99%
-    % envelopes based on 100 observations and 5 explanatory variables using 
-    % exact method.
-    Menv=FSRenvmdr(100,5,'exact',1);
+    % envelopes based on 100 observations and 5 explanatory variables
+    Menv=FSRenvmdr(100,5);
     plot(Menv(:,1),Menv(:,2:4));
 %}
 
 %{
     %%Comparing the accuracy of the envelopes computed with order statistics with the simulated ones.
-    % Fix a seed 
+    % Fix a seed
     state=1000;
     mtstream = RandStream('shr3cong','Seed',state);
     %RandStream.setDefaultStream(mtstream);
@@ -112,7 +87,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
     defaultStream = RandStream.getGlobalStream();
     reset(defaultStream)
 
-    % If you run this example in a version older than 7.9 replace the previous four lines with 
+    % If you run this example in a version older than 7.9 replace the previous four lines with
     % randn('state', 1000);
 
     n=200;
@@ -142,7 +117,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
     % Plot lines of empirical quantiles
     line(mdr(:,1),mdrStore(:,sel),'LineStyle','--','Color','g');
     % Plots lines of theoretical quantiles using order statistics
-    mdrT=FSRenvmdr(n,p+1,'exact',1,'init',init);
+    mdrT=FSRenvmdr(n,p+1,'init',init);
     line(mdrT(:,1),mdrT(:,2:4),'LineStyle','-','Color','r');
     xlabel('Subset size m');
 %}
@@ -166,7 +141,7 @@ end
 
 % Notice that prob must be a row vector
 prob=[0.01 0.5 0.99];
-options=struct('init',inisearch,'prob',prob,'exact',1);
+options=struct('init',inisearch,'prob',prob);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -185,7 +160,6 @@ if nargin>2
 end
 m0=options.init;
 prob=options.prob;
-exact=options.exact;
 
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
@@ -210,23 +184,15 @@ lm=length(m);
 % mm = fwd search index replicated lp times.
 mm = repmat(m,1,lp);
 
-if exact
-    % finv finds the inverse of the F distribution.
-    quant=finv(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
-else
-    % finvFS finds the inverse of the F distribution.
-    quant=finvFS(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
-end
+% finv finds the inverse of the F distribution.
+quant=finv(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
+
 
 % from the equivalence with Incomplete beta distribution.
 q=(mm+1)./(mm+1+(n-mm).*(quant));
 
 % Minsca = matrix of the scaled MDR envelopes in each step of the search.
-if exact
-    MinSca= abs(tinv(0.5*(1+q), mm-p));
-else
-    MinSca= abs(tinvFS(0.5*(1+q), mm-p));
-end
+MinSca= abs(tinv(0.5*(1+q), mm-p));
 
 
 % Compute variance of the truncated normal distribution.
@@ -236,206 +202,6 @@ a=norminv(0.5*(1+mm/n));
 corr=1-2*(n./mm).*a.*normpdf(a);
 
 MDRenv=[m MinSca./sqrt(corr)];
-
-end
-
-
-%% Subfunction: tinvFS
-%
-function [x0] = tinvFS(p,v)
-%  tinvFS - Student t Inverse Cumulative Distribution function.
-%            Used to compute the quantiles of t distribution.
-%
-% Remark: It is equivalent to MATLAB function tinv
-%
-%  Usage:  x0 = tinvFS(p,v)
-%
-%  Input:  p - matrix of percentage points ( 0 < p < 1 )
-%          v - matrix of degrees of freedom for t distribution
-%
-%  Output: x0 - matrix of critical T values st Pr(X < x0) = p and x ~ T(v)
-%
-%  REMARK:  Uses initial Normal approximation and then iterates for accuracy
-%           The default tolerance if 1e-8
-%
-
-% Use normal approx to start
-t = sqrt(-2.*log(abs((p>0.5) - p))) ;
-z = 2.515517 + t.*(0.802853 + t.*0.010328) ;
-d = 1 + t.*(1.432788 + t.*(0.189269 + t.*0.001308)) ;
-z = t - (z./d) ;
-d = sqrt(0.25.*(v<=2) + (1 - 2./v).*(v>2)) ;
-x0 = ((p>0.5).*z - (p<=0.5).*z)./d ;
-
-tol = 1e-8; % Change the tolerance if necessary
-p = 1 - p;
-
-converge=0;
-k=0;
-while (converge==0 && k<=500)
-    f0 = 1-tcdfFS(x0,v);
-    df0 = tpdf(x0,v);
-    
-    x1 = x0 - (p-f0)./df0 ;
-    converge = max(max(abs(x0 - x1))) < tol ;
-    x0 = x1;
-    k = k + 1;
-end
-if not(converge)
-    disp('Warning: tinvFS has not converged');
-end
-
-end
-
-%% Subfunction: finvFS
-%
-function [x0] = finvFS(p,v1,v2)
-%  finvFS - Inverse of the F Cumulative Distribution function
-%            with v1,v2 degrees of freedom
-%
-% Remark: It is equivalent to MATLAB function finv
-%
-%  Usage: x0 = finvFS(p,v1,v2)
-%
-%  Input:  p  - matrix of percentage points ( 0 < p < 1 )
-%          v1 - matrix of numerator df (conformable with p)
-%          v2 - matrix of denominator df (conformable with p)
-%
-%  Output: X  - matrix of critical values st Pr(X < x0) = p and X ~ F(v1,v2)
-%
-% REMARK: the default tolerance is 1e-8
-
-tol = 1e-8 ;
-tol2 = tol^2 ;
-% Paulson normal approximation as starting value
-t  = sqrt(-2*log(abs((p>0.5) - p)));
-z  = 2.515517 + t.*(0.802853 + t.*0.010328);
-d  = 1 + t.*(1.432788 + t.*(0.189269 + t.*0.001308));
-z  = t - (z./d);
-z  = (p>0.5).*z - (p<=0.5).*z;
-c  = 2./(9.*v2);
-d  = 2./(9.*v1);
-a  = 1 - c;
-b  = 1 - d;
-d  = (a.^2).*d + (b.^2).*c - c.*d.*(z.^2);
-c  = a.^2 - c.*(z.^2);
-x0 = abs((a.*b + z.*sqrt(d + (tol-d).*(d<0)))./(c + (1-c).*(c<0.3))).^3;
-x0 = x0 + (d<=0 |  c< 0.3).*(0.5.*(p<0.5) + 2.0.*(p>=0.5) - x0);
-p  = 1 - p ;
-converge=0;
-k=0;
-while (converge==0 && k<=50)
-    f0  = 1-fcdfFS(x0,v1,v2) ;
-    df0 = fpdfFS(x0,v1,v2);
-    
-    % Routines from MATLAB programmers
-    %  f0  = 1-fcdf(x0,v1,v2) ;
-    % df0 = fpdf(x0,v1,v2);
-    
-    x1 = x0 - (p-f0)./df0 ;
-    negative = sum(sum(not((x1 > tol2)))) ;
-    if negative>0
-        x1 = x1 + (x1<=tol2).*(x0.*(0.5 + 1.5.*(p< f0)) - x1) ;
-    end
-    converge = max(max(abs(x0 - x1))) < tol & not(negative);
-    x0 = x1;
-    k = k + 1;
-end
-if not(converge)
-    disp('Warning: finvFS has not converged, exaxt routine finv is used');
-    x0=finv(1-p,v1,v2);
-end
-
-end
-%% Subfunction: tcdfFS
-%
-function F = tcdfFS(x,v)
-% tcdfFS computes the cdf of the student T distribution
-% It is equivalent to MATLAB function tcdf
-%
-%         F = tcdfFS(x,v)
-%
-
-if any(any(v<=0))
-    error('FSDA:FSRenvmdr:WrongDf','Degrees of freedom must be positive')
-end
-
-v = min(v,1000000); % make it converge and also accept Inf.
-
-neg = x<0;
-F = fcdfFS(x.^2,ones(size(v)),v);
-F = 1-(1-F)./2;
-F = F + (1-2*F).*neg;
-
-end
-
-%% Subfunction: fpdfFS
-%
-function f = fpdfFS(x,v1,v2)
-%   fpdfFS computes the density function for the F distribution
-% It is equivalent to MATLAB function fpdf
-%         f = fpdfFS(x,df1,df2)
-%
-
-c = v2./v1;
-xx = x./(x+c);
-f = betapdfFS(xx,v1/2,v2/2);
-f = f./(x+c).^2.*c;
-
-%% Nested function: betapdfFS
-    function d = betapdfFS(x,v1,v2)
-        % betapdfFS computes the density function of the beta distribution
-        % It is equivalent to MATLAB function betapdf
-        % f = betapdfFS(x,v1,v2)
-        %
-        
-        if any(any((v1<=0)|(v2<=0)))
-            error('FSDA:FSRenvmdr:WrongV1OrV2','Parameter v1 or v2 is nonpositive')
-        end
-        
-        I = find((x<0)|(x>1));
-        
-        d = x.^(v1-1) .* (1-x).^(v2-1) ./ beta(v1,v2);
-        d(I) = 0*I;
-    end
-end
-
-%% Subfunction: fcdfFS
-%
-function F = fcdfFS(x,v1,v2)
-% fcdfFS computes the cdf of the F distribution
-% It is equivalent to MATLAB function fcdf
-%
-%         F = fcdfFS(x,v1,v2)
-%
-
-x = x./(x+v2./v1);
-F = pbeta(x,v1./2,v2./2);
-
-%% Nested function: pbeta
-    function F = pbeta(x,v1,v2)
-        % pbeta  computes the cdf of the beta distribution
-        % It is equivalent to MATLAB function betacdf
-        %         F = pbeta(x,v1,v2)
-        %
-        
-        if any(any((v1<=0)|(v2<=0)))
-            error('FSDA:FSRenvmdr:WrongV1OrV2','Parameter v1 or v2 is nonpositive')
-        end
-        
-        % Il = find(x<=0);
-        % Iu = find(x>=1);
-        Ii = find(x>0 & x<1);
-        
-        F = 0*(x+v1+v2); % Stupid allocation trick
-        % F(Il) = 0*Il; % zeros for all values x<=0
-        F(x>=1) = 1;  % 0*Iu + 1; % one for all values x>=1
-        % Computation of the cdf for all values 0<x<1
-        if ~isempty(Ii)
-            F(Ii) = betainc(x(Ii),v1(Ii),v2(Ii));
-        end
-        
-    end
 
 end
 %FScategory:REG-Regression

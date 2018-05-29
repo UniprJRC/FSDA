@@ -661,7 +661,7 @@ else
         quant=[0.01;0.5;0.99];
         % Compute theoretical envelops for minimum deletion residual based on all
         % the observations for the above quantiles.
-        [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1,'exact',1);
+        [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1);
         plot(mdr(:,1),mdr(:,2));
         
         % Superimpose 1%, 99%, 99.9% envelopes based on all the observations

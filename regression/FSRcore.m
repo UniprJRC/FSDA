@@ -246,7 +246,6 @@ if ~isempty(bonflev)
     
 else
     
-    exact=1;
     % lowexceed=0 means than outlier detection is just based on upper
     % exceedances
     lowexceed=0;
@@ -255,7 +254,7 @@ else
     quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
     % Compute theoretical envelopes for minimum deletion residual based on all
     % the observations for the above quantiles.
-    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init,'exact',exact);
+    [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init);
     % gmin = the matrix which contains envelopes based on all observations.
     % 1st col of gmin = fwd search index
     % 2nd col of gmin = 99% envelope

@@ -33,18 +33,6 @@ function mdrplot(out,varargin)
 %                   quant=[0.01;0.5;0.99];
 %                   Example - 'quant',[0.05;0.5;0.95]
 %                   Data Types - double
-%       exact:      Exact of approximate cdf for envelope calculation. Scalar. If it is equal to 1 the calculation of the
-%                   quantiles of the T and F distribution is based on
-%                   functions finv and tinv from the Matlab statistics
-%                   toolbox, otherwise the calculations of the former
-%                   quantiles is based on functions invcdff and invcdft.
-%                   The solution has a tolerance of 1e-8 (change variable
-%                   tol in files invcdff.m and invcdft.m if required.
-%                   Example - 'exact',1
-%                   Data Types - double
-%                   Remark: the use of functions tinv and finv is more
-%                   precise but requires more time. The default value of
-%                   exact is 0 (approximate solution).
 %       sign    :   mdr with sign. Scalar. If it is equal 1 (default) we distinguish steps
 %                   for which minimum deletion residual was associated with
 %                   positive or negative value of the residual. Steps
@@ -52,7 +40,8 @@ function mdrplot(out,varargin)
 %                   black, while other steps are plotted in red
 %                   Example - 'sign',1
 %                   Data Types - double
-%       mplus1  :   plot of (m+1)th order statistic. Scalar. Scalar, which specifies if it is necessary to plot the
+%       mplus1  :   plot of (m+1)th order statistic. Scalar. Scalar, which
+%                   specifies if it is necessary to plot the
 %                   curve associated with (m+1)th order statistic
 %                   Example - 'mplus1',1
 %                   Data Types - double
@@ -366,7 +355,7 @@ laby='Minimum deletion residual';
 
 %% User options
 
-options=struct('quant', quant,'exact',0,'sign',0,'mplus1',0,...
+options=struct('quant', quant,'sign',0,'mplus1',0,...
     'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mdr',...
     'datatooltip','','databrush','',...
@@ -480,7 +469,6 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 % Quantiles associated with the envelope based on all the observations.
 quant=options.quant;
-exact=options.exact;
 mplus1=options.mplus1;
 sign=options.sign;
 
@@ -520,7 +508,7 @@ set(h,'Name', 'Monitoring of Minimum deletion residual', 'NumberTitle', 'off');
 hold('all');
 
 % Theoretical envelopes for minimum deletion residual
-[gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init,'exact',exact);
+[gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
 
 box('on');
 

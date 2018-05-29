@@ -454,7 +454,7 @@ if plots==1
     
     % Compute teoretical quantiles for minimum deletion residual using
     % order statistics
-    quantilesT = FSMenvmmd(n,v,'exact',1,'init',init);
+    quantilesT = FSMenvmmd(n,v,'init',init);
     
     % Plots lines of theoretical quantiles
     line(quantilesT(:,1),quantilesT(:,2:4), ...
