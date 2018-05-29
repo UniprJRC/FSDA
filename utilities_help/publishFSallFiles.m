@@ -23,20 +23,6 @@ function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
 %             that is html file is created
 %             Example - 'write2file','false'
 %             Data Types - Boolean
-% webhelp :   Option to create web page version of local html help file. Logical.
-%             This option substitutes the MATLAB search form component with 
-%             a Google local search form, enabling Google to create an index
-%             of online documentation help.
-%             In this case 'outputDir' and 'imagesDir' should be populated to
-%             avoid overwriting local help files with WEB help files.
-%             Default values for 'outputDir' and 'imagesDir' are these namepairs: 
-%             'outputDir','(FSDA root) filesep helpfiles filesep webhelpfiles'
-%             'imagesDir','(FSDA root) filesep helpfiles filesep webhelpfiles filesep images'
-%             It is worth noting that setting up folders different form default
-%             values, implies that the user should manually create them.
-%             The default value of webhelp is false.
-%             Example - 'webhelp',true
-%             Data Types - logical
 % outputDir : Output folder. String.
 %             Output folder to which the HTML document is saved, specified
 %             as the comma-separated pair consisting of 'outputDir' and the
@@ -66,7 +52,21 @@ function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
 %             Remark - imagesDir must be a valid path.
 %             Example - 'imagesDir','C:'
 %             Data Types - string
-%
+% webhelp :   Option to create web page version of local html help file. Logical.
+%             This option substitutes the MATLAB search form component with 
+%             a Google local search form, enabling Google to create an index
+%             of online documentation help.
+%             In this case 'outputDir' and 'imagesDir' should be different
+%             from  those previously used wiht option webhelp=false to 
+%             avoid overwriting local help files with WEB help files.
+%             Default values for 'outputDir' and 'imagesDir' are these namepairs: 
+%             'outputDir','(FSDA root) filesep helpfiles filesep FSDAweb'
+%             'imagesDir','(FSDA root) filesep helpfiles filesep FSDAweb filesep images'
+%             It is worth noting that setting up folders different form default
+%             values, implies that the user should manually create the path.
+%             The default value of webhelp is false.
+%             Example - 'webhelp',true
+%             Data Types - logical
 %
 % Output:
 %
