@@ -3,7 +3,7 @@
    Z = zscoreFS(X) returns a centered, scaled version of X, with the same size
    as X. For vector input X, Z is the vector of z-scores
 
-      (X-median(X)) ./ mad(X).
+      (X-median(X)) ./ (1.4826* mad(X)).
 
    Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the
    same size as X using location and scale are specified in input
@@ -12,7 +12,9 @@
 
       (X-location(X)) ./ scale(X).
 
-
+   where scaled(X) is the corrected estimator of scale (corrected in the
+   sense that it is multiplied by a coefficient to achieve consistency for 
+   normally distributed data).  
 
 
    Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the

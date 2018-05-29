@@ -1,0 +1,19 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>tclusteda</title> <meta content="refpage" name="chunktype"><meta content="function:tclusteda " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclusteda Computes tclust for a series of values of the trimming factor" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {      window.location= "matlab:web([docrootFS '/FSDA/tclusteda.html'])";   }   setTimeout('Redirect()', 10);//--></script></head><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: tclusteda</em></p><h1 itemprop="title">tclusteda</h1><h1 class="reftitle">tclusteda Computes tclust for a series of values of the trimming factor</h1><h2>Description</h2><P>tclusteda performs tclust for a series of values of the trimming factor
+   alpha given k (number of groups) and given c (restriction factor). In
+   order to increase the speed of the computations, parfor is used.</P><h2>More About</h2><P>
+
+ This procedure extends to tclust the so called monitoring
+ approach. The phylosophy is to investigate how the results change as the
+ trimming proportion alpha reduces. This function enables us to monitor
+ the change in classification (measured by the ARI index) and the change
+ in centroids and covariance matrices (measured by the squared euclidean
+ distances). In order to make sure that consistent labels are used for the
+ groups, between two consecutive values of alpha, we assign label r to a
+ group if this group shows the smallest distance with group r for the
+ previous value of alpha.
+
+</P><h2>References</h2><P>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
+ A General Trimming Approach to Robust Cluster Analysis. Annals
+ of Statistics, Vol.36, 1324-1345.
+ Technical Report available at:
+ http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</P></html>

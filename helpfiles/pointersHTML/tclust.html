@@ -5,20 +5,19 @@
    variables. tclust returns inside structure out an n-by-1 vector idx
    containing the cluster indices of each point.  By default, tclust uses
    (squared), possibly constrained, Mahalanobis distances.</P><h2>More About</h2><P>
-
- This iterative algorithm initializes k clusters randomly and
- performs "concentration steps" in order to improve the current cluster
- assignment. The number of maximum concentration steps to be performed is
- given by input parameter refsteps. For approximately obtaining the global
- optimum, the system is initialized nsamp times and concentration steps
- are performed until convergence or refsteps is reached. When processing
- more complex data sets higher values of nsamp and refsteps have to be
+ This iterative algorithm initializes k clusters randomly and performs
+ concentration steps in order to improve the current cluster assignment.
+ The number of maximum concentration steps to be performed is given by
+ input parameter refsteps. For approximately obtaining the global optimum,
+ the system is initialized nsamp times and concentration steps are
+ performed until convergence or refsteps is reached. When processing more
+ complex data sets higher values of nsamp and refsteps have to be
  specified (obviously implying extra computation time). However, if more
  then 10 per cent of the iterations do not converge, a warning message is
  issued, indicating that nsamp has to be increased.
 
 </P><h2>References</h2><P>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
  A General Trimming Approach to Robust Cluster Analysis. Annals
- of Statistics, Vol.36, 1324-1345. 
+ of Statistics, Vol.36, 1324-1345.
  Technical Report available at:
  http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</P></html>
