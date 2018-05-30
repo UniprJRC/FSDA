@@ -70,13 +70,16 @@ function y = inversegampdf(x,a,b,nocheck)
 % If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
 % with paramters $a$ and $1/b$.
 %
+% See the appendix of Zellner (1971) for a detailed description of the
+% inverse Gamma distribution.
+%
+%
 % See also: gampdf
 %
 % References:
 %
-% Arnold Zellner (1971). An introduction to Bayesian Inference in
-% Econometrics, Wiley. See the appendix for a detailed description of the
-% inverse Gamma distribution.
+% Zellner, A. (1971). An introduction to Bayesian Inference in
+% Econometrics, Wiley. 
 %
 % https://en.wikipedia.org/wiki/Inverse-gamma_distribution.
 %
