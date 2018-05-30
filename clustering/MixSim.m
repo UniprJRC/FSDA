@@ -235,7 +235,7 @@ function [out]  = MixSim(k,v,varargin)
 %   Advances in data analysis and classification. Volume 9, Issue 4, pp
 %   461-481, DOI 10.1007/s11634-015-0223-9.
 %
-%   B. N. Parlett,  C. Reinsch (1969). Balancing a matrix for calculation
+%   Parlett  B. N.,  Reinsch C. (1969). Balancing a matrix for calculation
 %   of eigenvalues and eigenvectors. Numerische Mathematik, 19.  Volume 13,
 %   Issue 4, pp 293-304
 %

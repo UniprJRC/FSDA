@@ -614,7 +614,7 @@ if typeIC==0 || typeIC==3
     
     % Store whenever possible consistent labels
     if ~isempty(UnitsSameGroup)
-        IDXCLA=UnitsSameCluster(IDXCLA,UnitsSameGroup);
+        IDXCLA=ClusterRelabel(IDXCLA,UnitsSameGroup);
     end
     
     out.IDXCLA=IDXCLA;
@@ -644,7 +644,7 @@ end
 % MIXMIX or MIXCLA
 if typeIC>0
     if ~isempty(UnitsSameGroup)
-        IDXMIX=UnitsSameCluster(IDXMIX,UnitsSameGroup);
+        IDXMIX=ClusterRelabel(IDXMIX,UnitsSameGroup);
     end
     
     out.IDXMIX=IDXMIX;

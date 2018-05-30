@@ -1,7 +1,7 @@
-function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,UnitsSameGroup)
-%UnitsSameCluster enables to control the labels of the clusters which contain predefined units
+function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
+%ClusterRelabel enables to control the labels of the clusters which contain predefined units
 %
-%<a href="matlab: docsearchFS('UnitsSameCluster')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ClusterRelabel')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -17,9 +17,9 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %                   classification model.
 %                 Data Types -  cell
 %
-%   UnitsSameGroup :  list of the units which must (whenever possible)
+%   pivotunits :  list of the units which must (whenever possible)
 %                   have the same label. Numeric vector.  For example if
-%                   UnitsSameGroup=[20 26], means that group which contains
+%                   pivotunits=[20 26], means that group which contains
 %                   unit 20 is always labelled with number 1. Similarly,
 %                   the group which contains unit 26 is always labelled
 %                   with number 2, (unless it is found that unit 26 already
@@ -36,7 +36,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %
 %  Output:
 %
-% IDXwithConsistentLabels : cell with the same size as input cell IDX and with
+%   IDXrelabelled  : cell with the same size as input cell IDX and with
 %                   the same meaning of input cell IDX but with consistent
 %                   labels. Cell. Group which contains unit
 %                   UnitsSameGroup(1)  is labelled with number 1. In
@@ -45,15 +45,15 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %                   it is found that unit UnitsSameGroup(r) has already
 %                   been assigned to groups 1, 2, ..., r-1).
 %
-%   OldAndNewIndexes   : indexes of the permutations associated with IDX{1,1}. 
+%   idxMapping   : indexes of the permutations associated with IDX{1,1}. 
 %                       r-by-2 matrix. 
 %                       Matrix of size r-by-2 which keeps track of all the
 %                       permutations which have been done. For example if 
-%                       OldAndNewIndexes is equal to  [3, 1; 3, 2],
+%                       idxMapping is equal to  [3, 1; 3, 2],
 %                       it means that in the first iteration labels 1 and 3
 %                       have swapped, while in the second iteration label 3
 %                       and 2 have swapped. If no swapping was necessary
-%                       OldAndNewIndexes is empty.
+%                       idxMapping is empty.
 %
 %
 % See also tclustIC, tclustICplot
@@ -71,7 +71,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 %
 %
 %
-%<a href="matlab: docsearchFS('UnitsSameCluster')">Link to the help function</a>
+%<a href="matlab: docsearchFS('ClusterRelabel')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -85,7 +85,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
     % Make sure that units [23 54] are whenever possible respectively in
     % cluster 1 and 2
     UnitsSameGroup=[23 54];
-    IDXCLAnew=UnitsSameCluster(out.IDXCLA,UnitsSameGroup);
+    IDXCLAnew=ClusterRelabel(out.IDXCLA,UnitsSameGroup);
 %}
 
 %{
@@ -100,7 +100,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
     % make sure that the group which contains unit 12 is always labelled
     % with number 2, 
     UnitsSameGroup=[10;12];
-    [idxnew, OldNewIndexes]=UnitsSameCluster({out.idx}, UnitsSameGroup);
+    [idxnew, OldNewIndexes]=ClusterRelabel({out.idx}, UnitsSameGroup);
     % In this case OldNewIndexes is equal to 
     % 3 1 
     % 3 2 
@@ -119,7 +119,7 @@ function [IDXwithConsistentLabels, OldAndNewIndexes]  = UnitsSameCluster(IDX,Uni
 
 
 %% Beginning of code
-OldAndNewIndexes=zeros(length(UnitsSameGroup),2);
+idxMapping=zeros(length(pivotunits),2);
 jk=1;
 
 if iscell(IDX)
@@ -127,7 +127,7 @@ if iscell(IDX)
     [kk,cc]=size(IDX);
     
     % Initialize IDXwithConsistentLabels with IDX
-    IDXwithConsistentLabels=IDX;
+    IDXrelabelled=IDX;
     
     for i=1:kk
         for j=1:cc
@@ -149,10 +149,10 @@ if iscell(IDX)
             
             
             if length(uniqvar)>1
-                mineqv=min([length(UnitsSameGroup) length(uniqvar)-1]);
+                mineqv=min([length(pivotunits) length(uniqvar)-1]);
                 for jj=1:mineqv % length(uniqvar)-1
                     % Find old labels for group which contains  UnitsSameGroup(jj)
-                    OldLabel=idx(UnitsSameGroup(jj));
+                    OldLabel=idx(pivotunits(jj));
                     
                     idxtmp=idx;
                     if  OldLabel > jj
@@ -165,24 +165,24 @@ if iscell(IDX)
                         % becomes OldLabel
                         idx(idxtmp==jj)=OldLabel;
                         if i==1 && j==1
-                        OldAndNewIndexes(jk,:)=[OldLabel jj];
+                        idxMapping(jk,:)=[OldLabel jj];
                         jk=jk+1;
                         end
                     end
                 end
             end
             
-            IDXwithConsistentLabels{i,j}=idx;
+            IDXrelabelled{i,j}=idx;
         end
     end
 else
-    error('FSDA:UnitsSameCluster:WrongInput','Input must be a cell.');
+    error('FSDA:ClusterRelabel:WrongInput','Input must be a cell.');
 end
 
 if jk>1
-    OldAndNewIndexes=OldAndNewIndexes(1:jk-1,:);
+    idxMapping=idxMapping(1:jk-1,:);
 else
-    OldAndNewIndexes=[];
+    idxMapping=[];
 end
 
 end

@@ -935,7 +935,7 @@ end
 
 if ~isempty(UnitsSameGroup)
     
-    [IDXnew1, OldNewIndexes]=UnitsSameCluster({IDX(:,1)}, UnitsSameGroup);
+    [IDXnew1, OldNewIndexes]=ClusterRelabel({IDX(:,1)}, UnitsSameGroup);
     
     MUold1=MU(:,:,1);
     SIGMAold1= SIGMA{1};
