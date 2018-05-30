@@ -222,7 +222,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %}
 
 %{
-    %% mveeda with optional arguments.
+    % mveeda with optional arguments.
     n=200;
     v=3;
     randn('state', 123456);
@@ -246,7 +246,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %}
 
 %{
-    %% mve monitoring the extracted subsamples.
+    %% mve monitoring with varargout.
     n=200;
     v=3;
     randn('state', 123456);
@@ -254,7 +254,7 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW,C]=mveeda(Ycont);
+    [RAW,REW,C]=mveeda(Ycont,'msg',0,'plots',1);
 %}
 
 %% Beginning of code

@@ -1,7 +1,7 @@
 function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %minscale finds the M estimator of the scale for TB
 %
-%  REMARK: THIS FUNCTION HAS BEEN REPLACED BY mscale because minscale just
+%  REMARK: THIS FUNCTION HAS BEEN REPLACED BY Mscale because minscale just
 %  refers to Tukey's biweight At present this routine is just called by
 %  Smult and MMmult or MMmultcore
 %
@@ -11,8 +11,6 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 % $(1/n) \sum_{i=1}^n \rho((u_i/c)/s) = kc$
 % This routine computes the minimum value of s which satisfies the above
 % equation%
-%
-%<a href="matlab: docsearchFS('minscale')">Link to the help function</a>
 %
 %
 %

@@ -11,6 +11,8 @@ Warning: interchange greater than 10 when m=27
 Number of units which entered=28
 Warning: interchange greater than 10 when m=67
 Number of units which entered=13
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
 Warning: interchange greater than 10 when m=68
 Number of units which entered=61
 Warning: interchange greater than 10 when m=69
@@ -103,7 +105,8 @@ Number of units which entered=11
     X=X./max(X);
     Z=log(X);
     [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-    plot(Hetero(:,1),Hetero(:,2))</pre></div></div><img vspace="5" hspace="5" src="images\FSRHmdr_01.png" alt=""> </p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    plot(Hetero(:,1),Hetero(:,2))</pre></div></div><pre class="codeoutput">Warning: Maximum number of iterations has been reached without convergence 
+</pre><img vspace="5" hspace="5" src="images\FSRHmdr_01.png" alt=""> </p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     XX=load('tradeH.txt');
     y=XX(:,2);
     X=XX(:,1);

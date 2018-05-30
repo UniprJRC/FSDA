@@ -66,7 +66,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % This routine computes the value of $s$ which satisfies the above
 % equation.
 %
-% See also: Mscale1, minscale
+% See also: Sreg, Smult
 %
 % References:
 %

@@ -11,7 +11,7 @@
     % In this case we use the five most common values of lambda are considered
     [out]=FSRfan(y,X);
     fanplot(out);
-    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+    %The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
@@ -20,7 +20,7 @@ Warning: Number of subsets without full rank equal to 17.9%
 Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.07 seconds 
+Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
 Total estimated time to complete LMS:  0.01 seconds 
@@ -73,7 +73,7 @@ namey =
 
     'Sales'
 
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 m=100
 m=200
 m=300
@@ -91,7 +91,7 @@ m=200
 m=300
 m=400
 m=500
-Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.02 seconds 
 m=100
 m=200
 m=300
@@ -112,10 +112,7 @@ m=500
     fanplot(outBC,'titl','Box Cox');
     fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
     disp('Maximum difference in absolute value')
-    disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.32 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
+    disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.12 seconds 
@@ -139,7 +136,10 @@ Warning: Number of subsets without full rank equal to 16.3305%
 Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.11 seconds 
+Total estimated time to complete LMS:  0.12 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 16.3305%
+Total estimated time to complete LMS:  0.12 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Maximum difference in absolute value

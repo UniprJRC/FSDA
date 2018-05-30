@@ -100,6 +100,7 @@ if ~isempty(IndexesofFiles)
 end
 
 %% STEP 3: create alphabetical list of functions and txt file
+% rerun step 1 to regenerate FilesIncluded
 fsep=filesep;
 
 % Make sure one more time you are inside main root of FSDA
@@ -184,6 +185,11 @@ web(outputOFHtmlHelpFile,'-browser');
 %  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
 %  In the end create a sitemap for Google Search module.
 %
+FileName='addFSDA2path';
+FullPath=which(FileName);
+%Navigate to the main folder of FSDA
+FSDAroot=fileparts(FullPath);
+
 
 ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
     'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html' 'empty.html'...

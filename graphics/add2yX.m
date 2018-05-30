@@ -91,7 +91,7 @@ function add2yX(H,AX,BigAx,varargin)
 % - the labels of relevant observations, e.g. outliers or brushed groups.
 %
 %
-% See also olsline, add2spm
+% See also: add2spm
 %
 %
 % References:
