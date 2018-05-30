@@ -217,9 +217,9 @@ function [outFORE] = forecastTS(outEST,varargin)
 %
 % References:
 %
-% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2018), Robust
-% Monitoring of Time Series with Application to Fraud Detection,
-% Submitted.
+% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% forthcoming in Econometris and Statistics. [Referred below as RPRH]
 %
 %
 % Copyright 2008-2017.

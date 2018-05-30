@@ -239,7 +239,7 @@ function out=corrNominal(N, varargin)
 % Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
 % Series on Quantitative Applications in the Social Sciences, 07-004,
 % Newbury Park, CA: Sage, pp. 49-56.
-% Smithson, M.J. (2003) Confidence Intervals, Quantitative Applications in
+% Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in
 % the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.
 %
 % Acknowledgements:
