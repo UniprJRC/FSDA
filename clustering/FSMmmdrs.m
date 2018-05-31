@@ -191,7 +191,7 @@ function out=FSMmmdrs(Y,varargin)
 %   in: Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS,
 %   (pp. 271-286), IOS Press, Amsterdam (The Netherlands).
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -5,7 +5,7 @@ function [dom, laste] = evalmxdom(f,dom,cellBoundaries,imagePrefix,imageDir,outp
 
 % Copyright 1984-2014 The MathWorks, Inc.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 %
 %$LastChangedDate::                      $: Date of the last commit
 

@@ -28,7 +28,7 @@ function position(plmain)
 %
 % References:
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('position')">Link to the help function</a>

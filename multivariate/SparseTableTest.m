@@ -120,7 +120,7 @@ function out = SparseTableTest(N,varargin)
 % standard approaches and a new method, submitted
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

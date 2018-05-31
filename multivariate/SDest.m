@@ -306,7 +306,7 @@ function [out, varargout] = SDest(Y,varargin)
 %
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

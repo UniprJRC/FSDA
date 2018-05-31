@@ -70,7 +70,7 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 % Journal of the American Statistical Association , Vol. 76, No. 375,
 % pp. 643-648. (HRR)
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

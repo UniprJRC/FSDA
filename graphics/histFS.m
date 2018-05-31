@@ -64,7 +64,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %   Tufte E.R. (1983). The visual display of quantitative information,
 %   Graphics Press, Cheshire
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('histFS')">Link to the help function</a>

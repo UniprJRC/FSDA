@@ -155,7 +155,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 % See also: publishFS
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

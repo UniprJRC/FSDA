@@ -226,7 +226,7 @@ function [out] = FSRBeda(y, X, varargin)
 % DOI 10.1007/s11749-017-0542-6
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -311,7 +311,7 @@ function out  = tclustIC(Y,varargin)
 % Likelihoods, Journal of Computational and Graphical Statistics, 
 % https://doi.org/10.1080/10618600.2017.1390469
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

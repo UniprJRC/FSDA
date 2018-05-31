@@ -45,7 +45,7 @@
 %  See function tclust.m contained in the toolbox
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 
 %

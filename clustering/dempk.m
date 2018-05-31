@@ -137,7 +137,7 @@ function out = dempk(Y, k, g, varargin)
 %   Pairwise Overlap". Journal of Computational and Graphical Statistics,
 %   Vol.25, n.1, 66-90.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 % <a href="matlab: docsearchFS('dempk')">Link to the help page for this function</a>

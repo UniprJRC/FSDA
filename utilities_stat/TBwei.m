@@ -52,7 +52,7 @@ function w = TBwei(u,c)
 % DOI: 10.1007/s11749-014-0357-7
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

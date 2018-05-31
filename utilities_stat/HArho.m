@@ -69,7 +69,7 @@ function rhoHA = HArho(u, ctuning)
 % Exploratory Data Analysis Wiley, New York.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

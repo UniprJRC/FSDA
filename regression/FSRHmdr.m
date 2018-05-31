@@ -229,7 +229,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %   heteroskedastic regression, Computational Statistics and Data Analysis
 %   104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

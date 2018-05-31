@@ -63,7 +63,7 @@ function [Y , retain]= rthin(X, P)
 %      Techniques for Data Analysis," Oxford University Press.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

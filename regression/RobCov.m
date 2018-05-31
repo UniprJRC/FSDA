@@ -183,7 +183,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % for robust estimators. Technical report, Dept. of Applied Economics, K.U.
 % Leuven.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % FSDA toolbox
 %
 %

@@ -76,7 +76,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %   Davies, R. (1980), The distribution of a linear combination of
 %   chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

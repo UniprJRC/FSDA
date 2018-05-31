@@ -100,7 +100,7 @@ function add2yX(H,AX,BigAx,varargin)
 %   Graphics Press, Cheshire
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

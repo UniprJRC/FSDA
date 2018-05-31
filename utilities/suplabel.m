@@ -55,7 +55,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 % https://www.mathworks.com/matlabcentral/fileexchange/7772-suplabel?s_tid=srchtitle
 %
 % 
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

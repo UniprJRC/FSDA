@@ -53,7 +53,7 @@ function ceff = OPTeff(eff,v)
 % and Methods, Wiley, New York.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

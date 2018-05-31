@@ -385,7 +385,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 % http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

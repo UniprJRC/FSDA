@@ -65,7 +65,7 @@ function psiHYP = HYPpsi(u, cktuning)
 % Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014), Monitoring
 % Robust Regression. Electronic Journal of Statistics, Vol. 8, pp. 646-677.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -21,7 +21,7 @@ function [out1,out2,out3] = ginputFS(arg1,varargin)
 % ginput was modified into ginputFS by FSDA team
 % The modified code segments have been marked with string FSDAmodif ... FSDAmodifEnd.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

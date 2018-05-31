@@ -89,7 +89,7 @@ function y=triu2vec(A,k)
 % Springer, New York
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('triu2vec')">Link to the help function</a>

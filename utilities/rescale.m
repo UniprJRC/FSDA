@@ -13,7 +13,7 @@ function y = rescale(x,a,b)
 %     (default value of b is 1)
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

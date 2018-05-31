@@ -41,7 +41,7 @@ function list = findDir(root,varargin)
 %
 % References:
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

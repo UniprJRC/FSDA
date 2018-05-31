@@ -111,7 +111,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %       number of multivariate outliers. Journal of the Royal Statistical
 %       Society Series B, Vol. 71, pp. 201-221.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

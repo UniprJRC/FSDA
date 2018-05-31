@@ -27,7 +27,7 @@ function brushROB(eventdata)
 %
 %   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

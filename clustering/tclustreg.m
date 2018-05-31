@@ -291,7 +291,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
 % Methodologies for Clustering Linear Regression Data. Submitted.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>

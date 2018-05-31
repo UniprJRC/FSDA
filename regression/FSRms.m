@@ -253,7 +253,7 @@ function outms = FSRms(y,X,varargin)
 %   Computational Statistics and Data Analysis, special issue on robust
 %   model selection.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

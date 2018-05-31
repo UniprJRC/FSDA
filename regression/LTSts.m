@@ -450,7 +450,7 @@ function [out, varargout] = LTSts(y,varargin)
 % forthcoming in Econometris and Statistics. [Referred below as RPRH]
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by Marco Riani, Domenico Perrotta, Peter
 % Rousseeuw and Mia Hubert
 %

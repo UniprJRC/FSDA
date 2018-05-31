@@ -42,7 +42,7 @@ function bw = bwe(X, bwopt)
 %   Analysis. London: Chapman & Hall/CRC. p. 48. ISBN 0-412-24620-1.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

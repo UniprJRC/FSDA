@@ -63,7 +63,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
 %Discussion). J. R. Statist. Soc. B 26, 211-252
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -42,7 +42,7 @@ function X=crosstab2datamatrix(N, varargin)
 % References:
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

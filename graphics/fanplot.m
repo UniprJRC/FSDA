@@ -193,7 +193,7 @@ function fanplot(out,varargin)
 %   diagnostic transformations in regression, Chemometrics and Intelligent
 %   Laboratory Systems, Vol. 60, pp. 87-100.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

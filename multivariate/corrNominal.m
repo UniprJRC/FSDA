@@ -249,7 +249,7 @@ function out=corrNominal(N, varargin)
 % Code by Harald Hentschke (University of Tübingen) and
 % Maik Stüttgen (University of Bochum)
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

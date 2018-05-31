@@ -124,7 +124,7 @@ function out = boxtest(Y,group,varargin)
 % Wiley, New York, p. 280-284
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

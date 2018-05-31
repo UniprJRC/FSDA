@@ -191,7 +191,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 % and Methods, Wiley, New York.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

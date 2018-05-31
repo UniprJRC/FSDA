@@ -56,7 +56,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 % 954-959.
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

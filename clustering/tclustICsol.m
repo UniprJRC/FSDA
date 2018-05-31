@@ -227,7 +227,7 @@ function out  = tclustICsol(IC,varargin)
 % Classification 2:193-218
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustICsol')">Link to the help function</a>

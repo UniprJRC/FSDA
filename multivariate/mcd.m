@@ -272,7 +272,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 % to speed up computations for large datasets. This partitioning method is
 % applied in the R and LIBRA implementations of the mcd.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -203,7 +203,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tkmeans')">Link to the help function</a>

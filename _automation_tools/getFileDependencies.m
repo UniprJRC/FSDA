@@ -20,7 +20,7 @@ function list =  getFileDependencies(file)
 %
 % author:   Torsten Hopp
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 %
 %$LastChangedDate::                      $: Date of the last commit
 

@@ -97,7 +97,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
 %   Springer Verlag, New York.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

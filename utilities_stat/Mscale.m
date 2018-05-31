@@ -74,7 +74,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % (equation 7.119,  p. 176).
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

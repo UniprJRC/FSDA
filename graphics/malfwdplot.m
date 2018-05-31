@@ -328,7 +328,7 @@ function plotopt=malfwdplot(out,varargin)
 %   Atkinson A.C., Riani M. and Cerioli A. (2004), Exploring Multivariate Data with
 %   the Forward Search,  Springer Verlag, New York.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

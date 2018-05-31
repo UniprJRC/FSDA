@@ -116,7 +116,7 @@ function ci=ncpci(x,fType,df,varargin)
 %
 %
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

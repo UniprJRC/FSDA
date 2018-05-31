@@ -195,7 +195,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

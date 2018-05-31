@@ -113,7 +113,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %
 % See also: publishFunctionAlpha, publishFunctionCate, publishFS
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('makecontentsfileFS')">Link to the help page for this function</a>

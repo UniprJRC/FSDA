@@ -62,7 +62,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 % transformations to improve normality or symmetry. Biometrika, 87,
 % 954-959.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

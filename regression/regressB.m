@@ -285,7 +285,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %   Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('regressB')">Link to the help function</a>

@@ -57,7 +57,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 % algorithm for robust constrained clustering. Available at
 % http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 % DETAILS. This algorithm solves the minimization problem with constraints

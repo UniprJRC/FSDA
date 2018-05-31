@@ -53,7 +53,7 @@ function y=Qn(X,dim)
 % highly robust estimators of scale, in Computational Statistics, Volume 1,
 % eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % Written by FSDA team
 %
 %

@@ -49,7 +49,7 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 %   Distribution. Communications in Statistics - Simulation and Computation
 %   Volume 37, 2008 - Issue 2.
 %
-% Copyright 2008-2017.
+% Copyright 2008-2018.
 % FSDA team adapted and documented Jim Huntley's function wallen_pdf for
 % illustration purposes only.
 %
