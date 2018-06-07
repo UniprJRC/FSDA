@@ -198,13 +198,13 @@ if ~isempty(out.Ex)
                 str=regexprep(str,'\x0D','\x0A');
                 str=regexprep(str,'\x0A*','\x0A');
                 checkfirstLF=regexp(str,'\x0A');
-                if checkfirstLF(1)==1
+                if ~isempty(checkfirstLF) && checkfirstLF(1)==1
                     str=str(2:end);
                 end
                 %                 end
             end
             
-            if isempty(strtrim(str))
+            if (isnumeric(str) && isempty(str)) || isempty(strtrim(str))
                 out.Ex{i,j}=[];
             else
                 
