@@ -187,11 +187,11 @@ function fanplot(out,varargin)
 %
 % References:
 %
-%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
-%   Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust,
-%   diagnostic transformations in regression, Chemometrics and Intelligent
-%   Laboratory Systems, Vol. 60, pp. 87-100.
+% Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+% Analysis", Springer Verlag, New York.
+% Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
+% diagnostic transformations in regression, "Chemometrics and Intelligent
+% Laboratory Systems", Vol. 60, pp. 87-100.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

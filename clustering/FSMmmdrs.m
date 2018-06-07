@@ -176,20 +176,17 @@ function out=FSMmmdrs(Y,varargin)
 %
 % References:
 %
-%   Atkinson A.C., Riani M., and Cerioli A. (2006). Random Start Forward
-%   Searches with Envelopes for Detecting Clusters in Multivariate Data,
-%   in: Zani S., Cerioli A., Riani M., Vichi M. EDS. Data Analysis,
-%   Classification and the Forward Search, (pp. 163-172), 
-%   ISBN:3-540-35977-x, BERLIN: Springer Verlag (GERMANY).
-%
-%   Atkinson A.C., Riani M., (2007), Exploratory Tools for Clustering
-%   Multivariate Data. Computational Statistics & Data Analysis, vol. 52,
-%   pp. 272-285 ISSN: 0167-9473, doi:10.1016/j.csda.2006.12.034
-%
-%   Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008),
-%   Fitting Mixtures of Regression Lines with the Forward Search, 
-%   in: Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS,
-%   (pp. 271-286), IOS Press, Amsterdam (The Netherlands).
+% Atkinson, A.C., Riani, M., and Cerioli, A. (2006), Random Start Forward
+% Searches with Envelopes for Detecting Clusters in Multivariate Data,
+% in: Zani S., Cerioli A., Riani M., Vichi M., Eds., "Data Analysis,
+% Classification and the Forward Search", pp. 163-172, Springer Verlag.
+% Atkinson, A.C. and Riani, M., (2007), Exploratory Tools for Clustering
+% Multivariate Data, "Computational Statistics & Data Analysis", Vol. 52,
+% pp. 272-285, doi:10.1016/j.csda.2006.12.034
+% Riani, M., Cerioli, A., Atkinson, A.C., Perrotta, D. and Torti, F. (2008),
+% Fitting Mixtures of Regression Lines with the Forward Search, in:
+% "Mining Massive Data Sets for Security", F. Fogelman-Soulie et al. Eds.,
+% pp. 271-286, IOS Press.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

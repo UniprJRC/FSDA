@@ -43,8 +43,8 @@ function weights = GYfilt(x,varargin)
 %
 % References:
 %
-% Gervini D, Yohai VJ (2002), A class of robust and fully efficient
-% regression estimators. Annals of Statistics 30, pp. 583– 616
+% Gervini, D. and Yohai, V.J. (2002), A class of robust and fully efficient
+% regression estimators, "Annals of Statistics", Vol. 30, pp. 583–616.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

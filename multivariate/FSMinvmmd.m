@@ -113,12 +113,12 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %
 % References:
 %
-%   Atkinson, A.C. and Riani, M. (2006). Distribution theory and
-%   simulations for tests of outliers in regression. Journal of
-%   Computational and Graphical Statistics, Vol. 15, pp. 460-476
-%   Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward
-%   search for testing multiple outliers in regression, Advances in Data
-%   Analysis and Classification, Vol. 1, pp. 123-141.
+% Atkinson, A.C. and Riani, M. (2006), Distribution theory and
+% simulations for tests of outliers in regression, "Journal of
+% Computational and Graphical Statistics", Vol. 15, pp. 460-476.
+% Riani, M. and Atkinson, A.C. (2007), Fast calibrations of the forward
+% search for testing multiple outliers in regression, "Advances in Data
+% Analysis and Classification", Vol. 1, pp. 123-141.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

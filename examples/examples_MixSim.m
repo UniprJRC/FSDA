@@ -38,11 +38,10 @@
 % sphericity) and the relative cluster sizes. This new \textsc{MixSim}
 % feature allows to simulate data which comply with the TCLUST model of
 %
-%  Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
-%  (2008), "A General Trimming Approach to Robust Cluster Analysis". Annals
-%  of Statistics, Vol.36, 1324-1345. Technical Report available at
-%  www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf.
-%  See function tclust.m contained in the toolbox
+%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+%   A General Trimming Approach to Robust Cluster Analysis. Annals
+%   of Statistics, Vol.36, 1324-1345. [Technical Report available at:
+%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 %
 %
 % Copyright 2008-2018.

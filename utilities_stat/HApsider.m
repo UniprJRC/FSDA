@@ -61,8 +61,9 @@ function psiHAder = HApsider(u, ctuning)
 %
 % References:
 %
-% D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and
-% Exploratory Data Analysis Wiley, New York.
+% Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
+% Exploratory Data Analysis", Wiley, New York.
+%
 %
 %
 % Copyright 2008-2018.

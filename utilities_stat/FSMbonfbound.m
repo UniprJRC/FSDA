@@ -46,6 +46,10 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %
 % References:
 %
+% Atkinson, A.C. and Riani, M. (2006), Distribution theory and
+% simulations for tests of outliers in regression, "Journal of
+% Computational and Graphical Statistics", Vol. 15, pp. 460-476.
+%
 %
 % Copyright 2008-2018.
 % Written by FSDA team

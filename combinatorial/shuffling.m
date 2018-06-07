@@ -35,12 +35,10 @@ function x = shuffling(x)
 %
 % References:
 %
-% Knuth, Donald E. (1969). The Art of Computer Programming volume 2,
-% Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.
-%
-% Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological,
-% agricultural and medical research (3rd ed.). London, Oliver & Boyd. pp
-% 26-27.
+% Knuth, D.E. (1969), "The Art of Computer Programming volume 2,
+% Seminumerical algorithms", Reading, MA: Addison-Wesley, pp. 124-125.
+% Fisher, R.A. and Yates, F. (1948), "Statistical tables for biological,
+% agricultural and medical research (3rd ed.)", Oliver & Boyd, pp. 26-27.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

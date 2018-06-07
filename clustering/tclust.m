@@ -378,11 +378,10 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % References:
 %
-% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
-% A General Trimming Approach to Robust Cluster Analysis. Annals
-% of Statistics, Vol.36, 1324-1345.
-% Technical Report available at:
-% http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+%   A General Trimming Approach to Robust Cluster Analysis. Annals
+%   of Statistics, Vol.36, 1324-1345. [Technical Report available at:
+%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 %
 %
 % Copyright 2008-2018.

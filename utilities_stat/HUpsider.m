@@ -42,8 +42,8 @@ function psider=HUpsider(u,c)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
-% and Methods, Wiley, New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+% and Methods", Wiley, New York.
 %
 %
 % Copyright 2008-2018.

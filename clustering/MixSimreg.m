@@ -303,17 +303,17 @@ function [out] = MixSimreg(k,p,varargin)
 %
 % References:
 %
-%   Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
-%   of finite mixture modeling and clustering algorithms, The Journal of
-%   Computational and Graphical Statistics, 2:19, 354-376. (to refer to
-%   this publication we will use "MM2010 JCGS").
+% Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
+% of finite mixture modeling and clustering algorithms, "The Journal of
+% Computational and Graphical Statistics", Vol. 19, pp. 354-376. [to refer to
+% this publication we will use "MM2010 JCGS"]
 %
-%   Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package
-%   for Simulating Data to Study Performance of Clustering Algorithms,
-%   Journal of Statistical Software, 51:12, 1-25.
+% Melnykov, V., Chen, W.-C. and Maitra, R. (2012), MixSim: An R Package
+% for Simulating Data to Study Performance of Clustering Algorithms,
+% "Journal of Statistical Software", Vol. 51, pp. 1-25.
 %
-%   Davies, R. (1980), The distribution of a linear combination of
-%   chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.
+% Davies, R. (1980), The distribution of a linear combination of
+% chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
 %
 %   Parlett, B. N. and C. Reinschthe (1971), Balancing a Matrix for Calculation of
 %   Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
@@ -325,8 +325,8 @@ function [out] = MixSimreg(k,p,varargin)
 %
 %   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
-%   of Statistics, Vol.36, 1324-1345. Technical Report available at:
-%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf
+%   of Statistics, Vol.36, 1324-1345. [Technical Report available at:
+%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 %
 %   Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating
 %   mixtures of multivariate data with fixed cluster overlap in FSDA,

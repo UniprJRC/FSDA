@@ -86,11 +86,11 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %
 % References:
 %
-%   Davies, R (1973), Numerical inversion of a characteristic function, vol.
-%   60, Biometrika, pp. 415-417
+% Davies, R. (1973), Numerical inversion of a characteristic function, 
+% "Biometrika", Vol. 60, pp. 415-417.
 %
-%   Davies, R. (1980), The distribution of a linear combination of
-%   chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.
+% Davies, R. (1980), The distribution of a linear combination of
+% chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
 %
 %
 % Copyright 2008-2018.

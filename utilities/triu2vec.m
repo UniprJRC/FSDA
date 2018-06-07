@@ -85,8 +85,8 @@ function y=triu2vec(A,k)
 % References:
 %
 %
-% Harveille D. A. (1997). Matrix Algebra froma  statistician's perspective,
-% Springer, New York
+% Harveille, D.A. (1997), "Matrix Algebra from a statistician's
+% perspective", Springer.
 %
 %
 % Copyright 2008-2018.

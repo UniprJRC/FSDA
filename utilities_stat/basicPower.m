@@ -49,8 +49,9 @@ function Ytra=basicPower(Y,ColtoTra,la, varargin)
 %
 % References:
 %
-%Box, G. E. P. & Cox, D. R. (1964). An analysis of transformations (with
-%Discussion). J. R. Statist. Soc. B 26, 211-252
+% Box, G.E.P. and Cox, D.R. (1964), An analysis of transformations (with
+% Discussion), "Journal of the Royal Statistical Society Series B", 
+% Vol. 26, pp. 211-252.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

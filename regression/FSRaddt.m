@@ -148,9 +148,9 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % References: 
 %
-%   Atkinson, A.C. and Riani, M. (2002b). Forward search added variable t
-%   tests and the effect of masked outliers on model selection. Biometrika,
-%   Vol. 89, pp. 939-946.
+% Atkinson, A.C. and Riani, M. (2002b), Forward search added variable t
+% tests and the effect of masked outliers on model selection, "Biometrika",
+% Vol. 89, pp. 939-946.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

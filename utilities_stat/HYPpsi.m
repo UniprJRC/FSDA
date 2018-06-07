@@ -57,10 +57,10 @@ function psiHYP = HYPpsi(u, cktuning)
 %
 % References:
 %
-% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% Hampel, F.R., Rousseeuw, P.J. and  Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
-% Journal of the American Statistical Association , Vol. 76, No. 375,
-% pp. 643-648. (HRR)
+% "Journal of the American Statistical Association", Vol. 76,
+% pp. 643-648 [HRR]
 %
 % Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014), Monitoring
 % Robust Regression. Electronic Journal of Statistics, Vol. 8, pp. 646-677.

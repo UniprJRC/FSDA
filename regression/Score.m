@@ -61,8 +61,9 @@ function [outSC]=Score(y,X,varargin)
 %
 % References:
 %
-% Atkinson A.C. and Riani M. (2000), equation (2.30) for the expression
-% for score test statistic.
+% Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+% Analysis", Springer Verlag, New York. [see equation 2.30 for the
+% expression for score test statistic]
 %
 % Copyright 2008-2018.
 % Written by FSDA team

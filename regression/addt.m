@@ -75,8 +75,8 @@ function [out]=addt(y,X,w,varargin)
 %
 % References:
 %
-%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
+% Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+% Analysis", Springer Verlag, New York.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

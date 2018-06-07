@@ -66,10 +66,10 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
 %
 % References:
 %
-% Fowlkes E.B. and  C.L. Mallows. (1983), A Method for Comparing Two
-% Hierarchical Clusterings Author(s): Source: Journal of the American
-% Statistical Association, Vol. 78, No. 383, pp. 553-569
-% http://en.wikipedia.org/wiki/Fowlkes-Mallows_index
+% Fowlkes, E.B. and Mallows, C.L. (1983), A Method for Comparing Two
+% Hierarchical Clusterings, "Journal of the American
+% Statistical Association", Vol. 78, pp. 553-569.
+% [http://en.wikipedia.org/wiki/Fowlkes-Mallows_index]
 %
 %
 % Copyright 2008-2018.

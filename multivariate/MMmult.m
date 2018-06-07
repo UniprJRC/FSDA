@@ -177,8 +177,8 @@ function [out , varargout] = MMmult(Y,varargin)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
-% and Methods, Wiley, New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+% and Methods", Wiley, New York.
 %
 % Acknowledgements:
 %

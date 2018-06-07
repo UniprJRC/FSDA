@@ -254,8 +254,8 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 % Rousseeuw, P.J. and Van Driessen, K. 1999. A fast algorithm for the
 % minimum covariance determinant estimator. Technometrics, 41:212?223.
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
-% and Methods, Wiley, New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+% and Methods", Wiley, New York.
 %
 % Acknowledgements:
 %

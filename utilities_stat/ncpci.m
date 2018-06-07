@@ -95,17 +95,18 @@ function ci=ncpci(x,fType,df,varargin)
 %
 % References:
 %
-% Hentschke and Stüttgen (2011), European Journal of Neuroscience, 34, pp.
-% 1887-1894.
-% Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in
-% the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.
-% Hentschke H. and Stüttgen M. (2015), Measures of Effect Size Toolbox
+% Hentschke, H. and Stüttgen, M. (2011), Comuputation of measures of effect
+% size for neuroscience data sets, "European Journal of Neuroscience", Vol.
+% 34, pp. 1887-1894.
+% Smithson, M.J. (2003), "Confidence Intervals", Quantitative Applications in
+% the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. [pp. 39-41]
+% Hentschke, H. and Stüttgen, M. (2015), Measures of Effect Size Toolbox
 % Version 1.4. Code by Harald Hentschke (University of Tübingen) and
 % Maik Stüttgen (University of Bochum).
-% Steiger, J. H., & Fouladi, R. T. (1997), Noncentrality interval
-% estimation and the evaluation of statistical models. In L. L. Harlow, S.,
-% A. Mulaik, & J.H. Steiger (Eds.), What if there were no significance
-% tests? pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.
+% Steiger, J.H., and Fouladi, R.T. (1997), Noncentrality interval
+% estimation and the evaluation of statistical models. In Harlow, L.L.,
+% Stanley, S., Mulaik, A. and Steiger, J.H., Eds., "What if there were no
+% significance tests?", pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.
 %
 %
 % Acknowledgements:

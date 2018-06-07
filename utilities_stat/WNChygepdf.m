@@ -45,9 +45,9 @@ function Wpdf = WNChygepdf(X,N,K,M,W)
 % See also randsampleFS.m, subsets.m
 %
 % References:
-%   A. Fog (2008). Calculation Methods for Wallenius' Noncentral Hypergeometric
-%   Distribution. Communications in Statistics - Simulation and Computation
-%   Volume 37, 2008 - Issue 2.
+% Fog, A. (2008), Calculation Methods for Wallenius' Noncentral Hypergeometric
+% Distribution, "Communications in Statistics - Simulation and
+% Computation", Vol. 37, pp. 258-273.
 %
 % Copyright 2008-2018.
 % FSDA team adapted and documented Jim Huntley's function wallen_pdf for

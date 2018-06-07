@@ -170,8 +170,8 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
-% and Methods, Wiley, New York.
+% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+% and Methods", Wiley, New York.
 % P.J. Huber and E.M. Ronchetti (2009), Robust Statistics, 2nd Edition,
 % Wiley New York.
 % Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data

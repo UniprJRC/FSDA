@@ -82,21 +82,19 @@ function y = randsampleFS(n,k,method,after2011b)
 %
 % References:
 %
-%   For Method 1. Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables
-%   for biological, agricultural and medical research (3rd ed.). London,
-%   Oliver & Boyd, pp. 26-27.
-%
-%   For Method 2. Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.
-%
-%   For Method 3. D. E. Knuth. (1997). The Art of Computer Programming, Volume 2: Seminumerical
-%   Algorithms, Third Edition. Addison-Wesley, Section 3.2.1: The
-%   Linear Congruential Method, pp. 10-26.
-%
-%   For Weighted Sampling Without Replacement: Efraimidis, P.S. and Spirakis, P.G. (2006). 
-%   Weighted random sampling with a reservoir.
-%   Information Processing Letters, 97, 181-185.
-%   Wong, C. K. and M. C. Easton, (1980). An Efficient Method for Weighted Sampling Without Replacement.
-%   SIAM Journal of Computing 9(1), pp. 111-113.
+% Fisher, R.A. and Yates, F. (1948), "Statistical tables
+% for biological, agricultural and medical research (3rd ed.)",
+% Oliver & Boyd, pp. 26-27. [For Method 1]
+% Cochran, W.G. (1977), "Sampling techniques (Third ed.)", Wiley. [For
+% Method 2]
+% Knuth, D.E. (1997), "The Art of Computer Programming, Volume 2:
+% Seminumerical Algorithms, Third Edition" Addison-Wesley, pp. 10-26. [For
+% Method 3. For details see: Section 3.2.1: The Linear Congruential Method]
+% Efraimidis, P.S. and Spirakis, P.G. (2006), Weighted random sampling with
+% a reservoir, "Information Processing Letters", Vol. 97, pp. 181-185. [For
+% Weighted Sampling Without Replacement]
+% Wong, C.K. and Easton, M.C. (1980), An Efficient Method for Weighted
+% Sampling Without Replacement, "SIAM Journal of Computing", Vol. 9, pp. 111-113.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

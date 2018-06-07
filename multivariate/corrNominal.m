@@ -225,22 +225,24 @@ function out=corrNominal(N, varargin)
 %
 % References:
 %
-% Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 23-26.
-% Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for
+% Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.
+% 23-26]
+% Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
 % cross classifications II: Further Discussion and References,
-% Journal of the American Statistical Association, 54, pp. 123-163.
-% Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for
+% "Journal of the American Statistical Association", Vol. 54, pp. 123-163.
+% Goodman, L.A. and Kruskal, W.H. (1963), Measures of association for
 % cross classifications III: Approximate Sampling Theory,
-% Journal of the American Statistical Association, 58, pp. 310-364.
-% Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
+% "Journal of the American Statistical Association", Vol. 58, pp. 310-364.
+% Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
 % cross classifications IV: Simplification of Asymptotic
-% Variances. Journal of the American Statistical Association, 67, pp.
-% 415-421.
-% Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
+% Variances, "Journal of the American Statistical Association", Vol. 67,
+% pp. 415-421.
+% Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
 % Series on Quantitative Applications in the Social Sciences, 07-004,
-% Newbury Park, CA: Sage, pp. 49-56.
-% Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in
-% the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.
+% Newbury Park, CA: Sage. [pp. 49-56]
+% Smithson, M.J. (2003), "Confidence Intervals", Quantitative Applications
+% in the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. [pp.
+% 39-41]
 %
 % Acknowledgements:
 %

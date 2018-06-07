@@ -50,8 +50,8 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %
 % References:
 %
-%   A.W. Bowman and A. Azzalini (1997), "Applied Smoothing
-%      Techniques for Data Analysis," Oxford University Press.
+% Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
+% Techniques for Data Analysis", Oxford University Press.
 %
 %
 % Copyright 2008-2018.

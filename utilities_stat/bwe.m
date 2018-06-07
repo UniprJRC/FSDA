@@ -35,11 +35,10 @@ function bw = bwe(X, bwopt)
 %
 % References:
 %
-%   Bowman A.W.  and Azzalini A. (1997), "Applied Smoothing
-%      Techniques for Data Analysis," Oxford University Press.
-%
-%   Silverman, B.W. (1998). Density Estimation for Statistics and Data
-%   Analysis. London: Chapman & Hall/CRC. p. 48. ISBN 0-412-24620-1.
+% Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
+% Techniques for Data Analysis", Oxford University Press.
+% Silverman, B.W. (1998), Density Estimation for Statistics and Data
+% Analysis, Chapman & Hall/CRC, London. [pp. 48] 
 %
 %
 % Copyright 2008-2018.

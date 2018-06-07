@@ -249,11 +249,11 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %
 % References:
 %
-%   Atkinson A.C. and Riani M. (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
-%   Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for
-%   heteroskedastic regression, Computational Statistics and Data Analysis
-%   104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).
+% Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+% Analysis", Springer Verlag, New York.
+% Atkinson, A.C., Riani, M. and Torti, F. (2016), Robust methods for
+% heteroskedastic regression, "Computational Statistics and Data Analysis",
+% Vol. 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 [ART]
 %
 %
 % Copyright 2008-2018.

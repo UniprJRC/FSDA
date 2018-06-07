@@ -67,10 +67,10 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
 % References:
 %
 %
-% Hampel,F.R.,  Rousseeuw P.J. and  Ronchetti E.(1981),
+% Hampel, F.R., Rousseeuw, P.J. and  Ronchetti E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
-% Journal of the American Statistical Association , Vol. 76, No. 375,
-% pp. 643-648 (HRR)
+% "Journal of the American Statistical Association", Vol. 76,
+% pp. 643-648 [HRR]'
 %
 % Copyright 2008-2018.
 % Written by FSDA team

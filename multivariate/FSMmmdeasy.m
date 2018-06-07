@@ -74,14 +74,15 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %               each step of the search. Each row is associated to a unit
 %               while each colum is associated to a step of the fwd search.
 %
-% See also FSMenvmmd.m, FSM.m
+% See also FSMenvmmd.m, FSM.m, FSMmmd
+%
 %
 % References:
 %
-%   Atkinson Riani and Cerioli (2004), Exploring multivariate data with the
-%   forward search Springer Verlag, New York.
+% Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
+% data with the forward search", Springer Verlag, New York.
 %
-% See also FSMmmd
+%
 %
 % Copyright 2008-2018.
 % Written by FSDA team

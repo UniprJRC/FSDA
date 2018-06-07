@@ -108,12 +108,12 @@ function out = boxplotb(Y,varargin)
 %
 % References:
 %
-%   Zani, S.,  Riani M. and Cerioli A. (1998), Robust bivariate boxplots
-%   and multiple outlier detection, Computational Statistics and Data
-%   Analysis, 28, p. 257-270
-%   Corbellini A., Riani M. and Atkinson A.C. (2015), Discussion of the
-%   paper 'Multivariate Functional Outlier Detection' by Hubert, Rousseeuw
-%   and Segaert, Statistical Methods and Applications.
+% Zani, S., Riani M. and Cerioli A. (1998), Robust bivariate boxplots
+% and multiple outlier detection, "Computational Statistics and Data
+% Analysis", Vol. 28, pp. 257-270.
+% Corbellini A., Riani M. and Atkinson A.C. (2015), Discussion of the
+% paper 'Multivariate Functional Outlier Detection' by Hubert, Rousseeuw
+% and Segaert, "Statistical Methods and Applications".
 %
 % Copyright 2008-2018.
 % Written by FSDA team

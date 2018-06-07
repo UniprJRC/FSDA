@@ -277,14 +277,15 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 % Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and Mayo-Iscar A. (2016), 
 % The joint role of trimming and constraints in robust estimation
-% for mixtures of gaussian factor analyzers. Computational Statistics & Data
-% Analysis 99, p. 131-147.
-% Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S. and Mayo-Iscar A. (2017), Robust estimation of mixtures of regressions with random
-% covariates, via trimming and constraints. Statistics and Computing 27, 
-% p. 377-402.
+% for mixtures of gaussian factor analyzers, "Computational Statistics & Data
+% Analysis", Vol. 99, pp. 131-147.
+% Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and Mayo-Iscar, A. (2017),
+% Robust estimation of mixtures of regressions with random covariates, via
+% trimming and constraints, "Statistics and Computing", Vol. 27, pp.
+% 377-402.
 % Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R. (2010), 
-% Robust clusterwise linear regression through trimming. Computational
-% Statistics and Data Analysis 54, 3057-3069.
+% Robust clusterwise linear regression through trimming, "Computational
+% Statistics and Data Analysis", Vol. 54, pp.3057-3069.
 % Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
 % Lines with High Density Regions. Advances in Data Analysis and
 % Classification, Volume 8, Issue 1, p. 5-26.

@@ -306,39 +306,41 @@ function out=corrOrdinal(N, varargin)
 %
 % References:
 %
-% Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 57-59.
-% Agresti, A. (2010). Analysis of Ordinal Categorical Data, Second Edition,
+% Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.
+% 57-59]
+% Agresti, A. (2010), "Analysis of Ordinal Categorical Data", Second Edition,
 % Wiley, New York, pp. 194-195.
-% Hollander, M, Wolfe, D. A., Chicken, E. (2014). Nonparametric Statistical
-% Methods, Third edition, Wiley,
-% Goktas, A. and Oznur, I. (2011). A comparision of the most commonly used
-% measures of association for doubly ordered square
-% contingency tables via simulation. Metodoloski zvezki 8(1), pp. 17-37,
-% URL address: www.stat-d.si/mz/mz8.1/goktas.pdf
-% Goodman, L. A. and Kruskal, W. H. (1954). Measures of association for
-% cross classifications. Journal of the American Statistical
-% Association, 49, pp. 732-764.
-% Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for
+% Hollander, M, Wolfe, D.A., Chicken, E. (2014), "Nonparametric Statistical
+% Methods", Third edition, Wiley,
+% Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
+% measures of association for doubly ordered square contingency tables via
+% simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:
+% www.stat-d.si/mz/mz8.1/goktas.pdf]
+% Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
+% cross classifications, "Journal of the American Statistical
+% Association", Vol. 49, pp. 732-764.
+% Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
 % cross classifications II: Further Discussion and References,
-% Journal of the American Statistical Association, 54, pp. 123-163.
-% Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for
+% "Journal of the American Statistical Association", Vol. 54, pp. 123-163.
+% Goodman, L.A. and Kruskal, W.H. (1963), Measures of association for
 % cross classifications III: Approximate Sampling Theory,
-% Journal of the American Statistical Association, 58, pp. 310-364.
-% Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
+% "Journal of the American Statistical Association", Vol. 58, pp. 310-364.
+% Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
 % cross classifications IV: Simplification of Asymptotic
-% Variances. Journal of the American Statistical Association, 67, pp.
-% 415-421.
-% Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
+% Variances, "Journal of the American Statistical Association", Vol. 67,
+% pp. 415-421.
+% Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
 % Series on Quantitative Applications in the Social Sciences, 07-004,
-% Newbury Park, CA: Sage, pp. 49-56.
-% SAS documentation (2009). See
+% Newbury Park, CA: Sage. [pp. 49-56]
+% SAS documentation (2009), See
 % http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf,
 % pp. 1738-1740.
-% Morton B. B. and Benedetti J. K. (1977), Sampling Behavior of Tests for
-% Correlation in Two-Way Contingency Tables, Journal of the American
-% Statistical Association Vol. 72, pp. 309-315
-% Simon G. (1978), Alternative analysis for the singly ordered contingency
-% table, Journal of the American Statistical Association, Vol. 69, pp. 971-976.
+% Morton, B.B. and Benedetti, J.K. (1977), Sampling Behavior of Tests for
+% Correlation in Two-Way Contingency Tables, "Journal of the American
+% Statistical Association", Vol. 72, pp. 309-315.
+% Simon, G. (1978), Alternative analysis for the singly ordered contingency
+% table, "Journal of the American Statistical Association", Vol. 69, pp.
+% 971-976.
 %
 % Acknowledgements:
 %

@@ -61,8 +61,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information,
-%   Graphics Press, Cheshire
+%   Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire
 %
 % Copyright 2008-2018.
 % Written by FSDA team

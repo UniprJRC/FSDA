@@ -59,10 +59,10 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %
 % References:
 %
-% Yeo, I.-K. and Johnson, R. (2000). A new family of power
-% transformations to improve normality or symmetry. Biometrika, 87,
-% 954-959.
-% Atkinson A.C. and Riani M. (2018).  Extensions of the score test.
+% Yeo, I.K. and Johnson, R. (2000), A new family of power
+% transformations to improve normality or symmetry, "Biometrika", Vol. 87,
+% pp. 954-959.
+% Atkinson, A.C. and Riani, M. (2018), Extensions of the score test,
 % Submitted.
 %
 %

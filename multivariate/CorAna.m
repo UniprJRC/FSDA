@@ -525,19 +525,19 @@ function out=CorAna(N, varargin)
 %
 % References:
 %
-% Benzecri, J.-P. (1992), Correspondence Analysis Handbook, New-York,
+% Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,
 % Dekker.
-% Benzecri, J.-P. (1980), L'analyse des donnees tome 2: l'analyse des
-% correspondances, Paris, Bordas.
-% Greenacre, M.J. (1993), Correspondence Analysis in Practice, London,
+% Benzecri, J.-P. (1980), "L'analyse des donnees tome 2: l'analyse des
+% correspondances", Paris, Bordas.
+% Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
 % Academic Press.
 % Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
-% Statistics in Medicine, 9, pp. 469-485.
-% Greenacre, M.J. (1993), Biplots in correspondence Analysis, Journal of
-% Applied Statistics, 20, pp. 251 - 269.
-% Urbano L.-S., van de Velden M., Kiers H.A.L. (2009),
+% "Statistics in Medicine", Vol. 9, pp. 469-485.
+% Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
+% Applied Statistics", Vol. 20, pp. 251-269.
+% Urbano, L.-S., van de Velden, M. and Kiers, H.A.L. (2009),
 % CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
-% Journal of Statistical Software, Volume 31, Issue 8.
+% "Journal of Statistical Software", Vol. 31.
 %
 % Acknowledgements:
 %

@@ -171,8 +171,8 @@ function mmdplot(out,varargin)
 %
 % References:
 %
-%   Atkinson and Riani (2000), Robust Diagnostic Regression Analysis,
-%   Springer Verlag, New York.
+% Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
+% data with the forward search", Springer Verlag, New York.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

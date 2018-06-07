@@ -116,8 +116,8 @@ function out = SparseTableTest(N,varargin)
 %
 % References:
 %
-% Arsenin, S., Riani M. (2018), Data mining large contingency tables
-% standard approaches and a new method, submitted
+% Arsenin, S. and Riani, M. (2018), Data mining large contingency tables
+% standard approaches and a new method, in preparation.
 %
 %
 % Copyright 2008-2018.
