@@ -172,8 +172,8 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
-% P.J. Huber and E.M. Ronchetti (2009), Robust Statistics, 2nd Edition,
-% Wiley New York.
+% Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
+% Wiley.
 % Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data
 % sets. Computational Statistics and Data Analysis, 54, pp. 3168-3173.
 % Koller, M. and W. A. Stahel (2011). Sharpening wald-type inference in

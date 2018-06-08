@@ -315,23 +315,20 @@ function [out] = MixSimreg(k,p,varargin)
 % Davies, R. (1980), The distribution of a linear combination of
 % chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
 %
-%   Parlett, B. N. and C. Reinschthe (1971), Balancing a Matrix for Calculation of
-%   Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear
-%   Algebra, pp. 315-326.
-%
-%   Parlett, B. N. and C. Reinschthe (1969), Balancing a matrix for calculation 
-%   of eigenvalues and eigenvectors, Numerische Mathematik, 19, 
-%   Volume 13, Issue 4, pp 293-304. 
-%
+% Parlett, B.N. and Reinsch, C. (1969), Balancing a matrix for calculation
+% of eigenvalues and eigenvectors, "Numerische Mathematik", Vol. 13,
+% pp. 293-304.
+% Parlett, B.N. and Reinsch, C. (1971), Balancing a Matrix for Calculation of
+% Eigenvalues and Eigenvectors, in Bauer, F.L. Eds, "Handbook for Automatic
+% Computation", Vol. 2, pp. 315-326, Springer.
 %   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol.36, 1324-1345. [Technical Report available at:
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
-%
-%   Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating
-%   mixtures of multivariate data with fixed cluster overlap in FSDA,
-%   Advances in data analysis and classification. Volume 9, Issue 4, pp
-%   461-481, DOI 10.1007/s11634-015-0223-9.
+% Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
+% mixtures of multivariate data with fixed cluster overlap in FSDA,
+% "Advances in data analysis and classification", Vol. 9, pp. 461-481, 
+% DOI 10.1007/s11634-015-0223-9.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

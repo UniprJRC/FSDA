@@ -209,9 +209,9 @@ function [out] = simulateTS(T,varargin)
 %
 % References:
 %
-% Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
+% Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
 % Monitoring of Many Time Series with Application to Fraud Detection,
-% forthcoming in Econometris and Statistics. [Referred below as RPRH]
+% "Econmetrics and Statistics". [RPRH]
 %
 %
 % Copyright 2008-2018.
