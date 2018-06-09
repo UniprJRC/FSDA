@@ -938,8 +938,6 @@ idxopt           = zeros(n,1);
 
 postprobopt     = zeros(n,k);
 
-
-
 %%  Random starts
 for i =1:nselected
     
@@ -1014,7 +1012,10 @@ for i =1:nselected
         selj   = index(ilow:iup);
         Xb     = X(selj,:);
         yb     = y(selj,:);
-        
+        %if the model is without intercept and Xb is zero, the regression cannot be computed
+        if intercept == 0 && Xb == 0 
+            Xb = Xb + 0.0001*abs(randn(1,1));
+        end
         Beta(:,j) = Xb\yb;
         % Initialize sigmas
         if length(yb)==1
@@ -1388,16 +1389,25 @@ for i =1:nselected
                                 %close;
                                 if alphaX>0.5
                                     [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alphaX)/njj,'betathresh',1);
-                                    trimj=REW.outliers;
+                                    if isfield(REW,'outliers')
+                                        trimj=REW.outliers;
+                                    else
+                                        trimj = [];
+                                    end
                                 else
                                     [~,REW]      = mcd(Xjnointercept,'msg',0,'betathresh',1);
 
-                                    [~,indmdsor] = sort(REW.md);
-                                    % Trimmed units (after second level
-                                    % trimming)
-                                    % indmax for second level trimmed units is
-                                    % set to -1
-                                    trimj=indmdsor(hj+1:end);
+                                    if isfield(REW,'md')
+                                        [~,indmdsor] = sort(REW.md);
+                                        % Trimmed units (after second level
+                                        % trimming)
+                                        % indmax for second level trimmed units is
+                                        % set to -1
+                                        trimj=indmdsor(hj+1:end);
+                                    else
+                                        trimj = [];
+                                    end
+                                    
                                 end
                             else
                                 % Lines below are to find the second trimming points id_trim with
@@ -1593,7 +1603,6 @@ for i =1:nselected
             
             
         end
-        
         % disp([cstep obj sum(indmax<=0)])
         
         
@@ -1812,7 +1821,7 @@ if plots
         
         title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_1=' num2str(alphaLik) '\quad \alpha_2=' num2str(alphaX) '$'] , ...
             ['$ obj=' num2str(out.obj) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
-            'interpreter' , 'latex', 'fontsize' , 18);
+            'interpreter' , 'LaTex', 'fontsize' , 14);
         
         for jj = 1:k
             group_label = ['Group ' num2str(jj)];
@@ -1829,7 +1838,7 @@ if plots
             text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
                 'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
                 'HorizontalAlignment','center','VerticalAlignment','middle',...
-                'Color',clrdef(jj));
+                'Color',clrdef(jj), 'fontsize' , 12);
             
             % plot regression lines
             vv = [min(X(:,end)) max(X(:,end))];
@@ -1872,8 +1881,8 @@ if plots
         % clickableMultiLegend does not set properly the FontSize: to be fixed.
         lh=legend('show');
         legstr = get(lh,'String');
-        clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-        
+        clickableMultiLegend(legstr,'Location','northwest','interpreter' , 'LaTex', 'fontsize' , 12);
+          
         axis('manual');
         
         % control of the axis limits
