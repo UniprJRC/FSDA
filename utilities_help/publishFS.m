@@ -780,7 +780,6 @@ if nargin>1
         imagesDir=options.imagesDir;
     else
     end
-    
 end
 
 %% Open input .m file, put it in a string and do a series of preliminary operations
@@ -1453,6 +1452,13 @@ end
 [startIndexEx] = regexp(fstring,'\n%\{[\s1-20]');
 [endIndexEx] = regexp(fstring,'\n%\}[\s1-20]');
 
+if isempty(startIndexEx)
+    fstring=regexprep(fstring,'\r','\r\n');
+    [startIndexEx] = regexp(fstring,'\n%\{[\s1-20]');
+    [endIndexEx] = regexp(fstring,'\n%\}[\s1-20]');
+end
+
+
 % Try to understand where preamble finishes and MATLAB code starts
 EndOfExtry1=regexp(fstring,'[^"]Input parameters checking');
 EndOfExtry2=regexp(fstring,'[^"]Beginning of code');
@@ -1621,6 +1627,10 @@ for j=1:length(sintax)
     
     % Find point where description ends
     inicr=regexp(stri,'\r');
+    %     if isempty(inicr)
+    %         inicr=regexp(stri,'\n');
+    %     end
+    
     if isempty(inicr) && strcmp(stri,'EXAMPLES TO ADD')~=1
         disp('String below seems to be without carriage return')
         disp('------------------------------------------------')
@@ -2603,9 +2613,12 @@ else
     
     inipointCopyright=regexp(fstring,'Copyright');
     
-    
     if ~isempty(inipointAcknowledgements)
         Acknowledgements=fstring(inipointAcknowledgements+19:inipointCopyright-1);
+        if strcmp(Acknowledgements(1),':')
+        Acknowledgements=Acknowledgements(2:end);
+        end
+        
         posPercentageSigns=regexp(Acknowledgements,'%');
         Acknowledgements(posPercentageSigns)=[];
         
