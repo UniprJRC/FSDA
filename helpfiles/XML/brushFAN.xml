@@ -23,7 +23,7 @@
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire</Item>
+      <Item>Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>brushRES</Item>
@@ -43,7 +43,7 @@
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>for j=1:4</ItemCell>
-            <ItemCell>brushFAN(j);</ItemCell>
+            <ItemCell>    brushFAN(j);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

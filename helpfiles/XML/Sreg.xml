@@ -31,7 +31,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -209,7 +209,11 @@ If msg==1 (default) messages are displayed on the screen about estimated time to
             </ItemCell>
             <ItemCell>
                <Value>residuals</Value>
-               <Description>n x 1 vector containing the estimates of the robust scaled residuals</Description>
+               <Description>n x 1 vector containing the estimates of the robust scaled residuals.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>fittedvalues</Value>
+               <Description>n x 1 vector containing the fitted values.</Description>
             </ItemCell>
             <ItemCell>
                <Value>outliers</Value>
@@ -229,16 +233,12 @@ Remark: scalar out.conflev will be used to draw the horizontal line (confidence 
                <Description>n x 1 vector containing the estimates of the weights</Description>
             </ItemCell>
             <ItemCell>
-               <Value>class</Value>
-               <Description>'S'</Description>
-            </ItemCell>
-            <ItemCell>
                <Value>rhofunc</Value>
                <Description>string identifying the rho function which has been used</Description>
             </ItemCell>
             <ItemCell>
                <Value>rhofuncparam</Value>
-               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c</Description>
+               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c. This field is empty for the other rho functions.</Description>
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
@@ -247,6 +247,10 @@ Remark: scalar out.conflev will be used to draw the horizontal line (confidence 
             <ItemCell>
                <Value>X</Value>
                <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'Sreg'</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -297,7 +301,7 @@ Remark: scalar out.conflev will be used to draw the horizontal line (confidence 
             <ItemCell>[out]=Sreg(ycont,X);</ItemCell>
             <ItemCell>laby='Scaled S residuals';</ItemCell>
             <ItemCell>titl='';</ItemCell>
-            <ItemCell>resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</ItemCell>
+            <ItemCell>esindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

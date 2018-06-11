@@ -226,7 +226,7 @@ If multivarfit = '1' fits a single ols line to all points of each bivariate plot
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
       <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis, Springer Verlag, New York.</Item>
-      <Item>Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust, diagnostic transformations in regression, Chemometrics and Intelligent Laboratory Systems, Vol. 60, pp. 87–100.</Item>
+      <Item>Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust, diagnostic transformations in regression, Chemometrics and Intelligent Laboratory Systems, Vol. 60, pp. 87-100.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
@@ -373,12 +373,12 @@ If multivarfit = '1' fits a single ols line to all points of each bivariate plot
             <ItemCell>X=loyalty(:,1:3);</ItemCell>
             <ItemCell>la=[-1 -0.5 0 0.5 1];</ItemCell>
             <ItemCell>[out]=FSRfan(y,X,'la',la);</ItemCell>
-            <ItemCell>namey='Sales';</ItemCell>
-            <ItemCell>nameX={'Number of visits', 'Age', 'Number of persons in the family'};</ItemCell>
+            <ItemCell> namey='Sales';</ItemCell>
+            <ItemCell> nameX={'Number of visits', 'Age', 'Number of persons in the family'};</ItemCell>
             <ItemCell>%FlagSize controls how large must be the highlighted points. It is a</ItemCell>
             <ItemCell>%parametr of selectdataFS.</ItemCell>
-            <ItemCell>fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...</ItemCell>
-            <ItemCell>'multivarfit' '2' 'FlagSize' '5'})</ItemCell>
+            <ItemCell> fanplot(out,'xlimx',[10 520],'lwd',1.5,'FontSize',11,'SizeAxesNum',11,'nameX',nameX,'namey',namey,'databrush',{'selectionmode' 'Brush'...</ItemCell>
+            <ItemCell> 'multivarfit' '2' 'FlagSize' '5'})</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

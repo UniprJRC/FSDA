@@ -36,19 +36,27 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Jacobian</Name>
          <ShortDesc>Requested Jacobian of transformed values.</ShortDesc>
          <TypeInd>true (default) or false.</TypeInd>
          <LongDesc>If true (default) the transformation is normalized to have Jacobian equal to 1</LongDesc>
-         <Example>&lt;code&gt;'Jacobian',true&#xD;
-&lt;/code&gt;</Example>
+         <Example>'Jacobian',true</Example>
          <DataType>Logical</DataType>
-         <ReqArg>0</ReqArg>
          <Struct> </Struct>
       </Item>
-   </InpArgs>
-   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+      <Item>
+         <Name>inverse</Name>
+         <ShortDesc>Inverse transformation.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If inverse is true, the inverse transformation is returned. The default value of inverse is false.</LongDesc>
+         <Example>'inverse',true</Example>
+         <DataType>Logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>Ytra</Name>
@@ -89,13 +97,13 @@ where $G$ is the geometric mean of the observations.</LongDesc>
             <ItemCell>YtraBC=nan(n,nla);</ItemCell>
             <ItemCell>posy=y&amp;gt;0;</ItemCell>
             <ItemCell>for j=1:nla</ItemCell>
-            <ItemCell>YtraYJ(:,j)=normYJ(y,1,la(j),false);</ItemCell>
-            <ItemCell>YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),false);</ItemCell>
+            <ItemCell>  YtraYJ(:,j)=normYJ(y,1,la(j),'Jacobian',false);</ItemCell>
+            <ItemCell>  YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),'Jacobian',false);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>subplot(1,2,1)</ItemCell>
             <ItemCell>plot(y,YtraYJ)</ItemCell>
             <ItemCell>for j=1:nla</ItemCell>
-            <ItemCell>text(y(1), YtraYJ(1,j),['\lambda=' num2str(la(j))])</ItemCell>
+            <ItemCell>    text(y(1), YtraYJ(1,j),['\lambda=' num2str(la(j))])</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>xlabel('Original values')</ItemCell>
             <ItemCell>ylabel('Transformed values')</ItemCell>
@@ -104,7 +112,7 @@ where $G$ is the geometric mean of the observations.</LongDesc>
             <ItemCell>plot(y,YtraBC)</ItemCell>
             <ItemCell>xlim([y(1) y(end)])</ItemCell>
             <ItemCell>for j=1:nla</ItemCell>
-            <ItemCell>text(y(16), YtraBC(22,j),['\lambda=' num2str(la(j))])</ItemCell>
+            <ItemCell>    text(y(16), YtraBC(22,j),['\lambda=' num2str(la(j))])</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>xlabel('Original values')</ItemCell>
             <ItemCell>ylabel('Transformed values')</ItemCell>
@@ -125,5 +133,20 @@ where $G$ is the geometric mean of the observations.</LongDesc>
          <Exec>0</Exec>
       </Item>
    </Ex>
-   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Check the inverse tranformation load('mussels.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('mussels.mat');</ItemCell>
+            <ItemCell>Y=mussels.data;</ItemCell>
+            <ItemCell>la=[0.5 0 0.5 0 0];</ItemCell>
+            <ItemCell>% Transform all columns of matrix Y according to the values of la</ItemCell>
+            <ItemCell>Ytra=normBoxCox(Y,[],la,'Jacobian',false);</ItemCell>
+            <ItemCell>Ychk=normBoxCox(Ytra,[],la,'inverse',true);</ItemCell>
+            <ItemCell>disp(max(max(abs(Y-Ychk))))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
 </HelpXML>

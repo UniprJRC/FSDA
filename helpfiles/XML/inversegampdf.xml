@@ -68,10 +68,11 @@ inversegampdf computes the gamma pdf at each of the values in x using the corres
 The chief use of the inverse gamma distribution is in Bayesian statistics, where the distribution arises as the marginal posterior distribution for the unknown variance of a normal distribution if an uninformative prior is used; and as an analytically tractable conjugate prior if an informative prior is required. See the last example below.
 Relation with the Gamma distribution.
 If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with paramters $a$ and $1/b$.
+See the appendix of Zellner (1971) for a detailed description of the inverse Gamma distribution.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Arnold Zellner (1971). An introduction to Bayesian Inference in Econometrics, Wiley. See the appendix for a detailed description of the inverse Gamma distribution.
+      <Item>Zellner, A. (1971). An introduction to Bayesian Inference in Econometrics, Wiley.
 https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
@@ -86,10 +87,10 @@ https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
             <ItemCell>a=[1,2,3,3];</ItemCell>
             <ItemCell>b=[1,1,1,0.5];</ItemCell>
             <ItemCell>for j=1:4</ItemCell>
-            <ItemCell>subplot(2,2,j);</ItemCell>
-            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
-            <ItemCell>xlabel('x');</ItemCell>
-            <ItemCell>title(['PDF with a=' num2str(a(j)) ' b=' num2str(b(j))]);</ItemCell>
+            <ItemCell>    subplot(2,2,j);</ItemCell>
+            <ItemCell>    plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>    xlabel('x');</ItemCell>
+            <ItemCell>    title(['PDF with a=' num2str(a(j)) ' b=' num2str(b(j))]);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
@@ -104,8 +105,8 @@ https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
             <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
             <ItemCell>Ychk=Y;</ItemCell>
             <ItemCell>for i=1:length(x)</ItemCell>
-            <ItemCell>Y(i,:)   = inversegampdf(x(i),a,b);</ItemCell>
-            <ItemCell>Ychk(i,:)= inversegampdf(x(i),a,b,1);</ItemCell>
+            <ItemCell>    Y(i,:)   = inversegampdf(x(i),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)= inversegampdf(x(i),a,b,1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>disp('Maximum absolute difference is:');</ItemCell>
             <ItemCell>disp(max(max(abs(Y-Ychk))));</ItemCell>
@@ -133,9 +134,9 @@ https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
             <ItemCell>b = [1, 2, 4];</ItemCell>
             <ItemCell>subplot(1,2,1);</ItemCell>
             <ItemCell>for j=1:3</ItemCell>
-            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
-            <ItemCell>hold on;</ItemCell>
-            <ItemCell>xlabel('x (\sigma^2)');</ItemCell>
+            <ItemCell>    plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>    hold on;</ItemCell>
+            <ItemCell>    xlabel('x (\sigma^2)');</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>title('PDF with a=[1, 1, 1] and b=[1, 2, 4]');</ItemCell>
             <ItemCell>% Right panel: fixed scale (1), increasing shape (1,2,4);</ItemCell>
@@ -145,9 +146,9 @@ https://en.wikipedia.org/wiki/Inverse-gamma_distribution.</Item>
             <ItemCell>a = [1, 2, 4];</ItemCell>
             <ItemCell>subplot(1,2,2);</ItemCell>
             <ItemCell>for j=1:3</ItemCell>
-            <ItemCell>plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
-            <ItemCell>hold on;</ItemCell>
-            <ItemCell>xlabel('x (\sigma^2)');</ItemCell>
+            <ItemCell>    plot(x,inversegampdf(x,a(j),b(j)));</ItemCell>
+            <ItemCell>    hold on;</ItemCell>
+            <ItemCell>    xlabel('x (\sigma^2)');</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>title('PDF with a=[1, 2, 4] and b=[1, 1, 1]');</ItemCell>
          </MATLABcode>

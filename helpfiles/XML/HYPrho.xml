@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HYPrho</Title>
-   <Purpose><!--This is the second line of the .m file-->HYPrho computes rho function  using hyperboloc tangent estimator
+   <Purpose><!--This is the second line of the .m file-->HYPrho computes rho function  using hyperbolic tangent estimator
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -36,9 +36,9 @@ Remark - if length(cktuning)==2 values of A, B and d will be computed automatica
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>rhoHYP</Name>
-         <ShortDesc>n x 1 vector</ShortDesc>
-         <TypeInd>Hyperbolic rho associated to the residuals or Mahalanobis distances for the n units of the sample.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>rho function for hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>n x 1 vector which contains the hyperbolic rho associated to the residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
@@ -60,8 +60,8 @@ More precisely, it is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 *nor
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
-      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014). Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8 pp. 646-677</Item>
+      <Item>Hampel, F.R., Rousseeuw, P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
+      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014), Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8, pp. 646-677.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBrho</Item>

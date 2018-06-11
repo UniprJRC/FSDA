@@ -34,7 +34,7 @@ Remark: note that here we use symbol n1 instead of traditional symbol n because 
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -240,7 +240,11 @@ else no message is displayed on the screen</LongDesc>
          <Structure>
             <ItemCell>
                <Value>ListOut</Value>
-               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous. This field in future releases will be deleted bacause it will be replaced by out.outliers.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous.</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta</Value>
@@ -273,6 +277,10 @@ Second row contains the frequency distribution.</Description>
                <Value>constr</Value>
                <Description>This output is produced only if the search found at a certain step a non singular matrix X. In this case the search runs in a constrained mode, that is including the units which produced a singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSRB'.</Description>
+            </ItemCell>
          </Structure>
       </Item>
    </OutArgs>
@@ -280,8 +288,8 @@ Second row contains the frequency distribution.</Description>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
       <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
-      <Item>Riani M., Corbellini A., Atkinson A.C. (2016), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
-      <Item>Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian Regression, submitted</Item>
+      <Item>Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, Test, DOI 10.1007/s11749-017-0542-6</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRBmdr</Item>
@@ -388,9 +396,9 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>u02o=out02.ListOut(~sel);</ItemCell>
             <ItemCell>% u02gi = g + i units</ItemCell>
             <ItemCell>if ~isempty(u02i)</ItemCell>
-            <ItemCell>u02gi=[u02g u02i];</ItemCell>
+            <ItemCell>    u02gi=[u02g u02i];</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>u02gi=u02g;</ItemCell>
+            <ItemCell>    u02gi=u02g;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% n02gi = number of good + intermediate units</ItemCell>
             <ItemCell>n02gi=length(u02gi);</ItemCell>
@@ -409,9 +417,9 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>% S202gi = estimated of sigma^2 using g+i units</ItemCell>
             <ItemCell>S202gi=sum(res02(u02gi))/(n02gi-2);</ItemCell>
             <ItemCell>% X02gi = X matrix referred to good + intermediate units</ItemCell>
-            <ItemCell>X02gi=[ones(n02gi,1) X02(u02gi,:)];</ItemCell>
+            <ItemCell>  X02gi=[ones(n02gi,1) X02(u02gi,:)];</ItemCell>
             <ItemCell>% y02gi = y vector referred to good + intermediate units</ItemCell>
-            <ItemCell>y02gi=y02(u02gi);</ItemCell>
+            <ItemCell>  y02gi=y02(u02gi);</ItemCell>
             <ItemCell>% bayes = structure which contains prior information to be used in year</ItemCell>
             <ItemCell>% 2003</ItemCell>
             <ItemCell>bayes=struct;</ItemCell>
@@ -444,9 +452,9 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>% u03o =  outliers out of the threshold</ItemCell>
             <ItemCell>u03o=out03.ListOut(~sel);</ItemCell>
             <ItemCell>if ~isempty(u03i)</ItemCell>
-            <ItemCell>u03gi=[u03g u03i];</ItemCell>
+            <ItemCell>    u03gi=[u03g u03i];</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>u03gi=u03g;</ItemCell>
+            <ItemCell>    u03gi=u03g;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>n03gi=length(u03gi);</ItemCell>
             <ItemCell>X03gi=[ones(n03gi,1) X03(u03gi,:)];</ItemCell>
@@ -512,9 +520,9 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>% u04o = units outliers out of the threshold</ItemCell>
             <ItemCell>u04o=out04.ListOut(~sel);</ItemCell>
             <ItemCell>if ~isempty(u04i)</ItemCell>
-            <ItemCell>u04gi=[u04g u04i];</ItemCell>
+            <ItemCell>    u04gi=[u04g u04i];</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>u04gi=u04g;</ItemCell>
+            <ItemCell>    u04gi=u04g;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>n04gi=length(u04gi);</ItemCell>
             <ItemCell>% plotting section</ItemCell>
@@ -581,9 +589,9 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>u02i=out02.ListOut(sel);</ItemCell>
             <ItemCell>% u02gi = g + i units</ItemCell>
             <ItemCell>if ~isempty(u02i)</ItemCell>
-            <ItemCell>u02gi=[u02g u02i];</ItemCell>
+            <ItemCell>    u02gi=[u02g u02i];</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>u02gi=u02g;</ItemCell>
+            <ItemCell>    u02gi=u02g;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% n02gi = number of good + intermediate units</ItemCell>
             <ItemCell>n02gi=length(u02gi);</ItemCell>
@@ -651,28 +659,28 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>close all</ItemCell>
             <ItemCell>% just in case user has additional function subtightplot</ItemCell>
             <ItemCell>% http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot</ItemCell>
-            <ItemCell>make_it_tight = true;</ItemCell>
+            <ItemCell>make_it_tight = false;</ItemCell>
             <ItemCell>if make_it_tight == true &amp;&amp; exist('subtightplot','file') ==2</ItemCell>
-            <ItemCell>subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);</ItemCell>
+            <ItemCell>    subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>clear subplot;</ItemCell>
+            <ItemCell>    clear subplot;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% sel = panels in which yticks do not have to be removed</ItemCell>
             <ItemCell>sel=[1 4 7];</ItemCell>
             <ItemCell>miny=min(y);</ItemCell>
             <ItemCell>maxy=max(y);</ItemCell>
             <ItemCell>for j=1:9</ItemCell>
-            <ItemCell>subplot(3,3,j)</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>plot(X(selin,j),y(selin),'+')</ItemCell>
-            <ItemCell>plot(X(selout,j),y(selout),'ro')</ItemCell>
-            <ItemCell>ylim([miny maxy])</ItemCell>
-            <ItemCell>xlim([min(X(:,j)) max(X(:,j))])</ItemCell>
-            <ItemCell>if isempty(intersect(j,sel))</ItemCell>
-            <ItemCell>set(gca,'YTickLabel','')</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>% Add on the plot the variable name</ItemCell>
-            <ItemCell>text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)</ItemCell>
+            <ItemCell>    subplot(3,3,j)</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    plot(X(selin,j),y(selin),'+')</ItemCell>
+            <ItemCell>    plot(X(selout,j),y(selout),'ro')</ItemCell>
+            <ItemCell>    ylim([miny maxy])</ItemCell>
+            <ItemCell>    xlim([min(X(:,j)) max(X(:,j))])</ItemCell>
+            <ItemCell>    if isempty(intersect(j,sel))</ItemCell>
+            <ItemCell>        set(gca,'YTickLabel','')</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    % Add on the plot the variable name</ItemCell>
+            <ItemCell>    text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

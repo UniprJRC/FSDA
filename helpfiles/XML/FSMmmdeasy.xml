@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSMmmdeasy</Title>
-   <Purpose><!--This is the second line of the .m file-->FSMmmdeasy is exactly equal to minMD but much less efficient
+   <Purpose><!--This is the second line of the .m file-->FSMmmdeasy is exactly equal to FSMmmd but it is much less efficient
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->wthin</Title>
+   <Purpose><!--This is the second line of the .m file-->Thins a uni/bi-dimensional dataset
+</Purpose>
+   <Description><!--Description section-->Computes retention probabilities and bernoulli (0/1) weights on the basis of data density estimate.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Vector or 2-column matrix.</TypeInd>
+         <LongDesc>The structure contains the uni/bi-variate data to be thinned on the basis of a probability density estimate.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bandwidth</Name>
+         <ShortDesc>bandwidth value.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The bandwidth used to estimate the density. It can be estimated from the data using function bwe.
+Data Types - scalar</LongDesc>
+         <Example> </Example>
+         <DataType>scalar&#xD;
+                Example - bandwidth,0.35</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>retainby</Name>
+         <ShortDesc>retention method.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>The function used to retain the observations. It can be:
+- 'inverse' , i.e. (1 ./ pdfe) / max((1 ./ pdfe))) - 'comp2one' (default), i.e. 1 - pdfe/max(pdfe)) Data Types - char</LongDesc>
+         <Example> </Example>
+         <DataType>char&#xD;
+                Example - 'method','comp2one'</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Wt</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>vector of Bernoulli weights.</TypeInd>
+         <LongDesc>Contains 1 for retained units and 0 for thinned units.
+Data Types - single | double.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>pretain</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>vector of retention probabilities.</TypeInd>
+         <LongDesc>These are the probabilities that each point in X will be retained, estimated using a gaussian kernel using function ksdensity.
+Data Types - single | double.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>Xt : vector of retained units.</TypeInd>
+         <LongDesc>It is X(Wt,:).
+Data Types - single | double.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>A.W. Bowman and A. Azzalini (1997), "Applied Smoothing Techniques for Data Analysis," Oxford University Press.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>ksdensity</Item>
+      <Item>mvksdensity</Item>
+      <Item>bwe</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Univariate thinning.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>% The dataset is bi-dimensional and contain two collinear groups with</ItemCell>
+            <ItemCell>% regression structure. One group is dense, with 1000 units; the second</ItemCell>
+            <ItemCell>% has 100 units. Thinning in done according to the density of the values</ItemCell>
+            <ItemCell>% predicted by the OLS fit.</ItemCell>
+            <ItemCell>x1 = randn(1000,1);</ItemCell>
+            <ItemCell>x2 = 8 + randn(100,1);</ItemCell>
+            <ItemCell>x = [x1 ; x2];</ItemCell>
+            <ItemCell>y = 5*x + 0.9*randn(1100,1);</ItemCell>
+            <ItemCell>b = [ones(1100,1) , x] \ y;</ItemCell>
+            <ItemCell>yhat = [ones(1100,1) , x] * b;</ItemCell>
+            <ItemCell>plot(x,y,'.',x,yhat,'--');</ItemCell>
+            <ItemCell>% thinning over the predicted values</ItemCell>
+            <ItemCell>[Wt,pretain] = wthin(yhat, 'retainby','comp2one');</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');</ItemCell>
+            <ItemCell>drawnow;</ItemCell>
+            <ItemCell>axis manual;</ItemCell>
+            <ItemCell>title('univariate thinning over predicted ols values')</ItemCell>
+            <ItemCell>clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Bi-dimensional thinning.</Title>
+         <Desc>
+            <ItemCell>Same dataset, but thinning is done on the original bi-variate data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell/>
+            <ItemCell>plot(x,y,'.');</ItemCell>
+            <ItemCell>% thinning over the original bi-variate data</ItemCell>
+            <ItemCell>[Wt2,pretain2] = wthin([x,y]);</ItemCell>
+            <ItemCell>plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');</ItemCell>
+            <ItemCell>drawnow;</ItemCell>
+            <ItemCell>axis manual;</ItemCell>
+            <ItemCell>title('bivariate thinning')</ItemCell>
+            <ItemCell>clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Use of 'retainby' option.</Title>
+         <Desc>
+            <ItemCell>Since the thinning on the original bi-variate data with the default retention method ('inverse') removes too many units, let's try with the less conservative 'comp2one' option.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell/>
+            <ItemCell>plot(x,y,'.');</ItemCell>
+            <ItemCell>% thinning over the original bi-variate data</ItemCell>
+            <ItemCell>[Wt2,pretain2] = wthin([x,y], 'retainby','comp2one');</ItemCell>
+            <ItemCell>plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');</ItemCell>
+            <ItemCell>drawnow;</ItemCell>
+            <ItemCell>axis manual</ItemCell>
+            <ItemCell>clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);</ItemCell>
+            <ItemCell>title('"comp2one" thinning over the original bi-variate data');</ItemCell>
+            <ItemCell/>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Optional output Xt.</Title>
+         <Desc>
+            <ItemCell>Same dataset, the retained data are also returned using varagout option.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell/>
+            <ItemCell>% thinning over the original bi-variate data</ItemCell>
+            <ItemCell>[Wt2,pretain2,RetUnits] = wthin([x,y]);</ItemCell>
+            <ItemCell>RetUnits</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>thinning on the fishery dataset.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load fishery;</ItemCell>
+            <ItemCell>X=fishery.data;</ItemCell>
+            <ItemCell>% some jittering is necessary because duplicated units are not treated</ItemCell>
+            <ItemCell>% in tclustreg: this needs to be addressed</ItemCell>
+            <ItemCell>X = X + 10^(-8) * abs(randn(677,2));</ItemCell>
+            <ItemCell>% thinning over the original bi-variate data</ItemCell>
+            <ItemCell>[Wt3,pretain3,RetUnits3] = wthin(X ,'retainby','comp2one');</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>plot(X(Wt3,1),X(Wt3,2),'k.',X(~Wt3,1),X(~Wt3,2),'rx');</ItemCell>
+            <ItemCell>drawnow;</ItemCell>
+            <ItemCell>axis manual</ItemCell>
+            <ItemCell>clickableMultiLegend(['Retained: ' num2str(sum(Wt3))],['Thinned:   ' num2str(sum(~Wt3))]);</ItemCell>
+            <ItemCell>title('"comp2one" thinning on the fishery dataset');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>univariate thinning with less than 100 units.</Title>
+         <Desc>
+            <ItemCell>As the first examp[le above, but with less than 100 units in the data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>x1 = randn(85,1);</ItemCell>
+            <ItemCell>x2 = 8 + randn(10,1);</ItemCell>
+            <ItemCell>x = [x1 ; x2];</ItemCell>
+            <ItemCell>y = 5*x + 0.9*randn(95,1);</ItemCell>
+            <ItemCell>b = [ones(95,1) , x] \ y;</ItemCell>
+            <ItemCell>yhat = [ones(95,1) , x] * b;</ItemCell>
+            <ItemCell>plot(x,y,'.',x,yhat,'--');</ItemCell>
+            <ItemCell>% thinning over the predicted values</ItemCell>
+            <ItemCell>[Wt,pretain] = wthin(yhat, 'retainby','comp2one');</ItemCell>
+            <ItemCell>plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');</ItemCell>
+            <ItemCell>drawnow;</ItemCell>
+            <ItemCell>axis manual</ItemCell>
+            <ItemCell>title('univariate thinning over ols values predicted on a small dataset')</ItemCell>
+            <ItemCell>clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

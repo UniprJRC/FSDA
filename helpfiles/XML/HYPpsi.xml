@@ -36,9 +36,9 @@ Remark - if length(cktuning)==2 values of A, B and d will be computed automatica
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psiHYP</Name>
-         <ShortDesc>n x 1 vector</ShortDesc>
-         <TypeInd>FULL STOP MISSING IN THE OUTPUT DESCRIPTION</TypeInd>
-         <LongDesc>Values of hyperbolic psi function associated to the residuals or Mahalanobis distances for the n units of the sample</LongDesc>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>hyperbolic psi function.</TypeInd>
+         <LongDesc>n x 1 vector which contains the values of hyperbolic psi function associated to the residuals or Mahalanobis distances for the n units of the sample</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
@@ -53,8 +53,8 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel F.R., Rousseeuw P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
-      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014). Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8 pp. 646-677</Item>
+      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
+      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D. (2014), Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8, pp. 646-677.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBpsi</Item>
@@ -63,9 +63,10 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain Figure 2 of p.</Title>
+         <Title>Plot of hyperbolic psi function.</Title>
          <Desc> </Desc>
          <MATLABcode>
+            <ItemCell>% Plot of hyperbolic psi function.</ItemCell>
             <ItemCell>% Obtain Figure 2 of  p. 645 of HRR.</ItemCell>
             <ItemCell>x=-9:0.1:9;</ItemCell>
             <ItemCell>ctuning=6;</ItemCell>

@@ -61,7 +61,7 @@ Remark. Missing values (NaN's) and infinite values (Inf's) are allowed, since ob
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -156,9 +156,8 @@ Remark. Missing values (NaN's) and infinite values (Inf's) are allowed, since ob
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1 pp. 232-235), (7th edition, section 9.7.1 pp. 280-282).
-Prentice Hall.</Item>
-      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for heteroskedastic regression, submitted (ART)</Item>
+      <Item>Greene W.H.(1987), Econometric Analysis (5th edition, section 11.7.1 pp. 232-235), (7th edition, section 9.7.1 pp. 280-282), Prentice Hall.</Item>
+      <Item>Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for heteroskedastic regression, Computational Statistics and Data Analysis 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>regress</Item>

@@ -31,7 +31,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -185,9 +185,10 @@ If msg==1 (default) messages are displayed on the screen about estimated time to
       </Item>
       <Item>
          <Name>yxsave</Name>
-         <ShortDesc>the response vector y and data matrix X are saved into the output structure out.</ShortDesc>
+         <ShortDesc>Save matrices X and y.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <LongDesc>If yxsave is equal to 1 the response vector y and data matrix X are saved into the output structure out.
+Default is 0, i.e. no saving is done.</LongDesc>
          <Example>'yxsave',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -234,10 +235,6 @@ Remark: scalar out.conflev will be used to draw the horizontal line (confidence 
                <Description>n x 1 vector containing the estimates of the weights</Description>
             </ItemCell>
             <ItemCell>
-               <Value>class</Value>
-               <Description>'Tau'</Description>
-            </ItemCell>
-            <ItemCell>
                <Value>rhofunc</Value>
                <Description>string identifying the rho function which has been used</Description>
             </ItemCell>
@@ -252,6 +249,10 @@ Remark: scalar out.conflev will be used to draw the horizontal line (confidence 
             <ItemCell>
                <Value>X</Value>
                <Description>Data matrix X. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'Taureg'</Description>
             </ItemCell>
          </Structure>
       </Item>

@@ -234,13 +234,14 @@ This probability is computed using routine ncx2mixtcdf.m
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS")</Item>
-      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
-      <Item>Davies, R. (1980) The distribution of a linear combination of chi-square random variables, Applied Statistics, 29, 323-333.</Item>
-      <Item>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A. (2008), A General Trimming Approach to Robust Cluster Analysis. Annals of Statistics, Vol.36, 1324-1345. Technical Report available at http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf .
-References below document the problem of the ill-conditioning of the eigenvalue-eigenvector computation.</Item>
-      <Item>B. N. Parlett, C. Reinsch (1969). Balancing a matrix for calculation of eigenvalues and eigenvectors. Numerische Mathematik, 19. Volume 13, Issue 4, pp 293-304</Item>
-      <Item>Parlett, B. N. and C. Reinsch (1971). Balancing a Matrix for Calculation of Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear Algebra, pp. 315-326.</Item>
+      <Item>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS").</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980), The distribution of a linear combination of chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.</Item>
+      <Item>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), A General Trimming Approach to Robust Cluster Analysis. Annals of Statistics, Vol.36, 1324-1345. Technical Report available at:
+www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</Item>
+      <Item>Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating mixtures of multivariate data with fixed cluster overlap in FSDA, Advances in data analysis and classification. Volume 9, Issue 4, pp 461-481, DOI 10.1007/s11634-015-0223-9.</Item>
+      <Item>Parlett B. N., Reinsch C. (1969). Balancing a matrix for calculation of eigenvalues and eigenvectors. Numerische Mathematik, 19. Volume 13, Issue 4, pp 293-304</Item>
+      <Item>Parlett, B. N. and C. Reinschthe (1971), Balancing a Matrix for Calculation of Eigenvalues and Eigenvectors, Handbook for Auto. Comp., Vol. II, Linear Algebra, pp. 315-326.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tkmeans</Item>
@@ -276,7 +277,7 @@ References below document the problem of the ill-conditioning of the eigenvalue-
             <ItemCell>v=5;</ItemCell>
             <ItemCell>BarOmega=0.05;</ItemCell>
             <ItemCell>out=MixSim(4,5,'BarOmega',BarOmega, 'MaxOmega',0.15)</ItemCell>
-            <ItemCell>% Check a posteriori the average overlap</ItemCell>
+            <ItemCell>heck a posteriori the average overlap</ItemCell>
             <ItemCell>disp('Posterior average overlap')</ItemCell>
             <ItemCell>disp((sum(sum(out.OmegaMap))-k)/(0.5*k*(k-1)))</ItemCell>
             <ItemCell/>

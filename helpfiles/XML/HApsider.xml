@@ -62,11 +62,11 @@ It is necessary to have 0 &amp;lt;= $a$ &amp;lt;= $b$ &amp;lt;= $c$
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain bottom panel of Figure 11.10 p.</Title>
-         <Desc> </Desc>
+         <Title>Plot of derivative of psi function.</Title>
+         <Desc>
+            <ItemCell>Obtain bottom panel of Figure 11.10 p. 375 of Hoaglin et al. (1987)</ItemCell>
+         </Desc>
          <MATLABcode>
-            <ItemCell>% Obtain bottom panel of Figure 11.10 p. 375 of</ItemCell>
-            <ItemCell>% Hoaglin et al. (1987)</ItemCell>
             <ItemCell>x=-9:0.1:9;</ItemCell>
             <ItemCell>psiHA=HApsider(x,1);</ItemCell>
             <ItemCell>plot(x,psiHA)</ItemCell>

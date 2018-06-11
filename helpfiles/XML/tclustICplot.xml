@@ -167,7 +167,7 @@ datatooltip.SnapToDataVertex= Specifies whether the data cursor snaps to the nea
       <Item>
          <Name>databrush</Name>
          <ShortDesc>interactive mouse brushing.</ShortDesc>
-         <TypeInd>empty value, scalar or structure.</TypeInd>
+         <TypeInd>Empty value, scalar or structure.</TypeInd>
          <LongDesc>If databrush is an empty value (default), no brushing is done.
 The activation of this option (databrush is a scalar or a structure) enables the user to select a set of values of IC in the current plot and to see the corresponding classification highlighted in the scatter plot matrix (spm).
 If spm does not exist it is automatically created.
@@ -175,7 +175,8 @@ Please, note that the window style of the other figures is set equal to that whi
 DATABRUSH IS A SCALAR.
 If databrush is a scalar the default selection tool is a rectangular brush and it is possible to brush only once (that is persist='').
 DATABRUSH IS A STRUCTURE.
-If databrush is a structure, it is possible to use all optional arguments of function selectdataFS.m and the following fields - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar containing the strings 'on' or 'off'.
+If databrush is a structure, it is possible to use all optional arguments of function selectdataFS.m and the following optional arguments:
+- databrush.persist = repeated brushing enabled. Persist is an empty value or a scalar containing the strings 'on' or 'off'.
 The default value of persist is '', that is brushing is allowed only once.
 If persist is 'on' or 'off' brushing can be done as many time as the user requires.
 If persist='on' then the unit(s) currently brushed are added to those previously brushed. it is possible, every time a new brushing is done, to use a different color for the brushed solutions.
@@ -185,34 +186,7 @@ Character. [] (default) | '1'.
 - dispopt = string which controls how to fill the diagonals in the scatterplot matrix of the brushed solutions. Set dispopt to 'hist' (default) to plot histograms, or 'box' to plot boxplots.</LongDesc>
          <Example>'databrush',1</Example>
          <DataType>single | double | struct</DataType>
-         <Struct>
-            <ItemCell>
-               <Value>persist</Value>
-               <Description>repeated brushng enabled. Persist is an empty value or a scalar&#xD;
-                     containing the strings 'on' or 'off'.&#xD;
-                     The default value of persist is '', that is brushing&#xD;
-                     is allowed only once.&#xD;
-                     If persist is 'on' or 'off' brushing can be done as&#xD;
-                     many time as the user requires.&#xD;
-                     If persist='on' then the unit(s) currently brushed&#xD;
-                     are added to those previously brushed. it is&#xD;
-                     possible, every time a new brushing is done, to use a&#xD;
-                     different color for the brushed solutions.&#xD;
-                     If persist='off' every time a new brush is performed&#xD;
-                     units previously brushed are removed.&#xD;
-                   </Description>
-            </ItemCell>
-            <ItemCell>
-               <Value>Label</Value>
-               <Description>add labels (i.e. x=value of k and&#xD;
-                      y=values of IC) of brushed solutions in the ICplot.&#xD;
-                     Character. [] (default) | '1'.&#xD;
-                   - dispopt = string which controls how to fill the&#xD;
-                      diagonals in the scatterplot matrix of the brushed&#xD;
-                      solutions. Set dispopt to 'hist' (default) to plot&#xD;
-                      histograms, or 'box' to plot boxplots.</Description>
-            </ItemCell>
-         </Struct>
+         <Struct> </Struct>
       </Item>
       <Item>
          <Name>nameY</Name>
@@ -228,12 +202,13 @@ Character. [] (default) | '1'.
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016). Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoods, submitted.</Item>
-      <Item>L. Hubert and P. Arabie (1985). Comparing Partitions, Journal of Classification 2:193-218</Item>
+      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2017), Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoods, Journal of Computational and Graphical Statistics, https://doi.org/10.1080/10618600.2017.1390469</Item>
+      <Item>Hubert L. and Arabie P., (1985), Comparing Partitions, Journal of Classification, vol. 2, pp 193-218.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tclustIC</Item>
       <Item>tclust</Item>
+      <Item>tclustICsol</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
@@ -241,7 +216,10 @@ Character. [] (default) | '1'.
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>Y=load('geyser2.txt');</ItemCell>
-            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);</ItemCell>
+            <ItemCell>% Make sure (whenever possible) that units 15, 30 and 69 are inside</ItemCell>
+            <ItemCell>% groups which have labels respectively equal to 1, 2 and 3.</ItemCell>
+            <ItemCell>UnitsSameGroup=[15 30 69];</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);</ItemCell>
             <ItemCell>tclustICplot(out)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

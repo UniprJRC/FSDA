@@ -74,7 +74,7 @@ Using varargin it is possible to:
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire</Item>
+      <Item>Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>spmplot</Item>
@@ -89,8 +89,10 @@ Using varargin it is possible to:
             <ItemCell>load fisheriris;</ItemCell>
             <ItemCell>% Create scatter plot matrix with specific legends</ItemCell>
             <ItemCell>[H,AX,BigAx]=gplotmatrix(meas,[],species);</ItemCell>
+            <ItemCell>% The legens are not clickable</ItemCell>
             <ItemCell>% [H,AX,BigAx]=gplotmatrix(meas,[],species,[],[],[],[],'grpbars')</ItemCell>
             <ItemCell>add2spm(H,AX,BigAx)</ItemCell>
+            <ItemCell>% Now the legends become clickable</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

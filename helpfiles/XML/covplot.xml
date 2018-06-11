@@ -328,7 +328,7 @@ The default options of the structure are DisplayStyle='Window' and SnapToDataVer
             <ItemCell>m0=20;</ItemCell>
             <ItemCell>bs=fre(1:m0,1);</ItemCell>
             <ItemCell>[out]=FSMeda(Y,bs,'init',30);</ItemCell>
-            <ItemCell>% Initialize structure fground</ItemCell>
+            <ItemCell> % Initialize structure fground</ItemCell>
             <ItemCell>fground = struct;</ItemCell>
             <ItemCell>% Specify the number of trajectories which have to be highlighted</ItemCell>
             <ItemCell>fground.funit=2;</ItemCell>
@@ -337,7 +337,7 @@ The default options of the structure are DisplayStyle='Window' and SnapToDataVer
             <ItemCell>fground.flabstep=[n/2 n*0.75 n+0.5];</ItemCell>
             <ItemCell>% Specify the line width of the highlighted trajectories</ItemCell>
             <ItemCell>fground.LineWidth=3;</ItemCell>
-            <ItemCell>covplot(out,'fground',fground,'tag','pl_mycov')</ItemCell>
+            <ItemCell>ovplot(out,'fground',fground,'tag','pl_mycov')</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

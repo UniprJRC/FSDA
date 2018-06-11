@@ -19,8 +19,8 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>bdp</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Breakdown point.</TypeInd>
+         <ShortDesc>Breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
          <LongDesc>(Number between 0 and 0.5). The default value is 0.5.</LongDesc>
          <Example>'bdp',1/4</Example>
          <DataType>double</DataType>
@@ -28,63 +28,67 @@
       </Item>
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Number of subsamples of size v which have to be extracted (if not given, default = 1000).</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Number of subsamples.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of subsamples of size v+1 which have to be extracted (if not given, default = 1000).</LongDesc>
          <Example>'nsamp',10000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>refsteps</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Number of refining iterations in each subsample (default = 3).</TypeInd>
-         <LongDesc>refsteps = 0 means "raw-subsampling" without iterations.</LongDesc>
+         <ShortDesc>Number of refining iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of refining iterations in each subsample (default = 3).
+refsteps = 0 means "raw-subsampling" without iterations.</LongDesc>
          <Example>'refsteps',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>reftol</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Tolerance for the refining steps.</TypeInd>
-         <LongDesc>The default value is 1e-6;</LongDesc>
+         <ShortDesc>Refining steps tolerance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Tolerance for the refining steps.
+The default value is 1e-6;</LongDesc>
          <Example>'reftol',1e-8</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>refstepsbestr</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Number of refining iterations for each best subset (default = 50).</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Number of refining iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of refining iterations for each best subset (default = 50).</LongDesc>
          <Example>'refstepsbestr',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>reftolbestr</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Value of tolerance for the refining steps for each of the best subsets.</TypeInd>
-         <LongDesc>The default value is 1e-8;</LongDesc>
+         <ShortDesc>Tolerance for refining steps.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of tolerance for the refining steps for each of the best subsets.
+The default value is 1e-8;</LongDesc>
          <Example>'reftolbestr',1e-8</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bestr</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Number of "best locations" to remember from the subsamples.</TypeInd>
-         <LongDesc>These will be later iterated until convergence (default=5)</LongDesc>
+         <ShortDesc>Number of best solutions to store.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of "best locations" to remember from the subsamples. These will be later iterated until convergence (default=5)</LongDesc>
          <Example>'bestr',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>Scalar.</ShortDesc>
-         <TypeInd>Number between 0 and 1 containing confidence level which is used to declare units as outliers.</TypeInd>
-         <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+         <ShortDesc>Confidence level.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number between 0 and 1 containing confidence level which is used to declare units as outliers.
+Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 Default value is 0.975</LongDesc>
          <Example>'conflev',0.99</Example>
          <DataType>double</DataType>
@@ -92,17 +96,17 @@ Default value is 0.975</LongDesc>
       </Item>
       <Item>
          <Name>conflevrew</Name>
-         <ShortDesc>Scalar.</ShortDesc>
-         <TypeInd>Number between 0 and 1 containing confidence level which is used to do the reweighting step.</TypeInd>
-         <LongDesc>Default value is the one specified in previous option conflev</LongDesc>
+         <ShortDesc>Confidence level for use for reweighting.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number between 0 and 1 containing confidence level which is used to do the reweighting step. Default value is the one specified in previous option conflev.</LongDesc>
          <Example>'conflevrew',0.99</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>betathresh</Name>
-         <ShortDesc>Scalar.</ShortDesc>
-         <TypeInd>Distribution to use.</TypeInd>
+         <ShortDesc>Distribution to use.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
          <LongDesc>If betathresh = 1 the distribution which is used to declare units as outliers is a mixture of Rocke scaled F distribution and beta else (default) traditional chi^2 distribution is used.</LongDesc>
          <Example>'betathresh',1</Example>
          <DataType>double</DataType>
@@ -110,9 +114,9 @@ Default value is 0.975</LongDesc>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Scalar.</ShortDesc>
-         <TypeInd>If nocheck is equal to 1 no check is performed on matrix Y.</TypeInd>
-         <LongDesc>As default nocheck=0.</LongDesc>
+         <ShortDesc>No check on input data.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.</LongDesc>
          <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -146,8 +150,8 @@ plots.nameY = cell array of strings containing the labels of the variables. As d
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Display or not messages on the screen.</TypeInd>
+         <ShortDesc>Display or not messages on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
          <LongDesc>If msg==1 (default) messages are displayed on the screen about estimated time to compute the final estimator else no message is displayed on the screen.</LongDesc>
          <Example>'msg',1</Example>
          <DataType>double</DataType>
@@ -155,8 +159,8 @@ plots.nameY = cell array of strings containing the labels of the variables. As d
       </Item>
       <Item>
          <Name>tolMCD</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Tolerance to declare a subset as singular.</TypeInd>
+         <ShortDesc>Tolerance to declare a subset as singular.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
          <LongDesc>The default value of tolMCD is exp(-50*v).</LongDesc>
          <Example>'tolMCD',1e-20</Example>
          <DataType>double</DataType>
@@ -164,19 +168,30 @@ plots.nameY = cell array of strings containing the labels of the variables. As d
       </Item>
       <Item>
          <Name>ysaveRAW</Name>
-         <ShortDesc>scalar that is set to 1 to request that the data matrix Y is saved into the output structure RAW.</ShortDesc>
-         <TypeInd>This feature is meant at simplifying the use of function malindexplot.</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <ShortDesc>save Y.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure RAW. This feature is meant at simplifying the use of function malindexplot.
+Default is 0, i.e. no saving is done.</LongDesc>
          <Example>'ysaveRAW',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ysaveREW</Name>
-         <ShortDesc>scalar that is set to 1 to request that the data matrix Y is saved into the output structure REW.</ShortDesc>
-         <TypeInd>This feature is meant at simplifying the use of function malindexplot.</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <ShortDesc>save Y.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure REW. This feature is meant at simplifying the use of function malindexplot.
+Default is 0, i.e. no saving is done.</LongDesc>
          <Example>'ysaveREW',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>smallsamplecor</Name>
+         <ShortDesc>small sample correction factor.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which defines whether to use or not small sample correction factor to inflate the scale estimate. If it is equal to 1 the small sample correction factor is used. The default value of smallsamplecor is 1, that is the correction is used. See http://users.ugent.be/~svaelst/publications/corrections.pdf for further details about the correction factor.</LongDesc>
+         <Example>'smallsamplecor',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -295,7 +310,7 @@ Remark: if the reweighted MCD is singular, RAW.weights is given here.</Descripti
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>'mcdr'</Description>
+               <Description>'mcdr'.</Description>
             </ItemCell>
          </Structure>
       </Item>

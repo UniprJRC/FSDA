@@ -200,7 +200,7 @@ If cpbrush is not an empty value the user has to supply the matrix which in the 
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riani and Atkinson (2010), Robust model selection with flexible trimming, Computational Statistics and Data Analysis (in press).</Item>
+      <Item>Riani and Atkinson (2010). Robust Model Selection with Flexible Trimming, Computational Statistics and Data Analysis, special issue on robust model selection.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
    <Ex><!--EXAMPLES SECTION-->

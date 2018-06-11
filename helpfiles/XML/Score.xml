@@ -7,9 +7,9 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
-         <TypeInd>y can be both a row of column vector.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. It can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +17,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1). Rows of X represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -31,16 +32,17 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>la</Name>
-         <ShortDesc>It specifies for which values of the transformation parameter it is necessary to compute the score test.</ShortDesc>
+         <ShortDesc>transformation parameter.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>Default value of lambda is la=[-1 -0.5 0 0.5 1]; that is the five most common values of lambda</LongDesc>
+         <LongDesc>It specifies for which values of the transformation parameter it is necessary to compute the score test.
+Default value of lambda is la=[-1 -0.5 0 0.5 1]; that is the five most common values of lambda</LongDesc>
          <Example>'la',[0 0.5]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -73,7 +75,7 @@
          <Structure>
             <ItemCell>
                <Value>Score</Value>
-               <Description>score test. Scalar. t test for additional constructed variable</Description>
+               <Description>score test. Vector. Vector of length length(lambda) which contains the value of the score test for each value of lambda specfied in optional input parameter la. If la is not specified, the vector will be of length 5 and contains the values of the score test for the 5 most common values of lambda.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Lik</Value>
@@ -85,9 +87,13 @@
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson Riani (2000), equation (2.30) for the expression for score test statistic.</Item>
+      <Item>Atkinson A.C. and Riani M. (2000), equation (2.30) for the expression for score test statistic.</Item>
    </References>
-   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRfan</Item>
+      <Item>ScoreYJ</Item>
+      <Item>ScoreYJpn</Item>
+   </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>Score with all default options.</Title>
@@ -100,8 +106,11 @@
             <ItemCell>X=XX(:,1:end-1);</ItemCell>
             <ItemCell>% Score test using the five most common values of lambda</ItemCell>
             <ItemCell>[outSc]=Score(y,X);</ItemCell>
+            <ItemCell>disp('Values of the score test')</ItemCell>
+            <ItemCell>disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})</ItemCell>
+            <ItemCell>disp(outSc.Score')</ItemCell>
          </MATLABcode>
-         <Exec>0</Exec>
+         <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Score with optional arguments.</Title>
@@ -120,12 +129,5 @@
          <Exec>0</Exec>
       </Item>
    </Ex>
-   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
-      <Item>
-         <Title> </Title>
-         <Desc> </Desc>
-         <MATLABcode> </MATLABcode>
-         <Exec>0</Exec>
-      </Item>
-   </ExtraEx>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
 </HelpXML>

@@ -58,7 +58,7 @@ Default value is 0.975.</LongDesc>
          <ShortDesc>Marginal projections.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>Scalar which specifies if it is necessary to consider marginal projections. Scalar margin specifies up to which order marginal projections must be considered. For example margin = 2 implies that all possible univariate and bivariate marginal projections are considered. Default value is 0 (marginal projections are not considered).
-% Remark: note that if margin&amp;gt;0, data are preliminary standardized using medians and MADs.</LongDesc>
+Remark: note that if margin&amp;gt;0, data are preliminary standardized using medians and MADs.</LongDesc>
          <Example>'margin',2</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
@@ -315,7 +315,7 @@ Remark: note that outl_i(d) = outl_i(c*d) where c is a positive scalar therefore
       <Item>Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location Estimators", Ph.D. dissertation, Harvard University.</Item>
       <Item>Maronna, R.A. and Yohai, V.J. (1995), "The behavior of the Stahel-Donoho robust multivariate estimator", Journal of the American Statistical Association, 90, 329-341.</Item>
       <Item>Juan J. and Prieto F.J. (1995) Journal of Computational and Graphical Statistics, 4, 319-334.</Item>
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley,New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>MCD</Item>

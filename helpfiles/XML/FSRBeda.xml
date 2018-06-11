@@ -33,7 +33,7 @@ $\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -261,7 +261,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>string FSRBeda.</Description>
+               <Description>'FSRBeda'.</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -269,7 +269,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Corbellini A. and Riani M. (2015), Robust Bayesian Regression, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, Test, DOI 10.1007/s11749-017-0542-6</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRB</Item>
@@ -383,30 +383,30 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>FontSize=14;</ItemCell>
             <ItemCell>linst={'-','--',':','-.','--',':'};</ItemCell>
             <ItemCell>for j=1:5</ItemCell>
-            <ItemCell>my_subplot=subplot(3,2,j);</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
-            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
-            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
-            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
-            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>% Set ylim</ItemCell>
-            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylim([ylimL ylimU])</ItemCell>
-            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
-            <ItemCell>% entry of the first outlier</ItemCell>
-            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>% Set xlim</ItemCell>
-            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
-            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
-            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
-            <ItemCell>if j&amp;gt;4</ItemCell>
-            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    my_subplot=subplot(3,2,j);</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    % plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>    % plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>    % Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>    xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>    line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    % Set ylim</ItemCell>
+            <ItemCell>    ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>    % Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>    % entry of the first outlier</ItemCell>
+            <ItemCell>    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    % Set xlim</ItemCell>
+            <ItemCell>    xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>    ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>    set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>    if j&amp;gt;4</ItemCell>
+            <ItemCell>        xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
             <ItemCell>subplot(3,2,6);</ItemCell>
@@ -435,8 +435,8 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
             <ItemCell>% Add multiple title</ItemCell>
             <ItemCell>suplabel(['Housing data; forward plots in the interval ['...</ItemCell>
-            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
-            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+            <ItemCell>    num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>    ']  of HPD regions for \beta and \sigma^2'],'t');</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -491,30 +491,30 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>FontSize=14;</ItemCell>
             <ItemCell>linst={'-','--',':','-.','--',':'};</ItemCell>
             <ItemCell>for j=1:5</ItemCell>
-            <ItemCell>my_subplot=subplot(3,2,j);</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
-            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
-            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
-            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
-            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
-            <ItemCell>% entry of the first outlier</ItemCell>
-            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>% Set ylim</ItemCell>
-            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylim([ylimL ylimU])</ItemCell>
-            <ItemCell>% Set xlim</ItemCell>
-            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
-            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
-            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
-            <ItemCell>if j&amp;gt;4</ItemCell>
-            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    my_subplot=subplot(3,2,j);</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    % plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>    % plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>    % Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>    xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>    line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    % Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>    % entry of the first outlier</ItemCell>
+            <ItemCell>    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    % Set ylim</ItemCell>
+            <ItemCell>    ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>    % Set xlim</ItemCell>
+            <ItemCell>    xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>    ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>    set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>    if j&amp;gt;4</ItemCell>
+            <ItemCell>        xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
             <ItemCell>subplot(3,2,6);</ItemCell>
@@ -543,8 +543,8 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
             <ItemCell>% Add multiple title</ItemCell>
             <ItemCell>suplabel(['Housing data; forward plots in the interval ['...</ItemCell>
-            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
-            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+            <ItemCell>    num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>    ']  of HPD regions for \beta and \sigma^2'],'t');</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -595,30 +595,30 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>nr=4;</ItemCell>
             <ItemCell>nc=3;</ItemCell>
             <ItemCell>for j=1:length(beta0)</ItemCell>
-            <ItemCell>my_subplot=subplot(nr,nc,j);</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
-            <ItemCell>% plot posterior estimate of beta1_j</ItemCell>
-            <ItemCell>plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
-            <ItemCell>% Add the horizontal line which corresponds to prior values</ItemCell>
-            <ItemCell>xL = get(my_subplot,'XLim');</ItemCell>
-            <ItemCell>line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>% Set ylim</ItemCell>
-            <ItemCell>ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
-            <ItemCell>ylim([ylimL ylimU])</ItemCell>
-            <ItemCell>% Set xlim</ItemCell>
-            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
-            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
-            <ItemCell>% entry of the first outlier</ItemCell>
-            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
-            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
-            <ItemCell>if j&amp;gt;nr*(nc-1)</ItemCell>
-            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    my_subplot=subplot(nr,nc,j);</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    % plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>    % plot posterior estimate of beta1_j</ItemCell>
+            <ItemCell>    plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>    % Add the horizontal line which corresponds to prior values</ItemCell>
+            <ItemCell>    xL = get(my_subplot,'XLim');</ItemCell>
+            <ItemCell>    line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    % Set ylim</ItemCell>
+            <ItemCell>    ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);</ItemCell>
+            <ItemCell>    ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>    % Set xlim</ItemCell>
+            <ItemCell>    xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>        % Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>    % entry of the first outlier</ItemCell>
+            <ItemCell>    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>    set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>    if j&amp;gt;nr*(nc-1)</ItemCell>
+            <ItemCell>        xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
             <ItemCell>subplot(4,3,11);</ItemCell>
@@ -650,8 +650,8 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
             <ItemCell>% Add multiple title</ItemCell>
             <ItemCell>suplabel(['Bank profit data; forward plots in the interval ['...</ItemCell>
-            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
-            <ItemCell>']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
+            <ItemCell>    num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>    ']  of HPD regions for \beta and \sigma^2'],'t')</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

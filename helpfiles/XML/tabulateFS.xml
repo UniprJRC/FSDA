@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->tabulateFS</Title>
-   <Purpose><!--This is the second line of the .m file-->Create frequency table of unique values of x, excluding possible 0 counts
+   <Purpose><!--This is the second line of the .m file-->Creates frequency table of unique values of x, excluding possible 0 counts
 </Purpose>
    <Description><!--Description section-->tbl = tabulateFS(x) takes a vector x and returns a matrix, tbl. The first column of table contains the unique values of x. The second is the number of instances of each value. The last column contains the percentage of each value. This function differs from MATLAB function tabulate because it excludes 0 counts.
 Remark: tabulateFS with no output arguments returns a formatted table in the command window.

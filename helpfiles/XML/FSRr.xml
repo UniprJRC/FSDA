@@ -96,6 +96,10 @@ Rows of X represent observations, and columns represent variables. By default, t
                <Description>n-by-2 matrix.
 First column = studentized residuals Second column = p-values (computed using as reference distribution the Student t)</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSRr'.</Description>
+            </ItemCell>
          </Structure>
       </Item>
       <Item>
@@ -119,30 +123,30 @@ First column = studentized residuals Second column = p-values (computed using as
          <Title>Example of outlier detection in a case of almost perfect fit.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>randn('state', 123456);</ItemCell>
-            <ItemCell>n=200; p=1;</ItemCell>
-            <ItemCell>X = rand(n,p);</ItemCell>
-            <ItemCell>y = X + 0.01*randn(n,1);</ItemCell>
-            <ItemCell>% contaminated data points</ItemCell>
-            <ItemCell>ycont = y;</ItemCell>
-            <ItemCell>ycont(1:5) = ycont(1:5)+0.07;</ItemCell>
+            <ItemCell>    randn('state', 123456);</ItemCell>
+            <ItemCell>    n=200; p=1;</ItemCell>
+            <ItemCell>    X = rand(n,p);</ItemCell>
+            <ItemCell>    y = X + 0.01*randn(n,1);</ItemCell>
+            <ItemCell>    % contaminated data points</ItemCell>
+            <ItemCell>    ycont = y;</ItemCell>
+            <ItemCell>    ycont(1:5) = ycont(1:5)+0.07;</ItemCell>
             <ItemCell/>
-            <ItemCell>[out1 , xnew1 , ypred1, yci1] = ...</ItemCell>
-            <ItemCell>FSRr(ycont,X,'alpha',0.01,...</ItemCell>
-            <ItemCell>'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
-            <ItemCell>h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
+            <ItemCell>    [out1 , xnew1 , ypred1, yci1] = ...</ItemCell>
+            <ItemCell>            FSRr(ycont,X,'alpha',0.01,...</ItemCell>
+            <ItemCell>                'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
             <ItemCell/>
-            <ItemCell>[out2 , xnew2 , ypred2, yci2] = ...</ItemCell>
-            <ItemCell>FSRr(ycont,X,'alpha',0.01,'R2th',0.9,...</ItemCell>
-            <ItemCell>'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
-            <ItemCell>h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
-            <ItemCell>% move the figure above into a single one with two panels</ItemCell>
-            <ItemCell>figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
-            <ItemCell>copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
-            <ItemCell>copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
-            <ItemCell>close(f1); close(f2);</ItemCell>
-            <ItemCell>disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);</ItemCell>
-            <ItemCell>disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);</ItemCell>
+            <ItemCell>    [out2 , xnew2 , ypred2, yci2] = ...</ItemCell>
+            <ItemCell>            FSRr(ycont,X,'alpha',0.01,'R2th',0.9,...</ItemCell>
+            <ItemCell>                'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
+            <ItemCell>    % move the figure above into a single one with two panels</ItemCell>
+            <ItemCell>    figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
+            <ItemCell>    copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
+            <ItemCell>    copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
+            <ItemCell>    close(f1); close(f2);</ItemCell>
+            <ItemCell>    disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);</ItemCell>
+            <ItemCell>    disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);</ItemCell>
             <ItemCell/>
          </MATLABcode>
          <Exec>0</Exec>

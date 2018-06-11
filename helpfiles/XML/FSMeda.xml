@@ -7,7 +7,7 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Variables.</ShortDesc>
+         <ShortDesc>Input data.</ShortDesc>
          <TypeInd>Matrix.</TypeInd>
          <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
@@ -59,7 +59,9 @@ If bsb=0 (default) then the procedure starts with v units randomly chosen else i
          <Name>scaled</Name>
          <ShortDesc>It controls whether to monitor scaled Mahalanobis distances.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If scaled=1 scaled Mahalanobis distances are monitored during the search.</LongDesc>
+         <LongDesc>If scaled=1 Mahalanobis distances monitored during the search are scaled using ratio of determinant.
+If scaled=2 Mahalanobis distances monitored during the search are scaled using asymptotic consistency factor.
+The default value is 0 that is Mahalanobis distances are not scaled.</LongDesc>
          <Example>'scaled',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -118,7 +120,7 @@ inside).
 3rd col = (m+1)th ordered MD - mth ordered distance.</Description>
             </ItemCell>
             <ItemCell>
-               <Value>loc</Value>
+               <Value>Loc</Value>
                <Description>(n-init+1) x (v+1) matrix containing the monitoring of estimated of the means for each variable in each step of the forward search.</Description>
             </ItemCell>
             <ItemCell>
@@ -142,6 +144,10 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>
                <Value>Y</Value>
                <Description>Original data input matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSMeda'</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -249,7 +255,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify variables y16 y23 y25 y26</ItemCell>
             <ItemCell>sel=[16 23 25 26];</ItemCell>

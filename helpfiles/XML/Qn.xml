@@ -54,9 +54,9 @@ $c$ is the so called asymptotic consistency factor and is equal to 2.2219 while 
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>X = [1 2 4 4  7;</ItemCell>
-            <ItemCell>3 4 6 6  8;</ItemCell>
-            <ItemCell>5 6 8 8  10;</ItemCell>
-            <ItemCell>5 7 10 12 1500];</ItemCell>
+            <ItemCell>     3 4 6 6  8;</ItemCell>
+            <ItemCell>     5 6 8 8  10;</ItemCell>
+            <ItemCell>     5 7 10 12 1500];</ItemCell>
             <ItemCell>y1=Qn(X)</ItemCell>
             <ItemCell>y2=Qn(X,2)</ItemCell>
          </MATLABcode>

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->rlga</Title>
-   <Purpose><!--This is the second line of the .m file--> VERIFICARE LINEE 134 -- 136 ALPHA NON TORNA PER NIENTE !!!!!!!!   &#xD;
-
+   <Purpose><!--This is the second line of the .m file-->rlga performs robust linear grouping analysis
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -30,8 +29,8 @@
          <Name>alpha</Name>
          <ShortDesc>a numeric value between 0 and 0.5.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>For the robust estimate of LGA, specifying the percentage of points to be trimmed.
-alpha must be a number in the interval [0 0.5]</LongDesc>
+         <LongDesc>For the robust estimate of RLGA, specifying the percentage of points to be trimmed.
+alpha must be a number in the interval [0 0.5].</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -41,36 +40,36 @@ alpha must be a number in the interval [0 0.5]</LongDesc>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>biter</Name>
-         <ShortDesc>an integer for the number of different starting hyperplanes to try.</ShortDesc>
-         <TypeInd>Integer.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>number of different starting hyperplanes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>An integer for the number of different starting hyperplanes to try.</LongDesc>
          <Example>'biter',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>niter</Name>
-         <ShortDesc>an integer for the number of iterations to attempt for convergence.</ShortDesc>
-         <TypeInd>Integer.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Number of iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>An integer for the number of iterations to attempt for convergence.</LongDesc>
          <Example>'niter',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>showall</Name>
-         <ShortDesc>If true then display all the outcomes, not just the best one.</ShortDesc>
+         <ShortDesc>Level of display.</ShortDesc>
          <TypeInd>Logical.</TypeInd>
-         <LongDesc> </LongDesc>
+         <LongDesc>If true then display all the outcomes, not just the best one.</LongDesc>
          <Example>'showall','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>stand</Name>
-         <ShortDesc>If true standardize the X matrix with the standard deviation before fitting.</ShortDesc>
-         <TypeInd>Logical.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Data standardization.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If true the X matrix is standardized using the standard deviation before fitting. Logical.</LongDesc>
          <Example>'stand','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
@@ -79,8 +78,7 @@ alpha must be a number in the interval [0 0.5]</LongDesc>
          <Name>silent</Name>
          <ShortDesc>Text output.</ShortDesc>
          <TypeInd>Logical.</TypeInd>
-         <LongDesc>If true, produces no text output during processing.
-The default value is false</LongDesc>
+         <LongDesc>If true, produces no text output during processing. The default value is false.</LongDesc>
          <Example>'silent','true'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
@@ -123,7 +121,7 @@ The default value is false</LongDesc>
                <Description>best hyerplane</Description>
             </ItemCell>
             <ItemCell>
-               <Value>x</Value>
+               <Value>X</Value>
                <Description>the (scaled if selected) dataset.</Description>
             </ItemCell>
             <ItemCell>
@@ -164,19 +162,37 @@ doi: 10.1111/j.1467-9868.2008.00682.x</Item>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>X=load('X.txt');</ItemCell>
-            <ItemCell>out=rlga(X,3,0.5);</ItemCell>
+            <ItemCell>out=rlga(X,3,0.05);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>rlga with all niter = 1000 and biter = 3000.</Title>
+         <Title>rlga with niter = 500 and biter = 1000.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>X=load('X.txt');</ItemCell>
-            <ItemCell>out=rlga(X,4,0.5,'niter',1000,'biter',3000);</ItemCell>
+            <ItemCell>out=rlga(X,4,0.05,'niter',500,'biter',1000);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
-   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Generate mixture of regression using MixSimReg, with an average overlapping at centroids = 0.</Title>
+         <Desc>
+            <ItemCell>01. Use all default options.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(372,'twister');</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.001);</ItemCell>
+            <ItemCell>n=500;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% run rlga</ItemCell>
+            <ItemCell>out=rlga([y,X(:,2:end)],k,0.01);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
 </HelpXML>

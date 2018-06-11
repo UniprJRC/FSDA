@@ -92,8 +92,8 @@ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with p
             <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
             <ItemCell>Ychk=Y;</ItemCell>
             <ItemCell>for i=1:length(x)</ItemCell>
-            <ItemCell>Y(i,:)=inversegaminv(x(i),a,b);</ItemCell>
-            <ItemCell>Ychk(i,:)=inversegaminv(x(i),a,b,1);</ItemCell>
+            <ItemCell>    Y(i,:)=inversegaminv(x(i),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)=inversegaminv(x(i),a,b,1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>disp('Maximum absolute difference is:');</ItemCell>
             <ItemCell>disp(max(max(abs(Y-Ychk))));</ItemCell>
@@ -110,8 +110,8 @@ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with p
             <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
             <ItemCell>Ychk=Y;</ItemCell>
             <ItemCell>for i=1:length(x)</ItemCell>
-            <ItemCell>Y(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b),a,b);</ItemCell>
-            <ItemCell>Ychk(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b,1),a,b,1);</ItemCell>
+            <ItemCell>    Y(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b,1),a,b,1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>disp('Maximum deviation from 0 passing through routine gaminv:');</ItemCell>
             <ItemCell>disp(max(max(abs(Y))));</ItemCell>
@@ -130,22 +130,22 @@ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with p
          <MATLABcode>
             <ItemCell>chkMatlab_With_R_connection=exist('openR','file');</ItemCell>
             <ItemCell>if chkMatlab_With_R_connection==0</ItemCell>
-            <ItemCell>disp('Connection with R has not been setup yet')</ItemCell>
-            <ItemCell>examp=which('Connect_Matlab_with_R_HELP.m');</ItemCell>
-            <ItemCell>examp1=strrep(examp,'\','\\');</ItemCell>
-            <ItemCell>stri=['See file &amp;lt;a href="matlab: opentoline(' examp1 ',27)"&amp;gt;Connect_Matlab_with_R_HELP.m&amp;lt;/a&amp;gt;  for more information'];</ItemCell>
-            <ItemCell>disp(stri);</ItemCell>
+            <ItemCell>    disp('Connection with R has not been setup yet')</ItemCell>
+            <ItemCell>    examp=which('Connect_Matlab_with_R_HELP.m');</ItemCell>
+            <ItemCell>    examp1=strrep(examp,'\','\\');</ItemCell>
+            <ItemCell>    stri=['See file &amp;lt;a href="matlab: opentoline(' examp1 ',27)"&amp;gt;Connect_Matlab_with_R_HELP.m&amp;lt;/a&amp;gt;  for more information'];</ItemCell>
+            <ItemCell>    disp(stri);</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>openR</ItemCell>
-            <ItemCell>evalR('library(actuar)');</ItemCell>
-            <ItemCell>evalR('x=seq(0,0.9999,0.0001)');</ItemCell>
-            <ItemCell>evalR('a=2');</ItemCell>
-            <ItemCell>evalR('b=3');</ItemCell>
-            <ItemCell>yfromR=evalR('qinvgamma(x,a,scale=b)');</ItemCell>
-            <ItemCell>x=(0:0.0001:0.9999);</ItemCell>
-            <ItemCell>yfromMatlab=inversegaminv(x,2,3);</ItemCell>
-            <ItemCell>disp(max(abs(yfromR-yfromMatlab)));</ItemCell>
-            <ItemCell>closeR;</ItemCell>
+            <ItemCell>    openR</ItemCell>
+            <ItemCell>    evalR('library(actuar)');</ItemCell>
+            <ItemCell>    evalR('x=seq(0,0.9999,0.0001)');</ItemCell>
+            <ItemCell>    evalR('a=2');</ItemCell>
+            <ItemCell>    evalR('b=3');</ItemCell>
+            <ItemCell>    yfromR=evalR('qinvgamma(x,a,scale=b)');</ItemCell>
+            <ItemCell>    x=(0:0.0001:0.9999);</ItemCell>
+            <ItemCell>    yfromMatlab=inversegaminv(x,2,3);</ItemCell>
+            <ItemCell>    disp(max(abs(yfromR-yfromMatlab)));</ItemCell>
+            <ItemCell>    closeR;</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>

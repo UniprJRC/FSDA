@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->rthin</Title>
+   <Purpose><!--This is the second line of the .m file-->RTHIN applies independent random thinning to a point pattern.
+</Purpose>
+   <Description><!--Description section-->This function was ported to matlab from the R spatstat package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au), Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk) for the statistical analysis of spatial point patterns. The algorithm for random thinning was changed in spatstat version 1.42-3. Our matlab porting is based on a earlier version. See the rthin documentation in spatstat for more details.
+In a random thinning operation, each point of X is randomly either deleted or retained (i.e. not deleted). The result is a point pattern, consisting of those points of X that were retained. Independent random thinning means that the retention/deletion of each point is independent of other points.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Vector with the data to be thinned.</ShortDesc>
+         <TypeInd>Data can represent a point pattern.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>P</Name>
+         <ShortDesc>Vector giving the retention probabilities, i.e.</ShortDesc>
+         <TypeInd>the probability that each point in X will be retained.</TypeInd>
+         <LongDesc>It can be:
+- a single number, so that each point will be retained with the same probability P;
+- a vector of numbers, so that the ith point of X will be retained with probability P(i);
+- a function P(x,y), so that a point at a location (x,y) will be retained with probability P(x,y);
+- a pixel image, containing values of the retention probability for all locations in a region encompassing the point pattern.
+If P is a function, it should be vectorised, that is, it should accept vector arguments x,y and should yield a numeric vector of the same length. The function may have extra arguments which are passed through the argument.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>the retained data units.</TypeInd>
+         <LongDesc>In practice, Y = X(retain,:).</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>retain</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>the indices of the retained points in the original data X.</TypeInd>
+         <LongDesc>The ith point of X is retained with probability P(i).
+Optional Output:</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>A.W. Bowman and A. Azzalini (1997), "Applied Smoothing Techniques for Data Analysis," Oxford University Press.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>ksdensity</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Random thinning on a mixture of normal distribution.</Title>
+         <Desc>
+            <ItemCell>Data</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];</ItemCell>
+            <ItemCell>x = data(:,1);</ItemCell>
+            <ItemCell>y = data(:,2);</ItemCell>
+            <ItemCell>% Data density</ItemCell>
+            <ItemCell>[density,xout,bandwidth]   = kdebiv(data,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>xx = xout(:,1);</ItemCell>
+            <ItemCell>yy = xout(:,2);</ItemCell>
+            <ItemCell>zz = density;</ItemCell>
+            <ItemCell>% plot of data and density</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>[xq,yq] = meshgrid(xx,yy);</ItemCell>
+            <ItemCell>density = griddata(xx,yy,density,xq,yq);</ItemCell>
+            <ItemCell>contour3(xq,yq,density,50), hold on</ItemCell>
+            <ItemCell>plot(x,y,'r.','MarkerSize',5)</ItemCell>
+            <ItemCell>title(['Original data (' num2str(numel(y)) ' units) with density contour'],'FontSize',16);</ItemCell>
+            <ItemCell>%Interpolate the density and apply thinning using retention probabilities (1 - pdfe/max(pdfe))</ItemCell>
+            <ItemCell>F = TriScatteredInterp(xx(:),yy(:),zz(:));</ItemCell>
+            <ItemCell>pdfe = F(x,y);</ItemCell>
+            <ItemCell>pretain = 1 - pdfe/max(pdfe);</ItemCell>
+            <ItemCell>[Xt , Xti]= rthin([x y],pretain);</ItemCell>
+            <ItemCell>% rthin retention probabilities</ItemCell>
+            <ItemCell>[psorted ii] = sort(pretain);</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>plot(x,y,'r.','MarkerSize',5);</ItemCell>
+            <ItemCell>hold on;</ItemCell>
+            <ItemCell>plot(x(ii(1:100)),y(ii(1:100)),'bx','MarkerSize',5);</ItemCell>
+            <ItemCell>title('The 100 units with smaller retention probabilities','FontSize',16);</ItemCell>
+            <ItemCell>% now estimate the density on the retained units</ItemCell>
+            <ItemCell>%[tdensity,txout,tbandwidth] = ksdensity(Xt);</ItemCell>
+            <ItemCell>[tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>txx = txout(:,1);</ItemCell>
+            <ItemCell>tyy = txout(:,2);</ItemCell>
+            <ItemCell>tzz = tdensity;</ItemCell>
+            <ItemCell>% and plot the retained units with their density superimposed</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>[txq,tyq] = meshgrid(txx,tyy);</ItemCell>
+            <ItemCell>tdensity = griddata(txx,tyy,tdensity,txq,tyq);</ItemCell>
+            <ItemCell>contour3(txq,tyq,tdensity,50), hold on</ItemCell>
+            <ItemCell>plot(x(Xti),y(Xti),'b.','MarkerSize',5);</ItemCell>
+            <ItemCell>title(['Retained data (' num2str(numel(y(Xti))) ' units) with new density contour'],'FontSize',16);</ItemCell>
+            <ItemCell>cascade;</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Random thinning on the fishery dataset.</Title>
+         <Desc>
+            <ItemCell>load data and add some jittering, because duplicated units are not treated</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>load('fishery.txt');</ItemCell>
+            <ItemCell>fishery = fishery + 10^(-8) * abs(randn(677,2));</ItemCell>
+            <ItemCell>x = fishery(:,1);</ItemCell>
+            <ItemCell>y = fishery(:,2);</ItemCell>
+            <ItemCell>% Data density</ItemCell>
+            <ItemCell>[density,xout,bandwidth]   = kdebiv(fishery,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>xx = xout(:,1);</ItemCell>
+            <ItemCell>yy = xout(:,2);</ItemCell>
+            <ItemCell>zz = density;</ItemCell>
+            <ItemCell>% plot of data and density</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>[xq,yq] = meshgrid(xx,yy);</ItemCell>
+            <ItemCell>density = griddata(xx,yy,density,xq,yq);</ItemCell>
+            <ItemCell>contour3(xq,yq,density,50), hold on</ItemCell>
+            <ItemCell>plot(x,y,'r.','MarkerSize',8)</ItemCell>
+            <ItemCell>xlim([0 300]); ylim([0 2000]);</ItemCell>
+            <ItemCell>set(gca,'CameraPosition',[-216 -12425 0.0135]);</ItemCell>
+            <ItemCell>title({['Zoom on fishery data (' num2str(numel(y)) ' units) with density contour'] , 'Probability mass concentrated close to the origin'},'FontSize',16);</ItemCell>
+            <ItemCell>%Interpolate the density and apply thinning using retention</ItemCell>
+            <ItemCell>%probabilities equal to 1 - pdfe/max(pdfe)</ItemCell>
+            <ItemCell>F = TriScatteredInterp(xx(:),yy(:),zz(:));</ItemCell>
+            <ItemCell>pdfe = F(x,y);</ItemCell>
+            <ItemCell>pretain = 1 - pdfe/max(pdfe);</ItemCell>
+            <ItemCell>[Xt , Xti]= rthin([x y],pretain);</ItemCell>
+            <ItemCell>% now estimate the density on the retained units</ItemCell>
+            <ItemCell>[tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>txx = txout(:,1);</ItemCell>
+            <ItemCell>tyy = txout(:,2);</ItemCell>
+            <ItemCell>tzz = tdensity;</ItemCell>
+            <ItemCell>% and plot the retained units with their density superimposed</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>[txq,tyq] = meshgrid(txx,tyy);</ItemCell>
+            <ItemCell>tdensity = griddata(txx,tyy,tdensity,txq,tyq);</ItemCell>
+            <ItemCell>contour3(txq,tyq,tdensity,50), hold on</ItemCell>
+            <ItemCell>plot(x(Xti),y(Xti),'b.','MarkerSize',8);</ItemCell>
+            <ItemCell>xlim([0 300]); ylim([0 2000]);</ItemCell>
+            <ItemCell>set(gca,'CameraPosition',[-216 -12425 0.0002558 ]);</ItemCell>
+            <ItemCell>title({['Zoom on retained on the fishery data (' num2str(numel(y(Xti))) ' units) with density contour'] , 'Probabiity mass is smoother'},'FontSize',16);</ItemCell>
+            <ItemCell>cascade;</ItemCell>
+            <ItemCell/>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

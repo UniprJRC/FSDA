@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->corrOrdinal</Title>
+   <Purpose><!--This is the second line of the .m file-->corrOrdinal measures strength of association between two ordered categorical variables.
+</Purpose>
+   <Description><!--Description section-->corrOrdinal computes Goodman-Kruskal's $\gamma$, $\tau_a$, $\tau_b$, $\tau_c$ of Kendall and $d_{y|x}$ of Somers.
+All these indexes measure the correlation among two ordered qualitative variables and go between -1 and 1. The sign of the coefficient indicates the direction of the relationship, and its absolute value indicates the strength, with larger absolute values indicating stronger relationships. Values close to an absolute value of 1 indicate a strong relationship between the two variables. Values close to 0 indicate little or no relationship. More in detail:
+$\gamma$ is a symmetric measure of association.
+Kendall's $\tau_a$ is a symmetric measure of association that does not take ties into account. Ties happen when both members of the data pair have the same value.
+Kendall's $\tau_b$ is a symmetric measure of association which takes ties into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or +1 can be obtained only from square tables.
+$\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of association which makes an adjustment for table size in addition to a correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1 or +1 can be obtained only from square tables.
+Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a correction only for pairs that are tied on the independent variable (which in this implementation it is assumed to be on the rows of the contingency table).
+Additional details about these indexes can be found in the "More About" section of this document.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>N</Name>
+         <ShortDesc>Contingency table (default) or n-by-2 input dataset.</ShortDesc>
+         <TypeInd>Matrix or Table.</TypeInd>
+         <LongDesc>Matrix or table which contains the input contingency table (say of size I-by-J) or the original data matrix.
+In this last case N=crosstab(N(:,1),N(:,2)). As default procedure assumes that the input is a contingency table.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>NoStandardErrors</Name>
+         <ShortDesc>Just indexes without standard errors and p-values.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>if NoStandardErrors is true just the indexes are computed without standard errors and p-values. That is no inferential measure is given. The default value of NoStandardErrors is false.</LongDesc>
+         <Example>'NoStandardErrors',true</Example>
+         <DataType>Boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dispresults</Name>
+         <ShortDesc>Display results on the screen.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If dispresults is true (default) it is possible to see on the screen all the summary results of the analysis.</LongDesc>
+         <Example>'dispresults',false</Example>
+         <DataType>Boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Lr</Name>
+         <ShortDesc>Vector of row labels.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell containing the labels of the rows of the input contingency matrix N. This option is unnecessary if N is a table. because in this case Lr=N.Properties.RowNames;</LongDesc>
+         <Example>'Lr',{'a' 'b' 'c'}</Example>
+         <DataType>cell array of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Lc</Name>
+         <ShortDesc>Vector of column labels.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell containing the labels of the columns of the input contingency matrix N. This option is unnecessary if N is a table because in this case Lc=N.Properties.VariableNames;</LongDesc>
+         <Example>'Lc',{'c1' c2' 'c3' 'c4'}</Example>
+         <DataType>cell array of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datamatrix</Name>
+         <ShortDesc>Data matrix or contingency table.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If datamatrix is true the first input argument N is forced to be interpreted as a data matrix, else if the input argument is false N is treated as a contingency table. The default value of datamatrix is false, that is the procedure automatically considers N as a contingency table</LongDesc>
+         <Example>'datamatrix',true</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Confidence levels to be used to compute confidence intervals.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default value of conflev is 0.95, that is 95 per cent confidence intervals are computed for all the indexes (note that this option is ignored if NoStandardErrors=true).</LongDesc>
+         <Example>'conflev',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>N</Value>
+               <Description>$I$-by-$J$-array containing contingency table referred to active rows (i.e. referred to the rows which participated to the fit).
+The $(i,j)$-th element is equal to $n_{ij}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The sum of the elements of out.N is $n$ (the grand total).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Ntable</Value>
+               <Description>Same as out.N but in table format (with row and column names).
+This output is present just if your MATLAB version is not&amp;lt;2013b.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>gam</Value>
+               <Description>1 x 4 vector which contains Goodman and Kruskall gamma index, standard error, test and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>taua</Value>
+               <Description>1 x 4 vector which contains index $\tau_a$, standard error, test and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>taub</Value>
+               <Description>1 x 4 vector which contains index $\tau_b$, standard error, test and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>tauc</Value>
+               <Description>1 x 4 vector which contains index $\tau_c$, standard error, test and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>som</Value>
+               <Description>1 x 4 vector which contains Somers index $d_{y|x}$, standard error, test and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>TestInd</Value>
+               <Description>5-by-4 matrix containing index values (first column), standard errors (second column), zscores (third column), p-values (fourth column). Note that the standard errors in this matrix are computed assuming the null hypothesis of independence.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>TestIndtable</Value>
+               <Description>5-by-4 table containing index values (first column), standard errors (second column), zscores (third column), p-values (fourth column). Note that the standard errors in this table are computed assuming the null hypothesis of independence.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ConfLim</Value>
+               <Description>5-by-4 matrix containing index values (first column), standard errors (second column), lower confidence limit (third column), upper confidence limit (fourth column).
+Note that the standard errors in this matrix are computed not assuming the null hypothesis of independence.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ConfLimtable</Value>
+               <Description>5-by-4 table containing index values (first column), standard errors (second column), lower confidence limit (third column), upper confidence limit (fourth column).
+Note that the standard errors in this table are computed not assuming the null hypothesis of independence.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->All these indexes are based on concordant and discordant pairs.
+A pair of observations is concordant if the subject who is higher on one variable also is higher on the other variable, and a pair of observations is discordant if the subject who is higher on one variable is lower on the other variable.
+Let $C$ be the total number of concordant pairs (concordances) and $D$ the total number of discordant pairs (discordances) . If $C &amp;gt; D$ the variables have a positive association, but if $C &amp;lt; D$ then the variables have a negative association.
+In symbols, given an $I \times J$ contingency table the concordant pairs with cell $i,j$ are
+\[
+a_{ij} = \sum_{k&amp;lt;i} \sum_{l&amp;lt;j} n_{kl} + \sum_{k&amp;gt;i} \sum_{l&amp;gt;j} n_{kl}
+\]
+the number of discordant pairs is
+\[
+b_{ij} = \sum_{k&amp;gt;i} \sum_{l&amp;lt;j} n_{kl} + \sum_{k&amp;lt;i} \sum_{l&amp;gt;j} n_{kl}
+\]
+Twice the number of concordances, $C$ is given by:
+\[
+2 \times C = \sum_{i=1}^I \sum_{j=1}^J n_{ij} a_{ij}
+\]
+Twice the number of discordances, $D$ is given by:
+\[
+2 \times D = \sum_{i=1}^I \sum_{j=1}^J n_{ij} b_{ij}
+\]
+Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:
+\[
+\gamma= \frac{C-D}{C+D}
+\]
+$\tau_a$ is equal to concordant minus discordant pairs, divided by a factor which takes into account the total number of pairs.
+\[
+\tau_a= \frac{C-D}{0.5 n(n-1)}
+\]
+$\tau_b$ is equal to concordant minus discordant pairs divided by a term representing the geometric mean between the number of pairs not tied on x and the number not tied on y.
+More precisely:
+\[
+\tau_b= \frac{C-D}{\sqrt{ (0.5 n(n-1)-T_x)(0.5 n(n-1)-T_y)}}
+\]
+where $T_x= \sum_{i=1}^I 0.5 n_{i.}(n_{i.}-1)$ and $T_y=\sum_{j=1}^J 0.5 n_{.j}(n_{.j}-1)$ Note that $\tau_b \leq \gamma$.
+$\tau_c$ is equal to concordant minus discordant pairs multiplied by a factor that adjusts for table size.
+\[
+\tau_c= \frac{C-D}{ n^2(m-1)/(2m)}
+\]
+where $m= min(I,J)$;
+Somers' $d_{y|x}$ is an asymmetric extension of $\gamma$ that differs only in the inclusion of the number of pairs not tied on the independent variable. More precisely
+\[
+d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
+\]
+Null hypothesis:
+corresponding index = 0. Alternative hypothesis (one-sided) index &amp;lt; 0 or index &amp;gt; 0.
+In order to compute confidence intervals and test hypotheses, this routine computes the standard error of the various indexes.
+Note that the expression of the standard errors which is used to compute the confidence intervals is different from the expression which is used to test the null hypothesis of no association (no relationship or independence) between the two variables.
+As concerns the Goodman-Kruskal's $\gamma$ index we have that:
+\[
+var(\gamma) = \frac{4}{(C + D)^4} \sum_{i=1}^I \sum_{j=1}^J n_{ij} (D a_{ij} - C b_{ij} )^2
+\]
+where
+\[
+d_{ij}=a_{ij}- b_{ij}
+\]
+The variance of $\gamma$ assuming the independence hypothesis is:
+\[
+var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij}^2 -4(C-D)^2/n \right)
+\]
+As concerns $\tau_a$ we have that:
+\[
+var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2} \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\} \qquad \mbox{with $i,j$ such that $N(i,j)&amp;gt;0$}
+\]
+where
+\[
+\overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n \qquad \mbox{with $i,j$ such that $N(i,j)&amp;gt;0$}
+\]
+The variance of $\tau_a$ assuming the independence hypothesis is:
+\[
+var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
+\]
+As concerns $\tau_b$ we have that:
+\[
+var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J n_{ij}\tau_{ij}\right)^2 \right\}
+\]
+where
+\[
+\tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{ w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
+\]
+The variance of $\tau_b$ assuming the independence hypothesis is:
+\[
+var_0(\tau_b) =\frac{4}{w_r w_c} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+\]
+As concerns Stuart's $\tau_c$ we have that:
+\[
+var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+\]
+The variance of $\tau_c$ assuming the independence hypothesis is:
+\[
+var_0(\tau_c) =var(\tau_c)
+\]
+As concerns $d_{y|x}$ we have that:
+\[
+var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
+\]
+where
+\[
+w_r= n^2- \sum_{i=1}^I n_{i.}^2
+\]
+The variance of $d_{y|x}$ assuming the independence hypothesis is:
+\[
+var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
+\]
+From the theoretical point of view, Simon (1978) showed that all sample measures having the same numerator $(C-D)$ have the same efficacy and hence the same local power, for testing independence.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This file was inspired by Trujillo-Ortiz, A. and R. Hernandez-Walls.&#xD;
+ gkgammatst: Goodman-Kruskal's gamma test. URL address&#xD;
+ http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst&#xD;
+&#xD;
+ 
+</Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Agresti, A. (2002). Categorical Data Analysis. John Wiley &amp; Sons, pp. 57-59.</Item>
+      <Item>Agresti, A. (2010). Analysis of Ordinal Categorical Data, Second Edition, Wiley, New York, pp. 194-195.</Item>
+      <Item>Hollander, M, Wolfe, D. A., Chicken, E. (2014). Nonparametric Statistical Methods, Third edition, Wiley,</Item>
+      <Item>Goktas, A. and Oznur, I. (2011). A comparision of the most commonly used measures of association for doubly ordered square contingency tables via simulation. Metodoloski zvezki 8(1), pp. 17-37, URL address: www.stat-d.si/mz/mz8.1/goktas.pdf</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1954). Measures of association for cross classifications. Journal of the American Statistical Association, 49, pp. 732-764.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for cross classifications II: Further Discussion and References, Journal of the American Statistical Association, 54, pp. 123-163.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for cross classifications III: Approximate Sampling Theory, Journal of the American Statistical Association, 58, pp. 310-364.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for cross classifications IV: Simplification of Asymptotic Variances. Journal of the American Statistical Association, 67, pp.
+415-421.</Item>
+      <Item>Liebetrau, A. M. (1983). Measures of Association, Sage University Papers Series on Quantitative Applications in the Social Sciences, 07-004, Newbury Park, CA: Sage, pp. 49-56.</Item>
+      <Item>SAS documentation (2009). See http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf, pp. 1738-1740.</Item>
+      <Item>Morton B. B. and Benedetti J. K. (1977), Sampling Behavior of Tests for Correlation in Two-Way Contingency Tables, Journal of the American Statistical Association Vol. 72, pp. 309-315</Item>
+      <Item>Simon G. (1978), Alternative analysis for the singly ordered contingency table, Journal of the American Statistical Association, Vol. 69, pp. 971-976.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>crosstab</Item>
+      <Item>rcontFS</Item>
+      <Item>CressieRead</Item>
+      <Item>corr</Item>
+      <Item>corrNominal</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>corrOrdinal with all the default options.</Title>
+         <Desc>
+            <ItemCell>Rows of N indicate the results of a written test with levels:</ItemCell>
+            <ItemCell>'Sufficient' 'Good' Very good' Columns of N indicate the results of an oral test with levels:</ItemCell>
+            <ItemCell>'Sufficient' 'Good' Very good'</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[20    40    20;</ItemCell>
+            <ItemCell>   10    45    45;</ItemCell>
+            <ItemCell>    0     5    15];</ItemCell>
+            <ItemCell>out=corrOrdinal(N);</ItemCell>
+            <ItemCell>% Because the asymptotic 95 per cent confidence limits do not contain</ItemCell>
+            <ItemCell>% zero, this indicates a strong positive association between the</ItemCell>
+            <ItemCell>% written and the oral examination.</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Compare calculation of tau-b with that which comes from Matlab function corr.</Title>
+         <Desc>
+            <ItemCell>Starting from a contingency table, create the original data matrix to te able to call corr.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[20    23    20;</ItemCell>
+            <ItemCell>   21    25    22;</ItemCell>
+            <ItemCell>   18     18    19];</ItemCell>
+            <ItemCell>n11=N(1,1); n12=N(1,2); n13=N(1,3);</ItemCell>
+            <ItemCell>n21=N(2,1); n22=N(2,2); n23=N(2,3);</ItemCell>
+            <ItemCell>n31=N(3,1); n32=N(3,2); n33=N(3,3);</ItemCell>
+            <ItemCell>x11=[1*ones(n11,1) 1*ones(n11,1)];</ItemCell>
+            <ItemCell>x12=[1*ones(n12,1) 2*ones(n12,1)];</ItemCell>
+            <ItemCell>x13=[1*ones(n13,1) 3*ones(n13,1)];</ItemCell>
+            <ItemCell>x21=[2*ones(n21,1) 1*ones(n21,1)];</ItemCell>
+            <ItemCell>x22=[2*ones(n22,1) 2*ones(n22,1)];</ItemCell>
+            <ItemCell>x23=[2*ones(n23,1) 3*ones(n23,1)];</ItemCell>
+            <ItemCell>x31=[3*ones(n31,1) 1*ones(n31,1)];</ItemCell>
+            <ItemCell>x32=[3*ones(n32,1) 2*ones(n32,1)];</ItemCell>
+            <ItemCell>x33=[3*ones(n33,1) 3*ones(n33,1)];</ItemCell>
+            <ItemCell>% X original data matrix</ItemCell>
+            <ItemCell>X=[x11; x12; x13; x21; x22; x23; x31; x32; x33];</ItemCell>
+            <ItemCell>% Find taub and pvalue of taub using MATLAB routine corr</ItemCell>
+            <ItemCell>[RHO,pval]=corr(X,'type','Kendall');</ItemCell>
+            <ItemCell>% Compute tau-b using FSDA corrOrdinal routine.</ItemCell>
+            <ItemCell>out=corrOrdinal(X,'datamatrix',true,'dispresults',false);</ItemCell>
+            <ItemCell>disp(['tau-b from MATLAB routine corr=' num2str(RHO(1,2))])</ItemCell>
+            <ItemCell>disp(['tau-b from FSDA routine corrOrdinal=' num2str(out.taub(1))])</ItemCell>
+            <ItemCell>% Remark the p-values are slightly different</ItemCell>
+            <ItemCell>disp(['pvalue of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])</ItemCell>
+            <ItemCell>disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>corrOrdinal with option conflev.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[26 26 23 18  9;</ItemCell>
+            <ItemCell>   6  7  9 14 23];</ItemCell>
+            <ItemCell>out=corrOrdinal(N,'conflev',0.999);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>corrOrdinal with with option NoStandardErrors.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[26 26 23 18  9;</ItemCell>
+            <ItemCell>   6  7  9 14 23];</ItemCell>
+            <ItemCell>out=corrOrdinal(N,'NoStandardErrors',true);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Income and job satisfaction.</Title>
+         <Desc>
+            <ItemCell>Relationship between the income (with levels '&amp;lt; 5000' '5000-25000' and '&amp;gt;25000') and job satisfaction (with levels 'Dissatisfied' 'Moderately satisfied' and 'Very satisfied') for a sample of 300 persons Input data is matlab table Ntable:</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N = [24 23 30;19 43 57;13 33 58];</ItemCell>
+            <ItemCell>rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};</ItemCell>
+            <ItemCell>colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.2.0') ==0</ItemCell>
+            <ItemCell>    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));</ItemCell>
+            <ItemCell>    %  Check relationship</ItemCell>
+            <ItemCell>    out=corrOrdinal(Ntable);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    out=corrOrdinal(N);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Input is the contingency table in matrix format, labels for rows and columns are supplied.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[20    40    20;</ItemCell>
+            <ItemCell>   10    45    45;</ItemCell>
+            <ItemCell>    0     5    15];</ItemCell>
+            <ItemCell>% labels for rows and columns</ItemCell>
+            <ItemCell>labels_rows= {'Sufficient' 'Good' 'Very_good'};</ItemCell>
+            <ItemCell>labels_columns= {'Sufficient' 'Good' 'Very_good'};</ItemCell>
+            <ItemCell>out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.2.0') ==0</ItemCell>
+            <ItemCell>    % out.Ntable uses labels for rows and columns which are supplied</ItemCell>
+            <ItemCell>    disp(out.Ntable)</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

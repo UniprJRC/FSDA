@@ -38,12 +38,12 @@
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->Function TBwei transforms vector u as follows
 \[
-TBwei(u)= \left\{ \begin{array}{cc} (c^2/6) psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 if |u/c| \leq 1 \\
+TBwei(u)= \left\{ \begin{array}{cc} (c^2/6) \psi(u)/u = (c^2/6) \left[ 1-(u/c) \right]^2 &amp; |u/c| \leq 1 \\
 0 &amp; |u/c|&amp;gt;1 \\
 \end{array} \right.
 \]
 See p. 30 of Maronna et al. (2006) Remark: Tukey's biweight psi-function is almost linear around u = 0 in accordance with Winsor's principle that all distributions are normal in the middle.
-This means that $\psi (u)/u$ is approximately constant over the linear region of \psi, so the points in that region tend to get equal weight.
+This means that $\psi (u)/u$ is approximately constant over the linear region of $\psi$, so the points in that region tend to get equal weight.
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
@@ -58,7 +58,7 @@ DOI: 10.1007/s11749-014-0357-7</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Weight function for Tukey biweight.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.01:6;</ItemCell>

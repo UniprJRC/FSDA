@@ -80,9 +80,31 @@ Data Types - double</LongDesc>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Sequential vs parallel run.</Title>
          <Desc> </Desc>
-         <MATLABcode> </MATLABcode>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>

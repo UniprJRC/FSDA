@@ -90,7 +90,7 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
+      <Item>Hampel, F.R., Rousseeuw, P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBbdp</Item>
@@ -99,9 +99,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Find required values.</Title>
+         <Title>Find value of c, A, B, for fixed break down point.</Title>
          <Desc>
-            <ItemCell>Find value of c, A, B, for a break down point of 0.5 when k=4.5</ItemCell>
+            <ItemCell>Find required values when k=4.5 and bdp=0.5.</ItemCell>
          </Desc>
          <MATLABcode>
             <ItemCell/>
@@ -126,9 +126,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
             <ItemCell>iter=0;</ItemCell>
             <ItemCell>k=4;</ItemCell>
             <ItemCell>for i=seqi</ItemCell>
-            <ItemCell>[c,A,B,d] = HYPbdp(i,1,k);</ItemCell>
-            <ItemCell>iter=iter+1;</ItemCell>
-            <ItemCell>eff(iter,2:5)=[B^2/A A B d];</ItemCell>
+            <ItemCell>    [c,A,B,d] = HYPbdp(i,1,k);</ItemCell>
+            <ItemCell>    iter=iter+1;</ItemCell>
+            <ItemCell>    eff(iter,2:5)=[B^2/A A B d];</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>subplot(2,2,1)</ItemCell>
             <ItemCell>plot(eff(:,1),eff(:,2))</ItemCell>

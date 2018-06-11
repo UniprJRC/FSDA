@@ -83,21 +83,38 @@ If residuals is a structure it contains the following fields residuals.residuals
       <Item>
          <Name>numlab</Name>
          <ShortDesc>number of points to be identified in plots.</ShortDesc>
-         <TypeInd>[] | cell ({5} default) | numeric vector.</TypeInd>
-         <LongDesc>If numlab is a cell containing scalar k, the units with the k largest residuals are labelled in the plots.
+         <TypeInd>[] | cell ({5}) default) | numeric vector | structure.</TypeInd>
+         <LongDesc>NUMLAB IS A CELL.
+If numlab is a cell containing scalar k, the units with the k largest residuals are labelled in the plots.
+The default value of numlab is {5}, that is the units with the 5 largest residuals are labelled.
+For no labelling leave it empty.
+NUMLAB IS A VECTOR.
 If numlab is a vector, the units inside vector numlab are labelled in the plots.
-The default value of numlab is {5}. that is units with the 5 largest residuals are labelled.
-For no labelling leave it empty</LongDesc>
+NUMLAB IS A STRUCTURE.
+If numlab is a struct it is possible to control the size of the points identified. It contains the following fields:
+numlab.numlab = number of points to be identified (cell or vector, see above);
+numlab.FontSize = fontsize of the labels of the points. The default value is 12.</LongDesc>
          <Example>'numlab',[3,10,35]</Example>
          <DataType>double</DataType>
-         <Struct> </Struct>
+         <Struct>
+            <ItemCell>
+               <Value>numlab</Value>
+               <Description>number of points to be identified (cell&#xD;
+                   or vector, see above);</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>FontSize</Value>
+               <Description>fontsize of the labels of the&#xD;
+                   points. The default value is 12.</Description>
+            </ItemCell>
+         </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
          <ShortDesc>confidence interval for the horizontal bands.</ShortDesc>
          <TypeInd>Numeric vector.</TypeInd>
          <LongDesc>It can be a vector of different confidence level values.
-% Remark: confidence interval is based on the chi^2 distribution</LongDesc>
+Remark: confidence interval is based on the chi^2 distribution</LongDesc>
          <Example>'conflev',[0.95,0.99,0.999]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -125,7 +142,7 @@ For no labelling leave it empty</LongDesc>
          <ShortDesc>Vector with two elements which controla minimum and maximum value of the y axis.</ShortDesc>
          <TypeInd>Default is '', automatic scale.</TypeInd>
          <LongDesc> </LongDesc>
-         <Example>'SizeAxesNum',10</Example>
+         <Example>'ylimy',[-5 5]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -134,7 +151,7 @@ For no labelling leave it empty</LongDesc>
          <ShortDesc>Vector with two elements controlling minimum and maximum on the x axis.</ShortDesc>
          <TypeInd>Default value is '' (automatic scale).</TypeInd>
          <LongDesc> </LongDesc>
-         <Example>'SizeAxesNum',10</Example>
+         <Example>'xlimx',[-5 5]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -143,7 +160,7 @@ For no labelling leave it empty</LongDesc>
          <ShortDesc>width of the lines associated with the envelopes.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>Default is lwdenv=1.</LongDesc>
-         <Example>'SizeAxesNum',10</Example>
+         <Example>'lwdenv',2</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -152,7 +169,7 @@ For no labelling leave it empty</LongDesc>
          <ShortDesc>size of the marker in points.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>The default value for MarkerSize is 6 points (1 point = 1/72 inch).</LongDesc>
-         <Example>'SizeAxesNum',10</Example>
+         <Example>'MarkerSize',10</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -216,7 +233,7 @@ The line added to the scatter plot y|Xi is avconst +Ci*Xi, where Ci is the coeff
             <ItemCell>
                <Value>labeladd</Value>
                <Description>add labels of brushed units.&#xD;
-                     Character. [] (default) | '1'. &#xD;
+                     Character. [] (default) | '1'.&#xD;
                      If databrush.labeladd='1', we label the units&#xD;
                      of the last selected group with the unit row index in&#xD;
                      matrices X and y. The default value is labeladd='',&#xD;
@@ -302,15 +319,22 @@ The line added to the scatter plot y|Xi is avconst +Ci*Xi, where Ci is the coeff
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Rousseeuw PJ, Leroy AM (1987): Robust regression and outlier detection.
-Wiley.</Item>
+      <Item>Rousseeuw PJ, Leroy AM (1987), Robust regression and outlier detection, Wiley.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>resfwdplot</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Residual plot of 100 random numbers.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>resindexplot(randn(100,1))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Compare OLS residuals with robust residuals for the stack loss data.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>load('stack_loss.txt');</ItemCell>
@@ -330,8 +354,10 @@ Wiley.</Item>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Just plot robust residuals.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>[out]=LXS(y,X,'nsamp',0,'rew',1,'lms',0);</ItemCell>
@@ -340,10 +366,8 @@ Wiley.</Item>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
-   </Ex>
-   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt; databrush=struct;</Title>
+         <Title>&lt;i&gt;Interactive example 1.&lt;/i&gt;</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>databrush=struct;</ItemCell>
@@ -361,11 +385,41 @@ Wiley.</Item>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>Example of usage of option numlab Write the row number for the units which have the 3 largest residuals (in absolute value) [out]=LXS(y,X,'nsamp',1000);</Title>
-         <Desc> </Desc>
+         <Title>Example of usage of option numlab.</Title>
+         <Desc>
+            <ItemCell>Write the row number for the units which have the 3 largest residuals (in absolute value)</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>[out]=LXS(y,X,'nsamp',1000);</ItemCell>
             <ItemCell>resindexplot(out.residuals,'numlab',{3});</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>First example in which numlab is passed as structure.</Title>
+         <Desc>
+            <ItemCell>In this case we control the FontSize of the associated labels.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>numlab=struct;</ItemCell>
+            <ItemCell>% Set a font size for the labels equal to 20</ItemCell>
+            <ItemCell>numlab.FontSize=20;</ItemCell>
+            <ItemCell>resindexplot(randn(100,1),'numlab',numlab)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Second example in which numlab is passed as structure.</Title>
+         <Desc>
+            <ItemCell>In this case we control both the number of units to label and also the FontSize of the associated labels.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>numlab=struct;</ItemCell>
+            <ItemCell>% Show just the two most important residuals.</ItemCell>
+            <ItemCell>numlab.numlab={2};</ItemCell>
+            <ItemCell>% Set a font size for the labels equal to 20</ItemCell>
+            <ItemCell>numlab.FontSize=20;</ItemCell>
+            <ItemCell>resindexplot(randn(100,1),'numlab',numlab)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

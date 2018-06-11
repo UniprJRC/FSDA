@@ -62,11 +62,12 @@ It is necessary to have 0 &amp;lt;= $a$ &amp;lt;= $b$ &amp;lt;= $c$
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain bottom panel of Figure 11.10.</Title>
-         <Desc> </Desc>
+         <Title>Plot of psi(x) multiplied by x.</Title>
+         <Desc>
+            <ItemCell>Obtain bottom panel of Figure 11.10.</ItemCell>
+            <ItemCell>p. 375 of Hoaglin et al. (1987)</ItemCell>
+         </Desc>
          <MATLABcode>
-            <ItemCell>%% Obtain bottom panel of Figure 11.10.</ItemCell>
-            <ItemCell>% p. 375 of Hoaglin et al. (1987)</ItemCell>
             <ItemCell>x=-9:0.1:9;</ItemCell>
             <ItemCell>psiHAx=HApsix(x,1);</ItemCell>
             <ItemCell>plot(x,psiHAx)</ItemCell>

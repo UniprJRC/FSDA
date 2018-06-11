@@ -58,7 +58,7 @@ http://dx.doi.org/10.1007/s11749-014-0357-7</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of rho function.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>close all</ItemCell>

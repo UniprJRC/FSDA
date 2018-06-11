@@ -59,13 +59,26 @@ in multivariate analysis, in presence of v variables, the size of the elemental 
          <ReqArg>0</ReqArg>
          <Struct> </Struct>
       </Item>
+      <Item>
+         <Name>method</Name>
+         <ShortDesc>Sampling methods.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>Methods used to extract the subsets. See section 'More About' of function randsampleFS.m for details about the sampling methods. Default is method = 1.
+- Scalar, from 0 to 3 determining the (random sample without replacement) method to be used.
+- Vector of weights: in such a case, Weighted Sampling Without Replacement is applied using that vector of weights.</LongDesc>
+         <Example>&lt;code&gt;randsampleFS(100,10,2)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
    </InpArgs>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>C</Name>
          <ShortDesc>Matrix with nselected rows and p columns (stored in int16 format)</ShortDesc>
-         <TypeInd>The indeces of the subsets which need to be extracted.</TypeInd>
+         <TypeInd>The indices of the subsets which need to be extracted.</TypeInd>
          <LongDesc>Data Types - single|double</LongDesc>
          <Structure> </Structure>
       </Item>
@@ -87,23 +100,23 @@ in multivariate analysis, in presence of v variables, the size of the elemental 
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Create a matrix wuth the indexes of 5 subsets when n=100, p=3.</Title>
+         <Title>Create a matrix with the indexes of 5 subsets when n=100, p=3.</Title>
          <Desc>
             <ItemCell>Only default arguments used.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>C = subsets(5,100,3)</ItemCell>
+            <ItemCell>   C = subsets(5,100,3)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
          <Title>Create a matrix with the indexes of 5 subsets when n=100, p=3.</Title>
          <Desc>
-            <ItemCell>Use information on the number of combinations.</ItemCell>
+            <ItemCell>Use information on the number of combinations to speed up generation.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>ncomb = bc(100,3);</ItemCell>
-            <ItemCell>C = subsets(5,100,3,ncomb)</ItemCell>
+            <ItemCell>    ncomb = bc(100,3);</ItemCell>
+            <ItemCell>    C = subsets(5,100,3,ncomb)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -113,8 +126,9 @@ in multivariate analysis, in presence of v variables, the size of the elemental 
             <ItemCell>Also inform about the time taken for the operation.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>ncomb = bc(1000,5);</ItemCell>
-            <ItemCell>C = subsets(500000,1000,5,ncomb,1);</ItemCell>
+            <ItemCell/>
+            <ItemCell>   ncomb = bc(1000,5);</ItemCell>
+            <ItemCell>   C = subsets(500000,1000,5,ncomb,1);</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -124,21 +138,176 @@ in multivariate analysis, in presence of v variables, the size of the elemental 
             <ItemCell>As the previous example, but in addition returns in nselected the number of combinations.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>ncomb = bc(1000,5);</ItemCell>
-            <ItemCell>[C , nselected] = subsets(500000,1000,5,ncomb,1);</ItemCell>
+            <ItemCell/>
+            <ItemCell>   ncomb = bc(1000,5);</ItemCell>
+            <ItemCell>   [C , nselected] = subsets(500000,1000,5,ncomb,1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Extract 80000 subsets and check they are unique.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell/>
+            <ItemCell>    C=subsets(80000,100,5);</ItemCell>
+            <ItemCell>    size(unique(C,'rows'))</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title>Extract 80000 subsets and check they are unique.</Title>
+         <Title>Sampling without replacement and the hypergeometric distribution.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>C=subsets(80000,100,5);</ItemCell>
-            <ItemCell>size(unique(C,'rows'))</ItemCell>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>% parameters</ItemCell>
+            <ItemCell>n      = 100;</ItemCell>
+            <ItemCell>p      = 3;</ItemCell>
+            <ItemCell>nsamp  = 1000000;</ItemCell>
+            <ItemCell>ncomb  = bc(n,p);</ItemCell>
+            <ItemCell>msg    = 0;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% Sampling without repetition nsamp p-subsets from a dataset of n units.</ItemCell>
+            <ItemCell> subsets(nsamp, n, p, ncomb, msg);</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.4')</ItemCell>
+            <ItemCell>    hist(double(C(:))); xlim([1 n]);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);</ItemCell>
+            <ItemCell>    % this superimposes a line with the unit counts</ItemCell>
+            <ItemCell>    frC = tabulateFS(double(C(:)));</ItemCell>
+            <ItemCell>    hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% The hypergeometric distribution hygepdf(X,M,K,N) computes the probability</ItemCell>
+            <ItemCell>% of drawing exactly X of a possible K items in N drawings without</ItemCell>
+            <ItemCell>% replacement from a group of M objects. For drawings with replacement,</ItemCell>
+            <ItemCell>% the distribution would be binomial.</ItemCell>
+            <ItemCell>hpdf = hygepdf(0:p,n,n/2,p);</ItemCell>
+            <ItemCell>% Say that the n/2 target items (which determine the success of a draw) are</ItemCell>
+            <ItemCell>% in the subset formed by units 1,2,...n/2. Let's then count how many times</ItemCell>
+            <ItemCell>% we get units from this group.</ItemCell>
+            <ItemCell>c   = C&amp;lt;=n/2;</ItemCell>
+            <ItemCell>sc  = sum(c,2);</ItemCell>
+            <ItemCell>tab = tabulateFS(sc);</ItemCell>
+            <ItemCell>tab = (tab(:,2)/sum(tab(:,2)))';</ItemCell>
+            <ItemCell>disp('Probability of getting 0 to p successes in p drawns (hypergeometric pdf):');</ItemCell>
+            <ItemCell>disp(hpdf);</ItemCell>
+            <ItemCell>disp('Frequencies of the 0 to p successes in the p drawns (subsets output):');</ItemCell>
+            <ItemCell>disp(tab);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>% parameters</ItemCell>
+            <ItemCell>n      = 500;</ItemCell>
+            <ItemCell>p      = 3;</ItemCell>
+            <ItemCell>nsamp  = 50000;</ItemCell>
+            <ItemCell>ncomb  = bc(n,p);</ItemCell>
+            <ItemCell>msg    = 0;</ItemCell>
+            <ItemCell>% Sampling probability of the first n/2 units is 10 times larger than the others n/2.</ItemCell>
+            <ItemCell>method = [10*ones(n/2,1); ones(n/2,1)];</ItemCell>
+            <ItemCell>% no need to normalize weights: method = method(:)' / sum(method);</ItemCell>
+            <ItemCell> subsets(nsamp, n, p, ncomb, msg, method);</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.4')</ItemCell>
+            <ItemCell>    hist(double(C(:))); xlim([1 n]);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Here we address the case when the sampling (without replacement) is biased,</ItemCell>
+            <ItemCell>% in the sense that the probabilities to select the units in the sample are</ItemCell>
+            <ItemCell>% proportional to weights provided using option 'method'. In this case, the</ItemCell>
+            <ItemCell>% extraction probabilities follow Wallenius' noncentral hypergeometric</ItemCell>
+            <ItemCell>% distribution. The sampling scheme is the same of that of the hypergeometric</ItemCell>
+            <ItemCell>% distribution but, in addition, the success and failure are associated with</ItemCell>
+            <ItemCell>% weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The</ItemCell>
+            <ItemCell>% function is then called as: wpdf = WNChygepdf(x,N,K,M,W).</ItemCell>
+            <ItemCell>for i = 0:p</ItemCell>
+            <ItemCell>    wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% counts of the actual samples</ItemCell>
+            <ItemCell>c   = C&amp;lt;=n/2;</ItemCell>
+            <ItemCell>sc  = sum(c,2);</ItemCell>
+            <ItemCell>tab = tabulateFS(sc);</ItemCell>
+            <ItemCell>tab = (tab(:,2)/sum(tab(:,2)))';</ItemCell>
+            <ItemCell>disp('Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):');</ItemCell>
+            <ItemCell>disp(wpdf);</ItemCell>
+            <ItemCell>disp('Frequencies of the 0 to p successes in the p weighted drawns (subsets output):');</ItemCell>
+            <ItemCell>disp(tab);</ItemCell>
+            <ItemCell/>
+            <ItemCell>% The non-central hypergeometric is also available in the R package</ItemCell>
+            <ItemCell>% BiasedUrn. In the example above, where there are just two groups and one</ItemCell>
+            <ItemCell>% weight defining the ratio between the units in the two groups, the function</ItemCell>
+            <ItemCell>% to use is dWNCHypergeo (for Wallenius' distribution):</ItemCell>
+            <ItemCell>%</ItemCell>
+            <ItemCell>% dWNCHypergeo(c(0,1,2,3), 50, 50, 3, 10)</ItemCell>
+            <ItemCell>% [1] 0.0007107089 0.0225823308 0.2296133830 0.7470935773</ItemCell>
+            <ItemCell>%</ItemCell>
+            <ItemCell>% The general syntax of the function is:</ItemCell>
+            <ItemCell>% dWNCHypergeo(x, m1, m2, n, odds)</ItemCell>
+            <ItemCell>% x  = Number of red balls sampled.</ItemCell>
+            <ItemCell>% m1 = Initial number of red balls in the urn.</ItemCell>
+            <ItemCell>% m2 = Initial number of white balls in the urn.</ItemCell>
+            <ItemCell>% n  = Total number of balls sampled.</ItemCell>
+            <ItemCell>% N  = Total number of balls in urn before sampling.</ItemCell>
+            <ItemCell>% odds = Probability ratio of red over white balls.</ItemCell>
+            <ItemCell>% p = Cumulative probability.</ItemCell>
+            <ItemCell>% nran = Number of random variates to generate.</ItemCell>
+            <ItemCell>% mu = Mean x.</ItemCell>
+            <ItemCell>% precision = Desired precision of calculation.</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Weighted sampling without replacement, with negative weights.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>n = 200;</ItemCell>
+            <ItemCell>p = 3;</ItemCell>
+            <ItemCell>nsamp = 10000;</ItemCell>
+            <ItemCell>ncomb = bc(n,p);</ItemCell>
+            <ItemCell>msg = 0;</ItemCell>
+            <ItemCell>method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)];</ItemCell>
+            <ItemCell>C = subsets(nsamp, n, p, ncomb, msg, method);</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.4')</ItemCell>
+            <ItemCell>    hist(double(C(:))); xlim([1 n]);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');</ItemCell>
+            <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Function subset used in clustering or mixture modeling simulations.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>% parameters</ItemCell>
+            <ItemCell>n      = 100;       %number of units</ItemCell>
+            <ItemCell>p      = 2;         %number of variables</ItemCell>
+            <ItemCell>k      = 3;         %number of groups</ItemCell>
+            <ItemCell>nsamp  = 500;       %number of samples</ItemCell>
+            <ItemCell>ncomb  = bc(n,p);</ItemCell>
+            <ItemCell>msg    = 0;</ItemCell>
+            <ItemCell>% A dataset simulated using MixSim</ItemCell>
+            <ItemCell>rng(372,'twister');</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.001);</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% Some user-defined weights for weighted sampling, provided as a vector of "method" option.</ItemCell>
+            <ItemCell>method = [1*ones(n/2,1); ones(n/2,1)];</ItemCell>
+            <ItemCell>% C must be a nsamp-by-k*p matrix, to contain the extraction of nsamp p-combinations k times.</ItemCell>
+            <ItemCell>% This can be easily done as follows:</ItemCell>
+            <ItemCell>for i=1:k</ItemCell>
+            <ItemCell>    Ck(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Ck is then provided, e.g., to tclustreg as follows:</ItemCell>
+            <ItemCell>out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',Ck);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
       </Item>
    </ExtraEx>
 </HelpXML>

@@ -90,13 +90,13 @@ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with p
             <ItemCell>b=[1,1,1,0.5];</ItemCell>
             <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
             <ItemCell>for i=1:length(x)</ItemCell>
-            <ItemCell>Y(i,:)=inversegamcdf(x(i),a,b);</ItemCell>
+            <ItemCell>    Y(i,:)=inversegamcdf(x(i),a,b);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>for j=1:4</ItemCell>
-            <ItemCell>subplot(2,2,j)</ItemCell>
-            <ItemCell>plot(x,Y(:,j))</ItemCell>
-            <ItemCell>title(['CDF with a=' num2str(a(j)) ' b=' num2str(b(j))])</ItemCell>
-            <ItemCell>xlabel('x')</ItemCell>
+            <ItemCell>    subplot(2,2,j)</ItemCell>
+            <ItemCell>    plot(x,Y(:,j))</ItemCell>
+            <ItemCell>    title(['CDF with a=' num2str(a(j)) ' b=' num2str(b(j))])</ItemCell>
+            <ItemCell>    xlabel('x')</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
@@ -111,8 +111,8 @@ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with p
             <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
             <ItemCell>Ychk=Y;</ItemCell>
             <ItemCell>for i=1:length(x)</ItemCell>
-            <ItemCell>Y(i,:)=inversegamcdf(x(i),a,b);</ItemCell>
-            <ItemCell>Ychk(i,:)=inversegamcdf(x(i),a,b,1);</ItemCell>
+            <ItemCell>    Y(i,:)=inversegamcdf(x(i),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)=inversegamcdf(x(i),a,b,1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>disp('Maximum absolute difference is:');</ItemCell>
             <ItemCell>disp(max(max(abs(Y-Ychk))));</ItemCell>

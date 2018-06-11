@@ -56,7 +56,7 @@ This means that \psi (u)/u is approximately constant over the linear region of \
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of psi function (derivative of rho function) times x for Tukey's biweight.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.01:6;</ItemCell>

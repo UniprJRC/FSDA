@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->ncpci</Title>
+   <Purpose><!--This is the second line of the .m file--> non centrality parameter confidence interval (taken from effect_of_size_toolbox)
+</Purpose>
+   <Description><!--Description section-->This function creates (using iteration) a two-sided confidence intervals for the noncentrality parameter of a noncentral $\chi^2$, $F$ or $t$ distribution with degrees of freedom $df$, given an abscissa value $x$.
+This function has been taken from the MATLAB toolbox 'Measures of effect Size' by Harald Hentschke and Maik C. St&amp;uuml;ttgen.
+https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox and has been slighlty modified to be included into the FSDA toolbox.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>Non centrality parameter for which confidence interval is needed.</ShortDesc>
+         <TypeInd>Scalar double.</TypeInd>
+         <LongDesc>This is typically a value from $\chi^2$, $F$ or $t$ distribution. Confidence interval based on the noncentrality parameter of a noncentral distribution describes the degree of deviation from the null hypothesis. Its value is zero if the null hypothesis is true, and different from zero otherwise. For further details see the "More about" section of this document.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>fType</Name>
+         <ShortDesc>distribution to use.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character equal to 'X2', 'F' or 't' which specifies the reference distribution to use. X2 means $\chi^2$ distribution, $F$ means Fisher F distribution and t means Student $t$ distribution.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>df</Name>
+         <ShortDesc>degrees of freedom.</ShortDesc>
+         <TypeInd>Scalar or vector of length 2.</TypeInd>
+         <LongDesc>Degrees of freedom of the reference distribution. It fType is 'X2' or 't' df must be a scalar. If, on the other hand, fType is 'F', then df must be a vector of length 2 (which contains respectively the degrees of freedom of the numerator and of the denominator of the F distribution)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>confLevel</Name>
+         <ShortDesc>confidence levels to be used to compute confidence intervals.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default value of conflev is 0.95 that is 95 per cent confidence interval is computed.</LongDesc>
+         <Example>'confLevel',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>prec</Name>
+         <ShortDesc>tolerance for the iterative loop.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Iteration will run until the estimated percentile is &amp;lt;=prec away from the requested percentile.
+The default value is 1e-6;</LongDesc>
+         <Example>'prec',1e-05</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>doAnimate</Name>
+         <ShortDesc>show graphically the iteration process.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If doAnimate is true the the iteration process will be graphically displayed in a figure window. The default value of doAnimate is false.</LongDesc>
+         <Example>'doAnimate',false</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>ci</Name>
+         <ShortDesc>1-by-2 vector</ShortDesc>
+         <TypeInd>confidence interval for the non centrality parameter.</TypeInd>
+         <LongDesc>Vector which contains the lower and upper confidence interval of the non centrality parameter.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->This function is used in the FSDA toolbox in function corrNominal.m to find the confidence interval of Cramer's $V$ index. This index is a function of the non centrality parameter associated with the $\chi^2$ index. Confidence intervals based on non central distributions depend on the "inversion confidence interval principle" (Stiegler and Fouladi 1997, pp. 237-239). The main idea is to use the observed value of a test statistic (that is input x in the language of this routine) to initiate a search for the lower and upper limits of to a $1-\alpha$ confidence interval for the non centrality parameter (the lower and upper bound of the confidence interval is given in output argument ci).
+The confidence interval of the non centrality parameter can then be converted into a confidence interval of an index which takes into account the sample size (which for example can be the Cramer's $V$ index) as long as the effect-size index (parameter) is a monotonic function of the non centrality parameter.
+See Smithson (2003) and "Measures of Effect Size" Toolbox for further details.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This function has been taken and adapted from the MATLAB toolbox 'Measures of effect&#xD;
+ Size' by Harald Hentschke and  Maik C. St&amp;uuml;ttgen.&#xD;
+ https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox&#xD;
+&#xD;
+&#xD;
+&#xD;
+ 
+</Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Hentschke and St&amp;uuml;ttgen (2011), European Journal of Neuroscience, 34, pp.
+1887-1894.</Item>
+      <Item>Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.</Item>
+      <Item>Hentschke H. and St&amp;uuml;ttgen M. (2015), Measures of Effect Size Toolbox Version 1.4. Code by Harald Hentschke (University of T&amp;uuml;bingen) and Maik St&amp;uuml;ttgen (University of Bochum).</Item>
+      <Item>Steiger, J. H., &amp; Fouladi, R. T. (1997), Noncentrality interval estimation and the evaluation of statistical models. In L. L. Harlow, S.,</Item>
+      <Item>A. Mulaik, &amp; J.H. Steiger (Eds.), What if there were no significance tests? pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>corrNominal</Item>
+      <Item>corrOrdinal</Item>
+      <Item>ncx2cdf</Item>
+      <Item>ncfcdf</Item>
+      <Item>nctcdf</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>ncpci with all the default values.</Title>
+         <Desc>
+            <ItemCell>Suppose that in a contingency table of size 3-times-4 the value of the chi square test is 52. Suppose we want to compute a confidence interval for the non centrality parameter of the chi^2 with (3-1)(4-1)=8 degrees of freedom.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>ci=ncpci(52,'X2',8);</ItemCell>
+            <ItemCell>disp('Confidence interval for the non centrality parameter')</ItemCell>
+            <ItemCell>disp(ci)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>ncpci with option confint.</Title>
+         <Desc>
+            <ItemCell>A 99 per cent confidence interval is requested.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>confint=0.99;</ItemCell>
+            <ItemCell>ci=ncpci(52,'X2',8,'confLevel',confint);</ItemCell>
+            <ItemCell>disp([ num2str(100*confint) ' per cent confidence interval for the non centrality parameter'])</ItemCell>
+            <ItemCell>disp(ci)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>ncpci with option prec.</Title>
+         <Desc>
+            <ItemCell>Increase the precision.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>prec=1e-12;</ItemCell>
+            <ItemCell>ci=ncpci(52,'X2',8,'prec',prec);</ItemCell>
+            <ItemCell>disp(['95 per cent confidence interval for the non centrality parameter'])</ItemCell>
+            <ItemCell>disp(ci)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>ncpci with option doAnimate.</Title>
+         <Desc>
+            <ItemCell>set doAnimate to true.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>doAnimate=true;</ItemCell>
+            <ItemCell>ci=ncpci(52,'X2',8,'doAnimate',true);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Confidence interval based on the F distibution.</Title>
+         <Desc>
+            <ItemCell>See the animation which leads to convergence.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>ci=ncpci(52,'F',[8 3],'doAnimate',true);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -4,8 +4,9 @@
    <Purpose><!--This is the second line of the .m file-->zscoreFS computes (robust) standardized z scores
 </Purpose>
    <Description><!--Description section-->X can be a vector of length(n) or data matrix containing n observations on v variables or 3D array of size n-by-v-by-r.
-Z = zscoreFS(X) returns a centered, scaled version of X, with the same size as X. For vector input X, Z is the vector of z-scores (X-median(X)) ./ mad(X).
+Z = zscoreFS(X) returns a centered, scaled version of X, with the same size as X. For vector input X, Z is the vector of z-scores (X-median(X)) ./ (1.4826* mad(X)).
 Z=zscoreFS(X,loc,scale) returns a centered, scaled version of X, the same size as X using location and scale are specified in input parameters 'loc' and 'scale'. For vector input X, Z is the vector of z-scores (X-location(X)) ./ scale(X).
+where scaled(X) is the corrected estimator of scale (corrected in the sense that it is multiplied by a coefficient to achieve consistency for normally distributed data).
 Z=zscoreFS(X,loc,scale) computes robust standardized zscores using the estimates of location and scale specified in loc and scale strings. If X is a 2D matrix, zscores are computed using loc and scale along each column of X. If X is a 3D array zscores are computed using the location and scale along the first non-singleton dimension. For example if X is n-by-v-by-r (with n&amp;gt;1) and loc='median'; n-by-r medians are computed for each of the n rows of X and each third dimension r.
 Z=zscoreFS(X,loc) computes standardized zscores using the estimates of location specified in loc and the mad as measure of dispersion.
 [Z,mu,sigma] = zscoreFS(X) also returns median(X) in mu and mad in sigma.
@@ -40,12 +41,13 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
          <Name>scale</Name>
          <ShortDesc>scale measure to use.</ShortDesc>
          <TypeInd>'mad' (default) or 'Qn' or 'Sn' or 'std' or moddmadp'.</TypeInd>
-         <LongDesc>String which specifies the dispersion measure to use 'mad' is the default. Traditional mad is Me(|x_i-Me(X)|)/norminv(3/4);
-'Qn' first quartile of interpoint distances |x_i-x_j|. See function Qn.m;
-'Sn' robust Gini's average difference index. See function Sn.m;
+         <LongDesc>String which specifies the dispersion measure to use 'mad' is the default. Traditional (corrected) mad is $Me(|x_i-Me(X)|)/norminv(3/4)$;
+'Qn' first quartile of interpoint distances $|x_i-x_j|$ corrected by the consistency factor. See function Qn.m;
+'Sn' robust Gini's average difference index corrected by the consistency factor. See function Sn.m;
 'std' Unbiased standard deviations. See function std.m;
 'modmadp'. Modified mad where the last letter(s) p of string modmap is (are) a number converted to string necessary to compute the modified MAD.
-Modified MAD = (order statistic ceil((n+p-1)/2) of |x_i-Me(X)| + order statistic floor((n+p-1)/2+1) of |x_i-Me(X)|) / (2* \sigma) where \sigma= norminv(0.5*((n+p-1)/(2*n)+1)) Note that p is different from v (columns of X if X is a matrix) and must be supplied by the user.
+Modified MAD = (order statistic $ceil((n+p-1)/2)$ of $|x_i-Me(X)|$ + order statistic $floor((n+p-1)/2+1)$ of $|x_i-Me(X)|)$ / $(2 \sigma)$ where $\sigma= norminv(0.5*((n+p-1)/(2*n)+1))$.
+Note that $p$ is different from $v$ (columns of X if X is a matrix) and must be supplied by the user.
 For example if p=5 then the user can supply the string 'modmad5' as follows. p=5; modmadp=['modmap' num2str(p)];</LongDesc>
          <Example>&lt;code&gt;'mad'&#xD;
 &lt;/code&gt;</Example>
@@ -94,6 +96,8 @@ For example if p=5 then the user can supply the string 'modmad5' as follows. p=5
    <References><!--REFERENCES SECTION--></References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>zscore</Item>
+      <Item>Qn</Item>
+      <Item>Sn</Item>
       <Item>MCD</Item>
       <Item>Smult</Item>
       <Item>MMmult</Item>
@@ -173,9 +177,9 @@ For example if p=5 then the user can supply the string 'modmad5' as follows. p=5
             <ItemCell>[Z,mu,sig]=zscoreFS(X,'mean','std',3);</ItemCell>
             <ItemCell>[Z1,mu1,sig1]=zscore(X,[],3);</ItemCell>
             <ItemCell>if isequal(Z,Z1) + isequal(mu,mu1) + isequal(sig,sig) ==3</ItemCell>
-            <ItemCell>disp('Everything is equal')</ItemCell>
+            <ItemCell>    disp('Everything is equal')</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>disp('Equality not reached')</ItemCell>
+            <ItemCell>    disp('Equality not reached')</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>

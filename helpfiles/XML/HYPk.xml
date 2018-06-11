@@ -104,9 +104,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
          <Title>HYPk with all default options.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[bdp]=HYPk(4.5,1);</ItemCell>
-            <ItemCell>disp('Break down point')</ItemCell>
-            <ItemCell>disp(bdp)</ItemCell>
+            <ItemCell>    [bdp]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('Break down point')</ItemCell>
+            <ItemCell>    disp(bdp)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -114,9 +114,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
          <Title>HYPk with all default options.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[bdp,eff]=HYPk(4.5,1);</ItemCell>
-            <ItemCell>disp('efficiency')</ItemCell>
-            <ItemCell>disp(eff)</ItemCell>
+            <ItemCell>    [bdp,eff]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('efficiency')</ItemCell>
+            <ItemCell>    disp(eff)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -124,11 +124,11 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
          <Title>HYPk with all default options.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[bdp,eff,A,B,d]=HYPk(4.5,1);</ItemCell>
-            <ItemCell>disp('Constants A, B and d')</ItemCell>
-            <ItemCell>disp(A)</ItemCell>
-            <ItemCell>disp(B)</ItemCell>
-            <ItemCell>disp(d)</ItemCell>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('Constants A, B and d')</ItemCell>
+            <ItemCell>    disp(A)</ItemCell>
+            <ItemCell>    disp(B)</ItemCell>
+            <ItemCell>    disp(d)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -136,11 +136,11 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
          <Title>Example of use optional argument c.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[bdp,eff,A,B,d]=HYPk(4.5,1,'c',3);</ItemCell>
-            <ItemCell>disp('Constants A, B and d')</ItemCell>
-            <ItemCell>disp(A)</ItemCell>
-            <ItemCell>disp(B)</ItemCell>
-            <ItemCell>disp(d)</ItemCell>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(4.5,1,'c',3);</ItemCell>
+            <ItemCell>    disp('Constants A, B and d')</ItemCell>
+            <ItemCell>    disp(A)</ItemCell>
+            <ItemCell>    disp(B)</ItemCell>
+            <ItemCell>    disp(d)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -165,9 +165,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
             <ItemCell/>
             <ItemCell>jk=1;</ItemCell>
             <ItemCell>for k=kk</ItemCell>
-            <ItemCell>[bdp,eff,A,B,d]=HYPk(k,1,'c',cdef);</ItemCell>
-            <ItemCell>BDPEFF(jk,2:end)=[bdp, eff, A, B, d];</ItemCell>
-            <ItemCell>jk=jk+1;</ItemCell>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(k,1,'c',cdef);</ItemCell>
+            <ItemCell>    BDPEFF(jk,2:end)=[bdp, eff, A, B, d];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>nr=2;</ItemCell>
             <ItemCell>nc=2;</ItemCell>

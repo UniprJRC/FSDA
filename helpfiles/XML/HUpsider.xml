@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HUpsider</Title>
-   <Purpose><!--This is the second line of the .m file-->HUpsider computes derivative of psi function (second derivative of rho function) for Tukey's biweight  
+   <Purpose><!--This is the second line of the .m file-->HUpsider computes derivative of psi function (second derivative of rho function) for Huber 
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -54,7 +54,7 @@ HUpsider(u)= \left\{ \begin{array}{cc} 1 &amp; \mbox{if } |u/c| \leq 1 \\
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of derivative of psi function.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.01:6;</ItemCell>

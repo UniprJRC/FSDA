@@ -33,7 +33,7 @@ Rows of X represent observations, and columns represent variables. By default, t
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -61,9 +61,9 @@ If the number of all possible subset is &amp;lt;1000 the default is to extract a
       </Item>
       <Item>
          <Name>lms</Name>
-         <ShortDesc>Criterion to use to find the initlal subset to initialize the search.</ShortDesc>
+         <ShortDesc>Criterion to use to find the initial subset to initialize the search.</ShortDesc>
          <TypeInd>Scalar, vector or structure.</TypeInd>
-         <LongDesc>lms specifies the criterion to use to find the initlal subset to initialize the search (LMS, LTS with concentration steps, LTS without concentration steps or subset supplied directly by the user).
+         <LongDesc>lms specifies the criterion to use to find the initial subset to initialize the search (LMS, LTS with concentration steps, LTS without concentration steps or subset supplied directly by the user).
 The default value is 1 (Least Median of Squares is computed to initialize the search). On the other hand, if the user wants to initialze the search with LTS with all the default options for concentration steps then lms=2. If the user wants to use LTS without concentration steps, lms can be a scalar different from 1 or 2. If lms is a struct it is possible to control a series of options for concentration steps (for more details see option lms inside LXS.m) LXS.m.
 If, on the other hand, the user wants to initialize the search with a prespecified set of units there are two possibilities:
 1) lms can be a vector with length greater than 1 which contains the list of units forming the initial subset. For example, if the user wants to initialize the search with units 4, 6 and 10 then lms=[4 6 10];
@@ -118,7 +118,7 @@ bivarfit = '1' fits a single ols line to all points of each bivariate plot in th
 bivarfit = '2' fits two ols lines: one to all points and another to the group of the genuine observations. The group of the potential outliers is not fitted.
 bivarfit = '0' fits one ols line to each group. This is useful for the purpose of fitting mixtures of regression lines.
 bivarfit = 'i1' or 'i2' or 'i3' etc. fits an ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc. Again, useful in case of mixtures.</LongDesc>
-         <Example>'bivarfit',2</Example>
+         <Example>'bivarfit','2'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
@@ -165,7 +165,7 @@ multivarfit = '1' fits a single ols line to all points of each bivariate plot in
          <ShortDesc>Control y scale in plot.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
          <LongDesc>Vector with two elements controlling minimum and maximum on the y axis. Default value is '' (automatic scale)</LongDesc>
-         <Example>'ylim','[0,10]' sets the minim value to 0 and the max to 10 on the y axis</Example>
+         <Example>'ylim',[0,10] sets the minimum value to 0 and the max to 10 on the y axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -174,7 +174,7 @@ multivarfit = '1' fits a single ols line to all points of each bivariate plot in
          <ShortDesc>Control x scale in plot.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
          <LongDesc>Vector with two elements minimum and maximum on the x axis. Default value is '' (automatic scale)</LongDesc>
-         <Example>'xlim','[0,10]' sets the minim value to 0 and the max to 10 on the x axis</Example>
+         <Example>'xlim',[0,10] sets the minimum value to 0 and the max to 10 on the x axis</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -203,7 +203,7 @@ Default value is '', which means to rely on general rules based on consecutive e
          <Name>bsbmfullrank</Name>
          <ShortDesc>Dealing with singluar X matrix.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>This option tells how to behave in case subset at step m (say bsbm) produces a non singular X. In other words, this options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables. If bsbmfullrank =1 (default) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
+         <LongDesc>This option tells how to behave in case subset at step m (say bsbm) produces a singular X. In other words, this options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables. If bsbmfullrank =1 (default) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
          <Example>'bsbmfullrank',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -221,12 +221,24 @@ Default value is '', which means to rely on general rules based on consecutive e
                <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
             </ItemCell>
             <ItemCell>
+               <Value>outliers</Value>
+               <Description>out.ListOut. This field is added for homogeneity with the other robust estimators.</Description>
+            </ItemCell>
+            <ItemCell>
                <Value>beta</Value>
                <Description>p-by-1 vector containing the estimated regression parameters (in step n-k).</Description>
             </ItemCell>
             <ItemCell>
                <Value>scale</Value>
                <Description>scalar containing the estimate of the scale (sigma).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>residuals</Value>
+               <Description>n x 1 vector containing the estimates of the robust scaled residuals.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>fittedvalues</Value>
+               <Description>n x 1 vector containing the fitted values.</Description>
             </ItemCell>
             <ItemCell>
                <Value>mdr</Value>
@@ -247,7 +259,11 @@ Second row contains the frequency distribution.</Description>
             </ItemCell>
             <ItemCell>
                <Value>constr</Value>
-               <Description>This output is produced only if the search found at a certain step is a non singular matrix X. In this case the search run in a constrained mode, that is including the units which produced a singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
+               <Description>This output is produced only if the search found at a certain step X is a singular matrix. In this case the search runs in a constrained mode, that is including the units which produced a non singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSR'.</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -295,9 +311,17 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>y=3*randn(n,1)+X*bet;</ItemCell>
             <ItemCell>y(1:20)=y(1:20)+13;</ItemCell>
             <ItemCell>[outFS]=FSR(y,X,'plots',2);</ItemCell>
-            <ItemCell>%The envelopes based on all the observations show that in the central part of the search the observed curve is well beyond the extreme thresholds. More precisely, the message inside the graph informs that the signal took place in step 81 because the value of minimum deletion residual in this step was greater than 99.999% threshold.</ItemCell>
-            <ItemCell>%Once a signal takes place the envelopes are resuperimposed until a stopping rule is fulfilled</ItemCell>
-            <ItemCell>%The procedure of resuperimposing envelopes in this case stops when n = 85, the first time in which we have a value of rmin(m) for n&amp;gt;=m†-1 greater than the 99% threshold. The group can therefore be considered as homogeneous up to when we include 84 units.</ItemCell>
+            <ItemCell>% The envelopes based on all the observations show that in the central</ItemCell>
+            <ItemCell>% part of the search the observed curve is well beyond the extreme</ItemCell>
+            <ItemCell>% thresholds. More precisely, the message inside the graph informs that</ItemCell>
+            <ItemCell>% the signal took place in step 81 because the value of minimum deletion</ItemCell>
+            <ItemCell>% residual in this step was greater than 99.999% threshold.</ItemCell>
+            <ItemCell>% Once a signal takes place the envelopes are resuperimposed until a</ItemCell>
+            <ItemCell>% stopping rule is fulfilled.</ItemCell>
+            <ItemCell>% The procedure of resuperimposing envelopes in this case stops when</ItemCell>
+            <ItemCell>% n = 85, the first time in which we have a value of rmin(m) for</ItemCell>
+            <ItemCell>% $n&amp;gt;=m^\dagger-1$ greater than the 99% threshold. The group can</ItemCell>
+            <ItemCell>% therefore be considered as homogeneous up to when we include 84 units.</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

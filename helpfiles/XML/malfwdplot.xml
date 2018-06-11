@@ -10,7 +10,7 @@
          <ShortDesc>Structure containing monitoring of Mahalanobis distance.</ShortDesc>
          <TypeInd>Structure.</TypeInd>
          <LongDesc>Structure containing the following fields.
-out.MAL = matrix containing the Mahalanobis distances monitored in each step of the forward search. Every row is associated with a unit (row of data matrix Y).
+out.MAL = matrix containing the squared Mahalanobis distances monitored in each step of the forward search. Every row is associated with a unit (row of data matrix Y).
 This matrix can be created using function FSMeda (compulsory argument) out.Un = matrix containing the order of entry of each unit (necessary if datatooltip is true or databrush is not empty) out.Y = n x v data matrix; n observations and v variables</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
@@ -18,7 +18,7 @@ This matrix can be created using function FSMeda (compulsory argument) out.Un = 
          <Struct>
             <ItemCell>
                <Value>MAL</Value>
-               <Description>matrix containing the Mahalanobis distances monitored in each&#xD;
+               <Description>matrix containing the squared Mahalanobis distances monitored in each&#xD;
                step of the forward search. Every row is associated with a&#xD;
                unit (row of data matrix Y).&#xD;
                This matrix can be created using function FSMeda&#xD;
@@ -40,9 +40,10 @@ This matrix can be created using function FSMeda (compulsory argument) out.Un = 
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>standard</Name>
-         <ShortDesc>appearance of the plot in terms of xlim, ylim, axes labels and their font size style, color of the lines, etc.</ShortDesc>
+         <ShortDesc>plot layout.</ShortDesc>
          <TypeInd>Structure.</TypeInd>
-         <LongDesc>Structure standard contains the following fields:
+         <LongDesc>Appearance of the plot in terms of xlim, ylim, axes labels and their font size style, color of the lines, etc.
+Structure standard contains the following fields:
 standard.SizeAxesNum = scalar specifying the fontsize of the axes numbers. Default value is 10.
 standard.xlim = two elements vector with minimum and maximum of the x axis. Default value is '' (automatic scale).
 standard.ylim = two elements vector with minimum and maximum of the y axis. Default value is '' (automatic scale).
@@ -240,7 +241,7 @@ bground.bstyle = specifies how to plot the unimportant trajectories as defined i
 'greysh': unimportant trajectories are displayed in a faint grey.
 When n&amp;gt;100 the default option is 'faint'.
 When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
-% Remark: bground='' is equivalent to bground.bthresh=-Inf that is all trajectories are considered relevant.</LongDesc>
+Remark: bground='' is equivalent to bground.bthresh=-Inf that is all trajectories are considered relevant.</LongDesc>
          <Example>'bground.bstyle','faint'</Example>
          <DataType>struct</DataType>
          <Struct>
@@ -275,7 +276,7 @@ When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
                        When n&amp;gt;100 the default option is 'faint'.&#xD;
                        When n&amp;lt;=100 and bthresh = -Inf option bstyle is&#xD;
                        ignored.&#xD;
-                   %                   Remark: bground='' is equivalent to bground.bthresh=-Inf&#xD;
+                                      Remark: bground='' is equivalent to bground.bthresh=-Inf&#xD;
                    that is all trajectories are considered relevant.</Description>
             </ItemCell>
          </Struct>
@@ -322,7 +323,7 @@ The highlighted lines by default are in blue, but different colors can be specif
                        - datatip displays data cursor&#xD;
                        information in a small yellow text box attached to a&#xD;
                        black square marker at a data point you interactively&#xD;
-                       select. &#xD;
+                       select.&#xD;
                        - window displays data cursor information for the&#xD;
                        data point you interactively select in a floating&#xD;
                        window within the figure.</Description>
@@ -332,7 +333,7 @@ The highlighted lines by default are in blue, but different colors can be specif
                <Description>Specifies whether the&#xD;
                        data cursor snaps to the nearest data value or is&#xD;
                        located at the actual pointer position.  on | off.&#xD;
-                       - on data cursor snaps to the nearest data value  &#xD;
+                       - on data cursor snaps to the nearest data value&#xD;
                        - off data cursor is located at the actual pointer&#xD;
                        position.&#xD;
                    (see the MATLAB function datacursormode or the examples&#xD;
@@ -349,7 +350,7 @@ The highlighted lines by default are in blue, but different colors can be specif
                        conveniently chosen with our MATLAB class FSColor,&#xD;
                        see documentation).&#xD;
                        Example -&#xD;
-                       datatooltip.LineColor=[155/255,190/255,61/255]; &#xD;
+                       datatooltip.LineColor=[155/255,190/255,61/255];&#xD;
                        or using class FScolors:&#xD;
                        datatooltip.LineColor='greenish'</Description>
             </ItemCell>
@@ -360,7 +361,7 @@ The highlighted lines by default are in blue, but different colors can be specif
                        that are in the subset at a given step of the&#xD;
                        search. Vector with three elements&#xD;
                        specifying RGB color.&#xD;
-                       Example - datatooltip.SubsetLinesColor=[0 0 0]; &#xD;
+                       Example - datatooltip.SubsetLinesColor=[0 0 0];&#xD;
                        or using class FScolors:&#xD;
                        datatooltip.SubsetLinesColor='black'; highlights in&#xD;
                        black the trajectories of the units which are&#xD;
@@ -403,7 +404,8 @@ Please, note that the window style of the other figures is set equal to that whi
 DATABRUSH IS A SCALAR.
 If databrush is a scalar the default selection tool is a rectangular brush and it is possible to brush only once (that is persist='').
 DATABRUSH IS A STRUCTURE.
-If databrush is a structure, it is possible to use all optional arguments of function selectdataFS.m and the following fields - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar containing the strings 'on' or 'off'.
+If databrush is a structure, it is possible to use all optional arguments of function selectdataFS.m and the following fields:
+- databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar containing the strings 'on' or 'off'.
 The default value of persist is '', that is brushing is allowed only once.
 If persist is 'on' or 'off' brushing can be done as many time as the user requires.
 If persist='on' then the unit(s) currently brushed are added to those previously brushed. it is possible, every time a new brushing is done, to use a different color for the brushed units.
@@ -440,7 +442,7 @@ If databrush.labeladd='1', we label in the scatter plot matrix the units of the 
             <ItemCell>
                <Value>labeladd</Value>
                <Description>add labels of brushed units in spm.&#xD;
-                     Character. [] (default) | '1'. &#xD;
+                     Character. [] (default) | '1'.&#xD;
                      If databrush.labeladd='1', we label in the scatter&#xD;
                      plot matrix the units of the last selected group with&#xD;
                      the unit row index in matrices X and y. The default&#xD;
@@ -450,9 +452,9 @@ If databrush.labeladd='1', we label in the scatter plot matrix the units of the 
       </Item>
       <Item>
          <Name>nameY</Name>
-         <ShortDesc>cell array of strings of length v containing the labels of the variables of the dataset.</ShortDesc>
-         <TypeInd>Cell of strings.</TypeInd>
-         <LongDesc>If it is empty (default) the sequence Y1, ..., Yv will be used automatically</LongDesc>
+         <ShortDesc>variable labels.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>Cell array of strings of length v containing the labels of the variables of the dataset. Cell of strings. If it is empty (default) the sequence Y1, ..., Yv will be used automatically</LongDesc>
          <Example>'nameY',{'var1', var2, 'var3'}</Example>
          <DataType>cell of strings</DataType>
          <Struct> </Struct>
@@ -464,6 +466,15 @@ If databrush.labeladd='1', we label in the scatter plot matrix the units of the 
          <LongDesc>Scalar which controls whether to display or to save as output the options inside structures standard, fground and bground which have been used to draw the plot.
 plotopt=malfwdplot(out,'msg',1) enables to save inside cell plotopt the options which have been used to draw the three types of trajectories (standard, foreground and background) plotopt=malfwdplot(out,'msg',2) saves inside cell plotopt the options which have been used and prints them on the screen</LongDesc>
          <Example>'msg',1</Example>
+         <DataType>single or double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence interval for the horizontal bands.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It can be a vector of different confidence level values, e.g. [0.95,0.99,0.999]. Confidence interval is based on the chi^2 distribution.</LongDesc>
+         <Example>'conflev',0.99</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
       </Item>
@@ -480,7 +491,7 @@ plotopt=malfwdplot(out,'msg',1) enables to save inside cell plotopt the options 
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson, Riani and Cerioli (2004), Exploring Multivariate Data with the Forward Search, Springer Verlag, New York.</Item>
+      <Item>Atkinson A.C., Riani M. and Cerioli A. (2004), Exploring Multivariate Data with the Forward Search, Springer Verlag, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>resfwdplot</Item>
@@ -772,6 +783,21 @@ plotopt=malfwdplot(out,'msg',1) enables to save inside cell plotopt the options 
             <ItemCell>% In order to reuse the options which have been stored inside plotopt</ItemCell>
             <ItemCell>% use the following sintax</ItemCell>
             <ItemCell>% malfwdplot(out,plotopt{:})</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>malfwdplot starting from MM estimators.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>v=3;</ItemCell>
+            <ItemCell>Y=randn(n,v);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>Ycont=Y;</ItemCell>
+            <ItemCell>Ycont(1:5,:)=Ycont(1:5,:)+3;</ItemCell>
+            <ItemCell>[out]=MMmulteda(Ycont);</ItemCell>
+            <ItemCell>malfwdplot(out,'conflev',0.99)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

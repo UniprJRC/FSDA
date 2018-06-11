@@ -125,10 +125,10 @@ Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
          <Title>7th 2 combination chosen among 5 element.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>n = 5;</ItemCell>
-            <ItemCell>k = 2;</ItemCell>
-            <ItemCell>N = 7;</ItemCell>
-            <ItemCell>kcomb=lexunrank(n,k,N)</ItemCell>
+            <ItemCell>    n = 5;</ItemCell>
+            <ItemCell>    k = 2;</ItemCell>
+            <ItemCell>    N = 7;</ItemCell>
+            <ItemCell>    kcomb=lexunrank(n,k,N)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -136,7 +136,7 @@ Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
          <Title>number of binomial coefficient calls necessary to compute the 7th 2 combination chosen among 5 element.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[~,calls]=lexunrank(n,k,N)</ItemCell>
+            <ItemCell>    [~,calls]=lexunrank(n,k,N)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -144,7 +144,7 @@ Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
          <Title>7th 2 combination chosen among 5 element, using the pascal matrix.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>[kcomb,calls]=lexunrank(n,k,N,pascal(n))</ItemCell>
+            <ItemCell>    [kcomb,calls]=lexunrank(n,k,N,pascal(n))</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -167,7 +167,7 @@ Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
             <ItemCell>% using a loop with rank integers ranging from 0 to bc(n,p)-1</ItemCell>
             <ItemCell>all_recolex = nan(n_bc,p);</ItemCell>
             <ItemCell>for N_lex = 0:n_bc-1</ItemCell>
-            <ItemCell>all_recolex(N_lex+1,:) = lexunrank(n,p,N_lex);</ItemCell>
+            <ItemCell>    all_recolex(N_lex+1,:) = lexunrank(n,p,N_lex);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>all_recolex</ItemCell>
          </MATLABcode>

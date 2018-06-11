@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->resfwdplot</Title>
-   <Purpose><!--This is the second line of the .m file-->resfwdplot plots the trajectories of the scaled (squared) residuals monitored
+   <Purpose><!--This is the second line of the .m file-->resfwdplot plots the trajectories of the monitored scaled (squared) residuals
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -10,11 +10,11 @@
          <ShortDesc>Structure containing monitoring of scaled residuals.</ShortDesc>
          <TypeInd>Structure.</TypeInd>
          <LongDesc>Structure containing the following fields.
-out.RES = matrix containing the residuals monitored in each step of the forward search. Every row is associated with a residual (unit). This matrix can be created using function FSReda.
+out.RES = matrix containing the residuals monitored in each step of the forward search or any other robust procedure. Every row is associated with a residual (unit). This matrix can be created using function FSReda, Sregeda, MMregeda.
 out.Un = matrix containing the order of entry in the subset of each unit (required only when datatooltip is true or databrush is not empty).
 out.y = a vector containing the response (required only when option databrush is not empty).
 out.X = a matrix containing the explanatory variables (required only when option databrush is not empty).
-out.Bols = (n-init+1) x (p+1) matrix containing the estimated beta coefficients monitored in each step of the forward search (required only when option databrush is not empty and suboption multivarfit is not empty).</LongDesc>
+out.Bols = (n-init+1) x (p+1) matrix containing the estimated beta coefficients monitored in each step of the robust procedure (required only when option databrush is not empty and suboption multivarfit is not empty).</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
@@ -22,8 +22,9 @@ out.Bols = (n-init+1) x (p+1) matrix containing the estimated beta coefficients 
             <ItemCell>
                <Value>RES</Value>
                <Description>matrix containing the residuals monitored in each step of&#xD;
-               the forward search. Every row is associated with a residual&#xD;
-               (unit). This matrix can be created using function FSReda.</Description>
+               the forward search or any other robust procedure. Every row&#xD;
+               is associated with a residual (unit). This matrix can be&#xD;
+               created using function FSReda, Sregeda, MMregeda.</Description>
             </ItemCell>
             <ItemCell>
                <Value>Un</Value>
@@ -44,7 +45,7 @@ out.Bols = (n-init+1) x (p+1) matrix containing the estimated beta coefficients 
             <ItemCell>
                <Value>Bols</Value>
                <Description>(n-init+1) x (p+1) matrix containing the estimated beta&#xD;
-               coefficients monitored in each step of the forward search&#xD;
+               coefficients monitored in each step of the robust procedure&#xD;
                (required only when option databrush is not empty and&#xD;
                suboption multivarfit is not empty).</Description>
             </ItemCell>
@@ -106,7 +107,7 @@ standard.SizeAxesNum=10 standard.SizeAxesLab=12 standard.xlim='' (Automatic scal
             </ItemCell>
             <ItemCell>
                <Value>xvalues</Value>
-               <Description>vector. x axis values.  &#xD;
+               <Description>vector. x axis values.&#xD;
                        Numeric vector of length(size(out.RES,2)) controlling the x&#xD;
                        axis coordinates. The default value of xvalues is&#xD;
                        size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)</Description>
@@ -167,7 +168,7 @@ fground.fmark = scalar controlling whether to plot highlighted trajectories as m
 if 1 each line is plotted using a different marker else no marker is used (default).
 fground.FontSize = scalar controlling font size of the labels of the trajectories in foreground.
 The default values of structure fground are:
-fground.fthresh=2.5 fground.flabstep=[m0 n] fground.LineWidth=1 fground.LineStyle={'-'} fground.FontSize=12 % Remark: if fground='' no unit is highlighted and no label is inserted into the plot.</LongDesc>
+fground.fthresh=2.5 fground.flabstep=[m0 n] fground.LineWidth=1 fground.LineStyle={'-'} fground.FontSize=12 Remark: if fground='' no unit is highlighted and no label is inserted into the plot.</LongDesc>
          <Example>'fground.LineWidth','1'</Example>
          <DataType>struct</DataType>
          <Struct>
@@ -237,10 +238,7 @@ fground.fthresh=2.5 fground.flabstep=[m0 n] fground.LineWidth=1 fground.LineStyl
                     fground.flabstep=[m0 n]&#xD;
                     fground.LineWidth=1&#xD;
                     fground.LineStyle={'-'}&#xD;
-                    fground.FontSize=12&#xD;
-&#xD;
-                   %                   Remark: if fground='' no unit is highlighted and no&#xD;
-                   label is inserted into the plot.</Description>
+                    fground.FontSize=12</Description>
             </ItemCell>
          </Struct>
       </Item>
@@ -262,7 +260,7 @@ bground.bstyle = specifies how to plot the unimportant trajectories as defined i
 'greysh': unimportant trajectories are displayed in a faint grey.
 When n&amp;gt;100 the default option is 'faint'.
 When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
-% Remark: bground='' is equivalent to bground.thresh=-Inf that is all trajectories are considered relevant.</LongDesc>
+Remark: bground='' is equivalent to bground.thresh=-Inf that is all trajectories are considered relevant.</LongDesc>
          <Example>'bground.bstyle','faint'</Example>
          <DataType>struct</DataType>
          <Struct>
@@ -297,7 +295,7 @@ When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
                        When n&amp;gt;100 the default option is 'faint'.&#xD;
                        When n&amp;lt;=100 and bthresh = -Inf option bstyle is&#xD;
                        ignored.&#xD;
-                   %                   Remark: bground='' is equivalent to</Description>
+                                      Remark: bground='' is equivalent to</Description>
             </ItemCell>
             <ItemCell>
                <Value>thresh</Value>
@@ -318,44 +316,77 @@ When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
       <Item>
          <Name>datatooltip</Name>
          <ShortDesc>interactive clicking.</ShortDesc>
-         <TypeInd>Empty value (default) or structure.</TypeInd>
-         <LongDesc>The default is datatooltip=''.
-It is inactive if it is an empty value. The default is datatooltip = 1, i.e. the user can select with the mouse an individual residual trajectory in order to have information about the corresponding unit, the associated label and the step of the search in which the unit enters in the subset.
-If datatooltip is a structure, the fields DisplayStyle and SnapToDataVertex control the data cursor features (see the MATLAB function datacursormode or the examples below). Default values are datatooltip.DisplayStyle = 'Window' and datatooltip.SnapToDataVertex = 'on'.
-By default, the residual trajectory selected with the mouse is highlighted in red. A different color can be specified as RGB vector in the structure field LineColor (a RGB vector can be conveniently chosen with our MATLAB class FSColor, see documentation).
-By setting the field datatooltip.SubsetLinesColor, it is also possible to highlight the trajectories of units that are in the subset at a given step of the search.
-This can be done (repeatedly) with a left mouse click in proximity of the step of interest. A right mouse click will terminate the selection by marking with a up-arrow the step corresponding to the highlighted lines. The highlighted lines by default are in blue, but different colors can be specified as RGB vectors in the field SubsetLinesColor. By default SubsetLinesColor = '', i.e. the modality is not active. Any initialization for SubsetLinesColor which cannot be interpreted as RGB vector will be converted to blue, i.e. SubsetLinesColor will be forced to be [0 0 1].</LongDesc>
+         <TypeInd>Empty value, scalar or structure.</TypeInd>
+         <LongDesc>It is inactive if it is an empty value. The default is datatooltip = 1, i.e. the user can select with the mouse an individual residual trajectory in order to have information about the corresponding unit. The information displayed depends on the estimator in use.
+For example for class FSReda the information concerns the label and the step of the search in which the unit enters the subset. If datatooltip is a structure it may contain the following fields datatooltip.DisplayStyle = determines how the data cursor displays.
+Possible values are 'datatip' and 'window' (default).
+'datatip' displays data cursor information in a small yellow text box attached to a black square marker at a data point you interactively select.
+'window' displays data cursor information for the data point you interactively select in a floating window within the figure.
+datatooltip.SnapToDataVertex = specifies whether the data cursor snaps to the nearest data value or is located at the actual pointer position. Possible values are 'on' (default) and 'off'.
+datatooltip.LineColor = controls the color of the trajectory selected with the mouse. It can be an RGB triplet of values between 0 and 1, or character vector indicating a color name. Note that a RGB vector can be conveniently chosen with our MATLAB class FSColor, see documentation.
+datatooltip.SubsetLinesColor = enables to control the color of the trajectories of the units that are in the subset at a given step of the search (if resfwdplot is applied to an object of class FSReda) or have a weight greater than 0.9 (if resfwdplot is applied to an object of class LXSeda, Sregeda and MMregeda).
+This can be done (repeatedly) with a left mouse click in proximity of the step of interest. A right mouse click will terminate the selection by marking with a up-arrow the step corresponding to the highlighted lines. The highlighted lines by default are in red, but a different color can be specified as RGB triplet or character of color name.
+Note that a RGB vector can be conveniently chosen with our MATLAB class FSColor, see documentation.
+By default SubsetLinesColor ='', i.e. the modality is not active.
+Any initialization for SubsetLinesColor which cannot be interpreted as RGB vector will be converted to blue, i.e. SubsetLinesColor will be forced to be [0 0 1].
+If SubsetLinesColor is not empty previous option LineColor is overlooked.</LongDesc>
          <Example>'datatooltip',''</Example>
          <DataType>empty value, scalar or struct</DataType>
          <Struct>
             <ItemCell>
                <Value>DisplayStyle</Value>
-               <Description>'Window' and</Description>
+               <Description>determines how the data cursor displays.&#xD;
+                       Possible values are 'datatip' and 'window'&#xD;
+                       (default).&#xD;
+                       'datatip' displays data cursor information in a&#xD;
+                       small yellow text box attached to a black square&#xD;
+                       marker at a data point you interactively select.&#xD;
+                       'window' displays data cursor information for the&#xD;
+                       data point you interactively select in a floating&#xD;
+                       window within the figure.</Description>
             </ItemCell>
             <ItemCell>
                <Value>SnapToDataVertex</Value>
-               <Description>'on'.&#xD;
-                   By default, the residual trajectory selected with the&#xD;
-                   mouse is highlighted in red. A different color can be&#xD;
-                   specified as RGB vector in the structure field&#xD;
-                   LineColor (a RGB vector can be conveniently chosen&#xD;
-                   with our MATLAB class FSColor, see documentation).&#xD;
-                   By setting the field&#xD;
-                   datatooltip.SubsetLinesColor,&#xD;
-                   it is also possible to highlight the trajectories of&#xD;
-                   units that are in the subset at a given step of the&#xD;
-                   search.&#xD;
-                   This can be done (repeatedly) with a left mouse click&#xD;
-                   in proximity of the step of interest. A right mouse&#xD;
-                   click will terminate the selection by marking with a&#xD;
-                   up-arrow the step corresponding to the highlighted&#xD;
-                   lines. The highlighted lines by default are in blue,&#xD;
-                   but different colors can be specified as RGB vectors in&#xD;
-                   the field SubsetLinesColor. By default SubsetLinesColor&#xD;
-                   = '', i.e. the modality is not active. Any&#xD;
-                   initialization for SubsetLinesColor which cannot be&#xD;
-                   interpreted as RGB vector will be converted to blue,&#xD;
-                   i.e. SubsetLinesColor will be forced to be [0 0 1].</Description>
+               <Description>specifies whether the&#xD;
+                       data cursor snaps to the nearest data value or is&#xD;
+                       located at the actual pointer position. Possible&#xD;
+                       values are 'on' (default) and 'off'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineColor</Value>
+               <Description>controls the color of the&#xD;
+                       trajectory selected with the mouse. It can be an&#xD;
+                       RGB triplet of values between 0 and 1, or character&#xD;
+                       vector indicating a color name. Note that a RGB&#xD;
+                       vector can be conveniently chosen with our MATLAB&#xD;
+                       class FSColor, see documentation.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>SubsetLinesColor</Value>
+               <Description>enables to control the&#xD;
+                       color of the trajectories of the units that are in&#xD;
+                       the subset at a given step of the search (if&#xD;
+                       resfwdplot is applied to an object of class&#xD;
+                       FSReda) or have a weight greater than 0.9 (if&#xD;
+                       resfwdplot is applied to an object of class LXSeda,&#xD;
+                       Sregeda and MMregeda).&#xD;
+                       This can be done (repeatedly) with a left mouse&#xD;
+                       click in proximity of the step of interest. A right&#xD;
+                       mouse click will terminate the selection by marking&#xD;
+                       with a up-arrow the step corresponding to the&#xD;
+                       highlighted lines. The highlighted lines by default&#xD;
+                       are in red, but a different color can be specified&#xD;
+                       as RGB triplet or character of color name.&#xD;
+                       Note that a RGB vector can be conveniently chosen with&#xD;
+                       our MATLAB class FSColor, see documentation.&#xD;
+                       By default SubsetLinesColor ='', i.e. the modality&#xD;
+                       is not active.&#xD;
+                       Any initialization for SubsetLinesColor which&#xD;
+                       cannot be interpreted as RGB vector will be&#xD;
+                       converted to blue, i.e. SubsetLinesColor will be&#xD;
+                       forced to be [0 0 1].&#xD;
+                       If SubsetLinesColor is not empty previous option&#xD;
+                       LineColor is overlooked.</Description>
             </ItemCell>
          </Struct>
       </Item>
@@ -426,11 +457,10 @@ multivarfit = '2' exactly equal to multivarfit ='1' but this time we add the lin
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>display or save used options.</ShortDesc>
+         <ShortDesc>display used options.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>Scalar which controls whether to display or to save as output the options inside structures standard, fground and bground which have been used to draw the plot.
-plotopt=resfwdplot(out,'msg',1) enables to save inside cell plotopt the options which have been used to draw the three types of trajectories (standard, foreground and background).
-plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt the options which have been used and prints them on the screen.</LongDesc>
+         <LongDesc>Scalar which controls whether to display as output the options inside structures standard, fground and bground which have been used to draw the plot.
+plotopt=resfwdplot(out,'msg',1) prints on the screen the options which have been used to draw the three types of trajectories (standard, foreground and background).</LongDesc>
          <Example>'msg',1</Example>
          <DataType>single or double</DataType>
          <Struct> </Struct>
@@ -457,7 +487,7 @@ plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt the options which have
       <Item>
          <Title>Monitoring residuals plot with all the default options.</Title>
          <Desc>
-            <ItemCell>generate input structure for the resfwdplot</ItemCell>
+            <ItemCell>generate input structure for the resfwdplot In this example FS estimator is used</ItemCell>
          </Desc>
          <MATLABcode>
             <ItemCell>n=100;</ItemCell>
@@ -787,7 +817,7 @@ plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt the options which have
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>Example of the use of option msg.</Title>
+         <Title>Example of the use of nargout.</Title>
          <Desc>
             <ItemCell>Fidelity cards data</ItemCell>
          </Desc>
@@ -799,7 +829,8 @@ plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt the options which have
             <ItemCell>X=XX(:,1:end-1);</ItemCell>
             <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[out]=FSReda(y,X,out.bs);</ItemCell>
-            <ItemCell>plotopt=resfwdplot(out,'msg',2)</ItemCell>
+            <ItemCell>% msg is 1 therefore used options are also shown on the screen.</ItemCell>
+            <ItemCell>plotopt=resfwdplot(out,'msg',1)</ItemCell>
             <ItemCell>% In order to reuse the options which have been stored inside plotopt</ItemCell>
             <ItemCell>% use the following sintax</ItemCell>
             <ItemCell>% resfwdplot(out,plotopt{:})</ItemCell>
@@ -821,6 +852,19 @@ plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt the options which have
             <ItemCell>% xlabels start from 400</ItemCell>
             <ItemCell>standard.xvalues=400:1:(size(out.RES,2)+400-1);</ItemCell>
             <ItemCell>resfwdplot(out,'standard',standard)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring residuals plot using S estimator.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>X=randn(n,4);</ItemCell>
+            <ItemCell>[out]=Sregeda(y,X);</ItemCell>
+            <ItemCell>% Produce  resfwdplot</ItemCell>
+            <ItemCell>resfwdplot(out);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

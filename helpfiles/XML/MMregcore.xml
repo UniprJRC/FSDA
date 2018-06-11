@@ -51,7 +51,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -183,8 +183,12 @@ For Hampel rho function it is possible to define parameters a, b and c (the defa
                <Description>n x 1 vector. Weights assigned to each observation</Description>
             </ItemCell>
             <ItemCell>
-               <Value>class</Value>
-               <Description>'MM'</Description>
+               <Value>rhofunc</Value>
+               <Description>string identifying the rho function which has been used.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>rhofuncparam</Value>
+               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c.</Description>
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
@@ -193,6 +197,10 @@ For Hampel rho function it is possible to define parameters a, b and c (the defa
             <ItemCell>
                <Value>X</Value>
                <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'MMreg'</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -212,7 +220,7 @@ For Hampel rho function it is possible to define parameters a, b and c (the defa
  
 </Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sreg</Item>
@@ -277,6 +285,34 @@ For Hampel rho function it is possible to define parameters a, b and c (the defa
             <ItemCell>[outS]=Sreg(ycont,X);</ItemCell>
             <ItemCell>rhofunc='hampel';</ItemCell>
             <ItemCell>outMM1=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofunc,'plots',1)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Comparison between direct call to MMreg and call to Sreg and MMregcore.</Title>
+         <Desc>
+            <ItemCell>In this example two different rho functions are used for S and MM</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=30;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 16);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>% Two different rho functions are used for S and MM</ItemCell>
+            <ItemCell>rhofuncS='hyperbolic';</ItemCell>
+            <ItemCell>rhofuncMM='hampel';</ItemCell>
+            <ItemCell>% Direct call to MMreg</ItemCell>
+            <ItemCell>[out]=MMreg(ycont,X,'Srhofunc',rhofuncS,'rhofunc',rhofuncMM,'Snsamp',0);</ItemCell>
+            <ItemCell>% Call to Sreg and then to MMregcore</ItemCell>
+            <ItemCell>[outS]=Sreg(ycont,X,'rhofunc',rhofuncS,'nsamp',0);</ItemCell>
+            <ItemCell>outMM=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofuncMM);</ItemCell>
+            <ItemCell>disp('Difference between direct call to S and the calls to Sreg and MMregcore')</ItemCell>
+            <ItemCell>max(abs([out.beta-outMM.beta]))</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

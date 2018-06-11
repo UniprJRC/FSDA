@@ -7,9 +7,10 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variables.</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +18,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x (bigP-1)).</ShortDesc>
-         <TypeInd>The intercept will be added in automatic way, so that the dimension of the full model is bigP Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x (bigP-1)).
+The intercept will be added in automatic way, so that the dimension of the full model is bigP Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -87,9 +89,10 @@ Remark. if the number of all possible subset is &amp;lt;1000 the default is to e
       </Item>
       <Item>
          <Name>smallpint</Name>
-         <ShortDesc>It specifies which submodels (number of variables) must be considered.</ShortDesc>
+         <ShortDesc>submodels to consider.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>The default is to consider all models from size 2 to size bigP-1. In other words, as default, smallpint=(bigP-1):-1:2.
+         <LongDesc>It specifies which submodels (number of variables) must be considered.
+The default is to consider all models from size 2 to size bigP-1. In other words, as default, smallpint=(bigP-1):-1:2.
 When smallpint=2 all submodels including one explanatory variable and the constant will be considered.
 When smallpint=3 all submodels including two explanatory variables and a constant will be considered. ....</LongDesc>
          <Example>'smallpint',3</Example>
@@ -108,9 +111,10 @@ If labels is a missing value the following sequence of strings will be automatic
       </Item>
       <Item>
          <Name>fin_step</Name>
-         <ShortDesc>initial and final step of the search which has to be monitored to choose the best models as specified in scalar first_k.</ShortDesc>
-         <TypeInd>Vector.</TypeInd>
-         <LongDesc>The first element of the vector specifies the initial step of the search which has to be monitored to choose the best models as specified in scalar first_k below. The second element specifies the ending point of the central part of the search. This information will be used to create the candlestick Cp plot.
+         <ShortDesc>Initial and final step.</ShortDesc>
+         <TypeInd>Vector with two elements.</TypeInd>
+         <LongDesc>Initial and final step of the search which has to be monitored to choose the best models as specified in scalar first_k.
+The first element of the vector specifies the initial step of the search which has to be monitored to choose the best models as specified in scalar first_k below. The second element specifies the ending point of the central part of the search. This information will be used to create the candlestick Cp plot.
 If the elements of fin_step are integers greater or equal 1 they refer to the number of steps. For example if fin_step=[10 3] the program considers the last 10 steps to choose the best models and the central part of the search is defined up to step n-3.
 If the elements of fin_step are real numbers alpha (0&amp;lt;alpha&amp;lt;0.5) in the interval (0 0.5] then the program considers the last round(n*alpha) steps.
 As default fin_step(1)=round(n*0.2) that is the last 20% of the steps are considered.
@@ -121,9 +125,10 @@ As default fin_step(2)=round(n*0.05) that is the central part of the search exte
       </Item>
       <Item>
          <Name>first_k</Name>
-         <ShortDesc>number of best models to consider in each of the last fin_step.</ShortDesc>
+         <ShortDesc>Number of models to consider.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>For example if first_k=5 in each of the fin_step the models which had the 5 smallest values of Cp are considered. As default first_k=3</LongDesc>
+         <LongDesc>Number of best models to consider in each of the last fin_step.
+For example if first_k=5 in each of the fin_step the models which had the 5 smallest values of Cp are considered. As default first_k=3</LongDesc>
          <Example>'first_k',5</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -151,9 +156,10 @@ The default value of ExclThresh is 0.99999 that is the models whose minimum valu
       </Item>
       <Item>
          <Name>meanmed</Name>
-         <ShortDesc>specfy how to construct the boxes of the candles.</ShortDesc>
+         <ShortDesc>Boxes of tha candles.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If meanmed=1 boxes are constructed using mean and median else using the first and third quartile.</LongDesc>
+         <LongDesc>It specifies how to construct the boxes of the candles.
+If meanmed=1 boxes are constructed using mean and median else using the first and third quartile.</LongDesc>
          <Example>'meanmed',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -278,6 +284,7 @@ If matrix outl contains more columns they are ignored.</Description>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRcp</Item>
+      <Item>cdsplot</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>

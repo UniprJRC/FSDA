@@ -44,7 +44,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -53,8 +53,8 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <Name>bsbsteps</Name>
          <ShortDesc>Save the units forming subsets.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subsets. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=5000, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=753 and init=6, units forming subset are stored for m=init, 100, 200, 300, 400, 500 and 600.
-% REMARK: vector bsbsteps must contain numbers from init to n. if min(bsbsteps)&amp;lt;init a warning message will appear on the screen.</LongDesc>
+         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subsets. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=500, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=753 and init=6, units forming subset are stored for m=init, 100, 200, 300, 400, 500 and 600.
+REMARK: vector bsbsteps must contain numbers from init to n. if min(bsbsteps)&amp;lt;init a warning message will appear on the screen.</LongDesc>
          <Example>'bsbsteps',[100 200] stores the unis forming subset in steps 100 and 200.</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -91,7 +91,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <ShortDesc>Plot on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If equal to one a plot of random starts minimum deletion residual appears on the screen with 1%, 50% and 99% confidence bands else (default) no plot is shown.
-% Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrrsplot.</LongDesc>
+Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrrsplot.</LongDesc>
          <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -116,11 +116,11 @@ Therefore, *if a parallel pool is not already open*, UserOption numpool (if set)
       <Item>
          <Name>cleanpool</Name>
          <ShortDesc>clean pool after execution.</ShortDesc>
-         <TypeInd>Scalar.</TypeInd>
-         <LongDesc>cleanpool is 1 if the parallel pool has to be cleaned after the execution of the random starts. Otherwise it is 0.
-The default value of cleanpool is 1.
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>cleanpool is 1 (true) if the parallel pool has to be cleaned after the execution of the random starts. Otherwise it is 0 (false).
+The default value of cleanpool is false.
 Clearly this option has an effect just if previous option numpool is &amp;gt; 1.</LongDesc>
-         <Example>'clarnpool',false</Example>
+         <Example>'cleanpool',false</Example>
          <DataType>boolean</DataType>
          <Struct> </Struct>
       </Item>
@@ -166,14 +166,9 @@ In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has the same structure as b
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Riani M., and Cerioli A. (2006). Random Start Forward Searches with Envelopes for Detecting Clusters in Multivariate Data.
-In: ZANI S., CERIOLI A., RIANI M., VICHI M. EDS. Data Analysis, Classification and the Forward Search. (pp. 163-172). ISBN:
-3-540-35977-x. BERLIN: Springer Verlag (GERMANY).</Item>
-      <Item>Atkinson A.C., Riani M., (2007),Exploratory Tools for Clustering Multivariate Data. COMPUTATIONAL STATISTICS &amp; DATA ANALYSIS. vol. 52, pp. 272-285 ISSN: 0167-9473. doi:10.1016/j.csda.2006.12.034</Item>
-      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008).
-Fitting Mixtures of Regression Lines with the Forward Search. In:
-Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
-(pp. 271-286). IOS Press, Amsterdam (The Netherlands).</Item>
+      <Item>Atkinson A.C., Riani M., and Cerioli A. (2006). Random Start Forward Searches with Envelopes for Detecting Clusters in Multivariate Data, in: Zani S., Cerioli A., Riani M., Vichi M. EDS. Data Analysis, Classification and the Forward Search, (pp. 163-172), ISBN:3-540-35977-x, BERLIN: Springer Verlag (GERMANY).</Item>
+      <Item>Atkinson A.C., Riani M., (2007), Exploratory Tools for Clustering Multivariate Data. Computational Statistics &amp; Data Analysis, vol. 52, pp. 272-285 ISSN: 0167-9473, doi:10.1016/j.csda.2006.12.034</Item>
+      <Item>Riani M., Cerioli A., Atkinson A.C., Perrotta D., Torti F. (2008), Fitting Mixtures of Regression Lines with the Forward Search, in: Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS, (pp. 271-286), IOS Press, Amsterdam (The Netherlands).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRmdr</Item>
@@ -182,7 +177,7 @@ Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>An example with simulated data with regression lines with roughly the same number of observations.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>close all</ItemCell>
@@ -245,7 +240,7 @@ Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
             <ItemCell>% the execution of the random starts</ItemCell>
             <ItemCell>% The number of workers which is used is the one specified</ItemCell>
             <ItemCell>% in the local/current profile</ItemCell>
-            <ItemCell>[mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);</ItemCell>
+            <ItemCell>[out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);</ItemCell>
             <ItemCell>disp('The two peaks in the trajectories of minimum deletion residual (mdr).')</ItemCell>
             <ItemCell>disp('clearly show the presence of two groups.')</ItemCell>
             <ItemCell>disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')</ItemCell>
@@ -282,7 +277,7 @@ Mining Massive Data Sets for Security F. Fogelman-Soulie et al. EDS.
             <ItemCell>figure</ItemCell>
             <ItemCell>% parfor of Parallel Computing Toolbox is used (if present in current</ItemCell>
             <ItemCell>% computer). Parallel pool is closed after the execution of the random starts</ItemCell>
-            <ItemCell>[mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1);</ItemCell>
+            <ItemCell>[out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',true);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

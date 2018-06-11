@@ -213,7 +213,7 @@ Default is 0, i.e. no saving is done.</LongDesc>
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>'S'</Description>
+               <Description>'Smult'</Description>
             </ItemCell>
          </Structure>
       </Item>

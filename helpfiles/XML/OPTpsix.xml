@@ -56,7 +56,7 @@ Remark: function $\psi(x) *x$ has been precalculated because it is used to find 
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of psi(x) function (derivative of rho function) times x.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.01:6;</ItemCell>

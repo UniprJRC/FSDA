@@ -71,8 +71,10 @@
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Find c for a given efficiency.</Title>
+         <Desc>
+            <ItemCell>The constant c associated to a nominal location efficiency of 95% in regression is c = 4.685064948559557</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>c=TBeff(0.95,1)</ItemCell>
             <ItemCell>% for a fixed shape efficiency we have</ItemCell>
@@ -82,8 +84,10 @@
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Find shape efficiency.</Title>
+         <Desc>
+            <ItemCell>Compare constant c for the range of values of p from 1 to 200 using approximate and exact formula for fixed shape efficiency Number of variables</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>p=200;</ItemCell>
             <ItemCell>pp=1:1:p;</ItemCell>
@@ -93,12 +97,12 @@
             <ItemCell>eff=0.75;</ItemCell>
             <ItemCell>% eff=0.99;</ItemCell>
             <ItemCell>for i=pp</ItemCell>
-            <ItemCell>% Use exact formula for finding the value of c associated to a fixed</ItemCell>
-            <ItemCell>% level of shape efficiency</ItemCell>
-            <ItemCell>cc(i,2)=TBeff(eff,i,1);</ItemCell>
-            <ItemCell>% Use approximate formula for finding the value of c associated to a fixed</ItemCell>
-            <ItemCell>% level of shape efficiency</ItemCell>
-            <ItemCell>cc(i,3)=TBeff(eff,i,1,1);</ItemCell>
+            <ItemCell>    % Use exact formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>    % level of shape efficiency</ItemCell>
+            <ItemCell>    cc(i,2)=TBeff(eff,i,1);</ItemCell>
+            <ItemCell>    % Use approximate formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>    % level of shape efficiency</ItemCell>
+            <ItemCell>    cc(i,3)=TBeff(eff,i,1,1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>figure</ItemCell>
             <ItemCell>plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)</ItemCell>

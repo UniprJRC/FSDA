@@ -43,7 +43,7 @@
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>for j=1:6</ItemCell>
-            <ItemCell>brushROB(j);</ItemCell>
+            <ItemCell>    brushROB(j);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

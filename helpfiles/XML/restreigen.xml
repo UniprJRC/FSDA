@@ -10,7 +10,8 @@
          <Name>eigenvalues</Name>
          <ShortDesc>Eigenvalues.</ShortDesc>
          <TypeInd>Matrix.</TypeInd>
-         <LongDesc>v x k matrix containing the eigenvalues of the covariance matrices of the k groups v= number of variables of the dataset which has to be clustered</LongDesc>
+         <LongDesc>v x k matrix containing the eigenvalues of the covariance matrices of the k groups.
+v is the number of variables of the dataset which has to be clustered.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -43,7 +44,7 @@ Setting restr to 1, yields the strongest restriction, forcing all eigenvalues/de
          <ShortDesc>tolerance.</ShortDesc>
          <TypeInd>Scalar defining the tolerance of the procedure.</TypeInd>
          <LongDesc>The default value is 1e-8</LongDesc>
-         <Example>&lt;code&gt;'tol',[1e-18] &#xD;
+         <Example>&lt;code&gt;'tol',[1e-18]&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
          <ReqArg>0</ReqArg>
@@ -51,10 +52,11 @@ Setting restr to 1, yields the strongest restriction, forcing all eigenvalues/de
       </Item>
       <Item>
          <Name>userepmat</Name>
-         <ShortDesc>use builtin repmat.</ShortDesc>
+         <ShortDesc>use repmat, bsxfun or implicit expansion.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If userepmat is true function repmat is used instead of bsxfun inside the procedure. Remark: repmat is built in from MATLAB 2013b so it is faster to use repmat if the current version of MATLAB is &amp;gt;2013a</LongDesc>
-         <Example>&lt;code&gt;'userepmat',1 &#xD;
+         <LongDesc>If userepmat is equal to 1, function repmat is used instead of bsxfun inside the procedure. Remark: repmat is built in from MATLAB 2013b so it is faster to use repmat if the current version of MATLAB is &amp;gt;2013a.
+If userepmat is 2, implicit expansion is used instead of bsxfun. Note that implicit expansion has been introduced only in 2017a therefore it will not work with previous releases.</LongDesc>
+         <Example>&lt;code&gt;'userepmat',1&#xD;
 &lt;/code&gt;</Example>
          <DataType>double</DataType>
          <ReqArg>0</ReqArg>
@@ -79,6 +81,8 @@ The ratio between two possible elements in matrix out is not greater than restr<
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tclust</Item>
+      <Item>restrdeter</Item>
+      <Item>tclustreg</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
@@ -87,19 +91,19 @@ The ratio between two possible elements in matrix out is not greater than restr<
             <ItemCell>Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4 First column of matrix eigenvalues contains the eigenvalues of the first group Second column of matrix eigenvalues contains the eigenvalues of the second group Thrid column of matrix eigenvalues contains the eigenvalues of the third group Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>rng(10,'twister')</ItemCell>
-            <ItemCell>eigenvalues=abs(10*randn(3,4));</ItemCell>
-            <ItemCell>% niini is the vector containing the sizes of the 4 groups</ItemCell>
-            <ItemCell>niini=[30;40;20;10];</ItemCell>
-            <ItemCell>out=restreigen(eigenvalues,niini,1.1)</ItemCell>
-            <ItemCell>disp('Input matrix of unrestricted eigenvalues')</ItemCell>
-            <ItemCell>disp(eigenvalues)</ItemCell>
-            <ItemCell>disp('Output matrix of restricted eigenvalues')</ItemCell>
-            <ItemCell>disp(out)</ItemCell>
-            <ItemCell>disp('Ratio between largest and smallest unrestricted eigenvalues')</ItemCell>
-            <ItemCell>disp(max(max(eigenvalues))/min(min(eigenvalues)))</ItemCell>
-            <ItemCell>disp('Ratio between largest and smallest restricted eigenvalues')</ItemCell>
-            <ItemCell>disp(max(max(out))/min(min(out)))</ItemCell>
+            <ItemCell>ng(10,'twister')</ItemCell>
+            <ItemCell>igenvalues=abs(10*randn(3,4));</ItemCell>
+            <ItemCell> niini is the vector containing the sizes of the 4 groups</ItemCell>
+            <ItemCell>iini=[30;40;20;10];</ItemCell>
+            <ItemCell>ut=restreigen(eigenvalues,niini,1.1)</ItemCell>
+            <ItemCell>isp('Input matrix of unrestricted eigenvalues')</ItemCell>
+            <ItemCell>isp(eigenvalues)</ItemCell>
+            <ItemCell>isp('Output matrix of restricted eigenvalues')</ItemCell>
+            <ItemCell>isp(out)</ItemCell>
+            <ItemCell>isp('Ratio between largest and smallest unrestricted eigenvalues')</ItemCell>
+            <ItemCell>isp(max(max(eigenvalues))/min(min(eigenvalues)))</ItemCell>
+            <ItemCell>isp('Ratio between largest and smallest restricted eigenvalues')</ItemCell>
+            <ItemCell>isp(max(max(out))/min(min(out)))</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -116,13 +120,44 @@ The ratio between two possible elements in matrix out is not greater than restr<
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>Trimmed k-means using geyser data.</Title>
+         <Title>Compare speed.</Title>
          <Desc>
-            <ItemCell>3 groups and trimming level of 3%</ItemCell>
+            <ItemCell>We compare the speed of restreigneasy with that of restreigen. We use userepmat=2 if the current MATLAB version if &amp;gt;=R2017a or userepmat =1 if MATLAB version is &amp;gt;=R2013a but &amp;lt;R2017a else we use userepmat =0</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>Y=load('geyser2.txt');</ItemCell>
-            <ItemCell>out=tkmeans(Y,3,0.03,'plots',1)</ItemCell>
+            <ItemCell>v=10;</ItemCell>
+            <ItemCell>k=8;</ItemCell>
+            <ItemCell>tol=1e-8;</ItemCell>
+            <ItemCell>if verLessThanFS(9.2)== false</ItemCell>
+            <ItemCell>    % If MATLAB version is at least 2017a</ItemCell>
+            <ItemCell>    userepmat=2;</ItemCell>
+            <ItemCell>elseif verLessThanFS(8.1) == false</ItemCell>
+            <ItemCell>    % if MATLAB version is at least R2013b</ItemCell>
+            <ItemCell>    userepmat=1;</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    userepmat=0;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>oldroutinetime=0;</ItemCell>
+            <ItemCell>newroutinetime=0;</ItemCell>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>for j=1:10000</ItemCell>
+            <ItemCell>    eigenvalues=100*abs(randn(v,k));</ItemCell>
+            <ItemCell>    % niini is the vector containing the sizes of the 4 groups</ItemCell>
+            <ItemCell>    niini=randi(100,[k,1]);</ItemCell>
+            <ItemCell>    tic;</ItemCell>
+            <ItemCell>    outold=restreigeneasy(eigenvalues,niini,1.1);</ItemCell>
+            <ItemCell>    % Uncomment the line below if you want</ItemCell>
+            <ItemCell>    % outold=restreigen(eigenvalues,niini,1.1,tol,1);</ItemCell>
+            <ItemCell>    oldroutinetime=oldroutinetime+toc;</ItemCell>
+            <ItemCell>    tic;</ItemCell>
+            <ItemCell>    outnew=restreigen(eigenvalues,niini,1.1,tol,userepmat);</ItemCell>
+            <ItemCell>    newroutinetime=newroutinetime+toc;</ItemCell>
+            <ItemCell>    if max(max(abs(outold-outnew)))&amp;gt;1e-5</ItemCell>
+            <ItemCell>        error('The two routines are different')</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp(['Computing time of restreigeneasy: ' num2str(oldroutinetime)])</ItemCell>
+            <ItemCell>disp(['Computing time of restreigen: ' num2str(newroutinetime)])</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

@@ -51,7 +51,7 @@ The purpose of this function is to provide the user with different options for t
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -70,7 +70,7 @@ $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -81,7 +81,7 @@ $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>It measures the fraction of outliers the algorithm should resist. In this case any value greater than 0 but smaller or equal than 0.5 will do fine.
 Note that given bdp nominal efficiency is automatically determined.
-% REMARK: just one between bdp and eff must be specified. If both of them are specified an error is produced. If both of them are not specified the defulat is tu use the tuning constant associated to a nominal efficiency of 0.95.</LongDesc>
+REMARK: just one between bdp and eff must be specified. If both of them are specified an error is produced. If both of them are not specified the defulat is tu use the tuning constant associated to a nominal efficiency of 0.95.</LongDesc>
          <Example>'bdp',0.4</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -139,7 +139,7 @@ where
 \[
 \mbox{covrob1} = K^2 \hat v (X' W X)^{-1};
 \]
-where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n \psi'(r_i/\hat \sigma))^2}$ ;</Description>
+where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n \psi'(r_i/\hat \sigma)) \right]^2}$ ;</Description>
             </ItemCell>
             <ItemCell>
                <Value>covrob2</Value>
@@ -233,7 +233,7 @@ Leuven.</Item>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title> </Title>
+         <Title>Compare t stat from S and MM estimator.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>rhofunc='optimal';</ItemCell>

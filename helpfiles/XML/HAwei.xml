@@ -67,11 +67,11 @@ $c$= 8*ctun.
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain Figure 11.15 (panel b) p.</Title>
-         <Desc> </Desc>
+         <Title>Plot of weight function.</Title>
+         <Desc>
+            <ItemCell>Obtain Figure 11.15 (panel b) p. 382 of Hoaglin et al. (1987)</ItemCell>
+         </Desc>
          <MATLABcode>
-            <ItemCell>%% Obtain Figure 11.15 (panel b) p. 382 of</ItemCell>
-            <ItemCell>% Hoaglin et al. (1987)</ItemCell>
             <ItemCell>x=-8:0.01:8;</ItemCell>
             <ItemCell>weiHA=HAwei(x,[1 2 4 8]);</ItemCell>
             <ItemCell>plot(x,weiHA)</ItemCell>

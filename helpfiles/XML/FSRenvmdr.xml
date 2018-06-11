@@ -46,16 +46,6 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
-      <Item>
-         <Name>exact</Name>
-         <ShortDesc>Method for the calculation of the quantiles.</ShortDesc>
-         <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If it is equal to 1 (default) the calculation of the quantiles of the T and F distribution is based on functions finv and tinv from the Matlab statistics toolbox, otherwise the calculations of the former quantiles is based on functions finvFS and tinvFS. The solution has a tolerance of 1e-8 (change variable tol in files finvFS.m and tinvFS.m if required.
-% Remark: the use of functions tinv and finv is more precise but requires more time.</LongDesc>
-         <Example>'exact',0</Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
    </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
@@ -66,9 +56,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
 1st col = fwd search index from m0 to n-1;
 2nd col = envelope for quantile prob(1);
 3rd col = envelope for quantile prob(2) ...
-(k+1) col = envelope for quantile prob(k).
-Subfunctions: tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS.
-Other function dependencies: none.</LongDesc>
+(k+1) col = envelope for quantile prob(k).</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
@@ -80,13 +68,13 @@ Other function dependencies: none.</LongDesc>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>LXS</Item>
-      <Item>FSREDA</Item>
+      <Item>FSReda</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRenvmdr with all default options.</Title>
          <Desc>
-            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 1000 observations and 5 explanatory variables using exact method.</ItemCell>
+            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 1000 observations and 5 explanatory variables</ItemCell>
          </Desc>
          <MATLABcode>
             <ItemCell>MDRenv=FSRenvmdr(10000,5);</ItemCell>
@@ -94,28 +82,18 @@ Other function dependencies: none.</LongDesc>
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>FSRenvmdr with optional argument.</Title>
+         <Title>Example with plot of the envelopes.</Title>
          <Desc>
-            <ItemCell>Example of creation of 1%, 50% and 99% envelopes based on 1000 observations and 5 explanatory variables using approximate method.</ItemCell>
+            <ItemCell>Example of creation of 1%, 50% and 99% envelopes based on 100 observations and 5 explanatory variables</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>MDRenv1=FSRenvmdr(10000,5,'exact',0);</ItemCell>
+            <ItemCell>Menv=FSRenvmdr(100,5);</ItemCell>
+            <ItemCell>plot(Menv(:,1),Menv(:,2:4));</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
-      <Item>
-         <Title>Example with plot of the envelopes.</Title>
-         <Desc>
-            <ItemCell>Example of creation of 1%, 50% and 99% envelopes based on 100 observations and 5 explanatory variables using exact method.</ItemCell>
-         </Desc>
-         <MATLABcode>
-            <ItemCell>Menv=FSRenvmdr(100,5,'exact',1);</ItemCell>
-            <ItemCell>plot(Menv(:,1),Menv(:,2:4));</ItemCell>
-         </MATLABcode>
-         <Exec>0</Exec>
-      </Item>
       <Item>
          <Title>Comparing the accuracy of the envelopes computed with order statistics with the simulated ones.</Title>
          <Desc>
@@ -138,10 +116,10 @@ Other function dependencies: none.</LongDesc>
             <ItemCell>nsimul=1000;</ItemCell>
             <ItemCell>mdrStore=zeros(n-init,nsimul);</ItemCell>
             <ItemCell>for j=1:nsimul</ItemCell>
-            <ItemCell>y=randn(n,1);</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',1000','msg',0);</ItemCell>
-            <ItemCell>mdr = FSRmdr(y,X,out.bs,'init',init);</ItemCell>
-            <ItemCell>mdrStore(:,j)=mdr(:,2);</ItemCell>
+            <ItemCell>    y=randn(n,1);</ItemCell>
+            <ItemCell>    [out]=LXS(y,X,'nsamp',1000','msg',0);</ItemCell>
+            <ItemCell>    mdr = FSRmdr(y,X,out.bs,'init',init);</ItemCell>
+            <ItemCell>    mdrStore(:,j)=mdr(:,2);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Sort rows of matrix mdrStore</ItemCell>
             <ItemCell>mdrStore=sort(mdrStore,2);</ItemCell>
@@ -154,7 +132,7 @@ Other function dependencies: none.</LongDesc>
             <ItemCell>% Plot lines of empirical quantiles</ItemCell>
             <ItemCell>line(mdr(:,1),mdrStore(:,sel),'LineStyle','--','Color','g');</ItemCell>
             <ItemCell>% Plots lines of theoretical quantiles using order statistics</ItemCell>
-            <ItemCell>mdrT=FSRenvmdr(n,p+1,'exact',1,'init',init);</ItemCell>
+            <ItemCell>mdrT=FSRenvmdr(n,p+1,'init',init);</ItemCell>
             <ItemCell>line(mdrT(:,1),mdrT(:,2:4),'LineStyle','-','Color','r');</ItemCell>
             <ItemCell>xlabel('Subset size m');</ItemCell>
          </MATLABcode>

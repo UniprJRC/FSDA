@@ -125,12 +125,9 @@ plotslrt.ylim = minimum and maximum on the y axis;
 plotslrt.LineWidth= Line width of the trajectory of lrt of transformation parameters;
 plotslrt.conflev = vector which defines the confidence levels of the horizontal line for the likelihood ratio test (default is conflev=[0.95 0.99]);
 plotslrt.LineWidthEnv= Line width of the horizontal lines;
-plotslrt.Tag = tag of the plot (default is pl_lrt).
-Example -'plotslrt',1 Data Types - double</LongDesc>
-         <Example> </Example>
-         <DataType>double&#xD;
-                 Example - 'plotslrt',struct&#xD;
-                 Data Types - double</DataType>
+plotslrt.Tag = tag of the plot (default is pl_lrt).</LongDesc>
+         <Example>'plotslrt',1</Example>
+         <DataType>double</DataType>
          <Struct>
             <ItemCell>
                <Value>xlim</Value>
@@ -158,17 +155,15 @@ Example -'plotslrt',1 Data Types - double</LongDesc>
             </ItemCell>
             <ItemCell>
                <Value>Tag</Value>
-               <Description>tag of the plot (default is pl_lrt). &#xD;
-                 Example -'plotslrt',1&#xD;
-                 Data Types - double</Description>
+               <Description>tag of the plot (default is pl_lrt).</Description>
             </ItemCell>
          </Struct>
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>It controls whether to display or not messages about great interchange on the screen.</ShortDesc>
+         <ShortDesc>Message on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If msg==1 (default) messages are displyed on the screen else no message is displayed on the screen.</LongDesc>
+         <LongDesc>It controls whether to display or not messages about great interchange on the screen. If msg==1 (default) messages are displyed on the screen else no message is displayed on the screen.</LongDesc>
          <Example>'msg',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -204,13 +199,17 @@ length(laAround)+1 col = integer identifying the reason the algorithm terminated
                <Description>Cell of length ColtoComp. Each element of the cell contains the a (sub)cell of size length(laAround). Each element of the (sub)cell contains a n-init+1 x 11 which informs the order of entry of the units For example Unj=Un{i}{j} refers to ColtoComp(i) and laAround(j) Unj is a (n-init) x 11 matrix which contains the unit(s) included in the subset at each step of the fwd search.
 REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one Unj(1,2) for example contains the unit included in step init+1 Unj(end,2) contains the units included in the final step of the search</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSMfan'.</Description>
+            </ItemCell>
          </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the forward search Springer Verlag, New York.</Item>
+      <Item>Atkinson A.C. Riani M. and Cerioli A. (2004), Exploring multivariate data with the forward search, Springer Verlag, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMtra</Item>
@@ -258,7 +257,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Extract demographic variables</ItemCell>
             <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
@@ -282,7 +281,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify wealth variables</ItemCell>
             <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
@@ -309,7 +308,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify wealth variables</ItemCell>
             <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
@@ -359,7 +358,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21 25 26];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Extract work variables</ItemCell>
             <ItemCell>Y1=Y(:,[6:9 24:28]);</ItemCell>
@@ -384,7 +383,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify variables 25 and 26</ItemCell>
             <ItemCell>Y(:,25)=100-Y(:,25);</ItemCell>
@@ -412,7 +411,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify variables y16 y23 y25 y26</ItemCell>
             <ItemCell>sel=[16 23 25 26];</ItemCell>
@@ -442,7 +441,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify variables y16 y23 y25 y26</ItemCell>
             <ItemCell>sel=[16 23 25 26];</ItemCell>

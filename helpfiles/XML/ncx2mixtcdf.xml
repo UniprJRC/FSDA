@@ -102,9 +102,9 @@ The default value of lim is 10000</LongDesc>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Davies (1973), Numerical inversion of a characteristic function, vol.
+      <Item>Davies, R (1973), Numerical inversion of a characteristic function, vol.
 60, Biometrika, pp. 415-417</Item>
-      <Item>Davies (1980), The distribution of a linear combination of Chi^2 Random variables, Applied Statistics vol. pp. 323-333</Item>
+      <Item>Davies, R. (1980), The distribution of a linear combination of chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMenvmmd</Item>
@@ -138,9 +138,9 @@ The default value of lim is 10000</LongDesc>
             <ItemCell>cdfnc=zeros(length(xx),1);</ItemCell>
             <ItemCell>ij=1;</ItemCell>
             <ItemCell>for x=xx</ItemCell>
-            <ItemCell>[out]=ncx2mixtcdf(x,df,lb,nc);</ItemCell>
-            <ItemCell>cdfnc(ij)=out;</ItemCell>
-            <ItemCell>ij=ij+1;</ItemCell>
+            <ItemCell>    [out]=ncx2mixtcdf(x,df,lb,nc);</ItemCell>
+            <ItemCell>    cdfnc(ij)=out;</ItemCell>
+            <ItemCell>    ij=ij+1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>plot(xx',cdfnc)</ItemCell>
             <ItemCell>xlabel('x')</ItemCell>

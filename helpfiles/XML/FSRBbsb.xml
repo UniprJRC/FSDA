@@ -7,9 +7,10 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +18,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).
+Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
 PRIOR INFORMATION $\beta$ is assumed to have a normal distribution with mean $\beta_0$ and (conditional on $\tau_0$) covariance $(1/\tau_0) (X_0'X_0)^{-1}$.
 $\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
          <Example> </Example>
@@ -94,7 +96,7 @@ The minimum value of init is 0. In this case in the first step we start monitori
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -160,9 +162,9 @@ last column = units forming subset in the final step (i.e. all units).</LongDesc
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
-      <Item>Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
-      <Item>Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian Regression, submitted</Item>
+      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, Test, DOI 10.1007/s11749-017-0542-6</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRbsb</Item>
@@ -203,7 +205,7 @@ last column = units forming subset in the final step (i.e. all units).</LongDesc
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title>FSRaddt with optional arguments.</Title>
+         <Title>FSRBbsb with optional arguments.</Title>
          <Desc>
             <ItemCell>Display the monitoring units plot. Suppress all messages about interchange with option msg.</ItemCell>
          </Desc>
@@ -237,8 +239,10 @@ last column = units forming subset in the final step (i.e. all units).</LongDesc
          <Exec>1</Exec>
       </Item>
       <Item>
-         <Title>Monitoring the units belonging to subset in each step.</Title>
-         <Desc> </Desc>
+         <Title>Compare units belonging to subsets.</Title>
+         <Desc>
+            <ItemCell>Test procedures FSRBmdr and FSRBbsb to find out whether they produce the same results in terms of units belonging to subset</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>load hprice.txt;</ItemCell>
             <ItemCell/>

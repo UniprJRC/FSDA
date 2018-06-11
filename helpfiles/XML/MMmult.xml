@@ -143,7 +143,7 @@ $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
       </Item>
       <Item>
          <Name>effshape</Name>
-         <ShortDesc>locacation or scale effiicency.</ShortDesc>
+         <ShortDesc>location or scale effiicency.</ShortDesc>
          <TypeInd>dummy scalar.</TypeInd>
          <LongDesc>If effshape=1 efficiency refers to shape efficiency else (default) efficiency refers to location</LongDesc>
          <Example>'effshape',1</Example>
@@ -217,12 +217,12 @@ plots.nameY = cell array of strings containing the labels of the variables. As d
       </Item>
       <Item>
          <Name>ysave</Name>
-         <ShortDesc>input data matrix Y is saved into the output structure out.</ShortDesc>
+         <ShortDesc>save input matrix Y.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure out. This feature is meant at simplifying the use of function malindexplot.
 Default is 0, i.e. no saving is done.</LongDesc>
-         <Example> </Example>
-         <DataType> </DataType>
+         <Example>'ysave',1</Example>
+         <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
    </OptArgs>
@@ -279,11 +279,11 @@ Default is 0, i.e. no saving is done.</LongDesc>
             </ItemCell>
             <ItemCell>
                <Value>md</Value>
-               <Description>n x 1 vector containing robust Mahalanobis distances</Description>
+               <Description>n x 1 vector containing robust Mahalanobis distances (in squared units).</Description>
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>'MM'</Description>
+               <Description>'MMmult'</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -309,7 +309,7 @@ Default is 0, i.e. no saving is done.</LongDesc>
  
 </Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley,New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Smult</Item>

@@ -31,7 +31,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -60,13 +60,15 @@ If InitialEst is empty (default) program uses S estimators. In this last case it
       </Item>
       <Item>
          <Name>Soptions</Name>
-         <ShortDesc>options if initial estimator is S and InitialEst is empty.</ShortDesc>
-         <TypeInd>Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr, Sreftolbestr, Sminsctol, Sbestr.</TypeInd>
-         <LongDesc>See function Sreg.m for more details on these options.
+         <ShortDesc>options to pass to Sreg.</ShortDesc>
+         <TypeInd>Name value pairs.</TypeInd>
+         <LongDesc>Options if initial estimator is S and InitialEst is empty.
+The options are: Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr, Sreftolbestr, Sminsctol, Sbestr.
+See function Sreg.m for more details on these options.
 It is necessary to add to the S options the letter S at the beginning. For example, if you want to use the optimal rho function the supplied option is 'Srhofunc','optimal'. For example, if you want to use 3000 subsets, the supplied option is 'Snsamp',3000</LongDesc>
          <Example>'Snsamp',1000</Example>
          <DataType>single | double&#xD;
-                   &#xD;
+&#xD;
 &#xD;
                MM options</DataType>
          <Struct> </Struct>
@@ -83,11 +85,34 @@ $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$</LongDesc>
       </Item>
       <Item>
          <Name>effshape</Name>
-         <ShortDesc>location or scale effiicency.</ShortDesc>
+         <ShortDesc>location or scale efficiency.</ShortDesc>
          <TypeInd>dummy scalar.</TypeInd>
          <LongDesc>If effshape=1 efficiency refers to shape efficiency else (default) efficiency refers to location</LongDesc>
          <Example>'effshape',1</Example>
          <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofunc</Name>
+         <ShortDesc>rho function.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which specifies the rho function which must be used to weight the residuals. Possible values are 'bisquare' 'optimal' 'hyperbolic' 'hampel' 'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+See TBrho and TBpsi 'optimal' uses optimal $\rho$ and $\psi$ functions.
+See OPTrho and OPTpsi 'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+See HYPrho and HYPpsi 'hampel' uses Hampel $\rho$ and $\psi$ functions.
+See HArho and HApsi The default is bisquare</LongDesc>
+         <Example>'rhofunc','optimal'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofuncparam</Name>
+         <ShortDesc>Additional parameters for the specified rho function.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>For hyperbolic rho function it is possible to set up the value of k = sup CVC (the default value of k is 4.5).
+For Hampel rho function it is possible to define parameters a, b and c (the default values are a=2, b=4, c=8)</LongDesc>
+         <Example>'rhofuncparam',5</Example>
+         <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -146,6 +171,15 @@ Default value is 0.975</LongDesc>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages on the screen If msg==1 (default) messages are displayed on the screen about step in which signal took place else no message is displayed on the screen.</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
    </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
@@ -156,15 +190,20 @@ Default value is 0.975</LongDesc>
          <Structure>
             <ItemCell>
                <Value>beta</Value>
-               <Description>p x 1 vector containing MM estimate of regression coefficients</Description>
+               <Description>p x 1 vector containing MM estimate of regression coefficients.</Description>
             </ItemCell>
             <ItemCell>
                <Value>auxscale</Value>
-               <Description>scalar, S estimate of the scale (or supplied external estimate of scale, if option InitialEst is not empty)</Description>
+               <Description>scalar, S estimate of the scale (or supplied external estimate of scale, if option InitialEst is not empty).</Description>
             </ItemCell>
             <ItemCell>
                <Value>residuals</Value>
-               <Description>n x 1 vector containing standardized MM residuals out.residuals=(y-X*out.beta)/out.auxscale</Description>
+               <Description>n x 1 vector containing standardized MM residuals.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>fittedvalues</Value>
+               <Description>n x 1 vector containing the fitted values.
+out.residuals=(y-X*out.beta)/out.auxscale</Description>
             </ItemCell>
             <ItemCell>
                <Value>weights</Value>
@@ -179,16 +218,12 @@ Default value is 0.975</LongDesc>
                <Description>Confidence level that was used to declare outliers</Description>
             </ItemCell>
             <ItemCell>
-               <Value>class</Value>
-               <Description>'MM'</Description>
-            </ItemCell>
-            <ItemCell>
                <Value>rhofunc</Value>
-               <Description>string identifying the rho function which has been used</Description>
+               <Description>string identifying the rho function which has been used. If a different rho function is specified for S and MM loop then insted of out.rhofunc we will have out.rhofuncS and out.rhofuncMM.</Description>
             </ItemCell>
             <ItemCell>
                <Value>rhofuncparam</Value>
-               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c</Description>
+               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c. If a different rho function is specified for S and MM loop then insted of out.rhofuncparam we will have out.rhofuncparamS and out.rhofuncparamMM.</Description>
             </ItemCell>
             <ItemCell>
                <Value>y</Value>
@@ -197,6 +232,10 @@ Default value is 0.975</LongDesc>
             <ItemCell>
                <Value>X</Value>
                <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'MMreg'</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -222,7 +261,7 @@ Default value is 0.975</LongDesc>
  
 </Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006),Robust Statistics, Theory and Methods, Wiley,New York.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>Sreg</Item>
@@ -297,5 +336,32 @@ Default value is 0.975</LongDesc>
          <Exec>1</Exec>
       </Item>
    </Ex>
-   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Comparison between direct call to MMreg and call to Sreg and MMregcore.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=30;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>% Two different rho functions are used for S and MM</ItemCell>
+            <ItemCell>rhofuncS='hyperbolic';</ItemCell>
+            <ItemCell>rhofuncMM='hampel';</ItemCell>
+            <ItemCell>% Direct call to MMreg</ItemCell>
+            <ItemCell>[out]=MMreg(ycont,X,'Srhofunc',rhofuncS,'rhofunc',rhofuncMM,'Snsamp',0);</ItemCell>
+            <ItemCell>% Call to Sreg and then to MMregcore</ItemCell>
+            <ItemCell>[outS]=Sreg(ycont,X,'rhofunc',rhofuncS,'nsamp',0);</ItemCell>
+            <ItemCell>outMM=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofuncMM);</ItemCell>
+            <ItemCell>disp('Difference between direct call to S and the calls to Sreg and MMregcore')</ItemCell>
+            <ItemCell>max(abs([out.beta-outMM.beta]))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
 </HelpXML>

@@ -12,7 +12,7 @@
          <LongDesc>Structure containing the following fields.
 out.mdr = minimum deletion residual. A matrix containing the monitoring of minimum deletion residual in each step of the forward search. The first column of mdr must contain the fwd search index This matrix can be created using function FSReda (compulsory argument) out.Un = order of entry of each unit. Matrix containing the order of entry of each unit (necessary if datatooltip is true or databrush is not empty) out.y = response. Vector containing the response (necessary only if option databrush is not empty) out.X = Regressors. A matrix containing the explanatory variables (necessary only if option databrush is not empty) out.Bols = Monitoring of beta coefficients. (n-init+1) x (p+1) matrix containing the monitoring of estimated beta coefficients in each step of the forward search (necessary only if option databrush is not empty and suboption multivarfit is not empty)</LongDesc>
          <Example> </Example>
-         <DataType>single| double</DataType>
+         <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
          <Struct>
             <ItemCell>
@@ -55,17 +55,6 @@ out.mdr = minimum deletion residual. A matrix containing the monitoring of minim
          <TypeInd>Vector.</TypeInd>
          <LongDesc>The default is to produce 1%, 50% and 99% envelopes. In other words the default is quant=[0.01;0.5;0.99];</LongDesc>
          <Example>'quant',[0.05;0.5;0.95]</Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
-         <Name>exact</Name>
-         <ShortDesc>Exact of approximate cdf for envelope calculation.</ShortDesc>
-         <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If it is equal to 1 the calculation of the quantiles of the T and F distribution is based on functions finv and tinv from the Matlab statistics toolbox, otherwise the calculations of the former quantiles is based on functions invcdff and invcdft.
-The solution has a tolerance of 1e-8 (change variable tol in files invcdff.m and invcdft.m if required.
-% Remark: the use of functions tinv and finv is more precise but requires more time. The default value of exact is 0 (approximate solution).</LongDesc>
-         <Example>'exact',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
@@ -288,7 +277,7 @@ Default line width=2</LongDesc>
             <ItemCell>DisplayStyle =window)</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>mdrplot(out,'datatooltip',1);</ItemCell>
+            <ItemCell> mdrplot(out,'datatooltip',1);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -326,7 +315,7 @@ Default line width=2</LongDesc>
             <ItemCell>In this case the resuperimposed envelope is based on n-2 observations</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>mdrplot(out,'envm',length(out.y)-2);</ItemCell>
+            <ItemCell>drplot(out,'envm',length(out.y)-2);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -336,7 +325,7 @@ Default line width=2</LongDesc>
             <ItemCell>Example of the use of function mdrplot with databrush</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>mdrplot(out,'databrush',1);</ItemCell>
+            <ItemCell> mdrplot(out,'databrush',1);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -348,7 +337,7 @@ Default line width=2</LongDesc>
          <MATLABcode>
             <ItemCell>databrush=struct</ItemCell>
             <ItemCell>databrush.selectionmode='Lasso'</ItemCell>
-            <ItemCell>mdrplot(out,'databrush',databrush)</ItemCell>
+            <ItemCell> mdrplot(out,'databrush',databrush)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

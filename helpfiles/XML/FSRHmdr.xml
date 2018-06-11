@@ -74,7 +74,7 @@ The minimum value of init is 0. In this case in the first step we just use prior
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -128,7 +128,7 @@ Remark. the plot which is produced is very simple. In order to control a series 
          <ShortDesc>Algorithm to be used.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If gridsearch ==1 grid search will be used else the scoring algorith will be used.
-% REMARK: the grid search has only been implemented when there is just one explantory variable which controls heteroskedasticity</LongDesc>
+REMARK: the grid search has only been implemented when there is just one explantory variable which controls heteroskedasticity</LongDesc>
          <Example>'gridsearch',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -228,10 +228,12 @@ More precisely, if $var (\epsilon)= \sigma^2 Omega=diag(omegahat)$ the weights w
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for heteroskedastic regression, submitted (ART)</Item>
+      <Item>Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for heteroskedastic regression, Computational Statistics and Data Analysis 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRmdr</Item>
+      <Item>FSRH</Item>
+      <Item>FSRHeda</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>

@@ -7,9 +7,9 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
-         <TypeInd>y can be both a row of column vector.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. It can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +17,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</LongDesc>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1). Rows of X represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -31,7 +32,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -82,6 +83,19 @@
          <Struct> </Struct>
       </Item>
       <Item>
+         <Name>family</Name>
+         <ShortDesc>string which identifies the family of transformations which must be used.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Possible values are 'BoxCox' (default), 'YJ' or 'YJpn'.
+The Box-Cox family of power transformations equals $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and $\log(y)$ if $\lambda = 0$.
+The Yeo-Johnson (YJ) transformation is the Box-Cox transformation of $y+1$ for nonnegative values, and of $|y|+1$ with parameter $2-\lambda$ for $y$ negative.
+Remember that BoxCox can be used just if input y is positive. Yeo-Johnson family of transformations does not have this limitation.
+If family is 'YJpn' Yeo-Johnson family is applied but in this case it is also possible to monitor (in the output arguments out.Scorep and out.Scoren) the score test respectively for positive and negative observations.</LongDesc>
+         <Example>'family','YJ'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
          <Name>init</Name>
          <ShortDesc>Search initialization.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
@@ -97,7 +111,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <ShortDesc>Plot on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If plots=1 the fan plot is produced else (default) no plot is produced.
-% REMARK: all the following options work only if plots=1</LongDesc>
+REMARK: all the following options work only if plots=1</LongDesc>
          <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -222,8 +236,29 @@ If msg==1 (default) messages are displayed on the screen about estimated time to
          <Structure>
             <ItemCell>
                <Value>Score</Value>
-               <Description>(n-init) x length(la)+1 matrix containing the values of the score test for each value of the transformation parameter 1st col = fwd search index 2nd col = value of the score test in each step of the fwd search for la(1) ...........
-end col = value of the score test in each step of the fwd search for la(end)</Description>
+               <Description>(n-init) x length(la)+1 matrix containing the values of the score test for each value of the transformation parameter:
+1st col = fwd search index;
+2nd col = value of the score test in each step of the fwd search for la(1);
+...........
+end col = value of the score test in each step of the fwd search for la(end).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Scorep</Value>
+               <Description>(n-init) x length(la)+1 matrix containing the values of the score test for positive observations for each value of the transformation parameter.
+1st col = fwd search index;
+2nd col = value of the (positive) score test in each step of the fwd search for la(1);
+...........
+end col = value of the (positive) score test in each step of the fwd search for la(end).
+Note that this output is present only if input option family is 'YJpn'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Scoren</Value>
+               <Description>(n-init) x length(la)+1 matrix containing the values of the score test for positive observations for each value of the transformation parameter:
+1st col = fwd search index;
+2nd col = value of the (negative) score test in each step of the fwd search for la(1);
+...........
+end col = value of the (negative) score test in each step of the fwd search for la(end).
+Note that this output is present only if input option family is 'YJpn'</Description>
             </ItemCell>
             <ItemCell>
                <Value>la</Value>
@@ -256,7 +291,11 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
       <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis, Springer Verlag, New York.</Item>
       <Item>Atkinson, A.C. and Riani, M. (2002a). Tests in the fan plot for robust, diagnostic transformations in regression, Chemometrics and Intelligent Laboratory Systems, Vol. 60, pp. 87-100.</Item>
    </References>
-   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>Score</Item>
+      <Item>ScoreYJ</Item>
+      <Item>ScoreYJpn</Item>
+   </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRfan with all default options.</Title>
@@ -343,12 +382,81 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Store the score test statistics for the specified values of lambda</ItemCell>
             <ItemCell>% and automatically produce the fan plot</ItemCell>
             <ItemCell>[out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);</ItemCell>
-            <ItemCell>%The fan plot shows the even if the third root is the best value of the</ItemCell>
-            <ItemCell>%transformation parameter at the end of the search in earlier steps it</ItemCell>
-            <ItemCell>%lies very close to the upper rejection region. The best value of the</ItemCell>
-            <ItemCell>%transformation parameter seems to be the one associated with l=0.4</ItemCell>
-            <ItemCell>%which is always the confidence bands but at the end of search, due to</ItemCell>
-            <ItemCell>%the presence of particular observations it goes below the lower rejection line.</ItemCell>
+            <ItemCell>% The fan plot shows the even if the third root is the best value of the</ItemCell>
+            <ItemCell>% transformation parameter at the end of the search in earlier steps it</ItemCell>
+            <ItemCell>% lies very close to the upper rejection region. The best value of the</ItemCell>
+            <ItemCell>% transformation parameter seems to be the one associated with l=0.4</ItemCell>
+            <ItemCell>% which is always the confidence bands but at the end of search, due to</ItemCell>
+            <ItemCell>% the presence of particular observations it goes below the lower</ItemCell>
+            <ItemCell>% rejection line.</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Compare BoxCox with Yeo and Johnson transformation.</Title>
+         <Desc>
+            <ItemCell>Store values of the score test statistic for the five most common values of $\lambda$.</ItemCell>
+            <ItemCell>Produce also a fan plot and display it on the screen.</ItemCell>
+            <ItemCell>Common part to all examples: load wool dataset.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('wool.txt');</ItemCell>
+            <ItemCell>y=XX(:,end);</ItemCell>
+            <ItemCell>X=XX(:,1:end-1);</ItemCell>
+            <ItemCell>% Store the score test statistic using Box Cox transformation.</ItemCell>
+            <ItemCell>[outBC]=FSRfan(y,X,'nsamp',0);</ItemCell>
+            <ItemCell>% Store the score test statistic using Yeo and Johnson transformation.</ItemCell>
+            <ItemCell>[outYJ]=FSRfan(y,X,'family','YJ','nsamp',0);</ItemCell>
+            <ItemCell>fanplot(outBC,'titl','Box Cox');</ItemCell>
+            <ItemCell>fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');</ItemCell>
+            <ItemCell>disp('Maximum difference in absolute value')</ItemCell>
+            <ItemCell>disp(max(max(abs(outYJ.Score-outBC.Score))))</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of monitoring of score test for positive and negative obseravations.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(10)</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>X=randn(n,3);</ItemCell>
+            <ItemCell>beta=[ 1; 1; 1];</ItemCell>
+            <ItemCell>sig=0.5;</ItemCell>
+            <ItemCell>y=X*beta+sig*randn(n,1);</ItemCell>
+            <ItemCell>disp('Fit in the true scale')</ItemCell>
+            <ItemCell>disp('R2 of the model in the true scale')</ItemCell>
+            <ItemCell>if verLessThanFS(8.1)</ItemCell>
+            <ItemCell>    out=regstats(y,X,'linear',{'rsquare'});</ItemCell>
+            <ItemCell>    disp(out.rsquare)</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    outlmori=fitlm(X,y);</ItemCell>
+            <ItemCell>    disp(outlmori.Rsquared.Ordinary)</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>[~,~,BigAx]=yXplot(y,X,'tag','ori');</ItemCell>
+            <ItemCell>title(BigAx,'Data in the original scale')</ItemCell>
+            <ItemCell>% Find the data to transform</ItemCell>
+            <ItemCell>la=-0.25;</ItemCell>
+            <ItemCell>ytra=normYJ(y,[],la,'inverse',true);</ItemCell>
+            <ItemCell>if any(isnan(ytra))</ItemCell>
+            <ItemCell>    disp('response with missing values')</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp('Fit in the transformed scale')</ItemCell>
+            <ItemCell>disp('R2 of the model in the wrong (inverse) scale')</ItemCell>
+            <ItemCell>if verLessThanFS(8.1)</ItemCell>
+            <ItemCell>    out=regstats(ytra,X,'linear',{'rsquare'});</ItemCell>
+            <ItemCell>    disp(out.rsquare)</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    outlmtra=fitlm(X,ytra);</ItemCell>
+            <ItemCell>    disp(outlmtra.Rsquared.Ordinary)</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>[~,~,BigAx]=yXplot(ytra,X,'tag','tra','namey','Data to transform (zoom of y [0 500])','ylimy',[0 500]);</ItemCell>
+            <ItemCell>title(BigAx,'Data in the inverse scale')</ItemCell>
+            <ItemCell>la=[ -0.5 -0.25 0];</ItemCell>
+            <ItemCell>out=FSRfan(ytra,X,'la',la,'family','YJpn','plots',1,'init',round(n/2),'msg',0);</ItemCell>
+            <ItemCell>title('Extended fan plot')</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

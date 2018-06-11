@@ -13,7 +13,7 @@
 out.mmd = a matrix containing the monitoring of minimum Mahalanobis distance in each step of the forward search. The first column of mdr must contain the fwd search index This matrix can be created using function FSMeda (compulsory argument).
 If this matrix has three columns in the third colum there is the monitoring of the (m+1)-th Mahalanobis distance out.Un = matrix containing the order of entry of each unit (necessary if datatooltip is true or databrush is not empty) out.Y = the original n x v data matrix (necessary only if option databrush is not empty)</LongDesc>
          <Example> </Example>
-         <DataType>single| double</DataType>
+         <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
          <Struct>
             <ItemCell>
@@ -132,7 +132,7 @@ If databrush is a scalar the default selection tool is a rectangular brush and i
 DATABRUSH IS A STRUCTURE.
 If databrush is a structure, it is possible to use all optional arguments of function selectdataFS.m and the following optional argument:
 persist. Persist is an empty value or a scalar containing the strings 'on' or 'off' If persist = 'on' or 'off' brusing can be done as many time as the user requires. If persist='on' then the unit(s) currently brushed are added to those previously brushed. If persist='off' every time a new brush is performed units previously brushed are removed. The default value of persist is '' that is brushing is allowed only once. If persist is 'on' it is possible, every time a new brushing is done, to use a different color for the brushed units labeladd. If this option is '1', we label the units of the last selected group with the unit row index in matrices X and y. The default value is labeladd='', i.e. no label is added.
-% Remark: if databrush is a struct, it is possible to specify all optional arguments of function selectdataFS inside the curly brackets of option databrush.</LongDesc>
+Remark: if databrush is a struct, it is possible to specify all optional arguments of function selectdataFS inside the curly brackets of option databrush.</LongDesc>
          <Example>'databrush',1</Example>
          <DataType>single | double | struct</DataType>
          <Struct> </Struct>
@@ -256,7 +256,7 @@ If scaled=1 the envelopes are produced for scaled Mahalanobis distances (no cons
             <ItemCell>DisplayStyle =window)</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>mmdplot(out,'datatooltip',1);</ItemCell>
+            <ItemCell> mmdplot(out,'datatooltip',1);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -279,7 +279,7 @@ If scaled=1 the envelopes are produced for scaled Mahalanobis distances (no cons
             <ItemCell>In this case the resuperimposed envelope is based on n-2 observations</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>mmdplot(out,'envm',size(Y,1)-2);</ItemCell>
+            <ItemCell>mdplot(out,'envm',size(Y,1)-2);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

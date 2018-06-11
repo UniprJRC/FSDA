@@ -73,7 +73,7 @@ interval(1,v) interval (2,v) for variable v typeout = list of length f containin
 * Chisquarez, if the outliers must be generated using the Chi2 distribution with z degrees of freedom;
 * Tz or tz, if the outliers must be generated using the Student T distribution with z degrees of freedom;
 * pointmass, if the outliers are concentrated on a particular point;
-* componentwise, if the outliers must have the same coordinates of the existing rows of matrix X apart from a single coordinate (which will be to the min or max in that particular dimension or to the min or max specified in interval).
+* componentwise, if the outliers must have the same coordinates of the existing rows of matrix X apart from a single coordinate (which will be the min or max in that particular dimension or the min or max specified in interval).
 For example, the code:
 noiseunits=struct;
 noiseunits.number=[100 100];
@@ -221,9 +221,10 @@ REMARK: If noiseunits outliers could not be generated a warning is produced. In 
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maitra, R. and Melnykov, V. (2010). Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS")</Item>
-      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012). MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
-      <Item>Davies, R. (1980) The distribution of a linear combination of chi-square random variables, Applied Statistics, 29, 323-333.</Item>
+      <Item>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS").</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980), The distribution of a linear combination of chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.</Item>
+      <Item>Riani M., Cerioli A., Perrotta D. and Torti F. (2015), Simulating mixtures of multivariate data with fixed cluster overlap in FSDA, Advances in data analysis and classification. Volume 9, Issue 4, pp 461-481, DOI 10.1007/s11634-015-0223-9.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>MixSim</Item>
@@ -267,7 +268,7 @@ REMARK: If noiseunits outliers could not be generated a warning is produced. In 
             <ItemCell>rng('default')</ItemCell>
             <ItemCell>rng(100)</ItemCell>
             <ItemCell>out = MixSim(4,2,'BarOmega',0.01);</ItemCell>
-            <ItemCell>n=300;n=300;</ItemCell>
+            <ItemCell>n=300;</ItemCell>
             <ItemCell>noisevars=0;</ItemCell>
             <ItemCell>noiseunits=3000;</ItemCell>
             <ItemCell>[X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
@@ -414,7 +415,7 @@ REMARK: If noiseunits outliers could not be generated a warning is produced. In 
             <ItemCell>% Generate outliers in the interval [-1 1] for the first variable and</ItemCell>
             <ItemCell>% interval [1 2] for the second variable</ItemCell>
             <ItemCell>noiseunits.interval=[-1 1;</ItemCell>
-            <ItemCell>1 2];</ItemCell>
+            <ItemCell>                     1 2];</ItemCell>
             <ItemCell>% Finally add a noise variable</ItemCell>
             <ItemCell>noisevars=struct;</ItemCell>
             <ItemCell>noisevars.number=1;</ItemCell>

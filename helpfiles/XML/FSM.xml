@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->FSM</Title>
-   <Purpose><!--This is the second line of the .m file-->FSM gives an automatic outlier detection procedure in mult. analysis
+   <Purpose><!--This is the second line of the .m file-->FSM gives an automatic outlier detection procedure in multivariate analysis
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data.</ShortDesc>
-         <TypeInd>Matrix.</TypeInd>
+         <ShortDesc>Input data.
+</ShortDesc>
+         <TypeInd>Matrix.
+</TypeInd>
          <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
-Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
-         <Example> </Example>
-         <DataType>single|double</DataType>
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+</LongDesc>
+         <Example/>
+         <DataType>single|double
+</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -20,11 +24,16 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>m0</Name>
-         <ShortDesc>Initial subset size or vector which contains the list of the units forming initial subset.</ShortDesc>
-         <TypeInd>Scalar or vector.</TypeInd>
-         <LongDesc>The default is to start the search with v+1 units which consisting of those observations which are not outlying on any scatterplot, found as the intersection of all points lying within a robust contour containing a specified portion of the data (Riani and Zani 1997) and inside the univariate boxplot. Remark: if m0 is a vector option below crit is ignored.</LongDesc>
-         <Example>'m0',5</Example>
-         <DataType>double</DataType>
+         <ShortDesc>Initial subset size or vector which contains the list of the units forming initial subset.
+</ShortDesc>
+         <TypeInd>Scalar or vector.
+</TypeInd>
+         <LongDesc>The default is to start the search with v+1 units which consisting of those observations which are not outlying on any scatterplot, found as the intersection of all points lying within a robust contour containing a specified portion of the data (Riani and Zani 1997) and inside the univariate boxplot. Remark: if m0 is a vector option below crit is ignored.
+</LongDesc>
+         <Example>'m0',5
+</Example>
+         <DataType>double
+</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -34,8 +43,8 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
          <LongDesc>if crit='md' the units which form initial subset are those which have the smallest m0 pseudo Mahalanobis distances computed using procedure unibiv (bivariate robust ellipses).
 if crit='biv' sorting is done first in terms of times units fell outside robust bivariate ellipses and then in terms of pseudoMD. In other words, the units forming initial subset are chosen first among the set of those which never fell outside robust bivariate ellipses then among those which fell only once outside bivariate ellipses ... up to reach m0.
 if crit='uni' sorting is done first in terms of times units fell outside univariate boxplots and then in terms of pseudoMD. In other words, the units forming initial subset are chosen first among the set of those which never fell outside univariate boxplots then among those which fell only once outside univariate boxplots... up to reach m0.
-% Remark: as the user can see the starting point of the search is not going to affect at all the results of the analysis. The user can explore this point with his own datasets.
-% Remark: if crit='biv' the user can also supply in scalar rf (see below) the confidence level of the bivariate ellipses.</LongDesc>
+Remark: as the user can see the starting point of the search is not going to affect at all the results of the analysis. The user can explore this point with his own datasets.
+Remark: if crit='biv' the user can also supply in scalar rf (see below) the confidence level of the bivariate ellipses.</LongDesc>
          <Example>'crit','md'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
@@ -165,9 +174,9 @@ As default nocheck=0.</LongDesc>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>out</Name>
-         <ShortDesc> </ShortDesc>
-         <TypeInd> </TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
          <Structure>
             <ItemCell>
                <Value>outliers</Value>
@@ -188,7 +197,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
                <Value>nout</Value>
                <Description>2 x 5 matrix containing the number of times mmd went out of particular quantiles.
 First row contains quantiles 1 99 99.9 99.99 99.999 per cent;
-Second row contains the frequency distribution.</Description>
+Second row contains the frequency distribution. It is NaN if bonflev threshold is used.</Description>
             </ItemCell>
             <ItemCell>
                <Value>loc</Value>
@@ -201,6 +210,10 @@ Second row contains the frequency distribution.</Description>
             <ItemCell>
                <Value>md</Value>
                <Description>n x 1 vector containing the estimates of the robust Mahalanobis distances (in squared units). This vector contains the distances of each observation from the location of the data, relative to the scatter matrix cov.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSM'.</Description>
             </ItemCell>
          </Structure>
       </Item>

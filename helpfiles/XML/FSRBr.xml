@@ -71,7 +71,7 @@ Rows of X represent observations, and columns represent variables. By default, t
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -296,6 +296,10 @@ else no message is displayed on the screen</LongDesc>
                <Description>n-by-2 matrix.
 First column = studentized residuals Second column = p-values (computed using as reference distribution the Student t)</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSRBr'.</Description>
+            </ItemCell>
          </Structure>
       </Item>
       <Item>
@@ -310,7 +314,7 @@ ypred : values predicted by the fitted model on xnew. Vector of length(xnew) yci
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Corbellini A., Riani M., (2016) Robust Bayesian Regression, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, Test, DOI 10.1007/s11749-017-0542-6</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRB</Item>
@@ -318,98 +322,98 @@ ypred : values predicted by the fitted model on xnew. Vector of length(xnew) yci
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Example of FSRB for international trade data.</Title>
+         <Title>Example of FSRBr for international trade data.</Title>
          <Desc>
             <ItemCell>Bayesian FS to fit the group of undervalued flows.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>X = fishery.data(:,1);</ItemCell>
-            <ItemCell>y = fishery.data(:,2);</ItemCell>
-            <ItemCell>[n,p] = size(X);</ItemCell>
-            <ItemCell>X = X + 0.000001*randn(n,1);</ItemCell>
-            <ItemCell>% id = undervalued flows</ItemCell>
-            <ItemCell>id = (y./X &amp;lt; 9.5);</ItemCell>
+            <ItemCell>    load('fishery');</ItemCell>
+            <ItemCell>    X = fishery.data(:,1);</ItemCell>
+            <ItemCell>    y = fishery.data(:,2);</ItemCell>
+            <ItemCell>    [n,p] = size(X);</ItemCell>
+            <ItemCell>    X = X + 0.000001*randn(n,1);</ItemCell>
+            <ItemCell>    % id = undervalued flows</ItemCell>
+            <ItemCell>    id = (y./X &amp;lt; 9.5);</ItemCell>
             <ItemCell/>
-            <ItemCell>% my prior on beta</ItemCell>
-            <ItemCell>mybeta = median(y(id)./X(id));</ItemCell>
-            <ItemCell>bmad   = mad(y(id)./X(id));</ItemCell>
-            <ItemCell>ListIn = find(y./X &amp;lt;= mybeta + bmad);</ItemCell>
-            <ItemCell>% gscatter(X,y,id)</ItemCell>
-            <ItemCell>rr          = y(ListIn)-(X(ListIn,:) * mybeta);</ItemCell>
-            <ItemCell>numS2cl     = rr'*rr;</ItemCell>
-            <ItemCell>dfe         = length(ListIn)-p;</ItemCell>
-            <ItemCell>S2cl        = numS2cl/dfe;</ItemCell>
-            <ItemCell>bayes       = struct;</ItemCell>
-            <ItemCell>bayes.R     = X(ListIn,:)'*X(ListIn,:);</ItemCell>
-            <ItemCell>bayes.tau0  = 1/S2cl;</ItemCell>
-            <ItemCell>bayes.n0    = length(ListIn);</ItemCell>
-            <ItemCell>bayes.beta0 = mybeta;</ItemCell>
-            <ItemCell>% fit based on Bayesian FS with prior on the underdeclared flows</ItemCell>
-            <ItemCell>[out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    % my prior on beta</ItemCell>
+            <ItemCell>    mybeta = median(y(id)./X(id));</ItemCell>
+            <ItemCell>    bmad   = mad(y(id)./X(id));</ItemCell>
+            <ItemCell>    ListIn = find(y./X &amp;lt;= mybeta + bmad);</ItemCell>
+            <ItemCell>    % gscatter(X,y,id)</ItemCell>
+            <ItemCell>    rr          = y(ListIn)-(X(ListIn,:) * mybeta);</ItemCell>
+            <ItemCell>    numS2cl     = rr'*rr;</ItemCell>
+            <ItemCell>    dfe         = length(ListIn)-p;</ItemCell>
+            <ItemCell>    S2cl        = numS2cl/dfe;</ItemCell>
+            <ItemCell>    bayes       = struct;</ItemCell>
+            <ItemCell>    bayes.R     = X(ListIn,:)'*X(ListIn,:);</ItemCell>
+            <ItemCell>    bayes.tau0  = 1/S2cl;</ItemCell>
+            <ItemCell>    bayes.n0    = length(ListIn);</ItemCell>
+            <ItemCell>    bayes.beta0 = mybeta;</ItemCell>
+            <ItemCell>    % fit based on Bayesian FS with prior on the underdeclared flows</ItemCell>
+            <ItemCell>    [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
             <ItemCell/>
-            <ItemCell>h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
-            <ItemCell>% fit based on traditional FS</ItemCell>
-            <ItemCell>[out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
-            <ItemCell>h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
-            <ItemCell>% move the figure above into a single one with two panels</ItemCell>
-            <ItemCell>hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
-            <ItemCell>copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
-            <ItemCell>copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
-            <ItemCell>figsize = get(hh, 'Position');</ItemCell>
-            <ItemCell>set(hh,'Position',figsize);</ItemCell>
-            <ItemCell>close(f1); close(f2);</ItemCell>
-            <ItemCell>disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);</ItemCell>
-            <ItemCell>disp(['Traditional FS fit = ' num2str(out.betar)]);</ItemCell>
+            <ItemCell>    h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
+            <ItemCell>    % fit based on traditional FS</ItemCell>
+            <ItemCell>    [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
+            <ItemCell>    % move the figure above into a single one with two panels</ItemCell>
+            <ItemCell>    hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
+            <ItemCell>    copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
+            <ItemCell>    copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
+            <ItemCell>    figsize = get(hh, 'Position');</ItemCell>
+            <ItemCell>    set(hh,'Position',figsize);</ItemCell>
+            <ItemCell>    close(f1); close(f2);</ItemCell>
+            <ItemCell>    disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);</ItemCell>
+            <ItemCell>    disp(['Traditional FS fit = ' num2str(out.betar)]);</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
       <Item>
-         <Title>Example of FSRB for international trade data (explore options).</Title>
+         <Title>Example of FSRBr for international trade data (explore options).</Title>
          <Desc>
             <ItemCell>Bayesian FS to fit the group of undervalued flows.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>X = fishery.data(:,1);</ItemCell>
-            <ItemCell>y = fishery.data(:,2);</ItemCell>
-            <ItemCell>[n,p] = size(X);</ItemCell>
-            <ItemCell>X = X + 0.000001*randn(n,1);</ItemCell>
-            <ItemCell>% id = undervalued flows</ItemCell>
-            <ItemCell>id = (y./X &amp;lt; 9.5);</ItemCell>
+            <ItemCell>    load('fishery');</ItemCell>
+            <ItemCell>    X = fishery.data(:,1);</ItemCell>
+            <ItemCell>    y = fishery.data(:,2);</ItemCell>
+            <ItemCell>    [n,p] = size(X);</ItemCell>
+            <ItemCell>    X = X + 0.000001*randn(n,1);</ItemCell>
+            <ItemCell>    % id = undervalued flows</ItemCell>
+            <ItemCell>    id = (y./X &amp;lt; 9.5);</ItemCell>
             <ItemCell/>
-            <ItemCell>% my prior on beta</ItemCell>
-            <ItemCell>mybeta = median(y(id)./X(id));</ItemCell>
-            <ItemCell>bmad   = mad(y(id)./X(id));</ItemCell>
-            <ItemCell>ListIn = find(y./X &amp;lt;= mybeta + bmad);</ItemCell>
-            <ItemCell>% gscatter(X,y,id)</ItemCell>
-            <ItemCell>rr          = y(ListIn)-(X(ListIn,:) * mybeta);</ItemCell>
-            <ItemCell>numS2cl     = rr'*rr;</ItemCell>
-            <ItemCell>dfe         = length(ListIn)-p;</ItemCell>
-            <ItemCell>S2cl        = numS2cl/dfe;</ItemCell>
-            <ItemCell>bayes       = struct;</ItemCell>
-            <ItemCell>bayes.R     = X(ListIn,:)'*X(ListIn,:);</ItemCell>
-            <ItemCell>bayes.tau0  = 1/S2cl;</ItemCell>
-            <ItemCell>bayes.n0    = length(ListIn);</ItemCell>
-            <ItemCell>bayes.beta0 = mybeta;</ItemCell>
-            <ItemCell>alpha=0.0001;</ItemCell>
-            <ItemCell>bonflev=0.99999;</ItemCell>
-            <ItemCell>% fit based on Bayesian FS with prior on the underdeclared flows</ItemCell>
-            <ItemCell>[out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    % my prior on beta</ItemCell>
+            <ItemCell>    mybeta = median(y(id)./X(id));</ItemCell>
+            <ItemCell>    bmad   = mad(y(id)./X(id));</ItemCell>
+            <ItemCell>    ListIn = find(y./X &amp;lt;= mybeta + bmad);</ItemCell>
+            <ItemCell>    % gscatter(X,y,id)</ItemCell>
+            <ItemCell>    rr          = y(ListIn)-(X(ListIn,:) * mybeta);</ItemCell>
+            <ItemCell>    numS2cl     = rr'*rr;</ItemCell>
+            <ItemCell>    dfe         = length(ListIn)-p;</ItemCell>
+            <ItemCell>    S2cl        = numS2cl/dfe;</ItemCell>
+            <ItemCell>    bayes       = struct;</ItemCell>
+            <ItemCell>    bayes.R     = X(ListIn,:)'*X(ListIn,:);</ItemCell>
+            <ItemCell>    bayes.tau0  = 1/S2cl;</ItemCell>
+            <ItemCell>    bayes.n0    = length(ListIn);</ItemCell>
+            <ItemCell>    bayes.beta0 = mybeta;</ItemCell>
+            <ItemCell>    alpha=0.0001;</ItemCell>
+            <ItemCell>    bonflev=0.99999;</ItemCell>
+            <ItemCell>    % fit based on Bayesian FS with prior on the underdeclared flows</ItemCell>
+            <ItemCell>    [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
             <ItemCell/>
-            <ItemCell>h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
-            <ItemCell>% fit based on traditional FS</ItemCell>
-            <ItemCell>[out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
-            <ItemCell>h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
-            <ItemCell>% move the figure above into a single one with two panels</ItemCell>
-            <ItemCell>hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
-            <ItemCell>copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
-            <ItemCell>copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
-            <ItemCell>figsize = get(hh, 'Position');</ItemCell>
-            <ItemCell>set(hh,'Position',figsize);</ItemCell>
-            <ItemCell>close(f1); close(f2);</ItemCell>
-            <ItemCell>disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);</ItemCell>
-            <ItemCell>disp(['Traditional FS fit = ' num2str(out.betar)]);</ItemCell>
+            <ItemCell>    h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
+            <ItemCell>    % fit based on traditional FS</ItemCell>
+            <ItemCell>    [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',alpha,'bonflev',bonflev,'fullreweight',false,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
+            <ItemCell>    % move the figure above into a single one with two panels</ItemCell>
+            <ItemCell>    hh = figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
+            <ItemCell>    copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
+            <ItemCell>    copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
+            <ItemCell>    figsize = get(hh, 'Position');</ItemCell>
+            <ItemCell>    set(hh,'Position',figsize);</ItemCell>
+            <ItemCell>    close(f1); close(f2);</ItemCell>
+            <ItemCell>    disp(['Bayesian FS fit    = ' num2str(out_B.betar) ' using a prior based on undervalued flows']);</ItemCell>
+            <ItemCell>    disp(['Traditional FS fit = ' num2str(out.betar)]);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

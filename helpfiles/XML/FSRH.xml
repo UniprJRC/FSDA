@@ -54,7 +54,7 @@ FSRH(y,X,[3 5])</LongDesc>
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -90,7 +90,7 @@ on the other hand, if modeltype is 'har' then traditional formulation due to Har
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If nsamp=0 all subsets will be extracted.
 They will be (n choose p).
-% Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
          <Example>'nsamp',1000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -264,7 +264,11 @@ Default value is '', which means to rely on general rules based on consecutive e
          <Structure>
             <ItemCell>
                <Value>ListOut</Value>
-               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous. This field in future releases will be deleted bacause it will be replaced by out.outliers.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous.</Description>
             </ItemCell>
             <ItemCell>
                <Value>beta</Value>
@@ -301,13 +305,17 @@ Second row contains the frequency distribution.</Description>
                <Value>constr</Value>
                <Description>This output is produced only if the search found at a certain step a non singular matrix X. In this case the search run in a constrained mode, that is including the units which produced a singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSRH'.</Description>
+            </ItemCell>
          </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson A.C., Riani M. and Torti F. (2015), Robust methods for heteroskedastic regression, submitted (ART)</Item>
+      <Item>Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for heteroskedastic regression, Computational Statistics and Data Analysis 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSRHeda</Item>

@@ -30,21 +30,21 @@ http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-intera
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>clickableMultiLegend applied to a single plot.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>z = peaks(100);</ItemCell>
-            <ItemCell>plot(z(:,26:5:50))</ItemCell>
-            <ItemCell>grid on;</ItemCell>
-            <ItemCell>clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
-            <ItemCell>axis manual;</ItemCell>
-            <ItemCell>figure;</ItemCell>
-            <ItemCell>z = peaks(100);</ItemCell>
-            <ItemCell>plot(z(:,26:5:50))</ItemCell>
-            <ItemCell>grid on;</ItemCell>
-            <ItemCell>hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
-            <ItemCell>axis manual;</ItemCell>
-            <ItemCell>% legend(hlegend,'off');</ItemCell>
+            <ItemCell> z = peaks(100);</ItemCell>
+            <ItemCell> plot(z(:,26:5:50))</ItemCell>
+            <ItemCell> grid on;</ItemCell>
+            <ItemCell> clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
+            <ItemCell> axis manual;</ItemCell>
+            <ItemCell> figure;</ItemCell>
+            <ItemCell> z = peaks(100);</ItemCell>
+            <ItemCell> plot(z(:,26:5:50))</ItemCell>
+            <ItemCell> grid on;</ItemCell>
+            <ItemCell> hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
+            <ItemCell> axis manual;</ItemCell>
+            <ItemCell> % legend(hlegend,'off');</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -69,9 +69,9 @@ http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-intera
             <ItemCell>% Get the new legend texts directly from the plot</ItemCell>
             <ItemCell>% To take account a change in property names of the legend object in 2016b</ItemCell>
             <ItemCell>if verLessThan('matlab','9.1')</ItemCell>
-            <ItemCell>legstring='LegendPeerHandle';</ItemCell>
+            <ItemCell>    legstring='LegendPeerHandle';</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>legstring='LayoutPeers';</ItemCell>
+            <ItemCell>    legstring='LayoutPeers';</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>legnew = get(getappdata(AX(1,end),legstring),'String');</ItemCell>
             <ItemCell>% Get the handles of the legend to update</ItemCell>
@@ -96,7 +96,7 @@ http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-intera
             <ItemCell>newH = reshape(H,numel(H)/nleg,nleg);</ItemCell>
             <ItemCell>% redefine the legend texts</ItemCell>
             <ItemCell>for i = 1 : nleg</ItemCell>
-            <ItemCell>set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);</ItemCell>
+            <ItemCell>    set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% If the legend texts were clickable before the re-definition, they</ItemCell>
             <ItemCell>% will remain clickable.</ItemCell>

@@ -7,19 +7,12 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>Response variable.
-
-</ShortDesc>
-         <TypeInd>Vector.
-</TypeInd>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
          <LongDesc>Response variable, specified as a vector of length n1, where n1 is the number of observations. Each entry in y is the response for the corresponding row of X.
-Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
-
-</LongDesc>
-         <Example/>
-         <DataType>single| double
-
-</DataType>
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -83,18 +76,11 @@ $\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term.
-</ShortDesc>
-         <TypeInd>Scalar.
-</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.
-</LongDesc>
-         <Example>'intercept',1
-
-</Example>
-         <DataType>double
-
-</DataType>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -102,7 +88,7 @@ $\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
          <ShortDesc>units forming subset.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
          <LongDesc>m x 1 vector.
-The default value of bsb is 1:n1, that is all n1 units are used to compute beta1 % REMARK: if bsb='' (empty value) just prior information is used</LongDesc>
+The default value of bsb is 1:n1, that is all n1 units are used to compute beta1 REMARK: if bsb='' (empty value) just prior information is used</LongDesc>
          <Example>'bsb',[3 5]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -159,9 +145,9 @@ It was included to clarify the difference from Zellner's procedure and has the e
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>out</Name>
-         <ShortDesc/>
-         <TypeInd/>
-         <LongDesc/>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
          <Structure>
             <ItemCell>
                <Value>beta1</Value>
@@ -281,7 +267,7 @@ The posterior marginal distribution of $\beta$ is multivariate $T$ with paramete
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Chaloner and Brant (1988) Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
       <Item>Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->

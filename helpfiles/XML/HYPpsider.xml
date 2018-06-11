@@ -36,9 +36,9 @@ Remark - if length(cktuning)==2 values of A, B and d will be computed automatica
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psiHYPder</Name>
-         <ShortDesc>n x 1 vector</ShortDesc>
-         <TypeInd>Values of hyperbolic psi'(u) function associated to the residuals or Mahalanobis distances for the n units of the sample.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>Derivative of psi function.</TypeInd>
+         <LongDesc>n x 1 vector which contains the values of hyperbolic psi'(u) function associated to the residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
@@ -62,10 +62,10 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c no
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of derivative of hyperbolic psi function.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>% Plot of derivative of hyperbolic psi function</ItemCell>
+            <ItemCell>% Plot of derivative of hyperbolic psi function.</ItemCell>
             <ItemCell>x=-9:0.1:9;</ItemCell>
             <ItemCell>ctuning=6;</ItemCell>
             <ItemCell>ktuning=4.5;</ItemCell>
@@ -79,8 +79,10 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c no
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title>bdp=0.</Title>
-         <Desc> </Desc>
+         <Title>Comparison among four derivatives of psi function.</Title>
+         <Desc>
+            <ItemCell>TB, Optimal, Hampel, Hyperbolic</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>bdp=0.5;</ItemCell>
             <ItemCell>c=TBbdp(bdp,1);</ItemCell>

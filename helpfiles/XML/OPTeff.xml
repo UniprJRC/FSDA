@@ -58,8 +58,10 @@ TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\fr
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Find c given a value of efficiency.</Title>
+         <Desc>
+            <ItemCell>The constant c associated to a nominal location efficiency of 95% in regression is c = 3.180662196584308</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>c=OPTeff(0.95,1)</ItemCell>
          </MATLABcode>
@@ -68,17 +70,15 @@ TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\fr
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title>Find the value of c for efficiency which goes from 0.</Title>
-         <Desc>
-            <ItemCell>75 to 0.99 with step 0.01</ItemCell>
-         </Desc>
+         <Title>Find the value of c for efficiency which goes to 1.</Title>
+         <Desc> </Desc>
          <MATLABcode>
             <ItemCell>ef=0.75:0.01:0.99;</ItemCell>
             <ItemCell>CC=[ef' zeros(length(ef),1)];</ItemCell>
             <ItemCell>jk=0;</ItemCell>
             <ItemCell>for j=ef</ItemCell>
-            <ItemCell>jk=jk+1;</ItemCell>
-            <ItemCell>CC(jk,2)=OPTeff(j,1)</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
+            <ItemCell>    CC(jk,2)=OPTeff(j,1)</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>

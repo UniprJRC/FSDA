@@ -75,28 +75,30 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Example using default options.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>n=1000;</ItemCell>
             <ItemCell>p=5;</ItemCell>
             <ItemCell>init=floor(0.5*(n+p+1))+1;</ItemCell>
-            <ItemCell>MMDenv = FSMenvmmd(n,p,'exact',1,'init',init);</ItemCell>
+            <ItemCell>MMDenv = FSMenvmmd(n,p,'init',init);</ItemCell>
             <ItemCell>Bbound = FSMbonfbound(n,p,'init',init);</ItemCell>
             <ItemCell>figure;</ItemCell>
             <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');</ItemCell>
          </MATLABcode>
-         <Exec>0</Exec>
+         <Exec>1</Exec>
       </Item>
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Options init and prob.</Title>
+         <Desc>
+            <ItemCell>Example using option, init=10 and prob=[0.01 0.05 0.99 0.999]</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>n=2000;</ItemCell>
             <ItemCell>p=15;</ItemCell>
             <ItemCell>init=100;</ItemCell>
             <ItemCell>prob=[0.95 0.99 0.999];</ItemCell>
-            <ItemCell>MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);</ItemCell>
+            <ItemCell>MMDenv = FSMenvmmd(n,p,'init',init,'prob',prob);</ItemCell>
             <ItemCell>Bbound = FSMbonfbound(n,p,'init',init,'prob',prob);</ItemCell>
             <ItemCell>figure;</ItemCell>
             <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');</ItemCell>
@@ -106,23 +108,23 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
    </Ex>
    <ExtraEx><!--EXTRA EXAMPLES SECTION-->
       <Item>
-         <Title>Example plotting distrib=chi2 and F, init=100 and prob=[0.</Title>
+         <Title>Comparison between chi2 and F distributions.</Title>
          <Desc>
-            <ItemCell>999]</ItemCell>
+            <ItemCell>Example plotting distrib=chi2 and F, init=100 and prob=[0.999].</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>n=2000;</ItemCell>
-            <ItemCell>p=10;</ItemCell>
-            <ItemCell>init=100;</ItemCell>
-            <ItemCell>prob=[0.99];</ItemCell>
-            <ItemCell>MMDenv = FSMenvmmd(n,p,'exact',1,'init',init,'prob',prob);</ItemCell>
-            <ItemCell>distrib='chi2';</ItemCell>
-            <ItemCell>BboundC = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
-            <ItemCell>distrib='F';</ItemCell>
-            <ItemCell>BboundF = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
-            <ItemCell>figure;</ItemCell>
-            <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end),BboundC(:,1),BboundC(:,2:end),BboundF(:,1),BboundF(:,2:end));</ItemCell>
-            <ItemCell>legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');</ItemCell>
+            <ItemCell>  n=2000;</ItemCell>
+            <ItemCell>  p=10;</ItemCell>
+            <ItemCell>  init=100;</ItemCell>
+            <ItemCell>  prob=[0.99];</ItemCell>
+            <ItemCell>  MMDenv = FSMenvmmd(n,p,'init',init,'prob',prob);</ItemCell>
+            <ItemCell>  distrib='chi2';</ItemCell>
+            <ItemCell>  BboundC = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
+            <ItemCell>  distrib='F';</ItemCell>
+            <ItemCell>  BboundF = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  plot(MMDenv(:,1),MMDenv(:,2:end),BboundC(:,1),BboundC(:,2:end),BboundF(:,1),BboundF(:,2:end));</ItemCell>
+            <ItemCell>  legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

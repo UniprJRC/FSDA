@@ -118,14 +118,14 @@ The (log of the) probability density of the multivariate normal distribution wil
             <ItemCell>In this example we check the agreement of the results with MATLAB function mvnpdf.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>n=20000;</ItemCell>
-            <ItemCell>v=2;</ItemCell>
-            <ItemCell>X=randn(n,v);</ItemCell>
-            <ItemCell>mu = [1 -1]; Sigma = [.9 .4; .4 .3];</ItemCell>
-            <ItemCell>y = logmvnpdfFS(X, mu, Sigma);</ItemCell>
-            <ItemCell>y1=log(mvnpdf(X,mu,Sigma));</ItemCell>
-            <ItemCell>max(abs(y-y1))</ItemCell>
-            <ItemCell>% 2.842e-14</ItemCell>
+            <ItemCell> n=20000;</ItemCell>
+            <ItemCell> v=2;</ItemCell>
+            <ItemCell> X=randn(n,v);</ItemCell>
+            <ItemCell> mu = [1 -1]; Sigma = [.9 .4; .4 .3];</ItemCell>
+            <ItemCell> y = logmvnpdfFS(X, mu, Sigma);</ItemCell>
+            <ItemCell> y1=log(mvnpdf(X,mu,Sigma));</ItemCell>
+            <ItemCell> max(abs(y-y1))</ItemCell>
+            <ItemCell> % 2.842e-14</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -133,7 +133,7 @@ The (log of the) probability density of the multivariate normal distribution wil
          <Title>Remark: Options X0, eyed, n, and d must be used together.</Title>
          <Desc> </Desc>
          <MATLABcode>
-            <ItemCell>% Remark: Options X0, eyed, n, and d must be used together.</ItemCell>
+            <ItemCell> Remark: Options X0, eyed, n, and d must be used together.</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -187,41 +187,41 @@ The (log of the) probability density of the multivariate normal distribution wil
             <ItemCell>FSnoMex=0; tFSnoMex=0;</ItemCell>
             <ItemCell>in = 1; iv=1;</ItemCell>
             <ItemCell>for n = nn</ItemCell>
-            <ItemCell>for v = vv</ItemCell>
-            <ItemCell>X0 = zeros(n,v);</ItemCell>
-            <ItemCell>eyed=eye(v);</ItemCell>
-            <ItemCell>for i=1:rep</ItemCell>
-            <ItemCell>X = randn(n,v);</ItemCell>
-            <ItemCell>Mu = randn(1,v);</ItemCell>
-            <ItemCell>Sigma=cov(X);</ItemCell>
-            <ItemCell>%  Matlab function mvnpdf, (black line in plot)</ItemCell>
-            <ItemCell>Mat = tic;</ItemCell>
-            <ItemCell>y0 = mvnpdf(X, Mu, Sigma);</ItemCell>
-            <ItemCell>y0=log(y0);</ItemCell>
-            <ItemCell>tMat = tMat + toc(Mat);</ItemCell>
-            <ItemCell>% logmvnpdfFS using mex file for mean deviations, (blue line in plot)</ItemCell>
-            <ItemCell>FSwithmex = tic;</ItemCell>
-            <ItemCell>yD = logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);</ItemCell>
-            <ItemCell>tFSwithMex = tFSwithMex + toc(FSwithmex);</ItemCell>
-            <ItemCell>% logmvnpdfFS and no mex file for mean deviations. (red line in plot)</ItemCell>
-            <ItemCell>FSnoMex = tic;</ItemCell>
-            <ItemCell>yI = logmvnpdfFS(X, Mu, Sigma);</ItemCell>
-            <ItemCell>tFSnoMex = tFSnoMex + toc(FSnoMex);</ItemCell>
-            <ItemCell>if (sum(sum(abs(y0-yD))))&amp;gt;10^-6  || (sum(sum(abs(y0-yI)))) &amp;gt;10^-6</ItemCell>
-            <ItemCell>error('FSDA:logmvnpdfFS:ShouldBeEq','Difference in results: stop');</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>ttMat(in,iv) = tMat;</ItemCell>
-            <ItemCell>ttFSwithMex(in,iv) = tFSwithMex;</ItemCell>
-            <ItemCell>ttFSnoMex(in,iv) = tFSnoMex;</ItemCell>
-            <ItemCell>Mat=0; tMat=0;</ItemCell>
-            <ItemCell>FSwithmex=0; tFSwithMex=0;</ItemCell>
-            <ItemCell>FSnoMex=0; tFSnoMex=0;</ItemCell>
-            <ItemCell>disp(['n=' num2str(n) ' -- v=' num2str(v)]);</ItemCell>
-            <ItemCell>iv = iv+1;</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>in = in+1;</ItemCell>
-            <ItemCell>iv = 1;</ItemCell>
+            <ItemCell>    for v = vv</ItemCell>
+            <ItemCell>        X0 = zeros(n,v);</ItemCell>
+            <ItemCell>        eyed=eye(v);</ItemCell>
+            <ItemCell>        for i=1:rep</ItemCell>
+            <ItemCell>            X = randn(n,v);</ItemCell>
+            <ItemCell>            Mu = randn(1,v);</ItemCell>
+            <ItemCell>            Sigma=cov(X);</ItemCell>
+            <ItemCell>            %  Matlab function mvnpdf, (black line in plot)</ItemCell>
+            <ItemCell>            Mat = tic;</ItemCell>
+            <ItemCell>            y0 = mvnpdf(X, Mu, Sigma);</ItemCell>
+            <ItemCell>            y0=log(y0);</ItemCell>
+            <ItemCell>            tMat = tMat + toc(Mat);</ItemCell>
+            <ItemCell>            % logmvnpdfFS using mex file for mean deviations, (blue line in plot)</ItemCell>
+            <ItemCell>            FSwithmex = tic;</ItemCell>
+            <ItemCell>            yD = logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);</ItemCell>
+            <ItemCell>            tFSwithMex = tFSwithMex + toc(FSwithmex);</ItemCell>
+            <ItemCell>            % logmvnpdfFS and no mex file for mean deviations. (red line in plot)</ItemCell>
+            <ItemCell>            FSnoMex = tic;</ItemCell>
+            <ItemCell>            yI = logmvnpdfFS(X, Mu, Sigma);</ItemCell>
+            <ItemCell>            tFSnoMex = tFSnoMex + toc(FSnoMex);</ItemCell>
+            <ItemCell>            if (sum(sum(abs(y0-yD))))&amp;gt;10^-6  || (sum(sum(abs(y0-yI)))) &amp;gt;10^-6</ItemCell>
+            <ItemCell>               error('FSDA:logmvnpdfFS:ShouldBeEq','Difference in results: stop');</ItemCell>
+            <ItemCell>            end</ItemCell>
+            <ItemCell>        end</ItemCell>
+            <ItemCell>        ttMat(in,iv) = tMat;</ItemCell>
+            <ItemCell>        ttFSwithMex(in,iv) = tFSwithMex;</ItemCell>
+            <ItemCell>        ttFSnoMex(in,iv) = tFSnoMex;</ItemCell>
+            <ItemCell>        Mat=0; tMat=0;</ItemCell>
+            <ItemCell>        FSwithmex=0; tFSwithMex=0;</ItemCell>
+            <ItemCell>        FSnoMex=0; tFSnoMex=0;</ItemCell>
+            <ItemCell>        disp(['n=' num2str(n) ' -- v=' num2str(v)]);</ItemCell>
+            <ItemCell>        iv = iv+1;</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    in = in+1;</ItemCell>
+            <ItemCell>    iv = 1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Plotting part</ItemCell>
             <ItemCell>a=ver;</ItemCell>
@@ -229,21 +229,21 @@ The (log of the) probability density of the multivariate normal distribution wil
             <ItemCell>aa=1;</ItemCell>
             <ItemCell>bb=8;</ItemCell>
             <ItemCell>for ij=1:length(vv);</ItemCell>
-            <ItemCell>subplot(length(vv)/2,2,ij)</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');</ItemCell>
-            <ItemCell>if ij==1</ItemCell>
-            <ItemCell>title(['v (number of variables)=' num2str(vv(ij)) ' version' a])</ItemCell>
-            <ItemCell>else</ItemCell>
-            <ItemCell>title(['v=' num2str(vv(ij))])</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>ylabel('Seconds')</ItemCell>
-            <ItemCell>xlabel('Number of observations')</ItemCell>
-            <ItemCell>if ij==4</ItemCell>
-            <ItemCell>legend('mvnpdf','FS+mex','FS','location','NorthWest')</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    subplot(length(vv)/2,2,ij)</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');</ItemCell>
+            <ItemCell>    plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')</ItemCell>
+            <ItemCell>    plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');</ItemCell>
+            <ItemCell>    if ij==1</ItemCell>
+            <ItemCell>        title(['v (number of variables)=' num2str(vv(ij)) ' version' a])</ItemCell>
+            <ItemCell>    else</ItemCell>
+            <ItemCell>        title(['v=' num2str(vv(ij))])</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    ylabel('Seconds')</ItemCell>
+            <ItemCell>    xlabel('Number of observations')</ItemCell>
+            <ItemCell>    if ij==4</ItemCell>
+            <ItemCell>        legend('mvnpdf','FS+mex','FS','location','NorthWest')</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>hold off;</ItemCell>
          </MATLABcode>
@@ -256,65 +256,65 @@ The (log of the) probability density of the multivariate normal distribution wil
          </Desc>
          <MATLABcode>
             <ItemCell>if verLessThan('matlab', '8.2.0')</ItemCell>
-            <ItemCell>warning('FSDA:logmvnpdfFS:MatlabTooOld','This example needs routine timeit which has been introduced in Matlab 2013b')</ItemCell>
-            <ItemCell>warning('FSDA:logmvnpdfFS:MatlabTooOld','You have a version of Matlab which is &amp;lt; 2013b and you cannot run this example')</ItemCell>
+            <ItemCell>    warning('FSDA:logmvnpdfFS:MatlabTooOld','This example needs routine timeit which has been introduced in Matlab 2013b')</ItemCell>
+            <ItemCell>    warning('FSDA:logmvnpdfFS:MatlabTooOld','You have a version of Matlab which is &amp;lt; 2013b and you cannot run this example')</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>% nn = sample size</ItemCell>
-            <ItemCell>% vv = number of variables</ItemCell>
-            <ItemCell>nn=[100 200 500 1000 5000 10000 50000 100000];</ItemCell>
-            <ItemCell>vv=[2 5 10 20];</ItemCell>
-            <ItemCell>ttMat=nan(length(nn) , length(vv));</ItemCell>
-            <ItemCell>ttFSwithMex=ttMat;</ItemCell>
-            <ItemCell>ttFSnoMex=ttMat;</ItemCell>
-            <ItemCell>in = 1; iv=1;</ItemCell>
-            <ItemCell>for n = nn</ItemCell>
-            <ItemCell>for v = vv</ItemCell>
-            <ItemCell>X0 = zeros(n,v);</ItemCell>
-            <ItemCell>eyed=eye(v);</ItemCell>
-            <ItemCell>X = randn(n,v);</ItemCell>
-            <ItemCell>Mu = randn(1,v);</ItemCell>
-            <ItemCell>Sigma=cov(X);</ItemCell>
-            <ItemCell>%  Matlab function mvnpdf</ItemCell>
-            <ItemCell>yMat = @() log(mvnpdf(X, Mu, Sigma));</ItemCell>
-            <ItemCell>tMat = timeit(yMat);</ItemCell>
-            <ItemCell>% logmvnpdfFS using mex file for mean deviations.</ItemCell>
-            <ItemCell>yFSwithMex = @() logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);</ItemCell>
-            <ItemCell>tFSwithMex = timeit(yFSwithMex);</ItemCell>
-            <ItemCell>% logmvnpdfFS and no mex file for mean deviations.</ItemCell>
-            <ItemCell>yFSnoMex = @() logmvnpdfFS(X, Mu, Sigma);</ItemCell>
-            <ItemCell>tFSnoMex = timeit(yFSnoMex);</ItemCell>
-            <ItemCell>ttMat(in,iv) = tMat;</ItemCell>
-            <ItemCell>ttFSwithMex(in,iv) = tFSwithMex;</ItemCell>
-            <ItemCell>ttFSnoMex(in,iv) = tFSnoMex;</ItemCell>
-            <ItemCell>disp(['n=' num2str(n) ' -- v=' num2str(v)]);</ItemCell>
-            <ItemCell>iv = iv+1;</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>in = in+1;</ItemCell>
-            <ItemCell>iv = 1;</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>% Plotting part</ItemCell>
-            <ItemCell>a=ver;</ItemCell>
-            <ItemCell>a=a.Release;</ItemCell>
-            <ItemCell>aa=1;</ItemCell>
-            <ItemCell>bb=length(nn);</ItemCell>
-            <ItemCell>for ij=1:length(vv);</ItemCell>
-            <ItemCell>subplot(length(vv)/2,2,ij)</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')</ItemCell>
-            <ItemCell>plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');</ItemCell>
-            <ItemCell>if ij==1</ItemCell>
-            <ItemCell>title(['v (number of variables) =' num2str(vv(ij)) ' version' a])</ItemCell>
-            <ItemCell>else</ItemCell>
-            <ItemCell>title(['v=' num2str(vv(ij))])</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>xlabel('Number of observations')</ItemCell>
-            <ItemCell>ylabel('Seconds')</ItemCell>
-            <ItemCell>if ij==4</ItemCell>
-            <ItemCell>legend('mvnpdf','FS+mex','FS','location','NorthWest')</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>hold off;</ItemCell>
+            <ItemCell>    % nn = sample size</ItemCell>
+            <ItemCell>    % vv = number of variables</ItemCell>
+            <ItemCell>    nn=[100 200 500 1000 5000 10000 50000 100000];</ItemCell>
+            <ItemCell>    vv=[2 5 10 20];</ItemCell>
+            <ItemCell>    ttMat=nan(length(nn) , length(vv));</ItemCell>
+            <ItemCell>    ttFSwithMex=ttMat;</ItemCell>
+            <ItemCell>    ttFSnoMex=ttMat;</ItemCell>
+            <ItemCell>    in = 1; iv=1;</ItemCell>
+            <ItemCell>    for n = nn</ItemCell>
+            <ItemCell>        for v = vv</ItemCell>
+            <ItemCell>            X0 = zeros(n,v);</ItemCell>
+            <ItemCell>            eyed=eye(v);</ItemCell>
+            <ItemCell>            X = randn(n,v);</ItemCell>
+            <ItemCell>            Mu = randn(1,v);</ItemCell>
+            <ItemCell>            Sigma=cov(X);</ItemCell>
+            <ItemCell>            %  Matlab function mvnpdf</ItemCell>
+            <ItemCell>            yMat = @() log(mvnpdf(X, Mu, Sigma));</ItemCell>
+            <ItemCell>            tMat = timeit(yMat);</ItemCell>
+            <ItemCell>            % logmvnpdfFS using mex file for mean deviations.</ItemCell>
+            <ItemCell>            yFSwithMex = @() logmvnpdfFS(X, Mu, Sigma,X0,eyed,n,v);</ItemCell>
+            <ItemCell>            tFSwithMex = timeit(yFSwithMex);</ItemCell>
+            <ItemCell>            % logmvnpdfFS and no mex file for mean deviations.</ItemCell>
+            <ItemCell>            yFSnoMex = @() logmvnpdfFS(X, Mu, Sigma);</ItemCell>
+            <ItemCell>            tFSnoMex = timeit(yFSnoMex);</ItemCell>
+            <ItemCell>            ttMat(in,iv) = tMat;</ItemCell>
+            <ItemCell>            ttFSwithMex(in,iv) = tFSwithMex;</ItemCell>
+            <ItemCell>            ttFSnoMex(in,iv) = tFSnoMex;</ItemCell>
+            <ItemCell>            disp(['n=' num2str(n) ' -- v=' num2str(v)]);</ItemCell>
+            <ItemCell>            iv = iv+1;</ItemCell>
+            <ItemCell>        end</ItemCell>
+            <ItemCell>        in = in+1;</ItemCell>
+            <ItemCell>        iv = 1;</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    % Plotting part</ItemCell>
+            <ItemCell>    a=ver;</ItemCell>
+            <ItemCell>    a=a.Release;</ItemCell>
+            <ItemCell>    aa=1;</ItemCell>
+            <ItemCell>    bb=length(nn);</ItemCell>
+            <ItemCell>    for ij=1:length(vv);</ItemCell>
+            <ItemCell>        subplot(length(vv)/2,2,ij)</ItemCell>
+            <ItemCell>        hold('on')</ItemCell>
+            <ItemCell>        plot(nn(aa:bb)',ttMat(aa:bb,ij),'k');</ItemCell>
+            <ItemCell>        plot(nn(aa:bb)',ttFSwithMex(aa:bb,ij),'b')</ItemCell>
+            <ItemCell>        plot(nn(aa:bb)',ttFSnoMex(aa:bb,ij),'r');</ItemCell>
+            <ItemCell>        if ij==1</ItemCell>
+            <ItemCell>            title(['v (number of variables) =' num2str(vv(ij)) ' version' a])</ItemCell>
+            <ItemCell>        else</ItemCell>
+            <ItemCell>            title(['v=' num2str(vv(ij))])</ItemCell>
+            <ItemCell>        end</ItemCell>
+            <ItemCell>        xlabel('Number of observations')</ItemCell>
+            <ItemCell>        ylabel('Seconds')</ItemCell>
+            <ItemCell>        if ij==4</ItemCell>
+            <ItemCell>            legend('mvnpdf','FS+mex','FS','location','NorthWest')</ItemCell>
+            <ItemCell>        end</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    hold off;</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

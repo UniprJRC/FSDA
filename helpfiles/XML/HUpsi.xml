@@ -49,7 +49,7 @@ This means that \psi (u)/u is constant over the linear region of \psi, so the po
    <References><!--REFERENCES SECTION-->
       <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
       <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
-DOI: 10.1007/s11749-014-0357-7</Item>
+http://dx.doi.org/10.1007/s11749-014-0357-7</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>HYPpsi</Item>
@@ -58,7 +58,7 @@ DOI: 10.1007/s11749-014-0357-7</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of psi function.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>close all</ItemCell>

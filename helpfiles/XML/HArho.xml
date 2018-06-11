@@ -62,11 +62,11 @@ It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain Figure 11.10 p.</Title>
-         <Desc> </Desc>
+         <Title>Plot of rho function.</Title>
+         <Desc>
+            <ItemCell>Obtain Figure 11.10 p. 375 of Hoaglin et al. (1987)</ItemCell>
+         </Desc>
          <MATLABcode>
-            <ItemCell>% Obtain Figure 11.10 p. 375 of</ItemCell>
-            <ItemCell>% Hoaglin et al. (1987)</ItemCell>
             <ItemCell>x=-9:0.1:9;</ItemCell>
             <ItemCell>rhoHA=HArho(x,1);</ItemCell>
             <ItemCell>plot(x,rhoHA,'LineWidth',2)</ItemCell>

@@ -57,8 +57,10 @@ Therefore, to obtain the value of c for the (rho) psi function defined in the in
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Find c given bdp.</Title>
+         <Desc>
+            <ItemCell>The constant c associated to a breakdown point of 50% in regression is c= 1.213897063441983</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>c=OPTbdp(0.5,1)</ItemCell>
          </MATLABcode>

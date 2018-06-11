@@ -7,11 +7,12 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Data matrix containining n observations on v variables.</ShortDesc>
-         <TypeInd>Rows of Y represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will be excluded from the computations.</LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
-         <DataType>single| double</DataType>
+         <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -19,18 +20,18 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>bdp</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Breakdown point.</TypeInd>
-         <LongDesc>(Number between 0 and 0.5). The default value is 0.5.</LongDesc>
+         <ShortDesc>Breakdown point.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number between 0 and 0.5 which specifies the break down point. The default value is 0.5.</LongDesc>
          <Example>'bdp',1/4</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>nsamp</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Number of subsamples of size v which have to be extracted (if not given, default = 500).</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Number of subsamples.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of subsamples of size v+1 which have to be extracted (if not given, default = 500).</LongDesc>
          <Example>'nsamp',10000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -47,16 +48,17 @@ refsteps = 0 means "raw-subsampling" without iterations.</LongDesc>
       </Item>
       <Item>
          <Name>reftol</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Default value of tolerance for the refining steps.</TypeInd>
-         <LongDesc>The default value is 1e-6;</LongDesc>
+         <ShortDesc>Tolerance for the refining steps.</ShortDesc>
+         <TypeInd>scalar.</TypeInd>
+         <LongDesc>Default value of tolerance for the refining steps.
+The default value is 1e-6;</LongDesc>
          <Example>'reftol',1e-8</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>conflev</Name>
-         <ShortDesc>Scalar.</ShortDesc>
+         <ShortDesc>Confidence level Scalar.</ShortDesc>
          <TypeInd>Number between 0 and 1 containing confidence level which is used to declare units as outliers.</TypeInd>
          <LongDesc>Usually conflev=0.95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 Default value is 0.975</LongDesc>
@@ -66,9 +68,9 @@ Default value is 0.975</LongDesc>
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>Scalar.</ShortDesc>
-         <TypeInd>If nocheck is equal to 1 no check is performed on matrix Y.</TypeInd>
-         <LongDesc>As default nocheck=0.</LongDesc>
+         <ShortDesc>No check on input data.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.</LongDesc>
          <Example>'nocheck',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -102,27 +104,29 @@ plots.nameY = cell array of strings containing the labels of the variables. As d
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>Display or not messages on the screen.</TypeInd>
-         <LongDesc>If msg==1 (default) messages are displayed on the screen about estimated time to compute the final estimator else no message is displayed on the screen.</LongDesc>
+         <ShortDesc>Level of display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Display or not messages on the screen. If msg==1 (default) messages are displayed on the screen about estimated time to compute the final estimator else no message is displayed on the screen.</LongDesc>
          <Example>'msg',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ysaveRAW</Name>
-         <ShortDesc>scalar that is set to 1 to request that the data matrix Y is saved into the output structure RAW.</ShortDesc>
-         <TypeInd>This feature is meant at simplifying the use of function malindexplot.</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <ShortDesc>save input matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure RAW. This feature is meant at simplifying the use of function malindexplot.
+Default is 0, i.e. no saving is done.</LongDesc>
          <Example>'ysaveRAW',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>ysaveREW</Name>
-         <ShortDesc>scalar that is set to 1 to request that the data matrix Y is saved into the output structure REW.</ShortDesc>
-         <TypeInd>This feature is meant at simplifying the use of function malindexplot.</TypeInd>
-         <LongDesc>Default is 0, i.e. no saving is done.</LongDesc>
+         <ShortDesc>save input matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the data matrix Y is saved into the output structure REW. This feature is meant at simplifying the use of function malindexplot.
+Default is 0, i.e. no saving is done.</LongDesc>
          <Example>'ysaveREW',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -186,7 +190,7 @@ These weights determine which are the h observations are used to compute the fin
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>'mve'</Description>
+               <Description>'mve'.</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -222,7 +226,7 @@ These weights determine which are the h observations are used to compute the fin
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>'mve'</Description>
+               <Description>'mver';</Description>
             </ItemCell>
          </Structure>
       </Item>

@@ -41,7 +41,7 @@
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Tufte ER (1983) The visual display of quantitative information. Graphics Press, Cheshire</Item>
+      <Item>Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>spmplot</Item>

@@ -123,17 +123,17 @@ Remark. three horizontal lines associated respectively with values 0.01 0.5 and 
             <ItemCell>ij=0;</ItemCell>
             <ItemCell>supn0=max(n0);</ItemCell>
             <ItemCell>for jn0=n0;</ItemCell>
-            <ItemCell>ij=ij+1;</ItemCell>
-            <ItemCell>MDRinv = FSRinvmdr(out.mdr,4,'n',jn0);</ItemCell>
-            <ItemCell>% Resuperimposed envelope in normal coordinates</ItemCell>
-            <ItemCell>subplot(2,2,ij)</ItemCell>
-            <ItemCell>plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
-            <ItemCell>xlim([0 supn0])</ItemCell>
-            <ItemCell>v=axis;</ItemCell>
-            <ItemCell>line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
-            <ItemCell>text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
-            <ItemCell>% line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
-            <ItemCell>title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
+            <ItemCell>    ij=ij+1;</ItemCell>
+            <ItemCell>    MDRinv = FSRinvmdr(out.mdr,4,'n',jn0);</ItemCell>
+            <ItemCell>    % Resuperimposed envelope in normal coordinates</ItemCell>
+            <ItemCell>    subplot(2,2,ij)</ItemCell>
+            <ItemCell>    plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
+            <ItemCell>    xlim([0 supn0])</ItemCell>
+            <ItemCell>    v=axis;</ItemCell>
+            <ItemCell>    line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
+            <ItemCell>    text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
+            <ItemCell>    % line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
+            <ItemCell>    title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -157,19 +157,19 @@ Remark. three horizontal lines associated respectively with values 0.01 0.5 and 
             <ItemCell>figure;</ItemCell>
             <ItemCell>ij=0;</ItemCell>
             <ItemCell>for jn0=n0;</ItemCell>
-            <ItemCell>ij=ij+1;</ItemCell>
-            <ItemCell>[MDRinv] = FSRinvmdr(out.mdr,5,'n',jn0);</ItemCell>
-            <ItemCell>% Plot for each step of the fwd search the values of mdr translated in</ItemCell>
-            <ItemCell>% Plot for each step of the fwd search the values of mdr translated in</ItemCell>
-            <ItemCell>% terms of normal quantiles</ItemCell>
-            <ItemCell>subplot(2,2,ij)</ItemCell>
-            <ItemCell>plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
-            <ItemCell>xlim([0 supn0])</ItemCell>
-            <ItemCell>v=axis;</ItemCell>
-            <ItemCell>line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
-            <ItemCell>text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
-            <ItemCell>line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
-            <ItemCell>title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
+            <ItemCell>    ij=ij+1;</ItemCell>
+            <ItemCell>    [MDRinv] = FSRinvmdr(out.mdr,5,'n',jn0);</ItemCell>
+            <ItemCell>    % Plot for each step of the fwd search the values of mdr translated in</ItemCell>
+            <ItemCell>    % Plot for each step of the fwd search the values of mdr translated in</ItemCell>
+            <ItemCell>    % terms of normal quantiles</ItemCell>
+            <ItemCell>    subplot(2,2,ij)</ItemCell>
+            <ItemCell>    plot(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
+            <ItemCell>    xlim([0 supn0])</ItemCell>
+            <ItemCell>    v=axis;</ItemCell>
+            <ItemCell>    line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
+            <ItemCell>    text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
+            <ItemCell>    line(MDRinv(:,1),norminv(MDRinv(:,2)),'LineWidth',2)</ItemCell>
+            <ItemCell>    title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>

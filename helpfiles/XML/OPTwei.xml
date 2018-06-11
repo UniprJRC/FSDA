@@ -46,7 +46,7 @@ Remark: Yohai and Zamar (1997) showed that the optimal $\rho$ function is optima
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>YOHAI V.J., ZAMAR R.H. (1997) Optimal locally robust M-estimates of regression. J Plan Stat Inference 64, pp. 309– 323</Item>
+      <Item>YOHAI V.J., ZAMAR R.H. (1997) Optimal locally robust M-estimates of regression. J Plan Stat Inference 64, pp. 309-323</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>HYPwei</Item>
@@ -55,7 +55,7 @@ Remark: Yohai and Zamar (1997) showed that the optimal $\rho$ function is optima
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of weight function.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.1:6;</ItemCell>

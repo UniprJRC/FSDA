@@ -54,7 +54,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -64,7 +64,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <ShortDesc>Plot on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If equal to one a plot of minimum deletion residual appears on the screen with 1%, 50% and 99% confidence bands else (default) no plot is shown.
-% Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot.</LongDesc>
+Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot.</LongDesc>
          <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -180,14 +180,14 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Common part to all examples: load fishery dataset.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
-            <ItemCell>[mdr] = FSRmdr(y,X,out.bs);</ItemCell>
-            <ItemCell>plot(mdr(:,1),mdr(:,2))</ItemCell>
-            <ItemCell>title('Monitoring of minimum deletion residual')</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> [mdr] = FSRmdr(y,X,out.bs);</ItemCell>
+            <ItemCell> plot(mdr(:,1),mdr(:,2))</ItemCell>
+            <ItemCell> title('Monitoring of minimum deletion residual')</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -198,11 +198,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Compute minimum deletion residual and start monitoring it from step 60.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr] = FSRmdr(y,X,out.bs,'init',60);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -213,11 +213,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Compute minimum deletion residual and analyze the units entering subset in each step of the fwd search (matrix Un). As is well known, the FS provides an ordering of the data from those most in agreement with a suggested model (which enter the first steps) to those least in agreement with it (which are included in the final steps).</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un] = FSRmdr(y,X,out.bs);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -228,11 +228,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Obtain detailed information about the units forming subset in each step of the forward search (matrix BB).</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB] = FSRmdr(y,X,out.bs);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -243,11 +243,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Monitor how the estimates of beta coefficients changes as the subset size increases (matrix Bols).</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -258,11 +258,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>Monitor the estimate of $\sigma^2$ in each step of the fwd search (matrix S2).</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);</ItemCell>
             <ItemCell>plot(S2(:,1),S2(:,2))</ItemCell>
             <ItemCell>title('Monitoring of s2')</ItemCell>
@@ -277,11 +277,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>FSRmdr using a regression model without intercept.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -292,11 +292,11 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>FSRmdr applied without doing any checks on y and X variables.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>load('fishery');</ItemCell>
-            <ItemCell>y=fishery.data(:,2);</ItemCell>
-            <ItemCell>X=fishery.data(:,1);</ItemCell>
-            <ItemCell>% Find starting subset</ItemCell>
-            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -310,27 +310,31 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>X=hawkins(:,1:8);</ItemCell>
             <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[~,~,~,Bols,S2] = FSRmdr(y,X,out.bs);</ItemCell>
-            <ItemCell>%The forward plot of s2 shows that initially the estimate is virtually</ItemCell>
-            <ItemCell>%zero. The four line segments comprising the plot correspond to the four</ItemCell>
-            <ItemCell>%groups of observations</ItemCell>
-            <ItemCell>% Plot of the monitoring of S2 and R2</ItemCell>
-            <ItemCell>figure;</ItemCell>
-            <ItemCell>subplot(1,2,1)</ItemCell>
-            <ItemCell>plot(S2(:,1),S2(:,2))</ItemCell>
-            <ItemCell>xlabel('Subset size m');</ItemCell>
-            <ItemCell>ylabel('S2');</ItemCell>
-            <ItemCell>subplot(1,2,2)</ItemCell>
-            <ItemCell>plot(S2(:,1),S2(:,3))</ItemCell>
-            <ItemCell>xlabel('Subset size m');</ItemCell>
-            <ItemCell>ylabel('R2');</ItemCell>
-            <ItemCell>%The forward plots of the estimates of the beta coefficients show that they are virtually constant until m = 86, after which they start fluctuating in different directions.</ItemCell>
-            <ItemCell>% Plots of the monitoring of "Estimates of beta coefficients"</ItemCell>
-            <ItemCell>figure;</ItemCell>
-            <ItemCell>for j=3:size(Bols,2);</ItemCell>
-            <ItemCell>subplot(2,4,j-2)</ItemCell>
-            <ItemCell>plot(Bols(:,1),Bols(:,j))</ItemCell>
-            <ItemCell>xlabel('Subset size m');</ItemCell>
-            <ItemCell>ylabel(['b' num2str(j-2)]);</ItemCell>
+            <ItemCell>if isnan(S2)</ItemCell>
+            <ItemCell>    disp('NoFullRank in initial subset, please rerun FSRmdr')</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    %The forward plot of s2 shows that initially the estimate is virtually</ItemCell>
+            <ItemCell>    %zero. The four line segments comprising the plot correspond to the four</ItemCell>
+            <ItemCell>    %groups of observations</ItemCell>
+            <ItemCell>    % Plot of the monitoring of S2 and R2</ItemCell>
+            <ItemCell>    figure;</ItemCell>
+            <ItemCell>    subplot(1,2,1)</ItemCell>
+            <ItemCell>    plot(S2(:,1),S2(:,2))</ItemCell>
+            <ItemCell>    xlabel('Subset size m');</ItemCell>
+            <ItemCell>    ylabel('S2');</ItemCell>
+            <ItemCell>    subplot(1,2,2)</ItemCell>
+            <ItemCell>    plot(S2(:,1),S2(:,3))</ItemCell>
+            <ItemCell>    xlabel('Subset size m');</ItemCell>
+            <ItemCell>    ylabel('R2');</ItemCell>
+            <ItemCell>    %The forward plots of the estimates of the beta coefficients show that they are virtually constant until m = 86, after which they start fluctuating in different directions.</ItemCell>
+            <ItemCell>    % Plots of the monitoring of "Estimates of beta coefficients"</ItemCell>
+            <ItemCell>    figure;</ItemCell>
+            <ItemCell>    for j=3:size(Bols,2)</ItemCell>
+            <ItemCell>        subplot(2,4,j-2)</ItemCell>
+            <ItemCell>        plot(Bols(:,1),Bols(:,j))</ItemCell>
+            <ItemCell>        xlabel('Subset size m');</ItemCell>
+            <ItemCell>        ylabel(['b' num2str(j-2)]);</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
@@ -348,13 +352,17 @@ BB has the following structure 1-st row has number 1 in correspondence of the st
             <ItemCell>rng(100)</ItemCell>
             <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
             <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);</ItemCell>
-            <ItemCell>% BB has just two columns</ItemCell>
-            <ItemCell>% First column contains information about units forming subset at step m=30</ItemCell>
-            <ItemCell>% sum(~isnan(BB(:,1))) is 30</ItemCell>
-            <ItemCell>% Second column contains information about units forming subset at step m=60</ItemCell>
-            <ItemCell>% sum(~isnan(BB(:,2))) is 60</ItemCell>
-            <ItemCell>disp(sum(~isnan(BB(:,1))))</ItemCell>
-            <ItemCell>disp(sum(~isnan(BB(:,2))))</ItemCell>
+            <ItemCell>if isnan(S2)</ItemCell>
+            <ItemCell>    disp('NoFullRank in initial subset, please rerun FSRmdr')</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    % BB has just two columns</ItemCell>
+            <ItemCell>    % First column contains information about units forming subset at step m=30</ItemCell>
+            <ItemCell>    % sum(~isnan(BB(:,1))) is 30</ItemCell>
+            <ItemCell>    % Second column contains information about units forming subset at step m=60</ItemCell>
+            <ItemCell>    % sum(~isnan(BB(:,2))) is 60</ItemCell>
+            <ItemCell>    disp(sum(~isnan(BB(:,1))))</ItemCell>
+            <ItemCell>    disp(sum(~isnan(BB(:,2))))</ItemCell>
+            <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>

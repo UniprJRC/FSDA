@@ -7,25 +7,12 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Input data.
-
-
-
-</ShortDesc>
-         <TypeInd>Matrix.
-</TypeInd>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
          <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
-Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
-
-
-
-</LongDesc>
-         <Example/>
-         <DataType>single|double
-
-
-
-</DataType>
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -44,22 +31,11 @@ If bsb=0 (default) then the procedure starts with p units randomly chosen else i
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>init</Name>
-         <ShortDesc>Point where to start monitoring required diagnostics.
-</ShortDesc>
-         <TypeInd>Scalar.
-</TypeInd>
-         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).
-</LongDesc>
-         <Example>'init',50
-
-
-
-</Example>
-         <DataType>double
-
-
-
-</DataType>
+         <ShortDesc>Point where to start monitoring required diagnostics.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
+         <Example>'init',50</Example>
+         <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -91,31 +67,23 @@ If bsb=0 (default) then the procedure starts with p units randomly chosen else i
       </Item>
       <Item>
          <Name>nocheck</Name>
-         <ShortDesc>It controls whether to perform checks on matrix Y.
-</ShortDesc>
-         <TypeInd>Scalar.
-</TypeInd>
-         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.
-</LongDesc>
-         <Example>'nocheck',1
-</Example>
-         <DataType>double
-</DataType>
+         <ShortDesc>It controls whether to perform checks on matrix Y.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix Y. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
    </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>Un</Name>
-         <ShortDesc>Matrix
-</ShortDesc>
-         <TypeInd>Units included in each step.
-</TypeInd>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units included in each step.</TypeInd>
          <LongDesc>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the search.
 REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
 Un(1,2) for example contains the unit included in step init+1.
-Un(end,2) contains the units included in the final step of the search.
-</LongDesc>
+Un(end,2) contains the units included in the final step of the search.</LongDesc>
          <Structure> </Structure>
       </Item>
       <Item>

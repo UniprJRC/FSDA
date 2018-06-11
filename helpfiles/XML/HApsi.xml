@@ -62,9 +62,10 @@ It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title>Obtain bottom panel of Figure 11.10 p.</Title>
+         <Title>Plot of psi function.</Title>
          <Desc> </Desc>
          <MATLABcode>
+            <ItemCell>% Plot of psi function.</ItemCell>
             <ItemCell>% Obtain bottom panel of Figure 11.10 p. 375 of</ItemCell>
             <ItemCell>% Hoaglin et al. (1987).</ItemCell>
             <ItemCell>close all</ItemCell>

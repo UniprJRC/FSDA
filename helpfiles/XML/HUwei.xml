@@ -38,7 +38,7 @@
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->Function HUwei transforms vector u as follows
 \[
-HUpsi(u)= \left\{ \begin{array}{cc} 1 &amp; \mbox{if } |u/c| \leq 1 \\
+HUwei(u)= \left\{ \begin{array}{cc} 1 &amp; |u/c| \leq 1 \\
 c \times \frac{\mbox{sign}(u)}{u} &amp; |u/c|&amp;gt;1 \\
 \end{array} \right.
 \]
@@ -48,7 +48,7 @@ See equation (2.32) p. 28 of Maronna et al. (2006)
    <References><!--REFERENCES SECTION-->
       <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
       <Item>Riani M., Cerioli A., Torti F. (2014). On consistency factors and efficiency of robust S-estimators, TEST, Volume 23, Issue 2, pp 356-387.
-DOI: 10.1007/s11749-014-0357-7</Item>
+http://dx.doi.org/10.1007/s11749-014-0357-7</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBwei</Item>

@@ -7,9 +7,10 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +18,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x (bigP-1)).</ShortDesc>
-         <TypeInd>The intercept will be added in automatic way, so that the dimension of the full model is bigP Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x (bigP-1)).
+The intercept will be added in automatic way, so that the dimension of the full model is bigP Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -27,9 +29,9 @@
       </Item>
       <Item>
          <Name>smallp</Name>
-         <ShortDesc>scalar which specifies the number of variables in the reduced models which will be considered.</ShortDesc>
-         <TypeInd>For example if smallp=3, all possible subsets containing 2 columns of matrix X will be considered.</TypeInd>
-         <LongDesc>Notice that the dimension of each submodel is 3 because to each submodel the column of ones is added automatically</LongDesc>
+         <ShortDesc>number of variables in the reduced models.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the number of variables in the reduced models which will be considered. For example if smallp=3, all possible subsets containing 2 columns of matrix X will be considered. Notice that the dimension of each submodel is 3 because to each submodel the column of ones is added automatically.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -41,7 +43,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -88,7 +90,7 @@
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If nsamp=0 all subsets will be extracted.
 They will be (n choose smallp).
-% Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
          <Example>'nsamp',1000</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -129,8 +131,8 @@ If labels is a missing value the following sequence of strings will be automatic
          <LongDesc>If fin_step is an integer greater or equal 1, it refers to the number of steps.
 For example if fin_step=10 the program considers the last 10 steps to choose the best models.
 If fin_step is a real number alpha (0&amp;lt;alpha&amp;lt;0.5) in the interval (0 0.5] than the program considers the last round(n*alpha) steps. As default fin_step=round(n*0.2) that is the last 20% of the steps are considered.
-% Remark1: the number of best models to consider is controlled by scalar first_k (see below).
-% Remark2: if fin_step is an empty value, no selection is done and all trajectories of Cp are displayed (in this case the value of first_k below is ignored, all models are considered of interest and output matrix outCp.Ajout is equal to an empty value).</LongDesc>
+Remark1: the number of best models to consider is controlled by scalar first_k (see below).
+Remark2: if fin_step is an empty value, no selection is done and all trajectories of Cp are displayed (in this case the value of first_k below is ignored, all models are considered of interest and output matrix outCp.Ajout is equal to an empty value).</LongDesc>
          <Example>'fin_step',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -177,7 +179,7 @@ The default value of ExclThresh is 0.99999 that is the models whose minimum valu
          <ShortDesc>If labout=1 the output LABOUT contains the list of models whose Cp values are inacceptable.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>Default: no model is created.
-% Remark: the options below only work if plots is equal 1.</LongDesc>
+Remark: the options below only work if plots is equal 1.</LongDesc>
          <Example>'labout',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -193,9 +195,10 @@ The default value of ExclThresh is 0.99999 that is the models whose minimum valu
       </Item>
       <Item>
          <Name>steps</Name>
-         <ShortDesc>It specifies in which steps of the plot which monitors Cp it is necessary to include the labels of the models which have been previously chosen.</ShortDesc>
+         <ShortDesc>Steps to add labels.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>The default is to write the labels of the models in steps round([n*0.6 n*0.8 n]);</LongDesc>
+         <LongDesc>It specifies in which steps of the plot which monitors Cp it is necessary to include the labels of the models which have been previously chosen.
+The default is to write the labels of the models in steps round([n*0.6 n*0.8 n]);</LongDesc>
          <Example>'steps',[4 8]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -348,7 +351,8 @@ For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 
             </ItemCell>
             <ItemCell>
                <Value>LABout</Value>
-               <Description>it is created only if option labout=1. LABout is a cell array of strings which which contains as strings the list of models which are inacceptable.</Description>
+               <Description>cell array of strings which contains as strings the list of models which are unacceptable.
+LABout is created only if input option labout=1.</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -356,7 +360,7 @@ For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>ATKINSON A.C, RIANI M. (2008). A robust and diagnostic information criterion for selecting regression models. JOURNAL OF THE JAPAN STATISTICAL SOCIETY. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14</Item>
+      <Item>Atkinson A.C, and Riani M. (2008), A robust and diagnostic information criterion for selecting regression models. Journal of the Japan Statistical Society. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSR</Item>
@@ -366,7 +370,7 @@ For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 
       <Item>
          <Title>FSRcp with all default options.</Title>
          <Desc>
-            <ItemCell>Extract the best models of size 4, also store AIC.</ItemCell>
+            <ItemCell>Extract the best models of size 4.</ItemCell>
             <ItemCell>Common part to all examples: load Ozone dataset.</ItemCell>
          </Desc>
          <MATLABcode>
@@ -387,7 +391,7 @@ For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 
       <Item>
          <Title>FSRcp with optional arguments.</Title>
          <Desc>
-            <ItemCell>Extract the best models of size 4, store AIC and show the plots of Cp and AIC.</ItemCell>
+            <ItemCell>Extract the best models of size 4, and show the plot of forward Cp.</ItemCell>
          </Desc>
          <MATLABcode>
             <ItemCell>X=load('ozone.txt');</ItemCell>
@@ -507,7 +511,7 @@ For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 
             <ItemCell>% Define X</ItemCell>
             <ItemCell>X=X(:,1:end-1);</ItemCell>
             <ItemCell>labels={'Time','1','2','3','4','5','6','7','8'};</ItemCell>
-            <ItemCell>[Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);</ItemCell>
+            <ItemCell>Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

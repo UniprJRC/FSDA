@@ -147,9 +147,9 @@ where $\Phi^{-1}$ is the inverse of the CDF of the standard normal distribution.
             <ItemCell>After creating 99 per cent confidence envelopes based on 1000 observations and 5 variables are created, their confidence level is calculated with FSMinvmmd.</ItemCell>
          </Desc>
          <MATLABcode>
-            <ItemCell>v=5;</ItemCell>
-            <ItemCell>mmdenv=FSMenvmmd(1000,v,'prob',0.99);</ItemCell>
-            <ItemCell>mmdinv=FSMinvmmd(mmdenv,v);</ItemCell>
+            <ItemCell>  v=5;</ItemCell>
+            <ItemCell>  mmdenv=FSMenvmmd(1000,v,'prob',0.99);</ItemCell>
+            <ItemCell>  mmdinv=FSMinvmmd(mmdenv,v);</ItemCell>
             <ItemCell>% mmdinv is a matrix which in the second colum contains</ItemCell>
             <ItemCell>% all values equal to 0.99.</ItemCell>
             <ItemCell/>
@@ -196,16 +196,16 @@ where $\Phi^{-1}$ is the inverse of the CDF of the standard normal distribution.
             <ItemCell>supn0=max(n0);</ItemCell>
             <ItemCell>ij=0;</ItemCell>
             <ItemCell>for jn0=n0;</ItemCell>
-            <ItemCell>ij=ij+1;</ItemCell>
-            <ItemCell>MMDinv = FSMinvmmd(out.mmd,size(Y,2),'n',jn0);</ItemCell>
-            <ItemCell>% Resuperimposed envelope in normal coordinates</ItemCell>
-            <ItemCell>subplot(2,2,ij)</ItemCell>
-            <ItemCell>plot(MMDinv(:,1),MMDinv(:,3),'LineWidth',2)</ItemCell>
-            <ItemCell>xlim([out.mmd(1,1) supn0])</ItemCell>
-            <ItemCell>v=axis;</ItemCell>
-            <ItemCell>line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
-            <ItemCell>text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
-            <ItemCell>title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
+            <ItemCell>    ij=ij+1;</ItemCell>
+            <ItemCell>    MMDinv = FSMinvmmd(out.mmd,size(Y,2),'n',jn0);</ItemCell>
+            <ItemCell>    % Resuperimposed envelope in normal coordinates</ItemCell>
+            <ItemCell>    subplot(2,2,ij)</ItemCell>
+            <ItemCell>    plot(MMDinv(:,1),MMDinv(:,3),'LineWidth',2)</ItemCell>
+            <ItemCell>    xlim([out.mmd(1,1) supn0])</ItemCell>
+            <ItemCell>    v=axis;</ItemCell>
+            <ItemCell>    line(v(1:2)',[ninv;ninv],'color','g','LineWidth',lwdenv,'LineStyle','--','Tag','env');</ItemCell>
+            <ItemCell>    text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));</ItemCell>
+            <ItemCell>    title(['Resuperimposed envelope n=' num2str(jn0)]);</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>

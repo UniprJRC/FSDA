@@ -11,6 +11,7 @@
          <TypeInd>Structure.</TypeInd>
          <LongDesc>Structure containing the following fields.
 out.LEV = matrix containing the leverage monitored in each step of the forward search. Every row is associated with a unit.
+This matrix can be created using function FSReda (compulsory argument) out.RES = matrix containing the residuals monitored in each step of the forward search. Every row is associated with a unit.
 This matrix can be created using function FSReda (compulsory argument) out.Un = matrix containing the order of entry of each unit (necessary only if datatooltip or databrush are not empty) out.y = a vector containing the response (necessary only if option databrush is not empty) out.X = a matrix containing the explanatory variables (necessary only if option databrush is not empty) out.Bols = (n-init+1) x (p+1) matrix containing the monitoring of estimated beta coefficients in each step of the forward search (necessary only if option databrush is not empty and suboption lineadd is not empty)</LongDesc>
          <Example> </Example>
          <DataType>struct</DataType>
@@ -19,6 +20,13 @@ This matrix can be created using function FSReda (compulsory argument) out.Un = 
             <ItemCell>
                <Value>LEV</Value>
                <Description>matrix containing the leverage monitored in each step of&#xD;
+               the forward search. Every row is associated with a unit.&#xD;
+               This matrix can be created using function FSReda&#xD;
+               (compulsory argument)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>RES</Value>
+               <Description>matrix containing the residuals monitored in each step of&#xD;
                the forward search. Every row is associated with a unit.&#xD;
                This matrix can be created using function FSReda&#xD;
                (compulsory argument)</Description>
@@ -220,7 +228,7 @@ bground.bstyle = specifies how to plot the unimportant trajectories as defined i
 'greysh': unimportant trajectories are displayed in a faint grey.
 When n&amp;gt;100 the default option is 'faint'.
 When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
-% Remark: bground='' is equivalent to bground.thresh=-Inf that is all trajectories are considered relevant.</LongDesc>
+Remark: bground='' is equivalent to bground.thresh=-Inf that is all trajectories are considered relevant.</LongDesc>
          <Example>'bground.bstyle','faint'</Example>
          <DataType>struct</DataType>
          <Struct>
@@ -256,7 +264,7 @@ When n&amp;lt;=100 and bthresh = -Inf option bstyle is ignored.
                        When n&amp;gt;100 the default option is 'faint'.&#xD;
                        When n&amp;lt;=100 and bthresh = -Inf option bstyle is&#xD;
                        ignored.&#xD;
-                   %                   Remark: bground='' is equivalent to</Description>
+                                      Remark: bground='' is equivalent to</Description>
             </ItemCell>
             <ItemCell>
                <Value>thresh</Value>

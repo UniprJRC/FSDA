@@ -103,7 +103,7 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
+      <Item>Hampel, F.R., Rousseeuw, P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBc</Item>
@@ -128,9 +128,9 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
             <ItemCell>kdef=4.5;</ItemCell>
             <ItemCell>jk=1;</ItemCell>
             <ItemCell>for c=cc</ItemCell>
-            <ItemCell>[bdp,eff,A,B,d]=HYPc(c,1,'k',kdef);</ItemCell>
-            <ItemCell>BDPEFF(jk,2:end)=[bdp, eff, A, B, d];</ItemCell>
-            <ItemCell>jk=jk+1;</ItemCell>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPc(c,1,'k',kdef);</ItemCell>
+            <ItemCell>    BDPEFF(jk,2:end)=[bdp, eff, A, B, d];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>nr=2;</ItemCell>
             <ItemCell>nc=2;</ItemCell>

@@ -26,18 +26,19 @@
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
-   </InpArgs>
-   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>shapeeff</Name>
          <ShortDesc>Location or shape efficiency.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, the efficiency is referred to shape else (default) is referred to location</LongDesc>
-         <Example>'shapeeff',1</Example>
+         <LongDesc>If 1, the efficiency is referred to shape else (default) is referred to location (not implemented yet)</LongDesc>
+         <Example>&lt;code&gt;'shapeeff',1&#xD;
+&lt;/code&gt;</Example>
          <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
          <Struct> </Struct>
       </Item>
-   </OptArgs>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>ceff</Name>
@@ -69,15 +70,17 @@
          <Exec>0</Exec>
       </Item>
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Analyze constant c as a function of eff.</Title>
+         <Desc>
+            <ItemCell>Initialize the matrix which stores the values of c for the two methods</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>eff=[0.70:0.0001:0.9999];</ItemCell>
             <ItemCell>cc=[eff' zeros(length(eff),1)];</ItemCell>
             <ItemCell>for i=1:length(eff)</ItemCell>
-            <ItemCell>% Use exact formula for finding the value of c associated to a fixed</ItemCell>
-            <ItemCell>% level of shape efficiency</ItemCell>
-            <ItemCell>cc(i,2)=TBeff(eff(i),1);</ItemCell>
+            <ItemCell>    % Use exact formula for finding the value of c associated to a fixed</ItemCell>
+            <ItemCell>    % level of shape efficiency</ItemCell>
+            <ItemCell>    cc(i,2)=TBeff(eff(i),1);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>figure</ItemCell>
             <ItemCell>plot(cc(:,1),cc(:,2),'LineStyle','-','LineWidth',2)</ItemCell>

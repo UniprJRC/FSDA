@@ -41,7 +41,7 @@
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -86,7 +86,7 @@
          <Name>FontSize</Name>
          <ShortDesc>Label font size inside plot.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>It controls the fontsize of the labels of the axes and eventual plot labels. Default value is 12</LongDesc>
+         <LongDesc>It controls the fontsize of the labels of the axes and eventual plot labels. Default value is 10</LongDesc>
          <Example>'FontSize',14</Example>
          <DataType>double</DataType>
          <Struct> </Struct>

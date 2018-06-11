@@ -20,9 +20,9 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>family</Name>
-         <ShortDesc>string which identifies the family of transformations which must be used.</ShortDesc>
-         <TypeInd>Character.</TypeInd>
-         <LongDesc>Possible values are 'BoxCox' (default) or 'YJ'.
+         <ShortDesc>parametric transformation to use.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which identifies the family of transformations which must be used. Character. Possible values are 'BoxCox' (default) or 'YJ'.
 The Box-Cox family of power transformations equals $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and $\log(y)$ if $\lambda = 0$.
 The Yeo-Johnson (YJ) transformation is the Box-Cox transformation of $y+1$ for nonnegative values, and of $|y|+1$ with parameter 2-lambda for y negative.
 The basic power transformation returns $y^{\lambda}$ if $\lambda$ is not zero, and $\log(\lambda)$ otherwise.
@@ -33,18 +33,19 @@ Remark. BoxCox and the basic power family can be used just if input y is positiv
       </Item>
       <Item>
          <Name>init</Name>
-         <ShortDesc>Point where to start monitoring required diagnostics.</ShortDesc>
+         <ShortDesc>Beginning of monitoring.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>Note that if bsb is suppliedinit&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
+         <LongDesc>Scalar which defines where to start monitoring required diagnostics.
+Note that if bsb is suppliedinit&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
          <Example>'init',50</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>bsb</Name>
-         <ShortDesc>It contains the units forming initial subset.</ShortDesc>
+         <ShortDesc>Units forming initial subset.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>The default value of bsb is '' that is the initial subset is found through the intersection of robust bivariate ellipses This option is useful if a forced start is required.</LongDesc>
+         <LongDesc>It contains the units forming initial subset. The default value of bsb is '' that is the initial subset is found through the intersection of robust bivariate ellipses This option is useful if a forced start is required.</LongDesc>
          <Example>'bsb',[4 6 9]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -60,18 +61,18 @@ Remark. BoxCox and the basic power family can be used just if input y is positiv
       </Item>
       <Item>
          <Name>ColToTra</Name>
-         <ShortDesc>It specifies the variables which must be transformed.</ShortDesc>
+         <ShortDesc>Variables to transform.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>It is a k x 1 integer vector.</LongDesc>
+         <LongDesc>Vector which specifies the variables which must be transformed. Vector. It is a k x 1 integer vector.</LongDesc>
          <Example>'ColToTra',[1 3]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>la0</Name>
-         <ShortDesc>It contains set of transformation parameters for the k ColtoTra.</ShortDesc>
+         <ShortDesc>Values of transformation parameters.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>It is a k x 1 vector. The ordering of Mahalanobis distances at each step of the forward search uses variables transformed with la0.
+         <LongDesc>Vector which contains set of transformation parameters for the k ColtoTra. It is a k-by-1 vector. The ordering of Mahalanobis distances at each step of the forward search uses variables transformed with la0.
 la0 empty is equivalent to its default value la0=ones(length(ColToTra),1).</LongDesc>
          <Example>'la0',[-1 0]</Example>
          <DataType>double</DataType>
@@ -79,45 +80,46 @@ la0 empty is equivalent to its default value la0=ones(length(ColToTra),1).</Long
       </Item>
       <Item>
          <Name>onelambda</Name>
-         <ShortDesc>If onelambda=1, a common value lambda is estimated for all variables specified in ColToTra.</ShortDesc>
+         <ShortDesc>common value of lambda.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc> </LongDesc>
+         <LongDesc>If onelambda=1, a common value lambda is estimated for all variables specified in ColToTra.</LongDesc>
          <Example>'onelambda',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>optmin</Name>
-         <ShortDesc>It contains the options dealing with the maximization algorithm.</ShortDesc>
+         <ShortDesc>Optimation options.</ShortDesc>
          <TypeInd>Structure.</TypeInd>
-         <LongDesc>Use optimset to set these options. Notice that the maximization algorithm which is used is fminunc is the optimization toolbox is present else is fminsearch.</LongDesc>
+         <LongDesc>It contains the options dealing with the maximization algorithm. Use optimset to set these options. Notice that the maximization algorithm which is used is fminunc is the optimization toolbox is present else is fminsearch.</LongDesc>
          <Example>'optmin.Display','off'</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>speed</Name>
-         <ShortDesc>If speed=1 the initial value at step m of the maximization procedure is the final value at step m-1 else it is la0.</ShortDesc>
+         <ShortDesc>Start with previous values in the maximization procedure.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>Default value 1. The maximization procedure is fminunc or fminsearch.</LongDesc>
+         <LongDesc>If speed=1 the initial value at step m of the maximization procedure is the final value at step m-1 else it is la0. Default value 1. The maximization procedure is fminunc or fminsearch.</LongDesc>
          <Example>'speed',0</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>colnames</Name>
-         <ShortDesc>It contains the names of the variables of the dataset.</ShortDesc>
+         <ShortDesc>variable names.</ShortDesc>
          <TypeInd>Cell array of strings.</TypeInd>
-         <LongDesc>Cell array of strings of length v. If colnames is empty then the sequence 1:v is created to label the variables.</LongDesc>
+         <LongDesc>It contains the names of the variables of the dataset. Cell array of strings of length v. If colnames is empty then the sequence 1:v is created to label the variables.</LongDesc>
          <Example>'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};</Example>
          <DataType>cell array of strings</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>prolik</Name>
-         <ShortDesc>It specifies whether it is necessary to monitor the profile log likelihood of the transformation parameters at selected steps of the search.</ShortDesc>
+         <ShortDesc>Monitor profile log likelihood.</ShortDesc>
          <TypeInd>Scalar or structure.</TypeInd>
-         <LongDesc>If prolik is a scalar, the plot of the profile loglikelihoods is produced at step m=n with all default parameters.
+         <LongDesc>It specifies whether it is necessary to monitor the profile log likelihood of the transformation parameters at selected steps of the search.
+If prolik is a scalar, the plot of the profile loglikelihoods is produced at step m=n with all default parameters.
 If prolik is a structure it may contain the following fields:
 prolik.steps = vector containing the steps of the fwd search for which profile logliks have to be plotted. The default value of steps is n;
 prolik.clev = scalar between 0 and 1 determining confidence level for each element of lambda based on the asymptotic chi1^2 of twice the loglikelihood ratio.
@@ -159,9 +161,9 @@ prolik.LineWidth = line width of the vertical lines defining confidence levels o
       </Item>
       <Item>
          <Name>plotsmle</Name>
-         <ShortDesc>It specifies whether it is necessary to plot the maximum likelihood estimates of the transformation parameters.</ShortDesc>
+         <ShortDesc>plot mle.</ShortDesc>
          <TypeInd>Scalar or structure.</TypeInd>
-         <LongDesc>Three horizontal lines associated respectively with values -1, 0 and 1 are added to the plot.
+         <LongDesc>It specifies whether it is necessary to plot the maximum likelihood estimates of the transformation parameters. Three horizontal lines associated respectively with values -1, 0 and 1 are added to the plot.
 If prolik is a scalar, the plot of the monitoring of maximum likelihood estimates of transformation parameters is produced on the screen with all the default options.
 If plotsmle is a structure, it may contain the following fields:
 plotsmle.xlim = minimum and maximum on the x axis;
@@ -211,9 +213,10 @@ plotsmle.FontSize = font size of the text labels which identify the trajectories
       </Item>
       <Item>
          <Name>plotslrt</Name>
-         <ShortDesc>It specifies whether it is necessary to plot the likelihood ratio test.</ShortDesc>
+         <ShortDesc>plot lrt.</ShortDesc>
          <TypeInd>Scalar or structure.</TypeInd>
-         <LongDesc>If plotslrt is a scalar, the plot of the monitoring of likelihood ratio test is produced on the screen with all default options.
+         <LongDesc>It specifies whether it is necessary to plot the likelihood ratio test.
+If plotslrt is a scalar, the plot of the monitoring of likelihood ratio test is produced on the screen with all default options.
 If plotslrt is a strucure, it may contain the following fields:
 plotslrt.xlim = minimum and maximum on the x axis;
 plotslrt.ylim = minimum and maximum on the y axis;
@@ -256,9 +259,10 @@ plotslrt.Tag = tag of the plot (default is pl_lrt).</LongDesc>
       </Item>
       <Item>
          <Name>msg</Name>
-         <ShortDesc>It controls whether to display or not messages about great interchange on the screen.</ShortDesc>
+         <ShortDesc>Level of display on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If msg==1 (default) messages are displayed on the screen else no message is displayed on the screen.</LongDesc>
+         <LongDesc>It controls whether to display or not messages about great interchange on the screen.
+If msg==1 (default) messages are displayed on the screen else no message is displayed on the screen.</LongDesc>
          <Example>'msg',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -297,13 +301,17 @@ plotslrt.Tag = tag of the plot (default is pl_lrt).</LongDesc>
                <Description>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the fwd search.
 REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one Un(1,2) for example contains the unit included in step init+1 Un(end,2) contains the units included in the final step of the search</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSMtra';</Description>
+            </ItemCell>
          </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Atkinson Riani and Cerioli (2004), Exploring multivariate data with the forward search Springer Verlag, New York.</Item>
+      <Item>Atkinson A.C. Riani M. and Cerioli A. (2004), Exploring multivariate data with the forward search, Springer Verlag, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMmmd</Item>
@@ -422,7 +430,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>prolik=struct;</ItemCell>
             <ItemCell>prolik.steps=198;</ItemCell>
             <ItemCell>prolik.xlim=[-3 5];</ItemCell>
-            <ItemCell>[out]=FSMtra(Y,'prolik',prolik);</ItemCell>
+            <ItemCell>out]=FSMtra(Y,'prolik',prolik);</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>
@@ -563,12 +571,12 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>plotslrt.ylim=[0 21];</ItemCell>
             <ItemCell>ii=1;</ItemCell>
             <ItemCell>for la=la0;</ItemCell>
-            <ItemCell>plotslrt.Tag=tags{ii};</ItemCell>
-            <ItemCell>[out]=FSMtra(Y,'plotslrt',plotslrt,'onelambda',1,'la0',la);</ItemCell>
-            <ItemCell>ii=ii+1;</ItemCell>
+            <ItemCell>    plotslrt.Tag=tags{ii};</ItemCell>
+            <ItemCell>    [out]=FSMtra(Y,'plotslrt',plotslrt,'onelambda',1,'la0',la);</ItemCell>
+            <ItemCell>    ii=ii+1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>disp(out)</ItemCell>
-            <ItemCell>% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</ItemCell>
+            <ItemCell>mpare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
@@ -581,7 +589,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Extract demographic variables</ItemCell>
             <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
@@ -621,7 +629,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Extract demographic variables</ItemCell>
             <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
@@ -633,7 +641,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>plotslrt=struct;</ItemCell>
             <ItemCell>plotslrt.ylim=[4 21];</ItemCell>
             <ItemCell/>
-            <ItemCell>[out]=FSMtra(Y1,'plotsmle',1,'plotslrt',plotslrt,'la0',la0,'colnames',colnames,'prolik',prolik);</ItemCell>
+            <ItemCell>out]=FSMtra(Y1,'plotsmle',1,'plotslrt',plotslrt,'la0',la0,'colnames',colnames,'prolik',prolik);</ItemCell>
             <ItemCell>% Compare the plots with Figures 4.32, 4.33 and 4.34 p. 189-191 of ARC (2004)</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
@@ -649,7 +657,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify wealth variables</ItemCell>
             <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
@@ -674,7 +682,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify wealth variables</ItemCell>
             <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
@@ -699,7 +707,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21 25 26];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Extract work variables</ItemCell>
             <ItemCell>Y1=Y(:,[6:9 24:28]);</ItemCell>
@@ -722,7 +730,7 @@ REMARK: in every step the new subset is compared with the old subset. Un contain
             <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
             <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
             <ItemCell>for i=sel</ItemCell>
-            <ItemCell>Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Modify variables 25 and 26</ItemCell>
             <ItemCell>Y(:,25)=100-Y(:,25);</ItemCell>

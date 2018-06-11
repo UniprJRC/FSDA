@@ -37,7 +37,17 @@ Missing values (NaN's) and infinite values (Inf's) are allowed, since observatio
          <Struct> </Struct>
       </Item>
    </InpArgs>
-   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>inverse</Name>
+         <ShortDesc>Inverse transformation.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If inverse is true, the inverse transformation is returned. The default value of inverse is false.</LongDesc>
+         <Example>'inverse',true</Example>
+         <DataType>Logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>Ytra</Name>
@@ -76,6 +86,20 @@ ytra = log(y)
             <ItemCell>% Transform all columns of matrix Y according to the values of la using</ItemCell>
             <ItemCell>% basic power transformation</ItemCell>
             <ItemCell>Y1=basicPower(Y,[],la);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated data check inverse transformation.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=100;p=5;</ItemCell>
+            <ItemCell>Y=abs(randn(n,p));</ItemCell>
+            <ItemCell>la=[0.5 0 -0.5 2 0];</ItemCell>
+            <ItemCell>% Transform all columns of matrix Y according to the values of la</ItemCell>
+            <ItemCell>Ytra=basicPower(Y,[],la);</ItemCell>
+            <ItemCell>Ychk=basicPower(Ytra,[],la,'inverse',true);</ItemCell>
+            <ItemCell>disp(max(max(abs(Y-Ychk))))</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>
       </Item>

@@ -7,9 +7,10 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variable.</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
@@ -17,9 +18,10 @@
       </Item>
       <Item>
          <Name>X</Name>
-         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
-         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
-         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).
+Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
 PRIOR INFORMATION $\beta$ is assumed to have a normal distribution with mean $\beta_0$ and (conditional on $\tau_0$) covariance $(1/\tau_0) (X_0'X_0)^{-1}$.
 $\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
          <Example> </Example>
@@ -94,7 +96,7 @@ The minimum value of init is 0. In this case in the first step we start monitori
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -104,7 +106,7 @@ The minimum value of init is 0. In this case in the first step we start monitori
          <ShortDesc>Plot on the screen.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
          <LongDesc>If equal to one a plot of Bayesian minimum deletion residual appears on the screen with 1%, 50% and 99% confidence bands else (default) no plot is shown.
-% Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot</LongDesc>
+Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot</LongDesc>
          <Example>'plots',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -178,18 +180,22 @@ last column = units forming subset in the final step (i.e. all units).</LongDesc
          <LongDesc>(n-init+1) x 3 matrix containing the monitoring of posterior estimate of $\sigma^2$ and $\tau$ in each step of the forward search.
 1st col = fwd search index (from init to n).
 2nd col = monitoring of $\sigma^2_1$ (posterior estimate of $\sigma^2$).
-3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$).</LongDesc>
+3rd col = monitoring $\tau_1$ (posterior estimate of $\tau$). Note that these posterior estimates during the fwd search are corrected using the usual truncated variance consistency factor.</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Chaloner and Brant (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
-      <Item>Riani M., Corbellini A., Atkinson A.C. (2015), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
-      <Item>Atkinson A.C., Corbellini A., Riani M., (2015) Robust Bayesian Regression, submitted</Item>
+      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Riani M., Corbellini A., Atkinson A.C. (2017), Very Robust Bayesian Regression for Fraud Detection, submitted</Item>
+      <Item>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, Test, DOI 10.1007/s11749-017-0542-6</Item>
    </References>
-   <SeeAlso><!--SEE ALSO SECTION--></SeeAlso>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRB</Item>
+      <Item>FSRmdr</Item>
+      <Item>regressB</Item>
+   </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
          <Title>FSRBmdr with all default options.</Title>

@@ -74,7 +74,7 @@ TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\fr
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York. |t/c|&amp;gt;1</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>TBc</Item>
@@ -93,9 +93,9 @@ TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\fr
             <ItemCell>CC=[c' zeros(length(c),1)];</ItemCell>
             <ItemCell>jk=0;</ItemCell>
             <ItemCell>for j=c</ItemCell>
-            <ItemCell>jk=jk+1;</ItemCell>
-            <ItemCell>[bdp,eff]=OPTc(j,1);</ItemCell>
-            <ItemCell>CC(jk,2:3)=[bdp,eff];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
+            <ItemCell>     [bdp,eff]=OPTc(j,1);</ItemCell>
+            <ItemCell>    CC(jk,2:3)=[bdp,eff];</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell/>
             <ItemCell>subplot(2,1,1)</ItemCell>

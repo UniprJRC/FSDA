@@ -9,7 +9,7 @@
          <Name>v</Name>
          <ShortDesc>A vector with n elements.</ShortDesc>
          <TypeInd>It contains the response variable.</TypeInd>
-         <LongDesc>It can be both a row of column vector.</LongDesc>
+         <LongDesc>It can be either a row or a column vector.</LongDesc>
          <Example> </Example>
          <DataType>single|double</DataType>
          <ReqArg>1</ReqArg>

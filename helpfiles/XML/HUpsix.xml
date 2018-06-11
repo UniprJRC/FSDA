@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->HUpsix</Title>
-   <Purpose><!--This is the second line of the .m file-->HUpsix computes psi function (derivative of rho function) times x for Tukey's biweight  
+   <Purpose><!--This is the second line of the .m file-->HUpsix computes psi function (derivative of rho function) times x for Huber 
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -30,9 +30,9 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>psix</Name>
-         <ShortDesc>n x 1 vector</ShortDesc>
-         <TypeInd>Values of HU psi(u)*u function associated to the residuals or Mahalanobis distances for the n units of the sample.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>psi(u) function multiplied by u.</TypeInd>
+         <LongDesc>n-by-1 vector which contains the values of HU psi(u)*u function associated to the residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
          <Structure> </Structure>
       </Item>
    </OutArgs>
@@ -56,9 +56,10 @@ This means that \psi (u)/u is approximately constant over the linear region of \
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
+         <Title>Plot of psi(x) function multiplied by x.</Title>
          <Desc> </Desc>
          <MATLABcode>
+            <ItemCell>% Plot of psi(x) function multiplied  by x.</ItemCell>
             <ItemCell>x=-6:0.01:6;</ItemCell>
             <ItemCell>psixHU=HUpsix(x,2);</ItemCell>
             <ItemCell>plot(x,psixHU)</ItemCell>

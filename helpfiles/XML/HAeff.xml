@@ -74,8 +74,10 @@ It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
-         <Title> </Title>
-         <Desc> </Desc>
+         <Title>Find c for fixed efficiency.</Title>
+         <Desc>
+            <ItemCell>The constant c associated to a nominal location efficiency of 95% in regression is c = 0.690998716841394</ItemCell>
+         </Desc>
          <MATLABcode>
             <ItemCell>c=HAeff(0.95,1)</ItemCell>
          </MATLABcode>

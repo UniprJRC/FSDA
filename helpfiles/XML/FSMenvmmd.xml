@@ -47,27 +47,12 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
          <Struct> </Struct>
       </Item>
       <Item>
-         <Name>exact</Name>
-         <ShortDesc>It indicates how to calculate the quantiles of F distribution.</ShortDesc>
-         <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If it is equal to 1 (default) is based on function finv and from the Matlab statistics toolbox, otherwise the calculations of the former quantiles is based on functions invcdff. The solution has a tolerance of 1e-8 (change variable tol in files invcdff.m) Remark. the use of function finv is more precise but requires more time.</LongDesc>
-         <Example>'exact',0</Example>
-         <DataType>double</DataType>
-         <Struct> </Struct>
-      </Item>
-      <Item>
          <Name>scaled</Name>
          <ShortDesc>It indicates how to compute the envelopes.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If scaled=1 the envelopes are produced for scaled Mahalanobis distances (no consistency factor is applied) else the traditional consistency factor is applied (this is the default)</LongDesc>
+         <LongDesc>If scaled&amp;gt;0 the envelopes are produced for scaled Mahalanobis distances (no consistency factor is applied) else the traditional consistency factor is applied (this is the default)</LongDesc>
          <Example>'scaled',0</Example>
-         <DataType>double&#xD;
-&#xD;
- Subfunctions.&#xD;
-   invcdff.&#xD;
-&#xD;
- Other function dependencies:&#xD;
-   none.</DataType>
+         <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
    </OptArgs>
@@ -87,7 +72,7 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown number of multivariate outliers. Journal of the Royal Statistical Society Series B, Vol. 71, pp. 201–221.</Item>
+      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown number of multivariate outliers. Journal of the Royal Statistical Society Series B, Vol. 71, pp. 201-221.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>FSMenvmmd</Item>
@@ -97,7 +82,7 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
       <Item>
          <Title>FSMenvmmd with all default options.</Title>
          <Desc>
-            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000 observations and 5 explanatory variables using exact method.</ItemCell>
+            <ItemCell>Example of creation of 1 per cent, 50 per cent and 99 per cent envelopes based on 10000 observations and 5 explanatory variables.</ItemCell>
          </Desc>
          <MATLABcode>
             <ItemCell>MMDenv=FSMenvmmd(10000,5);</ItemCell>
@@ -139,14 +124,14 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
             <ItemCell>nsimul=1000;</ItemCell>
             <ItemCell>mmdStore=zeros(n-init,nsimul);</ItemCell>
             <ItemCell>for j=1:nsimul</ItemCell>
-            <ItemCell>Y=randn(n,p);</ItemCell>
-            <ItemCell>[fre]=unibiv(Y);</ItemCell>
-            <ItemCell>%create an initial subset with the 20 observations with the lowest</ItemCell>
-            <ItemCell>%Mahalanobis Distance</ItemCell>
-            <ItemCell>fre=sortrows(fre,4);</ItemCell>
-            <ItemCell>bs=fre(1:25,1);</ItemCell>
-            <ItemCell>mmd = FSMmmd(Y,bs,'init',init);</ItemCell>
-            <ItemCell>mmdStore(:,j)=mmd(:,2);</ItemCell>
+            <ItemCell>    Y=randn(n,p);</ItemCell>
+            <ItemCell>    [fre]=unibiv(Y);</ItemCell>
+            <ItemCell>    %create an initial subset with the 20 observations with the lowest</ItemCell>
+            <ItemCell>    %Mahalanobis Distance</ItemCell>
+            <ItemCell>    fre=sortrows(fre,4);</ItemCell>
+            <ItemCell>    bs=fre(1:25,1);</ItemCell>
+            <ItemCell>    mmd = FSMmmd(Y,bs,'init',init);</ItemCell>
+            <ItemCell>    mmdStore(:,j)=mmd(:,2);</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Sort rows of matrix mmdStore</ItemCell>
             <ItemCell>mmdStore=sort(mmdStore,2);</ItemCell>
@@ -159,7 +144,7 @@ The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</Lo
             <ItemCell>% Plot lines of empirical quantiles</ItemCell>
             <ItemCell>line(mmd(:,1),mmdStore(:,sel),'LineStyle','--','Color','g');</ItemCell>
             <ItemCell>% Plots lines of theoretical quantiles using order statistics</ItemCell>
-            <ItemCell>mmdT=FSMenvmmd(n,p,'exact',1,'init',init);</ItemCell>
+            <ItemCell>mmdT=FSMenvmmd(n,p,'init',init);</ItemCell>
             <ItemCell>line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');</ItemCell>
             <ItemCell>xlabel('Subset size m');</ItemCell>
          </MATLABcode>

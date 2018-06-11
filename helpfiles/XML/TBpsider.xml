@@ -38,7 +38,8 @@
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION-->Function TBpsider transforms vector x as follows
 \[
-TBpsider(x)= \left\{ \begin{array}{cc} 1- (x/c)^2 * [6- 5 (x/c)^2] &amp; \mbox{if } |x/c|&amp;lt;=1 0 &amp; |x/c|&amp;gt;1 \\
+TBpsider(x)= \left\{ \begin{array}{cc} 1- (x/c)^2 [6- 5 (x/c)^2] &amp; \mbox{if} |x/c|&amp;lt;=1 \\
+0 &amp; \mbox{if} |x/c|&amp;gt;1 \\
 \end{array} \right.
 \]
 Remark: Tukey's biweight psi-function is almost linear around $u = 0$ in accordance with Winsor's principle that all distributions are normal in the middle.
@@ -60,8 +61,9 @@ This means that $\psi (u)/u$ is approximately constant over the linear region of
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>x=-6:0.01:6;</ItemCell>
-            <ItemCell>psiHUder=HUpsider(x,2);</ItemCell>
-            <ItemCell>plot(x,psiHUder)</ItemCell>
+            <ItemCell>c=1.5476;</ItemCell>
+            <ItemCell>psiTBder=TBpsider(x,c);</ItemCell>
+            <ItemCell>plot(x,psiTBder)</ItemCell>
             <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
             <ItemCell>ylabel('$\psi''(x)$','Interpreter','Latex')</ItemCell>
          </MATLABcode>

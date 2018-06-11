@@ -27,7 +27,7 @@ confidence level 0.75 -&amp;gt; coefficient 0.43;
 confidence level 0.90 -&amp;gt; coefficient 0.83;
 confidence level 0.95 -&amp;gt; coefficient 1.13;
 confidence level 0.99 -&amp;gt; coefficient 1.68.
-% Remark: The default value of coeff is 1.68, that is 99% confidence level contours are produced.</LongDesc>
+Remark: The default value of coeff is 1.68, that is 99% confidence level contours are produced.</LongDesc>
          <Example>'coeff',1.68</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -134,7 +134,7 @@ The last two columns refer to the (x,y) coordinates of the outer spline.</Descri
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
       <Item>Zani, S., Riani M. and Cerioli A. (1998), Robust bivariate boxplots and multiple outlier detection, Computational Statistics and Data Analysis, 28, p. 257-270</Item>
-      <Item>Corbellini A., Riani M. and Atkinson A.C. (2015), Discussion of the paper ``Multivariate Functional Outlier Detection" by Hubert, Rousseeuw and Segaert, Statistical Methods and Applications.</Item>
+      <Item>Corbellini A., Riani M. and Atkinson A.C. (2015), Discussion of the paper 'Multivariate Functional Outlier Detection' by Hubert, Rousseeuw and Segaert, Statistical Methods and Applications.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>convhull</Item>

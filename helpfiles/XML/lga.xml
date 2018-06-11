@@ -139,7 +139,7 @@
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) ?Linear Grouping Using Orthogonal Regression?, Computational Statistics and Data Analysis 50, 1287?1312.</Item>
+      <Item>Van Aelst, S. and Wang, X. and Zamar, R. and Zhu, R. (2006) Linear Grouping Using Orthogonal Regression, Computational Statistics and Data Analysis 50, 1287-1312.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>rlga</Item>
@@ -155,7 +155,7 @@
          <Exec>1</Exec>
       </Item>
       <Item>
-         <Title>lga with all niter = 1000 and biter = 3000.</Title>
+         <Title>lga with niter = 1000 and biter = 3000.</Title>
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>X=load('X.txt');</ItemCell>

@@ -114,8 +114,8 @@ This routine computes the value of $s$ which satisfies the above equation.
       <Item>Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119, p. 176).</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
-      <Item>Mscale1</Item>
-      <Item>minscale</Item>
+      <Item>Sreg</Item>
+      <Item>Smult</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>

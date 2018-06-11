@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <HelpXML>
    <Title><!--This is simply the filename-->regressHhar</Title>
-   <Purpose><!--This is the second line of the .m file-->regressH fits a multiple linear regression model with Harvey heteroskedasticity
+   <Purpose><!--This is the second line of the .m file-->Fits a multiple linear regression model with Harvey heteroskedasticity
 </Purpose>
    <Description><!--Description section--></Description>
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
@@ -53,7 +53,7 @@ Remark: Missing values (NaN's) and infinite values (Inf's) are allowed, since ob
          <Name>intercept</Name>
          <ShortDesc>Indicator for constant term.</ShortDesc>
          <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
          <Example>'intercept',1</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
@@ -201,11 +201,11 @@ therefore the $\exp$ of the first element of vector $\gamma$ (namely exp(gamma(1
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Greene W.H.(1987): Econometric Analysis (5th edition, section 11.7.1 pp. 232-235), (7th edition, section 9.7.1 pp. 280-282).
-Prentice Hall.</Item>
+      <Item>Greene W.H.(1987), Econometric Analysis (5th edition, section 11.7.1 pp. 232-235), (7th edition, section 9.7.1 pp. 280-282), Prentice Hall.</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>regressHart</Item>
+      <Item>regressH</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>

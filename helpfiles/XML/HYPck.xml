@@ -7,18 +7,11 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>c</Name>
-         <ShortDesc>tuning constant c.
-
-</ShortDesc>
-         <TypeInd>Scalar.
-</TypeInd>
-         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator
-
-</LongDesc>
-         <Example/>
-         <DataType>single| double
-
-</DataType>
+         <ShortDesc>tuning constant c.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -70,12 +63,9 @@
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>Anew</Name>
-         <ShortDesc>Scalar
-</ShortDesc>
-         <TypeInd>Value of parameter A.
-</TypeInd>
-         <LongDesc>For more details see the methodological details inside "More About" below
-</LongDesc>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Value of parameter A.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
          <Structure> </Structure>
       </Item>
       <Item>
@@ -103,7 +93,7 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
 </MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E. (1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. This publication will be referred as 'HRR'</Item>
+      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>HYPc</Item>
@@ -118,12 +108,12 @@ It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \t
             <ItemCell>ABD=zeros(length(cc)*length(kk),4);</ItemCell>
             <ItemCell>ij=1;</ItemCell>
             <ItemCell>for c=cc</ItemCell>
-            <ItemCell>for k=kk</ItemCell>
-            <ItemCell>[A,B,d]=HYPck(c,k);</ItemCell>
-            <ItemCell>eff=B^2/A;</ItemCell>
-            <ItemCell>ABD(ij,:)=[A,B,d,eff];</ItemCell>
-            <ItemCell>ij=ij+1;</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    for k=kk</ItemCell>
+            <ItemCell>        [A,B,d]=HYPck(c,k);</ItemCell>
+            <ItemCell>        eff=B^2/A;</ItemCell>
+            <ItemCell>        ABD(ij,:)=[A,B,d,eff];</ItemCell>
+            <ItemCell>        ij=ij+1;</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
          </MATLABcode>
          <Exec>0</Exec>

@@ -8,9 +8,9 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>Y</Name>
-         <ShortDesc>Data matrix containing n observations on v variables Rows of Y represent observations, and columns represent variables.</ShortDesc>
-         <TypeInd>Observations (rows) with missing (NaN) or or infinite (Inf) values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix containing n observations on v variables Rows of Y represent observations, and columns represent variables. Observations (rows) with missing (NaN) or or infinite (Inf) values will automatically be excluded from the computations.</LongDesc>
          <Example> </Example>
          <DataType> double</DataType>
          <ReqArg>1</ReqArg>
@@ -20,28 +20,31 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>kk</Name>
-         <ShortDesc>Integer vector specifying the number of mixture components (clusters) for which the BIC is to be calculated.</ShortDesc>
-         <TypeInd>Vector.</TypeInd>
-         <LongDesc>The default value of kk is 1:5.</LongDesc>
+         <ShortDesc>number of mixture components.</ShortDesc>
+         <TypeInd>Integer vector.</TypeInd>
+         <LongDesc>Integer vector specifying the number of mixture components (clusters) for which the BIC is to be calculated.
+Vector. The default value of kk is 1:5.</LongDesc>
          <Example>'kk',1:4</Example>
          <DataType>int16 | int32 | single | double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>cc</Name>
-         <ShortDesc>A vector specifying the values of the restriction factor which have to be considered.</ShortDesc>
+         <ShortDesc>values of restriction factor.</ShortDesc>
          <TypeInd>Vector.</TypeInd>
-         <LongDesc>The default value of cc is [1 2 4 8 16 32 64 128]</LongDesc>
+         <LongDesc>A vector specifying the values of the restriction factor which have to be considered.
+The default value of cc is [1 2 4 8 16 32 64 128]</LongDesc>
          <Example>'cc',[1 2 4 8 128]</Example>
          <DataType>double</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
          <Name>whichIC</Name>
-         <ShortDesc>Character which specifies which information criteria must be computed for each k (number of groups) and each value of the restriction factor (c).</ShortDesc>
-         <TypeInd>Possible values for whichIC are:
-'MIXMIX' = a mixture model is fitted and to compute the information criterion the mixture likelihood is used.</TypeInd>
-         <LongDesc>This option corresponds to the use of the Bayesian Information criterion (BIC). In output structure out just the matrix out.MIXMIX is given.
+         <ShortDesc>type of information criterion.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character which specifies which information criteria must be computed for each k (number of groups) and each value of the restriction factor (c).
+Possible values for whichIC are:
+'MIXMIX' = a mixture model is fitted and to compute the information criterion the mixture likelihood is used. This option corresponds to the use of the Bayesian Information criterion (BIC). In output structure out just the matrix out.MIXMIX is given.
 'MIXCLA' = a mixture model is fitted but to compute the information criterion the classification likelihood is used. This option corresponds to the use of the Integrated Complete Likelihood (ICL). In output structure out just the matrix out.MIXCLA is given.
 'CLACLA' = everything is based on the classification likelihood. This information criterion will be called CLA. In output structure out just the matrix out.CLACLA is given.
 'ALL' = both classification and mixture likelihood are used.
@@ -114,11 +117,12 @@ Remark 2 - option startv1 is used just if nsamp is a scalar (see for more detail
          <Struct> </Struct>
       </Item>
       <Item>
-         <Name>restr</Name>
-         <ShortDesc>The type of restriction to be applied on the cluster scatter matrices.</ShortDesc>
-         <TypeInd>Valid values are 'eigen' (default), or 'deter'.</TypeInd>
-         <LongDesc>eigen implies restriction on the eigenvalues while deter implies restrictions on the determinant.</LongDesc>
-         <Example>'restr','deter'</Example>
+         <Name>restrtype</Name>
+         <ShortDesc>type of restriction.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>The type of restriction to be applied on the cluster scatter matrices. Valid values are 'eigen' (default), or 'deter'.
+eigen implies restriction on the eigenvalues while deter implies restriction on the determinants.</LongDesc>
+         <Example>'restrtype','deter'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
       </Item>
@@ -133,9 +137,9 @@ Remark 2 - option startv1 is used just if nsamp is a scalar (see for more detail
       </Item>
       <Item>
          <Name>numpool</Name>
-         <ShortDesc>scalar.</ShortDesc>
-         <TypeInd>If numpool &amp;gt; 1, the routine automatically checks if the Parallel Computing Toolbox is installed and distributes the random starts over numpool parallel processes.</TypeInd>
-         <LongDesc>If numpool &amp;lt;= 1, the random starts are run sequentially. By default, numpool is set equal to the number of physical cores available in the CPU (this choice may be inconvenient if other applications are running concurrently). The same happens if the numpool value chosen by the user exceeds the available number of cores. REMARK 1: up to R2013b, there was a limitation on the maximum number of cores that could be addressed by the parallel processing toolbox (8 and, more recently, 12). From R2014a, it is possible to run a local cluster of more than 12 workers.
+         <ShortDesc>number of pools for parellel computing.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If numpool &amp;gt; 1, the routine automatically checks if the Parallel Computing Toolbox is installed and distributes the random starts over numpool parallel processes. If numpool &amp;lt;= 1, the random starts are run sequentially. By default, numpool is set equal to the number of physical cores available in the CPU (this choice may be inconvenient if other applications are running concurrently). The same happens if the numpool value chosen by the user exceeds the available number of cores. REMARK 1: up to R2013b, there was a limitation on the maximum number of cores that could be addressed by the parallel processing toolbox (8 and, more recently, 12). From R2014a, it is possible to run a local cluster of more than 12 workers.
 REMARK 2: Unless you adjust the cluster profile, the default maximum number of workers is the same as the number of computational (physical) cores on the machine.
 REMARK 3: In modern computers the number of logical cores is larger than the number of physical cores. By default, MATLAB is not using all logical cores because, normally, hyper-threading is enabled and some cores are reserved to this feature.
 REMARK 4: It is because of Remarks 3 that we have chosen as default value for numpool the number of physical cores rather than the number of logical ones. The user can increase the number of parallel pool workers allocated to the multiple start monitoring by:
@@ -149,9 +153,10 @@ REMARK 5: the parallelization refers to the ...</LongDesc>
       </Item>
       <Item>
          <Name>cleanpool</Name>
-         <ShortDesc>cleanpool is 1 if the parallel pool has to be cleaned after the execution of the routine.</ShortDesc>
-         <TypeInd>Otherwise it is 0.</TypeInd>
-         <LongDesc>The default value of cleanpool is 1. Clearly this option has an effect just if previous option numpool is &amp;gt; 1.</LongDesc>
+         <ShortDesc>clean pool.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>cleanpool is 1 if the parallel pool has to be cleaned after the execution of the routine. Otherwise it is 0. The default value of cleanpool is 1. Clearly this option has an effect just if previous option numpool is &amp;gt;
+1.</LongDesc>
          <Example>'cleanpool',1</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
@@ -176,10 +181,19 @@ REMARK 5: the parallelization refers to the ...</LongDesc>
       </Item>
       <Item>
          <Name>Ysave</Name>
-         <ShortDesc>Scalar that is set to 1 to request that the input matrix Y is saved into the output structure out.</ShortDesc>
-         <TypeInd>Default is 1, that is matrix Y is saved inside output structure out.</TypeInd>
-         <LongDesc>%</LongDesc>
+         <ShortDesc>save input matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar that is set to 1 to request that the input matrix Y is saved into the output structure out. Default is 1, that is matrix Y is saved inside output structure out.</LongDesc>
          <Example>'Ysave',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>UnitsSameGroup</Name>
+         <ShortDesc>Units with same labels.</ShortDesc>
+         <TypeInd>Numeric vector.</TypeInd>
+         <LongDesc>List of the units which must (whenever possible) have the same label. For example if UnitsSameGroup=[20 26], it means that group which contains unit 20 is always labelled with number 1. Similarly, the group which contains unit 26 is always labelled with number 2, (unless it is found that unit 26 already belongs to group 1). In general, group which contains unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is labelled with number r (unless it is found that unit UnitsSameGroup(r) has already been assigned to groups 1, 2, ..., r-1). The default value of UnitsSameGroup is '' that is consistent labels are not imposed.</LongDesc>
+         <Example>'UnitsSameGroup',[12 20]</Example>
          <DataType>single | double</DataType>
          <Struct> </Struct>
       </Item>
@@ -196,6 +210,10 @@ REMARK 5: the parallelization refers to the ...</LongDesc>
                <Description>matrix of size 5-times-8 if kk and cc are not specififed else it is a matrix of size length(kk)-times length(cc) containinig the value of the penalized classification likelihood. This output is present only if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</Description>
             </ItemCell>
             <ItemCell>
+               <Value>CLACLAtable</Value>
+               <Description>same output of CLACLA but in MATLAB table format (this field is present only if your MATLAB version is not&amp;lt;2013b).</Description>
+            </ItemCell>
+            <ItemCell>
                <Value>IDXCLA</Value>
                <Description>cell of size 5-times-8 if kk and cc are not specififed else it is a cell of size length(kk)-times length(cc). Each element of the cell is a vector of length n containinig the assignment of each unit using the classification model. This output is present only if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</Description>
             </ItemCell>
@@ -204,8 +222,16 @@ REMARK 5: the parallelization refers to the ...</LongDesc>
                <Description>matrix of size 5-times-8 if kk and cc are not specififed else it is a matrix of size length(kk)-times length(cc) containinig the value of the penalized mixture likelihood. This output is present only if 'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.</Description>
             </ItemCell>
             <ItemCell>
+               <Value>MIXMIXtable</Value>
+               <Description>same output of MIXMIX but in MATLAB table format (this field is present only if your MATLAB version is not&amp;lt;2013b).</Description>
+            </ItemCell>
+            <ItemCell>
                <Value>MIXCLA</Value>
                <Description>matrix of size 5-times-8 if kk and cc are not specififed else it is a matrix of size length(kk)-times length(cc) containinig the value of the ICL. This output is present only if 'whichIC' is 'MIXCLA' or 'whichIC' is 'ALL'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXCLAtable</Value>
+               <Description>same output of MIXCLA but in MATLAB table format (this field is present only if your MATLAB version is not&amp;lt;2013b).</Description>
             </ItemCell>
             <ItemCell>
                <Value>IDXMIX</Value>
@@ -223,17 +249,23 @@ REMARK 5: the parallelization refers to the ...</LongDesc>
                <Value>alpha</Value>
                <Description>scalar containing the trimming level which has been used.</Description>
             </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>Original data matrix Y. The field is present if option Ysave is set to 1.</Description>
+            </ItemCell>
          </Structure>
       </Item>
    </OutArgs>
    <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
    <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
    <References><!--REFERENCES SECTION-->
-      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2016).
-Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoods, submitted</Item>
+      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2017), Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoods, Journal of Computational and Graphical Statistics, https://doi.org/10.1080/10618600.2017.1390469</Item>
    </References>
    <SeeAlso><!--SEE ALSO SECTION-->
       <Item>tclust</Item>
+      <Item>tclustICsol</Item>
+      <Item>tclustICplot</Item>
+      <Item>carbikeplot</Item>
    </SeeAlso>
    <Ex><!--EXAMPLES SECTION-->
       <Item>
@@ -241,18 +273,18 @@ Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoo
          <Desc> </Desc>
          <MATLABcode>
             <ItemCell>Y=load('geyser2.txt');</ItemCell>
-            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1)</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1);</ItemCell>
             <ItemCell>% Write out.MIXMIX as MATLAB table</ItemCell>
             <ItemCell>disp('MIXMIX (BIC)')</ItemCell>
             <ItemCell>if verLessThan ('matlab','8.2.0');</ItemCell>
-            <ItemCell>VariableNames={'c_1'; 'c_2'; 'c_4'; 'c_8'; 'c_16'; 'c_32'; 'c_64'; 'c_128'};</ItemCell>
-            <ItemCell>disp(VariableNames')</ItemCell>
-            <ItemCell>disp(out.MIXMIX)</ItemCell>
-            <ItemCell>disp('Rows refers to k (number of groups')</ItemCell>
+            <ItemCell>    VariableNames={'c_1'; 'c_2'; 'c_4'; 'c_8'; 'c_16'; 'c_32'; 'c_64'; 'c_128'};</ItemCell>
+            <ItemCell>    disp(VariableNames')</ItemCell>
+            <ItemCell>    disp(out.MIXMIX)</ItemCell>
+            <ItemCell>    disp('Rows refers to k (number of groups')</ItemCell>
             <ItemCell>else</ItemCell>
-            <ItemCell>RowNames=cellstr([repmat('k=',length(out.kk),1) num2str(out.kk')]);</ItemCell>
-            <ItemCell>VariableNames=matlab.lang.makeValidName(cellstr([repmat('c=',length(out.cc),1) num2str(out.cc')]));</ItemCell>
-            <ItemCell>disp(array2table(out.MIXMIX,'VariableNames',VariableNames','RowNames',RowNames))</ItemCell>
+            <ItemCell>    RowNames=cellstr([repmat('k=',length(out.kk),1) num2str(out.kk')]);</ItemCell>
+            <ItemCell>    VariableNames=matlab.lang.makeValidName(cellstr([repmat('c=',length(out.cc),1) num2str(out.cc')]));</ItemCell>
+            <ItemCell>    disp(array2table(out.MIXMIX,'VariableNames',VariableNames','RowNames',RowNames))</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Find smallest value inside the table and write the corresponding</ItemCell>
             <ItemCell>% values of k (number of groups) and c (restriction factor)</ItemCell>
@@ -295,20 +327,20 @@ Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoo
             <ItemCell>maxy=max(max(IC));</ItemCell>
             <ItemCell>seqcc=1:lcc;</ItemCell>
             <ItemCell>for j=kk</ItemCell>
-            <ItemCell>subplot(1,length(kk),j)</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>plot(1:lcc,IC(j,:),'k')</ItemCell>
-            <ItemCell>[minICj,minICjind]=min(IC(j,:));</ItemCell>
-            <ItemCell>plot(seqcc(minICjind),minICj,'rs','MarkerSize',10)</ItemCell>
-            <ItemCell>xlim([1 length(cc)])</ItemCell>
-            <ItemCell>if samescale==1</ItemCell>
-            <ItemCell>ylim([miny maxy])</ItemCell>
-            <ItemCell>end</ItemCell>
-            <ItemCell>L = get(gca,'XLim');</ItemCell>
-            <ItemCell>set(gca,'XTick',linspace(L(1),L(2),lcc))</ItemCell>
-            <ItemCell>set(gca,'XTickLabel',num2str(cc'))</ItemCell>
-            <ItemCell>xlabel('Restr. fact. $c$','Interpreter','Latex')</ItemCell>
-            <ItemCell>title(['k=' num2str(j)])</ItemCell>
+            <ItemCell>    subplot(1,length(kk),j)</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    plot(1:lcc,IC(j,:),'k')</ItemCell>
+            <ItemCell>    [minICj,minICjind]=min(IC(j,:));</ItemCell>
+            <ItemCell>    plot(seqcc(minICjind),minICj,'rs','MarkerSize',10)</ItemCell>
+            <ItemCell>    xlim([1 length(cc)])</ItemCell>
+            <ItemCell>    if samescale==1</ItemCell>
+            <ItemCell>        ylim([miny maxy])</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    L = get(gca,'XLim');</ItemCell>
+            <ItemCell>    set(gca,'XTick',linspace(L(1),L(2),lcc))</ItemCell>
+            <ItemCell>    set(gca,'XTickLabel',num2str(cc'))</ItemCell>
+            <ItemCell>    xlabel('Restr. fact. $c$','Interpreter','Latex')</ItemCell>
+            <ItemCell>    title(['k=' num2str(j)])</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>suplabel('BIC (MIXMIX)','t')</ItemCell>
          </MATLABcode>

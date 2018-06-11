@@ -102,9 +102,9 @@ It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
             <ItemCell>BDPEFF=[cc' zeros(length(cc),2)];</ItemCell>
             <ItemCell>jk=1;</ItemCell>
             <ItemCell>for c=cc</ItemCell>
-            <ItemCell>[bdp,eff]=HAc(c,1);</ItemCell>
-            <ItemCell>BDPEFF(jk,2:end)=[bdp, eff];</ItemCell>
-            <ItemCell>jk=jk+1;</ItemCell>
+            <ItemCell>    [bdp,eff]=HAc(c,1);</ItemCell>
+            <ItemCell>    BDPEFF(jk,2:end)=[bdp, eff];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>nr=2;</ItemCell>
             <ItemCell>nc=1;</ItemCell>

@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->Sregeda</Title>
+   <Purpose><!--This is the second line of the .m file-->Sregeda computes S estimators in linear regression for a series of values of bdp 
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. y can be either a row or a column vector.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x p-1).</ShortDesc>
+         <TypeInd>Rows of X represent observations, and columns represent variables.</TypeInd>
+         <LongDesc>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>breakdown point.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>It measures the fraction of outliers the algorithm should resist. In this case any value greater than 0 but smaller or equal than 0.5 will do fine.
+The default for bdp is a sequence from 0.5 to 0.01 with step -0.01. The sequence is forced to be monotonically decreasing.</LongDesc>
+         <Example>'bdp',[0.5 0.4 0.3 0.2 0.1]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofunc</Name>
+         <ShortDesc>rho function.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which specifies the rho function which must be used to weight the residuals. Possible values are 'bisquare' 'optimal' 'hyperbolic' 'hampel'.
+'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
+See TBrho.m and TBpsi.m.
+'optimal' uses optimal $\rho$ and $\psi$ functions.
+See OPTrho.m and OPTpsi.m.
+'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
+See HYPrho.m and HYPpsi.m.
+'hampel' uses Hampel $\rho$ and $\psi$ functions.
+See HArho.m and HApsi.m.
+The default is bisquare</LongDesc>
+         <Example>'rhofunc','optimal'</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rhofuncparam</Name>
+         <ShortDesc>Additional parameters for the specified rho function.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>For hyperbolic rho function it is possible to set up the value of k = sup CVC (the default value of k is 4.5).
+For Hampel rho function it is possible to define parameters a, b and c (the default values are a=2, b=4, c=8)</LongDesc>
+         <Example>'rhofuncparam',5</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the robust estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.
+They will be (n choose p).
+If the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+         <Example>'nsamp',1000</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refsteps</Name>
+         <ShortDesc>Number of refining iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of refining iterationsin each subsample (default = 3).
+refsteps = 0 means "raw-subsampling" without iterations.</LongDesc>
+         <Example>'refsteps',10</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>reftol</Name>
+         <ShortDesc>tolerance for the refining steps.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default value is 1e-6;</LongDesc>
+         <Example>'reftol',1e-05</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refstepsbestr</Name>
+         <ShortDesc>number of refining iterations for each best subset.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining number of refining iterations for each best subset (default = 50).</LongDesc>
+         <Example>'refstepsbestr',10</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>reftolbestr</Name>
+         <ShortDesc>Tolerance for the refining steps.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Tolerance for the refining steps for each of the best subsets The default value is 1e-8;</LongDesc>
+         <Example>'reftolbestr',1e-10</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>minsctol</Name>
+         <ShortDesc>tolerance for the iterative procedure for finding the minimum value of the scale.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Value of tolerance for the iterative procedure for finding the minimum value of the scale for each subset and each of the best subsets (It is used by subroutine minscale.m) The default value is 1e-7;</LongDesc>
+         <Example>'minsctol',1e-7</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bestr</Name>
+         <ShortDesc>number of "best betas" to remember.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar defining number of "best betas" to remember from the subsamples. These will be later iterated until convergence (default=5)</LongDesc>
+         <Example>'bestr',10</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Confidence level which is used to declare units as outliers.</ShortDesc>
+         <TypeInd>Scalar Usually conflev=0.</TypeInd>
+         <LongDesc>95, 0.975 0.99 (individual alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+Default value is 0.975</LongDesc>
+         <Example>'conflev',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages on the screen.
+If msg==1 (default) messages are displayed on the screen about estimated time to compute the estimator and the warnings about 'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix' are set to off else no message is displayed on the screen</LongDesc>
+         <Example>'msg',0</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots = 1, generates a plot with the robust residuals for each value of bdp. The confidence level used to draw the confidence bands for the residuals is given by the input option conflev. If conflev is not specified a nominal 0.975 confidence interval will be used.</LongDesc>
+         <Example>'plots',0</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>Beta</Value>
+               <Description>matrix containing the S estimator of regression coefficients for each value of bdp</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Scale</Value>
+               <Description>vector containing the estimate of the scale (sigma) for each value of bdp. This is the value of the objective function</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>BS</Value>
+               <Description>p x 1 vector containing the units forming best subset associated with S estimate of regression coefficient.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>RES</Value>
+               <Description>n x length(bdp) matrix containing the robust scaled residuals for each value of bdp</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Weights</Value>
+               <Description>n x length(bdp) vector containing the estimates of the weights for each value of bdp</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Outliers</Value>
+               <Description>Boolean matrix containing the list of the units declared as outliers for each value of bdp using confidence level specified in input scalar conflev</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>confidence level which is used to declare outliers.
+Remark: scalar out.conflev will be used to draw the horizontal line (confidence band) in the plot.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Singsub</Value>
+               <Description>Number of subsets wihtout full rank. Notice that out.singsub(bdp(jj)) &amp;gt; 0.1*(number of subsamples) produces a warning</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>rhofunc</Value>
+               <Description>string identifying the rho function which has been used</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>rhofuncparam</Value>
+               <Description>vector which contains the additional parameters for the specified rho function which have been used. For hyperbolic rho function the value of k =sup CVC. For Hampel rho function the parameters a, b and c</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>bdp</Value>
+               <Description>vector which contains the values of bdp which have been used</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>response vector y. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>data matrix X. The field is present if option yxsave is set to 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'Sregeda'</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>C : matrix</ShortDesc>
+         <TypeInd>Indices of the subsamples extracted for computing the estimate (the so called elemental sets).</TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani M., Cerioli A., Atkinson A.C., and Perrotta D. (2014), Monitoring Robust Regression. Electronic Journal of Statistics, Vol. 8 pp. 646-677.</Item>
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>Sreg</Item>
+      <Item>MMreg</Item>
+      <Item>Taureg</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Sregeda with msg=0.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=Sregeda(ycont,X,'msg',0);</ItemCell>
+            <ItemCell>resfwdplot(out)</ItemCell>
+            <ItemCell>ylabel('Scaled S residuals');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Sreg with optional input arguments.</Title>
+         <Desc>
+            <ItemCell>Sreg with optimal rho function. Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=Sregeda(ycont,X,'rhofunc','optimal');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Sreg with hyperbolic rho function.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=Sregeda(ycont,X,'rhofunc','hyperbolic');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Sreg on Stars data.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the Figure 2 of the article in the References</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('stars');</ItemCell>
+            <ItemCell>X=stars.data(:,1);</ItemCell>
+            <ItemCell>y=stars.data(:,2);</ItemCell>
+            <ItemCell>[out]=Sregeda(y,X,'rhofunc','bisquare');</ItemCell>
+            <ItemCell>standard.Color={'b'}</ItemCell>
+            <ItemCell>standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)</ItemCell>
+            <ItemCell>fground.Color={'r'}</ItemCell>
+            <ItemCell>resfwdplot(out,'standard',standard,'fground',fground)</ItemCell>
+            <ItemCell>ylabel('Scaled S residuals');</ItemCell>
+            <ItemCell/>
+            <ItemCell>RHO = [];</ItemCell>
+            <ItemCell>for i=1:49</ItemCell>
+            <ItemCell>    RHO(i,1) = corr(out.RES(:,i),out.RES(:,i+1),'type','Spearman');</ItemCell>
+            <ItemCell>    RHO(i,2) = corr(out.RES(:,i),out.RES(:,i+1),'type','Kendall');</ItemCell>
+            <ItemCell>    RHO(i,3) = corr(out.RES(:,i),out.RES(:,i+1),'type','Pearson');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>minc = min(RHO);</ItemCell>
+            <ItemCell>maxc = max(RHO);</ItemCell>
+            <ItemCell>ylimits = [min(minc)*0.8,max(maxc)*1.1];</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>subplot(3,1,1);</ItemCell>
+            <ItemCell>plot(out.bdp(1:49),RHO(:,1)');</ItemCell>
+            <ItemCell>if strcmp(out.class,'Sregeda')</ItemCell>
+            <ItemCell>    set(gca,'XDir','reverse','ylim',ylimits);</ItemCell>
+            <ItemCell>    title('Spearman');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>subplot(3,1,2);</ItemCell>
+            <ItemCell>plot(out.bdp(1:49),RHO(:,2)');</ItemCell>
+            <ItemCell>if strcmp(out.class,'Sregeda')</ItemCell>
+            <ItemCell>    set(gca,'XDir','reverse','ylim',ylimits);</ItemCell>
+            <ItemCell>    title('Kendall');</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>subplot(3,1,3);</ItemCell>
+            <ItemCell>plot(out.bdp(1:49),RHO(:,3)');</ItemCell>
+            <ItemCell>if strcmp(out.class,'Sregeda')</ItemCell>
+            <ItemCell>    set(gca,'XDir','reverse','ylim',ylimits);</ItemCell>
+            <ItemCell>    title('Pearson');</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -7,11 +7,14 @@
    <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
       <Item>
          <Name>y</Name>
-         <ShortDesc>A vector with n elements that contains the response variables.</ShortDesc>
-         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</TypeInd>
-         <LongDesc> </LongDesc>
-         <Example> </Example>
-         <DataType>single| double</DataType>
+         <ShortDesc>A vector with n elements that contains the response variables.
+</ShortDesc>
+         <TypeInd>Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+</TypeInd>
+         <LongDesc/>
+         <Example/>
+         <DataType>single| double
+</DataType>
          <ReqArg>1</ReqArg>
          <Struct> </Struct>
       </Item>
@@ -39,11 +42,16 @@
    <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
       <Item>
          <Name>intercept</Name>
-         <ShortDesc>Indicator for constant term.</ShortDesc>
-         <TypeInd>Scalar.</TypeInd>
-         <LongDesc>If 1, a model with constant term will be fitted (default), if 0, no constant term will be included.</LongDesc>
-         <Example>'intercept',1</Example>
-         <DataType>double</DataType>
+         <ShortDesc>Indicator for constant term.
+</ShortDesc>
+         <TypeInd>Scalar.
+</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.
+</LongDesc>
+         <Example>'intercept',1
+</Example>
+         <DataType>double
+</DataType>
          <Struct> </Struct>
       </Item>
       <Item>
@@ -70,7 +78,7 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
          <Name>tstat</Name>
          <ShortDesc>the kind of t-statistics which have to be monitored.</ShortDesc>
          <TypeInd>Character.</TypeInd>
-         <LongDesc>tstat = 'trad' implies monitoring of traditional t statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m is based on $s^2_m$ (notice that $s^2_m&amp;lt;&amp;lt;\sigma^2$ when m/n is small) tstat = 'scal' (default) implies monitoring of rescaled t statistics In this scale the estimate of $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$ where $var_{truncnorm(m/n)}$ is the variance of the truncated normal distribution.</LongDesc>
+         <LongDesc>tstat = 'trad' implies monitoring of traditional t statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m is based on $s^2_m$ (notice that $s^2_m&amp;lt;&amp;lt;\sigma^2$ when m/n is small) tstat = 'scal' (default) implies monitoring of rescaled t statistics In this case the estimate of $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$ where $var_{truncnorm(m/n)}$ is the variance of the truncated normal distribution.</LongDesc>
          <Example>'tstat','trad'</Example>
          <DataType>char</DataType>
          <Struct> </Struct>
@@ -88,9 +96,9 @@ min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
    <OutArgs><!--OUTPUT ARGUMENT SECTION-->
       <Item>
          <Name>out</Name>
-         <ShortDesc> </ShortDesc>
-         <TypeInd> </TypeInd>
-         <LongDesc> </LongDesc>
+         <ShortDesc/>
+         <TypeInd/>
+         <LongDesc/>
          <Structure>
             <ItemCell>
                <Value>RES</Value>
@@ -202,7 +210,7 @@ last col = upper confidence limit based on conflev(end);</Description>
             </ItemCell>
             <ItemCell>
                <Value>class</Value>
-               <Description>string FSReda.</Description>
+               <Description>'FSReda'.</Description>
             </ItemCell>
          </Structure>
       </Item>
@@ -348,27 +356,27 @@ last col = upper confidence limit based on conflev(end);</Description>
             <ItemCell>xlimU=n+1;  % upper value of xlim</ItemCell>
             <ItemCell>close all</ItemCell>
             <ItemCell>for j=1:p</ItemCell>
-            <ItemCell>subplot(nr,nc,j);</ItemCell>
-            <ItemCell>hold('on')</ItemCell>
-            <ItemCell>% plot 95% and 99% HPD  trajectories</ItemCell>
-            <ItemCell>plot(outEDA.Bols(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
-            <ItemCell>plot(outEDA.Bols(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
-            <ItemCell>% plot estimate of beta1_j</ItemCell>
-            <ItemCell>plot(outEDA.Bols(:,1),outEDA.Bols(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
-            <ItemCell>% Set ylim</ItemCell>
-            <ItemCell>ylimU=max(outEDA.betaINT(:,4,j));</ItemCell>
-            <ItemCell>ylimL=min(outEDA.betaINT(:,3,j));</ItemCell>
-            <ItemCell>ylim([ylimL ylimU])</ItemCell>
-            <ItemCell>% Set xlim</ItemCell>
-            <ItemCell>xlim([xlimL xlimU]);</ItemCell>
-            <ItemCell>% Add vertical line in correspondence of the step prior to the</ItemCell>
-            <ItemCell>% entry of the first outlier</ItemCell>
-            <ItemCell>line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
-            <ItemCell>ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
-            <ItemCell>set(gca,'FontSize',FontSize);</ItemCell>
-            <ItemCell>if j&amp;gt;(nr-1)*nc</ItemCell>
-            <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
-            <ItemCell>end</ItemCell>
+            <ItemCell>    subplot(nr,nc,j);</ItemCell>
+            <ItemCell>    hold('on')</ItemCell>
+            <ItemCell>    % plot 95% and 99% HPD  trajectories</ItemCell>
+            <ItemCell>    plot(outEDA.Bols(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')</ItemCell>
+            <ItemCell>    plot(outEDA.Bols(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')</ItemCell>
+            <ItemCell>    % plot estimate of beta1_j</ItemCell>
+            <ItemCell>    plot(outEDA.Bols(:,1),outEDA.Bols(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')</ItemCell>
+            <ItemCell>    % Set ylim</ItemCell>
+            <ItemCell>    ylimU=max(outEDA.betaINT(:,4,j));</ItemCell>
+            <ItemCell>    ylimL=min(outEDA.betaINT(:,3,j));</ItemCell>
+            <ItemCell>    ylim([ylimL ylimU])</ItemCell>
+            <ItemCell>    % Set xlim</ItemCell>
+            <ItemCell>    xlim([xlimL xlimU]);</ItemCell>
+            <ItemCell>    % Add vertical line in correspondence of the step prior to the</ItemCell>
+            <ItemCell>    % entry of the first outlier</ItemCell>
+            <ItemCell>    line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);</ItemCell>
+            <ItemCell>    ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);</ItemCell>
+            <ItemCell>    set(gca,'FontSize',FontSize);</ItemCell>
+            <ItemCell>    if j&amp;gt;(nr-1)*nc</ItemCell>
+            <ItemCell>        xlabel('Subset size m','FontSize',FontSize);</ItemCell>
+            <ItemCell>    end</ItemCell>
             <ItemCell>end</ItemCell>
             <ItemCell>% Subplot associated with the monitoring of sigma^2</ItemCell>
             <ItemCell>subplot(nr,nc,6);</ItemCell>
@@ -393,10 +401,10 @@ last col = upper confidence limit based on conflev(end);</Description>
             <ItemCell>xlabel('Subset size m','FontSize',FontSize);</ItemCell>
             <ItemCell>% Add multiple title</ItemCell>
             <ItemCell>suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...</ItemCell>
-            <ItemCell>num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
-            <ItemCell>']'],'t');</ItemCell>
+            <ItemCell>    num2str(xlimL) ',' num2str(xlimU) ...</ItemCell>
+            <ItemCell>    ']'],'t');</ItemCell>
             <ItemCell>disp(['The vertical lines are located in the' ...</ItemCell>
-            <ItemCell>' step prior to the inclusion of the first outlier'])</ItemCell>
+            <ItemCell>    ' step prior to the inclusion of the first outlier'])</ItemCell>
          </MATLABcode>
          <Exec>1</Exec>
       </Item>
