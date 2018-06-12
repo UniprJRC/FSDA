@@ -136,7 +136,6 @@ web(outputOFHtmlHelpFile,'-browser');
 %% STEP 2bis: create HTML for all files filtered using makecontentsFilesFS
 % FilesIncluded=FilesIncluded(1:3,:);
 
-
 [FilesWithProblemsweb,OUTweb]=publishFSallFiles(FilesIncluded,'webhelp',true);
 
 % Check correctness of HTML file creation
@@ -180,8 +179,8 @@ fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true);
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
-%% STEP 5: Patch with Google Search module all static files. Then copy
-%  external static files: acknowledgments.html, developers.html, group.html
+%% STEP 5: Patch with Google Search module all static files. 
+%  Then, copy external static files: acknowledgments.html, developers.html, group.html
 %  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
 %  In the end create a sitemap for Google Search module.
 %
@@ -190,10 +189,11 @@ FullPath=which(FileName);
 %Navigate to the main folder of FSDA
 FSDAroot=fileparts(FullPath);
 
-
+fsep=filesep;
+% List of static files
 ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
     'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html' 'empty.html'...
-    'examples.html' ...
+    'examples.html',  'function-alpha.html', 'function-cate.html', ...
     'getting-started.html' 'index.html' 'introFS.html' 'introrob.html' ...
     'introrobmulttech.html' 'introrobregtech.html' 'mult_fsm.html' ...
     'mult_fsmeda.html' 'mult_fsmfan.html' 'mult_fsmtra.html' 'mult_mcd.html'...
@@ -208,7 +208,16 @@ ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
     'statistical_visualization_resindex.html' 'statistical_visualization_yx.html'...
     'transf_fsrfan.html' 'transf_intro.html' 'transf_score.html' 'tutorials.html'};
 
-[issuesweb,OUTweb]=insertGoogleSearchEngine(ListofFiles);
+FilesNotFound=insertGoogleSearchEngine(ListofFiles);
+
+if ~isempty(FilesNotFound)
+    disp('Files for which google search engine could not be inserted')
+    for i=1:length(FilesNotFound)
+        disp(FilesNotFound{i,1})
+    end
+    error('FSDA:CreateFSDAhelpFiles','Files not found')
+end
+
 
 extFiles= {'acknowledgments.html' 'developers.html' 'group.html' 'license.txt' ...
     'links_relevant.html' 'poster_fsda.pdf'};
@@ -219,7 +228,7 @@ for i=1:length(extFiles)
         [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep extFiles{i}]);
     if status==0
         disp(['File: ' inputFile ' not found'])
-        error('FSDA:CreateFSDAhelpFiles',['File: not found'])
+        error('FSDA:CreateFSDAhelpFiles','File: not found')
     end
     
 end
@@ -229,7 +238,7 @@ status=copyfile(inputFile, ...
     [FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'InstallationNotes.pdf']);
 if status==0
     disp(['File: ' inputFile ' not found'])
-    error('FSDA:CreateFSDAhelpFiles',['File: not found'])
+    error('FSDA:CreateFSDAhelpFiles','File: not found')
 end
 
 

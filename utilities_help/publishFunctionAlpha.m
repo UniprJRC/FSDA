@@ -36,12 +36,15 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %                     current file in alphabetical order.
 %                 Example - 'CreateTxtFile',false
 %                 Data Types - boolean
-% webhelp :   Option to create web page version of categorical list of functions. 
+% webhelp :   Option which specifies the default path to create html file
+%             containing the alphabetical list of functions.
 %             Logical.
-%             If webhelp is true, this option substitutes the MATLAB search
-%             form component with a Google local search form, enabling
-%             Google to create an index of online documentation help. The
-%             default value of webhelp is false.
+%             If webhelp is true, the output is produced in the path
+%             (FSDA root)\helpfiles\FSDAweb.
+%             If webhelp is false (default), the output is produced in the path
+%             (FSDA root)\helpfiles\FSDA.
+%             Note that this option is valid just if outpuDir option below
+%             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
 % outputDir : Output folder. String.
@@ -182,7 +185,6 @@ if nargin>1
     
     CreateTxtFile=options.CreateTxtFile;
     outputDir=options.outputDir;
-%    webhelp=options.webhelp;
 end
 
 
@@ -244,7 +246,7 @@ end
 
 % Write output file 
 
-% Pring fstring in new HTML file named function-alpha.html
+% Print fstring in new HTML file named function-alpha.html
 name='function-alpha';
 file1ID=fopen([outputDir fsep name '.html'],'w');
 
@@ -259,7 +261,7 @@ if file1ID==-1
         errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
     end
     
-    error('FSDA:publishFS:WrngOutFolder',errmsg);
+    error('FSDA:publishFunctionAlpha:WrngOutFolder',errmsg);
 end
 fprintf(file1ID,'%s',fstring);
 
@@ -278,7 +280,7 @@ if CreateTxtFile
             errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
         end
         
-        error('FSDA:publishFS:WrngOutFolder',errmsg);
+        error('FSDA:publishFunctionAlpha:WrngOutFolder',errmsg);
     end
     
     % now construct string which has to be written inside the file

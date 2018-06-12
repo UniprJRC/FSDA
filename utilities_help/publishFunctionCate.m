@@ -24,12 +24,15 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %
 % Optional input arguments:
 %
-% webhelp :   Option to create web page version of categorical list of functions. 
+% webhelp :   Option which specifies the default path to create html file
+%             containing the categorical list of functions.
 %             Logical.
-%             If webhelp is true, this option substitutes the MATLAB search
-%             form component with a Google local search form, enabling
-%             Google to create an index of online documentation help. The
-%             default value of webhelp is false.
+%             If webhelp is true, the output is produced in the path
+%             (FSDA root)\helpfiles\FSDAweb.
+%             If webhelp is false (default), the output is produced in the path
+%             (FSDA root)\helpfiles\FSDA.
+%             Note that this option is valid just if outpuDir option below
+%             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
 % outputDir : Output folder. String.
@@ -85,16 +88,28 @@ function fstring=publishFunctionCate(InputCell, varargin)
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
-    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false);
     cd(fileparts(which('docsearchFS.m')))
     % Create HTML file containing categorical list of functions
     fstring=publishFunctionCate(out);
-    % open outfile file in web browser
+    % open output file in web browser
     FileWithFullPath=which('docsearchFS.m');
     [pathFSDAstr]=fileparts(FileWithFullPath);
     fsep=filesep;
     outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-cate.html'];
     web(outputOFHtmlHelpFile,'-browser');
+%}
+
+
+%{
+    % Interactive_example
+    % Create output file in personalized folder
+    % Create HTML file containing categorical list of functions in 
+    % local path "D:\tmp".
+    % Note that we assume that inside path D:\tmp there is the template
+    % file named "function-cateEmpty.html"
+    fstring=publishFunctionCate(out,'outputDir','D:\tmp');
+    
 %}
 
 %% Beginning of code
@@ -188,13 +203,6 @@ for i=1:length(seqCAT)
     
     iniHTMLTEXT=iniHTMLTEXT(iniHTMLTEXT<fin);
     
-    % Select all lines of InputCell starting with letter seqAZ(i)
-    %     if strcmp(seqCAT(i),'M')
-    %         boo=cellfun('length',regexpi(InputCell(:,1),['\<' seqCAT(i) '\w*']))==1;
-    %     else
-    %         boo=cellfun('isempty',regexpi(InputCell(:,1),['\<' seqCAT(i) '\w*']));
-    %     end
-    
     boo=strcmp(seqCAT(i),InputCell(:,8));
     Inputi=InputCell(boo,:);
     
@@ -212,8 +220,6 @@ for i=1:length(seqCAT)
         end
     end
     fstring=[fstring(1:iniHTMLTEXT-1) strInsert fstring(iniHTMLTEXT+8:end)];
-    
-    
 end
 
 name='function-cate';

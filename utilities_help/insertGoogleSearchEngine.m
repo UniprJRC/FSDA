@@ -1,9 +1,12 @@
-function [FilesWithProblems,OUT]=insertGoogleSearchEngine(InputCell,varargin)
+function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %insertGoogleSearchEngine insert instructions to include google search engine
 %
 % Required input arguments:
 %
-%   InputCell : n-by-1 cell containing list of files
+%   InputCell : n-by-1 cell containing list of files which must be
+%               processed. Cell. Typically this list contains the so called
+%               static file i.e. those which are not automatically created
+%               by function publishFS.
 %
 % Optional input arguments:
 %
@@ -22,7 +25,10 @@ function [FilesWithProblems,OUT]=insertGoogleSearchEngine(InputCell,varargin)
 %
 % Output:
 %
-%    FilesWithProblems :
+%    FilesWithProblems : cell containing the list of files which have not
+%                       been found and/or could not be processed. If all
+%                       files inside InputCell could be processed, than,
+%                       FilesWithProblems is empty.
 %
 %
 
@@ -47,6 +53,7 @@ function [FilesWithProblems,OUT]=insertGoogleSearchEngine(InputCell,varargin)
 %
 
 %% Beginning of code
+
 % Write output file in subfolder \(FSDAroot)\helpfiles\FSDA
 FileWithFullPath=which('docsearchFS.m');
 [pathFSDAstr]=fileparts(FileWithFullPath);
@@ -57,13 +64,13 @@ outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb'];
 
 
 if nargin>1
-    options=struct('outputDir',outputDir,'write2file',true);
+    options=struct('outputDir',outputDir);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:regressB:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:insertGoogleSearchEngine:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -74,64 +81,51 @@ if nargin>1
         end
         
     end
-    
-    write2file=options.write2file;
     outputDir=options.outputDir;
-    
-    
 end
-
-
 
 searchTagIni='includesFS/headJS.js';
-searchTagFin='/headJS.js';
-
 InputCell=InputCell';
 
-FilesWithProblems=[];
-
+% FilesWithProblems = cell containing list of files with problems
+FilesWithProblems=cell(size(InputCell,1),1);
+ij=1;
 
 for i=1:size(InputCell,1)
-    dirpathi=[pathFSDAstr '\helpfiles\FSDA\' InputCell{i,end}];
+    dirpathi=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep InputCell{i,end}];
     disp(['Processing file: ' dirpathi ])
-    out= get_SearchEngine(InputCell{i,end},dirpathi,searchTagIni,searchTagFin,outputDir);
-    if (out==-1)
-       FilesWithProblems=[FilesWithProblems  InputCell{i,end} ', ']; 
+    out= get_SearchEngine(InputCell{i,end},dirpathi,searchTagIni,outputDir);
+    if out==-1
+        FilesWithProblems{ij}=InputCell{i,end};
+        ij=ij+1;
     end
 end
-OUT=out;
+
+if ij>1
+    FilesWithProblems=FilesWithProblems(1:ij-1);
+else
+    FilesWithProblems='';
+end
 
 end
 
-function [file1ID] = get_SearchEngine(filename,filenamefullpath,letterINI,letterFIN,outputDir)
-%insert search enegines lines
-%    letterINI='DOVE INIZIA A RIMPIAZZARE';
-%
-%     letterINI='DOVE FIISCE A RIMPIAZZARE';
-
-
-
-% [~,name,ext] = fileparts(filename);
+function [file1ID] = get_SearchEngine(filename,filenamefullpath,letterINI,outputDir)
+%   insert search engine lines
+%   letterINI='where to start replacing';
 
 fid = fopen(filenamefullpath); % open file
 
 if fid > 1
     
-    % now get the part which contains seacrh engine
+    % now get the part which contains search engine
     fstring=fscanf(fid,'%c');
     
-    
-    
+    % strInsert string web is inserted  so that includesFS/headJS.js'
+    % becomes includesFS/headJSweb.js
     strInsert='web';
-    %                strInsert= sprintf([strInsert '<tr>\r' ...
-    %                 '<td class="term"><a href="' mfilename '.html">' mfilename '</a></td>\r' ...
-    %                 '<td class="description">' description '</td>\r' ...
-    %                 '</tr>\r']);
     
     idxStart=strfind(fstring, letterINI);
     offsetINI=length(letterINI);
-    offsetFIN=length(letterFIN);
-    idxEnd=strfind(fstring, letterFIN);
     
     fstring=[fstring(1:idxStart+offsetINI-4) strInsert fstring(idxStart+offsetINI-3:end)];
     
@@ -150,7 +144,7 @@ if fid > 1
             errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
         end
         
-        error('FSDA:publishFS:WrngOutFolder',errmsg);
+        error('FSDA:insertGoogleSearchEngine:WrngOutFolder',errmsg);
     end
     
     fprintf(file1ID,'%s',fstring);
