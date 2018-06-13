@@ -129,12 +129,47 @@ fileCate=publishFunctionCate(FilesIncluded);
 outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-cate.html'];
 web(outputOFHtmlHelpFile,'-browser');
 
-%%%%%%%%%%%%%%%%%%%
-%% NOW Repeat steps 2, 3 and 4 in order to generate the documentation files for the web site
-%%%%%%%%%%%%%%%%%%
 
-%% STEP 2bis: create HTML for all files filtered using makecontentsFilesFS
-% FilesIncluded=FilesIncluded(1:3,:);
+%% STEP 5: create bibliography file
+fsep=filesep;
+% Make sure one more time you are inside main root of FSDA
+cd(fileparts(which('docsearchFS.m')))
+
+% Note that input OUT comes from function publishFSallFiles
+% cell OUT can also be more easily created using option 'evalCode','false'
+% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false');
+
+% Create HTML file containing all the items which make up the bibblography
+[fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);
+
+% open outfile file in web browser
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\bibliography.html'];
+web(outputOFHtmlHelpFile,'-browser');
+
+%% STEP 6: create HTML pointer files
+h=CreateFSDApointerFiles(FilesIncluded,OUT);
+if h
+    disp('Successful creation of pointer files')
+end
+
+%% STEP not compulsory: create searchable database 
+% Use as folder the one which contains all pointers files 
+FileName='addFSDA2path';
+FullPath=which(FileName);
+%Navigate to the main folder of FSDA
+FSDAroot=fileparts(FullPath);
+% Navigate to subfolder which contains pointerHTML
+pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
+% Create searchable database
+builddocsearchdb(pointersHTMLroot)
+
+%% DOCUMENTATION FOR THE WEB SITE http://rosa.unipr.it
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% THE STEPS WHICH FOLLOW ARE NECESSARY TO CREATE THE DOCUMENTATION ON THE WEB
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% STEP 1web: create HTML to publish in rosa.unipr.it for all files filtered using makecontentsFilesFS
 
 [FilesWithProblemsweb,OUTweb]=publishFSallFiles(FilesIncluded,'webhelp',true);
 
@@ -150,36 +185,8 @@ if ~isempty(IndexesofFiles)
     error('FSDA:CreateFSDAhelpFiles','Files without HTML web page for WEB')
 end
 
-%% STEP 3bis: create alphabetical list of functions and txt file
-fsep=filesep;
-
-% Make sure one more time you are inside main root of FSDA
-cd(fileparts(which('docsearchFS.m')))
-% Create HTML file containing alphabetical list of functions
-fileAlphaweb=publishFunctionAlpha(FilesIncluded,'CreateTxtFile',true,'webhelp',true);
-% open html file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-alpha.html'];
-web(outputOFHtmlHelpFile,'-browser');
-
-fsep=filesep;
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-alpha.txt'];
-% open outfile txt in web browser
-disp('Check .txt file')
-web(outputOFHtmlHelpFile,'-browser');
-
-
-%% STEP 4bis: create categorical list of functions
-fsep=filesep;
-
-% Make sure one more time you are inside main root of FSDA
-cd(fileparts(which('docsearchFS.m')))
-% Create HTML file containing categorical list of functions
-fileCateweb=publishFunctionCate(FilesIncluded,'webhelp',true);
-% open outfile file in web browser
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDAweb\function-cate.html'];
-web(outputOFHtmlHelpFile,'-browser');
-
-%% STEP 5: Patch with Google Search module all static files. 
+%% STEP 2web: Insert in all files not parsed by publishFSallFiles Google search engine
+%  Patch with Google Search module all static files. 
 %  Then, copy external static files: acknowledgments.html, developers.html, group.html
 %  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
 %  In the end create a sitemap for Google Search module.
@@ -192,7 +199,7 @@ FSDAroot=fileparts(FullPath);
 fsep=filesep;
 % List of static files
 ListofFiles={'bibliography.html' 'cluster_intro.html' 'datasets.html' ...
-    'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html' 'empty.html'...
+    'datasets_clu.html' 'datasets_mv.html' 'datasets_reg.html'...
     'examples.html',  'function-alpha.html', 'function-cate.html', ...
     'getting-started.html' 'index.html' 'introFS.html' 'introrob.html' ...
     'introrobmulttech.html' 'introrobregtech.html' 'mult_fsm.html' ...
@@ -217,7 +224,6 @@ if ~isempty(FilesNotFound)
     end
     error('FSDA:CreateFSDAhelpFiles','Files not found')
 end
-
 
 extFiles= {'acknowledgments.html' 'developers.html' 'group.html' 'license.txt' ...
     'links_relevant.html' 'poster_fsda.pdf'};
@@ -256,22 +262,6 @@ writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.t
     'WriteVariableNames',false);
 
 
-%% STEP 6: create HTML pointer files
-
-h=CreateFSDApointerFiles(FilesIncluded,OUT);
-if h
-    disp('Successful creation of pointer files')
-end
-
-%% STEP 7: (not compulsory) create searchable database with different versions of MATLAB
-FileName='addFSDA2path';
-FullPath=which(FileName);
-%Navigate to the main folder of FSDA
-FSDAroot=fileparts(FullPath);
-% Navigate to subfolder which contains pointerHTML
-pointersHTMLroot=[FSDAroot filesep 'helpfiles'  filesep 'pointersHTML'];
-% Create searchable database
-builddocsearchdb(pointersHTMLroot)
 
 %% Now if all was well let us do the setup.exe
 disp('Congratulations the FSDA package is ready to be deployed')
@@ -283,5 +273,9 @@ outHELP.FilesExcluded=FilesExcluded;
 outHELP.FilesWithProblems=FilesWithProblems;
 outHELP.fileAlpha=fileAlpha;
 outHELP.fileCate=fileCate;
+outHELP.fileBiblio=fileBiblio;
+outHELP.OUT=OUT;
+outHELP.OUTweb=OUTweb;
+outHELP.Cits=Cits;
 
 end

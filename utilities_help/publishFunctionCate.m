@@ -1,6 +1,8 @@
 function fstring=publishFunctionCate(InputCell, varargin)
 %publishFunctionCate enables to create web page which contains the categorical list of functions
 %
+%<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
+%
 % This routins uses as input the cell which is created with routine
 % makecontentsfileFS.m and uses template file function-cateEmpty.html
 % which is contained inside:
@@ -14,7 +16,6 @@ function fstring=publishFunctionCate(InputCell, varargin)
 % using function publishFS.m
 %
 %
-%<a href="matlab: docsearchFS('publishFunctionCate')">Link to the help function</a>
 %
 % Required input arguments:
 %
