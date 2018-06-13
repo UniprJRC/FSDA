@@ -27,30 +27,15 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %
 %    FilesWithProblems : cell containing the list of files which have not
 %                       been found and/or could not be processed. If all
-%                       files inside InputCell could be processed, than,
+%                       files inside InputCell could be processed, 
 %                       FilesWithProblems is empty.
 %
 %
 
 %{
-    % Example of the use of options dirpath and  FilterFileContent.
-    % Preliminary step: create a list of the subfolders which have to be
-    % included, using routine findDir with options 'InclDir' and 'ExclDir'.
-    % Find full path of the main root where FSDA is installed
-    FileName='addFSDA2path';
-    FullPath=which(FileName);
-    root=FullPath(1:end-length(FileName)-3);
-    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
-    'examples' 'utilities' 'utilities_stat'};
-    ExclDir={'privateFS'  'datasets'};
-    % Create list of folders which must have a personalized contents file
-    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
-    % Crete personalized contents file for main folder of FSDA
-    % and required subfolders.
-    [outTest,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false);
-    [FilesWithProblems,OUT]=publishFSallFiles(outTest,'evalCode',false,'write2file',false);
+    % For an example of the use of this function 
+    % see file CreateFSDAhelpFiles.m
 %}
-%
 
 %% Beginning of code
 
