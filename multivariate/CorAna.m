@@ -1002,7 +1002,7 @@ out.ProfilesRows = ProfilesRows;
 ProfilesCols = P * Dc^(-1);
 out.ProfilesCols = ProfilesCols;
 
-% K = maximun number of dimensions
+% K = minimum number of dimensions
 K = min(I-1,J-1);
 out.K = K;
 

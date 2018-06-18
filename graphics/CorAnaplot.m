@@ -241,7 +241,7 @@ function CorAnaplot(out,varargin)
 %                   $r\times c$ values are drawn from a multinomial
 %                   distribution with theoretical frequencies equals to
 %                   $n_{ij}/n$.
-%                   {'bootrows'} = the values are bootstrapped row by row:
+%                   {'bootRows'} = the values are bootstrapped row by row:
 %                   Given row i, $n_{i.}$ are extracted with repetition and
 %                   a frequencey distribution is computed using classes
 %                   $[0, n_{i1}]$,$[n_{i1}, n_{i1}+n_{i2}]$, $\ldots$
@@ -1286,8 +1286,10 @@ if isstruct(confellipse) || confellipse ==1
                 selRows=seq1I(selRows);
             else
                 % Make sure that the indexes are in the interval [1 I]
-                if ~isempty(selRows) && (max(selRows)>I || min(selRows)<1)
-                    error('FSDA:CorAnaplot:WrongInputOpt',['The indexes of the requested ellipses must be integers in the interval [1,' num2str(I)])
+                if ~isempty(selRows) 
+                    if (max(selRows)>I || min(selRows)<1)
+                        error('FSDA:CorAnaplot:WrongInputOpt',['The indexes of the requested ellipses must be integers in the interval [1,' num2str(I)])
+                    end
                 end
             end
         else
@@ -1302,8 +1304,10 @@ if isstruct(confellipse) || confellipse ==1
                 selCols=seq1J(selCols);
             else
                 % Make sure that the indexes are in the interval [1 I]
-                if ~isempty(selCols) &&  max(selCols)>J  || min(selCols)<1
-                    error('FSDA:CorAnaplot:WrongInputOpt',['The indexes of the requested ellipses must be integers in the interval [1,' num2str(J)])
+                if ~isempty(selCols)
+                    if max(selCols)>J  || min(selCols)<1
+                        error('FSDA:CorAnaplot:WrongInputOpt',['The indexes of the requested ellipses must be integers in the interval [1,' num2str(J)])
+                    end
                 end
             end
         else
