@@ -7,7 +7,7 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId=FSDA
 AppName=FSDA toolbox for MATLAB
-AppVerName=FSDA toolbox Release 2018a (03-jun-16) for MATLAB >R2009b
+AppVerName=FSDA toolbox Release 2018a (03-jun-16) for MATLAB >=R2012a
 AppPublisher=University of Parma and European Union
 AppPublisherURL=http://www.riani.it/MATLAB.htm
 AppSupportURL=http://www.riani.it/MATLAB.htm
@@ -169,9 +169,9 @@ var
   if ( I = 0 ) then
    begin
      LevMatlab:=VersionMatlab[I];
-     if (CompareVersion (LevMatlab, '7.9') < 0) then
+     if (CompareVersion (LevMatlab, '7.13') < 0) then
      begin
-      MsgBox('FSDA Toolbox needs a MATLAB release greater than R2009b. Installation aborted.', mbError, MB_OK );
+      MsgBox('FSDA Toolbox needs a MATLAB release greater or equal to R2012a. Installation aborted.', mbError, MB_OK );
       abort;
      end;
          
@@ -213,9 +213,9 @@ var
              end;
            end;
       end;
-     if (CompareVersion (LevMatlab, '7.9') < 0) then
+     if (CompareVersion (LevMatlab, '7.13') < 0) then
       begin
-       MsgBox('FSDA Toolbox is maintained from MATLAB release R2009b. Installation aborted.', mbError, MB_OK );
+       MsgBox('FSDA Toolbox is maintained from MATLAB release R2012a. Installation aborted.', mbError, MB_OK );
        abort;
       end;
     end;
