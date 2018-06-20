@@ -1161,7 +1161,14 @@ if d>0
     % Plot first two principal components in presence of more than two
     % variables
     if v>2
-        [~,Ypca,~,~,explained]=pca(zscore(Y),'NumComponents',2);
+        Yst=zscore(Y);
+        [V,D]=eig(cov(Yst));
+        [Dsort,ind] = sort(diag(D),'descend');
+        Ypca=Yst*V(:,ind(1:2));
+        explained=100*Dsort(1:2)/sum(Dsort);
+        % Note that the rows above are just for retrocompatibility
+        % Those who have a release >=2012B can use
+        % [~,Ypca,~,~,explained]=pca(zscore(Y),'NumComponents',2);
     else
         Ypca=Y;
     end
