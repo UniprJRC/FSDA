@@ -794,9 +794,11 @@ else
     end
 end   %Rank check
 
+RES=RES/sqrt(S2(end,2));
+
 %% Structure returned by function FSReda
 out=struct;
-out.RES=RES/sqrt(S2(end,2));
+out.RES=RES;
 out.LEV=LEV;
 out.BB=BB;
 out.mdr=mdr;
