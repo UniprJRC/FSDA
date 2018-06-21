@@ -366,7 +366,11 @@ end
 if n<=5000
     bsbstepdef = 0;
 else
-    bsbstepdef = [initdef 100:100:100*floor(n/100)];
+    iniseq=100:100:100*floor(n/100);
+    iniseq=iniseq(iniseq>initdef);
+    bsbstepdef = [initdef iniseq];
+    % OLD WRONG statement
+    % bsbstepdef = [initdef 100:100:100*floor(n/100)];
 end
 
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
