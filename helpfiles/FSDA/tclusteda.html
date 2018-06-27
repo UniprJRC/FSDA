@@ -7,7 +7,9 @@
     % vector [0.10 0.05 0] is used while for the restriction factor, value c=12
     % is used
     k=3;
-    [out]=tclusteda(Y,k);</pre></div></div><img vspace="5" hspace="5" src="images\tclusteda_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclusteda_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring using geyser data with alpha and c specified.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=tclusteda(Y,k);</pre></div></div><pre class="codeoutput">Warning: You have not specified alpha: it is set to [0.10 0.05 0] by default 
+Warning: You have not specified restrfactor: it is set to 12 by default 
+</pre><img vspace="5" hspace="5" src="images\tclusteda_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclusteda_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring using geyser data with alpha and c specified.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     close all
     % alphavec= vector which contains the trimming levels to consider
@@ -112,7 +114,8 @@
     RandNumbForNini=rand(k,nsampscalar);
     % The allocation is shown on the space of the first two principal
     % components
-    out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+    out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Warning: You have not specified alpha: it is set to [0.10 0.05 0] by default 
+ClaLik with untrimmed units selected using crisp criterion
 100%[==================================================&gt;]
 </pre><img vspace="5" hspace="5" src="images\tclusteda_09.png" alt=""> <img vspace="5" hspace="5" src="images\tclusteda_10.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclusteda using determinant constraint.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter');</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables.</p> <p>
@@ -247,8 +250,8 @@
                associated with the largest h numbers are untrimmed.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar structure.</span></span></h3><div class="collapse">	<p><p>Case 1: plots option used as scalar.</p> <p>
-               - If plots=0 (default), plots are not generated.</p> <p>
-               - If plots=1, two plots are shown on the screen.</p> <p>
+               - If plots=0,  plots are not generated.</p> <p>
+               - If plots=1 (default), two plots are shown on the screen.</p> <p>
                  The first plot ("monitor plot") shows three panels
                  monitoring between two consecutive values of alpha the
                  change in classification using ARI index (top panel), the
@@ -397,8 +400,7 @@
  group if this group shows the smallest distance with group r for the
  previous value of alpha.</p> <p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
- A General Trimming Approach to Robust Cluster Analysis. Annals
- of Statistics, Vol.36, 1324-1345.</p> <p>
- Technical Report available at:</p><p>
-<a href="http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf">http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</a></p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+   A General Trimming Approach to Robust Cluster Analysis. Annals
+   of Statistics, Vol.36, 1324-1345. [Technical Report available at:</p> <p>
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
