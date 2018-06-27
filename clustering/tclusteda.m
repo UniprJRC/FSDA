@@ -152,8 +152,8 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 % plots    :    Plot on the screen. Scalar structure.
 %
 %               Case 1: plots option used as scalar.
-%               - If plots=0 (default), plots are not generated.
-%               - If plots=1, two plots are shown on the screen.
+%               - If plots=0,  plots are not generated.
+%               - If plots=1 (default), two plots are shown on the screen.
 %                 The first plot ("monitor plot") shows three panels
 %                 monitoring between two consecutive values of alpha the
 %                 change in classification using ARI index (top panel), the
@@ -610,14 +610,9 @@ reftoldef=1e-5;
 tolrestreigen=1e-08;
 
 % Default
-if nargin<3
+if nargin<3 || isempty(alpha)
     alpha=[0.10 0.05 0];
     warning('FSDA:tclusteda:Wrongalpha','You have not specified alpha: it is set to [0.10 0.05 0] by default');
-else
-    if isempty(alpha)
-        alpha=[0.10 0.05 0];
-        warning('FSDA:tclusteda:Wrongalpha','You have not specified alpha: it is set to [0.10 0.05 0] by default');
-    end
 end
 
 % Fix alpha equal to the trimming size
@@ -627,7 +622,7 @@ if min(alpha)<0
     error('FSDA:tclusteda:WrongAlpha','alpha must a vector with numbers in the interval [0 0.5]')
 end
 
-if nargin<4
+if nargin<4 || isempty(restrfactor)
     restrfactor=12;
     warning('FSDA:tclusteda:Wrongrestrfact','You have not specified restrfactor: it is set to 12 by default');
 end
