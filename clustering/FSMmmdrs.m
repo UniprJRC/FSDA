@@ -51,13 +51,21 @@ function out=FSMmmdrs(Y,varargin)
 %                 Data Types - double
 %      plots :  scalar. If equal to one a plot of random starts minimum
 %               Mahalanobis residual appears  on the screen with 1%, 50% and
-%               99% confidence bands else (default) no plot is shown.
+%               99% confidence bands else (default) no plot is shown. 
+%               The scale (ylim) for the y axis is defined as follows:
+%               ylim(2) is the maximum between the values of mmd in steps
+%               [n*0.2 n] and the final value of the 99 per cent envelope
+%               multiplied by 1.1. 
+%               ylim(1) is the minimum between the
+%               values of mmd in steps [n*0.2 n] and the 1 per cent
+%               envelope multiplied by 0.9.
 %               Example - 'plots',0
 %               Data Types - double
 %               Remark: the plot which is produced is very simple. In order
-%               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is
-%               necessary to use function mmdrsplot.
+%               to control a series of options in this plot (including the
+%               y scale) and in order to connect it dynamically to the
+%               other forward plots it is necessary to use function
+%               mmdrsplot.
 %   numpool :  scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
@@ -112,7 +120,7 @@ function out=FSMmmdrs(Y,varargin)
 %               the other hand a message will be displayed on the screen
 %               when 10%, 25%, 50%, 75% and 90% of the random starts have
 %               been accomplished
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - double
 %               REMARK: in order to create the progress bar when nparpool>1
 %               the program writes on a temporary .txt file in the folder
@@ -137,7 +145,7 @@ function out=FSMmmdrs(Y,varargin)
 %
 % Output:
 %
-%  
+%
 %  out :     A structure containing the following fields:
 %       out.mmdrs=  Minimum Mahalanobis distance. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
@@ -231,7 +239,7 @@ function out=FSMmmdrs(Y,varargin)
 %{
     % Two groups with approximately same units (larger sizes).
     % Same example as before but now the values of n1 and n2 (size of the
-    % two groups) have been increased.    
+    % two groups) have been increased.
     close all
     rng('default')
     rng(10);
@@ -368,7 +376,7 @@ if ~isempty(UserOptions)
     end
     chkbsbsteps = strcmp(UserOptions,'bsbsteps');
 else
-   UserOptions=0;
+    UserOptions=0;
 end
 
 init        = options.init;
@@ -457,19 +465,29 @@ if plots==1
     line(quantilesT(:,1),quantilesT(:,2:4), ...
         'LineStyle','-','Color','r','LineWidth',2,'tag','env');
     
+    maxacc=quantilesT(end,end)*1.1;
+    minac=quantilesT(1,2)*0.9;
+    indmmdrs=find(mmdrs(:,1)==round(n*0.2),1);
+    mdrrstmp = mmdrs(:,2:end);
+    mdrrstmp(1:indmmdrs,:) = NaN;
+    
     ax = get(gca,'YLim');
-    if ax(2)>20
-        mdrrstmp = mmdrs(:,2:end);
-        mdrrstmp(mdrrstmp>20) = NaN;
-        maxylim  = max(max(mdrrstmp));
-        minylim  = min(min(mdrrstmp));
-        set(gca,'YLim',[minylim maxylim]);
+    if ax(2)>maxacc
+        maxylim  = max([maxacc max(mdrrstmp(:))]);
+    else
+        maxylim=ax(2);
     end
+    if ax(1)<minac
+        minylim  = min([minac min(mdrrstmp(:))]);
+    else
+        minylim=ax(1);
+    end
+    set(gca,'YLim',[minylim maxylim]);
     
     % axes labels
     xlabel(xlab);
     ylabel(ylab);
-    
+    xlim([init-1 n+1])
 end
 
 % Store BBrs and mmdrs inside structure out
