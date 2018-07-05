@@ -30,7 +30,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               possible to specify the options given in function Sreg.
 %               Example - 'InitialEst',[]
 %               Data Types - struct
-%  Soptions  :  options to pass to Sreg. Name value pairs. 
+%  Soptions  :  options to pass to Sreg. Name value pairs.
 %               Options if initial estimator is S and InitialEst is empty.
 %               The options are: Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
@@ -354,6 +354,7 @@ if nargin > 2
     end
 end
 
+msg=options.msg;
 
 % intercept=options.intercept;
 
@@ -376,11 +377,7 @@ if isempty(InitialEst)
     rhofuncS=options.Srhofunc;              % rho function which must be used for S estimator
     rhofuncparamS=options.Srhofuncparam;    % eventual additional parameters associated to the rho function for S estimator
     
-    rhofuncMM=options.rhofunc;              % rho function which must be used for MM loop
-    rhofuncparamMM=options.rhofuncparam;    % eventual additional parameters associated to the rho function for MM loop
     
-    
-    msg=options.msg;
     
     % first compute S-estimator with a fixed breakdown point
     
@@ -403,11 +400,22 @@ if isempty(InitialEst)
     bs = Sresult.beta;
     ss = Sresult.scale;
     singsub=Sresult.singsub;
+    
+    
 else
     bs = InitialEst.beta;
     ss = InitialEst.scale;
     singsub=0;
+    % In this case there is no preliminary S estimator
+    rhofuncS=[];
+    % Sresult is an empty structure
+    Sresult=struct;
 end
+
+
+rhofuncMM=options.rhofunc;              % rho function which must be used for MM loop
+rhofuncparamMM=options.rhofuncparam;    % eventual additional parameters associated to the rho function for MM loop
+
 
 % Asymptotic nominal efficiency (for location or shape)
 eff = options.eff;
