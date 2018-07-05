@@ -45,7 +45,7 @@ function [c,M] = RKbdp(bdp,v,ARP)
 %
 % References:
 %
-% 
+%
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
 % Rocke D.M. (1996), Robustness properties of S-estimators of multivariate
@@ -92,7 +92,8 @@ function [c,M] = RKbdp(bdp,v,ARP)
 %}
 
 %{
-    %% Computation of c and M for a series of values of bdp (v=3).
+    %% Computation of c and M for a series of values of bdp (v=10).
+    % ARP fixed to 0.01.
     v=10;
     bdp=0.01:0.01:0.5;
     cM=zeros(length(bdp),2);
@@ -116,7 +117,7 @@ end
 
 iter = 1;
 crit = 100;
-% eps = tolerance for the main loop 
+% eps = tolerance for the main loop
 eps = 1e-5;
 % deps = tolerance to compute the numerical derivative
 deps = 1e-4;
@@ -154,10 +155,20 @@ while (crit > eps && iter<maxiter)
     % Note that erhoLim computes E(d^2) and not E(d^2/2)
     % This is fine because Flim is E(d^2)-bdp*c^2 rather than
     %  E(d^2)/2-bdp*c^2/2
-    ErhoLim=prod2*chi2cdf(c2,v+2)+ c2*(1-chi2cdf(c2,v));
+    % Slow implementation calling function chi2cdf
+    % ErhoLim=prod2*chi2cdf(c2,v+2)+ c2*(1-chi2cdf(c2,v));
+    % Fast implementation calling directly function gammainc
+    % Remark: chi2cdf(x,v) = gamcdf(x,v/2,2) = gammainc(x ./ 2, v/2);
+    ErhoLim=prod2*gammainc(0.5*c2,0.5*(v+2))+ c2*(1-gammainc(0.5*c2,0.5*v));
+    
     FLim=ErhoLim-c2*bdp;
     % ErhoLimder = derivative of Erholim with respect to c
-    ErhoLimder=prod2*chi2pdf(c2,v+2)*2*c +2*c*(1-chi2cdf(c2,v))-c^2*chi2pdf(c2,v)*2*c;
+    % Slow implementation calling function chi2cdf
+    % ErhoLimder=prod2*chi2pdf(c2,v+2)*2*c +2*c*(1-chi2cdf(c2,v))-c^2*chi2pdf(c2,v)*2*c;
+    % Fast implementation calling directly function gammainc
+    % Remark: chi2cdf(x,v) = gamcdf(x,v/2,2) = gammainc(x ./ 2, v/2);
+    ErhoLimder=prod2*gampdf(c2,0.5*(v+2),2)*2*c +2*c*(1-gammainc(0.5*c2,0.5*v))-c^2*gampdf(c2,0.5*v,2)*2*c;
+    
     Flimder=ErhoLimder-2*c*bdp;
     
     % Update equation for c
@@ -232,8 +243,8 @@ else
         c= cplusM - M;
         crit = abs(F);
         iter=iter+1;
-        % disp([iter crit])
-        % disp('----')
+        %         disp([iter crit])
+        %         disp('----')
     end
     
     if iter==maxiter
@@ -252,19 +263,37 @@ end
         ct2=ct^2;
         ct4=ct^4;
         
+%       %  Slow implementation using function chi2cdf (which does a series
+%       %  of checks than calls gamcdf, which finally calls gammainc)
+%                 if (ct == 0)
+%                     %     .chiInt(p,2,M)/2 + M^2/2*.chiInt2(p,0,M))
+%                     Expectationrho=prod2*chi2cdf(M2,p+2)/2+ M2/2*(1-chi2cdf(M2,p));
+%                 else
+%                     Expectationrho=prod2*chi2cdf(M2,p+2)/2 ...
+%                         +(M2/2+ct*(5*ct+16*M)/30)*(1-chi2cdf(Mct2,p)) ...
+%                         +(M2/2-M2*(M^4-5*M2*ct2+15*ct4)/(30*ct4))*(chi2cdf(Mct2,p)-chi2cdf(M2,p)) ...
+%                         +(1/2+M^4/(2*ct4)-M2/ct2)*prod2*(chi2cdf(Mct2,p+2)-chi2cdf(M2,p+2)) ...
+%                         +(4*M/(3*ct2)-4*M^3/(3*ct4))*prod3*(chi2cdf(Mct2,p+3)-chi2cdf(M2,p+3)) ...
+%                         +(3*M2/(2*ct4)-1/(2*ct2))*prod4*(chi2cdf(Mct2,p+4)-chi2cdf(M2,p+4))...
+%                         -(4*M/(5*ct4))*prod5*(chi2cdf(Mct2,p+5)-chi2cdf(M2,p+5))...
+%                         +(1/(6*ct4))*prod6*(chi2cdf(Mct2,p+6)-chi2cdf(M2,p+6));
+%                 end
+        
+        % Fast implementation using directly function gammainc
         if (ct == 0)
             %     .chiInt(p,2,M)/2 + M^2/2*.chiInt2(p,0,M))
             Expectationrho=prod2*chi2cdf(M2,p+2)/2+ M2/2*(1-chi2cdf(M2,p));
         else
-            Expectationrho=prod2*chi2cdf(M2,p+2)/2 ...
-                +(M2/2+ct*(5*ct+16*M)/30)*(1-chi2cdf(Mct2,p)) ...
-                +(M2/2-M2*(M^4-5*M2*ct^2+15*ct4)/(30*ct4))*(chi2cdf(Mct2,p)-chi2cdf(M2,p)) ...
-                +(1/2+M^4/(2*ct4)-M2/ct2)*prod2*(chi2cdf(Mct2,p+2)-chi2cdf(M2,p+2)) ...
-                +(4*M/(3*ct2)-4*M^3/(3*ct4))*prod3*(chi2cdf(Mct2,p+3)-chi2cdf(M2,p+3)) ...
-                +(3*M2/(2*ct4)-1/(2*ct2))*prod4*(chi2cdf(Mct2,p+4)-chi2cdf(M2,p+4))...
-                -(4*M/(5*ct4))*prod5*(chi2cdf(Mct2,p+5)-chi2cdf(M2,p+5))...
-                +(1/(6*ct4))*prod6*(chi2cdf(Mct2,p+6)-chi2cdf(M2,p+6));
+            Expectationrho=prod2*gammainc(0.5*M2,0.5*(p+2))/2 ...
+                +(M2/2+ct*(5*ct+16*M)/30)*(1-gammainc(0.5*Mct2,0.5*p)) ...
+                +(M2/2-M2*(M^4-5*M2*ct2+15*ct4)/(30*ct4))*(gammainc(0.5*Mct2,0.5*p)-gammainc(0.5*M2,0.5*p)) ...
+                +(1/2+M^4/(2*ct4)-M2/ct2)*prod2*(gammainc(0.5*Mct2,0.5*(p+2))-gammainc(0.5*M2,0.5*(p+2))) ...
+                +(4*M/(3*ct2)-4*M^3/(3*ct4))*prod3*(gammainc(0.5*Mct2,0.5*(p+3))-gammainc(0.5*M2,0.5*(p+3))) ...
+                +(3*M2/(2*ct4)-1/(2*ct2))*prod4*(gammainc(0.5*Mct2,0.5*(p+4))-gammainc(0.5*M2,0.5*(p+4)))...
+                -(4*M/(5*ct4))*prod5*(gammainc(0.5*Mct2,0.5*(p+5))-gammainc(0.5*M2,0.5*(p+5)))...
+                +(1/(6*ct4))*prod6*(gammainc(0.5*Mct2,0.5*(p+6))-gammainc(0.5*M2,0.5*(p+6)));
         end
+        
     end
 
 % Remark:
