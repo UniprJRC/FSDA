@@ -23,7 +23,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 %               Data Types - double
 %  InitialEst : starting values of the MM-estimator. [] (default) or structure.
 %               InitialEst must contain the following fields
-%               InitialEst.loc =  v x 1 vector (estimate of the centroid)
+%               InitialEst.beta =  v x 1 vector (estimate of the centroid)
 %               InitialEst.scale = scalar (estimate of the scale parameter).
 %               If InitialEst is empty (default)
 %               program uses S estimators. In this last case it is
@@ -222,7 +222,7 @@ function [out , varargout] = MMreg(y,X,varargin)
 
 %{
     % MMreg with optional input arguments.
-    % MMreg using the hyperbolic rho function
+    % MMreg using the hyperbolic rho function.
     % Run this code to see the output shown in the help file
     n=200;
     p=3;
@@ -234,6 +234,28 @@ function [out , varargout] = MMreg(y,X,varargin)
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=MMreg(ycont,X,'Srhofunc','optimal');
+%}
+
+%{
+    % MMreg with optional input arguments.
+    % MMreg using the OLS estimates ac InitialEst.
+    % Run this code to see the output shown in the help file
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    % OLS estimates
+    bols=[ones(n,1) X]\y;
+    res=y-[ones(n,1) X]*bols;
+    sols=sqrt((res'*res)/(n-p-1));
+    InitialEst.beta=bols;
+    InitialEst.scale=sols;
+    [out]=MMreg(ycont,X,'InitialEst',InitialEst);
 %}
 
 %{
