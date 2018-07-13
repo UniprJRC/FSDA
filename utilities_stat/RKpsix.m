@@ -41,9 +41,8 @@ function psixRK = RKpsix(u,c, M)
 %    \right.
 %  \]
 %
-% See equation (2.19) p. 1332 of Rocke (1996).
 %
-% See also HYPrho, HArho, OPTrho, TBrho
+% See also HYPpsix, HApsix, OPTpsix, TBpsix, HUpsix
 %
 % References:
 %
@@ -57,14 +56,14 @@ function psixRK = RKpsix(u,c, M)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('RKpsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('RKpsix')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2018-06-08 01:27:40 #$: Date of the last commit
 
 % Examples:
 
 %{
-   %% Plot of psi(x)*x function.
+   %% Plot of x psi(x) function.
     close all
     % Find the values of c and M given bdp=0.4 and v=5 for ARP=0.01
     x=0:0.01:5;

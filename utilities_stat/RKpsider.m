@@ -1,7 +1,7 @@
-function psiRK = RKpsi(u,c, M)
-%RKpsi computes psi function for Rocke (translated Tukey's) biweight
+function psiderRK = RKpsider(u,c, M)
+%RKpsider computes derivative of psi function (second derivative of rho function) for Rocke (translated Tukey's) biweight
 %
-%<a href="matlab: docsearchFS('RKpsi')">Link to the help function</a>
+%<a href="matlab: docsearchFS('RKpsider')">Link to the help function</a>
 %
 %  Required input arguments:
 %
@@ -23,27 +23,27 @@ function psiRK = RKpsi(u,c, M)
 %  Output:
 %
 %
-%   psiRK :      n x 1 vector which contains the Rocke psi (translated
+%   psiderRK :   n x 1 vector which contains the Rocke psi (translated
 %                Tukey's biweight) associated to the residuals or
 %                Mahalanobis distances for the n units of the sample.
 %
 % More About:
 %
 %
-% function RKpsi transforms vector u as follows
+% function RKpsider transforms vector u as follows:
 % \[
-% RKpsi(u)= \left\{
+% RKpsider(u)= \left\{
 %    \begin{array}{cc}
-% u &  0\leq |u| \leq M  \\
-% u \left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M \leq u \leq M+c \\
+% 1 &  1 \leq |u| \leq M  \\
+%  \left(1-\left( \frac{u-M}{c} \right)^2 \right)\left(1-\left( \frac{u-M}{c} \right)^2
+% -4u \frac{u-M}{c^2} \right)  &  M \leq u \leq M+c \\
 % 0   &             u > M+c \\
 % \end{array}
 %    \right.
 %  \]
 %
-% See equation (2.19) p. 1332 of Rocke (1996).
 %
-% See also HYPrho, HArho, OPTrho, TBrho
+% See also HYPpsider, HApsider, OPTpsider, TBpsider, HUpsider
 %
 % References:
 %
@@ -57,14 +57,14 @@ function psiRK = RKpsi(u,c, M)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('RKpsi')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('RKpsider')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2018-06-08 01:27:40 #$: Date of the last commit
 
 % Examples:
 
 %{
-   %% Plot of psi function.
+   %% Plot of psider function.
     close all
     % Find the values of c and M given bdp=0.4 and v=5 for ARP=0.01
     x=0:0.01:5;
@@ -72,21 +72,21 @@ function psiRK = RKpsi(u,c, M)
     v=5;
     ARP=0.01;
     [c,M]=RKbdp(bdp,v,ARP);
-    psiRK=RKpsi(x,c,M);
-    % psiRK=psiRK/max(psiRK);
-    plot(x,psiRK,'LineWidth',2)
+    psiderRK=RKpsider(x,c,M);
+    % psiderRK=psiderRK/max(psiderRK);
+    plot(x,psiderRK,'LineWidth',2)
     xlabel('$u$','Interpreter','Latex')
-    ylabel('$\psi (u,c,M)$','Interpreter','Latex')
-    title('$\psi (u,c,M)$','Interpreter','Latex')
+    ylabel('$\psi'' (u,c,M)$','Interpreter','Latex')
+    title('$\psi'' (u,c,M)$','Interpreter','Latex')
     hold('on')
-    stem(M,M,'LineStyle',':','LineWidth',1)
+    stem(M,1,'LineStyle',':','LineWidth',1)
     text(M,0,'M')
     stem(M+c,0,'LineStyle',':','LineWidth',1)
     text(M+c,0,'M+c')
 %}
 
 %{
-    %% Compare Rocke psi function for 3 different values of bdp.
+    %% Compare Rocke psider function for 3 different values of bdp.
     close all
     x=0:0.01:6;
     % Number of variables v is fixed to 5
@@ -98,45 +98,42 @@ function psiRK = RKpsi(u,c, M)
     % Use bdp=0.3
     bdp=0.3;
     [c,M]=RKbdp(bdp,v,ARP);
-    psiRK030=RKpsi(x,c,M);
-    psiRK030=psiRK030/max(psiRK030);
-    plot(x,psiRK030,'LineStyle','-','LineWidth',lwd)
+    psiderRK030=RKpsider(x,c,M);
+    plot(x,psiderRK030,'LineStyle','-','LineWidth',lwd)
 
     % Use bdp=0.4
     bdp=0.4;
     [c,M]=RKbdp(bdp,v,ARP);
-    psiRK040=RKpsi(x,c,M);
-    psiRK040=psiRK040/max(psiRK040);
-    plot(x,psiRK040,'LineStyle','-.','LineWidth',lwd)
+    psiderRK040=RKpsider(x,c,M);
+    plot(x,psiderRK040,'LineStyle','-.','LineWidth',lwd)
 
     % Use bdp=0.5
     bdp=0.5;
     [c,M]=RKbdp(bdp,v,ARP);
-    psiRK050=RKpsi(x,c,M);
-    psiRK050=psiRK050/max(psiRK050);
-    plot(x,psiRK050,'LineStyle','--','LineWidth',lwd)
+    psiderRK050=RKpsider(x,c,M);
+    plot(x,psiderRK050,'LineStyle','--','LineWidth',lwd)
     
     xlabel('$x$','Interpreter','Latex','FontSize',16)
-    ylabel('RK. Normalized $\psi(x,c,M)$','Interpreter','Latex','FontSize',20)
+    ylabel('RK. Normalized $\psi''(x,c,M)$','Interpreter','Latex','FontSize',20)
     legend({'$bdp=0.3$', '$bdp=0.4$' '$bdp=0.5$'},'Interpreter','Latex','Location','SouthEast','FontSize',16)
 %}
 
 
-
 %% Beginning of code
 
-psiRK=zeros(size(u));
+psiderRK=zeros(size(u));
 
 uu1 = u <= M;
 uu2 = u > M & u <= M+c;
 
 if ~isempty(uu1)
-    psiRK(uu1) =  u(uu1);
+    psiderRK(uu1) =  1;
 end
 
 if ~isempty(uu2)
     u2=u(uu2);
-    psiRK(uu2)=u2.*(1- ((u2-M)/c).^2 ).^2;
+    ust=(u2-M)/c;
+    psiderRK(uu2)=(1- ust.^2 ).*( 1- ust.^2 -4*u2.*ust*(1/c) ) ;
 end
 
 end
