@@ -1927,9 +1927,9 @@ end
 
 %% The part below contains subfunctions which are used only inside this file
 
-
-% lik computes the objective function (residual sum of squares/2 = negative
-% log likelihood) which must be minimized
+% ALS computes Alternating Least Squares estimate of beta starting from
+% vector beta0. The rows which are used are those specified in global
+% variable bsb
     function [newbeta,exitflag]=ALS(beta0)
         iter        = 0;
         betadiff    = 9999;
@@ -2017,9 +2017,8 @@ end
 
 
 % lik computes the objective function (residual sum of squares/2 = negative
-% log likelihood) which must be minimized. This function (using global
-% variable bsb) enable to compute the objective function just for the units
-% belonging to bsb
+% log likelihood) which must be minimized for the units specified inside
+% global variable bsb.
     function obj=lik(beta0)
         
         yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
@@ -2055,7 +2054,6 @@ end
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
-            
             yhatlshift=beta0(npar+1)*Xlshift(bsb);
         else
             yhatlshift=0;
@@ -2064,8 +2062,8 @@ end
         % Fitted values from trend (yhattrend), (time varying) seasonal
         % (yhatseaso), explanatory variables (yhatX) and level shift
         % component (yhatlshift)
-        
         yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
+        
         % obj = sum of squares of residuals/2 = negative log likelihood
         obj=sum((yin(bsb)-yhat).^2)/2;
         % format long
@@ -2073,9 +2071,11 @@ end
     end
 
 
-% lik computes fitted values. This function is called in the very last step
-% when routine nlinfit is invoked. Please, note the difference beween
-% likyhat and
+% likyhat computes fitted values using vector of regression coefficients
+% beta0. Note that matrices Xtrendf, Xseasof, Seqf, Xf contain n-k rows.
+% This function is called in the very last step of the procedure when
+% routine nlinfit is invoked. Please, note the difference beween likyhat
+% and lik
     function objyhat=likyhat(beta0,Xtrendf)
         
         yhattrend=Xtrendf*beta0(1:trend+1);
@@ -2118,27 +2118,11 @@ end
             yhatlshift=0;
         end
         
-        % Fitted values from trend (yhattrend), (time varying) seasonal
+        % objhat = fitted values from trend (yhattrend), (time varying) seasonal
         % (yhatseaso), explanatory variables (yhatX) and level shift
         % component (yhatlshift)
-        
         objyhat=yhattrend+yhatseaso+yhatX+yhatlshift;
-        % obj = sum of squares of residuals/2 = negative log likelihood
     end
-
-
-%     function J = getjacobianFS(beta,fdiffstep,modelFS,yfit,nans,sweights)
-%         function yplus = call_model_nested(betaNew)
-%             yplus = modelFS(betaNew, Xtrendf);
-%             yplus(nans) = [];
-%         end
-%         J = statjacobianFS(@call_model_nested, beta, fdiffstep, yfit(~nans));
-%         if ~isempty(sweights)
-%             sweights = sweights(~nans);
-%             J = bsxfun(@times,sweights(:),J);
-%         end
-%     end % function getjacobian
-
 
 % -------------------------------------------------------------------
 % subfunction IRWLSreg
