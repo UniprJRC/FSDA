@@ -2260,7 +2260,7 @@ end
                 end
                 
                 
-            else % model is non linear because there is jut the time varying amplitude in seasonal component
+            else % model is non linear because there is just the time varying amplitude in seasonal component
                 
                 % Use Alternative least squares to update beta (just using
                 % the units forming subset)
