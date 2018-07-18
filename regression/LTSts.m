@@ -2018,7 +2018,8 @@ end
 
 % lik computes the objective function (residual sum of squares/2 = negative
 % log likelihood) which must be minimized for the units specified inside
-% global variable bsb.
+% global variable bsb. Note that given that yhat is global it is possible
+% to call this function to compute fitted values for the units specified in bsb 
     function obj=lik(beta0)
         
         yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
