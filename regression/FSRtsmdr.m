@@ -428,8 +428,9 @@ otherind=setdiff(1:p,indlinsc);
 
 if bsb==0
     Ra=1; nwhile=1;
+    sizRandomSubsets=max([p+1 round(n/4)]);
     while and(Ra,nwhile<100)
-        bsb=randsample(n,p+1);
+        bsb=randsample(n,sizRandomSubsets);
         bsbini=bsb;
         Xb=Xsel(bsb,:);
         Ra=(rank(Xb)<size(Xb,2));
@@ -464,9 +465,11 @@ end
 % If model contains a field named B than use the first column of this field
 % as initial parameter value, else use OLS estimate based on linear part of
 % the model
-if ~isempty(model.B)
+if isfield(model,'B') && ~isempty(model.B)
     b=model.B(:,1); % get initial estimate of parameter values
 else
+    
+    % initial value of parameter estimates is based on subset 
     bsel=Xsel(bsb,:)\y(bsb);
     if varampl>0
         if lshift>0
@@ -543,11 +546,11 @@ ij=1;
 %  included.
 Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
-Xb=Xsel(bsb,:);
-
 % Initialize matrix which stores in each step the integer identifying the
 % reason why the algorithm terminated
 Exflag=[(ini0:n)',ones(n-ini0+1,1)];
+
+Xb=Xsel(bsb,:);
 
 % MaxIter=[];
 MaxIter=1000;
@@ -661,15 +664,23 @@ else
                 Xsel = getjacobianFS(betaout,fdiffstep,@lik,yhat);
             end
   
-            % Store correctly computed b for the case of rank problem
-            % Make sure that the coefficients of posvarampl are set to 0
+            % Check whether the estimate of b which has come out is
+            % reasonable. An estimate of b is called unreasonable if
+            % max(yhat)>2*max(y)  and min(yhat)<0.5*min(y)
+            % Make sure that the coefficients of posvarampl are set to 0 if
+            % they are greater than a certain threshold
             if max(abs(betaout(posvarampl)))>10
                 betaout(posvarampl)=0;
             end
-
-            b=betaout;
             
-            bprevious=betaout;
+            if max(yhat)>2*max(y) && min(yhat)<0.5*min(y)
+                b=bprevious;
+            else
+                b=betaout;
+            end
+            
+            % Store correctly computed b for the case of rank problem
+            bprevious=b;
         else   % number of independent columns is smaller than number of parameters
             if bsbmfullrank
                 Xb=Xsel(bsb,:);
