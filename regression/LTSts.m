@@ -394,7 +394,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                     \]
 %                     where $S_m$ is a set of cardinality $m$ which
 %                     contains the units not declared as outliers, $p$
-%                     is the total number of estimated parameters and cor
+%                     is the total number of estimated parameters and $cor$
 %                     is a correction factor to make the estimator
 %                     consistent.
 %         out.conflev = confidence level which is used to declare outliers.
@@ -412,7 +412,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       where $A$ is the matrix of partial derivatives. More
 %                       precisely:
 %                       \[
-%                       a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}
+%                       a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
 %                       \]
 %                       where
 %                       \begin{eqnarray}
@@ -422,7 +422,19 @@ function [out, varargout] = LTSts(y,varargin)
 %                           & = & \hat \eta_i + e_i
 %                       \end{eqnarray}
 %            out.y    = response vector y.
-%            out.X    = data matrix X containing trend+seasonal+expl+lshift.
+%            out.X    = data matrix X containing trend, seasonal, expl and
+%                       lshift, if the model is linear or linearized
+%                       version of $\eta(x_i, \beta)$ if the model is non
+%                       linear containing in the columns partial
+%                       derivatives evaluated in correspondence of
+%                       out.B(:,1) with respect to each parameter. In other
+%                       words, the $i,j$-th element of out.X is
+%                       \[
+%                       \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
+%                       \]
+%                       $j=1, 2, \ldots, p$, $i \in S_m$.
+%                       The size of this matrix is:
+%                       n-length(out.outliers)-by-p
 %                       The field is present only if option
 %                       yxsave is set to 1.
 %           out.class = 'LTSts'.
@@ -774,6 +786,7 @@ modeldef.lshift  =0;        % no level shift
 
 % Set the default value for h (the default is 75 per cent of the data)
 hdef    = round(0.75*T);
+hmin    = floor(0.5*T);
 bdpdef  = 1-hdef/T;
 nsampdef= 1000;
 
@@ -972,7 +985,7 @@ ncomb=bc(T,pini);
 
 % Check h and bdp The user has only specified h: no need to specify bdp.
 if chktrim==1
-    if options.h < hdef
+    if options.h < hmin
         error('FSDA:LTSts:WrongInput',['The LTS must cover at least ' int2str(hmin) ' observations.'])
     elseif options.h >= T
         error('FSDA:LTSts:WrongInput','h is greater or equal to the number of non-missings and non-infinites.')
@@ -1598,7 +1611,7 @@ if abs(s0) > 1e-7
         s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
         invXX=inv(Xsel'*Xsel);
         covB=s2*invXX; %#ok<MINV>
-        
+        Xlin=Xsel;
         
     elseif   varampl==0 && lshift>0
         % In this case there is just level shift however we do not redo
@@ -1613,7 +1626,7 @@ if abs(s0) > 1e-7
         s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
         invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
         covB=s2*invXX; %#ok<MINV>
-        
+        Xlin=Xseldum;
     else % model is non linear because there is time varying amplitude in seasonal component
         Xtrendf=Xtrend(bsb,:);
         Xseasof=Xseaso(bsb,:);
@@ -1630,9 +1643,9 @@ if abs(s0) > 1e-7
         
         if lshift>0
             Xlshiftf=Xlshift(bsb);
-            [betaout,~,~,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
         else
-            [betaout,~,~,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
             %
             % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
             % Note that MSE*inv(J'*J) = covB
@@ -1777,9 +1790,9 @@ end
 if options.yxsave
     if options.intercept==1
         % Store X (without the column of ones if there is an intercept)
-        out.X=X(:,2:end);
+        out.X=Xlin(:,2:end);
     else
-        out.X=X;
+        out.X=Xlin;
     end
 end
 
