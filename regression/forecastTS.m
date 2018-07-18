@@ -51,7 +51,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       where $A$ is the matrix of partial derivatives. More
 %                       precisely:
 %                       \[
-%                       a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}
+%                       a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
 %                       \]
 %                       where
 %                       \begin{eqnarray}
@@ -210,7 +210,21 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                   first length(y) rows of this matrix are equal to NaN.
 %               outFORE.datesnumeric = vector of length (length(y)+nfore)
 %                   containing the dates in numeric format.
-%
+%               outFORE.X= data matrix X containing trend, seasonal, expl and
+%                       lshift, if the model is linear or linearized
+%                       version of $\eta(x_i, \beta)$ if the model is non
+%                       linear containing in the columns partial
+%                       derivatives evaluated in correspondence of
+%                       outEST.B(:,1) with respect to each parameter. In other
+%                       words, the $i,j$-th element of outFORE.X is
+%                       \[
+%                       \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
+%                       \]
+%                       $j=1, 2, \ldots, p$, $i=1, 2, \ldots, T$.
+%                       The size of this matrix is:
+%                       T-by-p
+%                       The field is present only if option
+%                       yxsave is set to 1.
 %
 %
 % See also LTSts, wedgeplot, simulateTS
@@ -640,6 +654,9 @@ end
 
 % Raw numbers associated with the dates on the x axis
 outFORE.datesnumeric=datesnumeric;
+
+% Store linearized version of \eta(X,\hat \beta)
+outFORE.X=J(1:n,:);
 
 
 if dispresults
