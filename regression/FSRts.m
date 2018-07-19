@@ -491,7 +491,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LTSts(y,'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1)
+    [out]=LTSts(y,'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
     
     if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
@@ -499,8 +499,9 @@ else % initial subset is not supplied by the user
         %out.ListOut=out.outliers;
         %return
     end
-    
     bs=out.bs;
+    
+    % bs=out.bs;
     mdr=0;
     constr='';
     
@@ -511,9 +512,12 @@ else % initial subset is not supplied by the user
     
     if model.lshift>0
         modelmdr.posLS=out.posLS;
-        modelmdr=rmfield(modelmdr,'lshift');
     end
-    
+
+if isfield(modelmdr,'lshift')
+    modelmdr=rmfield(modelmdr,'lshift');
+end
+
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
@@ -544,7 +548,7 @@ else % initial subset is not supplied by the user
                 % restart LXS without the units forming
                 % initial subset
                 bsb=setdiff(seq,out.bs);
-                [out]=LTSts(y,'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
+                [out]=LTSts(y(bsb),'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
                 
                 %  [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
                 bs=bsb(out.bs);

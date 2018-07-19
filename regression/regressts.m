@@ -286,15 +286,14 @@ model = modeldef;
 bsb=options.bsb;
 plots=options.plots;
 
+mm=length(bsb);
+
 % Get model parameters
 trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
-B=model.B;
-
-
-if isfield(model,'posLS')
+if isfield(model,'posLS') && ~isempty(model.posLS)
     lshift   = model.posLS;
     posLS =lshift;
 else
@@ -303,6 +302,7 @@ end
 
 n=length(y);
 T = n;
+hrew=length(bsb);
 
 % seq is the vector which will contain linear time trend
 seq   = (1:T)';
@@ -416,124 +416,149 @@ otherind=setdiff(1:p,indlinsc);
 % end
 
 
-% If model contains a field named B than use the first column of this field
-% as initial parameter value, else use OLS estimate based on linear part of
-% the model
-if isfield('model',B) && ~isempty(model.B)
-    b=model.B(:,1); % get initial estimate of parameter values
-else
-    
-    % initial value of parameter estimates is based on subset
-    bsel=Xsel(bsb,:)\y(bsb);
-    if varampl>0
-        if lshift>0
-            b=[bsel(1:end-1); 0.01*zeros(varampl,1); bsel(end)];
-            
-        else
-            b=[bsel; 0.01*zeros(varampl,1)];
-        end
-    end
-end
-
-
-% MaxIter=[];
-MaxIter=1000;
-
-DisplayLevel='';
-nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',1e-7);
-
-warning('off','stats:nlinfit:Overparameterized');
-warning('off','stats:nlinfit:IterationLimitExceeded');
-warning('off','stats:nlinfit:IllConditionedJacobian')
-warning('off','MATLAB:rankDeficientMatrix')
 
 %% Set up the model
+Exflag=1;
+exitflagALS=[];
+iterA=[];
 
 % find estimate of beta and residuals
 if varampl==0  % In this case the model is linear
-    % Function lik constructs fitted values and residual sum of
-    % squares
-    betaout = Xsel(bsb,:) \ y(bsb);
+    
+    % initial value of parameter estimates is based on subset
+    betaout=Xsel(bsb,:)\y(bsb);
+    
+    
     % update fitted values
     yhat = Xsel * betaout;
     
     s2=sum((y(bsb)-yhat(bsb)).^2)/(mm-size(Xsel,2));
     invXX=inv(Xsel'*Xsel);
+    covB=s2*invXX; %#ok<MINV>
     
 else % model is non linear because there is time varying amplitude in seasonal component
-    Xtrendf=Xtrend(bsb,:);
+    
     Xseasof=Xseaso(bsb,:);
     if ~isempty(X)
         Xf=X(bsb,:);
     end
     Seqf=Seq(bsb,:);
-    yf=y(bsb);
-end
-
-if lshift>0
-    Xlshiftf=Xlshift(bsb);
-end
-
-Exflag=1;
-exitflagALS=[];
-iterA=[];
-iterALS=0;
-while iterALS < 2
-    %   [b,exitflag,iter]=ALS(y,b,10000,1e-7);
-    [betaout,~,Xsel,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
-    % Note that MSE*inv(J'*J) = covB
-            invXX=covB/s2;
-
     
+    
+    yf=y(bsb);
+    Xtrendf=Xtrend(bsb,:);
+    
+    if lshift>0
+        Xlshiftf=Xlshift(bsb);
+    end
+    
+    
+    
+    % If model contains a field named B than use the first column of this field
+    % as initial parameter value, else use OLS estimate based on linear part of
+    % the model
+    if isfield(model,'B') && ~isempty(model.B)
+        b=model.B(:,1); % get initial estimate of parameter values
+    else
+        
+        % initial value of parameter estimates is based on subset
+        b=Xsel(bsb,:)\y(bsb);
+        if varampl>0
+            if lshift>0
+                b=[b(1:end-1); 0.01*zeros(varampl,1); b(end)];
+                
+            else
+                b=[b; 0.01*zeros(varampl,1)];
+            end
+        end
+    end
+    
+    
+    % MaxIter=[];
+    MaxIter=1000;
+    
+    DisplayLevel='';
+    nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',1e-7);
+    
+    warning('off','stats:nlinfit:Overparameterized');
+    warning('off','stats:nlinfit:IterationLimitExceeded');
+    warning('off','stats:nlinfit:IllConditionedJacobian')
+    warning('off','MATLAB:rankDeficientMatrix')
+    
+    
+    iterALS=0;
+    while iterALS < 2
+        %   [b,exitflag,iter]=ALS(y,b,10000,1e-7);
+        [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
+        % Note that MSE*inv(J'*J) = covB
+        invXX=covB/s2;
+        
+        
+        [~,ID] = lastwarn;
+        
+        if iterALS == 0 && ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
+            lastwarn('')
+            % ID='';
+            % [b,exitflag,iter]=ALS(y,b,10000,1e-7);
+            [b,exitflagALS,iterA]=ALS(y,b,10000,1e-7);
+            iterALS=iterALS+1;
+        else
+            iterALS=2;
+        end
+    end
+    
+    %                 [b,exitflag,iter]=ALS(y,b,10000,1e-7);
+    %                 [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
+    
+    
+    % Note that MSE*inv(J'*J) = covB
     [~,ID] = lastwarn;
     
-    if iterALS == 0 && ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
-        lastwarn('')
-        % ID='';
-        % [b,exitflag,iter]=ALS(y,b,10000,1e-7);
-        [b,exitflagALS,iterA]=ALS(y,b,10000,1e-7);
-        iterALS=iterALS+1;
-    else
-        iterALS=2;
-    end
-end
-
-%                 [b,exitflag,iter]=ALS(y,b,10000,1e-7);
-%                 [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
-
-
-% Note that MSE*inv(J'*J) = covB
-[~,ID] = lastwarn;
-
-
-if ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
-    Exflag=0;
-end
-
-
-
-hrew=length(bsb);
-T=n;
-    if hrew<T
-        % factor=consistencyfactor(hrew,n,1);
-        a=norminv(0.5*(1+hrew/T));
-        %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
-        factor=1/sqrt(1-2*(T/hrew)*a.*normpdf(a));
-        % Apply small sample correction factor to reweighted estimate
-        % of sigma
-        factor=factor*sqrt(corfactorREW(1,T,hrew/T));
-    else
-        factor=1;
+    
+    if ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
+        Exflag=0;
     end
     
-   
+    
+    
     bsb=1:n;
-yhat=lik(betaout);
-
-
+    yhat=lik(betaout);
     
+end
+
+
+
+
+T=n;
+if hrew<T
+    % factor=consistencyfactor(hrew,n,1);
+    a=norminv(0.5*(1+hrew/T));
+    %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
+    factor=1/sqrt(1-2*(T/hrew)*a.*normpdf(a));
+    % Apply small sample correction factor to reweighted estimate
+    % of sigma
+    % TODO factor=factor*sqrt(corfactorREW(1,T,hrew/T));
+else
+    factor=1;
+end
+
+
 e=y-yhat;  % e = vector of residuals for all units using b estimated using subset
 residuals =e./(factor*sqrt(s2));
+
+%
+% if varampl==0
+%     Xsel=[Xtrend Xseaso X Xlshift];
+% else
+%     fdiffstep=[];
+%     Xsel = getjacobianFS(betaout,fdiffstep,@lik,yhat);
+% end
+
+
+if varampl>0
+    fdiffstep=[];
+    Xsel = getjacobianFS(betaout,fdiffstep,@lik,yhat);
+end
 
 out=struct;
 out.s2=s2;
@@ -545,6 +570,7 @@ out.covB=covB;
 out.exitflagALS=exitflagALS;
 out.iterA=iterA;
 out.beta=betaout;
+out.yhat=yhat;
 
 if dispresults
     
@@ -609,27 +635,27 @@ if plots==1
     ax=axis;
     ylimits=ax(3:4);
     line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','g')
-   
+    
     
     
     %% Create plots
-% If plots is a structure, plot directly those chosen by the user; elseif
-% plots is 1 a plot or residuals against index number appears else no plot
-% is produced.
-if plots>=1
-    % Time series + fitted values
-    figure
-    subplot(2,1,1)
-    plot([y yhat])
-    xlabel('Time')
-    ylabel('Real and fitted values')
+    % If plots is a structure, plot directly those chosen by the user; elseif
+    % plots is 1 a plot or residuals against index number appears else no plot
+    % is produced.
+    if plots>=1
+        % Time series + fitted values
+        figure
+        subplot(2,1,1)
+        plot([y yhat])
+        xlabel('Time')
+        ylabel('Real and fitted values')
+        
+        % Index plot of robust residuals
+        h2=subplot(2,1,2);
+        laby='Robust lts residuals';
+        resindexplot(residuals,'conflev',conflev,'laby',laby,'h',h2,'title','');
+    end
     
-    % Index plot of robust residuals
-    h2=subplot(2,1,2);
-    laby='Robust lts residuals';
-    resindexplot(residuals,'conflev',conflev,'laby',laby,'h',h2,'title','');
-end
-
 end
 
 
@@ -733,15 +759,13 @@ end
         
     end
 
-  
+
 
 
 % ALS computes Alternating Least Squares estimate of beta starting from
 % vector beta0. The rows which are used are those specified in global
 % variable bsb
     function [newbeta,exitflag,iter]=ALS(y,beta0,maxiterALS,maxtolALS)
-        
-        
         iter        = 0;
         betadiff    = 9999;
         newbeta=beta0;
@@ -823,6 +847,122 @@ end
                 exitflag=1;
                 break
             end
+        end
+    end
+
+
+
+    function J = getjacobianFS(beta,fdiffstep,modelFS,yfit)
+        function yplus = call_model_nested(betaNew)
+            yplus = modelFS(betaNew);
+        end
+        J = statjacobianFS(@call_model_nested, beta, fdiffstep, yfit);
+    end % function getjacobian
+
+    function J = statjacobianFS(func, theta, DerivStep, y0)
+        %STATJACOBIAN Estimate the Jacobian of a function
+        
+        % J is a matrix with one row per observation and one column per model
+        % parameter. J(i,j) is an estimate of the derivative of the i'th
+        % observation with respect to the j'th parameter.
+        
+        % For performance reasons, very little error checking is done on the input
+        % arguments. This function makes the following assumptions about inputs:
+        %
+        % * func is the model function and is a valid function handle that accepts
+        %   a single input argument of the same size as theta.
+        % * theta is vector or matrix of parameter values. If a matrix, each row
+        %   represents a different group or observation (see "Grouping Note" below)
+        %   and each column represents a different model parameter.
+        % * DerivStep (optional) controls the finite differencing step size. It may
+        %   be empty, scalar, or a vector of positive numbers with the number of
+        %   elements equal to the number model parameters.
+        % * y0 (optional) is the model function evaluated at theta. A value of []
+        %   is equivalent to omitting the argument and results in the model being
+        %   evaluated one additional time.
+        %
+        % Example 1: NLINFIT
+        %   NLINFIT is used to estimate the parameters b(1) and b(2) for the model
+        %   @(b,T) b(1)*sin(b(2)*T), given data at T=1:5. NLINFIT needs the
+        %   Jacobian of the model function with respect to b(1) and b(2) at each T.
+        %   To do this, it constructs a new function handle that is only a function
+        %   of b and that "burns-in" the value of T (e.g. model2 = @(b) model1(b,T)).
+        %   It then calls STATJACOBIAN with the new function handle to obtain a
+        %   matrix J, where J(i,j) is an estimate of the derivative of the model
+        %   with respect to the j'th parameter evaluated at T(i) and b.
+        %
+        % Example 2: NLMEFIT or NLMEFITSA with group-specific parameters
+        %   NLMEFIT requires the Jacobian of the model function with respect to two
+        %   parameters evaluated at group-specific values. (Group-specific
+        %   parameters can arise, for example, from using the default FEConstDesign
+        %   and REConstDesign options.) NLMEFIT calls STATJACOBIAN passing in a
+        %   matrix of parameter values theta, with one row per group, where
+        %   theta(i,j) represents a parameter value for i'th group and j'th
+        %   parameter. STATJACOBIAN returns a matrix J, where J(i,j) is an estimate
+        %   of the derivative of the model with respect to the j'th parameter,
+        %   evaluated for observation i with parameter values theta(rowIdx(i),:),
+        %   which are the parameter values for the observation's group.
+        %
+        % Example 3: NLMEFIT with observation-specific parameters
+        %   NLMEFIT requires the Jacobian of the model function with respect to two
+        %   parameters evaluated at observation-specific values. (Observation-
+        %   specific parameters can arise, for example, from using the FEObsDesign
+        %   or REObsDesign options.) NLMEFIT calls STATJACOBIAN passing in a matrix
+        %   of parameter values theta, with one row per observation, where
+        %   theta(i,j) represents a parameter value for the i'th observation and
+        %   j'th parameter. In this case, rowIdx is 1:N, where N is the number of
+        %   observations. STATJACOBIAN returns a matrix J, where J(i,j) is an
+        %   estimate of the derivative of the model with respect to the j'th
+        %   parameter, evaluated for observation i with parameter values
+        %   theta(i,:), which are the parameter values for the observation.
+        
+        % Use the appropriate class for variables.
+        classname = class(theta);
+        
+        % Handle optional arguments, starting with y0 since it will be needed to
+        % determine the appropriate size for a default groups.
+        if nargin < 4 || isempty(y0)
+            y0 = func(theta);
+        end
+        
+        % When there is only one group, ensure that theta is a row vector so
+        % that vectoriation works properly. Also ensure that the underlying
+        % function is called with an input with the original size of theta.
+        thetaOriginalSize = size(theta);
+        theta = reshape(theta, 1, []);
+        
+        func = @(theta) func(reshape(theta, thetaOriginalSize));
+        
+        % All observations belong to a single group; scalar expansion allows us
+        % to vectorize using a scalar index.
+        rowIdx = 1;
+        
+        [numThetaRows, numParams] = size(theta);
+        
+        if nargin < 3 || isempty(DerivStep)
+            % Best practice for forward/backward differences:
+            DerivStep = repmat(sqrt(eps(classname)), 1, numParams);
+            % However, NLINFIT's default is eps^(1/3).
+        elseif isscalar(DerivStep)
+            DerivStep = repmat(DerivStep, 1, numParams);
+        end
+        
+        delta = zeros(numThetaRows, numParams, classname);
+        J = zeros(numel(y0), numParams, classname);
+        for ii = 1:numParams
+            % Calculate delta(:,ii), but remember to set it back to 0 at the end of the loop.
+            delta(:,ii) = DerivStep(ii) * theta(:,ii);
+            deltaZero = delta(:,ii) == 0;
+            if any(deltaZero)
+                % Use the norm as the "scale", or 1 if the norm is 0.
+                nTheta = sqrt(sum(theta(deltaZero,:).^2, 2));
+                delta(deltaZero,ii) = DerivStep(ii) * (nTheta + (nTheta==0));
+            end
+            thetaNew = theta + delta;
+            yplus = func(thetaNew);
+            dy = yplus(:) - y0(:);
+            J(:,ii) = dy./delta(rowIdx,ii);
+            delta(:,ii) = 0;
         end
     end
 end

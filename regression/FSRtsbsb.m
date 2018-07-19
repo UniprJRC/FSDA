@@ -276,7 +276,7 @@ trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
-if isfield(model,'posLS')
+if isfield(model,'posLS') && ~isempty(model.posLS)
     lshift   = model.posLS;
     posLS =lshift;
 else
@@ -537,7 +537,7 @@ else
         % Store units belonging to the subset
         if (mm>=init)
             if intersect(mm,bsbsteps)==mm
-                BB(bsb,ij)=bsb;
+                BB(oldbsb,ij)=oldbsb;
                 ij=ij+1;
             end
         end

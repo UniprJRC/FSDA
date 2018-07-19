@@ -305,7 +305,7 @@ trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
 
-if isfield(model,'posLS')
+if isfield(model,'posLS') && ~isempty(model.posLS)
     lshift   = model.posLS;
     posLS =lshift;
 else
@@ -470,13 +470,13 @@ if isfield(model,'B') && ~isempty(model.B)
 else
     
     % initial value of parameter estimates is based on subset 
-    bsel=Xsel(bsb,:)\y(bsb);
+    b=Xsel(bsb,:)\y(bsb);
     if varampl>0
         if lshift>0
-            b=[bsel(1:end-1); 0.01*zeros(varampl,1); bsel(end)];
+            b=[b(1:end-1); 0.01*zeros(varampl,1); b(end)];
             
         else
-            b=[bsel; 0.01*zeros(varampl,1)];
+            b=[b; 0.01*zeros(varampl,1)];
         end
     end
 end
@@ -651,6 +651,7 @@ else
                 % using input  vector betaout
                 bsb=seq;
                 yhat=lik(betaout);
+               
                 
                 % yhatb = fitted values for the units belonging to subset
                 yhatb=yhat(oldbsb);
@@ -743,7 +744,7 @@ else
         if mm>=init1
             % Store units belonging to the subset
             if intersect(mm,bsbsteps)==mm
-                BB(bsb,ij)=bsb;
+                BB(oldbsb,ij)=oldbsb;
                 ij=ij+1;
             end
             
