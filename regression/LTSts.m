@@ -22,8 +22,9 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.s = scalar (length of seasonal period). For monthly
 %                         data s=12 (default), for quartely data s=4, ...
 %               model.trend = scalar (order of the trend component).
-%                       trend = 1 implies linear trend with interecept (default),
+%                       trend = 1 implies linear trend with intercept (default),
 %                       trend = 2 implies quadratic trend ...
+%                       Admissible values for trend are, 0, 1, 2 and 3.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
@@ -51,6 +52,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                        follows:
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+%                        seasonal =0 implies a non seasonal model.
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
@@ -329,10 +331,12 @@ function [out, varargout] = LTSts(y,varargin)
 %                       4th col = p values.
 %               out.h = The number of observations that have determined the
 %                       initial LTS estimator, i.e. the value of h.
-%              out.bs = Vector containing the units forming best initial
-%                       elemental subset (that is elemental subset which
-%                       produced the smallest value of the target
-%                       function).
+%              out.bs = Vector containing the units with the smallest p+1
+%                       squared residuals before the reweighting step,
+%                       where p is the total number of the parameters in
+%                       the model.
+%                       out.bs can be used to initialize the forward
+%                       search.
 %         out.Hsubset = matrix of size T-by-(T-2*lshift)
 %                       containing units forming best H subset for each
 %                       tentative level shift which is considered.
@@ -892,8 +896,8 @@ if s <=0
     error('FSDA:LTSts:WrongInput',['s=' num2str(s) 'is the periodicity of the time series (cannot be negative)'])
 end
 
-if sum(intersect(trend,1:3))==0
-    error('FSDA:LTSts:WrongInput','Trend must assume the following values: 1 or 2 or 3')
+if isempty(intersect(trend,0:3))
+    error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1 or 2 or 3')
 end
 
 % Construct the matrices which are fixed in each step of the minimization
@@ -1423,7 +1427,7 @@ for lsh=LSH
             brob = tmp.betarw;
             % bs = superbestsubset, units forming best subset according to
             % fastlts
-            bs = bestsubsetall(i,:);
+            % bs = bestsubsetall(i,:);
             yhatrob=tmp.yhat;
             numsuperbestscale2=tmp.numscale2rw;
             ibest=i;
@@ -1563,6 +1567,12 @@ lik(brobfinal);
 % residuals = Raw residuals using final estimate of beta
 residuals=yin-yhat;
 
+% Find the units with the smallest absolute p+1 residuals (before
+% reweighting step)
+  [~,IndBestRes]=sort(abs(residuals));
+  bs=IndBestRes(1:p+1);
+  
+  
 if abs(s0) > 1e-7
     stdres = residuals/s0;
     

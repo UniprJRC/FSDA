@@ -191,7 +191,7 @@
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
 
     % generate the wedgeplot
-    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     y1=y(:);
@@ -218,7 +218,7 @@
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
-</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
      other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     y1=y(:);
@@ -244,7 +244,7 @@
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
-</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'intercept',1
 </code>,<code> 'h',round(n*0,75)
@@ -267,8 +267,9 @@
                fields:</p> <p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
                          data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
-                       trend = 1 implies linear trend with interecept (default),
-                       trend = 2 implies quadratic trend ...</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
+                       trend = 1 implies linear trend with intercept (default),
+                       trend = 2 implies quadratic trend ...</p><p>
+                       Admissible values for trend are, 0, 1, 2 and 3.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
                         component. Possible values for seasonal are
                         $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
@@ -292,9 +293,10 @@
                         For example, seasonal =201 implies a seasonal
                         component which just uses one frequency
                         which grows in a quadratic way over time as
-                        follows:</p><p>
+                        follows:</p> <p>
                         $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
-                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
+                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
+                        seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
                          to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater or equal than 0 which
                          specifies whether it is necessary to include a
@@ -530,10 +532,12 @@
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
                        4th col = p values.</p></p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
-                       initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>Vector containing the units forming best initial
-                       elemental subset (that is elemental subset which
-                       produced the smallest value of the target
-                       function).</p></td></tr><tr valign="top"><td><code>Hsubset</code></td><td><p><p>matrix of size T-by-(T-2*lshift)
+                       initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p><p>Vector containing the units with the smallest p+1
+                       squared residuals before the reweighting step,
+                       where p is the total number of the parameters in
+                       the model.</p> <p>
+                       out.bs can be used to initialize the forward
+                       search.</p></p></td></tr><tr valign="top"><td><code>Hsubset</code></td><td><p><p>matrix of size T-by-(T-2*lshift)
                        containing units forming best H subset for each
                        tentative level shift which is considered.</p> <p>
                        Units belonging to
@@ -585,7 +589,7 @@
                      \]
                      where $S_m$ is a set of cardinality $m$ which
                      contains the units not declared as outliers, $p$
-                     is the total number of estimated parameters and cor
+                     is the total number of estimated parameters and $cor$
                      is a correction factor to make the estimator
                      consistent.</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p><p>confidence level which is used to declare outliers.</p> <p>
                        Remark: scalar out.conflev will be used to draw the
@@ -599,7 +603,7 @@
                        where $A$ is the matrix of partial derivatives. More
                        precisely:</p><p>
                        </p>\[
-                       a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}
+                       a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
                        \]
                        where
                        \begin{eqnarray}
@@ -607,7 +611,19 @@
                            & = & \eta_i +\epsilon_i \\
                            & = & \eta(x_i,\hat \beta)+ e_i  \\
                            & = & \hat \eta_i + e_i
-                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>data matrix X containing trend+seasonal+expl+lshift.</p> <p>
+                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X containing trend, seasonal, expl and
+                       lshift, if the model is linear or linearized
+                       version of $\eta(x_i, \beta)$ if the model is non
+                       linear containing in the columns partial
+                       derivatives evaluated in correspondence of
+                       out.B(:,1) with respect to each parameter. In other
+                       words, the $i,j$-th element of out.X is
+                       \[
+                       \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
+                       \]<p>
+                       $j=1, 2, \ldots, p$, $i \in S_m$.</p> <p>
+                       The size of this matrix is:</p><p>
+                       n-length(out.outliers)-by-p
                        The field is present only if option
                        yxsave is set to 1.</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'LTSts'.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples
                        extracted for computing the estimate (the so called
@@ -619,6 +635,6 @@
                        second tentative level shift position;</p> <p>
                        ...</p><p>
                        C{end} is associated with the subsamples for
-                       last tentative level shift position;</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust
+                       last tentative level shift position;</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- forthcoming in Econometris and Statistics. [Referred below as RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econmetrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
