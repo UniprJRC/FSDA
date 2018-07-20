@@ -2032,7 +2032,7 @@ end
             % can just keep the initialbeta and initial scale.
             if (any(isnan(newbeta)))
                 newbeta = beta0;
-                exitflag=1;
+                exitflag=-1;
                 break
             end
         end
