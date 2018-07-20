@@ -144,11 +144,6 @@ function out = regressts(y,varargin)
 %               time series object.
 %                 Example - 'StartDate',[2016,3]
 %                 Data Types - double
-%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1
-%               Data Types - double
 %
 % Output:
 %
@@ -228,9 +223,7 @@ function out = regressts(y,varargin)
 %                       \]
 %                       $j=1, 2, \ldots, p$, $i \in S_m$.
 %                       The size of this matrix is:
-%                       n-length(out.outliers)-by-p
-%                       The field is present only if option
-%                       yxsave is set to 1.
+%                       n-length(out.outliers)-by-p.
 %         out.Exflag  = Reason nlinfit stopped. Integer.
 %                       If the model is non linear out.Exflag is equal to 1
 %                       if the maximization procedure did not produce
@@ -336,6 +329,25 @@ function out = regressts(y,varargin)
     out=regressts(y,'model',model,'plots',1,'StartDate',StartDate);    
 %}
 
+%{
+    % Compare scaled residuals using or not correction factors.
+    % Example of the use of input option model and plots.
+    % Model with linear trend, two harmonics for seasonal component and
+    % varying amplitude using a linear trend.
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=104;         % two harmonics with time varying seasonality
+    bsini=1:72;
+    out=regressts(y,'model',model,'bsb',bsini);    
+    outCR=regressts(y,'model',model,'bsb',bsini,'smallsamplecor',true,'asymptcor',true);   
+    h1=subplot(2,1,1);
+    title('Estimate of the scale without correction factors')
+    resindexplot(out.residuals,'h',h1)
+    h2=subplot(2,1,2);
+    resindexplot(outCR.residuals,'h',h2)
+    title('Estimate of the scale with correction factors')
+%}  
 
 %% Input parameters checking
 
@@ -360,7 +372,7 @@ dispresultsdef=false;
 
 options=struct('model',modeldef,'nocheck',0,'dispresults',dispresultsdef,...
     'StartDate',StartDate,'bsb',bsbini,'plots',0,...
-    'smallsamplecor',false,'asymptcor',false,'yxsave',false);
+    'smallsamplecor',false,'asymptcor',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -687,11 +699,11 @@ out.ExflagALS=ExflagALS;
 out.iterALS=iterA;
 out.y=y;
 out.yhat=yhat;
-out.Xsel=Xsel;
+out.X=Xsel;
 out.B=B;
 out.covB=covB;
 out.invXX=invXX;
-out.s2=s2;
+out.scale=scale;
 out.e=e;
 out.residuals=residuals;
 
@@ -1085,5 +1097,55 @@ end
             delta(:,ii) = 0;
         end
     end
+end
+
+%% corfactorRAW function
+function rawcorfac=corfactorRAW(p,n,alpha)
+
+if p > 2
+    coeffqpkwad875=[-0.455179464070565,1.11192541278794,2;-0.294241208320834,1.09649329149811,3]';
+    coeffqpkwad500=[-1.42764571687802,1.26263336932151,2;-1.06141115981725,1.28907991440387,3]';
+    y1_500=1+(coeffqpkwad500(1,1)*1)/p^coeffqpkwad500(2,1);
+    y2_500=1+(coeffqpkwad500(1,2)*1)/p^coeffqpkwad500(2,2);
+    y1_875=1+(coeffqpkwad875(1,1)*1)/p^coeffqpkwad875(2,1);
+    y2_875=1+(coeffqpkwad875(1,2)*1)/p^coeffqpkwad875(2,2);
+    y1_500=log(1-y1_500);
+    y2_500=log(1-y2_500);
+    y_500=[y1_500;y2_500];
+    A_500=[1,log(1/(coeffqpkwad500(3,1)*p^2));1,log(1/(coeffqpkwad500(3,2)*p^2))];
+    coeffic_500=A_500\y_500;
+    y1_875=log(1-y1_875);
+    y2_875=log(1-y2_875);
+    y_875=[y1_875;y2_875];
+    A_875=[1,log(1/(coeffqpkwad875(3,1)*p^2));1,log(1/(coeffqpkwad875(3,2)*p^2))];
+    coeffic_875=A_875\y_875;
+    fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
+    fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
+else
+    if p == 2
+        fp_500_n=1-(exp(0.673292623522027)*1)/n^0.691365864961895;
+        fp_875_n=1-(exp(0.446537815635445)*1)/n^1.06690782995919;
+    end
+    if p == 1
+        fp_500_n=1-(exp(0.262024211897096)*1)/n^0.604756680630497;
+        fp_875_n=1-(exp(-0.351584646688712)*1)/n^1.01646567502486;
+    end
+end
+if 0.5 <= alpha && alpha <= 0.875
+    fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
+end
+if 0.875 < alpha && alpha < 1
+    fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+end
+rawcorfac=1/fp_alpha_n;
+if rawcorfac <=0 || rawcorfac>50
+    rawcorfac=1;
+    if msg==1
+        disp('Warning: problem in subfunction corfactorRAW')
+        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
+        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+        disp('This may happen when n is very small and p is large')
+    end
+end
 end
 %FScategory:REG-Regression

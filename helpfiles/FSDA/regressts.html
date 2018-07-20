@@ -1,0 +1,278 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>regressts</title><meta content="refpage" name="chunktype"><meta content="function:regressts" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="regressts computes estimates of regression parameters for a time series models." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">regressts</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">regressTS with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of input option model and plots.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of the use of input option bsb and dispresults.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example of the use of input option  StartDate.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Compare scaled residuals using or not correction factors.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bsb">bsb</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_smallsamplecor">smallsamplecor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_asymptcor">asymptcor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_StartDate">StartDate</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">regressts</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">regressts computes estimates of regression parameters for a time series models</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=regressts(y)</code><span class="syntax_example"><a class="intrnllnk" href="regressts.html#Example_1">example</a></span></li><li><code class="synopsis">out=regressts(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="regressts.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="regressts.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=regressts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>regressTS with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="regressts.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=regressts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of input option model and plots.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> regressTS with all the default options.</li></span></a></span></h3><div class="collapse"><p>
+     Load airline data
+       1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417     Jan
+         118  126  150  180  196  188  233  277  301  318  342  391     Feb
+         132  141  178  193  236  235  267  317  356  362  406  419     Mar
+         129  135  163  181  235  227  269  313  348  348  396  461     Apr
+         121  125  172  183  229  234  270  318  355  363  420  472     May
+         135  149  178  218  243  264  315  374  422  435  472  535     Jun
+         148  170  199  230  264  302  364  413  465  491  548  622     Jul
+         148  170  199  242  272  293  347  405  467  505  559  606     Aug
+         136  158  184  209  237  259  312  355  404  404  463  508     Sep
+         119  133  162  191  211  229  274  306  347  359  407  461     Oct
+         104  114  146  172  180  203  237  271  305  310  362  390     Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ];  Dec
+     Source:
+     http://datamarket.com/data/list/?q=provider:tsdl<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    y=(y(:));
+    % linear trend + just one harmonic for seasonal
+    out=regressts(y);    </pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of input option model and plots.</li></span></a></span></h3><div class="collapse"><p>
+     Model with linear trend, two harmonics for seasonal component and
+     varying amplitude using a linear trend.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=102;         % two harmonics with time varying seasonality
+    out=regressts(y,'model',model,'plots',1);    </pre></div></div><img vspace="5" hspace="5" src="images\regressts_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of input option bsb and dispresults.</li></span></a></span></h3><div class="collapse"><p>
+     Model with linear trend, two harmonics for seasonal component and
+     varying amplitude using a linear trend.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=102;         % two harmonics with time varying seasonality
+    % Fit is based just on the first 40 observations
+    out=regressts(y,'model',model,'bsb',[1:40],'dispresults', true, 'plots',1);    </pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of input option  StartDate.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    StartDate=[1949,1]
+    % Imposed level shift in position t=60 and 4 harmonics
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=104;         % four harmonics with time varying seasonality
+    model.posLS=60;             % level shift in position t=60
+    out=regressts(y,'model',model,'plots',1,'StartDate',StartDate);    </pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare scaled residuals using or not correction factors.</li></span></a></span></h3><div class="collapse"><p>
+     Example of the use of input option model and plots.
+     Model with linear trend, two harmonics for seasonal component and
+     varying amplitude using a linear trend.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=104;         % two harmonics with time varying seasonality
+    bsini=1:72;
+    out=regressts(y,'model',model,'bsb',bsini);    
+    outCR=regressts(y,'model',model,'bsb',bsini,'smallsamplecor',true,'asymptcor',true);   
+    h1=subplot(2,1,1);
+    title('Estimate of the scale without correction factors')
+    resindexplot(out.residuals,'h',h1)
+    h2=subplot(2,1,2);
+    resindexplot(outCR.residuals,'h',h2)
+    title('Estimate of the scale with correction factors')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>Response variable, specified as
+               a vector of length n, where n is the number of
+               observations. Each entry in y is the response for the
+               corresponding row of X.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
+</code>,<code> 'bsb',[3 5 20:30]
+</code>,<code> 'smallsamplecor',false
+</code>,<code> 'asymptcor',false
+</code>,<code> 'plots',1
+</code>,<code> 'nocheck',false
+</code>,<code> 'dispresults',true
+</code>,<code> 'StartDate',[2016,3]
+</code></code></span></div><div class="expandableContent"><div id="inputarg_model" class="clearfix"></div><h3 id="input_argument_namevalue_model" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>model</code> &#8212;model type.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies the model
+               which will be used. The model structure contains the following
+               fields:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>s</code></td><td><p>scalar (length of seasonal period). For monthly
+                         data s=12 (default), for quartely data s=4, ...</p></td></tr><tr valign="top"><td><code>trend</code></td><td><p><p>scalar (order of the trend component).</p> <p>
+                       trend = 1 implies linear trend with intercept (default),
+                       trend = 2 implies quadratic trend ...</p><p>
+                       Admissible values for trend are, 0, 1, 2 and 3.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
+                        frequencies, i.e. harmonics, in the seasonal
+                        component. Possible values for seasonal are
+                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
+                        For example:</p> <p>
+                        if seasonal =1 (default) we have:</p> <p>
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
+                        if seasonal =2 we have:</p> <p>
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
+                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
+                        Note that when $s$ is even the sine term disappears
+                        for $j=s/2$ and so the maximum number of
+                        trigonometric parameters is $s-1$.</p> <p>
+                        If seasonal is a number greater than 100 then it
+                        is possible to specify how the seasonal component
+                        grows over time.</p> <p>
+                        For example, seasonal =101 implies a seasonal
+                        component which just uses one frequency
+                        which grows linearly over time as follows:</p> <p>
+                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
+                        \beta_2 \sin ( 2 \pi t/s))$.</p> <p>
+                        For example, seasonal =201 implies a seasonal
+                        component which just uses one frequency
+                        which grows in a quadratic way over time as
+                        follows:</p> <p>
+                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
+                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.</p><p>
+                        seasonal =0 implies a non seasonal model.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
+                         values of nexpl extra covariates which are likely
+                         to affect y.</p></td></tr><tr valign="top"><td><code>posLS</code></td><td><p><p>positive integer which specifies to position
+                         to include the level shift component.</p> <p>
+                         For example if model.posLS =13 then the
+                         explanatory variable $I(t \geq 13})$ is created.</p><p>
+                         If this field is not present or if it is empty,
+                         the level shift component is not included.</p></p></td></tr><tr valign="top"><td><code>B</code></td><td><p><p>column vector or matrix containing the initial
+                         values of parameter estimates which have to be used in the
+                         maximization procedure. If model.B is a matrix,
+                         then initial estimates are extracted from the
+                         first colum of this matrix. If this field is
+                         empty or if this field is not present, the
+                         initial values to be used in the maximization
+                         procedure are referred to the OLS parameter
+                         estimates of the linear part of the model. The
+                         parameters associated to time varying amplitude
+                         are initially set to 0.</p> <p>
+                                Remark: the default model is for monthly data with a linear
+               trend (2 parameters) + seasonal component with just one
+               harmonic (2 parameters), no additional explanatory
+               variables and no level shift that is
+                               model=struct;</p> <p>
+                               model.s=12;</p> <p>
+                               model.trend=1;</p> <p>
+                               model.seasonal=1;</p> <p>
+                               model.X='';</p><p>
+                               model.posLS='';</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>m x 1 vector.</p> <p>
+               The default value of bsb is 1:length(y), that is all units are
+               used to compute parameter estimates.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3 5 20:30]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_smallsamplecor" class="clearfix"></div><h3 id="input_argument_namevalue_smallsamplecor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallsamplecor</code> &#8212;small sample correction factor.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which
+               defines whether to use or not small sample correction
+               factor to inflate the scale estimate just in case option
+               bsb is used and length(bsb)&lt;length(y).  If it is true
+               the small sample correction factor is used. The default
+               value of smallsamplecor is 1, that is the correction is
+               used. See
+              <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
+               for further details about the correction factor. The
+               default value of smallsamplecor is false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallsamplecor',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_asymptcor" class="clearfix"></div><h3 id="input_argument_namevalue_asymptcor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>asymptcor</code> &#8212;asymptotic consistency factor.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Boolean which
+               defines whether to use or not consistency correction
+               factor to inflate the scale estimate just in case option
+               bsb is used and length(bsb)&lt;length(y).  If it is true
+               the asmptotic consistency is used. The default
+               value of asymptcor is false, that is the asymptotic
+               consistency factor is not used.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'asymptcor',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one a two panel plot 
+               appears on the scree. The top panel contains real and
+               fitted value. The bottom panel contains scaled residuals
+               with a 99.9 per cent confidence band, else (default) no
+               plot is shown.</p> <p>
+                              Remark: the plot which is produced is very simple. In order
+               to control a series of options in this plot and in order to
+               connect it dynamically to the other forward plots it is
+               necessary to use function mdrplot.</p><p>
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no check is performed on
+               supplied structure model
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results of final fit.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is
+               true,  labels of coefficients, estimated coefficients,
+               standard errors, tstat and p-values are shown on the
+               screen in a fully formatted way. The default value of
+               dispresults is false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_StartDate" class="clearfix"></div><h3 id="input_argument_namevalue_StartDate" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>StartDate</code> &#8212;The time of the first observation.</span></a><span class="example_desc">numeric vector of length 2.</span></span></h3><div class="collapse">	<p><p>Vector with two integers, which
+               specify a natural time unit and a (1-based) number of
+               samples into the time unit. For example, if model.s=12
+               (that is the data are monthly) and the first observation
+               starts in March 2016, then StartDate=[2016,3]; Similarly,
+               if models.s=4 (that is the data are quarterly) and the first
+               observation starts in the second quarter or year 2014, then
+               StartData=[2014,2]. The information in option StartDate
+               will be used to create in the output the dates inside the
+               time series object.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'StartDate',[2016,3]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields
+
+     <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
+                       (including the intercept when options.intercept=1)
+                       standard errors, t-stat and p-values
+                       The content of matrix B is as follows:</p> <p>
+                       1st col = beta coefficients
+                        The order of the beta coefficients is as follows:</p> <p>
+                        1) trend elements (if present). If the trend is
+                        of order two there are r+1 coefficients if the
+                        intercept is present otherwise there are just r
+                        components;</p> <p>
+                        2) linear part of seasonal component 2, 4, 6, ...,
+                        s-2, s-1 coefficients (if present);</p> <p>
+                        3) coefficients associated with the matrix of
+                        explanatory variables which have a potential effect
+                        on the time series under study (X);</p> <p>
+                        4) non linear part of seasonal component, that is
+                        varying amplitude. If varying amplitude is of order
+                        k there are k coefficients (if present);</p> <p>
+                        5) level shift component (if present). In this case
+                        there are two coefficients, the second (which is
+                        also the last element of vector beta) is an integer
+                        which specifies the time in which level shift takes
+                        place and the first (which is also the penultime
+                        element of vector beta) is a real number which
+                        identifies the magnitude of the upward (downward)
+                        level shift;</p> <p>
+                       2nd col = standard errors;</p> <p>
+                       3rd col = t-statistics;</p><p>
+                       4th col = p values.</p></p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p><p>vector of fitted values after final (NLS=non linear
+                       least squares) step.</p> <p>
+                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</p></p></td></tr><tr valign="top"><td><code>e</code></td><td><p>Vector T-by-1 containing the raw residuals.</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>Vector T-by-1 containing the scaled residuals.</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scale estimate of the residuals
+                     \[
+                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
+                     \]
+                     where $S_m$ is a set of cardinality $m$ which
+                     contains the units belonging to bsb and  $p$
+                     is the total number of estimated parameters and $cor$
+                     is a correction factor to make the estimator
+                     consistent (see input options smallsamplecor and
+                     asymptcor).</p></td></tr><tr valign="top"><td><code>invXX</code></td><td><p><p>$cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.</p> <p>
+                       If the model is linear out.invXX  is equal to
+                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$
+                       where $A$ is the matrix of partial derivatives. More
+                       precisely:</p><p>
+                       </p>\[
+                       a_{i,j}=\frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
+                       \]
+                       where
+                       \begin{eqnarray}
+                       y_i & = & \eta(x_i,\beta)+ \epsilon_i  \\
+                           & = & \eta_i +\epsilon_i \\
+                           & = & \eta(x_i,\hat \beta)+ e_i  \\
+                           & = & \hat \eta_i + e_i
+                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>covB</code></td><td><p>$cov(\beta)$. p-by-p, square matrix containing
+                       variance covariance matrix of estimated coefficients.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X containing trend, seasonal, expl and
+                       lshift, if the model is linear or linearized
+                       version of $\eta(x_i, \beta)$ if the model is non
+                       linear containing in the columns partial
+                       derivatives evaluated in correspondence of
+                       out.B(:,1) with respect to each parameter. In other
+                       words, the $i,j$-th element of out.X is
+                       \[
+                       \frac{\partial \eta_i(x_i, \hat \beta)}{\partial \hat \beta_j}
+                       \]<p>
+                       $j=1, 2, \ldots, p$, $i \in S_m$.</p> <p>
+                       The size of this matrix is:</p><p>
+                       n-length(out.outliers)-by-p.</p></p></td></tr><tr valign="top"><td><code>Exflag</code></td><td><p><p>Reason nlinfit stopped. Integer.</p> <p>
+                       If the model is non linear out.Exflag is equal to 1
+                       if the maximization procedure did not produce
+                       warnings or the warning was different from
+                       "ILL Conditiioned Jacobian". For any other warning
+                       which is produced (for example,
+                       "Overparameterized", "IterationLimitExceeded",
+                       'MATLAB:rankDeficientMatrix") out.Exflag is equal
+                       to -1;</p></p></td></tr><tr valign="top"><td><code>ExflagALS</code></td><td><p><p>Reason ALS routine stopped. Integer.</p> <p>
+                       If in the iterations missing or NaN are found
+                       out.ExflagALS=-1.</p> <p>
+                       Note that ALS routine is used just in case there
+                       was no convergence inside routine nlinfit in order
+                       to provide a better set of initial parameter
+                       estimates before retrying nlinfit.</p><p>
+                       If there was immediate convergence in nlinfit
+                       out.ExflagALS is empty.</p></p></td></tr><tr valign="top"><td><code>iterALS</code></td><td><p><p>Number of iterations in the ALS routine. Intger
+                       between 1 and 10000 (maximum number of iterations).</p> <p>
+                       Note that ALS routine is used just in case there
+                       was no convergence inside routine nlinfit in order
+                       to provide a better set of initial parameter
+                       estimates before retrying nlinfit.</p><p>
+                       If there was immediate convergence in nlinfit
+                       out.iterALS is empty.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+ Monitoring of Many Time Series with Application to Fraud Detection,
+ "Econmetrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="regressH.html" itemprop="url"><span itemprop="name"><code>regressH</code></span></a></span> | <span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="FSRts.html" itemprop="url"><span itemprop="name"><code>FSRts</code></span></a></span> | <span itemprop="seealso"><a href="FSRtsmdr.html" itemprop="url"><span itemprop="name"><code>FSRtsmdr</code></span></a></span> | <span itemprop="seealso"><a href="forecastTS.html" itemprop="url"><span itemprop="name"><code>forecastTS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
