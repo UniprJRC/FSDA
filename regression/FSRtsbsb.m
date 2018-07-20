@@ -1,23 +1,12 @@
 function [Un,BB] = FSRtsbsb(y,bsb,varargin)
-%FSRbsb returns the units belonging to the subset in each step of the forward search
+%FSRtsbsb returns the units belonging to the subset in each step of the forward search 
 %
 %<a href="matlab: docsearchFS('FSRtsbsb')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%    y    :     Response variable. Vector. A vector with n elements that contains
-%               the response variable. y can be either a row or a column vector.
-%  X :          Predictor variables. Matrix.
-%               Matrix of explanatory variables (also called 'regressors')
-%               of dimension n x (p-1) where p denotes the number of
-%               explanatory variables including the intercept.
-%               Rows of X represent observations, and columns represent
-%               variables. By default, there is a constant term in the
-%               model, unless you explicitly remove it using input option
-%               intercept, so do not include a column of 1s in X. Missing
-%               values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations..
+%    y:         Time series to analyze. Vector. A row or a column vector
+%               with T elements, which contains the time series.
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
@@ -25,23 +14,86 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %
 % Optional input arguments:
 %
-%       init  :     Search initialization. Scalar.
-%                   It specifies the initial subset size to start
-%                   monitoring units forming subset
-%                   Example - 'init',100 starts the search from step m=100
-%                   Data Types - double
-%   intercept :    Indicator for constant term. Scalar.
-%                  If 1, a model with constant term will be fitted (default),
-%                  else no constant term will be included.
-%                  Example - 'intercept',1
-%                  Data Types - double
-%    nocheck  :    Check input arguments. Scalar.
-%                  If nocheck is equal to 1 no check is performed on
-%                  matrix y and matrix X. Notice that y and X are left
-%                  unchanged. In other words the additioanl column of ones for
-%                  the intercept is not added. As default nocheck=0.
-%                  Example - 'nocheck',1
-%                  Data Types - double
+%  init :       Start of monitoring point. Scalar.
+%               It specifies the point where to initialize the search and
+%               start monitoring required diagnostics. If it is not
+%               specified it is set equal floor(0.5*(T+1))
+%               Example - 'init',100 starts monitoring from step m=100
+%               Data Types - double
+%      model :  model type. Structure. A structure which specifies the model
+%               which will be used. The model structure contains the following
+%               fields:
+%               model.s = scalar (length of seasonal period). For monthly
+%                         data s=12 (default), for quartely data s=4, ...
+%               model.trend = scalar (order of the trend component).
+%                       trend = 1 implies linear trend with intercept (default),
+%                       trend = 2 implies quadratic trend ...
+%                       Admissible values for trend are, 0, 1, 2 and 3.
+%               model.seasonal = scalar (integer specifying number of
+%                        frequencies, i.e. harmonics, in the seasonal
+%                        component. Possible values for seasonal are
+%                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+%                        For example:
+%                        if seasonal =1 (default) we have:
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
+%                        if seasonal =2 we have:
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
+%                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
+%                        Note that when $s$ is even the sine term disappears
+%                        for $j=s/2$ and so the maximum number of
+%                        trigonometric parameters is $s-1$.
+%                        If seasonal is a number greater than 100 then it
+%                        is possible to specify how the seasonal component
+%                        grows over time.
+%                        For example, seasonal =101 implies a seasonal
+%                        component which just uses one frequency
+%                        which grows linearly over time as follows:
+%                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
+%                        \beta_2 \sin ( 2 \pi t/s))$.
+%                        For example, seasonal =201 implies a seasonal
+%                        component which just uses one frequency
+%                        which grows in a quadratic way over time as
+%                        follows:
+%                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
+%                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+%                        seasonal =0 implies a non seasonal model.
+%               model.X  =  matrix of size T-by-nexpl containing the
+%                         values of nexpl extra covariates which are likely
+%                         to affect y.
+%               model.posLS = positive integer which specifies to position
+%                         to include the level shift component.
+%                         For example if model.posLS =13 then the
+%                         explanatory variable $I(t \geq 13})$ is created.
+%                         If this field is not present or if it is empty,
+%                         the level shift component is not included.
+%               model.B  = column vector or matrix containing the initial
+%                         values of parameter estimates which have to be used in the
+%                         maximization procedure. If model.B is a matrix,
+%                         then initial estimates are extracted from the
+%                         first colum of this matrix. If this field is
+%                         empty or if this field is not present, the
+%                         initial values to be used in the maximization
+%                         procedure are referred to the OLS parameter
+%                         estimates of the linear part of the model. The
+%                         parameters associated to time varying amplitude
+%                         are initially set to 0.
+%                 Example - 'model', model
+%                 Data Types - struct
+%               Remark: the default model is for monthly data with a linear
+%               trend (2 parameters) + seasonal component with just one
+%               harmonic (2 parameters), no additional explanatory
+%               variables and no level shift that is
+%                               model=struct;
+%                               model.s=12;
+%                               model.trend=1;
+%                               model.seasonal=1;
+%                               model.X='';
+%                               model.posLS='';
+%  nocheck:     Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
+%               supplied structure model
+%               Example - 'nocheck',false
+%               Data Types - logical
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -88,63 +140,96 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               Row n of matrix BB is referred to unit n;
 %               Units not belonging to subset are denoted with NaN.
 %
-% See also FSRBbsb, FSRHbsb
+% See also FSRbsb, FSRBbsb, FSRHbsb
 %
-% See also: FSReda
+% See also: FSRts, LTSts, regressts
 %
 % References:
 %
-% Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
-% Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.
-% Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
-% Regression for Fraud Detection, "International Statistical Review",
-% http://dx.doi.org/10.1111/insr.12247
-% Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
-% Regression with the Forward Search: Theory and Data Analysis, "Test",
-% Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6
+% Atkinson, A.C. and Riani, M. (2006), Distribution theory and
+% simulations for tests of outliers in regression, "Journal of
+% Computational and Graphical Statistics", Vol. 15, pp. 460-476.
+% Riani, M. and Atkinson, A.C. (2007), Fast calibrations of the forward
+% search for testing multiple outliers in regression, "Advances in Data
+% Analysis and Classification", Vol. 1, pp. 123-141.
+% Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% "Econmetrics and Statistics". [RPRH]
 %
 % Copyright 2008-2018.
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('FSRbsb')">Link to the help function</a>
+%<a href="matlab: docsearchFS('FSRtsbsb')">Link to the help function</a>
 %
 %$LastChangedDate:: 2018-06-08 01:27:40 #$: Date of the last commit
 
 % Examples:
 
 %{
-    % FSRbsb with all default options.
+    % FSRtsbsb with all default options.
     load('fishery');
     y=fishery.data(:,1);
-    X=fishery.data(:,2);
-    [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs);
+    bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   114];
+    [Un,BB]=FSRtsbsb(y,bsbini);
 %}
 
 %{
-    %% FSRbsb with optional arguments.
-    % Monitoring units plot for fishery dataset
-    load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
-    [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs,'plots',1);
+    %% FSRtsbsb with optional arguments.
+    % Load airline data
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+    y=(y(:));
+    % Define the model  and show the monitoring units plots.
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=104;         % four harmonics with time varying seasonality
+    bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   114];
+    [Un,BB]=FSRtsbsb(y,bsbini,'model',model,'plots',1);
 %}
 
 %{
     %% Monitoring the units belonging to subset.
-    state=1000;
-    randn('state', state);
-    n=100;
-    X=randn(n,3);
-    bet=[3;4;5];
-    y=3*randn(n,1)+X*bet;
-    y(1:20)=y(1:20)+15;
-    [outLMS]=LXS(y,X);
-    bsb=outLMS.bs;
-    % Store in matrix BB the units belonging to subset in each step of the forward search
-    [Un,BB] = FSRbsb(y,X,bsb);
+    % Load airline data
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+    y=(y(:));
+    % Contaminates units 31:40
+    y(31:40)=y(31:40)+200;
+    % Define the model  and show the monitoring units plots.
+    model=struct;
+    model.trend=1;              % linear trend
+    model.s=12;                 % monthly time series
+    model.seasonal=104;         % four harmonics with time varying seasonality
+    bsbini=[97    77    12     2    26    95    10    60    94   135     7    61   114];
+    [Un,BB]=FSRtsbsb(y,0,'model',model,'plots',1);
     % Create the 'monitoring units plot'
     figure;
     seqr=[Un(1,1)-1; Un(:,1)];
@@ -152,55 +237,9 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
     xlabel('Subset size m');
     ylabel('Monitoring units plot');
     % The plot, which monitors the units belonging to subset in each step of
-    % the forward search shows that apart from unit 11 which enters the
-    % search in step m=78 all the other contaminated units enter the search
-    % in the last 19 steps.
-
-    % if we consider the seed state=500, we obtain a plot showing that the
-    % 20 contaminated units enter the search in the final 20 steps.
-    state=500;
-    randn('state', state);
-    X=randn(n,3);
-    y=3*randn(n,1)+X*bet;
-    y(1:20)=y(1:20)+15;
-    [outLMS]=LXS(y,X);
-    bsb=outLMS.bs;
-    % Store in matrix BB the units belonging to subset in each step of the forward search
-    [Un,BB] = FSRbsb(y,X,bsb);
-    % Create the 'monitoring units plot'
-    figure;
-    seqr=[Un(1,1)-1; Un(:,1)];
-    plot(seqr,BB','bx');
-    xlabel('Subset size m');
-    ylabel('Monitoring units plot');
-%}
-
-%{
-    % Example with monitoring from step 60.
-    load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
-    [out]=LXS(y,X,'nsamp',10000);
-    Un = FSRbsb(y,X,out.bs,'init',60);
-%}
-
-%{
-    % FSR using a regression model without intercept.
-    load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
-    [out]=LXS(y,X);
-    bsb=out.bs;
-    [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
-%}
-
-%{
-    %FSR applied without doing any checks on y and X variables.
-    load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
-    [out]=LXS(y,X,'nsamp',10000);
-    [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
+    % the forward search shows that independently of the initial starting
+    % point the contaminated units (31:40) are always the last to enter the
+    % forward search.
 %}
 
 
@@ -226,7 +265,7 @@ end
 
 bsbstepdef='';
 
-options=struct('intercept',1,'init',init,'nocheck',0,'plots',0,...
+options=struct('init',init,'nocheck',0,'plots',0,...
     'bsbsteps',bsbstepdef,'model',modeldef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -251,7 +290,7 @@ if nargin >2
         options.(varargin{i})=varargin{i+1};
     end
 end
-
+nocheck=options.nocheck;
 % And check if the optional user parameters are reasonable.
 
 % Default values for the optional parameters are set inside structure
@@ -259,10 +298,10 @@ end
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
     
-%     if nocheck == false
+    if nocheck == false
         % Check if user options inside options.model are valid options
         chkoptions(modeldef,fld)
-%     end
+    end
     for i=1:length(fld)
         modeldef.(fld{i})=options.model.(fld{i});
     end
@@ -402,7 +441,7 @@ if bsb==0
     sizRandomSubsets=max([p+1 round(n/4)]);
     while and(Ra,nwhile<100)
         bsb=randsample(n,sizRandomSubsets);
-        bsbini=bsb;
+        % bsbini=bsb;
         Xb=Xsel(bsb,:);
         Ra=(rank(Xb)<size(Xb,2));
         nwhile=nwhile+1;
@@ -454,8 +493,9 @@ end
 posvarampl=p-varampl+1:p;
 posvarampl=posvarampl-(lshift>0);
 
-bprevious=b;
-
+if varampl>0
+    bprevious=b;
+end
 
 %% Initialise key matrices
 
@@ -585,16 +625,12 @@ else
                         lastwarn('')
                         % ID='';
                         % [b,exitflag,iter]=ALS(y,b,10000,1e-7);
-                        [b,exitflag,iter]=ALS(y,b,10000,1e-7);
+                        [b]=ALS(y,b,10000,1e-7);
                         iterALS=iterALS+1;
                     else
                         iterALS=2;
                     end
                 end
-                
-                %                 [b,exitflag,iter]=ALS(y,b,10000,1e-7);
-                %                 [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
-                
                 
                 % Note that MSE*inv(J'*J) = covB
                 [~,ID] = lastwarn;
@@ -603,9 +639,6 @@ else
                     betaout=bprevious;
                 end
                 
-%                 if ~isempty(lastwarn) && ~strcmp(ID,'stats:nlinfit:IllConditionedJacobian')
-%                     Exflag(mm-ini0+1,2)=0;
-%                 end
                 % clear "last warning"
                 lastwarn('')
                 
@@ -614,11 +647,6 @@ else
                 % using input  vector betaout
                 bsb=seq;
                 yhat=lik(betaout);
-                
-                % yhatb = fitted values for the units belonging to subset
-             %   yhatb=yhat(oldbsb);
-             %   resBSB=yb-yhatb;
-             %    s2=resBSB'*resBSB/(mm-p);
                 
                 % Xsel always has n rows and p columns and is referred to
                 % all the units (this is the linearized version of matrix
@@ -1036,7 +1064,7 @@ end
             % can just keep the initialbeta and initial scale.
             if (any(isnan(newbeta)))
                 newbeta = beta0;
-                exitflag=1;
+                exitflag=-1;
                 break
             end
         end
