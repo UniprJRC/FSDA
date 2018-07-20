@@ -544,7 +544,7 @@ end
 otherind=setdiff(1:p,indlinsc);
 
 
-%% find estimate of beta and residuals
+%% Find estimate of beta and residuals
 Exflag=1;
 ExflagALS=[];
 iterA=[];
