@@ -123,7 +123,7 @@ function out = regressts(y,varargin)
 %               If nocheck is equal to true no check is performed on
 %               supplied structure model
 %               Example - 'nocheck',false
-%               Data Types - double
+%               Data Types - logical
 %  dispresults : Display results of final fit. Boolean. If dispresults is
 %               true,  labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
