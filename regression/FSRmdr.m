@@ -116,7 +116,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               1st col = fwd search index (from init to n-1).
 %               2nd col = minimum deletion residual.
 %               REMARK: if in a certain step of the search matrix is
-%               singular, this procedure checks ohw many observations
+%               singular, this procedure checks how many observations
 %               produce a singular matrix. In this case mdr is a column
 %               vector which contains the list of units for which matrix X
 %               is non singular.
