@@ -17,7 +17,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               intercept, so do not include a column of 1s in X. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations..
+%               will automatically be excluded from the computations.
 %  bsb :        list of units forming the initial subset. Vector | 0. If
 %               bsb=0 then the procedure starts with p units randomly
 %               chosen else if bsb is not 0 the search will start with
