@@ -101,11 +101,8 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
+%  nocheck:     Check input arguments inside structure model. As default
+%               nocheck=0. 
 %               Example - 'nocheck',1
 %               Data Types - double
 %  msg  :       Level of output to display. Scalar. It controls whether to
@@ -115,9 +112,10 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
-%  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
-%               forced to join the search in the last r steps. The default
-%               is constr=''.  No constraint is imposed
+%  constr :     Constrained search. Vector. r x 1 vector which contains the
+%               list of units which are forced to join the search in the
+%               last r steps. The default is constr=''.  No constraint is
+%               imposed
 %               Example - 'constr',[1:10] forces the first 10 units to join
 %               the subset in the last 10 steps
 %               Data Types - double
@@ -163,7 +161,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               vector which contains the list of units for which matrix X
 %               is non singular.
 %  Un:          Units included in each step. Matrix.
-%               (n-init) x 11 Matrix which contains the unit(s) included
+%               (T-init) x 11 Matrix which contains the unit(s) included
 %               in the subset at each step of the search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
@@ -173,32 +171,32 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               Un(end,2) contains the units included in the final step
 %               of the search.
 %  BB:          Units belonging to subset in each step. Matrix.
-%               n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input
-%               option bsbsteps) which contains information about the units
-%               belonging to the subset at each step of the forward search.
-%               BB has the following structure
+%               T x (T-init+1) or T-by-length(bsbsteps) matrix (depending
+%               on input option bsbsteps) which contains information about
+%               the units belonging to the subset at each step of the
+%               forward search. BB has the following structure:
 %               1-st row has number 1 in correspondence of the steps in
 %                   which unit 1 is included inside subset and a missing
-%                   value for the other steps
+%                   value for the other steps;
 %               ......
 %               (n-1)-th row has number n-1 in correspondence of the steps in
 %                   which unit n-1 is included inside subset and a missing
-%                   value for the other steps
+%                   value for the other steps;
 %               n-th row has number n in correspondence of the steps in
 %                   which unit n is included inside subset and a missing
 %                   value for the other steps
 %               The size of matrix BB is n x (n-init+1) if option input
 %               bsbsteps is 0 else the size is n-by-length(bsbsteps).
-%  Bols:        OLS coefficents. Matrix.
+%  Bols:        beta coefficents. Matrix.
 %               (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
 %  S2:          S2 and R2. Matrix.
-%               (n-init+1) x 3 matrix containing the monitoring of S2 (2nd
+%               (T-init+1) x 3 matrix containing the monitoring of S2 (2nd
 %               column)and R2 (third column) in each step of the forward
 %               search.
 %   Exflag  :   Reason nlinfit stopped. Integer matrix.
-%               (n-init+1) x 2 matrix containing information about the
+%               (T-init+1) x 2 matrix containing information about the
 %               result  of the maximization procedure.
 %               If the model is non linear out.Exflag(i,2) is equal to 1
 %               if at step out.Exflag(i,1) the maximization procedure did not produce
@@ -270,7 +268,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
     model.s=12;                 % monthly time series
     model.seasonal=104;         % four harmonics with time varying seasonality
     % Choose step to start monitoring.
-    init=80;             
+    init=80;
     out1=FSRtsmdr(y,0,'model',model,'init',80,'plots',1);
 %}
 
@@ -302,7 +300,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
     model.s=12;                 % monthly time series
     model.seasonal=104;         % four harmonics with time varying seasonality
     % Choose step to start monitoring.
-    init=80;             
+    init=80;
     [mdr,Un,BB,Bols,S2,Exflag]=FSRtsmdr(y,0,'model',model,'init',80,'plots',1);
     % Check if there was convergence in all step which were monitored.
     if min(Exflag(:,2))<1
@@ -322,7 +320,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
     model.seasonal=104;         % four harmonics with time varying seasonality
-    init=80;             
+    init=80;
     [mdr,Un,BB,Bols,S2] =FSRtsmdr(y,0,'model',model,'init',80,'bsbsteps',[90 120]);
     % BB has just two columns
     % First column contains information about units forming subset at step m=90
@@ -331,10 +329,10 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
     % sum(~isnan(BB(:,2))) is 120
     disp(sum(~isnan(BB(:,1))))
     disp(sum(~isnan(BB(:,2))))
-%}        
+%}
 
 %{
-    %% Example where initial subset comes from LTSts..
+    %% Example where initial subset comes from LTSts.
     % Set up the model.
     model=struct;
     model.trend=1;              % linear trend
@@ -375,7 +373,7 @@ else
     bsbstepdef = [initdef iniseq];
 end
 
-options=struct('model',modeldef,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
+options=struct('model',modeldef,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -666,13 +664,13 @@ Exflag=[(ini0:T)',ones(T-ini0+1,1)];
 
 Xb=Xsel(bsb,:);
 
-    % MaxIter = Maximum number of iterations in the maximization procedure
-    MaxIter=1000;
-    % TolX = Convergence tolerance in the maximization procedure
-    TolX=1e-7;
-    % DisplayLevel
-    DisplayLevel='';
-    nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',TolX);
+% MaxIter = Maximum number of iterations in the maximization procedure
+MaxIter=1000;
+% TolX = Convergence tolerance in the maximization procedure
+TolX=1e-7;
+% DisplayLevel
+DisplayLevel='';
+nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',TolX);
 
 
 
@@ -731,7 +729,7 @@ else
                 
                 iterALS=0;
                 while iterALS < 2
-        % [betaout,R,J,CovB,MSE,ErrorModelInfo]=nlinfit(....)
+                    % [betaout,R,J,CovB,MSE,ErrorModelInfo]=nlinfit(....)
                     [betaout,~,~,covB,s2,~]  = nlinfit(Xtrendf,yf,@likyhat,b,'options',nlinfitOptions);
                     % Note that MSE*inv(J'*J) = covB
                     [~,ID] = lastwarn;
@@ -748,7 +746,7 @@ else
                     end
                 end
                 
-        % Capture ID of last warning message
+                % Capture ID of last warning message
                 [~,ID] = lastwarn;
                 
                 if ~isempty(lastwarn) && strcmp(ID,'stats:nlinfit:ModelConstantWRTParam')

@@ -183,7 +183,6 @@ function [out]=FSRcore(INP,model,options)
 %% Beginning of code
 
 y=INP.y;
-X=INP.X;
 n=INP.n;
 p=INP.p;
 mdr=INP.mdr;
@@ -194,6 +193,10 @@ Bcoeff=INP.Bcoeff;
 
 S2=INP.S2;
 
+if strcmp(model,'ts')
+    intercept=1;
+else
+X=INP.X;
 % intcolumn = the index of the first constant column found in X, or empty.
 % Used here to check if X includes the constant term for the intercept.
 % The variable 'intercept' will be used later for plotting.
@@ -203,7 +206,7 @@ if any(intcolumn) && p>1
 else
     intercept=0;
 end
-
+end
 
 plo=options.plots;
 labeladd=options.labeladd;
@@ -1224,6 +1227,11 @@ if ndecl>0
                 n0=INP.n0;
                 [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0,'bsb',bsb,'intercept',intercept,...
                     'init',n-ndecl,'nocheck',1,'msg',0);
+            elseif strcmp(model,'ts')
+                modelmdr=options.model;
+                [Un,BB] = FSRtsbsb(y,bsb,...
+                    'init',n-ndecl,'msg',0,'model',modelmdr);
+                
             else
                 error('FSDA:FSRcore:WrongModel','Specified model is not supported: possible values are ''H'' (heteroskedastic model) , '''' empty value for linear regression,  ''B'' (Bayesian linear regression)')
             end
@@ -1236,6 +1244,8 @@ if ndecl>0
     else
         ListOut=seq(isnan(bb(:,end-ndecl)));
     end
+    
+    if ~strcmp(model,'ts')
     % Add to ListOut all the units which have equal values in terms of X
     % and to y to those declared as outliers
     add=zeros(round(n*5),1);
@@ -1256,6 +1266,8 @@ if ndecl>0
         add=unique(add);
         ListOut=[ListOut,add'];
     end
+    end
+    
     % Store the values of beta coefficients in step n-ndecl
     ndecl=length(ListOut);
     
@@ -1289,6 +1301,17 @@ if ndecl>0
         end
         scale=sqrt(1/outregrB.tau1);
         beta = outregrB.beta1';
+        
+    elseif strcmp(model,'ts')
+        goodobs=setdiff(seq,ListOut);
+        
+        out1=regressts(y,'model',INP.model,'bsb',goodobs);
+        scale=out1.scale;
+        beta=out1.B;
+        % linearized version of matrix X
+        X=out1.X;
+        % check coefficients found with those which were stored
+        %     Bcoeff(end-ndecl,2:end);
     else
         beta = Bcoeff(end-ndecl,2:end);
         scale= sqrt(S2(end-ndecl,2));
@@ -1297,12 +1320,21 @@ if ndecl>0
 else
     % No outlier is found.
     % Store the values of beta coefficients in final step of the fwd search
-    beta = Bcoeff(end,2:end);
-    scale= sqrt(S2(end,2));
     ListOut=NaN;
     if strcmp(model,'H')
         Hetero=INP.Hetero;
         hetero=Hetero(end,2:end);
+    elseif   strcmp(model,'ts')
+        
+        out1=regressts(y,'model',INP.model);
+        scale=out1.scale;
+        beta=out1.B;
+        % linearized version of matrix X
+        X=out1.X;
+    else
+        beta = Bcoeff(end,2:end);
+        scale= sqrt(S2(end,2));
+        
     end
 end
 
@@ -1357,7 +1389,34 @@ if plo==1 || plo==2
     % The following line adds objects to the panels of the yX
     % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
     add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+
+if strcmp(model,'ts')
+    
+    yhat=out1.yhat;
+      % Time series + fitted values
+    figure
+    subplot(2,1,1)
+    plot([y yhat])
+    xlabel('Time')
+    ylabel('Real and fitted values')
+    
+    % Index plot of robust residuals
+    h2=subplot(2,1,2);
+    laby='Robust FS residuals';
+    residuals=(y-yhat)/scale;
+    conflev=0.99;
+    if ~isnan(ListOut)
+        outl=ListOut;
+    else
+        outl=[];
+    end
+    resindexplot(residuals,'conflev',conflev,'laby',laby,'numlab',outl,'h',h2,'title','');
+  
 end
+
+end
+
+
 
 %% Structure returned by function FSR
 out=struct;
@@ -1378,6 +1437,8 @@ end
 out.beta=beta';
 if strcmp(model,'H')
     out.hetero=hetero;
+elseif strcmp(model,'ts')
+    out.yhat=out1.yhat;
 end
 
 out.scale=scale;

@@ -1,47 +1,84 @@
 function [out]=FSRts(y,varargin)
-%FSRts gives an automatic outlier detection procedure in linear regression
+%FSRts gives an automatic outlier detection procedure in time series
 %
 %<a href="matlab: docsearchFS('FSRts')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%    y:         Response variable. Vector. Response variable, specified as
-%               a vector of length n, where n is the number of
-%               observations. Each entry in y is the response for the
-%               corresponding row of X.
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
-%  X :          Predictor variables. Matrix. Matrix of explanatory
-%               variables (also called 'regressors') of dimension n x (p-1)
-%               where p denotes the number of explanatory variables
-%               including the intercept.
-%               Rows of X represent observations, and columns represent
-%               variables. By default, there is a constant term in the
-%               model, unless you explicitly remove it using input option
-%               intercept, so do not include a column of 1s in X. Missing
-%               values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations.
+%    y:         Time series to analyze. Vector. A row or a column vector
+%               with T elements, which contains the time series.
 %
 % Optional input arguments:
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
-%           h   : The number of observations that have determined the least
-%                 trimmed squares estimator. Scalar. h is an integer
-%                 greater or equal than p but smaller then n. Generally if
-%                 the purpose is outlier detection h=[0.5*(n+p+1)] (default
-%                 value). h can be smaller than this threshold if the
-%                 purpose is to find subgroups of homogeneous observations.
-%                 In this function the LTS/LMS estimator is used just to
-%                 initialize the search.
-%                 Example - 'h',round(n*0,75)
-%                 Data Types - double
+%      model :  model type. Structure. A structure which specifies the model
+%               which will be used. The model structure contains the following
+%               fields:
+%               model.s = scalar (length of seasonal period). For monthly
+%                         data s=12 (default), for quartely data s=4, ...
+%               model.trend = scalar (order of the trend component).
+%                       trend = 1 implies linear trend with intercept (default),
+%                       trend = 2 implies quadratic trend ...
+%                       Admissible values for trend are, 0, 1, 2 and 3.
+%               model.seasonal = scalar (integer specifying number of
+%                        frequencies, i.e. harmonics, in the seasonal
+%                        component. Possible values for seasonal are
+%                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+%                        For example:
+%                        if seasonal =1 (default) we have:
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
+%                        if seasonal =2 we have:
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
+%                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
+%                        Note that when $s$ is even the sine term disappears
+%                        for $j=s/2$ and so the maximum number of
+%                        trigonometric parameters is $s-1$.
+%                        If seasonal is a number greater than 100 then it
+%                        is possible to specify how the seasonal component
+%                        grows over time.
+%                        For example, seasonal =101 implies a seasonal
+%                        component which just uses one frequency
+%                        which grows linearly over time as follows:
+%                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
+%                        \beta_2 \sin ( 2 \pi t/s))$.
+%                        For example, seasonal =201 implies a seasonal
+%                        component which just uses one frequency
+%                        which grows in a quadratic way over time as
+%                        follows:
+%                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
+%                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+%                        seasonal =0 implies a non seasonal model.
+%               model.X  =  matrix of size T-by-nexpl containing the
+%                         values of nexpl extra covariates which are likely
+%                         to affect y.
+%               model.posLS = positive integer which specifies to position
+%                         to include the level shift component.
+%                         For example if model.posLS =13 then the
+%                         explanatory variable $I(t \geq 13})$ is created.
+%                         If this field is not present or if it is empty,
+%                         the level shift component is not included.
+%               model.B  = column vector or matrix containing the initial
+%                         values of parameter estimates which have to be used in the
+%                         maximization procedure. If model.B is a matrix,
+%                         then initial estimates are extracted from the
+%                         first colum of this matrix. If this field is
+%                         empty or if this field is not present, the
+%                         initial values to be used in the maximization
+%                         procedure are referred to the OLS parameter
+%                         estimates of the linear part of the model. The
+%                         parameters associated to time varying amplitude
+%                         are initially set to 0.
+%                 Example - 'model', model
+%                 Data Types - struct
+%               Remark: the default model is for monthly data with a linear
+%               trend (2 parameters) + seasonal component with just one
+%               harmonic (2 parameters), no additional explanatory
+%               variables and no level shift that is
+%                               model=struct;
+%                               model.s=12;
+%                               model.trend=1;
+%                               model.seasonal=1;
+%                               model.X='';
+%                               model.posLS='';
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
@@ -52,19 +89,14 @@ function [out]=FSRts(y,varargin)
 %       lms     : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
 %                 lms specifies the criterion to use to find the initial
-%                 subset to initialize the search (LMS, LTS with
-%                 concentration steps, LTS without concentration steps
-%                 or subset supplied directly by the user).
-%                 The default value is 1 (Least Median of Squares
-%                 is computed to initialize the search). On the other hand,
-%                 if the user wants to initialze the search with LTS with
-%                 all the default options for concentration steps then
-%                 lms=2. If the user wants to use LTS without
-%                 concentration steps, lms can be a scalar different from 1
-%                 or 2. If lms is a struct it is possible to control a
+%                 subset to initialize the search (LTS with
+%                 concentration steps or subset supplied directly by the
+%                 user).
+%                 The default value is 1 (Least trimmed squares
+%                 is computed to initialize the search).
+%                 If lms is a struct it is possible to control a
 %                 series of options for concentration steps (for more
-%                 details see option lms inside LXS.m)
-%                 LXS.m.
+%                 details see function LTSts.m)
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
 %                 possibilities:
@@ -80,27 +112,40 @@ function [out]=FSRts(y,varargin)
 %                 lms=struct; lms.bsb=3;
 %                 Example - 'lms',1
 %                 Data Types - double
+%           h   : The number of observations that have determined the least
+%                 trimmed squares estimator. Scalar. h is an integer
+%                 greater or equal than p but smaller then n. Generally if
+%                 the purpose is outlier detection h=[0.5*(n+p+1)] (default
+%                 value). h can be smaller than this threshold if the
+%                 purpose is to find subgroups of homogeneous observations.
+%                 In this function the LTSts estimator is used just to
+%                 initialize the search. The default value of h which is
+%                 used is round(0.75*T).
+%                 Example - 'h',round(n*0.55)
+%                 Data Types - double
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
-%                 residual with envelopes based on n observations and the
+%                 residual with envelopes based on T observations and the
 %                 scatterplot matrix with the outliers highlighted is
-%                 produced.
+%                 produced together with a two panel plot.
+%                 The upper panel contains the orginal time series with
+%                 fitted values. The bottom panel will contain the plot
+%                 of robust residuals against index number. The confidence
+%                 level which is used to draw the horizontal lines associated
+%                 with the bands for the residuals is 0.999.
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
 %                 Else no plot is produced.
 %                 Example - 'plots',1
 %                 Data Types - double
-%       init    : Search initialization. Scalar. It specifies the initial subset size to start
-%                 monitoring exceedances of minimum deletion residual, if
-%                 init is not specified it set equal to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%  init :       Start of monitoring point. Scalar.
+%               It specifies the point where to initialize the search and
+%               start monitoring required diagnostics. If it is not
+%               specified it is set equal floor(0.5*(T+1))
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%       nocheck : Check input arguments inside input option model.
+%               As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
 %    bivarfit : Superimpose bivariate least square lines. Character. This option adds
@@ -218,17 +263,53 @@ function [out]=FSRts(y,varargin)
 %                outliers or NaN if the sample is homogeneous
 % out.outliers = out.ListOut. This field is added for homogeneity with the
 %                other robust estimators.
-% out.beta   =  p-by-1 vector containing the estimated regression
-%               parameters (in step n-k).
+% out.beta   = Matrix containing estimated beta coefficients,
+%                       standard errors, t-stat and p-values
+%                       The content of matrix out.beta is as follows:
+%                       1st col = beta coefficients
+%                        The order of the beta coefficients is as follows:
+%                        1) trend elements (if present). If the trend is
+%                        of order two there are r+1 coefficients if the
+%                        intercept is present otherwise there are just r
+%                        components;
+%                        2) linear part of seasonal component 2, 4, 6, ...,
+%                        s-2, s-1 coefficients (if present);
+%                        3) coefficients associated with the matrix of
+%                        explanatory variables which have a potential effect
+%                        on the time series under study (X);
+%                        4) non linear part of seasonal component, that is
+%                        varying amplitude. If varying amplitude is of order
+%                        k there are k coefficients (if present);
+%                        5) level shift component (if present). In this case
+%                        there are two coefficients, the second (which is
+%                        also the last element of vector beta) is an integer
+%                        which specifies the time in which level shift takes
+%                        place and the first (which is also the penultime
+%                        element of vector beta) is a real number which
+%                        identifies the magnitude of the upward (downward)
+%                        level shift;
+%                       2nd col = standard errors;
+%                       3rd col = t-statistics;
+%                       4th col = p values.
 % out.scale  =  scalar containing the estimate of the scale (sigma).
-%
 % out.residuals= n x 1 vector containing the estimates of the robust
 %                scaled residuals.
-% out.fittedvalues= n x 1 vector containing the fitted values.
+% out.yhat= n x 1 vector containing the fitted values.
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
 %               of the fwd search
+%   Exflag  :   Reason nlinfit stopped. Integer matrix.
+%               (n-init+1) x 2 matrix containing information about the
+%               result  of the maximization procedure.
+%               If the model is non linear out.Exflag(i,2) is equal to 1
+%               if at step out.Exflag(i,1) the maximization procedure did not produce
+%               warnings or the warning was different from
+%               "ILL Conditiioned Jacobian". For any other warning
+%               which is produced (for example,
+%               "Overparameterized", "IterationLimitExceeded",
+%               'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal
+%               to -1;
 % out.Un     =  (n-init) x 11 matrix which contains the unit(s) included
 %               in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
@@ -248,157 +329,192 @@ function [out]=FSRts(y,varargin)
 %               units which produced a non singular matrix in the last n-constr
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
-% out.class  =  'FSR'.
+% out.Exflag  = Reason nlinfit stopped. Integer matrix.
+%               (n-init+1) x 2 matrix containing information about the
+%               result  of the maximization procedure.
+%               If the model is non linear out.Exflag(i,2) is equal to 1
+%               if at step out.Exflag(i,1) the maximization procedure did not produce
+%               warnings or the warning was different from
+%               "ILL Conditiioned Jacobian". For any other warning
+%               which is produced (for example,
+%               "Overparameterized", "IterationLimitExceeded",
+%               'MATLAB:rankDeficientMatrix") out.Exflag(i,2) is equal
+%               to -1;
+% out.class  =  'FSRts'.
 %
-% See also: FSReda, LXS.m
+% See also: FSR, LTSts, FSRtsmdr
 %
 % References:
 %
-%       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-%       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201-221.
+% Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
+% number of multivariate outliers. Journal of the Royal Statistical
+% Society Series B, Vol. 71, pp. 201-221.
+% Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+% Monitoring of Many Time Series with Application to Fraud Detection,
+% "Econmetrics and Statistics". [RPRH]
 %
 % Copyright 2008-2018.
 % Written by FSDA team
 %
 %
 %
-%<a href="matlab: docsearchFS('FSR')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('FSRts')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2018-05-31 10:53:11 #$: Date of the last commit
 
 % Examples:
 
 %{
-    % FSR with all default options.
-    % Run this code to see the output shown in the help file.
+    % FSRts with all default options.
     n=200;
-    p=3;
-    randn('state', 123456);
-    X=randn(n,p);
+    rng(123456);
+    outSIM=simulateTS(n,'plots',1);
     % Uncontaminated data
-    y=randn(n,1);
+    y=outSIM.y;
     % Contaminated data
     ycont=y;
-    ycont(1:5)=ycont(1:5)+6;
-    [out]=FSR(ycont,X,'plots',2);
+    ycont(10:15)=ycont(10:15)+6;
+    [out]=FSRts(ycont,'plots',1);
 %}
 
 %{
-    %% FSR with optional arguments.
-    % Run this code to see the output shown in the help file.
-    state=100;
-    randn('state', state);
-    n=100;
-    X=randn(n,3);
-    bet=[3;4;5];
-    y=3*randn(n,1)+X*bet;
-    y(1:20)=y(1:20)+13;
-    [outFS]=FSR(y,X,'plots',2);
-    % The envelopes based on all the observations show that in the central
-    % part of the search the observed curve is well beyond the extreme
-    % thresholds. More precisely, the message inside the graph informs that
-    % the signal took place in step 81 because the value of minimum deletion
-    % residual in this step was greater than 99.999% threshold.
-    % Once a signal takes place the envelopes are resuperimposed until a
-    % stopping rule is fulfilled.
-    % The procedure of resuperimposing envelopes in this case stops when
-    % n = 85, the first time in which we have a value of rmin(m) for
-    % $n>=m^\dagger-1$ greater than the 99% threshold. The group can
-    % therefore be considered as homogeneous up to when we include 84 units.
+    %% FSRts with optional arguments.
+    rng(1)
+    model=struct;
+    model.trend=[];
+    model.trendb=[];
+    model.seasonal=103;
+    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+    model.signal2noiseratio=20;
+    T=100;
+    outSIM=simulateTS(T,'model',model,'plots',1);
+    y=outSIM.y;
+    model1=struct;
+    model1.trend=1;              % linear trend
+    model1.s=12;                 % monthly time series
+    model1.lshift=0;             % No level shift
+    model1.seasonal=104;         % Four harmonics
+    out=FSRts(y,'model',model1);
 %}
 
 %{
-    % FSR with optional arguments.
-    % Monitor the exceedances from m=60 without showing plots.
-    n=200;
-    p=3;
-    X=rand(n,p);
-    y=rand(n,1);
-    [out]=FSR(y,X,'init',60,'plots',0);
+    % FSRts with optional arguments in time series with outliers.
+    % A time series of 100 observations is simulated from a model which
+    % contains no trend, a linear time varying seasonal component with
+    % three harmonics, no explanatory variables and a signal to noise ratio
+    % egual to 20
+    rng(1)
+    model=struct;
+    model.trend=[];
+    model.trendb=[];
+    model.seasonal=103;
+    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+    model.signal2noiseratio=20;
+    T=100;
+    outSIM=simulateTS(T,'model',model,'plots',1);
+    y=outSIM.y;
+    y(80:90)=y(80:90)+15000;
+    model1=struct;
+    model1.trend=1;              % linear trend
+    model1.s=12;                 % monthly time series
+    model1.lshift=0;
+    model1.seasonal=104;
+    out=FSRts(y,'model',model1);
 %}
 
 %{
-    % Initialize the search with the subsample which produces the smallest
-    % [h/n] quantile of squared residuals.
-    n=200;
-    p=3;
-    X=randn(n,p);
-    y=randn(n,1);
-    [out]=FSR(y,X,'h',120);
+    %% Example of the use of option lms as a vector.
+    % A time series of 100 observations is simulated from a model which
+    % contains no trend, a linear time varying seasonal component with
+    % three harmonics, no explanatory variables and a signal to noise ratio
+    % egual to 20
+    rng(1)
+    model=struct;
+    model.trend=[];
+    model.trendb=[];
+    model.seasonal=103;
+    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+    model.signal2noiseratio=20;
+    T=100;
+    outSIM=simulateTS(T,'model',model);
+    y=outSIM.y;
+    % Contaminate the series.
+    y(80:90)=y(80:90)+15000;
+    model1=struct;
+    model1.trend=1;              % linear trend
+    model1.s=12;                 % monthly time series
+    model1.seasonal=104;
+    % Initialize the search with the first 20 units.
+    out=FSRts(y,'model',model1,'lms',1:20);
 %}
 
 %{
-    % Extract all possible subsamples in order to find susbet to initialize
-    % the search.
-    n=200;
-    p=3;
-    X=randn(n,p);
-    y=randn(n,1);
-    [out]=FSR(y,X,'nsamp',0);
+    %% Example of the use of option lms as struct.
+    % A time series of 100 observations is simulated from a model which
+    % contains no trend, a linear time varying seasonal component with
+    % three harmonics, no explanatory variables and a signal to noise ratio
+    % egual to 20
+    rng(1)
+    model=struct;
+    model.trend=[];
+    model.trendb=[];
+    model.seasonal=102;
+    model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
+    model.signal2noiseratio=20;
+    model.lshift=30;
+    model.lshiftb=2000;
+    T=100;
+    outSIM=simulateTS(T,'model',model,'plots',1);
+    y=outSIM.y;
+    % Contaminate the series.
+    y(80:90)=y(80:90)+2000;
+    model1=struct;
+    model1.trend=1;              % linear trend
+    model1.s=12;                 % monthly time series
+    model1.seasonal=104;
+    lms=struct;
+    lms.bsb=[1:20 80:85];
+    lms.posLS=30;
+    % Initialize the search with the units inside lms.bsb.
+    out=FSRts(y,'model',model1,'lms',lms);
 %}
 
 %{
-    %% Example for various combinations of the labeladd, bivarfit
-    % and multivarfit options.
-    n=200;
-    p=3;
-    X=randn(n,p);
-    y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');
+    %% Automatic outlier and level shift detection.
+    % A time series of 100 observations is simulated from a model which
+    % contains no trend, a linear time varying seasonal component with
+    % three harmonics, no explanatory variables and a signal to noise ratio
+    % egual to 20
+    rng(1)
+    model=struct;
+    model.trend=[];
+    model.trendb=[];
+    model.seasonal=102;
+    model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
+    model.signal2noiseratio=20;
+    model.lshift=30;
+    model.lshiftb=2000;
+    T=100;
+    outSIM=simulateTS(T,'model',model,'plots',1);
+    y=outSIM.y;
+    % Contaminate the series.
+    y(80:90)=y(80:90)+2000;
+    model1=struct;
+    model1.trend=1;              % linear trend
+    model1.s=12;                 % monthly time series
+    model1.seasonal=104;
+    model1.lshift=10;
+    % Automatically serch for level shift and outliers
+    out=FSRts(y,'model',model1,'msg',0);
 %}
 
-%{
-    % Example of use of options xlim and ylim (Hawkins data).
-    load('hawkins.txt','hawkins');
-    y=hawkins(:,9);
-    X=hawkins(:,1:8);
-    % Use of FSR starting with 1000 subsamples
-    [out]=FSR(y,X,'nsamp',1000);
-    % Use of FSR starting with 1000 subsamples
-    % focusing in the output plots to the interval 1-6 on the y axis and
-    % to steps 30-90.
-    [out]=FSR(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);
-%}
 
-%{
-    % Example of use of options nameX and nameY with contaminated data.
-    n=200;
-    p=3;
-    state1=123498;
-    randn('state', state1);
-    X=randn(n,p);
-    y=randn(n,1);
-    kk=33;
-    % shift contamination of the first 6 units of the response
-    y(1:kk)=y(1:kk)+6;
-    nameX={'age', 'salary', 'position'};
-    namey='salary';
-    [out]=FSR(y,X,'nameX',nameX,'namey',namey);
-%}
+%% Beginning of code
 
-%{
-    % Example of point mass contamination.
-    n=130;
-    p=5;
-    state1=123498;
-    randn('state', state1);
-    X=randn(n,p);
-    y=randn(n,1);
-    kk=30;
-    % point mass contamination of the first kk units
-    X(1:kk,:)=1;
-    y(1:kk)=3;
-    [out]=FSR(y,X);
-%}
-
-n=length(y);
-T=n;
-
-hdef    = round(0.75*T);
+T=length(y);
 nsampdef= 1000;
 
-init=floor(0.5*(n+1));
+init=floor(0.5*(T+1));
 
 % Set up values for default model
 % Set up values for default model
@@ -408,14 +524,13 @@ modeldef.s       =12;       % monthly time series
 modeldef.seasonal=1;        % just one harmonic
 modeldef.X       ='';       % no extra explanatory variable
 modeldef.lshift  =0;        % no level shift
+hdef    = round(0.75*T);
 
-
-options=struct('h',hdef,...
-    'nsamp',nsampdef,'model',modeldef,'lms',1,'plots',1,...
-    'init',init,...
+options=struct('nsamp',nsampdef,'model',modeldef,'lms',1,'plots',1,...
+    'init',init,'h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
+    'msg',1,'nocheck',0,'bonflev','',...
     'bsbmfullrank',1);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -446,7 +561,7 @@ model=options.model;
 
 %% Start of the forward search
 
-seq=1:n;
+seq=1:T;
 
 iter=0;
 
@@ -463,11 +578,22 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
         init=length(bs);
     end
     
+    modelmdr=model;
+    
+    if isstruct(lms) && isfield(lms,'posLS')
+        modelmdr.posLS=lms.posLS;
+    end
+    
+    
+    if isfield(modelmdr,'lshift')
+        modelmdr=rmfield(modelmdr,'lshift');
+    end
+    
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bols,S2,Exflag] = FSRtsmdr(y,bs,'model',model,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    [mdr,Un,bb,Bols,S2,Exflag] = FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',1,'msg',msg);
     
     if size(mdr,2)<2
-        if length(mdr)>=n/2
+        if length(mdr)>=T/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
@@ -486,7 +612,8 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
         out.scale=NaN;
         out.fittedvalues=NaN;
         out.residuals=NaN;
-        out.class='FSR';
+        out.Exflag=NaN;
+        out.class='FSRts';
         return
     end
 else % initial subset is not supplied by the user
@@ -510,20 +637,19 @@ else % initial subset is not supplied by the user
     modelmdr=model;
     modelmdr.B=out.B;
     
+    if isfield(modelmdr,'lshift')
     if model.lshift>0
         modelmdr.posLS=out.posLS;
     end
-
-if isfield(modelmdr,'lshift')
-    modelmdr=rmfield(modelmdr,'lshift');
-end
-
+        modelmdr=rmfield(modelmdr,'lshift');
+    end
+    
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,Bols,S2]=FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
+        [mdr,Un,bb,Bols,S2,Exflag]=FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
-        % If FSRmdr runs without problems mdr has two columns. In the second
+        % If FSRtsmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
         % monitored in each step of the search
         
@@ -536,7 +662,7 @@ end
         %    singular matrix
         
         if size(mdr,2)<2
-            if length(mdr)>=n/2
+            if length(mdr)>=T/2
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
@@ -550,7 +676,6 @@ end
                 bsb=setdiff(seq,out.bs);
                 [out]=LTSts(y(bsb),'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
                 
-                %  [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
                 bs=bsb(out.bs);
                 
                 
@@ -562,8 +687,7 @@ end
                 bsb=setdiff(seq,mdr);
                 constr=mdr;
                 % [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
-                [out]=LTSts(y,'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
-                
+                [out]=LTSts(y(bsb),'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
                 
                 bs=bsb(out.bs);
             end
@@ -583,9 +707,15 @@ end
 
 INP=struct;
 INP.y=y;
-INP.X=out.X;
-INP.n=n;
-p=size(out.B(:,1),1);
+
+if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
+    p=size(Bols,2)-1;
+else
+    INP.X=out.X;
+    p=size(out.B(:,1),1);
+end
+    INP.model=modelmdr;
+INP.n=T;
 INP.p=p;
 INP.mdr=mdr;
 INP.init=init;
@@ -593,7 +723,7 @@ INP.Un=Un;
 INP.bb=bb;
 INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
-INP.model=modelmdr;
+
 %% Call core function which computes exceedances to thresholds of mdr
 [out]=FSRcore(INP,'ts',options);
 
@@ -602,6 +732,7 @@ out.fittedvalues = out.yhat;
 out.residuals    = (y-out.fittedvalues)/out.scale;
 
 out.class  =  'FSRts';
+out.Exflag=Exflag;
 end
 
 %FScategory:REG-Regression
