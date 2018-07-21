@@ -331,10 +331,11 @@ function [out, varargout] = LTSts(y,varargin)
 %                       4th col = p values.
 %               out.h = The number of observations that have determined the
 %                       initial LTS estimator, i.e. the value of h.
-%              out.bs = Vector containing the units with the smallest p+1
+%              out.bs = Vector containing the units with the smallest p+k
 %                       squared residuals before the reweighting step,
 %                       where p is the total number of the parameters in
-%                       the model.
+%                       the model and p+k is smallest number of units such
+%                       that the design matrix is full rank.
 %                       out.bs can be used to initialize the forward
 %                       search.
 %         out.Hsubset = matrix of size T-by-(T-2*lshift)
@@ -1570,8 +1571,18 @@ residuals=yin-yhat;
 % Find the units with the smallest absolute p+1 residuals (before
 % reweighting step)
   [~,IndBestRes]=sort(abs(residuals));
+  nofullrank=true;
   bs=IndBestRes(1:p+1);
+  ij=0;
   
+  while nofullrank
+  bs=IndBestRes(1:p+ij);
+  if rank(zscore(Xsel(bs,2:end)))<pini-1
+      ij=ij+1;
+  else
+      nofullrank = false;
+  end
+  end
   
 if abs(s0) > 1e-7
     stdres = residuals/s0;

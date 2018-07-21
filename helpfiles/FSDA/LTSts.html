@@ -532,10 +532,11 @@
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
                        4th col = p values.</p></p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
-                       initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p><p>Vector containing the units with the smallest p+1
+                       initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p><p>Vector containing the units with the smallest p+k
                        squared residuals before the reweighting step,
                        where p is the total number of the parameters in
-                       the model.</p> <p>
+                       the model and p+k is smallest number of units such
+                       that the design matrix is full rank.</p> <p>
                        out.bs can be used to initialize the forward
                        search.</p></p></td></tr><tr valign="top"><td><code>Hsubset</code></td><td><p><p>matrix of size T-by-(T-2*lshift)
                        containing units forming best H subset for each
