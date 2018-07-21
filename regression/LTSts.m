@@ -171,7 +171,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               If plots = 1, a two panel plot will be shown on the screen.
 %               The upper panel contains the orginal time series with
 %               fitted values. The bottom panel will contain the plot
-%               ofrobust residuals against index number. The confidence
+%               of robust residuals against index number. The confidence
 %               level which is used to draw the horizontal lines associated
 %               with the bands for the residuals is specified in input
 %               option conflev. If conflev is missing a nominal 0.975
