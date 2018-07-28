@@ -370,10 +370,23 @@ function [out]=FSRts(y,varargin)
     outSIM=simulateTS(n,'plots',1);
     % Uncontaminated data
     y=outSIM.y;
+
+    % FSRts and LTSts on Uncontaminated data
+    [outFSRu] = FSRts(y,'plots',1);
+    [outLTSu] = LTSts(y,'plots',1);
+    outFSRu.outliers
+    outLTSu.outliers'
+
     % Contaminated data
+    close all
     ycont=y;
-    ycont(10:15)=ycont(10:15)+6;
-    [out]=FSRts(ycont,'plots',1);
+    ycont(10:15) = ycont(10:15)+2*mean(ycont)*sign(ycont(10:15));
+
+    % FSRts and LTSts on contaminated data
+    [outFSR] = FSRts(ycont,'plots',1);
+    [outLTS] = LTSts(ycont,'plots',1);
+    outFSR.outliers
+    outLTS.outliers'
 %}
 
 %{
