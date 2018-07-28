@@ -3,10 +3,10 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 %
-% It is possible to introduce a trend (up to third order), seasonality
-% (constant or of varying amplitude and with a different number of
-% harmonics) and a level shift (in this last case it is possible to specify
-% the window in which level shift has to be searched for).
+% It is possible to set a model with a trend (up to third order), a
+% seasonality (constant or of varying amplitude and with a different number
+% of harmonics) and a level shift (in this last case it is possible to
+% specify the window in which level shift has to be searched for).
 %
 %  Required input arguments:
 %
@@ -489,14 +489,16 @@ function [out, varargout] = LTSts(y,varargin)
     seq=(1:n)';
     y=a+b*seq+sig*randn(n,1);
     y(round(n/2):end)=y(round(n/2):end)+10;
-    % model with a quadratic trend, non seasonal and level shift
+    % model with a linear trend, non seasonal and level shift
     model=struct;
-    model.trend=2;
+    model.trend=1;
     model.seasonal=0;
     % Potential level shift position is investigated in positions:
     % t=10, t=11, ..., t=T-10.
     model.lshift=10;
     out=LTSts(y,'model',model,'plots',1);
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=0, G=0, s=1'};
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
     
 %}
 
@@ -543,6 +545,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=1, G=0, s=0'};
+    title(gca,numpar);
 %}
 
 %{
@@ -560,6 +564,9 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=0, s=0'};
+    title(gca,numpar);
+
 %}
 
 %{
@@ -578,6 +585,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=2, G=1, s=0'};
+    title(gca,numpar);
 %}
 
 %{
@@ -596,6 +605,9 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=0'};
+    title(gca,numpar);
+
 %}
 
 %{
@@ -616,6 +628,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=1, G=0, s=1'};
+    title(gca,numpar);
 %}
 
 %{
@@ -636,10 +650,13 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=1'};
+    title(gca,numpar);
+
 %}
 
 %{
-    % Model with an explanatory variable using logged series.
+    % Model with an explanatory variable using log-transformed series.
     y1=log(y);
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
@@ -656,6 +673,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=0'};
+    title(gca,numpar);
 %}
 
 %{
@@ -696,6 +715,8 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -726,6 +747,8 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -757,6 +780,9 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
+    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
+
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
 
@@ -1873,8 +1899,9 @@ end
 if plots>=1
     % Time series + fitted values
     figure
-    subplot(2,1,1)
-    plot([yin yhat])
+    htmp = subplot(2,1,1);
+    plot([yin yhat]);
+    set(htmp,'Tag','LTSts:ts');
     xlabel('Time')
     ylabel('Real and fitted values')
     

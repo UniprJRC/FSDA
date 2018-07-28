@@ -57,12 +57,12 @@ function [out]=FSRts(y,varargin)
 %                         If this field is not present or if it is empty,
 %                         the level shift component is not included.
 %               model.B  = column vector or matrix containing the initial
-%                         values of parameter estimates which have to be used in the
-%                         maximization procedure. If model.B is a matrix,
-%                         then initial estimates are extracted from the
-%                         first colum of this matrix. If this field is
-%                         empty or if this field is not present, the
-%                         initial values to be used in the maximization
+%                         values of parameter estimates which have to be
+%                         used in the maximization procedure. If model.B is
+%                         a matrix, then initial estimates are extracted
+%                         from the first colum of this matrix. If this
+%                         field is empty or if this field is not present,
+%                         the initial values to be used in the maximization
 %                         procedure are referred to the OLS parameter
 %                         estimates of the linear part of the model. The
 %                         parameters associated to time varying amplitude
@@ -86,12 +86,11 @@ function [out]=FSRts(y,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%       lms     : Criterion to use to find the initial
-%                 subset to initialize the search. Scalar,  vector or structure.
-%                 lms specifies the criterion to use to find the initial
-%                 subset to initialize the search (LTS with
-%                 concentration steps or subset supplied directly by the
-%                 user).
+%       lms     : Criterion to use to find the initial subset to initialize 
+%                 the search. Scalar,  vector or structure. lms specifies
+%                 the criterion to use to find the initial subset to
+%                 initialize the search (LTS with concentration steps or
+%                 subset supplied directly by the user).
 %                 The default value is 1 (Least trimmed squares
 %                 is computed to initialize the search).
 %                 If lms is a struct it is possible to control a
