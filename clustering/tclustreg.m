@@ -63,7 +63,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               variables across groups, so overcoming an intrinsic limitation
 %               of mixtures of regression, because they are implicitly
 %               assumed equally distributed. 
-%               For further details about CWM see Garcia-Escudero et al. (2017).
+%               For further details about CWM see Garcia-Escudero et al.
+%               (2017) or Torti et al. (2018).
 %            Data Types - single|double
 %
 %
@@ -290,7 +291,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Lines with High Density Regions. Advances in Data Analysis and
 % Classification, Volume 8, Issue 1, p. 5-26.
 % Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
-% Methodologies for Clustering Linear Regression Data. Submitted.
+% Methodologies for Clustering Linear Regression Data, "Advances in Data
+% Analysis and Classification".
 %
 % Copyright 2008-2018.
 % Written by FSDA team
@@ -437,7 +439,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     yXplot(y,X);
 
     % run tclustreg
-    out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);
+    out=tclustreg(y,X(:,2:end),k,50,0.01,0.01,'intercept',1);
 %}
 
 %{
@@ -464,7 +466,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     end
 
     % tclustreg using samples in C
-    out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',C);
+    out=tclustreg(y,X(:,2:end),k,50,0.01,0.01,'nsamp',C);
 %}
 
 %{
@@ -549,8 +551,15 @@ end
 
 nnargin=nargin;
 vvarargin=varargin;
+pprelim=size(X,2);
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
+if p>pprelim
+% Intercept, yes/no
+intercept = 1;
+else
+    intercept=0;
+end
 
 
 % check restrfact option
@@ -630,7 +639,8 @@ if nargin>6
             % extracted
             C=nsamp;
             [nsampdef,ncolC]=size(C);
-            if ncolC ~= k*(p+cwm)
+            if ncolC ~= k*p
+                disp('p is the total number of explanatory variables (including the constant if present)')
                 error('FSDA:tclustreg:WrongInput','Input matrix C must contain k*p columns')
             end
             % The number of rows of nsamp (matrix C) is the number of
@@ -658,7 +668,7 @@ end
 % If the user has not specified prior subsets (nsamp is not a scalar) than
 if NoPriorSubsets ==1
     
-    ncomb=bc(n,k*(p+cwm));
+    ncomb=bc(n,k*(p+intercept));
     nsampdef=min(300,ncomb);
 end
 
@@ -734,8 +744,6 @@ msg = options.msg;
 % Graph summarizing the results
 plots = options.plots;
 
-% Intercept, yes/no
-intercept = options.intercept;
 
 % Number of subsets to extract or matrix containing the subsets
 nsamp = options.nsamp;
@@ -870,7 +878,7 @@ if NoPriorSubsets
     
     % C = matrix which will contain the indexes of the subsets to extract
     % for the k groups
-    [C,nselected]=subsets(nsamp, n, (p+cwm)*k, ncomb, 0, we);
+    [C,nselected]=subsets(nsamp, n, (p+intercept)*k, ncomb, 0, we);
     
     %nselected is set equal to the number of subsets:
     % - nselected = nsamp, if nsamp is a scalar;
@@ -937,6 +945,11 @@ trim2levelopt       = w4trimopt;
 idxopt           = zeros(n,1);
 
 postprobopt     = zeros(n,k);
+
+if p==1
+    varX=var(X);
+    vary=var(y);
+end
 
 %%  Random starts
 for i =1:nselected
@@ -1006,28 +1019,32 @@ for i =1:nselected
     
     
     for j = 1:k
-        ilow   = (j-1)*(p+cwm)+1;
-        iup    = j*(p+cwm);
+        ilow   = (j-1)*p+1;
+        iup    = j*p;
         index  = C(i,:);
         selj   = index(ilow:iup);
         Xb     = X(selj,:);
         yb     = y(selj,:);
         %if the model is without intercept and Xb is zero, the regression cannot be computed
-        if intercept == 0 && Xb == 0 
+        if intercept == 0 && isscalar(Xb) && Xb == 0 
             Xb = Xb + 0.0001*abs(randn(1,1));
         end
         Beta(:,j) = Xb\yb;
         % Initialize sigmas
         if length(yb)==1
-            sigma2ini(j)= var(y);
+            sigma2ini(j)= vary;
         else
             sigma2ini(j) =var(yb);
         end
         
         if cwm==1
             muX(:,j)=mean(Xb(:,intercept+1:end),1);
+             if length(yb)==1
+              sigmaX(:,:,j)=varX;
+             else
             sigmaX(:,:,j)=cov(Xb(:,intercept+1:end));
-            
+             end
+             
             % Eigenvalue eigenvector decomposition for group j
             [Uj,Lambdaj] = eig(sigmaX(:,:,j));
             % Store eigenvectors and eigenvalues of group j
