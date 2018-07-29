@@ -461,8 +461,9 @@ end
 
 if ~isempty(trend)
     if nocheck == false
-        if sum(intersect(trend,1:3))==0
-            error('FSDA:simulateTS:WrongInput','Trend must assume the following values: 1 or 2 or 3')
+        
+        if isempty(intersect(trend,0:3))
+            error('FSDA:LTSts:WrongInput','Trend must assume the following values: 0  1 or 2 or 3')
         end
         
         if isempty(trendb) && ~isempty(trend)
