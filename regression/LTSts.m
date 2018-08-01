@@ -25,6 +25,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                       trend = 1 implies linear trend with intercept (default),
 %                       trend = 2 implies quadratic trend ...
 %                       Admissible values for trend are, 0, 1, 2 and 3.
+%                       In the paper RPRH to denote the order of the trend
+%                       symbol A is used.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
@@ -53,6 +55,13 @@ function [out, varargout] = LTSts(y,varargin)
 %                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(
 %                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
 %                        seasonal =0 implies a non seasonal model.
+%                       In the paper RPRH to denote the number of
+%                       frequencies of the seasonal component
+%                       symbol B is used, while symbol G is used to denote
+%                       the order of the trend of the seasonal component.
+%                       Therefore, for example, model.seasonal=201
+%                       corresponds to B=1 and G=2, while model.seasonal=3
+%                       corresponds to B=3 and G=0;
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
@@ -69,6 +78,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                          which assumes values 14, 14, ..., T-13.
 %                         In general, the level shift which are considered
 %                         are referred to times (lshift+1):(T-lshift).
+%                       In the paper RPRH $\beta_{LS1}$ is denoted with
+%                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
+%                       with symbol $\delta_2$.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
@@ -81,6 +93,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.lshift=0;
+%               Using the notation of the paper RPRH we have A=1, B=1; and
+%               $\delta_1=0$.
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), else no constant
 %               term will be included.
@@ -488,6 +502,7 @@ function [out, varargout] = LTSts(y,varargin)
     sig=1;
     seq=(1:n)';
     y=a+b*seq+sig*randn(n,1);
+    % Add a level shift in the simulated series
     y(round(n/2):end)=y(round(n/2):end)+10;
     % model with a linear trend, non seasonal and level shift
     model=struct;
@@ -497,14 +512,15 @@ function [out, varargout] = LTSts(y,varargin)
     % t=10, t=11, ..., t=T-10.
     model.lshift=10;
     out=LTSts(y,'model',model,'plots',1);
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=0, G=0, s=1'};
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
-    
+    % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
+    str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
 %}
 
 %{
     % Airline data: linear trend + just one harmonic for seasonal
     % component.
+    % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1=0$.
     % Load airline data
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
@@ -545,8 +561,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=1, G=0, s=0'};
-    title(gca,numpar);
+    numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
+    title(gca,numpar,'Interpreter','Latex');
 %}
 
 %{
@@ -564,7 +580,7 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=0, s=0'};
+    numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
     title(gca,numpar);
 
 %}
@@ -585,8 +601,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=2, G=1, s=0'};
-    title(gca,numpar);
+    numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
+   title(gca,numpar,'Interpreter','Latex');
 %}
 
 %{
@@ -605,8 +621,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=0'};
-    title(gca,numpar);
+    numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
+   title(gca,numpar,'Interpreter','Latex');
 
 %}
 
@@ -628,8 +644,11 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=1, G=0, s=1'};
-    title(gca,numpar);
+    % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
+    str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
+    numpar = {'model parameters:' , str};
+    title(gca,numpar,'Interpreter','Latex');
+
 %}
 
 %{
@@ -650,9 +669,10 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=1'};
-    title(gca,numpar);
-
+    % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
+    str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
+    numpar = {'model parameters:' , str};
+    title(gca,numpar,'Interpreter','Latex');
 %}
 
 %{
@@ -673,8 +693,10 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=1, B=6, G=1, s=0'};
-    title(gca,numpar);
+    % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
+    str=strcat('A=1, B=6, G=1, $\delta_1=0$');
+    numpar = {'model parameters:' , str};
+    title(gca,numpar,'Interpreter','Latex');
 %}
 
 %{
@@ -715,8 +737,10 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
+    % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
+    str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
+    numpar = {'model parameters:' , str};
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -747,8 +771,11 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',1,'lshiftlocref',lshiftlocref,'msg',0);
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
+
+    % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
+    str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
+    numpar = {'model parameters:' , str};
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -780,8 +807,10 @@ function [out, varargout] = LTSts(y,varargin)
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
-    numpar = {'# model parameters:' , '1+A+2*B+G+2*s, with A=2, B=4, G=2, s=1'};
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar);
+    % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
+    str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
+    numpar = {'model parameters:' , str};
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
