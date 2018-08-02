@@ -129,6 +129,22 @@ function [out , varargout] = LXS(y,X,varargin)
 %               displayed.
 %               Example - 'nomes',1
 %               Data Types - double
+%  bonflevoutX : remote units in the X space. Scalar or empty (default).
+%               If the design matrix X contains several high leverage units
+%               (that is units which are very far from the bulk of the
+%               data), it may happen that the best subset may include some
+%               of these units.
+%               If boflevoutX is not empty, outlier detection procedure FSM
+%               is applied to the design matrix X,  using name/pair option
+%               'bonflev',bonflevoutX. The extracted subsets which contain
+%               at least one unit declared as outlier in the X space by FSM
+%               are removed (more precisely they are treated as singular
+%               subsets) from the list of candidate subsets to find the LXS
+%               solution. The default value of bonflevoutX is empty, that
+%               is FSM is not invoked.
+%               Example - 'bonflevoutX',0.95
+%               Data Types - double
+%
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
 %               Default is 0, i.e. no saving is done.
@@ -347,6 +363,41 @@ function [out , varargout] = LXS(y,X,varargin)
     % By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.
 %}
 
+%{
+    %% Example of the use of option bonflevoutX.
+    % In this example a set of remote units is added to a cloud of points.
+    % The purpose of this example is to show that while best LMS using all
+    % default options contains some of the remote units. In order to make sure
+    % that the remote units are excluded from the best LMS subset it is
+    % necessary to use option bonflevoutX.
+    rng('default')
+    rng(10000)
+    n=100;
+    p=1;
+    X=randn(n,p);
+    epsil=10;
+    beta=ones(p,1);
+    y=X*beta+randn(n,1)*epsil;
+    % Add 10 very remote points
+    add=10;
+    Xadd=X(1:add,:)+5000;
+    yadd=y(1:add)+200;
+    Xall=[X;Xadd];
+    yall=[y;yadd];
+    out=LXS(yall,Xall);
+    subplot(2,1,1)
+    plot(Xall,yall,'o')
+    xylim=axis;
+    line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
+    title('Fit using best subset with option bonflevoutX empty')
+    subplot(2,1,2)
+    plot(Xall,yall,'o')
+    out=LXS(yall,Xall,'bonflevoutX',0.99);
+    line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
+    ylim(xylim(3:4));
+    title('Fit using best subset with option bonflevoutX  not empty')
+%}
+
 %% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
@@ -378,7 +429,7 @@ brob=-99;
 
 options=struct('intercept',1,'nsamp',nsampdef,'h',hdef,'bdp',...
     bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',0,'nomes',0,...
-    'conflev',0.975,'msg',1,'yxsave',0);
+    'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -577,6 +628,16 @@ rmin=Inf;
 tsampling = ceil(min(nselected/100 , 1000));
 time=zeros(tsampling,1);
 
+% bonflevoutX option to search for outliers in the X space
+bonflevoutX=options.bonflevoutX;
+if ~isempty(bonflevoutX)
+    bonflevout=true;
+    outFSM=FSM(X(:,options.intercept+1:end),'plots',0,'bonflev',bonflevoutX,'msg',0);
+    outliers=outFSM.outliers;
+else
+    bonflevout=false;
+end
+
 %% Computation of LMS (LTS)
 for i=1:nselected
     if i <= tsampling, ttic = tic; end
@@ -584,14 +645,19 @@ for i=1:nselected
     % extract a subset of size p
     index = C(i,:);
     
+    if bonflevout ==true && ~isempty(intersect(index,outliers))
+        b=NaN;
+    else
+        
+        Xb=X(index,:);
+        yb=y(index);
+        
+        % if rank(Xb)==p Warning: this instruction has been replaced by a
+        % posteriori control on vector b
+        % Compute the vector of coefficients using matrice Xb and yb
+        b=Xb\yb;
+    end
     
-    Xb=X(index,:);
-    yb=y(index);
-    
-    % if rank(Xb)==p Warning: this instruction has been replaced by a
-    % posteriori control on vector b
-    % Compute the vector of coefficients using matrice Xb and yb
-    b=Xb\yb;
     
     if ~isnan(b(1)) && ~isinf(b(1))
         
@@ -916,7 +982,11 @@ out.singsub=singsub;
 if msg==1
     if singsub/nselected>0.1
         disp('------------------------------')
-        disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        if bonflevout == true
+            disp(['Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to ' num2str(100*singsub/nselected) '%'])
+        else
+            disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        end
     end
 end
 % Store information about the class of the object

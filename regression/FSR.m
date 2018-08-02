@@ -30,7 +30,7 @@ function [out]=FSR(y,X,varargin)
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), else no constant
 %               term will be included.
-%               Example - 'intercept',1 
+%               Example - 'intercept',1
 %               Data Types - double
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar. h is an integer
@@ -40,14 +40,14 @@ function [out]=FSR(y,X,varargin)
 %                 purpose is to find subgroups of homogeneous observations.
 %                 In this function the LTS/LMS estimator is used just to
 %                 initialize the search.
-%                 Example - 'h',round(n*0,75) 
+%                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
 %                 If the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
-%                 Example - 'nsamp',1000 
+%                 Example - 'nsamp',1000
 %                 Data Types - double
 %       lms     : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
@@ -67,20 +67,20 @@ function [out]=FSR(y,X,varargin)
 %                 LXS.m.
 %                 If, on the other hand, the user wants to initialize the
 %                 search with a prespecified set of units there are two
-%                 possibilities: 
+%                 possibilities:
 %                 1) lms can be a vector with length greater than 1 which
-%                 contains the list of units forming the initial subset. For 
+%                 contains the list of units forming the initial subset. For
 %                 example, if the user wants to initialize the search
-%                 with units 4, 6 and 10 then lms=[4 6 10]; 
+%                 with units 4, 6 and 10 then lms=[4 6 10];
 %                 2) lms is a struct which contains a field named bsb which
 %                 contains the list of units to initialize the search. For
 %                 example, in the case of simple regression through the
 %                 origin with just one explanatory variable, if the user
 %                 wants to initialize the search with unit 3 then
 %                 lms=struct; lms.bsb=3;
-%                 Example - 'lms',1 
+%                 Example - 'lms',1
 %                 Data Types - double
-%       plots   : Plot on the screen. Scalar. 
+%       plots   : Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
 %                 scatterplot matrix with the outliers highlighted is
@@ -88,20 +88,20 @@ function [out]=FSR(y,X,varargin)
 %                 If plots=2 the user can also monitor the intermediate
 %                 plots based on envelope superimposition.
 %                 Else no plot is produced.
-%                 Example - 'plots',1 
+%                 Example - 'plots',1
 %                 Data Types - double
 %       init    : Search initialization. Scalar. It specifies the initial subset size to start
 %                 monitoring exceedances of minimum deletion residual, if
 %                 init is not specified it set equal to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100 
+%               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
 %                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %    bivarfit : Superimpose bivariate least square lines. Character. This option adds
 %                 one or more least squares lines, based on
@@ -118,11 +118,11 @@ function [out]=FSR(y,X,varargin)
 %                 bivarfit = '0'
 %                   fits one ols line to each group. This is useful for the
 %                   purpose of fitting mixtures of regression lines.
-%                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits 
+%                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits
 %                   an ols line to a specific group, the one with
 %                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
 %                   of mixtures.
-%               Example - 'bivarfit','2' 
+%               Example - 'bivarfit','2'
 %               Data Types - char
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                 This option adds one or more least square lines, based on
@@ -141,24 +141,24 @@ function [out]=FSR(y,X,varargin)
 %                   equal to multivarfit ='1' but this time we also add the
 %                   line based on the group of unselected observations
 %                   (i.e. the normal units).
-%               Example - 'multivarfit','1' 
+%               Example - 'multivarfit','1'
 %               Data Types - char
 %      labeladd : Add outlier labels in plot. Character. If this option is
 %                 '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
-%               Example - 'labeladd','1' 
+%               Example - 'labeladd','1'
 %               Data Types - char
 %       nameX  : Add variable labels in plot. Cell array of strings. Cell
 %                 array of strings of length p containing the labels of
 %                 the variables of the regression dataset. If it is empty
 %                 (default) the sequence X1, ..., Xp will be created
 %                 automatically
-%               Example - 'nameX',{'NameVar1','NameVar2'} 
+%               Example - 'nameX',{'NameVar1','NameVar2'}
 %               Data Types - cell
 %       namey  :  Add response label. Character. String containing the
 %                 label of the response
-%               Example - 'namey','NameOfResponse' 
+%               Example - 'namey','NameOfResponse'
 %               Data Types - char
 %       ylim   :  Control y scale in plot. Vector. Vector with two elements controlling minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
@@ -189,12 +189,48 @@ function [out]=FSR(y,X,varargin)
 %                 based on consecutive exceedances.
 %               Example - 'bonflev',0.99
 %               Data Types - double
+%  threshoutX  : threshold to bound the effect of high leverage units.
+%                empty value (default) or scalar or structure.
+%               If the design matrix X contains several high leverage units
+%               (that is units which are very far from the bulk of the
+%               data), it may happen that the best subset of LXS may include some
+%               of these units, or it may happen that these units have a
+%               deletion residual which is very small due to their
+%               extremely high value of $h_i$. bonflevoutX=1 imposes the
+%               constraints that:
+%               1) the extracted subsets which contain
+%               at least one unit declared as outlier in the X space by FSM
+%               using a Bonferronized confidence level of 0.99
+%               are removedfrom the list of candidate subsets to find the
+%               LXS solution.
+%               2) imposes the contrainst that $h_i(m^*)$
+%               cannot exceed $10 \times p/m$.
+%               If threshoutX is a structure, it contains the following
+%               fields:
+%               threshoutX.bonflevoutX = specifies the bonferronized
+%               confidence level to be used to find the outliers in the X
+%               space. If this field is not present a 99 per cent
+%               confidence level is used.
+%               threshoutX.threshlevoutX = specifies the threshold to bound
+%               the effect of high leverage units in the computation of
+%               deletion residuals. In the computation of
+%               the quantity $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$,
+%               $i \notin S^{(m)}_*$, units which very far from the bulk of
+%               the data (represented by $X(m^*)$) will have a huge value
+%               of $h_i(m^*)$ and consequently of the deletion residuals.
+%               In order to tackle this problem it is possible to put a
+%               bound to the value of $h_i(m^*)$. For example
+%               threshoutX.threshlevoutX=r imposes the contrainst that $h_i(m^*)$
+%               cannot exceed $r \times p/m$. If this field is not present
+%               the default threshold of 10 is imposed.
+%               Example - 'threshoutX',1
+%               Data Types - double
 %       msg    :  Level of output to display. Scalar. It controls whether
 %                 to display or not messages on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
 %                   step in which signal took place
 %                 else no message is displayed on the screen.
-%               Example - 'msg',1 
+%               Example - 'msg',1
 %               Data Types - double
 % bsbmfullrank : Dealing with singluar X matrix. Scalar. This option tells
 %                 how to behave in case subset at step m
@@ -206,7 +242,7 @@ function [out]=FSR(y,X,varargin)
 %                 the final n-mnofullrank steps else the search continues
 %                 using as estimate of beta at step m the estimate of beta
 %                 found in the previous step.
-%               Example - 'bsbmfullrank',1 
+%               Example - 'bsbmfullrank',1
 %               Data Types - double
 %
 %
@@ -217,10 +253,10 @@ function [out]=FSR(y,X,varargin)
 % out.ListOut  = k x 1 vector containing the list of the units declared as
 %                outliers or NaN if the sample is homogeneous
 % out.outliers = out.ListOut. This field is added for homogeneity with the
-%                other robust estimators.  
+%                other robust estimators.
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameters (in step n-k).
-% out.scale  =  scalar containing the estimate of the scale (sigma). 
+% out.scale  =  scalar containing the estimate of the scale (sigma).
 %
 % out.residuals= n x 1 vector containing the estimates of the robust
 %                scaled residuals.
@@ -302,7 +338,7 @@ function [out]=FSR(y,X,varargin)
     % residual in this step was greater than 99.999% threshold.
     % Once a signal takes place the envelopes are resuperimposed until a
     % stopping rule is fulfilled.
-    % The procedure of resuperimposing envelopes in this case stops when 
+    % The procedure of resuperimposing envelopes in this case stops when
     % n = 85, the first time in which we have a value of rmin(m) for
     % $n>=m^\dagger-1$ greater than the 99% threshold. The group can
     % therefore be considered as homogeneous up to when we include 84 units.
@@ -392,7 +428,38 @@ function [out]=FSR(y,X,varargin)
     [out]=FSR(y,X);
 %}
 
-
+%{
+    % Example of the use of option threshoutX.
+    % In this example a set of remote units is added to a cloud of points.
+    % The purpose of this example is to show that in presence of units very far
+    % from the bulk of th data (bad or good elverage points) it is necessary to
+    % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
+    rng(10000)
+    n=100;
+    p=1;
+    X=randn(n,p);
+    epsil=10;
+    beta=ones(p,1);
+    y=X*beta+randn(n,1)*epsil;
+    % Add 10 very remote points
+    add=3;
+    Xadd=X(1:add,:)+5000;
+    yadd=y(1:add)+200;
+    Xall=[X;Xadd];
+    yall=[y;yadd];
+    outNoLevConstr=FSR(yall,Xall,'msg',0,'ylim',[0 5]);
+    xylim=axis;
+    ylabel('mdr')
+    title('FS without bound on the leverage')
+    % threshoutX is passed s astructure
+    threshoutX=struct;
+    threshoutX.threshlevoutX=5;
+    % Use the instruction below if you wish to change the confidence level to
+    % be used to find outlierd in the X space
+    % threshoutX.bonflevoutX=0.99
+    outWithLevConstr=FSR(yall,Xall,'threshoutX',threshoutX,'msg',0,'ylim',[0 5]);
+    title('FS with bound on the leverage')
+%}
 
 %% Input parameters checking
 
@@ -424,7 +491,7 @@ options=struct('h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1);
+    'bsbmfullrank',1,'threshoutX','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -450,6 +517,36 @@ lms=options.lms;
 bsbmfullrank=options.bsbmfullrank;
 nsamp=options.nsamp;
 msg=options.msg;
+threshoutX=options.threshoutX;
+
+if isempty(threshoutX)
+    bonflevoutX=[];
+    threshlevoutX=[];
+elseif  isstruct(threshoutX)
+    % Check if user options insidethreshoutX are valid options
+    threshoutXdef=struct('bonflevoutX',0.99,'threshlevoutX',10);
+    chkoptions(threshoutXdef,fieldnames(threshoutX))
+    
+    if isfield(threshoutX,'bonflevoutX')
+        bonflevoutX=threshoutX.bonflevoutX;
+    else
+        bonflevoutX=0.99;
+    end
+    
+    if isfield(threshoutX,'threshlevoutX')
+        threshlevoutX=threshoutX.threshlevoutX;
+    else
+        threshlevoutX=10;
+    end
+elseif threshoutXthreshoutX ==1
+    bonflevoutX=0.99;
+    threshlevoutX=10;
+    
+else
+    error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalr equal to 1 or a struct.');
+end
+
+
 
 %% Start of the forward search
 
@@ -471,7 +568,8 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,...
+        'msg',msg,'threshlevoutX',threshlevoutX);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
@@ -498,7 +596,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
+    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg,'bonflevoutX',bonflevoutX);
     
     if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
@@ -515,7 +613,8 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
+        [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,...
+            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'threshlevoutX',threshlevoutX);
         
         % If FSRmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -567,7 +666,7 @@ if iter >=5
     %     out.mdr = NaN;
     %     out.Un  = NaN;
     %     out.nout= NaN;
-         error('FSDA:FSR:NoConv','No convergence')
+    error('FSDA:FSR:NoConv','No convergence')
 end
 
 INP=struct;

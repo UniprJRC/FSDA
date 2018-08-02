@@ -98,16 +98,22 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
-%  Remark:      The user should only give the input arguments that have to
-%               change their default value.
-%               The name of the input arguments needs to be followed by
-%               their value. The order of the input arguments is of no
-%               importance.
+%threshlevoutX: threshold for high leverage units. Scalar or empty value.
+%               Threshold to bound the effect of high leverage units in the
+%               computation of deletion residuals. In the computation of
+%               the quantity $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$,
+%               $i \notin S^{(m)}_*$, units which very far from the bulk of
+%               the data (represented by $X(m^*)$) will have a huge value
+%               of $h_i(m^*)$ and consequently of the deletion residuals.
+%               In order to tackle this problem it is possible to put a
+%               bound to the value of $h_i(m^*)$. For example
+%               threshlevoutX=r imposes the contrainst that $h_i(m^*)$
+%               cannot exceed $r \times p/m$. The default value of
+%               threshlevoutX is empty, which means that no threshold is
+%               imposed.
+%               Example - 'threshlevoutX',5
+%               Data Types - double
 %
-%               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations. y can be both a row of column vector.
 %
 % Output:
 %
@@ -156,7 +162,44 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               column)and R2 (third column) in each step of the forward
 %               search.
 %
+%
+% More About:
+%
+%               Let $S^{(m)}_* \in \cal{M}$ be the  optimum subset of size $m$,
+%               for which the matrix of regressors is $X(m^*)$. Least squares
+%               applied to this subset yields parameter estimates
+%               $\hat{\beta}(m^*)$ and $s^2(m^*)$, the mean square estimate of
+%               $\sigma^2$ on $m-p$ degrees of freedom. Residuals can be
+%               calculated for all observations including those not in
+%               $S^{(m)}_*$. The $n$ resulting least squares residuals are
+%               \begin{equation}
+%                 e_i(m^*) =  y_i -x_i^T\hat{\beta}(m^*). \label{eq2.14a}
+%               \end{equation}
+%               The search moves forward
+%               with the subset $S^{(m+1)}_*$ consisting of the observations with
+%               the $m+1$ smallest absolute values of $e_i(m^*)$. When $m < n$ the
+%               estimates of the parameters are based on only those observations
+%               giving the central $m$ residuals.
+%               To test for outliers the deletion residual is calculated for the
+%               $n-m$ observations not in $S^{(m)}_*$. These residuals are
+%               \begin{equation}
+%               r_i^*(m^*)  = \frac{y_{i} - x_{i}^T\hat{\beta}(m^*)} {
+%               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
+%               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}, 
+%               \end{equation}
+%               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
+%               of each observation depends on $S^{(m)}_*$. Let the observation
+%               nearest to those constituting $S^{(m)}_*$ be
+%               $i_{\mbox{min}}$ where
+%               \[
+%               i_{\mbox{min}} = \arg \min | r^*_i(m^*)| \; \mbox{for} \; i \notin S^{(m)}_*,
+%               \]
+%               the observation with the minimum absolute deletion  residual among
+%               those not in $S^{(m)}_*$. This function computes
+%               $r_i^*(m^*)$ for $m^*=init, init+1, \ldots, n-1$.
+%
 % See also: FSR, FSReda
+%
 %
 % References:
 %
@@ -346,6 +389,38 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     end
 %}
 
+%{
+    %% Example of the use of option threshlevoutX.
+    % In this example a set of remote units is added to a cloud of points.
+    % The purpose of this example is to show that in presence of units very far
+    % from the bulk of th data (bad or good elverage points) it is necessary to
+    % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
+    rng(10000)
+    n=100;
+    p=1;
+    X=randn(n,p);
+    epsil=10;
+    beta=ones(p,1);
+    y=X*beta+randn(n,1)*epsil;
+    % Add 10 very remote points
+    add=3;
+    Xadd=X(1:add,:)+5000;
+    yadd=y(1:add)+200;
+    Xall=[X;Xadd];
+    yall=[y;yadd];
+    outLXS=LXS(y,X);
+    bs=outLXS.bs;
+    subplot(2,1,1)
+    out1=FSRmdr(yall,Xall,bs,'plots',1);
+    xylim=axis;
+    ylabel('mdr')
+    title('Monitoring of mdr without bound on the leverage')
+    subplot(2,1,2)
+    out2=FSRmdr(yall,Xall,bs,'plots',1,'threshlevoutX',10);
+    ylim(xylim(3:4));
+    ylabel('mdr')
+    title('Monitoring of mdr with bound on the leverage')
+%}
 
 %% Input parameters checking
 
@@ -374,7 +449,7 @@ else
 end
 
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef);
+    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,'threshlevoutX',[]);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -440,8 +515,14 @@ msg=options.msg;
 constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
+ threshlevoutX=options.threshlevoutX;
 
-
+ if ~isempty(threshlevoutX)
+     bonflevout=true;
+ else
+     bonflevout=false;
+ end
+ 
 %% Initialise key matrices
 
 % sequence from 1 to n.
@@ -597,8 +678,20 @@ else
                     % mmX=inv(mAm);
                     % hi = sum((Xncl*mmX).*Xncl,2);
                     hi=sum((Xncl/mAm).*Xncl,2);
+                    %hiall=sum((X/mAm).*X,2);
+                    
+                    if bonflevout==true
+                        unitstopenalize=(hi>threshlevoutX*p/mm);
+                        hi(unitstopenalize)=threshlevoutX*p/mm;
+                    end
                     
                     ord = [(r(ncl,2)./(1+hi)) e(ncl)];
+                    
+                    if bonflevout==true
+                        truerownamestopenalize=ncl(unitstopenalize);
+                        % disp(ncl(unittopenalize))
+                        r(truerownamestopenalize,2)=r(truerownamestopenalize,2)*1e+7;
+                    end
                     
                     % Store minimum deletion residual in matrix mdr
                     selmdr=sortrows(ord,1);
