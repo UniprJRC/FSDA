@@ -1265,12 +1265,13 @@ else
 end
 
 %% End of the forward search
-if msg
-    disp('Summary of the exceedances');
-    disp(nout);
-end
 
 if msg
+    if isempty(bonflev)
+        disp('Summary of the exceedances');
+        disp(nout);
+    end
+    
     if ~isempty(extram3)
         disp(extram3);
     else
