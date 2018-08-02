@@ -699,7 +699,9 @@ else
         
         % Note that Xsel is the X matrix of the linearized version if the
         % model is non linear (that is it contains time varying amplitude)
-        NoRankProblem=( rank(zscore(Xsel(bsb,2:end))) == size(Xsel,2)-1 );
+        
+        tmp = zscore(Xsel(bsb,2:end));
+        NoRankProblem=(rank(tmp) == size(Xsel,2)-1 );
         
         if NoRankProblem  % rank is ok
             

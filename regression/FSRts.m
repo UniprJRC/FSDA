@@ -1,16 +1,16 @@
 function [out]=FSRts(y,varargin)
-%FSRts gives an automatic outlier detection procedure in time series
+%FSRts is an automatic adaptive procedure to detect outliers in time series
 %
 %<a href="matlab: docsearchFS('FSRts')">Link to the help function</a>
 %
 % Required input arguments:
 %
-%    y:         Time series to analyze. Vector. A row or a column vector
+%           y:  Time series to analyze. Vector. A row or a column vector
 %               with T elements, which contains the time series.
 %
 % Optional input arguments:
 %
-%      model :  model type. Structure. A structure which specifies the model
+%      model :  Model type. Structure. A structure which specifies the model
 %               which will be used. The model structure contains the following
 %               fields:
 %               model.s = scalar (length of seasonal period). For monthly
@@ -86,7 +86,7 @@ function [out]=FSRts(y,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%       lms     : Criterion to use to find the initial subset to initialize 
+%       lms     : Criterion to use to find the initial subset to initialize
 %                 the search. Scalar,  vector or structure. lms specifies
 %                 the criterion to use to find the initial subset to
 %                 initialize the search (LTS with concentration steps or
@@ -137,7 +137,7 @@ function [out]=FSRts(y,varargin)
 %                 Else no plot is produced.
 %                 Example - 'plots',1
 %                 Data Types - double
-%  init :       Start of monitoring point. Scalar.
+%      init :   Start of monitoring point. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
 %               specified it is set equal floor(0.5*(T+1))
@@ -371,9 +371,9 @@ function [out]=FSRts(y,varargin)
     % Uncontaminated data
     y=outSIM.y;
 
-    % FSRts and LTSts on Uncontaminated data
+    % FSRts and LTSts on Uncontaminated data (conflev defaults differ)
     [outFSRu] = FSRts(y,'plots',1);
-    [outLTSu] = LTSts(y,'plots',1);
+    [outLTSu] = LTSts(y,'plots',1,'conflev',0.99);
     outFSRu.outliers
     outLTSu.outliers'
 
@@ -382,9 +382,9 @@ function [out]=FSRts(y,varargin)
     ycont=y;
     ycont(10:15) = ycont(10:15)+2*mean(ycont)*sign(ycont(10:15));
 
-    % FSRts and LTSts on contaminated data
+    % FSRts and LTSts on contaminated data (conflev defaults differ)
     [outFSR] = FSRts(ycont,'plots',1);
-    [outLTS] = LTSts(ycont,'plots',1);
+    [outLTS] = LTSts(ycont,'plots',1,'conflev',0.99);
     outFSR.outliers
     outLTS.outliers'
 %}
@@ -628,7 +628,9 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
         out.class='FSRts';
         return
     end
-else % initial subset is not supplied by the user
+    
+else % Initial subset is not supplied by the user
+    
     % Find initial subset to initialize the search
     [out]=LTSts(y,'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
     
@@ -650,9 +652,9 @@ else % initial subset is not supplied by the user
     modelmdr.B=out.B;
     
     if isfield(modelmdr,'lshift')
-    if model.lshift>0
-        modelmdr.posLS=out.posLS;
-    end
+        if model.lshift>0
+            modelmdr.posLS=out.posLS;
+        end
         modelmdr=rmfield(modelmdr,'lshift');
     end
     
@@ -726,7 +728,7 @@ else
     INP.X=out.X;
     p=size(out.B(:,1),1);
 end
-    INP.model=modelmdr;
+INP.model=modelmdr;
 INP.n=T;
 INP.p=p;
 INP.mdr=mdr;

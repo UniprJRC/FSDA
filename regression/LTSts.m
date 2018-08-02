@@ -514,7 +514,7 @@ function [out, varargout] = LTSts(y,varargin)
     out=LTSts(y,'model',model,'plots',1);
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'Interpreter','Latex');
 %}
 
 %{
@@ -581,7 +581,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
-    title(gca,numpar);
+    title(gca,numpar,'Interpreter','Latex');
 
 %}
 
@@ -2253,6 +2253,8 @@ end
         %               from final iteration 0 for the other units.
         %   exitflag   : scalar which informs about convergence. exitflag =
         %               0 implies normal convergence
+        
+        outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
         
         % Residuals for the initialbeta
         res = y - yhat;
