@@ -117,7 +117,7 @@ function [out]=FSM(Y,varargin)
 %                   Bonferroni bound. For example if bonflev=0.99 the
 %                   procedure stops when the trajectory exceeds for the
 %                   first time the 99% bonferroni bound.
-%                 - A scalar value greater than 1.. In this case the
+%                 - A scalar value greater than 1. In this case the
 %                   procedure stops when the residual trajectory exceeds
 %                   for the first time this value.
 %                 Default value is ' ', which means to rely on general rules
