@@ -496,6 +496,7 @@ function [out, varargout] = LTSts(y,varargin)
 %{
     % Simulated data with linear trend and level shift.
     % No seasonal component.
+    rng('default')
     n=45;
     a=1;
     b=0.8;
@@ -740,7 +741,8 @@ function [out, varargout] = LTSts(y,varargin)
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
+    axeslast=findobj('-regexp','Tag','LTSts:ts');
+    title(axeslast(end),numpar,'Interpreter','Latex');
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -750,6 +752,7 @@ function [out, varargout] = LTSts(y,varargin)
     %% Example 2 used in the paper RPRH.
     % A persisting level shift and three isolated outliers, two of which in
     % proximity of the level shift.
+    close all
     y1=y(:);
     y1(68:end)=y1(68:end)+1300;
     y1(67)=y1(67)-600;
@@ -804,6 +807,7 @@ function [out, varargout] = LTSts(y,varargin)
     lshiftlocref.wlength=10;
     % Set tuning constant to use insde Huber rho function
     lshiftlocref.huberc=1.5;
+    close all
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
