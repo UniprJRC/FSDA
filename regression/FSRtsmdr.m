@@ -135,7 +135,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               is necessary to save the units forming subsets. If bsbsteps
 %               is 0 we store the units forming subset in all steps. The
 %               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
+%               T<=5000, else to store the units forming subset at steps
 %               init and steps which are multiple of 100. For example, as
 %               default, if T=753 and init=6,
 %               units forming subset are stored for
@@ -179,16 +179,16 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                   which unit 1 is included inside subset and a missing
 %                   value for the other steps;
 %               ......
-%               (n-1)-th row has number n-1 in correspondence of the steps in
-%                   which unit n-1 is included inside subset and a missing
+%               (T-1)-th row has number T-1 in correspondence of the steps in
+%                   which unit T-1 is included inside subset and a missing
 %                   value for the other steps;
-%               n-th row has number n in correspondence of the steps in
-%                   which unit n is included inside subset and a missing
+%               T-th row has number Tn in correspondence of the steps in
+%                   which unit T is included inside subset and a missing
 %                   value for the other steps
-%               The size of matrix BB is n x (n-init+1) if option input
-%               bsbsteps is 0 else the size is n-by-length(bsbsteps).
+%               The size of matrix BB is T x (T-init+1) if option input
+%               bsbsteps is 0 else the size is T-by-length(bsbsteps).
 %  Bols:        beta coefficents. Matrix.
-%               (n-init+1) x (p+1) matrix containing the monitoring of
+%               (T-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
 %  S2:          S2 and R2. Matrix.
