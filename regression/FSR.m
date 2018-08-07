@@ -518,6 +518,7 @@ bsbmfullrank=options.bsbmfullrank;
 nsamp=options.nsamp;
 msg=options.msg;
 threshoutX=options.threshoutX;
+intercept = options.intercept;
 
 if isempty(threshoutX)
     bonflevoutX=[];
@@ -538,7 +539,7 @@ elseif  isstruct(threshoutX)
     else
         threshlevoutX=10;
     end
-elseif threshoutXthreshoutX ==1
+elseif threshoutX == 1
     bonflevoutX=0.99;
     threshlevoutX=10;
     
@@ -569,7 +570,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     
     % Compute Minimum Deletion Residual for each step of the search
     [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,...
-        'msg',msg,'threshlevoutX',threshlevoutX);
+        'msg',msg,'threshlevoutX',threshlevoutX,'intercept',intercept);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
@@ -596,7 +597,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg,'bonflevoutX',bonflevoutX);
+    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg,'bonflevoutX',bonflevoutX, 'intercept',intercept);
     
     if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
@@ -614,7 +615,7 @@ else % initial subset is not supplied by the user
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
         [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',1,...
-            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'threshlevoutX',threshlevoutX);
+            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'threshlevoutX',threshlevoutX,'intercept',intercept);
         
         % If FSRmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -641,7 +642,7 @@ else % initial subset is not supplied by the user
                 % restart LXS without the units forming
                 % initial subset
                 bsb=setdiff(seq,out.bs);
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
+                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg,'intercept',intercept);
                 bs=bsb(out.bs);
                 
                 
@@ -652,7 +653,7 @@ else % initial subset is not supplied by the user
                 iter=iter+1;
                 bsb=setdiff(seq,mdr);
                 constr=mdr;
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
+                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg,'intercept',intercept);
                 bs=bsb(out.bs);
             end
         end
