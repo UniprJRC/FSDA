@@ -365,6 +365,8 @@ function [out]=FSRts(y,varargin)
 
 %{
     % FSRts with all default options.
+    % Reset the random generator
+    rng('default')
     n=200;
     rng(123456);
     outSIM=simulateTS(n,'plots',1);
