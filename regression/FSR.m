@@ -434,6 +434,7 @@ function [out]=FSR(y,X,varargin)
     % The purpose of this example is to show that in presence of units very far
     % from the bulk of th data (bad or good elverage points) it is necessary to
     % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
+    rng('default')
     rng(10000)
     n=100;
     p=1;
