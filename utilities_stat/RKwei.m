@@ -99,7 +99,7 @@ function weiRK = RKwei(u,c, M)
     bdp=0.3;
     [c,M]=RKbdp(bdp,v,ARP);
     weiRK030=RKwei(x,c,M);
-    weiRK030=weiRK030/max(psiRK030);
+    weiRK030=weiRK030/max(weiRK030);
     plot(x,weiRK030,'LineStyle','-','LineWidth',lwd)
 
     % Use bdp=0.4
