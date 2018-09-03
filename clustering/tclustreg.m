@@ -1869,12 +1869,12 @@ if plots
             
             %plot the thinned (not trimmed) units
             if wtrim == 3
-                if jj == 1
+                if jj == k
                     thinned_nt_trimmed = w4trimopt;
                     thinned_nt_trimmed([trim1levelopt ;trim2levelopt]) = -12;
                     ucg = find(thinned_nt_trimmed == 0);
                     plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
-                        'DisplayName',['Group ' num2str(jj) ': thinned units (' num2str(length(ucg)) ')' ]);
+                        'DisplayName',['thinned units (' num2str(length(ucg)) ')' ]);
                 end
              end
             
