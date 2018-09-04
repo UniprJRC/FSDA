@@ -53,11 +53,16 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       Y.Un  = matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty).
-%       Y.label = cell of length n containing the labels of the units
-%               (optional argument used when datatooltip=1. If this
+%       Y.label = cell of length n containing the labels of the units.
+%               This optional argument is used in conjuction with options
+%               databrush and datatooltip.
+%               When datatooltip=1, if this
 %               field is not present labels row1, ..., rown will be
 %               automatically created and included in the pop up
-%               datatooltip window)
+%               datatooltip window else the labels contained in Y.label will be used.
+%               When databrush is a cell and it is called together with
+%               option 'labeladd' '1', the trajectories in the malfwdplot
+%               will be labelled with the labels contained in Y.label.
 %
 %                Data Types - single|double
 %
@@ -239,8 +244,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                     units previously brushed are removed.
 %                   - labeladd= point labelling. If this option is '1', we label the units
 %                     of the last selected group with the unit row index in
-%                     matrices X and y. The default value is labeladd='',
-%                     i.e. no label is added.
+%                     input Y if Y is a matrix or with the labels contained
+%                     in Y.label if input Y is a struct.
+%                     The default value is labeladd='', i.e. no label is
+%                     added in the malfwdplot.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
@@ -1398,8 +1405,12 @@ if ~isempty(databrush) || iscell(databrush)
     
     % numtext= a cell of strings used to labels the units with their position
     % in the dataset.
-    numtext=cellstr(num2str(seq,'%d'));
     
+    if isstruct(out) && ~isempty(intersect('label',fieldnames(out)))
+        numtext=out.label;
+    else
+         numtext=cellstr(num2str(seq,'%d'));
+    end   
     %%  Prepare the spmplot for brushing
     
     plot1 = fig;
@@ -1885,10 +1896,14 @@ if ~isempty(databrush) || iscell(databrush)
                 %add labels, if necessary.
                 if strcmp('1',labeladdDB)
                     if strcmp('off',persist)
-                        text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
+                        text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),...
+                            reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),...
+                            reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
                     end
                     if strcmp('on',persist)
-                        text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
+                        text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),...
+                            reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),...
+                            reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
                     end
                 end
                 %add (fix) labels eventually set in selunit.
