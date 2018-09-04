@@ -7,7 +7,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %    y: Response variable or structure containing y, X and possibly other
 %       fields to link with monitoring plots.
-%       Vector or struct. 
+%       Vector or struct.
 %       A vector with n elements that contains the response variable or a
 %       structure containing monitoring information (see the examples).
 %       If y is a vector it can be either a row or a column vector.
@@ -153,7 +153,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %              the output of the new plot overwrites the existing one
 %              in the same window else a new window is created.
 %                 Example - 'tag',''
-%                 Data Types - char.   
+%                 Data Types - char.
 %
 %    nameX :  explanatory variables names. Cell. Cell array of
 %              strings of length p containing the labels
@@ -161,23 +161,23 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %            	(default) the sequence X1, ..., Xp will be created
 %              automatically.
 %              Example - 'nameX', {'First var' 'Second var'}
-%              Data Types - cell     
+%              Data Types - cell
 %
-%    namey  :  response variable name. Character or cell. 
+%    namey  :  response variable name. Character or cell.
 %              Character containing the label of the response
 %              Example - 'namey', {'response'}
-%              Data Types - char or cell        
+%              Data Types - char or cell
 %
 %  ylimy    :  y limits. Vector. vector with two elements controlling
 %              minimum and maximum on the y axis. Default value is ''
 %              (automatic scale).
 %              Example - 'ylimy',[-2 6]
-%              Data Types - double   
+%              Data Types - double
 %
 %  xlimx   :  x limits. Vector. vector with two elements controlling minimum and maximum
 %              on the x axis. Default value is '' (automatic scale).
 %              Example - 'xlimx',[-2 3]
-%              Data Types - double   
+%              Data Types - double
 %
 % datatooltip : personalized tooltip. Empty value or structure.
 %               The default is datatooltip=''.
@@ -197,7 +197,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               The default options of the structure are
 %               DisplayStyle='Window' and SnapToDataVertex='on'.
 %               Example - 'datatooltip',''
-%               Data Types - char 
+%               Data Types - char
 %
 % databrush :   interactive brushing. Empty value, scalar or cell.
 %               Note that this option can be used only if the input
@@ -291,10 +291,11 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               Note also the option subsize produces its effect on the
 %               monitoring residuals plot.
 %               Example - 'subsize',10:100
-%               Data Types - single | double  
+%               Data Types - single | double
 %
-%   selstep :   text in selected steps in resfwdplot. Numeric vector. Numeric vector
-%               which specifies for which steps of the
+%   selstep :   position of text labels of brushed units in resfwdplot.
+%               Numeric vector.
+%               Numeric vector which specifies for which steps of the
 %               forward search textlabels are added in the monitoring
 %               residual plot after a brushing action in the yXplot.
 %               The default is to write the labels at the initial and
@@ -306,34 +307,35 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               Note also the option selstep produces its effect on the
 %               monitoring residuals plot.
 %               Example - 'selstep',100
-%               Data Types - single | double   
+%               Data Types - single | double
 %
-%   selunit :   unit labelling in resfwdplot. Cell array of strings, string, or numeric vector for
-%               labelling units. If out is a structure the threshold is
-%               associated with the trajectories of the residuals
-%               monitored along the search else it refers to the values
-%               of the response variable.
+%   selunit :   unit labelling in the yXplot and in the associated resfwdplot.
+%               Cell array of strings, string, or numeric vector for
+%               labelling units. When input option databrush is not empty,
+%               if input argument y is a structure the threshold is
+%               associated with the trajectories of the residuals monitored
+%               along the search else it refers to the values of the
+%               response variable.
 %               If it is a cell array of strings, only
-%               the lines associated with the units that in at least
+%               the the units that in at least
 %               one step of the search had a residual smaller than
 %               selunit{1} or greater than selline{2} will have a
-%               textbox.
+%               textbox in the yXplot and in the associated resfwdplot
+%               after brushing.
 %               If it is a string it specifies the threshold
 %               above which labels have to be put. For example
-%               selunit='2.6' means that the text labels are written
+%               selunit='2.6' means that the text labels in the yXplot (and
+%               in the resfwdplot after brushing) are added
 %               only for the units which have in at least one step of
 %               the search a value of the scaled residual greater than
 %               2.6 in absolute value.
-%               If it is a numeric vector it
-%               contains the list of the units for which it is
-%               necessary to put the text labels.
-%               The default value of
-%               selunit is string '2.5' if y is a structure
-%               else it is an empty value if y is a vector
-%               Note that this option can be used just if previous
-%               option databrush is not empty.
-%               Note also the option selunit produces its effect on the
-%               monitoring residuals plot.
+%               If it is a numeric vector it contains the list of the units
+%               for which it is necessary to put the text labels in each panel of the
+%               yXplot and in the associated resfwdplot (if input option
+%               databrush is not empty).
+%               The default value of selunit is string '2.5' if input
+%               argument y is a structure else it is an empty value if
+%               input argument y is a vector
 %               Example - 'selunit','3'
 %               Data Types - numeric or character
 %
@@ -444,6 +446,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Example of use of option selunit.
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 98 and greater than 102.
+    % Note that in this case selunit is a cell array.
     yXplot(y,X,'selunit',{'98' '102'});
 %}
 
@@ -451,15 +454,24 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % yXplot with first input argument a vector, varargin is name/value pairs Ex2.
     % yXplot with personalized labelling.
     % Example of the use of function yXplot putting the text for the units
-    % which have a value of y smaller than 1% percentile and greater than
-    % 99% percentile of y
+    % which have a value of y smaller than 1 per cent percentile and greater than
+    % 99 per cent percentile of y.
+    % Note that in this case selunit is a cell array.
     selth={num2str(prctile(y,1)) num2str(prctile(y,99))};
     yXplot(y,X,'selunit',selth);
 %}
 
 %{
+    % yXplot with first input argument a vector, varargin is name/value pairs Ex2.
+    % yXplot with personalized labelling.
+    % In this case selunit is passed as a numeric vector and it contains
+    % the list of the units which have to be labelled in the yXplot.
+    selth=[2 10 20];
+    yXplot(y,X,'selunit',selth);
+%}
+
+%{
     % yXplot with first input argument a vector, varargin is name/value pairs Ex3.
-    % In this case group is passed as a name value pairs.
     n=100;
     p=3;
     X=randn(n,p);
@@ -512,10 +524,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %{
     % Interactive_example
     %   Example of the use of options selunit and selstep.
-    yXplot(out,'selunit',[2 5 20 23 35 45],'selstep',[20 22 27 36],...
+    % After the instruction below the labels for units inside vector
+    % selunit are added to each panel of the yXplot
+    selunit=[2 5 20 23 35 45];
+    yXplot(out,'selunit',selunit,'selstep',[20 22 27 36],...
             'databrush',{'persist','off','selectionmode' 'Rect'})
-    %   produces a resfwdplot in which labels are put for units
-    %   [2 5 20 23 35 45] in steps [20 22 27 36] of the search
+    %   After brushing the resfwdplot automatically appears and the labels
+    % are put for units contained in vector selunit in steps [20 22 27
+    % 36] of the search
 %}
 %
 %{
@@ -691,12 +707,12 @@ seq= (1:n)';
 
 % numtext= a cell of strings used to label the units with their position
 % in the dataset.
- if isstruct(out) && ~isempty(intersect('label',fieldnames(out)))
-        numtext=out.label;
-    else
-numtext=cellstr(num2str(seq,'%d'));
- end
- 
+if isstruct(out) && ~isempty(intersect('label',fieldnames(out)))
+    numtext=out.label;
+else
+    numtext=cellstr(num2str(seq,'%d'));
+end
+
 % Initialize line width
 linewidthStd = 0.5;
 
@@ -827,9 +843,6 @@ if nargin>2
     end
     
     
-    
-    
-    
     if isnotstructy ==1
         
         if isempty(nameX)
@@ -899,8 +912,6 @@ if nargin>2
             end
         end
     end
-    
-    
     
     % units= the list of the units which must be labelled.
     % It can be a cell array of strings (defining lower and upper threhold),

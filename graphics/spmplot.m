@@ -66,14 +66,14 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %                Data Types - single|double
 %
-%   Optional input arguments: 
+%   Optional input arguments:
 %
-%  group: grouping variable. Vector with n elements. 
+%  group: grouping variable. Vector with n elements.
 %          group is a grouping variable defined as a categorical
-%           variable, numeric, or array of strings, 
+%           variable, numeric, or array of strings,
 %               or string matrix, and it must have the same number of rows
 %               as Y. This grouping variable that determines
-%               the marker and color assigned to each point. 
+%               the marker and color assigned to each point.
 %                   Example - 'group',group
 %                   Data Types - char
 %         Remark: if 'group' is used to distinguish a set of outliers from
@@ -81,7 +81,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %
 %
-%    plo: names, labels, colors, marker type. Empty value, scalar or structure. 
+%    plo: names, labels, colors, marker type. Empty value, scalar or structure.
 %         This options controls the names which
 %         are displayed in the margins of the scatter-plot matrix and the
 %         labels of the legend.
@@ -116,7 +116,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %        plo.doleg: a string to control whether legends are created or not.
 %                Set doleg to 'on' (default) or 'off'.
 %                   Example - 'plo',1
-%                   Data Types - Empty value, scalar or structure. 
+%                   Data Types - Empty value, scalar or structure.
 %
 % dispopt: what to put on the diagonal. Character. String which controls how to fill the diagonals in a plot of
 %       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
@@ -137,19 +137,19 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'tag','myspm'
 %                   Data Types - char
 %
-%   overlay :   Superimposition on the panels out of the main diagonal of 
-%               the scatter matrix. Scalar, char or structure. It specifies 
+%   overlay :   Superimposition on the panels out of the main diagonal of
+%               the scatter matrix. Scalar, char or structure. It specifies
 %               what to add in the background for the panels specified in
 %               undock (default is for all oh them).
-%               The default value is overlay='', i.e. nothing is changed. If 
-%               overlay=1 the the filled contours are added to each panel, 
-%               considering all groups, as default. If overlay is a structure 
+%               The default value is overlay='', i.e. nothing is changed. If
+%               overlay=1 the the filled contours are added to each panel,
+%               considering all groups, as default. If overlay is a structure
 %               it may contain the following fields:
-%              overlay.type  = Type of plot to add in the background or to 
-%                                superimpose. String. It can be: 'contourf', 
-%                                'contour', 'ellipse' or 'boxplotb', 
-%                                specifying respectively to add filled 
-%                                contour (default when overlay=1), contour, 
+%              overlay.type  = Type of plot to add in the background or to
+%                                superimpose. String. It can be: 'contourf',
+%                                'contour', 'ellipse' or 'boxplotb',
+%                                specifying respectively to add filled
+%                                contour (default when overlay=1), contour,
 %                                ellipses or a bivariate boxplot (see
 %                                function boxplotb.m).
 %              overlay.include = Boolean vector specifying which groups to
@@ -157,34 +157,34 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                                overlay.type, the default value is a vector
 %                                of ones (i.e. all groups).
 %              overlay.cmap =  The colormap for the type 'contourf' and
-%                                'contour' is grey as default. In these case, 
-%                                this field may specify the colors used for 
-%                                the color map. It is a three-column matrix of 
-%                                values in the range [0,1] where each row 
+%                                'contour' is grey as default. In these case,
+%                                this field may specify the colors used for
+%                                the color map. It is a three-column matrix of
+%                                values in the range [0,1] where each row
 %                                is an RGB triplet that defines one color.
-%                                Check the colormap function for additional 
-%                                informations.      
-%              overlay.conflev = When the type specified is 'ellipse', the 
+%                                Check the colormap function for additional
+%                                informations.
+%              overlay.conflev = When the type specified is 'ellipse', the
 %                                size of the ellipses is chi2inv(0.95,2) as
-%                                default. In this case, this field may 
+%                                default. In this case, this field may
 %                                specify a different confidence level used
-%                                and it is a value between 0 and 1.   
+%                                and it is a value between 0 and 1.
 %                   Example - 'overlay',1
 %                   Data Types - single | double
 %
 %   undock   :  Panel to undock and visualize separately. Matrix or logical
-%               matrix. If undock='' (default), no panel is extracted. If 
-%               undock is a r-by-2 matrix, it specifies the r coordinates 
-%               of the scatter plot matrix to undock and visualize 
+%               matrix. If undock='' (default), no panel is extracted. If
+%               undock is a r-by-2 matrix, it specifies the r coordinates
+%               of the scatter plot matrix to undock and visualize
 %               separately in a bivariate plot (i.e. for panels out of the
-%               main diagonal plots) or in an univariate plot (i.e. the ones 
+%               main diagonal plots) or in an univariate plot (i.e. the ones
 %               on the main diagonal). If undock is a v-by-v logical matrix,
 %               where v are the number of columns in Y, the trues of undock
 %               are undocked and visualized separately.
-%               REMARK - When used, undock automatically deletes the plots 
-%               obtained by spmplots. If it is desired to keep some of them, 
-%               the respective 'Tag' associated has to be changed (e.g. 
-%               selecting the figure and then: set(gcf,'Tag','newTag');). 
+%               REMARK - When used, undock automatically deletes the plots
+%               obtained by spmplots. If it is desired to keep some of them,
+%               the respective 'Tag' associated has to be changed (e.g.
+%               selecting the figure and then: set(gcf,'Tag','newTag');).
 %                   Example - 'undock', [1 1; 1 3; 3 4]
 %                   Data Types - single | double | logical
 %   datatooltip :   interactive clicking. Empty value (default) or
@@ -200,7 +200,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   located at the actual pointer position. The default
 %                   options of the structure are
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
-%                   Example - 'datatooltip','' 
+%                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or cell.
@@ -266,9 +266,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)
 %                   Example - 'subsize',10:100
 %                   Data Types - single | double
-%       selstep :   add text labels of brushed units in malfwdplot. Vector. Numeric vector
+%       selstep :   position of text labels of brushed units in malfwdplot. Vector. Numeric vector
 %                   which specifies for which steps of the
-%                   forward search textlabels are added in the monitoring
+%                   forward search text labels are added in the monitoring
 %                   MD plot after a brushing action in the spmplot.
 %                   The default is to write the labels at the initial and
 %                   final step. The default is selstep=[m0 n] where m0 and
@@ -276,29 +276,30 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
-%       selunit :   unit labelling. Cell array of strings or string or numeric vector for
-%                   labelling units. If out is a structure the threshold is
-%                   associated with the trajectories of the residuals
-%                   monitored along the search else it refers to the values
-%                   of the response variable.
-%                   If it is a cell array of strings, only
-%                   the lines associated with the units that in at least
-%                   one step of the search had a residual smaller than
-%                   selunit{1} or greater than selline{2} will have a
-%                   textbox.
-%                   If it is a string it specifies the threshold
-%                   above which labels have to be put. For example
-%                   selunit='2.6' means that the text labels are written
-%                   only for the units which have in at least one step of
-%                   the search a value of the scaled residual greater than
-%                   2.6 in absolute value.
-%                   If it is a numeric vector it
-%                   contains the list of the units for which it is
-%                   necessary to put the text labels.
-%                   The default value of
-%                   selunit is string '2.5' if the input is a structure
-%                   else it is an empty value if if the input is matrices y
-%                   and X.
+%       selunit :   unit labelling in the spmplot and in the malfwdplot.
+%                   Cell array of strings or string or numeric vector for
+%                   labelling units. When input argument Y is a structure
+%                   the threshold is associated with the trajectories of
+%                   the Mahalanobis distances monitored along the search.
+%               If it is a cell array of strings, only the the units that
+%               in at least one step of the search had a Mahalanobis
+%               distance smaller than selunit{1} or greater than selline{2}
+%               will have a textbox in the scatter plot matrix and in the
+%               associated malfwdplot after brushing.
+%               If it is a string it specifies the threshold
+%               above which labels have to be put. For example
+%               selunit='2.6' means that the text labels in the scatter plot matrix (and
+%               in the malfwdplot after brushing) are added
+%               only for the units which have in at least one step of
+%               the search a value of the Mahalanobis distance greater than
+%               2.6.
+%               If it is a numeric vector it contains the list of the units
+%               for which it is necessary to put the text labels in each panel of the
+%               spmplot and in the associated malfwdplot (if input option
+%               databrush is not empty).
+%               The default value of selunit is string '2.5' if input
+%               argument Y is a structure else it is an empty value if
+%               input argument Y is a matrix.
 %                   Example - 'selunit','3'
 %                   Data Types - numeric or character
 %
@@ -357,9 +358,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 
 
 %{
-    %% Call of spmplot with name/value pairs and specifying overlay, 
-    % also discarding some groups with the field include, and changing 
-    % the default colormap. 
+    %% Call of spmplot with name/value pairs and specifying overlay,
+    % also discarding some groups with the field include, and changing
+    % the default colormap.
     % The Tag setting will be used in the next example to demonstrate the
     % undock option.
 
@@ -373,7 +374,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(meas,'group',species,'plo',plo,'dispopt','box');
     figure
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','ellipse');
-    figure    
+    figure
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contour');
     figure
     spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contourf');
@@ -381,8 +382,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     cascade
 %}
 
-%{  
-    %% Call of spmplot with name/value pairs and specifying overlay and undock. 
+%{
+    %% Call of spmplot with name/value pairs and specifying overlay and undock.
     % The latter argument requires to change the tag of the scatterplot
     % matrix not to delete.
 
@@ -636,13 +637,46 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(out,'datatooltip',1,'plo',plo)
 %}
 
+%{
+    % Interactive_example
+    %   Example of the use of options selstep and selunit.
+    %   selunit is passed as a character.
+    %   It produces a scatter plot matrix in which labels are put for units
+    %   which have a Mahalanobis distance greater than str2num(selunit). When a set of
+    %   units is brushed in the spmplot in the monitoring MD
+    %   plot the labels for the units which have a MD greater than 10
+    %   are added in steps selsteps.
+   spmplot(out,'selstep',[60 80],'selunit','10',...
+           'databrush',{'persist','off','selectionmode' 'Rect'})
+%}
+       
+%{
+    % Interactive_example
+    %   Example of the use of options selstep and selunit.
+    %   selunit is passed as a numeric vector.
+    %   It produces a scatter plot matrix in which labels are put for units
+    %   selunit. When a set of
+    %   units is brushed in the spmplot in the monitoring MD
+    %   plot the labels for the units selunit
+    %   are added in steps selsteps.
+   spmplot(out,'selstep',[60 80],'selunit',1:5,...
+           'databrush',{'persist','off','selectionmode' 'Rect'})
+%}
+
+%{
+    % Interactive_example
+    %   Example of the use of options selstep and selunit.
+    %   selunit is passed as a cell array of length 2.
+    %   It produces a scatter plot matrix in which labels are put for units
+    %   which have a min MD > selunit{1} and max MD <selunit{2}. When a set of
+    %   units is brushed in the spmplot in the monitoring MD
+    %   plot the labels for the units selunit
+    %   are added in steps selsteps.
+   spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
+           'databrush',{'persist','off','selectionmode' 'Rect'})
+%}
+
 %% Beginning of code
-% if length(varargin{1})==n then we are in the old format of the function
-% spmplot(Y,group)
-% or
-% spmplot(Y,group,plo)
-% or
-% spmplot(Y,group,plo,dispopt)
 
 if nargin<1
     error('FSDA:spmplot:missingInputs','A required input argument is missing.')
@@ -651,13 +685,20 @@ end
 % Check if the first argument is a structure or not
 if ~isstruct(Y)
     [n,v]=size(Y);
-    onlyyX=1;
+    isnotstructY=1;
+    % seq= column vector containing the sequence 1 to n
+    seq= (1:n)';
+    
+    numtext=cellstr(num2str(seq,'%d'));
+    
 else
     % The first argument (Y) is a structure
     out=Y;
     % Retrieve matrix Y from the input structure
     Y=out.Y;
     [n,v]=size(Y);
+    % seq= column vector containing the sequence 1 to n
+    seq= (1:n)';
     
     if find(strcmp('MAL',fieldnames(out)))
         % The number of rows of matrix MAL (squared Mahalanobis distnaces
@@ -666,14 +707,30 @@ else
         % fwd search.
         residuals=out.MAL;
         [n,nsteps]=size(residuals);
-        % onlyyX is a scalar. If onlyyX =1 this means that the user can do
+        % isnotstructY is a scalar. If isnotstructY =0 this means that the user can do
         % brushing on the spmplot, else just a static spmplot with
         % clickable multilegends is produced
-        onlyyX=0;
+        isnotstructY=0;
     else
-        onlyyX=1;
+        isnotstructY=1;
     end
+    
+    % numtext= a cell of strings used to label the units with their position
+    % in the dataset.
+    if  ~isempty(intersect('label',fieldnames(out)))
+        numtext=out.label;
+    else
+        numtext=cellstr(num2str(seq,'%d'));
+    end
+    
 end
+
+% if length(varargin{1})==n then we are in the old format of the function
+% spmplot(Y,group)
+% or
+% spmplot(Y,group,plo)
+% or
+% spmplot(Y,group,plo,dispopt)
 
 if nargin>1
     if length(varargin{1})==n
@@ -699,7 +756,7 @@ if nargin>1
         overlay = '';
         undock  = '';
         tag='pl_spm';
-        
+         units='';
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
             disp('In this case only the first four arguments "Y,group,plo,dispopt" are considered')
@@ -711,7 +768,7 @@ if nargin>1
         % format name/value pairs
         namevaluepairs=1;
         
-        if onlyyX==0
+        if isnotstructY==0
             % x= vector which contains the subset size (numbers on the x axis)
             x=(n-nsteps+1):n;
             
@@ -764,7 +821,67 @@ if nargin>1
         datatooltip=options.datatooltip;
         overlay=options.overlay;
         undock=options.undock;
+        units=options.selunit;
+   
     end
+    
+    if isnotstructY ==1
+        if ~isempty(databrush)
+            disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
+            return
+        end
+        
+        if isnumeric(units)
+            % Some checks on minimum and maximum of vector units
+            if max(units)>n
+                mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units<=n);
+            end
+            if min(units)<1
+                mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units>0);
+            end
+        end
+        
+    else
+        if iscellstr(units)
+            selunit=str2double(units);
+            selmax=max(residuals,[],2);
+            selmin=min(residuals,[],2);
+            units=seq(selmax<selunit(2) & selmin>selunit(1));
+        elseif ischar(units)==1
+            % if units is a character than the user has specified a threshold
+            % convert character to numeric
+            thresh=str2double(units);
+            % Label the units whose maximum MD along the search is greater
+            % than the required threshold 
+            units=seq(selmax>thresh);
+        else
+            % Some checks on minimum and maximum of vector units
+            if max(units)>n
+                mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units<=n);
+            end
+            if min(units)<1
+                mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
+                    'It is deleted.']);
+                fprintf('%s\n',mess);
+                units=units(units>0);
+            end
+        end
+    end
+    
+    % units= the list of the units which must be labelled.
+    % It can be a cell array of strings (defining lower and upper threhold),
+    % a string (defining just one threshold) or a numeric vector.
+    
+    
 else
     group=ones(n,1);
     plo='';
@@ -775,6 +892,7 @@ else
     namevaluepairs=1;
     overlay='';
     undock='';
+    units='';
 end
 
 ngroups=length(unique(group));
@@ -1058,12 +1176,26 @@ set([get(BigAx,'Title'); get(BigAx,'XLabel'); get(BigAx,'YLabel')], ...
 % set the specified tag in the current plot
 set(gcf,'tag',tag)
 
+if ~isempty(units)
+    for i = 1:size(AX,2)
+        for j=1:size(AX,2)
+            if i~=j
+                set(gcf,'CurrentAxes',AX(i,j));
+                xlimits = get(AX(j,i),'Xlim'); 
+                ylimits = get(AX(j,i),'Ylim');
+                dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
+                dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
+                text(Y(units,j)+dy,Y(units,i)+dx,numtext(units),'HorizontalAlignment', 'Left');
+            end
+        end
+    end
+end
 
 %% Add objects to the scatterplot matrix
 
 if ~isempty(overlay)
     % if the option overlay is specified, add specific objects out of the main
-    % diagonal for the groups specified in include 
+    % diagonal for the groups specified in include
     
     % use default values for missing informations
     if ischar(overlay)
@@ -1110,7 +1242,7 @@ if ~isempty(overlay)
     
     % get the indexes used to iterate through the off-diagonal panels
     if ~isempty(undock)
-        % when undock is specified: reduce the number of iteration iterating 
+        % when undock is specified: reduce the number of iteration iterating
         % just on the panels of interest(because the global figure will
         % be deleted)
         
@@ -1141,15 +1273,15 @@ if ~isempty(overlay)
         [iterpan(:,1),iterpan(:,2)] = ind2sub([v,v], 1:v^2);
     end
     
-    % When using contour or contourf the optional field cmap allows the 
+    % When using contour or contourf the optional field cmap allows the
     % user to provide a colormap.
     % The default colormap is 'gray' (see function colormap);
     % If the user colormap is invalid, set it to the default 'gray'.
     if strcmp(type, 'contourf') || strcmp(type, 'contour')
         % ischar(type) && max(strcmp(type,{'contourf' , 'contour' , 'surf' , 'mesh'}))  [to add 2 new options in the future]
-
+        
         if isfield(overlay, 'cmap')
-
+            
             % get the colormap specified by the user
             cmap = overlay.cmap;
             
@@ -1174,7 +1306,7 @@ if ~isempty(overlay)
     % The default value uses chi2inv(0.95,2) (see the function ellipse).
     % If the user choice is invalid, it is set to default.
     if strcmp(type, 'ellipse') && isfield(overlay, 'conflev')
-
+        
         % get the confidence level specified by the user
         conflev = overlay.conflev;
         
@@ -1190,7 +1322,7 @@ if ~isempty(overlay)
         conflev = [];
         overlay.conflev = conflev;
     end
-
+    
     % iterate through the off diagonal indexes of interest
     for jj = 1:size(iterpan,1)
         indRows = iterpan(jj,1);
@@ -1198,12 +1330,12 @@ if ~isempty(overlay)
         if indRows~=indCols
             
             % get the specific axes
-            axes(AX(indRows,indCols));  %#ok<LAXES> 
+            axes(AX(indRows,indCols));  %#ok<LAXES>
             
-            if ~isempty(undock) 
+            if ~isempty(undock)
                 % make the main figure invisible again
-                set(findobj('Tag', 'pl_spm'), 'Visible', 'off');  
-            end        
+                set(findobj('Tag', 'pl_spm'), 'Visible', 'off');
+            end
             
             axis manual;
             hold all;
@@ -1223,7 +1355,7 @@ if ~isempty(overlay)
                 
                 % put densities in the background
                 GetCountur = get(AX(indRows,indCols),'Children');
-                uistack(GetCountur(1),'bottom');   
+                uistack(GetCountur(1),'bottom');
                 
             elseif strcmp(type, 'ellipse')
                 %  plot ellipses for the specified groups
@@ -1241,13 +1373,13 @@ if ~isempty(overlay)
                     % delete(axx(1:2)); % uncomment to plot ellipses without axes
                     set(axx(1:length(axx)-axx0), 'DisplayName', get(displayGroups(end-ii+1), 'DisplayName'));
                     % set(axx(1:length(axx)-axx0), 'DisplayName',
-                    % num2str(ii-(length(unId)-length(unId(include))))); 
+                    % num2str(ii-(length(unId)-length(unId(include)))));
                 end
                 
             elseif strcmp(type, 'boxplotb')
                 %  plot bivariate boxplot for the specified groups
                 displayGroups = findobj(AX(indRows,indCols), 'type', 'line'); % to get labels for display names
-                                
+                
                 % set limits
                 plots.xlim = [min(dataextr{1,2}), max(dataextr{1,2})];
                 plots.ylim = [min(dataextr{1,3}), max(dataextr{1,3})];
@@ -1273,7 +1405,7 @@ if ~isempty(overlay)
     end
 end
 
-%% Undock specified panels 
+%% Undock specified panels
 
 if ~isempty(undock) % && ~strcmp(undock, 'interactive') % [To Add]
     % If the option undock is non-empty, the panels specified are undocked and
@@ -1282,7 +1414,7 @@ if ~isempty(undock) % && ~strcmp(undock, 'interactive') % [To Add]
     % sub-function defined at the end of spmplot
     panelplot(undock, AX, Y, dispopt, groupv, clr, unigroup, overlay);
     
-% elseif strcmp(undock, 'interactive') 
+    % elseif strcmp(undock, 'interactive')
     %[To Add]
 end
 
@@ -1315,7 +1447,6 @@ end
 if ~isempty(databrush) || iscell(databrush)
     % Initialize line width
     linewidthStd = 0.5;
-    units=options.selunit;
     
     % extract the vector associated with the subset size (x)
     x=options.subsize;
@@ -1334,36 +1465,11 @@ if ~isempty(databrush) || iscell(databrush)
         steps=steps(steps>=x(1));
     end
     
-    if onlyyX
+    if isnotstructY
         
         if ~isempty(options.databrush)
             disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
             return
-        end
-        if iscellstr(units)
-            selunit=str2double(units);
-            units=seq(y>selunit(2) | y<selunit(1));
-        elseif ischar(units)==1
-            % if units is a character than the user has specified a threshold
-            % convert character to numeric
-            thresh=str2double(units);
-            % Label the units whose maximum residual along the search is greater
-            % than the required threshold or smalleR than -threshold
-            units=seq(y>thresh | y<-thresh);
-        else
-            % Some checks on minimum and maximum of vector units
-            if max(units)>n
-                mess=sprintf(['One of the units which has beeen chosen is greater than n. \n',...
-                    'It is deleted.']);
-                fprintf('%s\n',mess);
-                units=units(units<=n);
-            end
-            if min(units)<1
-                mess=sprintf(['One of the units which has beeen chosen is smaller than 1. \n',...
-                    'It is deleted.']);
-                fprintf('%s\n',mess);
-                units=units(units>0);
-            end
         end
         
     else
@@ -1409,8 +1515,8 @@ if ~isempty(databrush) || iscell(databrush)
     if isstruct(out) && ~isempty(intersect('label',fieldnames(out)))
         numtext=out.label;
     else
-         numtext=cellstr(num2str(seq,'%d'));
-    end   
+        numtext=cellstr(num2str(seq,'%d'));
+    end
     %%  Prepare the spmplot for brushing
     
     plot1 = fig;
@@ -2198,14 +2304,14 @@ end
         % get the number of variables
         vv = size(Y, 2);
         
-        % specify labels for the legend 
+        % specify labels for the legend
         gunipp = unique(groupv);
         gunipp = num2str(gunipp);
         
         if isempty(overlay)
             % make the main figure invisible if overlay was not used,
             % otherwise it is already invisible
-            set(findobj('Tag', 'pl_spm'), 'Visible', 'off');  
+            set(findobj('Tag', 'pl_spm'), 'Visible', 'off');
         end
         
         % obtain the indexes of the panels to extract (already evaluated if
@@ -2227,7 +2333,7 @@ end
             
         elseif ~islogical(undock) && size(undock, 2)==2
             % if undock contains in each row the indexes of the panels to
-            % plot (in the order: R-C)            
+            % plot (in the order: R-C)
             panels = undock;
             
         else
@@ -2245,10 +2351,10 @@ end
             
             if indRowspp~=indColspp
                 % panels not on the main diagonal
-                copyobj(AX(indRowspp,indColspp), newF); 
+                copyobj(AX(indRowspp,indColspp), newF);
                 
             else
-                % panels on the main diagonal 
+                % panels on the main diagonal
                 if strcmp(dispopt,'hist')
                     % plot again the histograms instead of copying them [just to avoid
                     % errors. To Enhance]
@@ -2274,7 +2380,7 @@ end
             % specify the y-label axis
             if indRowspp~=indColspp || (strcmp(dispopt,'box') && indRowspp==indColspp)
                 % off-diagonal panels or boxplots on the main diagonal
-
+                
                 if indRowspp~=1
                     % extract the Ylabel of panel in the first column
                     labPrntY = get(get(AX(indRowspp,1), 'Ylabel'),'string');
@@ -2284,7 +2390,7 @@ end
                     %  panel in the lowast left corner of gplotmatrix is extracted
                     labPrntY = get(get(AX(end-1,1), 'Xlabel'),'string');
                 end
-
+                
                 ylabel(labPrntY);
                 
             elseif strcmp(dispopt,'hist')==1 % main diagonal histogram panels
@@ -2302,7 +2408,7 @@ end
                 %  gplotmatrix is extracted
                 labPrntX = get(get(AX(end-1,1), 'Xlabel'),'string');
             end
-       
+            
             xlabel(labPrntX);
             
             % general adjustment of axes labels and ticks
@@ -2325,7 +2431,7 @@ end
                 
             end
             
-            % add clickable legend 
+            % add clickable legend
             if ~isempty(overlay) && indRowspp~=indColspp && ...
                     (strcmp(overlay.type, 'contourf') || strcmp(overlay.type, 'contour'))
                 % off-diagonal panels where contourf or contour is specified
@@ -2335,7 +2441,7 @@ end
                 uistack(CGcont(end),'top');
                 if any(overlay.cmap(end,:)~= [1 1 1])
                     % restore white background
-                    colormap(gca, [overlay.cmap; [1 1 1]]); 
+                    colormap(gca, [overlay.cmap; [1 1 1]]);
                 else
                     % the background is already white
                     colormap(gca, overlay.cmap);
@@ -2360,14 +2466,14 @@ end
                 
                 clickableMultiLegend(hpp(1:length(hpp)/nleg:end),char(gunipp(1:3)));
                 
-            elseif indRowspp~=indColspp 
+            elseif indRowspp~=indColspp
                 % in general for off-diagonal panels add a legend
                 
                 legToAdd = findobj('Tag', 'spmclickleg');
-                clickableMultiLegend(get(legToAdd(1), 'String')); 
-                % this tag is assigned by add2spm function 
+                clickableMultiLegend(get(legToAdd(1), 'String'));
+                % this tag is assigned by add2spm function
                 % (index 1 is used to avoid errors in case of multiple plots)
-
+                
             end
             
             % title
@@ -2380,7 +2486,7 @@ end
         
         % delete scatter plot matrix
         delete(findobj('Tag', 'pl_spm'));
-        % cascade; 
+        % cascade;
         
     end
 
