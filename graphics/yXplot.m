@@ -58,11 +58,16 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %       y.Un  =   matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty).
-%       y.label = cell of length n containing the labels of the units
-%               (optional argument used when datatooltip=1. If this
+%       y.label = cell of length n containing the labels of the units.
+%               This optional argument is used in conjuction with options
+%               databrush and datatooltip.
+%               When datatooltip=1, if this
 %               field is not present labels row1, ..., rown will be
 %               automatically created and included in the pop up
-%               datatooltip window)
+%               datatooltip window else the labels contained in y.label will be used.
+%               When databrush is a cell and it is called together with
+%               option 'labeladd' '1', the trajectories in the resfwdplot
+%               will be labelled with the labels contained in y.label.
 %
 %           Note that the structure described above is automatically
 %           generated from function FSReda
@@ -267,10 +272,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                 is mean(y)+Ci*Xi, being Ci the coefficient of Xi.
 %                 The default value of multivarfit is '', i.e. no line is
 %                 added.
-%               - labeladd. If this option is '1', we label the units
+%               - labeladd= point labelling. If this option is '1', we label the units
 %                 of the last selected group with the unit row index in
-%                 matrices X and y. The default value is labeladd='',
-%                 i.e. no label is added.
+%                 input y if y is a vector or with the labels contained
+%                 in y.label if input y is a struct.
+%                 The default value is labeladd='', i.e. no label is
+%                 added in the resfwdplot.
 %               Example - 'databrush',1
 %               Data Types - single | double | struct
 %
@@ -682,10 +689,14 @@ end
 % seq= column vector containing the sequence 1 to n
 seq= (1:n)';
 
-% numtext= a cell of strings used to labels the units with their position
+% numtext= a cell of strings used to label the units with their position
 % in the dataset.
+ if isstruct(out) && ~isempty(intersect('label',fieldnames(out)))
+        numtext=out.label;
+    else
 numtext=cellstr(num2str(seq,'%d'));
-
+ end
+ 
 % Initialize line width
 linewidthStd = 0.5;
 
@@ -1495,10 +1506,14 @@ if ~isempty(databrush) || iscell(databrush)
                     %add labels, if necessary.
                     if strcmp('1',labeladdDB)
                         if strcmp('off',persist)
-                            text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
+                            text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),...
+                                reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),...
+                                reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
                         end
                         if strcmp('on',persist)
-                            text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
+                            text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),...
+                                reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),...
+                                reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
                         end
                     end
                     

@@ -1873,9 +1873,12 @@ if ~isempty(databrush) || iscell(databrush)
                 end
                 hold on
                 if strcmp('on',persist)
-                    %find the handles of the residual trajectories
-                    a=get(gcf,'Children');
-                    aa=get(a,'Children');
+                    % find the handles of the trajectories of Mahalanobis
+                    % distances
+                    % a=get(gcf,'Children');
+                    % aa=get(a,'Children');
+                    aa=findobj(gca,'Type','line');
+                    
                     %sort the handles of the residual trajectories
                     aa1=sort(aa);
                     %select the handles of the selected residual trajectories

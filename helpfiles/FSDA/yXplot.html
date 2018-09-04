@@ -239,12 +239,17 @@
                (compulsory argument).</p> <p>
        y.Un  =   matrix containing the order of entry of each unit
                (necessary if datatooltip is true or databrush is not
-               empty).</p><p>
-       y.label = cell of length n containing the labels of the units
-               (optional argument used when datatooltip=1. If this
+               empty).</p> <p>
+       y.label = cell of length n containing the labels of the units.</p> <p>
+               This optional argument is used in conjuction with options
+               databrush and datatooltip.</p> <p>
+               When datatooltip=1, if this
                field is not present labels row1, ..., rown will be
                automatically created and included in the pop up
-               datatooltip window)
+               datatooltip window else the labels contained in y.label will be used.</p> <p>
+               When databrush is a cell and it is called together with
+               option 'labeladd' '1', the trajectories in the resfwdplot
+               will be labelled with the labels contained in y.label.</p><p>
 
            Note that the structure described above is automatically
            generated from function FSReda</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix.  Data matrix of explanatory
@@ -419,10 +424,12 @@
                  is mean(y)+Ci*Xi, being Ci the coefficient of Xi.</p> <p>
                  The default value of multivarfit is '', i.e. no line is
                  added.</p> <p>
-               - labeladd. If this option is '1', we label the units
+               - labeladd= point labelling. If this option is '1', we label the units
                  of the last selected group with the unit row index in
-                 matrices X and y. The default value is labeladd='',
-                 i.e. no label is added.</p><p>
+                 input y if y is a vector or with the labels contained
+                 in y.label if input y is a struct.</p> <p>
+                 The default value is labeladd='', i.e. no label is
+                 added in the resfwdplot.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_subsize" class="clearfix"></div><h3 id="input_argument_namevalue_subsize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>subsize</code> &#8212;x axis control in resfwdplot.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>Numeric vector
                containing the subset size with length
