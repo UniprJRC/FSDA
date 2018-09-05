@@ -536,8 +536,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 %{
     % Interactive_example
-    %   Example of the use of options selstep, selunit, selunitbold and
-    %   selunitcolor.
+    %   Example of the use of options selstep, selunit.
     %   It produces a yXplot plot in which labels are put for units
     %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
     %   in the monitoring residuals plot the labels are added in steps
@@ -567,31 +566,31 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   An equivalent statement is
        yXplot(out,'databrush',{'selectionmode' 'Rect'})
 %}
-%
+
 %{
     % Interactive_example
     %   Example of the use of brush using a rectangular selection tool and
     %   a cyan colour.
    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
-%
+
 %{
     % Interactive_example
     %  Example of the use of brush using multiple selection circular tools.
     yXplot(out,'databrush',{'selectionmode' 'Brush'})
 %}
-%
+
 %{
     % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur pointer.
     yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})
 %}
-%
+
 %{
     % Interactive_example
     %   Example of the use of rectangular brush. Superimposed labels for
-    %   the brushed units and persistent labels in the plot which has been
-    %   brushed
+    %   the brushed units and persistent labels in the yXplot which has been
+    %   brushed 
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
 %}
 
@@ -605,7 +604,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
-    %   Every time a brushing action is performed
+    %   In other words, every time a brushing action is performed
     %   current highlightments replace previous highlightments
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
                             'Label' 'on' 'RemoveLabels' 'off'})
@@ -623,9 +622,21 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 
 %{
     % Interactive_example
+    % Example of persistent cumulative brushing. 
+    % The options are 'persist' 'on'  labeladd '1' 'Label' 'on' 'RemoveLabels' 'off'.
+    %  Now option labeladd '1'. In this case the row numbers of the
+    %  selected units are displayed in the monitoring residuals plot
+    %  Given that  'Label' 'on' 'RemoveLabels' 'off' the labels of the
+    %  brushed units are also shown in the yXplot
+    yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
+         'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'})
+%}
+
+%{
+    % Interactive_example
     % Example of persistent cumulative brushing (with persist on and labeladd '1').
     %   Now option labeladd '1'. In this case the row numbers of the
-    %   selected units is displayed in the monitoring residuals plot
+    %   selected units are displayed just in the monitoring residuals plot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'labeladd' '1'})
 %}
@@ -927,6 +938,7 @@ else
     units='';
     
 end
+unitsori=units;
 
 % seq= column vector containing the sequence 1 to n
 seq= (1:n)';
@@ -1199,10 +1211,10 @@ if ~isempty(databrush) || iscell(databrush)
     
     
     % lunits = number of units which must be labelled
-    lunits=length(units);
+    % lunits=length(units);
     % lsteps = number of steps for which it is necessary to add the labels
-    lsteps=length(steps);
-    lall=lunits*lsteps;
+    % lsteps=length(steps);
+    % lall=lunits*lsteps;
     
     % bivarfit option
     d=find(strcmp('bivarfit',databrush));
@@ -1330,11 +1342,14 @@ if ~isempty(databrush) || iscell(databrush)
             if ij>1
                 % legend(hLegend(length(AX)),'hide');
                 set( hLegend(1,end),'Visible','off')
-                
-                %               set(hLegend(length(AX)),'Location', 'EastOutside');
             end
-            set(fig,'UserData',num2cell(seq));
-            [pl,xselect,yselect] = selectdataFS(sele{:}, 'Label', 'off');
+            
+            set(fig,'UserData',numtext);
+            [pl,xselect,yselect] = selectdataFS(sele{:});
+            
+            % OLD CODE TO DELETE
+            % set(fig,'UserData',num2cell(seq));
+            % [pl,xselect,yselect] = selectdataFS(sele{:}, 'Label', 'off');
             
             % exit from yXplot if the yXplot figure was closed before selection
             if ~isempty(pl) && isnumeric(pl) && (min(pl) == -999)
@@ -1473,7 +1488,7 @@ if ~isempty(databrush) || iscell(databrush)
                 
                 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),siz,doleg,[],nameX,namey);
                 
-                % Set the legenda properties of the gplotmatrix
+                % Set the legend properties of the gplotmatrix
                 if nbrush>0
                     set(H(:,:,1),'DisplayName','Unbrushed units');
                     for brugrp = 2:length(unigroup)
@@ -1497,6 +1512,30 @@ if ~isempty(databrush) || iscell(databrush)
                 hLegend=zeros(size(AX));
                 hLegend(1,end)=legend;
                 
+                % if there is the option RemoveLabels inside sele and if it
+                % is set to off and persist is on the labels must remain in the yXplot
+                chkexist=find(strcmp('RemoveLabels',sele)==1);
+                if strcmp(persist,'on')
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off') 
+                        units=unique([units(:); nbrush]);
+                    end
+                else
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off') 
+                        units=unique([unitsori(:); nbrush]);
+                    end
+                end
+                
+                % if selunit option has been defined label the units.
+                % Note that these units will always be labelled (independently on the
+                % brushing action)
+                for i = 1:length(AX)
+                    set(gcf,'CurrentAxes',AX(i));
+                    if ~isempty(units)
+                        xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
+                        dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
+                        text(Xsel(units,i)+dx,y(units)+dy,numtext(units),'HorizontalAlignment', 'Left');
+                    end
+                end
                 
                 %% - display the resfwdplot with the corresponding groups of trajectories highlighted.
                 
@@ -1526,6 +1565,9 @@ if ~isempty(databrush) || iscell(databrush)
                                 reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),...
                                 reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
                         end
+                        
+                    else
+                        
                     end
                     
                     set(gcf,'tag','data_res');
@@ -1553,7 +1595,6 @@ if ~isempty(databrush) || iscell(databrush)
                     %if persist=off the previous selection must be replaced
                     set(gcf,'NextPlot','replace');
                     plot(x,residuals,'Tag','data_res','Color','b');
-                    text(reshape(repmat(steps,lunits,1),lall,1),reshape(residuals(units,steps-x(1)+1),lall,1),reshape(repmat(numtext(units),1,lsteps),lall,1));
                     set(gcf,'tag','data_res');
                     set(gcf,'Name','resfwdplot');
                     set(gcf,'NextPlot','add');
@@ -1561,8 +1602,10 @@ if ~isempty(databrush) || iscell(databrush)
                 hold on
                 if strcmp('on',persist)
                     %find the handles of the residual trajectories
-                    a=get(gcf,'Children');
-                    aa=get(a,'Children');
+                    %a=get(gcf,'Children');
+                    %aa=get(a,'Children');
+                    aa=findobj(gca,'Type','line');
+                    
                     %sort the handles of the residual trajectories
                     aa1=sort(aa);
                     %select the handles of the selected residual trajectories
@@ -1571,7 +1614,7 @@ if ~isempty(databrush) || iscell(databrush)
                     delete(aa1);
                 end
                 % plot on the residual plot previously created the same
-                % tajectories that we have just deleted, but in another
+                % trajectories that we have just deleted, but in another
                 % color and with a width that is 2 points bigger than the
                 % one of the standard trajectories.
                 plot(x,residuals(nbrush,:),...
@@ -1581,18 +1624,39 @@ if ~isempty(databrush) || iscell(databrush)
                     'LineWidth',linewidthStd+2);
                 
                 %add labels, if necessary.
-                if strcmp('1',labeladd)
+                if strcmp('1',labeladdDB)
                     if strcmp('off',persist)
-                        text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
+                        text(reshape(repmat(steps,length(nbrush),1),length(nbrush)*length(steps),1),...
+                            reshape(residuals(nbrush,steps-x(1)+1),length(nbrush)*length(steps),1),...
+                            reshape(repmat(numtext(nbrush),1,length(steps)),length(nbrush)*length(steps),1));
                     end
                     if strcmp('on',persist)
-                        text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
+                        text(reshape(repmat(steps,length(brushcum),1),length(brushcum)*length(steps),1),...
+                            reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),...
+                            reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
+                    end
+                    
+                    %add labels for the units in selunit and those referred
+                    %to brushed units if persist is on else just add labels
+                    %for the unitsori.
+                    if ~isempty(units)
+                        text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),...
+                            reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),...
+                            reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
+                    end
+                    
+                else
+                    %add labels just for the units in selunit (excluding brushed units).
+                    if ~isempty(unitsori)
+                        text(reshape(repmat(steps,length(unitsori),1),length(unitsori)*length(steps),1),...
+                            reshape(residuals(unitsori,steps-x(1)+1),length(unitsori)*length(steps),1),...
+                            reshape(repmat(numtext(unitsori),1,length(steps)),length(unitsori)*length(steps),1));
                     end
                 end
-                %add (fix) labels eventually set in selunit.
-                if ~isempty(units)
-                    text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
-                end
+                %                 %add (fix) labels eventually set in selunit.
+                %                 if ~isempty(units)
+                %                     text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
+                %                 end
                 
                 xlabel(labx);
                 ylabel(laby);

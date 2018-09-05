@@ -570,14 +570,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     [out]=FSMeda(Ycont,bs,'plots',1);
     % mmdplot(out);
     figure
-    plo=struct;
-    plo.labeladd='1';
-    % Please note the difference between plo.labeladd='1' and option labeladd
-    % '1' inside databrush.
-    % plo.labeladd enables the user to label the units in the scatterplot
+    % 'Label' 'on' 'RemoveLabels' 'off'  enables the user to label the units in the scatterplot
     % matrix once selected. Option labeladd '1' inside databrush enables to add
-    % the labels of the selected units in the linked plots
-    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')
+    % the labels of the selected units in the linked malfwdplot
+    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect', ...
+    'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist')
 %}
 
 %{
@@ -649,7 +646,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
    spmplot(out,'selstep',[60 80],'selunit','10',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 %}
-       
+
 %{
     % Interactive_example
     %   Example of the use of options selstep and selunit.
@@ -756,7 +753,7 @@ if nargin>1
         overlay = '';
         undock  = '';
         tag='pl_spm';
-         units='';
+        units='';
         if length(varargin)>3
             disp('spmplot has been called in the old format without name pairs')
             disp('In this case only the first four arguments "Y,group,plo,dispopt" are considered')
@@ -822,7 +819,7 @@ if nargin>1
         overlay=options.overlay;
         undock=options.undock;
         units=options.selunit;
-   
+        
     end
     
     if isnotstructY ==1
@@ -858,7 +855,7 @@ if nargin>1
             % convert character to numeric
             thresh=str2double(units);
             % Label the units whose maximum MD along the search is greater
-            % than the required threshold 
+            % than the required threshold
             units=seq(selmax>thresh);
         else
             % Some checks on minimum and maximum of vector units
@@ -1181,7 +1178,7 @@ if ~isempty(units)
         for j=1:size(AX,2)
             if i~=j
                 set(gcf,'CurrentAxes',AX(i,j));
-                xlimits = get(AX(j,i),'Xlim'); 
+                xlimits = get(AX(j,i),'Xlim');
                 ylimits = get(AX(j,i),'Ylim');
                 dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
                 dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
@@ -1502,12 +1499,13 @@ if ~isempty(databrush) || iscell(databrush)
             end
         end
     end
+    unitsori=units;
     
     % lunits = number of units which must be labelled
-    lunits=length(units);
+    % lunits=length(units);
     % lsteps = number of steps for which it is necessary to add the labels
-    lsteps=length(steps);
-    lall=lunits*lsteps;
+    % lsteps=length(steps);
+    % lall=lunits*lsteps;
     
     % numtext= a cell of strings used to labels the units with their position
     % in the dataset.
@@ -1668,8 +1666,12 @@ if ~isempty(databrush) || iscell(databrush)
                 set( hLegend(1,end),'Visible','off')
             end
             
-            set(fig,'UserData',num2cell(seq));
-            [pl,xselect,yselect] = selectdataFS(sele{:}, 'Label', 'off');
+            set(fig,'UserData',numtext);
+            [pl,xselect,yselect] = selectdataFS(sele{:});
+            
+            % OLD CODE TO DELETE
+            % set(fig,'UserData',num2cell(seq));
+            % [pl,xselect,yselect] = selectdataFS(sele{:}, 'Label', 'off');
             
             % exit from yXplot if the yXplot figure was closed before selection
             if ~isempty(pl) && isnumeric(pl) && (min(pl) == -999)
@@ -1941,6 +1943,34 @@ if ~isempty(databrush) || iscell(databrush)
                 hLegend=zeros(size(AX));
                 hLegend(1,end) = clickableMultiLegend(hLines, eLegend{:});
                 
+                % if there is the option RemoveLabels inside sele and if it
+                % is set to off the labels must remain in the yXplot
+                chkexist=find(strcmp('RemoveLabels',sele)==1);
+                if strcmp(persist,'on')
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off')
+                        units=unique([units(:); nbrush]);
+                    end
+                else
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off')
+                        units=unique([unitsori(:); nbrush]);
+                    end
+                end
+                
+                if ~isempty(units)
+                    for i = 1:size(AX,2)
+                        for j=1:size(AX,2)
+                            if i~=j
+                                set(gcf,'CurrentAxes',AX(i,j));
+                                xlimits = get(AX(j,i),'Xlim');
+                                ylimits = get(AX(j,i),'Ylim');
+                                dx = (xlimits(2)-xlimits(1))*0.01*size(AX,2)/2;
+                                dy = (ylimits(2)-ylimits(1))*0.01*size(AX,2)/2; % displacement
+                                text(Y(units,j)+dy,Y(units,i)+dx,numtext(units),'HorizontalAlignment', 'Left');
+                            end
+                        end
+                    end
+                end
+                
                 %% - display the malfwdplot with the corresponding groups of trajectories highlighted.
                 
                 % creates the resfwdplot
@@ -1972,7 +2002,6 @@ if ~isempty(databrush) || iscell(databrush)
                     %if persist=off the previous selection must be replaced
                     set(gcf,'NextPlot','replace');
                     plot(x,residuals,'Tag','data_res','Color','b');
-                    text(reshape(repmat(steps,lunits,1),lall,1),reshape(residuals(units,steps-x(1)+1),lall,1),reshape(repmat(numtext(units),1,lsteps),lall,1));
                     set(gcf,'tag','data_res');
                     set(gcf,'Name','malfwdplot');
                     set(gcf,'NextPlot','add');
@@ -2014,13 +2043,24 @@ if ~isempty(databrush) || iscell(databrush)
                             reshape(residuals(brushcum,steps-x(1)+1),length(brushcum)*length(steps),1),...
                             reshape(repmat(numtext(brushcum),1,length(steps)),length(brushcum)*length(steps),1));
                     end
+                    
+                    %add labels for the units in selunit and those referred to brushed units.
+                    if ~isempty(units)
+                        text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),...
+                            reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),...
+                            reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
+                    end
+                else
+                    %add labels just for the units in selunit (excluding brushed units).
+                    if ~isempty(unitsori)
+                        text(reshape(repmat(steps,length(unitsori),1),length(unitsori)*length(steps),1),...
+                            reshape(residuals(unitsori,steps-x(1)+1),length(unitsori)*length(steps),1),...
+                            reshape(repmat(numtext(unitsori),1,length(steps)),length(unitsori)*length(steps),1));
+                    end
+                    
                 end
-                %add (fix) labels eventually set in selunit.
-                if ~isempty(units)
-                    text(reshape(repmat(steps,length(units),1),length(units)*length(steps),1),...
-                        reshape(residuals(units,steps-x(1)+1),length(units)*length(steps),1),...
-                        reshape(repmat(numtext(units),1,length(steps)),length(units)*length(steps),1));
-                end
+                
+                
                 
                 xlabel(labx);
                 ylabel(laby);

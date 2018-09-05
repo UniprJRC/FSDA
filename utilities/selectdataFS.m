@@ -2,7 +2,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %selectdataFS enables to select data points using the mouse, on scatter plot matrices or trajectories in the forward plots.
 %
 % This function is an extension of the selectdata function by John
-% D'Errico that can be found in the Mathworks page 
+% D'Errico that can be found in the Mathworks page
 % <a http://www.mathworks.com/matlabcentral/fileexchange/13857</a>.
 % Our extension is used in the FS toolbox to provide the forward plots and
 % other specific graphical functions with brushing and linking
@@ -1132,7 +1132,7 @@ end
                 xtext = vertcat(xselect{:});
                 ytext = vertcat(yselect{:});
             end
-           
+            
             textlabels = cell(1,length(xtext));
             
             for ii=1:length(xtext)
@@ -1146,13 +1146,56 @@ end
                 % textlabels{ii}=num2str(xtext(ii));
             end
             % This is just to displace a bit on the right the labels
-             xtext=xtext+0.2;
+            xtext=xtext+0.2;
             
             %  if params.RemoveLabels
             if strcmpi(params.RemoveLabels,'on')
                 texthandles = text(xtext,ytext,textlabels,'tag','selected','FontSize',12);
             else
                 texthandles = text(xtext,ytext,textlabels,'FontSize',12);
+            end
+            
+        elseif strcmp(get(gcf,'tag'),'pl_yX') || ...
+                strcmp(get(gcf,'tag'),'pl_spm')
+            
+            % Retrieve the x and y coordinates of the points in the
+            % selected scatter (panel of yXplot or panel of spmplot)
+            hh=get(gca,'UserData');
+            XX=[hh{:,2:3}];
+            
+            % retrive the labels (row names of the units)
+            labori=get(gcf,'UserData');
+            
+            % create a new set of handles
+            if ~iscell(xselect)
+                xtext = xselect;
+                ytext = yselect;
+            else
+                xtext = vertcat(xselect{:});
+                ytext = vertcat(yselect{:});
+            end
+            
+            % anything selected?
+            if ~isempty(xtext)
+                textlabels = cell(1,nsel);
+                for L = 1:nsel
+                    % Find the position of xtext(L) ytext(L) inside matrix XX
+                    pos=sum([xtext(L) ytext(L)]== XX,2)==2;
+                    if max(pos)>0
+                        labun=labori{pos};
+                        textlabels{L}=num2str(labun);
+                    else
+                        textlabels{L}='';
+                    end
+                end
+                % xtext = x coordinates of text labels
+                % ytext = ycoordinates of text labels
+                % textlabels to add to the plot
+                if strcmpi(params.RemoveLabels,'on')
+                    texthandles = text(xtext,ytext,textlabels,'tag','selected','FontSize',12);
+                else
+                    texthandles = text(xtext,ytext,textlabels,'FontSize',12);
+                end
             end
             
         else
@@ -1525,7 +1568,7 @@ npv = length(pv_pairs);
 n = npv/2;
 
 if n~=floor(n)
-        error('FSDA:selectdataFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    error('FSDA:selectdataFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
 end
 if n<=0
     % just return the defaults

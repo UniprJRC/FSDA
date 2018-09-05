@@ -194,14 +194,11 @@
     [out]=FSMeda(Ycont,bs,'plots',1);
     % mmdplot(out);
     figure
-    plo=struct;
-    plo.labeladd='1';
-    % Please note the difference between plo.labeladd='1' and option labeladd
-    % '1' inside databrush.
-    % plo.labeladd enables the user to label the units in the scatterplot
+    % 'Label' 'on' 'RemoveLabels' 'off'  enables the user to label the units in the scatterplot
     % matrix once selected. Option labeladd '1' inside databrush enables to add
-    % the labels of the selected units in the linked plots
-    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect','labeladd','1'},'plo',plo,'dispopt','hist')</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
+    % the labels of the selected units in the linked malfwdplot
+    spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect', ...
+    'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist')</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
      First input argument is a structure.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     n=100;
