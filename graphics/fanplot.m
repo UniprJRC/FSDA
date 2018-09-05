@@ -6,25 +6,25 @@ function fanplot(out,varargin)
 % Required input arguments:
 %
 %  out :  Data to plot. Structure. Structure containing the following fields
-%     out.Score  =  (n-init) x length(la)+1 matrix: 
-%               1st col = fwd search index; 
+%     out.Score  =  (n-init) x length(la)+1 matrix:
+%               1st col = fwd search index;
 %               2nd col = value of the score test in each step
-%               of the fwd search for la(1); 
-%               ...; 
+%               of the fwd search for la(1);
+%               ...;
 %               last col  =  value of the score test in each step
-%               of the fwd search for la(end). 
+%               of the fwd search for la(end).
 %       out.la   =  vector containing the values of lambda for which fan plot
-%               is constructed. 
+%               is constructed.
 %       out.bs   =  matrix of size p x length(la) containing the units forming
-%               the initial subset for each value of lambda. 
+%               the initial subset for each value of lambda.
 %      out. Un   =  cell of size length(la). out.Un{i} is a (n-init) x 11
 %               matrix which contains the unit(s) included in the subset
 %               at each step of the fwd search (necessary only if option
-%               datatooltip or databrush are not empty). 
+%               datatooltip or databrush are not empty).
 %         out.y  = a vector containing the response (necessary only if option
-%              databrush is true). 
+%              databrush is true).
 %         out.X  = a matrix containing the explanatory variables (necessary
-%              only if option databrush is not empty). 
+%              only if option databrush is not empty).
 %      Data Types - struct
 %
 % Optional input arguments:
@@ -64,15 +64,15 @@ function fanplot(out,varargin)
 %                   they are already open): monitoring residual plot
 %                   monitoring leverage plot maximum studentized residual
 %                   $s^2$ and $R^2$ Cook distance and modified Cook distance
-%                   deletion t statistics. 
+%                   deletion t statistics.
 %                   The window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
-%                   figures will be docked too. 
+%                   figures will be docked too.
 %                   DATABRUSH IS A SCALAR: If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
-%                   (that is persist=''). 
+%                   (that is persist='').
 %                   DATABRUSH IS A CELL: If databrush is a cell, it is possible to use all
 %                   optional arguments of function selectdataFS.m and LXS.m inside the curly brackets of
 %                   option databrush and the following optional argument:
@@ -147,7 +147,7 @@ function fanplot(out,varargin)
 %                   Example - 'ylimy',[0 100]
 %                   Data Types - double
 %       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of the curves which
-%                   contain the score test. Default line width=2. 
+%                   contain the score test. Default line width=2.
 %                   Example - 'lwd',2
 %                   Data Types - double
 %       lwdenv  :   Width of the envelope lines. Scalar. Scalar which controls the width of the lines associated
@@ -642,19 +642,26 @@ if (~isempty(options.databrush) || iscell(options.databrush))
         [pl,xs,ys] = selectdataFS(sele1{:},'Label','off');
         
         % exit from levfwdplot if the levfwdplot figure was closed before selection
-        if isnumeric(pl) && ~isempty(pl) && (pl == -999)
+        if isnumeric(pl) && ~isempty(pl) && (max(pl) == -999)
             return
         end
         
         % selsteps= vector which contains the list of the steps which have
         % been brushed
-        selsteps=cell2mat(xs);
+        % sely = corresponding values of the score test associated
+        % to the brushed steps
+        if iscell(xs)
+            selsteps=cell2mat(xs);
+            sely=cell2mat(ys);
+        else
+            selsteps=xs;
+            sely=ys;
+        end
+        
         lselsteps=length(selsteps);
         selindex=zeros(lselsteps,1);
         
-        % find to which value of \lambda the selected steps refer to
-        sely=cell2mat(ys);
-        
+        %  find to which value of \lambda the selected steps refer to
         if ~isempty(sely)
             
             % col1 is associated to the columns of \lambda which have been
