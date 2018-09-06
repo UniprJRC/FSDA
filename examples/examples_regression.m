@@ -423,6 +423,9 @@ databrush.selectionmode='Brush'; % Brush selection
 databrush.persist='on'; % Enable repeated mouse selections
 databrush.Label='on'; % Write labels of trajectories while selecting
 databrush.RemoveLabels='off'; % Do not remove labels after selection
+% Note that if you wish to have the labels for the brushed units in the
+% yXplot it is necessary to add the instruction in the line below
+% databrush.labeladd='1'
 resfwdplot(out,'databrush',databrush);
 
 %%  HD: resfwdplot with persistent brushing and line fit resuperimposing
