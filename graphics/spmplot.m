@@ -283,7 +283,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   the Mahalanobis distances monitored along the search.
 %               If it is a cell array of strings, only the the units that
 %               in at least one step of the search had a Mahalanobis
-%               distance smaller than selunit{1} or greater than selline{2}
+%               distance greater than selunit{1} or smaller than selline{2}
 %               will have a textbox in the scatter plot matrix and in the
 %               associated malfwdplot after brushing.
 %               If it is a string it specifies the threshold
@@ -777,7 +777,7 @@ if nargin>1
             
             % maximum and minimum residual along the search for each unit
             selmax=max(residuals,[],2);
-            selmin=min(residuals,[],2);
+            % selmin=min(residuals,[],2);
         else
             x=1;
             % The default is not to add textlabels to any unit
@@ -848,8 +848,8 @@ if nargin>1
         if iscellstr(units)
             selunit=str2double(units);
             selmax=max(residuals,[],2);
-            selmin=min(residuals,[],2);
-            units=seq(selmax<selunit(2) & selmin>selunit(1));
+            %selmin=min(residuals,[],2);
+            units=seq(selmax<selunit(2) & selmax>selunit(1));
         elseif ischar(units)==1
             % if units is a character than the user has specified a threshold
             % convert character to numeric
@@ -1474,15 +1474,15 @@ if ~isempty(databrush) || iscell(databrush)
         if iscellstr(units)
             selunit=str2double(units);
             selmax=max(residuals,[],2);
-            selmin=min(residuals,[],2);
-            units=seq(selmax>selunit(2) | selmin<selunit(1));
+            % selmin=min(residuals,[],2);
+            units=seq(selmax>selunit(1) | selmax<selunit(2));
         elseif ischar(units)==1
             % if units is a character than the user has specified a threshold
             % convert character to numeric
             thresh=str2double(units);
             % Label the units whose maximum residual along the search is greater
-            % than the required threshold or smalleR than -threshold
-            units=seq(selmax>thresh | selmin<-thresh);
+            % than the required threshold
+            units=seq(selmax>thresh);
         else
             % Some checks on minimum and maximum of vector units
             if max(units)>n
@@ -1819,6 +1819,7 @@ if ~isempty(databrush) || iscell(databrush)
                     set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
                 end
                 
+              
                 % beginning of updating boxplots or histograms
                 % on the main diagonal
                 for i=1:size(AX,2)
@@ -1872,6 +1873,10 @@ if ~isempty(databrush) || iscell(databrush)
                             plotstyle = 'compact';
                         end
                         
+                        axPos=get(AX(i,i),'Position');
+                        % parent = ancestor(gca,'figure');
+                        ax = axes('Position',axPos); %  ,'Parent',parent);
+                        
                         hbp = boxplot(ax,Y(:,i),groupv,'plotstyle',plotstyle,'colors',clr(unigroup),'labelverbosity','minor','symbol','+');
                         
                         % Remove the x tick labels from the graph containing boxplots
@@ -1879,6 +1884,7 @@ if ~isempty(databrush) || iscell(databrush)
                         
                         % Remove the y tick labels from the graph containing boxplots
                         set(ax,'YTickLabel',{' '});
+                        
                         
                         % Put the graph containing boxplots in the correct position
                         set(ax,'position',axPosition);
