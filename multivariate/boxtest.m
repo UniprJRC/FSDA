@@ -118,10 +118,10 @@ function out = boxtest(Y,group,varargin)
 % References:
 %
 % Mardia, K.V., J.T. Kent, and J.M. Bibby (1979), "Multivariate Analysis,"
-% Academic Press, London, p. 140. (MKB)
+% Academic Press, London, pp. 140. [MKB].
 %
 % Rencher A.C. (2002), "Methods of Multivariate Analysis", 2nd edition,
-% Wiley, New York, p. 280-284
+% Wiley, New York, pp. 280-284.
 %
 %
 % Copyright 2008-2018.

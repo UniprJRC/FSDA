@@ -220,11 +220,11 @@ function out  = tclustICsol(IC,varargin)
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
 % https://doi.org/10.1080/10618600.2017.1390469
 %
-% L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
-% Classification 2:193-218
+% Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
+% Classification", Vol. 2, pp. 193-218.
 %
 %
 % Copyright 2008-2018.

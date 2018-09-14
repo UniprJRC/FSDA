@@ -15,13 +15,7 @@
 
     % Comparison with robust linear grouping
     out = rlga(X,k,alpha2);
-</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclustreg:  3.22 seconds 
-MixLik with untrimmed units selected using h largest lik contributions
-Total estimated time to complete tclustreg:  4.21 seconds 
-RLGA Algorithm k =2 biter =7 niter =10
-Finished.
-</pre><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     clear all; close all;
     load fishery;
     X = fishery.data;
@@ -125,7 +119,7 @@ Finished.
     yXplot(y,X);
 
     % run tclustreg
-    out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustreg of simulated data 2.</li></span></a></span></h3><div class="collapse"><p>
+    out=tclustreg(y,X(:,2:end),k,50,0.01,0.01,'intercept',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclustreg of simulated data 2.</li></span></a></span></h3><div class="collapse"><p>
      Generate mixture of regression using MixSimReg, with an average
      overlapping at centroids =0.01.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rng(372,'twister');
@@ -148,7 +142,7 @@ Finished.
     end
 
     % tclustreg using samples in C
-    out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',C);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of nsamp passed as a matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out=tclustreg(y,X(:,2:end),k,50,0.01,0.01,'nsamp',C);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of nsamp passed as a matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X  = load('X.txt');
     y1 = X(:,end);
     X1 = X(:,1:end-1);
@@ -201,7 +195,8 @@ Finished.
                variables across groups, so overcoming an intrinsic limitation
                of mixtures of regression, because they are implicitly
                assumed equally distributed.</p> <p> 
-               For further details about CWM see Garcia-Escudero et al. (2017).</p><p>
+               For further details about CWM see Garcia-Escudero et al.</p> <p>
+               (2017) or Torti et al. (2018).</p><p>
             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
 </code>,<code> 'mixt',1
 </code>,<code> 'equalweights',true
@@ -377,12 +372,14 @@ Finished.
                     the indices of the subsamples extracted for computing
                     the estimate.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and Mayo-Iscar A. (2016), 
  The joint role of trimming and constraints in robust estimation
- for mixtures of gaussian factor analyzers. Computational Statistics & Data
- Analysis 99, p. 131-147.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S. and Mayo-Iscar A. (2017), Robust estimation of mixtures of regressions with random
- covariates, via trimming and constraints. Statistics and Computing 27, 
- p. 377-402.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R. (2010), 
- Robust clusterwise linear regression through trimming. Computational
- Statistics and Data Analysis 54, 3057-3069.</p></div><div><p>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
+ for mixtures of gaussian factor analyzers, "Computational Statistics & Data
+ Analysis", Vol. 99, pp. 131-147.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and Mayo-Iscar, A. (2017),
+ Robust estimation of mixtures of regressions with random covariates, via
+ trimming and constraints, "Statistics and Computing", Vol. 27, pp.
+ 377-402.</p></div><div><p>Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R. (2010), 
+ Robust clusterwise linear regression through trimming, "Computational
+ Statistics and Data Analysis", Vol. 54, pp.3057-3069.</p></div><div><p>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
  Lines with High Density Regions. Advances in Data Analysis and
- Classification, Volume 8, Issue 1, p. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
- Methodologies for Clustering Linear Regression Data. Submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Methodologies for Clustering Linear Regression Data, "Advances in Data
+ Analysis and Classification".</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="rlga.html" itemprop="url"><span itemprop="name"><code>rlga</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

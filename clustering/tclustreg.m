@@ -289,7 +289,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Statistics and Data Analysis", Vol. 54, pp.3057-3069.
 % Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
 % Lines with High Density Regions. Advances in Data Analysis and
-% Classification, Volume 8, Issue 1, p. 5-26.
+% Classification, Vol. 8, pp. 5-26.
 % Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
 % Methodologies for Clustering Linear Regression Data, "Advances in Data
 % Analysis and Classification".

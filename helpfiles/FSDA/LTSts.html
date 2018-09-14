@@ -7,6 +7,7 @@
  specify the window in which level shift has to be searched for).</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LTSts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>Simulated data with linear trend and level shift.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LTSts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Airline data: linear trend + just one harmonic for seasonal
      component.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=LTSts(___)</code></span>Model with linear trend and six harmonics for seasonal component.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Simulated data with linear trend and level shift.</li></span></a></span></h3><div class="collapse"><p>
      No seasonal component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    rng('default')
     n=45;
     a=1;
     b=0.8;
@@ -25,7 +26,7 @@
     out=LTSts(y,'model',model,'plots',1);
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1&gt;0$.
     str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Airline data: linear trend + just one harmonic for seasonal
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'Interpreter','Latex');</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Airline data: linear trend + just one harmonic for seasonal
      component.</li></span></a></span></h3><div class="collapse"><p>
      Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1=0$.
      Load airline data
@@ -84,7 +85,7 @@
     plot(out.yhat,'red')
     legend('real values','fitted values','Location','SouthEast')
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
-    title(gca,numpar);
+    title(gca,numpar,'Interpreter','Latex');
 </pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, two harmonics for seasonal component and
      varying amplitude using a linear trend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     model=struct;
@@ -219,12 +220,14 @@
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1&gt;0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
+    axeslast=findobj('-regexp','Tag','LTSts:ts');
+    title(axeslast(end),numpar,'Interpreter','Latex');
 
     % generate the wedgeplot
-    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+    % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    close all
     y1=y(:);
     y1(68:end)=y1(68:end)+1300;
     y1(67)=y1(67)-600;
@@ -275,6 +278,7 @@
     lshiftlocref.wlength=10;
     % Set tuning constant to use insde Huber rho function
     lshiftlocref.huberc=1.5;
+    close all
     % Estimate the parameters
     [out, varargout]=LTSts(y1,'model',model,'nsamp',500,...
        'plots',2,'lshiftlocref',lshiftlocref,'msg',0);
@@ -693,4 +697,4 @@
                        C{end} is associated with the subsamples for
                        last tentative level shift position;</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econmetrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

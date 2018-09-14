@@ -38,31 +38,7 @@
     out=tclust(Y,3,0.1,10000,'plots',plots);
     title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 
-    cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.63 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 16%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.68 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 17.6667%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.86 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 19%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.12 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 19.6667%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.78 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 20.3333%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.88 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 24%
-</pre><img vspace="5" hspace="5" src="images\tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    cascade</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     nsamp=20;
     [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -84,19 +60,7 @@ Warning: Number of subsets without convergence equal to 24%
     restrfactor=1;
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
-    cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.56 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 19%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.20 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 22.4%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.71 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 25.4%
-</pre><img vspace="5" hspace="5" src="images\tclust_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+    cascade</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
       the components is very overlapped with another one. A 10 per cent
@@ -210,7 +174,7 @@ Warning: Number of subsets without convergence equal to 25.4%
     plot(MIXCLA(:,1),MIXCLA(:,2))
     xlabel('Number of groups')
     ylabel('MIXCLA (ICL)')
-    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images\tclust_10.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+    xlim([1 maxk])</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     n1=100;     % Generate 5 groups in 5 dimensions
@@ -577,8 +541,7 @@ Warning: Number of subsets without convergence equal to 25.4%
  then 10 per cent of the iterations do not converge, a warning message is
  issued, indicating that nsamp has to be increased.</p><p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
- A General Trimming Approach to Robust Cluster Analysis. Annals
- of Statistics, Vol.36, 1324-1345.</p> <p>
- Technical Report available at:</p><p>
-<a href="http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf">http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf</a></p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+   A General Trimming Approach to Robust Cluster Analysis. Annals
+   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

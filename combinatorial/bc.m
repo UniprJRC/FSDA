@@ -27,9 +27,8 @@ function c = bc(n,k)
 %
 % References:
 %
-%    Knuth, Donald E. (1997). The Art of Computer Programming, Volume 1:
-%    Fundamental Algorithms, Third ed. Addison-Wesley. pp. 52--74. ISBN
-%    0-201-89683-4.
+%    Knuth, D. E. (1997). "The Art of Computer Programming", Volume 1:
+%    Fundamental Algorithms, Third ed. Addison-Wesley. [pp. 52--74]. 
 %
 % Acknowledgements: 
 %

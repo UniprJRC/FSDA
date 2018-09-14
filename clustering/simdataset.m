@@ -222,7 +222,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 % Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
 % mixtures of multivariate data with fixed cluster overlap in FSDA,
 % "Advances in data analysis and classification", Vol. 9, pp. 461-481.
-% [DOI 10.1007/s11634-015-0223-9]
+% [DOI 10.1007/s11634-015-0223-9].
 %
 % Copyright 2008-2018.
 % Written by FSDA team

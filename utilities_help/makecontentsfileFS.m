@@ -242,103 +242,108 @@ for j=1:ldirpath
     end
     
     d = dir([dirpathj filesep '*.m']);
-    if max(strcmp(fieldnames(d),'folder'))>0
-        d=rmfield(d,'folder');
-    end
-    
-    % if file contains the string FilterOutFileName then it is not
-    % listed
-    if ~isempty(FilterOutFileName)
-        boo=cellfun('isempty',regexpi({d.name},FilterOutFileName));
-        lExcl=sum(~boo);
-        if lExcl>0
-            Excluded(iExcluded:iExcluded+lExcl-1,1:5)=struct2cell(d(~boo))';
-            iExcluded=iExcluded+lExcl;
+    % Act just if in the folder there are .m files
+    if ~isempty(d)
+        if max(strcmp(fieldnames(d),'folder'))>0
+            d=rmfield(d,'folder');
         end
-        d=d(boo);
-    end
-    
-    % Sort files in alphabetical order
-    [~,sortIndex] = sort(lower({d.name}));
-    d = d(sortIndex);
-    
-    
-    % For each particulat folder find:
-    % maximal name length of a file
-    % maximal length of a file category
-    % maximal length of a file description
-    % maxNameLen is linked to the maximal name length of a file
-    maxNameLen = 0;
-    % maxDescriptionLen is linked to the maximal length of a file category
-    maxCategoryLen = 0;
-    % maxDescriptionLen is linked to the maximal length of a file description
-    maxDescriptionLen=0;
-    
-    
-    killIndex = [];
-    noContentsFlag = 1;
-    for i = 1:length(d)
-        % create mfilename (that is name of the file without .m extension) from
-        % file name
-        d(i).mfilename = regexprep(d(i).name,'\.m$','');
-        if strcmp(d(i).name,NameOutputFile)
-            % Special case: remove the NameOutputFile.m file from the list
-            % NameOutputFile.m should not list itself.
-            killIndex = i;
-            noContentsFlag = 0;
-        else
-            disp(d(i).name)
-            [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
-            d(i).description=description;
-            d(i).category=category;
-            % Store also the path
-            d(i).path=dirpathj;
-            
-            % Check what is the name of the file with the maximum length
-            maxNameLen = max(length(d(i).mfilename), maxNameLen);
-            maxCategoryLen= max(length(d(i).category), maxCategoryLen);
-            maxDescriptionLen= max(length(d(i).description), maxDescriptionLen);
-        end
-    end
-    
-    maxNameLenAll=max(maxNameLenAll,maxNameLen);
-    maxCategoryLenAll = max(maxCategoryLenAll,maxCategoryLen);
-    maxDescriptionLenAll=max(maxDescriptionLenAll,maxDescriptionLen);
-    
-    
-    d(killIndex) = [];
-    
-    maxNameLenStr = num2str(maxNameLen);
-    maxCategoryLenStr = num2str(maxCategoryLen);
-    maxDescriptionLenStr = num2str(maxDescriptionLen);
-    
-    maxNameLenAllStr = num2str(maxNameLenAll);
-    maxCategoryLenAllStr = num2str(maxCategoryLenAll);
-    maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
-    dout=struct2cell(d)';
-
-    % dout(:,1)= name of the file (with extension)
-    % dout(:,2)= date (in local format)
-    % dout(:,3)= size ()
-    % dout(:,4)= boolean (1 if a folder)
-    % dout(:,5)= date (in numeric format)
-    % dout(:,6)= matlab file name (wthout .m extension)
-    % dout(:,7)= file description
-    % dout(:,8)= string which identifies file category
-    % dout(:,9)= file path
-    
-    if ~isempty(FilterFileContent)
-        boo=~cellfun(@isempty,dout(:,8));
-        % Extract just the rows of d for which category does not the string
-        % specified inside input option FilterFileContent
         
-        lExcl=sum(~boo);
-        if lExcl>0
-            Excluded(iExcluded:iExcluded+lExcl-1,:)=dout(~boo,:);
-            iExcluded=iExcluded+lExcl;
+        % if file contains the string FilterOutFileName then it is not
+        % listed
+        if ~isempty(FilterOutFileName)
+            boo=cellfun('isempty',regexpi({d.name},FilterOutFileName));
+            lExcl=sum(~boo);
+            if lExcl>0
+                Excluded(iExcluded:iExcluded+lExcl-1,1:5)=struct2cell(d(~boo))';
+                iExcluded=iExcluded+lExcl;
+            end
+            d=d(boo);
         end
-        dout=dout(boo,:);
-        d=d(boo);
+        
+        % Sort files in alphabetical order
+        [~,sortIndex] = sort(lower({d.name}));
+        d = d(sortIndex);
+        
+        
+        % For each particulat folder find:
+        % maximal name length of a file
+        % maximal length of a file category
+        % maximal length of a file description
+        % maxNameLen is linked to the maximal name length of a file
+        maxNameLen = 0;
+        % maxDescriptionLen is linked to the maximal length of a file category
+        maxCategoryLen = 0;
+        % maxDescriptionLen is linked to the maximal length of a file description
+        maxDescriptionLen=0;
+        
+        
+        killIndex = [];
+        noContentsFlag = 1;
+        for i = 1:length(d)
+            % create mfilename (that is name of the file without .m extension) from
+            % file name
+            d(i).mfilename = regexprep(d(i).name,'\.m$','');
+            if strcmp(d(i).name,NameOutputFile)
+                % Special case: remove the NameOutputFile.m file from the list
+                % NameOutputFile.m should not list itself.
+                killIndex = i;
+                noContentsFlag = 0;
+            else
+                disp(d(i).name)
+                [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
+                d(i).description=description;
+                d(i).category=category;
+                % Store also the path
+                d(i).path=dirpathj;
+                
+                % Check what is the name of the file with the maximum length
+                maxNameLen = max(length(d(i).mfilename), maxNameLen);
+                maxCategoryLen= max(length(d(i).category), maxCategoryLen);
+                maxDescriptionLen= max(length(d(i).description), maxDescriptionLen);
+            end
+        end
+        
+        maxNameLenAll=max(maxNameLenAll,maxNameLen);
+        maxCategoryLenAll = max(maxCategoryLenAll,maxCategoryLen);
+        maxDescriptionLenAll=max(maxDescriptionLenAll,maxDescriptionLen);
+        
+        
+        d(killIndex) = [];
+        
+        maxNameLenStr = num2str(maxNameLen);
+        maxCategoryLenStr = num2str(maxCategoryLen);
+        maxDescriptionLenStr = num2str(maxDescriptionLen);
+        
+        maxNameLenAllStr = num2str(maxNameLenAll);
+        maxCategoryLenAllStr = num2str(maxCategoryLenAll);
+        maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
+       
+        dout=struct2cell(d)';
+        % dout(:,1)= name of the file (with extension)
+        % dout(:,2)= date (in local format)
+        % dout(:,3)= size ()
+        % dout(:,4)= boolean (1 if a folder)
+        % dout(:,5)= date (in numeric format)
+        % dout(:,6)= matlab file name (wthout .m extension)
+        % dout(:,7)= file description
+        % dout(:,8)= string which identifies file category
+        % dout(:,9)= file path
+        
+        if ~isempty(FilterFileContent)
+            boo=~cellfun(@isempty,dout(:,8));
+            % Extract just the rows of d for which category does not the string
+            % specified inside input option FilterFileContent
+            
+            lExcl=sum(~boo);
+            if lExcl>0
+                Excluded(iExcluded:iExcluded+lExcl-1,:)=dout(~boo,:);
+                iExcluded=iExcluded+lExcl;
+            end
+            dout=dout(boo,:);
+            d=d(boo);
+        end
+    else
+        dout='';
     end
     
     %Include inside dout output of j-th folder which has been analyzed

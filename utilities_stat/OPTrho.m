@@ -43,14 +43,13 @@ function rhoOPT=OPTrho(u, c)
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
-
 % Riani, M., Cerioli, A. and Torti, F. (2014), On consistency factors and
 % efficiency of robust S-estimators, "TEST", Vol. 23, pp. 356-387.
 % http://dx.doi.org/10.1007/s11749-014-0357-7
-
 % Yohai V.J., Zamar R.H. (1997) Optimal locally robust M-estimates of
-% regression. J Plan Stat Inference 64, pp. 309-323
-
+% regression. "Journal of Planning and Statistical Inference", Vol. 64, pp.
+% 309-323.
+%
 % Copyright 2008-2018.
 % Written by FSDA team
 %

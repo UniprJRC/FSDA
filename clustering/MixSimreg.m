@@ -323,12 +323,12 @@ function [out] = MixSimreg(k,p,varargin)
 % Computation", Vol. 2, pp. 315-326, Springer.
 %   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
-%   of Statistics, Vol.36, 1324-1345. [Technical Report available at:
+%   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 % Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
 % mixtures of multivariate data with fixed cluster overlap in FSDA,
-% "Advances in data analysis and classification", Vol. 9, pp. 461-481, 
-% DOI 10.1007/s11634-015-0223-9.
+% "Advances in data analysis and classification", Vol. 9, pp. 461-481. 
+% [DOI 10.1007/s11634-015-0223-9].
 %
 % Copyright 2008-2018.
 % Written by FSDA team

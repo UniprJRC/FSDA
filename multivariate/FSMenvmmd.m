@@ -45,9 +45,9 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %
 % References:
 %
-%       Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-%       number of multivariate outliers. Journal of the Royal Statistical
-%       Society Series B, Vol. 71, pp. 201-221.
+% Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
+% number of multivariate outliers, "Journal of the Royal Statistical
+% Society Series B", Vol. 71, pp. 201-221.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

@@ -51,9 +51,8 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %
 % References:
 %
-% Yeo, In-Kwon and Johnson, Richard (2000). A new family of power
-% transformations to improve normality or symmetry. Biometrika, 87,
-% 954-959.
+% Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
+% improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
 %
 %
 % Copyright 2008-2018.

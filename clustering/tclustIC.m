@@ -308,7 +308,7 @@ function out  = tclustIC(Y,varargin)
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
 % https://doi.org/10.1080/10618600.2017.1390469
 %
 % Copyright 2008-2018.

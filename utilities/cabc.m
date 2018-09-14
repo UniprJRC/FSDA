@@ -19,7 +19,9 @@ function cabc()
 %
 % References:
 %
-%   Tufte E.R. (1983). The visual display of quantitative information. Graphics Press, Cheshire 
+%   Tufte E.R. (1983), "The visual display of quantitative information",
+%   Graphics Press, Cheshire.
+%
 %
 % Copyright 2008-2018.
 % Written by FSDA team

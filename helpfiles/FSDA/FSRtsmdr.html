@@ -67,11 +67,7 @@
         disp('Convergence obtained in all steps')
     end
     % Check the last two units which are included in the last two steps.
-    disp(Un(end-1:end,:))</pre></div></div><pre class="codeoutput">Warning: in some steps there was not convergence
-    99    95   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
-   100    96   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN   NaN
-
-</pre><img vspace="5" hspace="5" src="images\FSRtsmdr_01.png" alt=""> </p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
+    disp(Un(end-1:end,:))</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     model=struct;
@@ -86,11 +82,7 @@
     % Second column contains information about units forming subset at step m=120
     % sum(~isnan(BB(:,2))) is 120
     disp(sum(~isnan(BB(:,1))))
-    disp(sum(~isnan(BB(:,2))))</pre></div></div><pre class="codeoutput">    90
-
-     0
-
-</pre></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where initial subset comes from LTSts.</li></span></a></span></h3><div class="collapse"><p>
+    disp(sum(~isnan(BB(:,2))))</pre></div></div></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where initial subset comes from LTSts.</li></span></a></span></h3><div class="collapse"><p>
      Set up the model.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     model=struct;
     model.trend=1;              % linear trend
@@ -101,7 +93,7 @@
     % Extract best initial subset from LTSts.
     [~,indres]=sort(abs(out.residuals));
     bs=indres(1:50);
-    [mdr,Un,BB,Bols,S2,Exflag] =FSRtsmdr(y,bs,'model',model,'init',length(bs)+1,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSRtsmdr_02.png" alt=""> </p></div></div><div id="example_6" class="example_module expandableContent"><div id="Example_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_7" class="example_module expandableContent"><div id="Example_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+    [mdr,Un,BB,Bols,S2,Exflag] =FSRtsmdr(y,bs,'model',model,'init',length(bs)+1,'plots',1);</pre></div></div></p></div></div><div id="example_6" class="example_module expandableContent"><div id="Example_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_7" class="example_module expandableContent"><div id="Example_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial subset. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>If bsb=0
                (default) then the procedure starts with p units randomly
                chosen else if bsb is not 0 the search will start with
@@ -213,7 +205,7 @@
                is necessary to save the units forming subsets. If bsbsteps
                is 0 we store the units forming subset in all steps. The
                default is store the units forming subset in all steps if
-               n&lt;=5000, else to store the units forming subset at steps
+               T&lt;=5000, else to store the units forming subset at steps
                init and steps which are multiple of 100. For example, as
                default, if T=753 and init=6,
                units forming subset are stored for
@@ -245,15 +237,15 @@
                    which unit 1 is included inside subset and a missing
                    value for the other steps;</p> <p>
                ......</p> <p>
-               (n-1)-th row has number n-1 in correspondence of the steps in
-                   which unit n-1 is included inside subset and a missing
+               (T-1)-th row has number T-1 in correspondence of the steps in
+                   which unit T-1 is included inside subset and a missing
                    value for the other steps;</p><p>
-               n-th row has number n in correspondence of the steps in
-                   which unit n is included inside subset and a missing
+               T-th row has number Tn in correspondence of the steps in
+                   which unit T is included inside subset and a missing
                    value for the other steps
-               The size of matrix BB is n x (n-init+1) if option input
-               bsbsteps is 0 else the size is n-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;beta coefficents.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
-               (n-init+1) x (p+1) matrix containing the monitoring of
+               The size of matrix BB is T x (T-init+1) if option input
+               bsbsteps is 0 else the size is T-by-length(bsbsteps).</p></p></div></div><div class="expandableContent"><div id="outputarg_Bols" class="clearfix"></div><h3 id="output_argument_Bols" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Bols</code> &#8212;beta coefficents.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+               (T-init+1) x (p+1) matrix containing the monitoring of
                estimated beta coefficients in each step of the forward
                search.</p></div></div><div class="expandableContent"><div id="outputarg_S2" class="clearfix"></div><h3 id="output_argument_S2" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>S2</code> &#8212;S2 and R2.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
                (T-init+1) x 3 matrix containing the monitoring of S2 (2nd
@@ -274,4 +266,4 @@
  search for testing multiple outliers in regression, "Advances in Data
  Analysis and Classification", Vol. 1, pp. 123-141.</p></div><div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econmetrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="FSRtsmdr.html" itemprop="url"><span itemprop="name"><code>FSRtsmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSRts.html" itemprop="url"><span itemprop="name"><code>FSRts</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="FSRtsmdr.html" itemprop="url"><span itemprop="name"><code>FSRtsmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSRts.html" itemprop="url"><span itemprop="name"><code>FSRts</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

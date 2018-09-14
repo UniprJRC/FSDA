@@ -6,55 +6,7 @@
     %extract the directory containing findFile.m
     root=FullPath(1:end-length('findFile.m')-1);
     %list the content of the directory containing findFile.m
-    list = findFile(root)</pre></div></div><pre class="codeoutput">
-list =
-
-  42&times;1 cell array
-
-    {'D:\MATLAB\FSDA\utilities\Contents.m'                      }
-    {'D:\MATLAB\FSDA\utilities\FSColors.m'                      }
-    {'D:\MATLAB\FSDA\utilities\PoolClose.m'                     }
-    {'D:\MATLAB\FSDA\utilities\PoolPrepare.m'                   }
-    {'D:\MATLAB\FSDA\utilities\ProgressBar.m'                   }
-    {'D:\MATLAB\FSDA\utilities\Untitled3.m'                     }
-    {'D:\MATLAB\FSDA\utilities\cabc.m'                          }
-    {'D:\MATLAB\FSDA\utilities\cascade.m'                       }
-    {'D:\MATLAB\FSDA\utilities\chkinputM.m'                     }
-    {'D:\MATLAB\FSDA\utilities\chkinputR.m'                     }
-    {'D:\MATLAB\FSDA\utilities\chkinputRB.m'                    }
-    {'D:\MATLAB\FSDA\utilities\chkoptions.m'                    }
-    {'D:\MATLAB\FSDA\utilities\clickableMultiLegend.m'          }
-    {'D:\MATLAB\FSDA\utilities\closereqFS.m'                    }
-    {'D:\MATLAB\FSDA\utilities\docrootFS.m'                     }
-    {'D:\MATLAB\FSDA\utilities\dsxy2figxy.m'                    }
-    {'D:\MATLAB\FSDA\utilities\findDir.m'                       }
-    {'D:\MATLAB\FSDA\utilities\findFile.m'                      }
-    {'D:\MATLAB\FSDA\utilities\ginputFS.m'                      }
-    {'D:\MATLAB\FSDA\utilities\isfunction.m'                    }
-    {'D:\MATLAB\FSDA\utilities\locParseContentsFilesFS.m'       }
-    {'D:\MATLAB\FSDA\utilities\openExampleFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\openMatlabFileFromHTML.m'        }
-    {'D:\MATLAB\FSDA\utilities\position.m'                      }
-    {'D:\MATLAB\FSDA\utilities\privateFS\Contents.m'            }
-    {'D:\MATLAB\FSDA\utilities\privateFS\evalmxdom.m'           }
-    {'D:\MATLAB\FSDA\utilities\privateFS\m2mxdom.m'             }
-    {'D:\MATLAB\FSDA\utilities\privateFS\mxdom2simplehtml.xsl'  }
-    {'D:\MATLAB\FSDA\utilities\privateFS\supplyDefaultOptions.m'}
-    {'D:\MATLAB\FSDA\utilities\quickselectFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\removeExtraSpacesLF.m'           }
-    {'D:\MATLAB\FSDA\utilities\rescale.m'                       }
-    {'D:\MATLAB\FSDA\utilities\selectdataFS.m'                  }
-    {'D:\MATLAB\FSDA\utilities\setuphelp.m'                     }
-    {'D:\MATLAB\FSDA\utilities\subtightplot.m'                  }
-    {'D:\MATLAB\FSDA\utilities\suplabel.m'                      }
-    {'D:\MATLAB\FSDA\utilities\triu2vec.m'                      }
-    {'D:\MATLAB\FSDA\utilities\upperfracpos.m'                  }
-    {'D:\MATLAB\FSDA\utilities\verLessThanFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\waitforbuttonpressFS.m'          }
-    {'D:\MATLAB\FSDA\utilities\wraptextFS.m'                    }
-    {'D:\MATLAB\FSDA\utilities\zscoreFS.m'                      }
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>findFile with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+    list = findFile(root)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>findFile with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
     find the location of findFile.m<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     FullPath=which('findFile');
     %extract the root directory of FSDA

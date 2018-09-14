@@ -50,9 +50,9 @@ function w = OPTwei(u,c)
 %
 % References:
 %
-% Yohai, V.J. and Zamar, R.H. (1997) Optimal locally robust 
-% M-estimates of regression, "Journal of Planning and Statistical
-% Inference", Vol. 64, pp. 309-323.
+% Yohai V.J., Zamar R.H. (1997) Optimal locally robust M-estimates of
+% regression. "Journal of Planning and Statistical Inference", Vol. 64, pp.
+% 309-323.
 %
 %
 % Copyright 2008-2018.

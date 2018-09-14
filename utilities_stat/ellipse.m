@@ -66,8 +66,8 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 %
 % References:
 %
-%   Mardia, K.V., J.T. Kent, J.M. Bibby (1979). Multivariate Analysis. Academic
-%   Press, London-New York-Toronto-Sydney-San Francisco.
+% Mardia, K.V., J.T. Kent, and J.M. Bibby (1979), "Multivariate Analysis,"
+% Academic Press, London, p. 140. [MKB].
 %
 %
 % Copyright 2008-2018.

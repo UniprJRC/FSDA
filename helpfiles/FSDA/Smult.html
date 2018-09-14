@@ -14,8 +14,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=Smult(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  2.33 seconds 
-</pre><img vspace="5" hspace="5" src="images\Smult_01.png" alt=""> <img vspace="5" hspace="5" src="images\Smult_02.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smult with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=Smult(Ycont,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smult with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
     randn('state', 123456);
@@ -122,8 +121,8 @@
                     warning</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p>n x 1 vector containing the estimates of the weights</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present if option ysave
                     is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'Smult'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples 
                        extracted for computing the estimate (the so called
-                       elemental sets).</span></a><span class="example_desc"><code>C        : </code>matrix</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
- and Methods, Wiley, New York.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p> 
+                       elemental sets).</span></a><span class="example_desc"><code>C        : </code>matrix</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p> 
 
  This function follows the lines of MATLAB/R code developed during the
  years by many authors.</p> <p>

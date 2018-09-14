@@ -141,7 +141,8 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 % References:
 %
 %   Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust
-%   Regression Diagnostics, submitted.
+%   Regression Diagnostics, "International Statistical Review", Vol. 84,
+%   pp. 99-127.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

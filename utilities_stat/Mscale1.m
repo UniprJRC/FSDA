@@ -65,8 +65,8 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 %
 % References:
 %
-% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
-% 176).
+% Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
+% Wiley. [equation 7.119,  p. 176].
 %
 %
 % Copyright 2008-2018.

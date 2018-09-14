@@ -164,33 +164,7 @@
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
---------------------------------------------------
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=511 because
-rmin(511,546)&gt;99.99% and rmin(510,546)&gt;99.99% and rmin(512,546)&gt;99.99%
-rmin(511,546)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=510
-Superimposition stopped because r_{min}(512,529)&gt;99.9% envelope
-Subsample of 528 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=18
-Summary of the exceedances
-           1          99         999        9999       99999
-          10          64          48          38          29
-
-m=100
-m=200
-m=300
-m=400
-m=500
-</pre><img vspace="5" hspace="5" src="images\FSRBeda_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2 in the last steps.</li></span></a></span></h3><div class="collapse"><p>
+        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2 in the last steps.</li></span></a></span></h3><div class="collapse"><p>
      Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].
      In this example for the house price data we monitor the forward plots
      of the parameters of the linear model adding 95% and 99% HPD
@@ -315,33 +289,7 @@ m=500
     % Add multiple title
     suplabel(['Housing data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
---------------------------------------------------
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=511 because
-rmin(511,546)&gt;99.99% and rmin(510,546)&gt;99.99% and rmin(512,546)&gt;99.99%
-rmin(511,546)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=510
-Superimposition stopped because r_{min}(512,529)&gt;99.9% envelope
-Subsample of 528 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=18
-Summary of the exceedances
-           1          99         999        9999       99999
-          10          64          48          38          29
-
-m=100
-m=200
-m=300
-m=400
-m=500
-</pre><img vspace="5" hspace="5" src="images\FSRBeda_02.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Plot of HPDI for BankProfit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+        ']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Plot of HPDI for BankProfit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     XX=load('BankProfit.txt');
     R=load('BankProfitR.txt');
 
@@ -624,6 +572,9 @@ m=500
                units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
                variable which has been used.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
                which has been used (it also contains the column of ones if
-               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRBeda'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson A.C., Corbellini A., Riani M., (2017), Robust Bayesian 
- Regression with the Forward Search: Theory and Data Analysis, Test, 
- DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRB.html" itemprop="url"><span itemprop="name"><code>FSRB</code></span></a></span> | <span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+               input option intercept was missing or equal to 1).</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRBeda'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
+ Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
+ Regression for Fraud Detection, "International Statistical Review",
+<a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
+ Regression with the Forward Search: Theory and Data Analysis, "Test",
+ Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRB.html" itemprop="url"><span itemprop="name"><code>FSRB</code></span></a></span> | <span itemprop="seealso"><a href="regressB.html" itemprop="url"><span itemprop="name"><code>regressB</code></span></a></span> | <span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

@@ -12,16 +12,7 @@
     % Plot first two best solutions using as Information criterion MIXMIX
     disp('Best solutions using MIXMIX')
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
-    disp(outMIXMIX.MIXMIXbs)</pre></div></div><pre class="codeoutput">k=1
-k=2
-k=3
-k=4
-k=5
-Best solutions using MIXMIX
-    [3]    [ 4]    [1&times;7 double]    [1]    'true'    
-    [4]    [64]    [1&times;8 double]     []    'spurious'
-
-</pre><img vspace="5" hspace="5" src="images\tclustICsol_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
+    disp(outMIXMIX.MIXMIXbs)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
      Data generation<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     restrfact=5;
     rng('default') % Reinitialize the random number generator to its startup configuration
@@ -46,22 +37,7 @@ Best solutions using MIXMIX
     disp(outMIXMIX.MIXMIXbs)
     disp('Best 3 solutions using CLACLA')
     [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
-    disp(outCLACLA.CLACLAbs)</pre></div></div><pre class="codeoutput">k=1
-k=2
-k=3
-k=4
-k=5
-Best 3 solutions using MIXMIX
-    [3]    [ 8]    [1&times;6 double]    [1&times;2 double]    'true'    
-    [2]    [16]    [1&times;5 double]    [         4]    'true'    
-    [4]    [ 4]    [1&times;8 double]              []    'spurious'
-
-Best 3 solutions using CLACLA
-    [2]    [16]    [1&times;5 double]    [1&times;2 double]    'true'    
-    [3]    [ 8]    [1&times;6 double]    [1&times;2 double]    'true'    
-    [4]    [64]    [1&times;2 double]    [1&times;0 double]    'spurious'
-
-</pre><img vspace="5" hspace="5" src="images\tclustICsol_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_09.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_10.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_11.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input option kk.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    disp(outCLACLA.CLACLAbs)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input option kk.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA','kk',[2 3 4 6])
     [outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
@@ -228,8 +204,8 @@ Best 3 solutions using CLACLA
                    restriction factor) which have been considered. This
                    vector is equal to input optional argument cc if cc had
                    been specified else it is equal to [1, 2, 4, 8, 16, 32,
-                   64, 128].</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2017),
+                   64, 128].</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained
- Likelihoods, Journal of Computational and Graphical Statistics, 
-<a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of
- Classification 2:193-218</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+<a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
+ Classification", Vol. 2, pp. 193-218.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

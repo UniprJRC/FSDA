@@ -13,7 +13,7 @@
     % FS based on untrasnformed data H_0:\lambda=1 for all variables
     % Plot of mle of transformation parameters with all default options
     % Compare the output with Figure 4.7 p. 167 of ARC (2004)
-    [out]=FSMtra(Y,'plotsmle',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSMtra_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Personalized options for plotsmle.</li></span></a></span></h3><div class="collapse"><p>
+    [out]=FSMtra(Y,'plotsmle',1);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Personalized options for plotsmle.</li></span></a></span></h3><div class="collapse"><p>
      Baby food data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -23,7 +23,7 @@
     plotsmle.LineWidthEnv=3;
     plotsmle.FontSize=14;
     plotsmle.ylim=[-0.4 0.4];
-    [out]=FSMtra(Y,'plotsmle',plotsmle);</pre></div></div><img vspace="5" hspace="5" src="images\FSMtra_02.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSMtra based on log trasnformed data.</li></span></a></span></h3><div class="collapse"><p>
+    [out]=FSMtra(Y,'plotsmle',plotsmle);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSMtra based on log trasnformed data.</li></span></a></span></h3><div class="collapse"><p>
      Baby food data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -44,7 +44,7 @@
     prolik=struct;
     prolik.steps=26;
     prolik.xlim=[-1 1];
-    [out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'prolik',prolik);</pre></div></div><img vspace="5" hspace="5" src="images\FSMtra_03.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Swiss heads data, Example 1.</li></span></a></span></h3><div class="collapse"><p>
+    [out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'prolik',prolik);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Swiss heads data, Example 1.</li></span></a></span></h3><div class="collapse"><p>
      FSMtra based on untransformed data $H_0:\lambda=1$ for all variables<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('head.mat');
     Y=head.data;
@@ -137,13 +137,7 @@
         ii=ii+1;
     end
     disp(out)
-% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div><pre class="codeoutput">    MLEtra: [23&times;2 double]
-    Exflag: [23&times;2 double]
-    LIKrat: [23&times;2 double]
-        Un: [22&times;11 double]
-     class: 'FSMtra'
-
-</pre><img vspace="5" hspace="5" src="images\FSMtra_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_07.png" alt=""> </p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Emilia Romagna data, Example 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Emilia Romagna data, Example 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel
@@ -410,5 +404,5 @@
                old subset. Un contains the unit(s) present in the new
                subset but not in the old one Un(1,2) for example contains
                the unit included in step init+1 Un(end,2) contains the
-               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSMtra';</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson A.C. Riani M. and Cerioli A. (2004), Exploring multivariate data with the
-   forward search, Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+               units included in the final step of the search</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSMtra';</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
+ data with the forward search", Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

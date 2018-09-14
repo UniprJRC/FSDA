@@ -8,27 +8,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=FSM(Ycont);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+    [out]=FSM(Ycont);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      FSM with plots showing envelope superimposition.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -37,27 +17,7 @@ Summary of the exceedances
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=FSM(Ycont,'plots',2);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_06.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with plots showing envelope superimposition in normal
+    [out]=FSM(Ycont,'plots',2);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with plots showing envelope superimposition in normal
      coordinates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
@@ -68,27 +28,7 @@ Summary of the exceedances
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     plots=struct;
     plots.ncoord=1;
-    [out]=FSM(Ycont,'plots',plots);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_10.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Monitor the exceedances from m=200 without showing plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=FSM(Ycont,'plots',plots);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Monitor the exceedances from m=200 without showing plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=1000;
     v=10;
     Y=randn(n,v);
@@ -210,7 +150,7 @@ Summary of the exceedances
                    Bonferroni bound. For example if bonflev=0.99 the
                    procedure stops when the trajectory exceeds for the
                    first time the 99% bonferroni bound.</p> <p>
-                 - A scalar value greater than 1.. In this case the
+                 - A scalar value greater than 1. In this case the
                    procedure stops when the residual trajectory exceeds
                    for the first time this value.</p> <p>
                  Default value is ' ', which means to rely on general rules
@@ -241,9 +181,9 @@ Summary of the exceedances
                if bonflev threshold is used.</p></p></td></tr><tr valign="top"><td><code>loc</code></td><td><p>1 x v  vector containing location of the data.</p></td></tr><tr valign="top"><td><code>cov</code></td><td><p>v x v robust estimate of covariance matrix.</p></td></tr><tr valign="top"><td><code>md</code></td><td><p>n x 1 vector containing the estimates of the robust
                Mahalanobis distances (in squared units). This vector
                contains the distances of each observation from the
-               location of the data, relative to the scatter matrix cov.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSM'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-       number of multivariate outliers. Journal of the Royal Statistical
-       Society Series B, Vol. 71, pp. 201-221.</p></div><div><p>Cerioli A., Farcomeni A. Riani M., (2014). Strong consistency and
-       robustness of the Forward Search estimator of multivariate location
-       and scatter, Journal of Multivariate Analysis, Vol. 126,
-       pp. 167-183,<a href="http://dx.doi.org/10.1016/j.jmva.2013.12.010">http://dx.doi.org/10.1016/j.jmva.2013.12.010</a>.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMeda.html" itemprop="url"><span itemprop="name"><code>FSMeda</code></span></a></span> | <span itemprop="seealso"><a href="unibiv.html" itemprop="url"><span itemprop="name"><code>unibiv</code></span></a></span> | <span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+               location of the data, relative to the scatter matrix cov.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSM'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
+ number of multivariate outliers, "Journal of the Royal Statistical
+ Society Series B", Vol. 71, pp. 201-221.</p></div><div><p>Cerioli, A., Farcomeni, A. and Riani M. (2014), Strong consistency and
+ robustness of the Forward Search estimator of multivariate location
+ and scatter, "Journal of Multivariate Analysis", Vol. 126,
+ pp. 167-183,<a href="http://dx.doi.org/10.1016/j.jmva.2013.12.010">http://dx.doi.org/10.1016/j.jmva.2013.12.010</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMeda.html" itemprop="url"><span itemprop="name"><code>FSMeda</code></span></a></span> | <span itemprop="seealso"><a href="unibiv.html" itemprop="url"><span itemprop="name"><code>unibiv</code></span></a></span> | <span itemprop="seealso"><a href="FSMmmd.html" itemprop="url"><span itemprop="name"><code>FSMmmd</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

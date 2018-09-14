@@ -345,12 +345,12 @@ function [out]=FSRts(y,varargin)
 %
 % References:
 %
-% Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-% number of multivariate outliers. Journal of the Royal Statistical
-% Society Series B, Vol. 71, pp. 201-221.
+% Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
+% number of multivariate outliers, "Journal of the Royal Statistical
+% Society Series B", Vol. 71, pp. 201-221.
 % Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
 % Monitoring of Many Time Series with Application to Fraud Detection,
-% "Econmetrics and Statistics". [RPRH]
+% "Econometrics and Statistics". [RPRH]
 %
 % Copyright 2008-2018.
 % Written by FSDA team

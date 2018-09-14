@@ -4,8 +4,7 @@
      N= 2x2 Input contingency table<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[8,14; 1,3];
     pval=barnardtest(N);
-    disp(['The p-value of the test is: ' num2str(pval)])</pre></div></div><pre class="codeoutput">The p-value of the test is: 0.41598
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Resolution option.</li></span></a></span></h3><div class="collapse"><p>
+    disp(['The p-value of the test is: ' num2str(pval)])</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Resolution option.</li></span></a></span></h3><div class="collapse"><p>
      N= 2x2 Input contingency table<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[20,14; 10,13];
     % pvalue with the default resolution (0.001)
@@ -13,9 +12,7 @@
     % p value with a resolution of 0.01
     pval01=barnardtest(N,'resolution',0.01);
     disp(['The p-value with a resolution 0.01 is: ' num2str(pval01)])
-    disp(['The p-value a resolution 0.001 is: ' num2str(pval001)])</pre></div></div><pre class="codeoutput">The p-value with a resolution 0.01 is: 0.15259
-The p-value a resolution 0.001 is: 0.1528
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example when the input is a MATLAB table.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    disp(['The p-value a resolution 0.001 is: ' num2str(pval001)])</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example when the input is a MATLAB table.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rownam={'OutcomeI', 'OutcomeII'};
     colnam={'TreatmentI' 'TreatmentII'};
     N=[40,14;10,30];
@@ -85,12 +82,12 @@ The p-value a resolution 0.001 is: 0.1528
  resolution parameter controls the resolution to search for.</p><p>
 
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Barnard, G.A. (1945), A new test for 2x2 tables. Nature, pp. 156-177.</p></div><div><p>Barnard, G.A. (1947), Significance tests for 2x2 tables, Biometrika,
- 34, pp. 123-138.</p></div><div><p>Suissa, S. and Shuster, J. J. (1985), Exact Unconditional Sample Sizes
- for the 2x2 Binomial Trial, Journal of the Royal Statistical Society,
- Ser. A, 148, pp. 317-327.</p></div><div><p>Lin C.Y., Yang M.C. (2009), Improved p-value tests for comparing two
- independent binomial proportions. Communications in Statistics-Simulation
- and Computation, 38(1):78-91.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Barnard, G.A. (1945), A new test for 2x2 tables, "Nature", pp. 156-177.</p></div><div><p>Barnard, G.A. (1947), Significance tests for 2x2 tables, "Biometrika",
+ Vol. 34, pp. 123-138.</p></div><div><p>Suissa, S. and Shuster, J.J. (1985), Exact Unconditional Sample Sizes
+ for the 2x2 Binomial Trial, "Journal of the Royal Statistical Society",
+ Ser. A, Vol. 148, pp. 317-327.</p></div><div><p>Lin, C.Y., Yang, M.C. (2009), Improved p-value tests for comparing two
+ independent binomial proportions, "Communications in Statistics-Simulation
+ and Computation", Vol. 38, pp.78-91.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  This file was inspired by Trujillo-Ortiz, A., R. Hernandez-Walls, A. Castro-Perez, L.</p> <p>
  Rodriguez-Cardozo N.A. Ramos-Delgado and R. Garcia-Sanchez. (2004).</p> <p>

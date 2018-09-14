@@ -186,12 +186,13 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
-% Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008). The fast-tau
-%   estimator for regression. Journal of Computational and Graphical
-%   Statistics, 17, 659-682. (Referred below as SBWZ08)
-% Yohai V.J. and Zamar R.H. (1988) High Breakdown-Point Estimates of
-%   Regression by Means of the Minimization of an Efficient Scale,
-%   Vol. 83, No. 402, pp. 406-413 (Referred below as YZ88)
+% Salibian-Barrera, M., Willems, G. and Zamar, R.H. (2008), The fast-tau
+%   estimator for regression, "Journal of Computational and Graphical
+%   Statistics", Vol. 17, pp. 659-682. [Referred below as SBWZ08].
+% Yohai V.J. and Zamar R.H. (1988), High Breakdown-Point Estimates of
+%   Regression by Means of the Minimization of an Efficient Scale, "Journal
+%   of the American Statistical Association", Vol. 83, pp. 406-413.
+%   [Referred below as YZ88].
 %
 % Acknowledgements:
 %

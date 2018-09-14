@@ -12,68 +12,12 @@
     N=[150	80	20	50
         80	250	30	140
         30	50	0	120];
-    out=corrNominal(N);</pre></div></div><pre class="codeoutput">Chi2 index
-  221.2405
-
-Phi index
-    0.4704
-
-Cramer's V 
-    0.3326
-
-Test of H_0: independence between rows and columns
-                   Coeff         se       zscore       pval   
-                  ________    ________    ______    __________
-
-    CramerV         0.3326    0.021769    15.278             0
-    GKlambdayx     0.22581    0.028383    7.9556    1.7764e-15
-    tauyx         0.091674    0.013524    6.7788    1.2121e-11
-    Hyx            0.08716    0.011265    7.7374    1.0214e-14
-
------------------------------------------
-Indexes and 95% confidence limits
-                   Value      StandardError    ConflimL    ConflimU
-                  ________    _____________    ________    ________
-
-    CramerV         0.3326      0.021769        0.28993    0.37687 
-    GKlambdayx     0.22581      0.028383        0.17018    0.28144 
-    tauyx         0.091674      0.013524       0.065168    0.11818 
-    Hyx            0.08716      0.011265       0.065082    0.10924 
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of option conflev.</li></span></a></span></h3><div class="collapse"><p>
+    out=corrNominal(N);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of option conflev.</li></span></a></span></h3><div class="collapse"><p>
       Use data from Goodman Kruskal (1954).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[1768   807    189 47
        946   1387    746 53
        115    438    288 16];
-    out=corrNominal(N,'conflev',0.99);</pre></div></div><pre class="codeoutput">Chi2 index
-   1.0735e+03
-
-Phi index
-    0.3973
-
-Cramer's V 
-    0.2810
-
-Test of H_0: independence between rows and columns
-                   Coeff         se        zscore    pval
-                  ________    _________    ______    ____
-
-    CramerV        0.28095    0.0085086     33.02     0  
-    GKlambdayx     0.19239     0.012158    15.825     0  
-    tauyx         0.080883    0.0046282    17.476     0  
-    Hyx           0.075341    0.0041619    18.102     0  
-
------------------------------------------
-Indexes and 99% confidence limits
-                   Value      StandardError    ConflimL    ConflimU
-                  ________    _____________    ________    ________
-
-    CramerV        0.28095      0.0085086       0.25904     0.30314
-    GKlambdayx     0.19239       0.012158       0.16108     0.22371
-    tauyx         0.080883      0.0046282      0.068962    0.092805
-    Hyx           0.075341      0.0041619      0.064621    0.086061
-
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrNominal with option dispresults.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out=corrNominal(N,'conflev',0.99);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrNominal with option dispresults.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[ 6 14 17 9;
        30 32 17 3];
     out=corrNominal(N,'dispresults',false);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example which starts from the original data matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -270,21 +214,23 @@ Indexes and 99% confidence limits
                        of y by 85 per cent (when variation measure which
                        is used is the entropy index)
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 23-26.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.</p> <p>
+ 23-26]</p></p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
  cross classifications II: Further Discussion and References,
- Journal of the American Statistical Association, 54, pp. 123-163.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for
+ "Journal of the American Statistical Association", Vol. 54, pp. 123-163.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1963), Measures of association for
  cross classifications III: Approximate Sampling Theory,
- Journal of the American Statistical Association, 58, pp. 310-364.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
+ "Journal of the American Statistical Association", Vol. 58, pp. 310-364.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
  cross classifications IV: Simplification of Asymptotic
- Variances. Journal of the American Statistical Association, 67, pp.
- 415-421.</p></div><div><p>Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
+ Variances, "Journal of the American Statistical Association", Vol. 67,
+ pp. 415-421.</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
  Series on Quantitative Applications in the Social Sciences, 07-004,
- Newbury Park, CA: Sage, pp. 49-56.</p></div><div><p>Smithson, M.J. (2003) Confidence Intervals, Quantitative Applications in
- the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p>
+ Newbury Park, CA: Sage. [pp. 49-56]</p></div><div><p><p>Smithson, M.J. (2003), "Confidence Intervals", Quantitative Applications
+ in the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. [pp.</p> <p>
+ 39-41]</p></p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  In order to find the confidence interval for the non centrality parameter
- of the Chi-squared distribution we use routine ncpci from the Effect Size Toolbox
- Code by Harald Hentschke (University of T&uuml;bingen) and
- Maik St&uuml;ttgen (University of Bochum)
+ of the Chi-squared distribution we use routine ncpci from the Effect Size
+ Toolbox. [Code by Harald Hentschke (University of T&uuml;bingen) and
+ Maik St&uuml;ttgen (University of Bochum)].</p> <p>
 
- </p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrOrdinal.html" itemprop="url"><span itemprop="name"><code>corrOrdinal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrOrdinal.html" itemprop="url"><span itemprop="name"><code>corrOrdinal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

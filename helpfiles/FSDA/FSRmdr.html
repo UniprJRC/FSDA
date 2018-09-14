@@ -105,8 +105,7 @@
             xlabel('Subset size m');
             ylabel(['b' num2str(j-2)]);
         end
-    end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.16 seconds 
-</pre><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRmdr_02.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
+    end</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('hawkins.txt');
@@ -126,12 +125,7 @@
         % sum(~isnan(BB(:,2))) is 60
         disp(sum(~isnan(BB(:,1))))
         disp(sum(~isnan(BB(:,2))))
-    end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
-    30
-
-    60
-
-</pre></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option threshlevoutX.</li></span></a></span></h3><div class="collapse"><p>
+    end</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option threshlevoutX.</li></span></a></span></h3><div class="collapse"><p>
      In this example a set of remote units is added to a cloud of points.
      The purpose of this example is to show that in presence of units very far
      from the bulk of th data (bad or good elverage points) it is necessary to
@@ -160,8 +154,7 @@
     out2=FSRmdr(yall,Xall,bs,'plots',1,'threshlevoutX',10);
     ylim(xylim(3:4));
     ylabel('mdr')
-    title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-</pre><img vspace="5" hspace="5" src="images\FSRmdr_03.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+    title('Monitoring of mdr with bound on the leverage')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

@@ -21,21 +21,7 @@
     ycont = y;
     ycont(1:kk)=ycont(1:kk)+7;
     [outS]=Sreg(ycont,X);
-    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.18 seconds 
-
-outMM = 
-
-  struct with fields:
-
-        class: 'MMreg'
-         beta: [4&times;1 double]
-      weights: [200&times;1 double]
-    residuals: [200&times;1 double]
-     outliers: [1 2 3 4 5 6 7 8 9 10 26 56 80 113 134 156 193]
-      conflev: 0.9750
-      rhofunc: 'bisquare'
-
-</pre><img vspace="5" hspace="5" src="images\MMregcore_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
      Determine, e.g., an S estimate and extract the required arguments for the MM estimate.
      This time use a Tukey biweight for S estimation and HA rho function
      for MM loop <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -164,8 +150,8 @@ outMM =
  It does iterative reweighted least squares (IRWLS) steps from "initial
  beta" (b0) keeping the estimate of the scale (auxscale) fixed.</p> <p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory
- and Methods, Wiley, New York.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  This function follows the lines of MATLAB/R code developed during the
  years by many authors.</p> <p>

@@ -11,21 +11,7 @@
     % Random contingency table based on algorthm AS144
     disp(out.m144)
     % Random contingency table based on algorthm AS159
-    disp(out.m159)</pre></div></div><pre class="codeoutput">
-out = 
-
-  struct with fields:
-
-    m144: [2&times;3 double]
-    m159: [2&times;3 double]
-
-     9     7     4
-    15     8     7
-
-    12     6     2
-    13     9     8
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>rcontFS with option nocheck set to true.</li></span></a></span></h3><div class="collapse"><p>
+    disp(out.m159)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>rcontFS with option nocheck set to true.</li></span></a></span></h3><div class="collapse"><p>
      Generate a random contingency table with 2 rows and 3 columns and do
      not check input arguments.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     nrow=2;
@@ -90,9 +76,9 @@ out =
                          algorithm is 'all' or '159'.</p><p>
                          Note that sum(out.159,1)=nrowt and that
                          sum(out.159,1)=ncolt.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Boyett, J. (1979), Algorithm AS 144: Random R x C Tables with Given Row
- and Column Totals, Applied Statistics, Volume 28, Number 3, pp. 329-332.</p></div><div><p>Patefield M., (1981), Algorithm AS 159: An Efficient Method of Generating
- RXC Tables with Given Row and Column Totals, Applied Statistics, Volume
- 30, Number 1, pages 91-97.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+ and Column Totals, "Applied Statistics", Vol. 28, pp. 329-332.</p></div><div><p>Patefield, M. (1981), Algorithm AS 159: An Efficient Method of Generating
+ RXC Tables with Given Row and Column Totals, "Applied Statistics", 
+ Vol. 30, pp. 91-97.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  This routine is based on the codes written in FORTRAN77 version by
  Michael Patefield and James Boyett and on the Matlab version by John

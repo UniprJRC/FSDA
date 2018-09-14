@@ -32,27 +32,7 @@
     % The procedure of resuperimposing envelopes in this case stops when
     % n = 85, the first time in which we have a value of rmin(m) for
     % $n&gt;=m^\dagger-1$ greater than the 99% threshold. The group can
-    % therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=81 because
-rmin(81,100)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=80
-Superimposition stopped because r_{min}(82,85)&gt;99% envelope
-$r_{min}(82,85)&gt;99$\% envelope
-Subsample of 84 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=16
-Summary of the exceedances
-           1          99         999        9999       99999
-           0          19          10           9           6
-
-</pre><img vspace="5" hspace="5" src="images\FSR_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_04.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSR with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+    % therefore be considered as homogeneous up to when we include 84 units.</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSR with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Monitor the exceedances from m=60 without showing plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     p=3;
@@ -76,15 +56,7 @@ Summary of the exceedances
     p=3;
     X=randn(n,p);
     y=randn(n,1);
-    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
--------------------------
-Signal detection loop
-Sample seems homogeneous, no outlier has been found
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           0           0           0           0
-
-</pre><img vspace="5" hspace="5" src="images\FSR_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('hawkins.txt','hawkins');
     y=hawkins(:,9);
     X=hawkins(:,1:8);
@@ -121,6 +93,7 @@ Summary of the exceedances
      The purpose of this example is to show that in presence of units very far
      from the bulk of th data (bad or good elverage points) it is necessary to
      bound their effect putting a constraint on their leverage hi=xi'(X'X)xi<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    rng('default')
     rng(10000)
     n=100;
     p=1;
@@ -390,6 +363,6 @@ Summary of the exceedances
                search runs in a constrained mode, that is including the
                units which produced a non singular matrix in the last n-constr
                steps. out.constr is a vector which contains the list of
-               units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSR'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown
-       number of multivariate outliers. Journal of the Royal Statistical
-       Society Series B, Vol. 71, pp. 201-221.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span> | <span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+               units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSR'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
+ number of multivariate outliers, "Journal of the Royal Statistical
+ Society Series B", Vol. 71, pp. 201-221.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span> | <span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

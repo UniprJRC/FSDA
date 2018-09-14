@@ -478,7 +478,7 @@ function [out, varargout] = LTSts(y,varargin)
 %
 % Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
 % Monitoring of Many Time Series with Application to Fraud Detection,
-% "Econmetrics and Statistics". [RPRH]
+% "Econometrics and Statistics". [RPRH]
 %
 %
 % Copyright 2008-2018.

@@ -283,7 +283,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 % Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
 % Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.
 %
-%   Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ
+% Koop G. (2003), "Bayesian Econometrics", Wiley, New York. [Chapt. 3]
 %
 % Copyright 2008-2018.
 % Written by FSDA team

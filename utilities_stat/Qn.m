@@ -47,8 +47,9 @@ function y=Qn(X,dim)
 %
 % References:
 %
-% Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation,
-% Journal of American Statistical Association 88, 1273-1283
+% Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute
+% deviation, "Journal of American Statistical Association", Vol. 88, pp.
+% 1273-1283
 % Croux C. and Rousseeuw P.J.(1992)  Time-efficient algorithms for two
 % highly robust estimators of scale, in "Computational Statistics", Vol. 1,
 % eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.

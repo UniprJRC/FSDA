@@ -39,8 +39,9 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 % Remark: this routine is called by Smult.m
 %
 % References
-% Huber P. and Ronchetti E. (2009), Robust Statistics, Wiley (equation 7.119,  p.
-% 176).
+%
+% Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
+% Wiley. [equation 7.119,  p. 176].
 %
 % See also Mscale1, minscale
 %

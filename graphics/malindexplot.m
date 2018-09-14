@@ -154,8 +154,8 @@ function malindexplot(md,v,varargin)
 %
 % References:
 %
-%   Rousseeuw PJ, Leroy AM (1987), Robust regression and outlier detection,
-%   Wiley.
+%   Rousseeuw P.J., Leroy A.M. (1987), "Robust regression and outlier
+%   detection", Wiley.
 %
 % Copyright 2008-2018.
 % Written by FSDA team

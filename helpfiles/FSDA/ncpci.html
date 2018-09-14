@@ -12,26 +12,17 @@
      (3-1)(4-1)=8 degrees of freedom.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     ci=ncpci(52,'X2',8);
     disp('Confidence interval for the non centrality parameter')
-    disp(ci)</pre></div></div><pre class="codeoutput">Confidence interval for the non centrality parameter
-   43.5345   76.2004
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
      A 99 per cent confidence interval is requested.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     confint=0.99;
     ci=ncpci(52,'X2',8,'confLevel',confint);
     disp([ num2str(100*confint) ' per cent confidence interval for the non centrality parameter'])
-    disp(ci)</pre></div></div><pre class="codeoutput">99 per cent confidence interval for the non centrality parameter
-   47.9550   87.6262
-
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
      Increase the precision.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     prec=1e-12;
     ci=ncpci(52,'X2',8,'prec',prec);
     disp(['95 per cent confidence interval for the non centrality parameter'])
-    disp(ci)</pre></div></div><pre class="codeoutput">95 per cent confidence interval for the non centrality parameter
-   43.5345   76.2003
-
-</pre></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
      set doAnimate to true.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     doAnimate=true;
     ci=ncpci(52,'X2',8,'doAnimate',true);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Confidence interval based on the F distibution.</li></span></a></span></h3><div class="collapse"><p>
@@ -89,13 +80,15 @@
  See Smithson (2003) and "Measures of Effect Size" Toolbox for further
  details.</p><p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Hentschke and St&uuml;ttgen (2011), European Journal of Neuroscience, 34, pp.
- 1887-1894.</p></div><div><p>Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in
- the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.</p></div><div><p>Hentschke H. and St&uuml;ttgen M. (2015), Measures of Effect Size Toolbox
- Version 1.4. Code by Harald Hentschke (University of T&uuml;bingen) and
- Maik St&uuml;ttgen (University of Bochum).</p></div><div><p>Steiger, J. H., & Fouladi, R. T. (1997), Noncentrality interval
- estimation and the evaluation of statistical models. In L. L. Harlow, S.,</p></div><div><p>A. Mulaik, & J.H. Steiger (Eds.), What if there were no significance
- tests? pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Hentschke, H. and St&uuml;ttgen, M. (2011), Comuputation of measures of effect
+ size for neuroscience data sets, "European Journal of Neuroscience", Vol.</p> <p>
+ 34, pp. 1887-1894.</p></p></div><div><p>Smithson, M.J. (2003), "Confidence Intervals", Quantitative Applications in
+ the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. [pp. 39-41]</p></div><div><p>Hentschke, H. and St&uuml;ttgen, M. (2015), Measures of Effect Size Toolbox
+ Version 1.4. [Code by Harald Hentschke (University of T&uuml;bingen) and
+ Maik St&uuml;ttgen (University of Bochum)].</p></div><div><p>Steiger, J.H., and Fouladi, R.T. (1997), Noncentrality interval
+ estimation and the evaluation of statistical models. In Harlow, L.L.,
+ Stanley, S., Mulaik, A. and Steiger, J.H., Eds., "What if there were no
+ significance tests?", pp. 221-257. Mahwah, NJ: Lawrence Erlbaum.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  This function has been taken and adapted from the MATLAB toolbox 'Measures of effect
  Size' by Harald Hentschke and  Maik C. St&uuml;ttgen.</p> <p>

@@ -227,8 +227,8 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %
 % The MCD method was introduced in:
 %
-%   Rousseeuw, P.J. (1984), "Least Median of Squares Regression,"
-%   Journal of the American Statistical Association, Vol. 79, pp. 871-881.
+%   Rousseeuw, P.J. (1984), Least Median of Squares Regression,
+%   "Journal of the American Statistical Association", Vol. 79, pp. 871-881.
 %
 %   The program below uses the technique of concentration steps described in
 %

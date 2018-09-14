@@ -159,7 +159,8 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 % References:
 %
 %   Lehmer, D. H. (1964). The machine tools of combinatorics. In E. F.
-%   Beckenbach (Ed.), Applied Combinatorial Mathematics, pp. 5--31. New York, Wiley.
+%   Beckenbach (Ed.), "Applied Combinatorial Mathematics", pp. 5-31. New
+%   York, Wiley.
 %
 %   Knuth, D. (2005). Generating All Combinations and Partitions. The Art of
 %   Computer Programming, Vol. 4, Fascicle 3. Reading, Mass., Addison-Wesley.

@@ -9,51 +9,11 @@
      load iris data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load fisheriris
     % Compute Box test of equality of covariance matrices
-    out=boxtest(meas,species,'dispresults',true);</pre></div></div><pre class="codeoutput">*****************************************************************
-Test of homogeneity of covariances (without correction factor)
-  146.6632
-
-LRchi2approx = Chi2 approximation of Box test of homogeneity of covariances
-  140.9430
-
-p value of the Chi2 approximation of Box test
-   3.3520e-20
-
-*****************************************************************
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris with option Fapprox.</li></span></a></span></h3><div class="collapse"><p>
+    out=boxtest(meas,species,'dispresults',true);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Box test for Iris with option Fapprox.</li></span></a></span></h3><div class="collapse"><p>
      load iris data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load fisheriris
     % Compute Box test of equality of covariance matrices
-    out=boxtest(meas,species,'dispresults',true,'Fapprox',true)</pre></div></div><pre class="codeoutput">*****************************************************************
-Test of homogeneity of covariances (without correction factor)
-  146.6632
-
-LRchi2approx = Chi2 approximation of Box test of homogeneity of covariances
-  140.9430
-
-p value of the Chi2 approximation of Box test
-   3.3520e-20
-
-LRFapprox = F approximation of Box test of homogeneity of covariances
-    7.0453
-
-p value of the F approximation of Box test
-   3.5781e-20
-
-*****************************************************************
-
-out = 
-
-  struct with fields:
-
-                   LR: 146.6632
-         LRchi2approx: 140.9430
-    LRchi2approx_pval: 3.3520e-20
-            LRFapprox: 7.0453
-       LRFapprox_pval: 3.5781e-20
-                  Spl: [4&times;4 double]
-
-</pre></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
+    out=boxtest(meas,species,'dispresults',true,'Fapprox',true)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix. n observations and v
                variables. Rows of Y represent observations, and columns represent
                variables. Missing values (NaN's) and infinite values
                (Inf's) are allowed, since observations (rows) with missing
@@ -136,5 +96,5 @@ out =
 
 
 </p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Mardia, K.V., J.T. Kent, and J.M. Bibby (1979), "Multivariate Analysis,"
- Academic Press, London, p. 140. (MKB)</p></div><div><p>Rencher A.C. (2002), "Methods of Multivariate Analysis", 2nd edition,
- Wiley, New York, p. 280-284</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/manova1.html'))" itemprop="url"><span itemprop="name"><code>manova1</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Academic Press, London, pp. 140. [MKB].</p></div><div><p>Rencher A.C. (2002), "Methods of Multivariate Analysis", 2nd edition,
+ Wiley, New York, pp. 280-284.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/manova1.html'))" itemprop="url"><span itemprop="name"><code>manova1</code></span></a></span> | <span itemprop="seealso"><a href="tkmeans.html" itemprop="url"><span itemprop="name"><code>tkmeans</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

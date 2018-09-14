@@ -247,9 +247,9 @@ function out=corrNominal(N, varargin)
 % Acknowledgements:
 %
 % In order to find the confidence interval for the non centrality parameter
-% of the Chi-squared distribution we use routine ncpci from the Effect Size Toolbox
-% Code by Harald Hentschke (University of Tübingen) and
-% Maik Stüttgen (University of Bochum)
+% of the Chi-squared distribution we use routine ncpci from the Effect Size
+% Toolbox. [Code by Harald Hentschke (University of Tübingen) and
+% Maik Stüttgen (University of Bochum)].
 %
 % Copyright 2008-2018.
 % Written by FSDA team

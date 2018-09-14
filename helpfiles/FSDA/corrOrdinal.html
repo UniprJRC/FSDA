@@ -37,30 +37,7 @@
     out=corrOrdinal(N);
     % Because the asymptotic 95 per cent confidence limits do not contain
     % zero, this indicates a strong positive association between the
-    % written and the oral examination.</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
-The standard errors are computed under H_0
-              Coeff        se       zscore       pval   
-             _______    ________    ______    __________
-
-    gamma        0.5    0.098239    5.0896     3.588e-07
-    taua     0.18342    0.047553    3.8571    0.00011474
-    taub     0.30557    0.060038    5.0896     3.588e-07
-    tauc     0.27375    0.053786    5.0896     3.588e-07
-    dyx      0.31466    0.061823    5.0896     3.588e-07
-
------------------------------------------
-Indexes and 95% confidence limits
-The standard error are computed under H_1
-              Value     StandardError    ConflimL    ConflimU
-             _______    _____________    ________    ________
-
-    gamma        0.5        0.0876       0.32831     0.67169 
-    taua     0.18342      0.011904       0.16009     0.20675 
-    taub     0.30557       0.05852       0.19087     0.42027 
-    tauc     0.27375      0.053786       0.16833     0.37917 
-    dyx      0.31466      0.059899       0.19726     0.43205 
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
+    % written and the oral examination.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
      Matlab function corr.</li></span></a></span></h3><div class="collapse"><p>
      Starting from a contingency table, create the original data matrix to
      te able to call corr.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -89,11 +66,7 @@ The standard error are computed under H_1
     disp(['tau-b from FSDA routine corrOrdinal=' num2str(out.taub(1))])
     % Remark the p-values are slightly different
     disp(['pvalue of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])
-    disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</pre></div></div><pre class="codeoutput">tau-b from MATLAB routine corr=0.0083449
-tau-b from FSDA routine corrOrdinal=0.0083449
-pvalue of H0:taub=0 from MATLAB routine corr=0.89952
-pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[26 26 23 18  9;
        6  7  9 14 23];
     out=corrOrdinal(N,'conflev',0.999);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with with option NoStandardErrors.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -361,28 +334,30 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  measures having the same numerator $(C-D)$ have the same efficacy and hence
  the same local power, for testing independence.</p> <p>
 
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Agresti, A. (2002). Categorical Data Analysis. John Wiley & Sons, pp. 57-59.</p></div><div><p>Agresti, A. (2010). Analysis of Ordinal Categorical Data, Second Edition,
- Wiley, New York, pp. 194-195.</p></div><div><p>Hollander, M, Wolfe, D. A., Chicken, E. (2014). Nonparametric Statistical
- Methods, Third edition, Wiley,</p></div><div><p>Goktas, A. and Oznur, I. (2011). A comparision of the most commonly used
- measures of association for doubly ordered square
- contingency tables via simulation. Metodoloski zvezki 8(1), pp. 17-37,
- URL address: www.stat-d.si/mz/mz8.1/goktas.pdf</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1954). Measures of association for
- cross classifications. Journal of the American Statistical
- Association, 49, pp. 732-764.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.</p> <p>
+ 57-59]</p></p></div><div><p>Agresti, A. (2010), "Analysis of Ordinal Categorical Data", Second Edition,
+ Wiley, New York, pp. 194-195.</p></div><div><p>Hollander, M, Wolfe, D.A., Chicken, E. (2014), "Nonparametric Statistical
+ Methods", Third edition, Wiley,</p></div><div><p><p>Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
+ measures of association for doubly ordered square contingency tables via
+ simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:</p> <p>
+ www.stat-d.si/mz/mz8.1/goktas.pdf]</p></p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
+ cross classifications, "Journal of the American Statistical
+ Association", Vol. 49, pp. 732-764.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
  cross classifications II: Further Discussion and References,
- Journal of the American Statistical Association, 54, pp. 123-163.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for
+ "Journal of the American Statistical Association", Vol. 54, pp. 123-163.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1963), Measures of association for
  cross classifications III: Approximate Sampling Theory,
- Journal of the American Statistical Association, 58, pp. 310-364.</p></div><div><p>Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for
+ "Journal of the American Statistical Association", Vol. 58, pp. 310-364.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
  cross classifications IV: Simplification of Asymptotic
- Variances. Journal of the American Statistical Association, 67, pp.
- 415-421.</p></div><div><p>Liebetrau, A. M. (1983). Measures of Association, Sage University Papers
+ Variances, "Journal of the American Statistical Association", Vol. 67,
+ pp. 415-421.</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
  Series on Quantitative Applications in the Social Sciences, 07-004,
- Newbury Park, CA: Sage, pp. 49-56.</p></div><div><p>SAS documentation (2009). See
+ Newbury Park, CA: Sage. [pp. 49-56]</p></div><div><p>SAS documentation (2009), See
 <a href="http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf">http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf</a>,
- pp. 1738-1740.</p></div><div><p>Morton B. B. and Benedetti J. K. (1977), Sampling Behavior of Tests for
- Correlation in Two-Way Contingency Tables, Journal of the American
- Statistical Association Vol. 72, pp. 309-315</p></div><div><p>Simon G. (1978), Alternative analysis for the singly ordered contingency
- table, Journal of the American Statistical Association, Vol. 69, pp. 971-976.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+ pp. 1738-1740.</p></div><div><p>Morton, B.B. and Benedetti, J.K. (1977), Sampling Behavior of Tests for
+ Correlation in Two-Way Contingency Tables, "Journal of the American
+ Statistical Association", Vol. 72, pp. 309-315.</p></div><div><p>Simon, G. (1978), Alternative analysis for the singly ordered contingency
+ table, "Journal of the American Statistical Association", Vol. 69, pp.
+ 971-976.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
 
  This file was inspired by Trujillo-Ortiz, A. and R. Hernandez-Walls.</p> <p>
  gkgammatst: Goodman-Kruskal's gamma test. URL address

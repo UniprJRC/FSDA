@@ -63,7 +63,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %                The HTML file bibliography.html is also produced inside
 %                folder specified by input option "outputDir" .
 %     citsCell : References, associated file and path. Cell.
-%                Cell with three columns. 
+%                Cell with three columns.
 %                First column = citation.
 %                Second column = FileName of associated file where citation
 %                was found.
@@ -208,12 +208,35 @@ end
 citsCell=extractRefs(OUT, InputCell);
 % Sort all the rows by alphabetical order based on citation
 citsCell=sortrows(citsCell,1);
+% citsCell=citsCell;
+% remove in any citation what is inside the square brackets
+% The expression ' .\[.*\]' means find a string with any character (but just one) followed
+% by [ containing any sequence of words up to ]
+for i=1:length(citsCell)
+    citsCell{i,1}=regexprep(citsCell{i,1},'.\[.*\]','');
+end
+
 
 % cits=unique(citsCell(:,1),'sorted');
-cits=unique(citsCell(:,1));
+[~,ia]=unique(citsCell(:,1));
+
+cits=citsCell(ia,:);
 
 % Remove duplicate references
 uniquesTab=cell2table(cits);
+
+% Remove reference which are virtually equal, that is the lines which have
+% an edit distance https://en.wikipedia.org/wiki/Edit_distance smaller than
+% 8
+%
+boo=false(size(cits,1),1);
+
+for i=2:size(uniquesTab,1)
+    if wfEdits(char(uniquesTab{i,1}),char(uniquesTab{i-1,1}))<8
+        boo(i)=true;
+    end
+end
+uniquesTab(boo,:)=[];
 
 % Create 'bibliography.html' file for all uniques references inside all
 % MATLAB source files.
@@ -294,6 +317,7 @@ function References=extractRefs(OUT, FilesIncluded)
 % Make sure that empty elements of OUT are removed
 boo=cellfun(@isempty,OUT);
 OUT=OUT(~boo);
+FilesIncluded=FilesIncluded(~boo,:);
 
 ri=size(OUT,1);
 % References is a cell with three columns
@@ -307,14 +331,32 @@ for ii=1:ri
     fileRefs=OUT{ii,1}.References;
     refsRows=size(fileRefs,1);
     for jj=1:refsRows
-        References(j,1)=fileRefs(jj);
-        References(j:j+refsRows,2)=FilesIncluded(ii,1);
-        References(j:j+refsRows,3)=FilesIncluded(ii,9);
-        
+        References{j,1}=removeExtraSpacesLF(fileRefs{jj});
+        References(j,2)=FilesIncluded(ii,1);
+        References(j,3)=FilesIncluded(ii,9);
         j=j+1;
     end
 end
 References=References(1:j-1,:);
+end
+
+function d = wfEdits(S1,S2)
+% Wagner–Fischer algorithm to calculate the edit distance / Levenshtein distance.
+%
+N1 = 1+numel(S1);
+N2 = 1+numel(S2);
+%
+D = zeros(N1,N2);
+D(:,1) = 0:N1-1;
+D(1,:) = 0:N2-1;
+%
+for r = 2:N1
+    for c = 2:N2
+        D(r,c) = min([D(r-1,c)+1, D(r,c-1)+1, D(r-1,c-1)+~strcmpi(S1(r-1),S2(c-1))]);
+    end
+end
+d = D(end);
+%
 end
 
 %FScategory:UTIHELP

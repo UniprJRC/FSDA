@@ -36,8 +36,8 @@ function c = nchoosekFS(v,k)
 %
 % References:
 %
-%    Riordan, John (1958). An Introduction to Combinatorial Analysis, 
-%    New York, NY: Wiley & Sons.
+%    Riordan, J. (1958), "An Introduction to Combinatorial Analysis", 
+%    Wiley & Sons, New York.
 %
 % Copyright 2008-2018.
 % Written by FSDA team
