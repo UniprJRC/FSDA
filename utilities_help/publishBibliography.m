@@ -95,7 +95,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %
 % Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
 % Monitoring of Many Time Series with Application to Fraud Detection,
-% "Econmetrics and Statistics". [quoted below as RPRH].
+% "Econometrics and Statistics". [quoted below as RPRH].
 %
 % The string [quoted below as RPRH] does not appear in the bibliography
 %
