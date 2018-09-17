@@ -1,7 +1,7 @@
 function rhoRK = RKrho(u,c, M)
 %RKrho computes rho function for Rocke (translated Tukey's) biweight
 %
-%<a href="matlab: docsearchFS('rhoRK')">Link to the help function</a>
+%<a href="matlab: docsearchFS('RKrho')">Link to the help function</a>
 %
 %  Required input arguments:
 %
