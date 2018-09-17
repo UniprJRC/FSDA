@@ -1377,7 +1377,7 @@ if plo==1 || plo==2
     elseif ndecl>0
         set(H(:,:,1),'DisplayName','Outliers');
     else
-        set(H,'DisplayName','Units');
+        set(H,'DisplayName',' Units');
     end
     
     % save the indices of the outliers (ListOut) to the

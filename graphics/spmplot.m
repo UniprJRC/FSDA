@@ -1809,7 +1809,7 @@ if ~isempty(databrush) || iscell(databrush)
                         set(H(1,end,brugrp),'DisplayName',['Brushed units ' num2str(brugrp-1)]);
                     end
                 else
-                    set(H,'DisplayName','Units');
+                    set(H,'DisplayName',' Units');
                 end
                 
                 % Make the histograms on the main diagonal invisible if the

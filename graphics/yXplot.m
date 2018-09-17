@@ -1101,7 +1101,7 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 
 % default legenda
 if isnotstructy ~=1
-    set(H,'DisplayName','Units');
+    set(H,'DisplayName',' Units');
 end
 
 for i = 1:length(AX)
@@ -1495,7 +1495,7 @@ if ~isempty(databrush) || iscell(databrush)
                         set(H(:,:,brugrp),'DisplayName',['Brushed units ' num2str(brugrp-1)]);
                     end
                 else
-                    set(H,'DisplayName','Units');
+                    set(H,'DisplayName',' Units');
                 end
                 
                 if strcmp(doleg,'on')

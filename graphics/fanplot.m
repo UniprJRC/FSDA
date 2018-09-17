@@ -864,7 +864,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
                     set(H(:,:,1),'DisplayName','Unbrushed units');
                     set(H(:,:,2),'DisplayName','Brushed units');
                 else
-                    set(H,'DisplayName','Units');
+                    set(H,'DisplayName',' Units');
                 end
                 
                 set(AX,'FontSize',FontSize)
