@@ -71,7 +71,12 @@ for i=1:size(InputCell,1)
         error(message('MATLAB:filebrowser:MakeContentsFileOpenError', errMsg))
     end
     % Create string to include the HTML pointer file
-    fstring=stringHTMLpointer(NameInputFile,PurposeInputFile,DescrRef);
+    try
+        fstring=stringHTMLpointer(NameInputFile,PurposeInputFile,DescrRef);
+    catch
+        error('FSDA:CreateFSDApointerFiles:WrongInputFile',['Could not create pointer file: ' NameInputFile])
+    end
+    
     fprintf(fileID,'%s',fstring);
     fclose(fileID);
 end
