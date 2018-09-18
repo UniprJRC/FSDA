@@ -2,41 +2,46 @@
 // plz. note that: 'function-alpha.txt' should be put in folder (...)\helpfiles\FSDA
 // 				   'bottomscript.js'   should be put in folder (...)\helpfiles\FSDA\includeFS
 // 				   'bottom.html'       should be put in folder (...)\helpfiles\FSDA\includeFS
-var stuff;
-var fname;
-var mess;
 
+var fname;
+
+ 
 // get the name of the current file that include bottom.html removing the path with a regular expression
 fname=document.location.pathname.match(/[^\/]+$/)[0];
 
 // load the file list and store the big string in a variable by a callback f(x)='function(stuff)'
-$.get('function-alpha.txt', function(stuff){
+//$.get('function-alpha.txt', function(stuff){
 
 // define new blank array and...
-var fileArray = new Array();
+var fileArray = new Array( "index.html","add2spm.html","add2yX.html","addt.html","barnardtest.html","basicPower.html","bc.html","boxplotb.html","boxtest.html","brushFAN.html","brushRES.html","brushROB.html","bwe.html","cabc.html","carbikeplot.html","cascade.html","cdsplot.html","clickableMultiLegend.html","ClusterRelabel.html","combsFS.html","CorAna.html","CorAnaplot.html","corrNominal.html","corrOrdinal.html","covplot.html","CressieRead.html","crosstab2datamatrix.html","dempk.html","ellipse.html","fanplot.html","findDir.html","findFile.html","forecastTS.html","FowlkesMallowsIndex.html","FSM.html","FSMbonfbound.html","FSMbsb.html","FSMeda.html","FSMenvmmd.html","FSMfan.html","FSMinvmmd.html","FSMmmd.html","FSMmmdeasy.html","FSMmmdrs.html","FSMtra.html","FSR.html","FSRaddt.html","FSRB.html","FSRBbsb.html","FSRBeda.html","FSRBmdr.html","FSRbonfbound.html","FSRBr.html","FSRbsb.html","FSRcp.html","FSReda.html","FSRenvmdr.html","FSRfan.html","FSRH.html","FSRHbsb.html","FSRHeda.html","FSRHmdr.html","FSRinvmdr.html","FSRmdr.html","FSRmdrrs.html","FSRms.html","FSRr.html","FSRts.html","FSRtsbsb.html","FSRtsmdr.html","GYfilt.html","HAbdp.html","HAc.html","HAeff.html","HApsi.html","HApsider.html","HApsix.html","HArho.html","HAwei.html","histFS.html","htmlwriteFS.html","HUeff.html","HUpsi.html","HUpsider.html","HUpsix.html","HUrho.html","HUwei.html","HYPbdp.html","HYPc.html","HYPck.html","HYPeff.html","HYPk.html","HYPpsi.html","HYPpsider.html","HYPpsix.html","HYPrho.html","HYPwei.html","inversegamcdf.html","inversegaminv.html","inversegampdf.html","isfunction.html","kdebiv.html","levfwdplot.html","lexunrank.html","lga.html","logmvnpdfFS.html","LTSts.html","LXS.html","mahalFS.html","makecontentsfileFS.html","malfwdplot.html","malindexplot.html","mcd.html","mdrplot.html","MixSim.html","MixSimreg.html","mmdplot.html","mmdrsplot.html","MMmult.html","MMmultcore.html","MMmulteda.html","MMreg.html","MMregcore.html","MMregeda.html","mreadFS.html","Mscale.html","mve.html","mveeda.html","nchoosekFS.html","ncpci.html","ncx2mixtcdf.html","normBoxCox.html","normYJ.html","openMatlabFileFromHTML.html","OPTbdp.html","OPTc.html","OPTeff.html","OPTpsi.html","OPTpsider.html","OPTpsix.html","OPTrho.html","OPTwei.html","overlap.html","overlapmap.html","PoolClose.html","PoolPrepare.html","position.html","Powertra.html","publishBibliography.html","publishFS.html","publishFunctionAlpha.html","publishFunctionCate.html","Qn.html","quickselectFS.html","RandIndexFS.html","randsampleFS.html","rcontFS.html","regressB.html","regressH.html","regressHart.html","regressHhar.html","regressts.html","removeExtraSpacesLF.html","resfwdplot.html","resindexplot.html","restrdeter.html","restreigen.html","restreigeneasy.html","RKbdp.html","RKeff.html","RKpsi.html","RKpsider.html","RKpsix.html","RKrho.html","RKwei.html","rlga.html","RobCov.html","RobRegrSize.html","rthin.html","Score.html","ScoreYJ.html","ScoreYJpn.html","SDest.html","shuffling.html","simdataset.html","simdatasetreg.html","simulateTS.html","Smult.html","Smulteda.html","Sn.html","SparseTableTest.html","spmplot.html","Sreg.html","Sregeda.html","subsets.html","suplabel.html","tabulateFS.html","Taureg.html","TBbdp.html","TBc.html","TBeff.html","TBpsi.html","TBpsider.html","TBpsix.html","TBrho.html","TBwei.html","tclust.html","tclusteda.html","tclustIC.html","tclustICplot.html","tclustICsol.html","tclustreg.html","tkmeans.html","triu2vec.html","unibiv.html","upperfracpos.html","verLessThanFS.html","wedgeplot.html","winsor.html","WNChygepdf.html","wraptextFS.html","wthin.html","xmlcreateFS.html","yXplot.html","zscoreFS.html","function-cate.html" );
 
 // ...populate it splitting the big string
-fileArray = stuff.split(",");
+//fileArray = stuff.split(",");
+	//fileArray = ["index.html" ,"add2spm.html","FSRaddt.html","FSRB.html","FSRBbsb.html","FSRBeda.html"];
+	
 
 // array index of the current file
-var ind=$.inArray(fname, fileArray );
+//var ind=$.inArray(fname, fileArray );
 
-// alert(fileArray.length)
-// alert(ind)
+var ind=fileArray.indexOf(fname);
+
+
+// alert(fileArray.length);
+//alert(ind);
 
 
 if (ind==1){
 // substitute the following placeholder tags with the correct ones 
-$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind])
-$("a[href='http://www.topright.com/']").attr('href', fileArray [ind+1])
+$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind]);
+$("a[href='http://www.topright.com/']").attr('href', fileArray [ind+1]);
 $("#topleft").text(fileArray[ind].substr(0,fileArray[ind].length-5));
 $("#topright").text(fileArray[ind+1].substr(0,fileArray[ind+1].length-5));
 }
 else if ((ind+1)==(fileArray.length-1)) 
 {
 // substitute the following placeholder tags with the correct ones 
-$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind-1])
-$("a[href='http://www.topright.com/']").attr('href', fileArray [ind])
+$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind-1]);
+$("a[href='http://www.topright.com/']").attr('href', fileArray [ind]);
 $("#topleft").text(fileArray[ind-1].substr(0,fileArray[ind-1].length-5));
 $("#topright").text(fileArray[ind].substr(0,fileArray[ind].length-5));
 }
@@ -44,18 +49,18 @@ $("#topright").text(fileArray[ind].substr(0,fileArray[ind].length-5));
 else if (ind==-1) 
 {
 // substitute the following placeholder tags with the correct ones 
-$("a[href='http://www.topleft.com/']").attr('href', 'function-alpha.html')
-$("a[href='http://www.topright.com/']").attr('href', 'function-cate.html')
+$("a[href='http://www.topleft.com/']").attr('href', 'function-alpha.html');
+$("a[href='http://www.topright.com/']").attr('href', 'function-cate.html');
 $("#topleft").text('function-alpha.html');
 $("#topright").text('function-cate.html');
 }
 
 else{
 // substitute the following placeholder tags with the correct ones 
-$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind-1])
-$("a[href='http://www.topright.com/']").attr('href', fileArray [ind+1])
+$("a[href='http://www.topleft.com/']").attr('href', fileArray [ind-1]);
+$("a[href='http://www.topright.com/']").attr('href', fileArray [ind+1]);
 $("#topleft").text(fileArray[ind-1].substr(0,fileArray[ind-1].length-5));
 $("#topright").text(fileArray[ind+1].substr(0,fileArray[ind+1].length-5));
 }
-});
+
 
