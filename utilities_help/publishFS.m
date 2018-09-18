@@ -1640,20 +1640,24 @@ for j=1:length(sintax)
         error('FSDA:wrongdelimiter',errmsg)
     end
     
-    % This is the first line which does not contain symbol %
+    % The end of the description is the first line which does not start
+    % with symbol "%" or is in correpondence of the line which follows the one
+    % which ends with a full stop (jjbreak=jj+1).
     for jj=1:length(inicr)-1
         strtest=stri(inicr(jj):inicr(jj+1));
         if isempty(regexp(strtest,'%','once'))
+            jjbreak=jj;
+            break
+        elseif  (jj>1 && strcmp(strtest(end-1),'.'))
+            jjbreak=jj+1;
             break
         end
     end
+    jj=jjbreak;
     findescriptionEx=inicr(jj);
     strdescrEx=stri(endtitle+1:findescriptionEx);
-    % remove % signs from strdescrEx
-    % OLD
-    %posPercentageSigns=regexp(strdescrEx,'%');
-    % strdescrEx(posPercentageSigns)=[];
     
+    % remove % signs from strdescrEx
     posPercentageSigns=regexp(strdescrEx,'\D%');
     strdescrEx(posPercentageSigns+1)=[];
     
@@ -1739,7 +1743,7 @@ for j=1:length(sintax)
         '</div>\r'])]; % close div id="example_j"
 end
 
-%% CREATE RELATED EXAMPLES SECTION OF HTML FILE
+%% CREATE EXTRA  EXAMPLES SECTION OF HTML FILE
 if length(startIndexEx)>length(sintax)
     lsintax=length(sintax);
     % Fourth column of listextraEX contains flag 1 or 0 depending on the
@@ -1773,20 +1777,38 @@ if length(startIndexEx)>length(sintax)
         
         % Find point where description ends
         inicr=regexp(stri,'\r');
+        %         for jj=1:length(inicr)-1
+        %             strtest=stri(inicr(jj):inicr(jj+1));
+        %
+        %             % break when you find the first line which does not contain symbol %
+        %             %             if isempty(regexp(strtest,'%','once'));
+        %             %                 break
+        %             %             end
+        %
+        %             % NEW code: break when you find the first line which does not start with symbol %
+        %             strtest=strtrim(strtest);
+        %             if  ~isempty(strtest) && ~strcmp(strtest(1),'%')
+        %                 break
+        %             end
+        %         end
+        %
+        
+        % The end of the description is the first line which does not start
+        % with symbol "%" or is in correpondence of the line which follows the one
+        % which ends with a full stop (jjbreak=jj+1).
         for jj=1:length(inicr)-1
             strtest=stri(inicr(jj):inicr(jj+1));
-            
-            % break when you find the first line which does not contain symbol %
-            %             if isempty(regexp(strtest,'%','once'));
-            %                 break
-            %             end
-            
-            % NEW code: break when you find the first line which does not start with symbol %
-            strtest=strtrim(strtest);
-            if  ~isempty(strtest) && ~strcmp(strtest(1),'%')
+            if isempty(regexp(strtest,'%','once'))
+                jjbreak=jj;
+                break
+            elseif  (jj>1 && strcmp(strtest(end-1),'.'))
+                jjbreak=jj+1;
                 break
             end
         end
+        jj=jjbreak;
+        
+        
         findescriptionEx=inicr(jj);
         strdescrEx=stri(endtitle+1:findescriptionEx);
         % remove % signs from strdescrEx
@@ -2616,7 +2638,7 @@ else
     if ~isempty(inipointAcknowledgements)
         Acknowledgements=fstring(inipointAcknowledgements+19:inipointCopyright-1);
         if strcmp(Acknowledgements(1),':')
-        Acknowledgements=Acknowledgements(2:end);
+            Acknowledgements=Acknowledgements(2:end);
         end
         
         posPercentageSigns=regexp(Acknowledgements,'%');
@@ -2782,16 +2804,37 @@ for i=1:nseealso
                 DestHyperLink=[Seealsoitem '.html'];
             else % reference is towards a MATLAB function or a function of another toolbox
                 pathdocroot=docroot;
-                % Find path of .html documentation file
-                pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
                 
-                if matlabversion==0
+                if verLessThanFS(9.1)
+                    % Locate file using old function findFile (just up to 2016a)
+                    % Find path of .html documentation file
+                    pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+                    
+                    if ~isempty(pathExtHelpFile)
+                        pathExtHelpFile=char(pathExtHelpFile{1});
+                        addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
+                    else
+                        if  matlabversion==0
+                            error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                        end
+                        
+                    end
+                    
+                else
+                    % Locate file using faster function (just from 2016b)
+                    currentfolder=pwd;
+                    cd(pathdocroot)
+                    pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
                     if isempty(pathExtHelpFile)
                         error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                     end
-                    pathExtHelpFile=char(pathExtHelpFile{1});
-                    addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
-                    
+                    pathExtHelpFile=pathExtHelpFile(1).folder;
+                    cd(currentfolder)
+                    addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep Seealsoitem '.html'];
+                end
+                
+                
+                if matlabversion==0
                     % replace '\' with '/'
                     addSubPath=strrep(addSubPath,'\','/') ;
                     if webhelp==true
@@ -3617,7 +3660,7 @@ if evalCode ==1
                 end
             else
                 warnmsg=['No example has been executed therefore'...
-                    ' coherance control in output structure is impossible'];
+                    ' coherence control in output structure is impossible'];
                 warning('FSDA:publishFS:WrongOut',warnmsg);
             end
         end
@@ -3728,27 +3771,30 @@ if ~isempty(IniRefhttp)
         end
         
         
-        if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',')
+        if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',') || strcmp(namehttp(end),'/')
             namehttp=namehttp(1:end-1);
+            extrasp=1;
+        else
+            extrasp=0;
         end
         
         FinRefhttp(i)=IniRefhttp(i)+length(namehttp);
         
         if i==1 && length(IniRefhttp)==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
-                '<a href="' namehttp '">' namehttp '</a>'...
+                ' <a href="' namehttp '">' namehttp '</a>'...
                 descrHTTP(FinRefhttp(i)+1:end)];
         elseif i==1
             descrHTTPwithref=[descrHTTPwithref descrHTTP(1:IniRefhttp(i)-1) ...
-                '<a href="' namehttp '">' namehttp '</a>'];
+                ' <a href="' namehttp '">' namehttp '</a>'];
             
         elseif i==length(IniRefhttp)
             descrHTTPwithref=[descrHTTPwithref descrHTTP(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
-                '<a href="' namehttp '">' namehttp '</a>'...
-                descrHTTP(FinRefhttp(i):end)];
+                ' <a href="' namehttp '">' namehttp '</a>'...
+                descrHTTP(FinRefhttp(i)+extrasp:end)];
         else
             descrHTTPwithref=[descrHTTPwithref descrlongHTML(FinRefhttp(i-1)+1:IniRefhttp(i)-1) ...
-                '<a href="' namehttp '">' namehttp '</a>'];
+                ' <a href="' namehttp '">' namehttp '</a>'];
         end
     end
 else
