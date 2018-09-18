@@ -56,14 +56,21 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %             there must be a file named "function-alphaEmpty.html" which
 %             contains the template to create the alphabetical list of
 %             functions. The defaults of 'outputDir' are as follows:
-%             if input option webhelp is false  outputDir is 
+%             if input option webhelp is false  outputDir is
 %             (FSDA root)\helpfiles\FSDA path,
-%             else if input option webhelp is true  outputDir is 
+%             else if input option webhelp is true  outputDir is
 %             (FSDA root)\helpfiles\FSDAweb path.
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
 %             Data Types - string
-%
+% Createtopscript : create file topscript.js. Boolean. If Createtopscript
+%             is true (default), this routine assumes there is an input
+%             file inside (FSDA root)\helpfiles\FSDA\includesFS named
+%             topscriptEMPTY.js which contains top navigation bar to
+%             include in each .html file. When this option is set to true file
+%             (FSDA root)\helpfiles\FSDA\includesFS\topscript.js is
+%             created. This file contains the list of files in input option
+%             InputCell and anables to enable the navigation bar.
 %
 % Output:
 %
@@ -143,7 +150,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 % % / = Unix
 fsep=filesep;
 CreateTxtFile=false;
-
+Createtopscript=true;
 
 if nargin>1
     UserOptions=varargin(1:2:length(varargin));
@@ -168,7 +175,8 @@ end
 
 
 if nargin>1
-    options=struct('CreateTxtFile',CreateTxtFile,'outputDir',outputDir,'webhelp',webhelp);
+    options=struct('CreateTxtFile',CreateTxtFile,'outputDir',...
+        outputDir,'webhelp',webhelp,'Createtopscript', Createtopscript);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
@@ -185,6 +193,7 @@ if nargin>1
     
     CreateTxtFile=options.CreateTxtFile;
     outputDir=options.outputDir;
+    Createtopscript=options.Createtopscript;
 end
 
 
@@ -244,7 +253,7 @@ for i=1:length(seqAZ)
     fstring=[fstring(1:iniHTMLTEXT-1) strInsert fstring(iniHTMLTEXT+8:end)];
 end
 
-% Write output file 
+% Write output file
 
 % Print fstring in new HTML file named function-alpha.html
 name='function-alpha';
@@ -292,10 +301,47 @@ if CreateTxtFile
     end
     ReQstring=[ ReQstring ',' 'function-cate.html'];
     
+    
     fprintf(file2ID,'%s',ReQstring);
     
 end
-fclose('all');
 
+if Createtopscript ==true
+    
+    % Open input function-alphaEmpty.html file, put it in a string and do a series of preliminary operations
+    FileTopBottomWithPath=[outputDir fsep 'includesFS' fsep 'topscriptEmpty.js'];
+    
+    %now write inside file function-alpha.txt if requested
+    file3ID=fopen(FileTopBottomWithPath,'r');
+    
+    if file3ID==-1
+
+                    errmsg= ['Input file' FileTopBottomWithPath  'does not exist'];
+        error('FSDA:publishFunctionAlpha:WrngOutInputFiler',errmsg);
+    end
+    
+    % Insert the content of file topscriptEmpty into fstring
+    fstring=fscanf(file3ID,'%c');
+    
+    strInsertTop='"index.html';
+    
+    for i=1:size(InputCell,1)
+        strInsertTop =[ strInsertTop '","' InputCell{i,6} '.html']; %#ok<AGROW>
+    end
+    strInsertTop=[ strInsertTop '","' 'function-cate.html"'];
+    
+    iniHTMLTEXT=regexp(fstring,'LIST_OF_FILES');
+    
+    fstring=[fstring(1:iniHTMLTEXT-1) strInsertTop fstring(iniHTMLTEXT+13:end)];
+    
+    % Open file topscript.js for writing
+    FileTopBottomWithPath=[outputDir fsep 'includesFS' fsep 'topscript.js'];
+    
+    file4ID=fopen(FileTopBottomWithPath,'w');
+    % Write the string fstring into topscript.js
+    fprintf(file4ID,'%s',fstring);
+end
+
+fclose('all');
 end
 %FScategory:UTIHELP
