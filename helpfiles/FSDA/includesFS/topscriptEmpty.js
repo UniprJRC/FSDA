@@ -1,33 +1,19 @@
-// this script manages the bottom bar behavior
-// plz. note that: 'function-alpha.txt' should be put in folder (...)\helpfiles\FSDA
-// 				   'bottomscript.js'   should be put in folder (...)\helpfiles\FSDA\includeFS
-// 				   'bottom.html'       should be put in folder (...)\helpfiles\FSDA\includeFS
+// this script manages the top bar behavior
+// please note that: 	'topscript.js'   should be put in folder (...)\helpfiles\FSDA\includeFS
+// 				   		'top.html'       should be put in folder (...)\helpfiles\FSDA\includeFS
 
 var fname;
 
  
-// get the name of the current file that include bottom.html removing the path with a regular expression
+// get the name of the current PARENT file that include bottom.html removing the path with a regular expression
 fname=document.location.pathname.match(/[^\/]+$/)[0];
 
-// load the file list and store the big string in a variable by a callback f(x)='function(stuff)'
-//$.get('function-alpha.txt', function(stuff){
-
-// define new blank array and...
+// define new array that will be populated by publishfunctionAlpha.m MATLAB function
 var fileArray = new Array( LIST_OF_FILES );
 
-// ...populate it splitting the big string
-//fileArray = stuff.split(",");
-	//fileArray = ["index.html" ,"add2spm.html","FSRaddt.html","FSRB.html","FSRBbsb.html","FSRBeda.html"];
-	
-
-// array index of the current file
-//var ind=$.inArray(fname, fileArray );
-
+// create the array index of the current file
 var ind=fileArray.indexOf(fname);
 
-
-// alert(fileArray.length);
-//alert(ind);
 
 
 if (ind==1){
