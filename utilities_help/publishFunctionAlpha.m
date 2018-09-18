@@ -73,6 +73,8 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %             are created. This files contain an array variable that is the
 %             list of files in input option InputCell and enables
 %             the navigation bar functionality.
+%             Example - 'Createnavbars',false
+%             Data Types - boolean
 %
 % Output:
 %
@@ -178,7 +180,7 @@ end
 
 if nargin>1
     options=struct('CreateTxtFile',CreateTxtFile,'outputDir',...
-        outputDir,'webhelp',webhelp,'Createtopscript', Createnavbars);
+        outputDir,'webhelp',webhelp,'Createnavbars', Createnavbars);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
@@ -195,7 +197,7 @@ if nargin>1
     
     CreateTxtFile=options.CreateTxtFile;
     outputDir=options.outputDir;
-    Createnavbars=options.Createtopscript;
+    Createnavbars=options.Createnavbars;
 end
 
 
