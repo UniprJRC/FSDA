@@ -1,5 +1,5 @@
 function [Y , retain]= rthin(X, P)
-%RTHIN applies independent random thinning to a point pattern.
+%rthin applies independent random thinning to a point pattern.
 %
 %<a href="matlab: docsearchFS('rthin')">Link to the help page for this function</a>
 %
@@ -54,6 +54,7 @@ function [Y , retain]= rthin(X, P)
 %  Optional Output:
 %
 %
+%
 %  See also ksdensity
 %
 %
@@ -61,6 +62,18 @@ function [Y , retain]= rthin(X, P)
 %
 % Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
 % Techniques for Data Analysis", Oxford University Press.
+%
+%
+%
+% Acknowledgements: 
+%
+% This function was ported to matlab from the R spatstat
+% package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au),
+% Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk)
+% for the statistical analysis of spatial point patterns. The algorithm for
+% random thinning was changed in spatstat version 1.42-3. Our matlab
+% porting is based on a previous version. See the rthin documentation in
+% spatstat for more details.
 %
 %
 % Copyright 2008-2018.
@@ -180,6 +193,9 @@ function [Y , retain]= rthin(X, P)
  
 %}
 
+
+%% Beginning of code
+
 n = length(X);
 
 % if the retention probabilities are not provided by the user, retain
@@ -236,17 +252,17 @@ retain = rand(length(pX),1) < pX;
 
 Y = X(retain,:);
 
-    %% this function is ported from the R function rthin from spatstat
+%% this function is ported from the R function rthin from spatstat
 
-    % Acknowledgements: This function was ported to matlab from the R spatstat
-    % package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au),
-    % Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk)
-    % for the statistical analysis of spatial point patterns. The algorithm for
-    % random thinning was changed in spatstat version 1.42-3. Our matlab
-    % porting is based on a previous version. See the rthin documentation in
-    % spatstat for more details.
+% Acknowledgements: This function was ported to matlab from the R spatstat
+% package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au),
+% Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk)
+% for the statistical analysis of spatial point patterns. The algorithm for
+% random thinning was changed in spatstat version 1.42-3. Our matlab
+% porting is based on a previous version. See the rthin documentation in
+% spatstat for more details.
 
-    %{
+%{
     % Skip_example
     % this is the version ported into matlab
 
@@ -297,14 +313,14 @@ Y = X(retain,:);
 
       return(Y)
     }
-    %}
+%}
 
 
-    %{
+%{
     % Skip_example
     % this is a newer version: to be  checked for consistency with older one
 
-    function (X, P, ..., nsim = 1, drop = TRUE)
+function (X, P, ..., nsim = 1, drop = TRUE)
     {
         verifyclass(X, "ppp")
         nX <- npoints(X)
@@ -379,7 +395,7 @@ Y = X(retain,:);
     }
 
 
-    %}
+%}
 
 end
 

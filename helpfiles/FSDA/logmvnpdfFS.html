@@ -21,8 +21,7 @@
      y = logmvnpdfFS(X, mu, Sigma);
      y1=log(mvnpdf(X,mu,Sigma));
      max(abs(y-y1))
-     % 2.842e-14</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Remark: Options X0, eyed, n, and d must be used together.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-   % Remark: Options X0, eyed, n, and d must be used together.</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_6" class="example_module expandableContent"><div id="Example_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option msg.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     % 2.842e-14</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Remark: Options X0, eyed, n, and d must be used together.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div><div id="example_6" class="example_module expandableContent"><div id="Example_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option msg.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     msg=0;
     X0=X;
     eyed=eye(v);
@@ -30,13 +29,13 @@
     %  enables to control the display of the error message on the cov matrix
 </pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> TIME COMPARISON USING TIC TOC.</li></span></a></span></h3><div class="collapse"><p>
      In the examples below we compare the speed of the different solutions
-     logmvnpdfFS with mex function and logmvnpdfFS without mex function
+     logmvnpdfFS with mex function and logmvnpdfFS without mex function<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
 
-     In this code computation time is based on tic toc combined with a series
-     of replications
+    % In this code computation time is based on tic toc combined with a series
+    % of replications
 
-     nn = sample size
-     vv = number of variables<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % nn = sample size
+    % vv = number of variables
     nn=[100 200 500 1000 5000 10000 50000 100000];
     vv=[2 5 10 20];
 
@@ -132,9 +131,41 @@
         end
     end
 
-    hold off;</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> TIME COMPARISON USING TIMEIT FUNCTION.</li></span></a></span></h3><div class="collapse"><p>
-     Remark: timeit function is present from  MATLAB 2013b
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    hold off;</pre></div></div><pre class="codeoutput">n=100 -- v=2
+n=100 -- v=5
+n=100 -- v=10
+n=100 -- v=20
+n=200 -- v=2
+n=200 -- v=5
+n=200 -- v=10
+n=200 -- v=20
+n=500 -- v=2
+n=500 -- v=5
+n=500 -- v=10
+n=500 -- v=20
+n=1000 -- v=2
+n=1000 -- v=5
+n=1000 -- v=10
+n=1000 -- v=20
+n=5000 -- v=2
+n=5000 -- v=5
+n=5000 -- v=10
+n=5000 -- v=20
+n=10000 -- v=2
+n=10000 -- v=5
+n=10000 -- v=10
+n=10000 -- v=20
+n=50000 -- v=2
+n=50000 -- v=5
+n=50000 -- v=10
+n=50000 -- v=20
+n=100000 -- v=2
+n=100000 -- v=5
+n=100000 -- v=10
+n=100000 -- v=20
+</pre><img vspace="5" hspace="5" src="images\logmvnpdfFS_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> TIME COMPARISON USING TIMEIT FUNCTION.</li></span></a></span></h3><div class="collapse"><p>
+     Remark: timeit function is present from  MATLAB 2013b<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     if verLessThan('matlab', '8.2.0')
         warning('FSDA:logmvnpdfFS:MatlabTooOld','This example needs routine timeit which has been introduced in Matlab 2013b')
         warning('FSDA:logmvnpdfFS:MatlabTooOld','You have a version of Matlab which is &lt; 2013b and you cannot run this example')
@@ -214,7 +245,39 @@
         end
 
         hold off;
-    end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Input data. </span>  </a><span class="example_desc">Scalar, Vector or matrix.</span></span></h3> <div class="collapse"> <p><p>n x d data matrix; n observations and d variables. Rows of
+    end</pre></div></div><pre class="codeoutput">n=100 -- v=2
+n=100 -- v=5
+n=100 -- v=10
+n=100 -- v=20
+n=200 -- v=2
+n=200 -- v=5
+n=200 -- v=10
+n=200 -- v=20
+n=500 -- v=2
+n=500 -- v=5
+n=500 -- v=10
+n=500 -- v=20
+n=1000 -- v=2
+n=1000 -- v=5
+n=1000 -- v=10
+n=1000 -- v=20
+n=5000 -- v=2
+n=5000 -- v=5
+n=5000 -- v=10
+n=5000 -- v=20
+n=10000 -- v=2
+n=10000 -- v=5
+n=10000 -- v=10
+n=10000 -- v=20
+n=50000 -- v=2
+n=50000 -- v=5
+n=50000 -- v=10
+n=50000 -- v=20
+n=100000 -- v=2
+n=100000 -- v=5
+n=100000 -- v=10
+n=100000 -- v=20
+</pre><img vspace="5" hspace="5" src="images\logmvnpdfFS_02.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Input data. </span>  </a><span class="example_desc">Scalar, Vector or matrix.</span></span></h3> <div class="collapse"> <p><p>n x d data matrix; n observations and d variables. Rows of
                Y represent observations, and columns represent variables or coordinates.</p> <p>
                The (log of the) probability density of the multivariate
                normal distribution will be evaluated at each row of the

@@ -30,7 +30,7 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [RAW,REW,C]=mveeda(Ycont,'msg',0,'plots',1);</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
+    [RAW,REW,C]=mveeda(Ycont,'msg',0,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\mveeda_01.png" alt=""> </p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
@@ -157,8 +157,8 @@
 
  This function follows the lines of MATLAB/R code developed during the
  years by many authors.</p> <p>
- For more details see<a href="http://www.econ.kuleuven.be/public/NDBAE06/programs/">http://www.econ.kuleuven.be/public/NDBAE06/programs/</a>
- and the R library robustbase<a href="http://robustbase.r-forge.r-project.org/">http://robustbase.r-forge.r-project.org/</a>/
+ For more details see <a href="http://www.econ.kuleuven.be/public/NDBAE06/programs">http://www.econ.kuleuven.be/public/NDBAE06/programs</a>/
+ and the R library robustbase <a href="http://robustbase.r-forge.r-project.org">http://robustbase.r-forge.r-project.org</a>/
  The core of these routines, e.g. the resampling approach, however, has
  been completely redesigned, with considerable increase of the
  computational performance.</p><p>

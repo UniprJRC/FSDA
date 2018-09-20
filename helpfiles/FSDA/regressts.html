@@ -24,7 +24,7 @@
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
     model.seasonal=102;         % two harmonics with time varying seasonality
-    out=regressts(y,'model',model,'plots',1);    </pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of input option bsb and dispresults.</li></span></a></span></h3><div class="collapse"><p>
+    out=regressts(y,'model',model,'plots',1);    </pre></div></div><img vspace="5" hspace="5" src="images\regressts_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of input option bsb and dispresults.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, two harmonics for seasonal component and
      varying amplitude using a linear trend.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     model=struct;
@@ -41,9 +41,9 @@
     model.seasonal=104;         % four harmonics with time varying seasonality
     model.posLS=60;             % level shift in position t=60
     out=regressts(y,'model',model,'plots',1,'StartDate',StartDate);    </pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare scaled residuals using or not correction factors.</li></span></a></span></h3><div class="collapse"><p>
-     Example of the use of input option model and plots.
-     Model with linear trend, two harmonics for seasonal component and
-     varying amplitude using a linear trend.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of the use of input option model and plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Model with linear trend, two harmonics for seasonal component and
+    % varying amplitude using a linear trend.
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
@@ -140,7 +140,7 @@
                the small sample correction factor is used. The default
                value of smallsamplecor is 1, that is the correction is
                used. See
-              <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
+               <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
                for further details about the correction factor. The
                default value of smallsamplecor is false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'smallsamplecor',false

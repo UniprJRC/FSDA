@@ -23,13 +23,13 @@
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',1,'init',30);
     % Produce monitoring MD plot with all the default options
-    malfwdplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
+    malfwdplot(out)</pre></div></div><img vspace="5" hspace="5" src="images\malfwdplot_01.png" alt=""> <img vspace="5" hspace="5" src="images\malfwdplot_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
      Initialize structure standard<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     standard=struct;
     standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
-    malfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
+    malfwdplot(out,'standard',standard)</pre></div></div><img vspace="5" hspace="5" src="images\malfwdplot_03.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
      Initialize structure fground<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -49,8 +49,8 @@
     % are shown as specified in bground.bstyle
     bground.bstyle='faint';
     malfwdplot(out,'bground',bground)</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p>
-       (brushing is done only once using a rectangular selection tool)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   (brushing is done only once using a rectangular selection tool)
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
@@ -103,12 +103,12 @@
     % now LineColor is not a valid RGB vector, but red (default) will be used
     datatooltip.LineColor = [123 41 12 32 1];
     malfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-     Another example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
-     The user can highlight the trajectories of the units that are in
-     the subset at a given step with a mouse click in proximity
-     of that step. A right click will terminate the exercise.
-     To activate this modality, we set the field SubsetLinesColor,
-     which specifies the color used to highlight the trajectories.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Another example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % The user can highlight the trajectories of the units that are in
+    % the subset at a given step with a mouse click in proximity
+    % of that step. A right click will terminate the exercise.
+    % To activate this modality, we set the field SubsetLinesColor,
+    % which specifies the color used to highlight the trajectories.
     datatooltip = struct;
     datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
     malfwdplot(out,'datatooltip',datatooltip);
@@ -119,8 +119,8 @@
     datatooltip = struct;
     datatooltip.SubsetLinesColor = 999;
     malfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
-       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p>
-       (brushing is done only once using a rectangular selection tool)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   (brushing is done only once using a rectangular selection tool)
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
@@ -142,9 +142,9 @@
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
     malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
-       Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p>
-        Labels are added for the brushed units. Persistent labels appear in the plot which has
-       been brushed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %    Labels are added for the brushed units. Persistent labels appear in the plot which has
+    %   been brushed
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';

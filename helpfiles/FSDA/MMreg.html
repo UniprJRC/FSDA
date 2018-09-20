@@ -10,8 +10,8 @@
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=MMreg(ycont,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
-     MMreg using the hyperbolic rho function.
-     Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     MMreg using the hyperbolic rho function.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Run this code to see the output shown in the help file
     n=200;
     p=3;
     randn('state', 123456);
@@ -22,8 +22,8 @@
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
     [out]=MMreg(ycont,X,'Srhofunc','optimal');</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
-     MMreg using the OLS estimates ac InitialEst.
-     Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     MMreg using the OLS estimates ac InitialEst.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Run this code to see the output shown in the help file
     n=200;
     p=3;
     randn('state', 123456);
@@ -65,7 +65,8 @@
     % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
     % By simply changing the seed to 543 (state=543), using a Bonferroni size
     %of 1%, no unit is declared as outlier and just half of them using the 99%
-    %band.</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.61 seconds 
+</pre><img vspace="5" hspace="5" src="images\MMreg_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=30;
     p=3;
     randn('state', 123456);
@@ -219,8 +220,8 @@
 
  This function follows the lines of MATLAB/R code developed during the
  years by many authors.</p> <p>
- For more details see<a href="http://www.econ.kuleuven.be/public/NDBAE06/programs/">http://www.econ.kuleuven.be/public/NDBAE06/programs/</a>
- and the R library robustbase<a href="http://robustbase.r-forge.r-project.org/">http://robustbase.r-forge.r-project.org/</a>/
+ For more details see <a href="http://www.econ.kuleuven.be/public/NDBAE06/programs">http://www.econ.kuleuven.be/public/NDBAE06/programs</a>/
+ and the R library robustbase <a href="http://robustbase.r-forge.r-project.org">http://robustbase.r-forge.r-project.org</a>/
  The core of these routines, e.g. the resampling approach, however, has
  been completely redesigned, with considerable increase of the
  computational performance.</p><p>

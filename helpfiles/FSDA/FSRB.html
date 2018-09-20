@@ -38,7 +38,21 @@
     intercept=1;
 
     % function call
-    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
+    out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">
+out = 
+
+  struct with fields:
+
+     ListOut: [1&times;18 double]
+    outliers: [1&times;18 double]
+         mdr: [273&times;2 double]
+          Un: [273&times;11 double]
+        nout: [2&times;5 double]
+        beta: [5&times;1 double]
+       scale: 1.4951e+04
+       class: 'FSRB'
+
+</pre><img vspace="5" hspace="5" src="images\FSRB_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
      nsamp is the number of subsamples to use in the frequentist analysis of first
      year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
@@ -262,7 +276,7 @@
     xlabel('QUANTITY in tons')
     ylabel('VALUE in 1000 euro')
     title('Frequentist - 2004');
-</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+</pre></div></div><img vspace="5" hspace="5" src="images\FSRB_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_10.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     % nsamp is the number of subsamples to use in the frequentist analysis of first
     % year, in order to find initial subset using LMS.
@@ -338,7 +352,7 @@
 
     % Run Bayesian Forward Search for the 2nd year using the prior based on
     % the first year.
-    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div><img vspace="5" hspace="5" src="images\FSRB_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_14.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     XX=load('BankProfit.txt');
     R=load('BankProfitR.txt');
 
@@ -406,7 +420,57 @@
         end
         % Add on the plot the variable name
         text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)
-    end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+    end</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
+--------------------------------------------------
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=1830 because
+rmin(1830,1903)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=1829
+Superimposition stopped because r_{min}(1851,1859)&gt;99.9% envelope
+Subsample of 1858 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=45
+Summary of the exceedances
+           1          99         999        9999       99999
+         838          77          76          73          73
+
+</pre><img vspace="5" hspace="5" src="images\FSRB_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_16.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_17.png" alt=""> <h2>Plot the outliers with a different symbol using a 3x3 layout<a name="5"></a></h2><pre class="codeinput">    selout=out.ListOut;
+    selin=setdiff(1:n,selout);
+
+    close <span class="string">all</span>
+    <span class="comment">% just in case user has additional function subtightplot</span>
+    <span class="comment">% http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot</span>
+    make_it_tight = false;
+    <span class="keyword">if</span> make_it_tight == true &amp;&amp; exist(<span class="string">'subtightplot'</span>,<span class="string">'file'</span>) ==2
+        subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);
+    <span class="keyword">else</span>
+        clear <span class="string">subplot</span>;
+    <span class="keyword">end</span>
+    <span class="comment">% sel = panels in which yticks do not have to be removed</span>
+    sel=[1 4 7];
+    miny=min(y);
+    maxy=max(y);
+    <span class="keyword">for</span> j=1:9
+        subplot(3,3,j)
+        hold(<span class="string">'on'</span>)
+        plot(X(selin,j),y(selin),<span class="string">'+'</span>)
+        plot(X(selout,j),y(selout),<span class="string">'ro'</span>)
+
+        ylim([miny maxy])
+        xlim([min(X(:,j)) max(X(:,j))])
+        <span class="keyword">if</span> isempty(intersect(j,sel))
+            set(gca,<span class="string">'YTickLabel'</span>,<span class="string">''</span>)
+        <span class="keyword">end</span>
+        <span class="comment">% Add on the plot the variable name</span>
+        text(0.75,0.1,[<span class="string">'x'</span> num2str(j)],<span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'FontSize'</span>,16)
+    <span class="keyword">end</span>
+</pre><img vspace="5" hspace="5" src="images\FSRB_18.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -594,6 +658,6 @@
                units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRB'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
  Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
  Regression for Fraud Detection, "International Statistical Review",
-<a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
+ <a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
  Regression with the Forward Search: Theory and Data Analysis, "Test",
  Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

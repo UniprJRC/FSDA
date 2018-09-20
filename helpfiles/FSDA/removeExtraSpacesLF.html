@@ -6,8 +6,8 @@
            4) symbol '</p>\[' is followed by one or more spaces and a CR;
            5) symbol '\]<p>' is preceded by one or more spaces and a CR.</p> <p>
            6) symbol '\\' is preceded by one or more spaces and a CR.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="removeExtraSpacesLF.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_newTxt"><code>newTxt</code></a>=removeExtraSpacesLF(<a class="intrnllnk" href="#inputarg_txt"><code>txt</code></a>)</code></span>Create a string with unnecesseray line feeds and without text justification.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Create a string with unnecesseray line feeds and without text justification.</li></span></a></span></h3><div class="collapse"><p>
-     Create an input string containing a series of unwanted features.
-     The input string is extracted from the head of the FSDA function tclust.m.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Create an input string containing a series of unwanted features.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % The input string is extracted from the head of the FSDA function tclust.m.
     FileWithFullPath=which('tclust');
     filename=FileWithFullPath;
     fileID = fopen(char(filename), 'r');

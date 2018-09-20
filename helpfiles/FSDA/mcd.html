@@ -14,7 +14,16 @@
     % Contaminated data
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    RAW=mcd(Ycont,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcd monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Warning: File: D:\MATLAB\FSDA\multivariate\mcd.m Line: 1379 Column: 14
+Defining "meanvct" in the nested function shares it with the parent function.
+In a future release, to share "meanvct" between parent and nested functions,
+explicitly define it in the parent function. 
+Warning: File: D:\MATLAB\FSDA\multivariate\mcd.m Line: 1379 Column: 22
+Defining "covmat" in the nested function shares it with the parent function.  In
+a future release, to share "covmat" between parent and nested functions,
+explicitly define it in the parent function. 
+Total estimated time to complete MCD:  1.03 seconds 
+</pre><img vspace="5" hspace="5" src="images\mcd_01.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_04.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcd monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     v=3;
     randn('state', 123456);
@@ -34,7 +43,8 @@
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
-    [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (plots using the scale of Pison et al).</li></span></a></span></h3><div class="collapse"><p>
+    [RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.97 seconds 
+</pre><img vspace="5" hspace="5" src="images\mcd_05.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_06.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_07.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_08.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (plots using the scale of Pison et al).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X = load('aircraft.txt');
     Y = X(:,1:end-1);
@@ -50,7 +60,8 @@
     ylimy=[0 36];
     malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylimy);
     title('Corrected reweighted MCD')
-</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
+</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.19 seconds 
+</pre><img vspace="5" hspace="5" src="images\mcd_09.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
        since observations (rows) with missing or infinite values will
        be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',1/4
 </code>,<code> 'nsamp',10000
@@ -149,7 +160,7 @@
                the small sample correction factor is used. The default
                value of smallsamplecor is 1, that is the correction is
                used. See
-              <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
+               <a href="http://users.ugent.be/~svaelst/publications/corrections.pdf">http://users.ugent.be/~svaelst/publications/corrections.pdf</a>
                for further details about the correction factor. </p>	<p class="description_valueexample">       <strong>Example: </strong><code>
 </code>               'smallsamplecor',1</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_RAW" class="clearfix"></div><h3 id="output_argument_RAW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RAW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
 
@@ -250,9 +261,9 @@
  This function follows the lines of MATLAB/R code developed during the
  years by many authors. In particular, parts of the code rely on the LIBRA
  mcd implementation of Hubert and Verboven. For more details, see:</p> <p>
-<a href="http://wis.kuleuven.be/stat/robust/LIBRA.html">http://wis.kuleuven.be/stat/robust/LIBRA.html</a>,
-<a href="http://www.econ.kuleuven.be/public/NDBAE06/programs/">http://www.econ.kuleuven.be/public/NDBAE06/programs/</a>
- and the R library Robustbase<a href="http://robustbase.r-forge.r-project.org/">http://robustbase.r-forge.r-project.org/</a>/
+ <a href="http://wis.kuleuven.be/stat/robust/LIBRA.html">http://wis.kuleuven.be/stat/robust/LIBRA.html</a>,
+ <a href="http://www.econ.kuleuven.be/public/NDBAE06/programs">http://www.econ.kuleuven.be/public/NDBAE06/programs</a>/
+ and the R library Robustbase <a href="http://robustbase.r-forge.r-project.org">http://robustbase.r-forge.r-project.org</a>/
  The core of our routines, e.g. the resampling approach, however, has been
  completely redesigned, with considerable increase of the computational
  performance. Note that, for the moment, FSDA does not adopt the 'divide

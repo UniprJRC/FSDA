@@ -5,7 +5,10 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % Required input arguments:
 %
-%   y:          A vector with n elements that contains the response variables.
+%    y:         Response variable. Vector. Response variable, specified as
+%               a vector of length n, where n is the number of
+%               observations. Each entry in y is the response for the
+%               corresponding row of X.
 %               Missing values (NaN's) and infinite values (Inf's) are
 %               allowed, since observations (rows) with missing or infinite
 %               values will automatically be excluded from the

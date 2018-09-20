@@ -13,7 +13,7 @@
     plotslrt.ylim=[-6.2 6.2];
     warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,[0.5 0 0.5 0 0],'laAround',[-1 -0.5 0 1/3 0.5 1],'init',58,'plotslrt',plotslrt);
-    % Compare this plot with Figure 4.24 p. 182 of ARC (2004)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>EmiliaRomagna data (demographic variables).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Compare this plot with Figure 4.24 p. 182 of ARC (2004)</pre></div></div><img vspace="5" hspace="5" src="images\FSMfan_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>EmiliaRomagna data (demographic variables).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load('emilia2001')
     Y=emilia2001.data;
     % Replace zeros with min values for variables specified in sel

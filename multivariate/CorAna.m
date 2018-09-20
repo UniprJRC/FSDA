@@ -574,7 +574,8 @@ function out=CorAna(N, varargin)
 
 %{
     %% CorAna with name pairs.
-    % Input is the contingency table, labels for rows and columns are supplied
+    % Input is the contingency table, labels for rows and columns are
+    % supplied.
     % Data are read from the txt file
     load('smoke.txt')
     labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'};

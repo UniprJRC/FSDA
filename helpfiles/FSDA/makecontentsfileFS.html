@@ -12,8 +12,8 @@
     %  Note that force is false and therefore just output cell is created.
     out=makecontentsfileFS('dirpath',dirpathsel,'FilterFileContent','%FScategory:','force',false)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of options dirpath and  FilterFileContent.</li></span></a></span></h3><div class="collapse"><p>
      Preliminary step: create a list of the subfolders which have to be
-     included, using routine findDir with options 'InclDir' and 'ExclDir'.
-     Find full path of the main root where FSDA is installed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     included, using routine findDir with options 'InclDir' and 'ExclDir'.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Find full path of the main root where FSDA is installed
     FileName='addFSDA2path';
     FullPath=which(FileName);
     root=FullPath(1:end-length(FileName)-3);

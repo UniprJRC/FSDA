@@ -9,13 +9,90 @@
     else
         out=CorAna(N);
     end</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with name pairs.</li></span></a></span></h3><div class="collapse"><p>
-     Input is the contingency table, labels for rows and columns are supplied
-     Data are read from the txt file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Input is the contingency table, labels for rows and columns are
+     supplied.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Data are read from the txt file
     load('smoke.txt')
     labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'};
     labels_columns= {'None' 'Light' 'Medium' 'Heavy'};
     N=crosstab(smoke(:,1),smoke(:,2));
-    out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAna with original data matrix as input.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia      Accounted_for    Cumulative
+             ______________    __________    _____________    __________
+
+    dim_1        0.27342         0.074759        0.87756       0.87756  
+    dim_2        0.10009         0.010017        0.11759       0.99515  
+    dim_3       0.020337       0.00041357      0.0048547             1  
+
+ROW POINTS
+Results for dimension: 1
+                         Scores      CntrbPnt2In    CntrbDim2In
+                        _________    ___________    ___________
+
+    Senior_Managers     -0.065768     0.0032977      0.092232  
+    Junior_Managers       0.25896      0.083659        0.5264  
+    Senior_Employees     -0.38059       0.51201       0.99903  
+    Junior_Employees      0.23295       0.33097       0.94193  
+    Secretaries          -0.20109      0.070064       0.86535  
+
+Results for dimension: 2
+                         Scores     CntrbPnt2In    CntrbDim2In
+                        ________    ___________    ___________
+
+    Senior_Managers     -0.19374       0.21356        0.80034 
+    Junior_Managers      -0.2433       0.55115        0.46468 
+    Senior_Employees    -0.01066     0.0029976     0.00078372 
+    Junior_Employees    0.057744       0.15177       0.057876 
+    Secretaries         0.078911      0.080522        0.13326 
+
+COLUMN POINTS
+Results for dimension: 1
+               Scores     CntrbPnt2In    CntrbDim2In
+              ________    ___________    ___________
+
+    None      -0.39331        0.654        0.99402  
+    Light     0.099456      0.03085        0.32673  
+    Medium     0.19632      0.16562        0.98185  
+    Heavy      0.29378      0.14954         0.6844  
+
+Results for dimension: 2
+               Scores      CntrbPnt2In    CntrbDim2In
+              _________    ___________    ___________
+
+    None      -0.030492      0.029336      0.0059745 
+    Light       0.14106       0.46317        0.65729 
+    Medium    0.0073591     0.0017368      0.0013796 
+    Heavy      -0.19777       0.50575        0.31015 
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                          Mass       Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                        ________    _________    ________    _________    _____________    _____________    _____________    _____________
+
+    Senior_Managers     0.056995    -0.065768    -0.19374    0.0026729      0.0032977          0.21356        0.092232           0.80034  
+    Junior_Managers     0.093264      0.25896     -0.2433     0.011881       0.083659          0.55115          0.5264           0.46468  
+    Senior_Employees     0.26425     -0.38059    -0.01066     0.038314        0.51201        0.0029976         0.99903        0.00078372  
+    Junior_Employees     0.45596      0.23295    0.057744     0.026269        0.33097          0.15177         0.94193          0.057876  
+    Secretaries          0.12953     -0.20109    0.078911     0.006053       0.070064         0.080522         0.86535           0.13326  
+
+Overview COLUMN POINTS
+               Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+              _______    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    None      0.31606    -0.39331    -0.030492     0.049186         0.654          0.029336         0.99402         0.0059745  
+    Light     0.23316    0.099456      0.14106    0.0070588       0.03085           0.46317         0.32673           0.65729  
+    Medium    0.32124     0.19632    0.0073591      0.01261       0.16562         0.0017368         0.98185         0.0013796  
+    Heavy     0.12953     0.29378     -0.19777     0.016335       0.14954           0.50575          0.6844           0.31015  
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><img vspace="5" hspace="5" src="images\CorAna_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAna with original data matrix as input.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load smoke
     out=CorAna(smoke.data,'datamatrix',true);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with supplementary rows and supplementary columns.</li></span></a></span></h3><div class="collapse"><p>
      Children data
@@ -56,7 +133,114 @@
     Sup=struct;
     Sup.r=Nsupr;
     Sup.c=Nsupc;
-    out=CorAna(Nactive,'Sup',Sup);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
+    out=CorAna(Nactive,'Sup',Sup);</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia     Accounted_for    Cumulative
+             ______________    _________    _____________    __________
+
+    dim_1        0.18815        0.035402       0.57043        0.57043  
+    dim_2        0.11452        0.013115       0.21132        0.78175  
+    dim_3       0.085447       0.0073011       0.11764        0.89939  
+    dim_4       0.079018       0.0062439       0.10061              1  
+
+ROW POINTS
+Results for dimension: 1
+                      Scores      CntrbPnt2In    CntrbDim2In
+                     _________    ___________    ___________
+
+    money             -0.11527      0.045499        0.42845 
+    future             0.17645       0.17567        0.71562 
+    unemployment      -0.21223       0.22616        0.87492 
+    circumstances      0.40092      0.062745        0.58397 
+    hard              -0.24998      0.029938        0.88369 
+    economic           0.35396       0.12005        0.48362 
+    egoism            0.059889     0.0068096       0.073339 
+    employment        -0.13675      0.026215         0.1643 
+    finances            -0.237      0.027904        0.27623 
+    war                0.21682      0.021688        0.74907 
+    housing          -0.006681    4.1183e-05     0.00072894 
+    fear               0.20335       0.11666        0.90069 
+    health             0.11165      0.020571        0.79911 
+    work              -0.21168       0.12005        0.75402 
+
+Results for dimension: 2
+                       Scores      CntrbPnt2In    CntrbDim2In
+                     __________    ___________    ___________
+
+    money             -0.020046     0.0037146       0.012958 
+    future             0.097863       0.14587        0.22013 
+    unemployment       0.070718      0.067786       0.097145 
+    circumstances      -0.33099       0.11544          0.398 
+    hard               -0.06765     0.0059184       0.064717 
+    economic           -0.32072       0.26604        0.39705 
+    egoism             0.025667     0.0033763       0.013471 
+    employment         -0.21539       0.17555         0.4076 
+    finances            0.20598      0.056902        0.20867 
+    war                0.074663     0.0069419       0.088821 
+    housing            -0.12824       0.04096        0.26858 
+    fear               0.058068      0.025678       0.073446 
+    health           -0.0042912    8.2025e-05      0.0011804 
+    work               -0.10888      0.085745        0.19951 
+
+COLUMN POINTS
+Results for dimension: 1
+                            Scores     CntrbPnt2In    CntrbDim2In
+                           ________    ___________    ___________
+
+    unqualified            -0.20932       0.2511        0.67619  
+    cep                    -0.13858      0.18297        0.64492  
+    bepc                    0.10876     0.067579         0.3119  
+    high_school_diploma     0.27404      0.37976        0.75817  
+    university              0.23123      0.11859        0.31171  
+
+Results for dimension: 2
+                            Scores      CntrbPnt2In    CntrbDim2In
+                           _________    ___________    ___________
+
+    unqualified             0.080727      0.10082        0.10058  
+    cep                    -0.056047     0.080794        0.10549  
+    bepc                    0.028483     0.012512       0.021393  
+    high_school_diploma      0.12134      0.20099        0.14865  
+    university              -0.31786      0.60488          0.589  
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                       Mass       Score_1      Score_2       Inertia      CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                     ________    _________    __________    __________    _____________    _____________    _____________    _____________
+
+    money             0.12123     -0.11527     -0.020046     0.0037595       0.045499        0.0037146          0.42845         0.012958  
+    future            0.19975      0.17645      0.097863     0.0086904        0.17567          0.14587          0.71562          0.22013  
+    unemployment      0.17776     -0.21223      0.070718     0.0091512        0.22616         0.067786          0.87492         0.097145  
+    circumstances    0.013819      0.40092      -0.33099     0.0038038       0.062745          0.11544          0.58397            0.398  
+    hard              0.01696     -0.24998      -0.06765     0.0011994       0.029938        0.0059184          0.88369         0.064717  
+    economic          0.03392      0.35396      -0.32072     0.0087874        0.12005          0.26604          0.48362          0.39705  
+    egoism           0.067211     0.059889      0.025667     0.0032871      0.0068096        0.0033763         0.073339         0.013471  
+    employment       0.049623     -0.13675      -0.21539     0.0056484       0.026215          0.17555           0.1643           0.4076  
+    finances         0.017588       -0.237       0.20598     0.0035763       0.027904         0.056902          0.27623          0.20867  
+    war              0.016332      0.21682      0.074663      0.001025       0.021688        0.0069419          0.74907         0.088821  
+    housing          0.032663    -0.006681      -0.12824     0.0020001     4.1183e-05          0.04096       0.00072894          0.26858  
+    fear             0.099874      0.20335      0.058068     0.0045852        0.11666         0.025678          0.90069         0.073446  
+    health           0.058417      0.11165    -0.0042912    0.00091131       0.020571       8.2025e-05          0.79911        0.0011804  
+    work             0.094849     -0.21168      -0.10888     0.0056364        0.12005         0.085745          0.75402          0.19951  
+
+Overview COLUMN POINTS
+                             Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                           ________    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    unqualified             0.20289    -0.20932     0.080727     0.013146        0.2511          0.10082          0.67619          0.10058   
+    cep                     0.33731    -0.13858    -0.056047     0.010044       0.18297         0.080794          0.64492          0.10549   
+    bepc                    0.20226     0.10876     0.028483    0.0076704      0.067579         0.012512           0.3119         0.021393   
+    high_school_diploma     0.17902     0.27404      0.12134     0.017732       0.37976          0.20099          0.75817          0.14865   
+    university             0.078518     0.23123     -0.31786     0.013468       0.11859          0.60488          0.31171            0.589   
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><img vspace="5" hspace="5" src="images\CorAna_02.png" alt=""> <img vspace="5" hspace="5" src="images\CorAna_03.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix.</p> <p>
                  In this last case N=crosstab(N(:,1),N(:,2)). As default
                  procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'k',3

@@ -38,7 +38,31 @@
     out=tclust(Y,3,0.1,10000,'plots',plots);
     title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 
-    cascade</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.52 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 16.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.96 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 16.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.71 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 18.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.37 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 15.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.52 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 17.6667%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.11 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 21.6667%
+</pre><img vspace="5" hspace="5" src="images\tclust_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     Y=load('geyser2.txt');
     nsamp=20;
     [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -60,7 +84,19 @@
     restrfactor=1;
     out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
     title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
-    cascade</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+    cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.94 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 20.2%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  2.06 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 26.8%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  2.27 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 26.2%
+</pre><img vspace="5" hspace="5" src="images\tclust_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
       the components is very overlapped with another one. A 10 per cent
@@ -88,8 +124,8 @@
         x &lt;- rbind (
             rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
             rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
-            noise)
-    <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+            noise)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    
     close all
     Y=load('structurednoise.txt');
     out=tclust(Y(:,1:2),2,0.1,100,'plots',1)
@@ -174,7 +210,7 @@
     plot(MIXCLA(:,1),MIXCLA(:,2))
     xlabel('Number of groups')
     ylabel('MIXCLA (ICL)')
-    xlim([1 maxk])</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+    xlim([1 maxk])</pre></div></div><img vspace="5" hspace="5" src="images\tclust_10.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     n1=100;     % Generate 5 groups in 5 dimensions

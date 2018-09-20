@@ -65,10 +65,10 @@
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X(:,2:end),'group',id);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Mixture of regression with prefixed average overlap.</li></span></a></span></h3><div class="collapse"><p>
      Generate mixture of regression hyperplanes using an average overlapping at
-     centroids =0.01.
-     1) we use all the default options for Beta (random normal for each group with
-     mu=0.5 and sigma=1)
-     2) X in the second dimension for the third group is generated according to U(1, 3)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     centroids =0.01.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % 1) we use all the default options for Beta (random normal for each group with
+    % mu=0.5 and sigma=1)
+    % 2) X in the second dimension for the third group is generated according to U(1, 3)
     rng(10,'twister')
     % Specify the distribution of the explanatory variables
     Xdistrib=struct;
@@ -135,8 +135,8 @@
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X,'group',id)</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 5:  Another international trade data example.</li></span></a></span></h3><div class="collapse"><p>
      Here the strips of certain groups are limited up to certain values
-     There is no intercept.
-     In this example we compare high and low overlap among regression hyperplanes<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     There is no intercept.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % In this example we compare high and low overlap among regression hyperplanes
     p=1;
     k=4;
     Xdistrib=struct;

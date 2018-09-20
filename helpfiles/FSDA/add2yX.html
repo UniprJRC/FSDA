@@ -10,7 +10,7 @@
     [H,AX,BigAx] = gplotmatrix(X,y,group);
     % The legengs are not clickable
     add2yX(H,AX,BigAx)
-    % Now the legends become clickable</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare gplotmatrix and addyX with yXplot for IRIS data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Now the legends become clickable</pre></div></div><img vspace="5" hspace="5" src="images\add2yX_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare gplotmatrix and addyX with yXplot for IRIS data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load fisheriris;
     % Create scatter plot matrix with specific legends
     % plot Sepal length (y) againt the other variables
@@ -21,7 +21,44 @@
     add2yX(H,AX,BigAx)
     % Now the legends become clickable
     % It is easier to call directly function yXplot
-    [H,AX,BigAx]=yXplot(meas(:,1),meas(:,2:4),species)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option bivarfit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [H,AX,BigAx]=yXplot(meas(:,1),meas(:,2:4),species)</pre></div></div><pre class="codeoutput">
+H(:,:,1) =
+
+    1.0010    2.0010    3.0010
+
+
+H(:,:,2) =
+
+    4.0010    5.0010    6.0010
+
+
+H(:,:,3) =
+
+     0     0     0
+
+
+AX = 
+
+  1&times;3 Axes array:
+
+    Axes    Axes    Axes
+
+
+BigAx = 
+
+  Axes (PlotMatrixBigAx) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1300 0.1100 0.7750 0.8150]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\add2yX_02.png" alt=""> <img vspace="5" hspace="5" src="images\add2yX_03.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option bivarfit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     load fisheriris;
     % Create scatter plot matrix with specific legends
     % plot Sepal length (y) againt the other variables
@@ -29,7 +66,44 @@
     X=meas(:,2:4);
     [H,AX,BigAx]=yXplot(meas(:,1),meas(:,2:4),species)
     % add a regression line to each group
-    add2yX(H,AX,BigAx,'bivarfit','0')</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_H" class="clearfix"> </div> <h3 id="input_argument_H" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>H</code> &#8212; handles to the lines on the graphs. </span>  </a><span class="example_desc">2D or 3D array.</span></span></h3> <div class="collapse"> <p><p>H is an array of handles to the
+    add2yX(H,AX,BigAx,'bivarfit','0')</pre></div></div><pre class="codeoutput">
+H(:,:,1) =
+
+    1.0011    2.0011    3.0011
+
+
+H(:,:,2) =
+
+    4.0011    5.0011    6.0011
+
+
+H(:,:,3) =
+
+     0     0     0
+
+
+AX = 
+
+  1&times;3 Axes array:
+
+    Axes    Axes    Axes
+
+
+BigAx = 
+
+  Axes (PlotMatrixBigAx) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1300 0.1100 0.7750 0.8150]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\add2yX_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_H" class="clearfix"> </div> <h3 id="input_argument_H" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>H</code> &#8212; handles to the lines on the graphs. </span>  </a><span class="example_desc">2D or 3D array.</span></span></h3> <div class="collapse"> <p><p>H is an array of handles to the
                    lines on the graphs. The array's third dimension
                    corresponds to groups in the grouping variable.</p> <p>
                    For more details see the output arguments of gplotmatrix.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_AX" class="clearfix"> </div> <h3 id="input_argument_AX" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>AX</code> &#8212; handles to the axes of the individual plots. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>AX is a

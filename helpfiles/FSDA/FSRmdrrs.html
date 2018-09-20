@@ -39,8 +39,8 @@
 </pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Same example as before but now the values of n1 and n2 (size of the
      two groups) have been increased.</li></span></a></span></h3><div class="collapse"><p> In this case it is possible to see
      that there are two trajectories of minimum deletion residual which go
-     outside the envelopes in the central part of the search.
-     In this case the two groups have roughly the same size (n1=140 and n2=150)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     outside the envelopes in the central part of the search.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % In this case the two groups have roughly the same size (n1=140 and n2=150)
     close all
     rng(2);
     b1=[1 1];
@@ -75,20 +75,20 @@
      corresponds to the searches initialized using the units coming from
      the smaller group. Note that due to the partial overlapping after the
      peak in steps 60-110 there is a gradual decrease. When m is around
-     160, most of the units from this group tend to get out of the subset.
-     Therefore the value of mdr becomes much smaller than it should be.
-     Please note the dip around step m=165, which is due to entrance of the
-     units of the second larger group. This trajectory just after the dip
-     collapses into the trajectory which starts from the second group.
-     Around steps 90-110 it is also possible to see two trajectories
-     inside the bands which collaps into one around m=120. Please use
-     mdrrsplot with option databrush in order to explore the units
-     belonging to subset. Here we limit ourselves to notice that around m
-     =180 all the units from second group are included into subset (plus
-     some of group 1 given that the two groups partially overlap). Also
-     notice once again the decrease in the unique trajectory of minimum
-     deletion residual after m around 180 which is due to the entry of the
-     units of the first smaller group.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     160, most of the units from this group tend to get out of the subset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Therefore the value of mdr becomes much smaller than it should be.
+    % Please note the dip around step m=165, which is due to entrance of the
+    % units of the second larger group. This trajectory just after the dip
+    % collapses into the trajectory which starts from the second group.
+    % Around steps 90-110 it is also possible to see two trajectories
+    % inside the bands which collaps into one around m=120. Please use
+    % mdrrsplot with option databrush in order to explore the units
+    % belonging to subset. Here we limit ourselves to notice that around m
+    % =180 all the units from second group are included into subset (plus
+    % some of group 1 given that the two groups partially overlap). Also
+    % notice once again the decrease in the unique trajectory of minimum
+    % deletion residual after m around 180 which is due to the entry of the
+    % units of the first smaller group.
     close all
     rng(2);
     b1=[1 1];

@@ -21,10 +21,24 @@
     ycont = y;
     ycont(1:kk)=ycont(1:kk)+7;
     [outS]=Sreg(ycont,X);
-    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
-     Determine, e.g., an S estimate and extract the required arguments for the MM estimate.
-     This time use a Tukey biweight for S estimation and HA rho function
-     for MM loop <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.13 seconds 
+
+outMM = 
+
+  struct with fields:
+
+        class: 'MMreg'
+         beta: [4&times;1 double]
+      weights: [200&times;1 double]
+    residuals: [200&times;1 double]
+     outliers: [1 2 3 4 5 6 7 8 9 10 26 56 80 113 134 156 193]
+      conflev: 0.9750
+      rhofunc: 'bisquare'
+
+</pre><img vspace="5" hspace="5" src="images\MMregcore_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
+     Determine, e.g., an S estimate and extract the required arguments for the MM estimate.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % This time use a Tukey biweight for S estimation and HA rho function
+    % for MM loop 
     n=200;
     p=3;
     state1=123456;
@@ -155,8 +169,8 @@
 
  This function follows the lines of MATLAB/R code developed during the
  years by many authors.</p> <p>
- For more details see<a href="http://www.econ.kuleuven.be/public/NDBAE06/programs/">http://www.econ.kuleuven.be/public/NDBAE06/programs/</a>
- and the R library robustbase<a href="http://robustbase.r-forge.r-project.org/">http://robustbase.r-forge.r-project.org/</a>/.</p> <p>
+ For more details see <a href="http://www.econ.kuleuven.be/public/NDBAE06/programs">http://www.econ.kuleuven.be/public/NDBAE06/programs</a>/
+ and the R library robustbase <a href="http://robustbase.r-forge.r-project.org/">http://robustbase.r-forge.r-project.org/</a>.</p> <p>
  The core of these routines, e.g. the resampling approach, however, has
  been completely redesigned, with considerable increase of the
  computational performance.</p><p>

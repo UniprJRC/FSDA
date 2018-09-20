@@ -65,21 +65,21 @@
     plo.sym={'^';'v'};
     yXplot(y,X,group,plo);
 </pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex1.</li></span></a></span></h3><div class="collapse"><p>
-     Example of use of option selunit.
-     Example of the use of function yXplot putting the text for the units
-     which have a value of y smaller than 98 and greater than 102.
-     Note that in this case selunit is a cell array.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of use of option selunit.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Example of the use of function yXplot putting the text for the units
+    % which have a value of y smaller than 98 and greater than 102.
+    % Note that in this case selunit is a cell array.
     yXplot(y,X,'selunit',{'98' '102'});</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex2.</li></span></a></span></h3><div class="collapse"><p>
-     yXplot with personalized labelling.
-     Example of the use of function yXplot putting the text for the units
-     which have a value of y smaller than 1 per cent percentile and greater than
-     99 per cent percentile of y.
-     Note that in this case selunit is a cell array.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     yXplot with personalized labelling.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Example of the use of function yXplot putting the text for the units
+    % which have a value of y smaller than 1 per cent percentile and greater than
+    % 99 per cent percentile of y.
+    % Note that in this case selunit is a cell array.
     selth={num2str(prctile(y,1)) num2str(prctile(y,99))};
     yXplot(y,X,'selunit',selth);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex2.</li></span></a></span></h3><div class="collapse"><p>
-     yXplot with personalized labelling.
-     In this case selunit is passed as a numeric vector and it contains
-     the list of the units which have to be labelled in the yXplot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     yXplot with personalized labelling.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % In this case selunit is passed as a numeric vector and it contains
+    % the list of the units which have to be labelled in the yXplot.
     selth=[2 10 20];
     yXplot(y,X,'selunit',selth);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=100;
@@ -116,28 +116,28 @@
     [out]=FSReda(y,X,out.bs);
     % Example of the use of function yXplot with all the default options
     yXplot(out);</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-       Example of the use of options selunit and selstep.</li></span></a></span></h3><div class="collapse"><p>
-     After the instruction below the labels for units inside vector
-     selunit are added to each panel of the yXplot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of options selunit and selstep.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % After the instruction below the labels for units inside vector
+    % selunit are added to each panel of the yXplot
     selunit=[2 5 20 23 35 45];
     yXplot(out,'selunit',selunit,'selstep',[20 22 27 36],...
             'databrush',{'persist','off','selectionmode' 'Rect'})
     %   After brushing the resfwdplot automatically appears and the labels
     % are put for units contained in vector selunit in steps [20 22 27
     % 36] of the search</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-       Example of the use of options selstep, selunit.</li></span></a></span></h3><div class="collapse"><p>
-       It produces a yXplot plot in which labels are put for units
-       which have a residual greater and 1.5. When a set of units is brushed in the yXplot
-       in the monitoring residuals plot the labels are added in steps
-       selsteps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of options selstep, selunit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   It produces a yXplot plot in which labels are put for units
+    %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
+    %   in the monitoring residuals plot the labels are added in steps
+    %   selsteps.
    yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 </pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of option selunit (notice that in this
-       case selunit is a cell array of strings.</li></span></a></span></h3><div class="collapse"><p>
-       Highlight only the trajectories which in at least one step of the
-       search had a value smaller than -3 or greater than 2 and label
-       them at the beginning and at the end of the search.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       case selunit is a cell array of strings.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   Highlight only the trajectories which in at least one step of the
+    %   search had a value smaller than -3 or greater than 2 and label
+    %   them at the beginning and at the end of the search.
     yXplot(out,'selunit',{'-3';'2'},...
             'databrush',{'selectionmode' 'Rect'});</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
        Example of the use of option databrush
@@ -156,41 +156,41 @@
        the brushed units and persistent labels in the yXplot which has been
        brushed <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
-     Example of persistent cumulative brushing (with persist off).</li></span></a></span></h3><div class="collapse"><p>
-       All previous examples used a non persistent brushing (that is brushing
-       could be done only once). The examples below use persistent brushing
-       (that is brushing can be done multiple times)
-    
-       Example of the use of persistent non cumulative brush. Every time a
-       brushing action is performed previous highlightments are removed
-       In other words, every time a brushing action is performed
-       current highlightments replace previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brushing (with persist off).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   All previous examples used a non persistent brushing (that is brushing
+    %   could be done only once). The examples below use persistent brushing
+    %   (that is brushing can be done multiple times)
+    %
+    %   Example of the use of persistent non cumulative brush. Every time a
+    %   brushing action is performed previous highlightments are removed
+    %   In other words, every time a brushing action is performed
+    %   current highlightments replace previous highlightments
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
                             'Label' 'on' 'RemoveLabels' 'off'})</pre></div></div></p></div></div><div id="ExtraExample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
-     Example of persistent cumulative brushing (with persist on).</li></span></a></span></h3><div class="collapse"><p>
-       Every time a brushing action is performed
-       current highlightments are added to previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brushing (with persist on).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   Every time a brushing action is performed
+    %   current highlightments are added to previous highlightments
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'Label' 'off' 'RemoveLabels' 'on'})</pre></div></div></p></div></div><div id="ExtraExample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
      Example of persistent cumulative brushing.</li></span></a></span></h3><div class="collapse"><p> 
-     The options are 'persist' 'on'  labeladd '1' 'Label' 'on' 'RemoveLabels' 'off'.
-      Now option labeladd '1'. In this case the row numbers of the
-      selected units are displayed in the monitoring residuals plot
-      Given that  'Label' 'on' 'RemoveLabels' 'off' the labels of the
-      brushed units are also shown in the yXplot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     The options are 'persist' 'on'  labeladd '1' 'Label' 'on' 'RemoveLabels' 'off'.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %  Now option labeladd '1'. In this case the row numbers of the
+    %  selected units are displayed in the monitoring residuals plot
+    %  Given that  'Label' 'on' 'RemoveLabels' 'off' the labels of the
+    %  brushed units are also shown in the yXplot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
          'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'})</pre></div></div></p></div></div><div id="ExtraExample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
-     Example of persistent cumulative brushing (with persist on and labeladd '1').</li></span></a></span></h3><div class="collapse"><p>
-       Now option labeladd '1'. In this case the row numbers of the
-       selected units are displayed just in the monitoring residuals plot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brushing (with persist on and labeladd '1').</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   Now option labeladd '1'. In this case the row numbers of the
+    %   selected units are displayed just in the monitoring residuals plot
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'labeladd' '1'})</pre></div></div></p></div></div><div id="ExtraExample_19" class="example_module expandableContent"><div id="ExtraExample_19"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
        It gives the possibility of clicking on the different points and have
        information about the unit selected, the step of entry into the
        subset and the associated label<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
         yXplot(out,'datatooltip',1);</pre></div></div></p></div></div><div id="ExtraExample_20" class="example_module expandableContent"><div id="ExtraExample_20"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Option datatooltip combined with rownames
-     Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
-     First input argument of yXplot is a structure.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % First input argument of yXplot is a structure.
     load carsmall
     x1 = Weight;
     x2 = Horsepower;    % Contains NaN data

@@ -12,7 +12,7 @@
         plot(x,Y(:,j))
         title(['CDF with a=' num2str(a(j)) ' b=' num2str(b(j))])
         xlabel('x')
-    end</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the results using option nocheck=1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    end</pre></div></div><img vspace="5" hspace="5" src="images\inversegamcdf_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the results using option nocheck=1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     x=(0:0.001:3)';
     a=[1,2,3,50,100,10000];
     b=[1,10,100,0.05,10,800];
@@ -23,7 +23,10 @@
         Ychk(i,:)=inversegamcdf(x(i),a,b,1);
     end
     disp('Maximum absolute difference is:');
-    disp(max(max(abs(Y-Ychk))));</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Value at which the cdf must be evaluated. </span>  </a><span class="example_desc">Scalar, vector or matrix 3D array of the same size of x and b.</span></span></h3> <div class="collapse"> <p><p>A scalar input functions as a constant matrix of the same
+    disp(max(max(abs(Y-Ychk))));</pre></div></div><pre class="codeoutput">Maximum absolute difference is:
+   3.6082e-15
+
+</pre></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Value at which the cdf must be evaluated. </span>  </a><span class="example_desc">Scalar, vector or matrix 3D array of the same size of x and b.</span></span></h3> <div class="collapse"> <p><p>A scalar input functions as a constant matrix of the same
                size as the other input.</p> <p>
                See the section called "More About:" for more details about
                the inverse gamma distribution.</p><p>

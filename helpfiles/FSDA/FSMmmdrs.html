@@ -26,7 +26,7 @@
     ylim([2 5])
     disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
     disp('clearly show the presence of two groups.')
-    disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Two groups with approximately same units (larger sizes).</li></span></a></span></h3><div class="collapse"><p>
+    disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')</pre></div></div><img vspace="5" hspace="5" src="images\FSMmmdrs_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Two groups with approximately same units (larger sizes).</li></span></a></span></h3><div class="collapse"><p>
      Same example as before but now the values of n1 and n2 (size of the
      two groups) have been increased.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
@@ -57,19 +57,19 @@
      corresponds to the searches initialized using the units coming from
      the smaller group. Note that due to the partial overlapping after the
      peak in steps 80-100 there is a gradual decrease. When m is around
-     140, most of the units from this group tend to get out of the subset.
-     Therefore the value of mmd becomes much smaller than it should be.
-     Please note the dip around step m=140, which is due to entrance of the
-     units of the second larger group. This trajectory just after the dip
-     collapses into the trajectory which starts from the second group.
-     Please use
-     mdrrsplot with option databrush in order to explore the units
-     belonging to subset. Here we limit ourselves to notice that around m
-     =180 all the units from second group are included into subset (plus
-     some of group 1 given that the two groups partially overlap). Also
-     notice once again the decrease in the unique trajectory of minimum
-     Mahalanobis residual after m around 180 which is due to the entry of the
-     units of the first smaller group.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     140, most of the units from this group tend to get out of the subset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Therefore the value of mmd becomes much smaller than it should be.
+    % Please note the dip around step m=140, which is due to entrance of the
+    % units of the second larger group. This trajectory just after the dip
+    % collapses into the trajectory which starts from the second group.
+    % Please use
+    % mdrrsplot with option databrush in order to explore the units
+    % belonging to subset. Here we limit ourselves to notice that around m
+    % =180 all the units from second group are included into subset (plus
+    % some of group 1 given that the two groups partially overlap). Also
+    % notice once again the decrease in the unique trajectory of minimum
+    % Mahalanobis residual after m around 180 which is due to the entry of the
+    % units of the first smaller group.
     close all
     rng('default')
     rng(10);

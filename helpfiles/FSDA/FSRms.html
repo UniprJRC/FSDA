@@ -17,7 +17,14 @@
     y=X(:,end);
     X=X(:,1:end-1);
     labels={'Time','1','2','3','4','5','6','7','8'};
-    [Cpms]=FSRms(y,X,'labels',labels,'plots',1);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [Cpms]=FSRms(y,X,'labels',labels,'plots',1);</pre></div></div><pre class="codeoutput">small p=9
+small p=8
+small p=7
+small p=6
+small p=5
+small p=4
+small p=3
+</pre><img vspace="5" hspace="5" src="images\FSRms_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -34,10 +41,14 @@
     %a satisfactory model. For smallp = 4 the best model has the trend, x3 and
     %x7, although the plot shows the values of Cp(m) increasing towards the end
     %of the search. By far the most stable model for smallp= 5 adds x2 to these
-    %variables.</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
+    %variables.</pre></div></div><pre class="codeoutput">small p=7
+small p=6
+small p=5
+small p=4
+</pre><img vspace="5" hspace="5" src="images\FSRms_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_03.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
      Perform robust model selection and show the generalized candlestick
-     plot considering all submodels for each smallp from 2 to size(X).
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     plot considering all submodels for each smallp from 2 to size(X).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -47,8 +58,8 @@
      Perform robust model selection and show the generalized candlestick
      plot. Restric attention to the models with size in the interval 4:6
      Compare the results using ignore=1 with those with ignore=0
-     default option ignore=1.
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     default option ignore=1.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -58,16 +69,27 @@
     % ignore=0
     [Cpms]=FSRms(y,X,'ignore',0,'smallpint',4:6,'labels',labels,'plots',1);
     % with ignore=0 but changing the threshold for excluding models
-    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'ExclThresh',0.99999999999999);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
-     Same options as before but using different confidence bands.
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'ExclThresh',0.99999999999999);</pre></div></div><pre class="codeoutput">small p=6
+small p=5
+small p=4
+small p=6
+small p=5
+Warning: Rank deficient, rank = 3, tol =  5.715223e-13. 
+Warning: Rank deficient, rank = 3, tol =  7.937901e-13. 
+small p=4
+small p=6
+small p=5
+small p=4
+</pre><img vspace="5" hspace="5" src="images\FSRms_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_07.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
+     Same options as before but using different confidence bands.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
-    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Personalized LineWidth and CandleWidth.</li></span></a></span></h3><div class="collapse"><p>
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Personalized LineWidth and CandleWidth.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -78,8 +100,8 @@
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth)</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (1).</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[0.3 0.1] the central part of the search
      goes from m=round(n*0.7)=56 to m=round(n*0.9)=72 and the final part
-     of the search goes from m=73 to m=80.
-    <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     of the search goes from m=73 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -88,8 +110,8 @@
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1])</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (2).</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[0.36 0.06] the central part of the search
      goes from m=round(n*0.64)=51 to m=round(n*0.94)=75 and the final part of the search goes from
-     m=76 to m=80.
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     m=76 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];
@@ -98,14 +120,14 @@
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06])</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as integers.</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[20 5] the central part of the search
      goes from m=n-20=61 to m=n-5=75 and the final part of the search goes from
-     m=76 to m=80.
-     It is worthwhile to notice that independently on how fin_step is
-     chosen, the message of the generalized candlestick plot remains the
-     same. In other words, the best two models with 5 variables are always
-     (Time,4,5,6) and (Time,2,4,5)
-     while two reasonable models with 6 variables are (Time,2,4,5,6) and
-     (Time,2,3,4,5).
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     m=76 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % It is worthwhile to notice that independently on how fin_step is
+    % chosen, the message of the generalized candlestick plot remains the
+    % same. In other words, the best two models with 5 variables are always
+    % (Time,4,5,6) and (Time,2,4,5)
+    % while two reasonable models with 6 variables are (Time,2,4,5,6) and
+    % (Time,2,3,4,5).
+
     X=load('ozone.txt');
     X(:,end)=log(X(:,end));
     X=[(-40:39)' X];

@@ -3,7 +3,7 @@ function docr=docrootFS()
 
 a=ver('matlab');
 
-if str2double(a.Version)>7.14 && str2double(a.Version)<9.5
+if str2double(a.Version)>7.14 && str2double(a.Version)<9.6
     docr=docroot;
     destinationpathFSDAdoc=[docr filesep 'FSDA'];
     chkFSDAinsideMatlab=exist(destinationpathFSDAdoc,'file');
@@ -39,7 +39,7 @@ if str2double(a.Version)>7.14 && str2double(a.Version)<9.5
         
     end
     
-elseif str2double(a.Version)>=9.5
+elseif str2double(a.Version)>=9.6
     docr='https://localhost:31515/static/help';
     
     docr2018b=docroot;

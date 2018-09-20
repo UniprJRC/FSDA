@@ -73,12 +73,12 @@
     % now LineColor is not a valid RGB vector, but red (default) will be used
     datatooltip.LineColor = [123 41 12 32 1];
     resfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-     Another example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
-     The user can highlight the trajectories of the units that are in
-     the subset at a given step with a mouse click in proximity
-     of that step. A right click will terminate the exercise.
-     To activate this modality, we set the field SubsetLinesColor,
-     which specifies the color used to highlight the trajectories.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Another example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % The user can highlight the trajectories of the units that are in
+    % the subset at a given step with a mouse click in proximity
+    % of that step. A right click will terminate the exercise.
+    % To activate this modality, we set the field SubsetLinesColor,
+    % which specifies the color used to highlight the trajectories.
     datatooltip = struct;
     datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
     resfwdplot(out,'datatooltip',datatooltip);
@@ -89,15 +89,15 @@
     datatooltip = struct;
     datatooltip.SubsetLinesColor = 999;
     resfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p>
-       (brushing is done only once using a rectangular selection tool)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   (brushing is done only once using a rectangular selection tool)
     resfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
     databrush.selectionmode='Rect';
     resfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
-       Example of the use of brush using a rectangular selection tool.</li></span></a></span></h3><div class="collapse"><p>
-     Use a cyan colour.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+       Example of the use of brush using a rectangular selection tool.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Use a cyan colour.
     resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
      Example of the use of brush using multiple selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     databrush=struct;
@@ -108,36 +108,36 @@
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
-     Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p>
-      We havesuperimposed labels
-       for the brushed units and persistent labels in the plot which has
-       been brushed.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %  We havesuperimposed labels
+    %   for the brushed units and persistent labels in the plot which has
+    %   been brushed.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
     databrush.RemoveLabels='off';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
-     Example of persistent brushing.</li></span></a></span></h3><div class="collapse"><p>
-       Example of the use of persistent non cumulative brush. Every time a
-       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent brushing.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   Example of the use of persistent non cumulative brush. Every time a
+    %   brushing action is performed previous highlightments are removed
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
     databrush.RemoveLabels='off';
     databrush.persist='off';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
-     Example of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p>
-       Example of the use of persistent cumulative brush. Every time a
-       brushing action is performed current highlightments are added to
-       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   Example of the use of persistent cumulative brush. Every time a
+    %   brushing action is performed current highlightments are added to
+    %   previous highlightments
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
     databrush.RemoveLabels='on';
     databrush.persist='on';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
-     Example of persistent cumulative brush with ols line.</li></span></a></span></h3><div class="collapse"><p>
-       The same as before, but also fit one ols line to each selected group<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with ols line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   The same as before, but also fit one ols line to each selected group
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -145,8 +145,8 @@
     databrush.persist='on';
     databrush.bivarfit='0';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
-     Example of persistent cumulative brush with a single ols line.</li></span></a></span></h3><div class="collapse"><p>
-       The same but now fit a single ols line to all data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with a single ols line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   The same but now fit a single ols line to all data.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -154,9 +154,9 @@
     databrush.persist='on';
     databrush.bivarfit='1';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
-     Example of persistent cumulative brush with two ols lines.</li></span></a></span></h3><div class="collapse"><p>
-       The same but now fit a first ols line to all data and a second line
-       on the group of observations which remain unselected.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with two ols lines.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   The same but now fit a first ols line to all data and a second line
+    %   on the group of observations which remain unselected.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -164,8 +164,8 @@
     databrush.persist='on';
     databrush.bivarfit='2';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
-     Example of persistent cumulative brush with ols line for a particular group.</li></span></a></span></h3><div class="collapse"><p>
-       The same but now fit a single ols line to the group with index 4.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with ols line for a particular group.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   The same but now fit a single ols line to the group with index 4.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -173,8 +173,8 @@
     databrush.persist='on';
     databrush.bivarfit='i4';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 13.</i>
-     Example of persistent cumulative brush with personalized line.</li></span></a></span></h3><div class="collapse"><p>
-       The same but now add the line mean(y)+Ci*Xi.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with personalized line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %   The same but now add the line mean(y)+Ci*Xi.
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -182,8 +182,8 @@
     databrush.persist='on';
     databrush.multivarfit='1';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 14.</i>
-     Example of persistent cumulative brush with option multivarfit.</li></span></a></span></h3><div class="collapse"><p>
-     Example of use of option databrush suboptions multivarfit 2, persist on<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of persistent cumulative brush with option multivarfit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Example of use of option databrush suboptions multivarfit 2, persist on
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
@@ -200,8 +200,8 @@
     databrush.persist='on';
     databrush.multivarfit='2';
     resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 15.</i>
-     Brushing in the loyalty cards data example.</li></span></a></span></h3><div class="collapse"><p>
-     Fidelity cards data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Brushing in the loyalty cards data example.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Fidelity cards data
     XX=load('loyalty.txt');
     namey='Sales'
     y=XX(:,end);

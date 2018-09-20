@@ -50,7 +50,7 @@
     out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
     % Show the correspodence analysis plot.
     % Rows and columns are showN in principal coordinates
-    CorAnaplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAnaplot with personalized symbols.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    CorAnaplot(out)</pre></div></div><img vspace="5" hspace="5" src="images\CorAnaplot_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAnaplot with personalized symbols.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     % Prepare the data.
     N=[51	64	32	29	17	59	66	70;
@@ -137,7 +137,7 @@
 
     % change the sign of the second dimension
     changedimsign=[false true];
-    CorAnaplot(out,'plots',plots,'changedimsign',changedimsign)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAnaplot with personalized displacement.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    CorAnaplot(out,'plots',plots,'changedimsign',changedimsign)</pre></div></div><img vspace="5" hspace="5" src="images\CorAnaplot_02.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAnaplot with personalized displacement.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     close all
     % Prepare the data.
     N=[51	64	32	29	17	59	66	70;
@@ -253,7 +253,7 @@
     out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
 
     % Draw correspondence analysis plot with requested confidence ellipses
-    CorAnaplot(out,'plots',1,'confellipse',confellipse)</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Correpondence analysis plot with ellipses only on column points.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    CorAnaplot(out,'plots',1,'confellipse',confellipse)</pre></div></div><img vspace="5" hspace="5" src="images\CorAnaplot_03.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Correpondence analysis plot with ellipses only on column points.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[51	64	32	29	17	59	66	70;
         53	90	78	75	22	115	117	86;
         71	111	50	40	11	79	88	177;
@@ -405,7 +405,7 @@
     CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h1)
     h2=subplot(1,2,2);
     plots.alpha=0;
-    CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing the output of function CorAna. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Lr</code></td><td><p>cell of length $I$ containing the labels of
+    CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);</pre></div></div><img vspace="5" hspace="5" src="images\CorAnaplot_04.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing the output of function CorAna. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Lr</code></td><td><p>cell of length $I$ containing the labels of
                          active rows (i.e. the rows which participated to
                          the fit).</p></td></tr><tr valign="top"><td><code>Lc</code></td><td><p>cell of length $J$ containing the labels of
                          active columns (i.e. the columns which participated to

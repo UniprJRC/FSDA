@@ -1,4 +1,4 @@
-function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
+function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %publishFSallFiles passes routine publishFS to all files found with makecontentsfileFS
 %
 % Required input arguments:
@@ -86,6 +86,10 @@ function [FilesWithProblems,OUT]=publishFSallFiles(InputCell,varargin)
 %                        size(InputCell,1). OUT{i} contains the output of
 %                        the application of routine publishFS to i-th file
 %
+%       InputCell     :  What is given is InputCell is also shown in the
+%                        output. This is done because workspace is cleared
+%                        and InputCell is lost if it is not an output
+%                        argument
 %
 
 %{
@@ -209,7 +213,7 @@ for i=1:size(InputCell,1)
         % Store file path
         FilesWithProblems{ij,2}=InputCell{i,9};
         % Store catch message
-        FilesWithProblems{ij,3}='notrun';
+        FilesWithProblems{ij,3}='Not Parsed';
         
         ij=ij+1;
         errmsg=['Could not parse file: ' InputCell{i,1}];

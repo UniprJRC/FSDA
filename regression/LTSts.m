@@ -518,11 +518,12 @@ function [out, varargout] = LTSts(y,varargin)
     title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'Interpreter','Latex');
 %}
 
+
+
+
 %{
-    % Airline data: linear trend + just one harmonic for seasonal
-    % component.
-    % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1=0$.
-    % Load airline data
+    % Airline data: linear trend + just one harmonic for seasonal component.
+    % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
          118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -702,7 +703,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     %% Example 1 used in the paper RPRH.
-    % Load airline data
+    % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
          118  126  150  180  196  188  233  277  301  318  342  391    % Feb

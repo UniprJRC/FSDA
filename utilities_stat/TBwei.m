@@ -75,6 +75,7 @@ function w = TBwei(u,c)
 %{
 
     %% Compare four different weight functions.
+    % Do comparison.
     FontSize=14;
     x=-6:0.01:6;
     ylim1=-0.05;
@@ -125,8 +126,8 @@ function w = TBwei(u,c)
 %{
     %% Compare two weight functions for 2 different values of c. 
     % In the first we fix the bdp (value of
-    % efficiency is automatically given) , while in the second we find the
-    % efficiency (the value of bdp is automatically given)
+    % efficiency is automatically given), while in the second we find the
+    % efficiency (the value of bdp is automatically given).
     close all
     x=-6:0.01:6;
     lwd=2;

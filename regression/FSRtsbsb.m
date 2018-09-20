@@ -177,7 +177,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %{
     %% FSRtsbsb with optional arguments.
     % Load airline data
-    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
          118  126  150  180  196  188  233  277  301  318  342  391    % Feb
          132  141  178  193  236  235  267  317  356  362  406  419    % Mar
@@ -204,7 +204,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 
 %{
     %% Monitoring the units belonging to subset.
-    % Load airline data
+    % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
          118  126  150  180  196  188  233  277  301  318  342  391    % Feb

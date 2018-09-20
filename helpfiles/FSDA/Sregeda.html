@@ -11,7 +11,7 @@
     ycont(1:5)=ycont(1:5)+6;
     [out]=Sregeda(ycont,X,'msg',0);
     resfwdplot(out)
-    ylabel('Scaled S residuals'); </pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
+    ylabel('Scaled S residuals'); </pre></div></div><img vspace="5" hspace="5" src="images\Sregeda_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
      Sreg with optimal rho function. Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     p=3;
@@ -77,7 +77,79 @@
         set(gca,'XDir','reverse','ylim',ylimits);
         title('Pearson');
     end
-</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
+</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.82 seconds 
+Total estimated time to complete S estimate:  0.63 seconds 
+Total estimated time to complete S estimate:  0.65 seconds 
+Total estimated time to complete S estimate:  0.62 seconds 
+Total estimated time to complete S estimate:  0.70 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.59 seconds 
+Total estimated time to complete S estimate:  0.65 seconds 
+Total estimated time to complete S estimate:  0.58 seconds 
+Total estimated time to complete S estimate:  0.56 seconds 
+Total estimated time to complete S estimate:  0.59 seconds 
+Total estimated time to complete S estimate:  0.55 seconds 
+Total estimated time to complete S estimate:  0.60 seconds 
+Total estimated time to complete S estimate:  0.61 seconds 
+Total estimated time to complete S estimate:  0.64 seconds 
+Total estimated time to complete S estimate:  0.68 seconds 
+Total estimated time to complete S estimate:  0.58 seconds 
+Total estimated time to complete S estimate:  0.52 seconds 
+Total estimated time to complete S estimate:  0.53 seconds 
+Total estimated time to complete S estimate:  0.56 seconds 
+Total estimated time to complete S estimate:  0.54 seconds 
+Total estimated time to complete S estimate:  0.53 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.53 seconds 
+Total estimated time to complete S estimate:  0.63 seconds 
+Total estimated time to complete S estimate:  0.54 seconds 
+Total estimated time to complete S estimate:  0.50 seconds 
+Total estimated time to complete S estimate:  0.60 seconds 
+Total estimated time to complete S estimate:  0.58 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.42 seconds 
+Total estimated time to complete S estimate:  0.56 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
+Total estimated time to complete S estimate:  0.37 seconds 
+Total estimated time to complete S estimate:  0.38 seconds 
+Total estimated time to complete S estimate:  0.51 seconds 
+Total estimated time to complete S estimate:  0.44 seconds 
+Total estimated time to complete S estimate:  0.38 seconds 
+Total estimated time to complete S estimate:  0.36 seconds 
+Total estimated time to complete S estimate:  0.35 seconds 
+Total estimated time to complete S estimate:  0.36 seconds 
+Total estimated time to complete S estimate:  0.34 seconds 
+Total estimated time to complete S estimate:  0.42 seconds 
+Total estimated time to complete S estimate:  0.34 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.34 seconds 
+Total estimated time to complete S estimate:  0.38 seconds 
+Total estimated time to complete S estimate:  0.34 seconds 
+Total estimated time to complete S estimate:  0.35 seconds 
+Total estimated time to complete S estimate:  0.33 seconds 
+
+standard = 
+
+  struct with fields:
+
+    Color: {'b'}
+
+
+standard = 
+
+  struct with fields:
+
+      Color: {'b'}
+    xvalues: [1&times;50 double]
+
+
+fground = 
+
+  struct with fields:
+
+    Color: {'r'}
+
+</pre><img vspace="5" hspace="5" src="images\Sregeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\Sregeda_03.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that contains
        the response variable. y can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors') of
        dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and columns
        represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,

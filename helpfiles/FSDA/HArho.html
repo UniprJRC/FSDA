@@ -6,7 +6,9 @@
     plot(x,rhoHA,'LineWidth',2)
     xlabel('$u$','Interpreter','Latex')
     ylabel(' Hampel $\rho(u,[2, 4, 8]) $','Interpreter','Latex','FontSize',14)
-</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Hampel rho function using a redescending slope of -1/3.</li></span></a></span></h3><div class="collapse"><p> <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Hampel rho function using a redescending slope of -1/3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
+    % Hampel rho function using a redescending slope of -1/3. 
     x=-9:0.1:9;
     rhoHA=HArho(x,[1,1.5,3.5,8]);
     plot(x,rhoHA)

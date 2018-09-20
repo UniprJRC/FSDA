@@ -8,8 +8,8 @@
     load fisheriris;
     tbl=tabulateFS(species);
     disp(tbl)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Explore the difference between tabulate and tabulateFS.</li></span></a></span></h3><div class="collapse"><p>
-     Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng('default') % Reinitialize the random number generator to its startup configuration
+     Run this code to see the output shown in the help file
+    rng('default')  Reinitialize the random number generator to its startup configuration<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rng(100)
     x=randi([1 10],100,1);
     x(100)=30;
@@ -18,7 +18,52 @@
     disp(tabulate(x));
     % Output of tabulateFS
     disp('Output of FSDA function tabulateFS')
-    disp(tabulateFS(x));</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector for which frequency table has to be calculated. </span>  </a><span class="example_desc">vector of numeric data or  categorical variable, character
+    disp(tabulateFS(x));</pre></div></div><pre class="codeoutput">Output of MATLAB function tabulate
+     1     9     9
+     2    11    11
+     3    15    15
+     4    14    14
+     5     4     4
+     6    13    13
+     7     8     8
+     8     5     5
+     9    11    11
+    10     9     9
+    11     0     0
+    12     0     0
+    13     0     0
+    14     0     0
+    15     0     0
+    16     0     0
+    17     0     0
+    18     0     0
+    19     0     0
+    20     0     0
+    21     0     0
+    22     0     0
+    23     0     0
+    24     0     0
+    25     0     0
+    26     0     0
+    27     0     0
+    28     0     0
+    29     0     0
+    30     1     1
+
+Output of FSDA function tabulateFS
+     1     9     9
+     2    11    11
+     3    15    15
+     4    14    14
+     5     4     4
+     6    13    13
+     7     8     8
+     8     5     5
+     9    11    11
+    10     9     9
+    30     1     1
+
+</pre></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector for which frequency table has to be calculated. </span>  </a><span class="example_desc">vector of numeric data or  categorical variable, character
                array, or cell array of strings of length n.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>double | single| categorical variable | character
                array, | cell array of strings</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_tbl" class="clearfix"></div><h3 id="output_argument_tbl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tbl</code> &#8212;frequency table of data in vector x.</span></a><span class="example_desc"><code>
            </code>Matrix of size unique(x)-by-3</span></span></h3><div class="collapse"><p><p>

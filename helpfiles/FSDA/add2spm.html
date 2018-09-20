@@ -6,7 +6,7 @@
     % The legens are not clickable
     % [H,AX,BigAx]=gplotmatrix(meas,[],species,[],[],[],[],'grpbars')
     add2spm(H,AX,BigAx)
-    % Now the legends become clickable</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>add2spm with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+    % Now the legends become clickable</pre></div></div><img vspace="5" hspace="5" src="images\add2spm_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>add2spm with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Use of userleg variable. Set some multivariate data and some groups.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     y = randn(100,3);
     group = ones(100,1); group(1:10,1) = 444; group(11:20,1) = 777;
@@ -42,8 +42,8 @@
     figure('Tag','this is a dataset with outliers');
     [H,AX,BigAx] = gplotmatrix(y,[],group,'br','ox');
     add2spm(H,AX,BigAx,'userleg','1');
-</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use of labeladd.</li></span></a></span></h3><div class="collapse"><p>
-    <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use of labeladd.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    
     close all;
     % 'labeladd' is set to '1' to add labels found in the UserData
     % property of the last group in each panel of the scatter matrix.

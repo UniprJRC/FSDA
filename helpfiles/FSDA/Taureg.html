@@ -18,7 +18,8 @@
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=Taureg(ycont,X,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Taureg with optimal rho function.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    [out]=Taureg(ycont,X,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete tau estimate:  4.77 seconds 
+</pre><img vspace="5" hspace="5" src="images\Taureg_01.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Taureg with optimal rho function.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
     p=3;
     randn('state', 123456);

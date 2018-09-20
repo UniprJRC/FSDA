@@ -1596,78 +1596,80 @@ for j=1:length(sintax)
     
     try
         stri=fstring(startIndexEx(j)+3:endIndexEx(j)-1);
+        
+        % What is before the first full stop is the title.
+        % What is after the second full stop is the description
+        % The first line which does not contain symbol % is the beginning of the
+        % code
+        [endtitle] = regexp(stri,'\.\s{1,3}','once');
+        strititle=stri(1:endtitle);
+        % Remove percentage signs if present.
+        posPercentageSigns=regexp(strititle,'%');
+        % Insert in fourth column of listEx information on the fact that the
+        % example must be executed  (if there are two consecutive %% then it must be
+        % executed)
+        if length(posPercentageSigns)>1 && posPercentageSigns(2)-posPercentageSigns(1)==1
+            listEx{j,4}=1;
+        else
+            listEx{j,4}=0;
+        end
+        
+        strititle(posPercentageSigns)=[];
+        % Remove from string strititle leading and trailing white spaces
+        strititle=strtrim(strititle);
+        % Store title
+        listEx{j,1}=strititle;
+        
+        % Find point where description ends
+        inicr=regexp(stri,'\r');
+        %     if isempty(inicr)
+        %         inicr=regexp(stri,'\n');
+        %     end
+        
+        if isempty(inicr) % && strcmp(stri,'EXAMPLES TO ADD')~=1
+            disp('String below seems to be without carriage return')
+            disp('------------------------------------------------')
+            disp(stri)
+            errmsg=['Carriage return could not be found in the example section \n'...
+                'Probably file has been created using Linux'];
+            error('FSDA:wrongdelimiter',errmsg)
+        end
+        
+        % The end of the description is the first line which does not start
+        % with symbol "%" or is in correpondence of the line which follows the one
+        % which ends with a full stop (jjbreak=jj+1).
+        for jj=1:length(inicr)-1
+            strtest=stri(inicr(jj):inicr(jj+1));
+            if isempty(regexp(strtest,'%','once'))
+                jjbreak=jj;
+                break
+            elseif  (jj>1 && strcmp(strtest(end-1),'.'))
+                jjbreak=jj+1;
+                break
+            end
+        end
+        jj=jjbreak;
+        findescriptionEx=inicr(jj);
+        strdescrEx=stri(endtitle+1:findescriptionEx);
+        
+        % remove % signs from strdescrEx
+        posPercentageSigns=regexp(strdescrEx,'\D%');
+        strdescrEx(posPercentageSigns+1)=[];
+        
+        
+        listEx{j,2}=strdescrEx;
+        % listEx{j,3}=stri(findescriptionEx+1:end);
+        
+        StringWithLTandGT=stri(findescriptionEx+1:end);
+        StringWithoutLTandGT=strrep(StringWithLTandGT,'<','&lt;');
+        StringWithoutLTandGT=strrep(StringWithoutLTandGT,'>','&gt;');
+        listEx{j,3}=StringWithoutLTandGT;
+        
     catch
         %disp(stri)
         warning('FSDA:wrongEx','This file does not contain enough examples, please add them!')
-        stri='EXAMPLES TO ADD';
+        % stri='EXAMPLES TO ADD';
     end
-    
-    % What is before the first full stop is the title.
-    % What is after the second full stop is the description
-    % The first line which does not contain symbol % is the beginning of the
-    % code
-    [endtitle] = regexp(stri,'\.\s{1,3}','once');
-    strititle=stri(1:endtitle);
-    % Remove percentage signs if present.
-    posPercentageSigns=regexp(strititle,'%');
-    % Insert in fourth column of listEx information on the fact that the
-    % example must be executed  (if there are two consecutive %% then it must be
-    % executed)
-    if length(posPercentageSigns)>1 && posPercentageSigns(2)-posPercentageSigns(1)==1
-        listEx{j,4}=1;
-    else
-        listEx{j,4}=0;
-    end
-    
-    strititle(posPercentageSigns)=[];
-    % Remove from string strititle leading and trailing white spaces
-    strititle=strtrim(strititle);
-    % Store title
-    listEx{j,1}=strititle;
-    
-    % Find point where description ends
-    inicr=regexp(stri,'\r');
-    %     if isempty(inicr)
-    %         inicr=regexp(stri,'\n');
-    %     end
-    
-    if isempty(inicr) && strcmp(stri,'EXAMPLES TO ADD')~=1
-        disp('String below seems to be without carriage return')
-        disp('------------------------------------------------')
-        disp(stri)
-        errmsg=['Carriage return could not be found in the example section \n'...
-            'Probably file has been created using Linux'];
-        error('FSDA:wrongdelimiter',errmsg)
-    end
-    
-    % The end of the description is the first line which does not start
-    % with symbol "%" or is in correpondence of the line which follows the one
-    % which ends with a full stop (jjbreak=jj+1).
-    for jj=1:length(inicr)-1
-        strtest=stri(inicr(jj):inicr(jj+1));
-        if isempty(regexp(strtest,'%','once'))
-            jjbreak=jj;
-            break
-        elseif  (jj>1 && strcmp(strtest(end-1),'.'))
-            jjbreak=jj+1;
-            break
-        end
-    end
-    jj=jjbreak;
-    findescriptionEx=inicr(jj);
-    strdescrEx=stri(endtitle+1:findescriptionEx);
-    
-    % remove % signs from strdescrEx
-    posPercentageSigns=regexp(strdescrEx,'\D%');
-    strdescrEx(posPercentageSigns+1)=[];
-    
-    listEx{j,2}=strdescrEx;
-    % listEx{j,3}=stri(findescriptionEx+1:end);
-    
-    StringWithLTandGT=stri(findescriptionEx+1:end);
-    StringWithoutLTandGT=strrep(StringWithLTandGT,'<','&lt;');
-    StringWithoutLTandGT=strrep(StringWithoutLTandGT,'>','&gt;');
-    listEx{j,3}=StringWithoutLTandGT;
     
     %---------
     
@@ -1676,16 +1678,20 @@ for j=1:length(sintax)
         '</div>'])];
     description=[descriptionini description descriptionend];
     descriptionhtml= [descriptionhtml description];
+    
+    
 end
 
 % Now check whether the first column of cell listEx contains the string interactive_example
 NumOfInterEx=1;
 for i=1:size(listEx,1)
-    [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
-    if ~isempty(StartInteractive)
-        StringToReplace=listEx{i,1};
-        listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
-        NumOfInterEx=NumOfInterEx+1;
+    if ~isempty(listEx{i,1})
+        [StartInteractive,EndInteractive]=regexp(listEx{i,1},'[Ii]nteractive_example.');
+        if ~isempty(StartInteractive)
+            StringToReplace=listEx{i,1};
+            listEx{i,1}=['<i>Interactive example ' num2str(NumOfInterEx)  '.</i>' StringToReplace(EndInteractive+1:end)];
+            NumOfInterEx=NumOfInterEx+1;
+        end
     end
 end
 
@@ -3339,11 +3345,8 @@ if evalCode==true
             end
         end
         
-        
-        
-        
         for j=1:totex
-            if j<totex && totex>1
+            if j<totex && totex>1 && length(fHTML)>1
                 fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
             else
                 fendHTML=regexp(fstringHTML,'<p class="footer">','once');

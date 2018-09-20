@@ -37,10 +37,33 @@
     out=corrOrdinal(N);
     % Because the asymptotic 95 per cent confidence limits do not contain
     % zero, this indicates a strong positive association between the
-    % written and the oral examination.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
-     Matlab function corr.</li></span></a></span></h3><div class="collapse"><p>
-     Starting from a contingency table, create the original data matrix to
-     te able to call corr.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % written and the oral examination.</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
+The standard errors are computed under H_0
+              Coeff        se       zscore       pval   
+             _______    ________    ______    __________
+
+    gamma        0.5    0.098239    5.0896     3.588e-07
+    taua     0.18342    0.047553    3.8571    0.00011474
+    taub     0.30557    0.060038    5.0896     3.588e-07
+    tauc     0.27375    0.053786    5.0896     3.588e-07
+    dyx      0.31466    0.061823    5.0896     3.588e-07
+
+-----------------------------------------
+Indexes and 95% confidence limits
+The standard error are computed under H_1
+              Value     StandardError    ConflimL    ConflimU
+             _______    _____________    ________    ________
+
+    gamma        0.5        0.0876       0.32831     0.67169 
+    taua     0.18342      0.011904       0.16009     0.20675 
+    taub     0.30557       0.05852       0.19087     0.42027 
+    tauc     0.27375      0.053786       0.16833     0.37917 
+    dyx      0.31466      0.059899       0.19726     0.43205 
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
+     Matlab function corr.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Starting from a contingency table, create the original data matrix to
+    % te able to call corr.
     N=[20    23    20;
        21    25    22;
        18     18    19];
@@ -66,7 +89,11 @@
     disp(['tau-b from FSDA routine corrOrdinal=' num2str(out.taub(1))])
     % Remark the p-values are slightly different
     disp(['pvalue of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])
-    disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</pre></div></div><pre class="codeoutput">tau-b from MATLAB routine corr=0.0083449
+tau-b from FSDA routine corrOrdinal=0.0083449
+pvalue of H0:taub=0 from MATLAB routine corr=0.89952
+pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
+</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     N=[26 26 23 18  9;
        6  7  9 14 23];
     out=corrOrdinal(N,'conflev',0.999);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with with option NoStandardErrors.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -352,7 +379,7 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
  pp. 415-421.</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
  Series on Quantitative Applications in the Social Sciences, 07-004,
  Newbury Park, CA: Sage. [pp. 49-56]</p></div><div><p>SAS documentation (2009), See
-<a href="http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf">http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf</a>,
+ <a href="http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf">http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf</a>,
  pp. 1738-1740.</p></div><div><p>Morton, B.B. and Benedetti, J.K. (1977), Sampling Behavior of Tests for
  Correlation in Two-Way Contingency Tables, "Journal of the American
  Statistical Association", Vol. 72, pp. 309-315.</p></div><div><p>Simon, G. (1978), Alternative analysis for the singly ordered contingency
@@ -361,6 +388,6 @@ As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
 
  This file was inspired by Trujillo-Ortiz, A. and R. Hernandez-Walls.</p> <p>
  gkgammatst: Goodman-Kruskal's gamma test. URL address
-<a href="http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst">http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst</a>
+ <a href="http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst">http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst</a>
 
  </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrNominal.html" itemprop="url"><span itemprop="name"><code>corrNominal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

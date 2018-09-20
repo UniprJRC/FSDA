@@ -17,8 +17,8 @@
      1) Beta is generated according to random normal for each group with
      mu=0 and sigma=1;
      2) X in each dimension and each group is generated according to U(0, 1);
-     3) regression hyperplanes contain intercepts.
-     The value of p includes the intercept<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     3) regression hyperplanes contain intercepts.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % The value of p includes the intercept
     p=5;  
     k=3;
     Q=MixSimreg(k,p,'BarOmega',0.01);
@@ -33,7 +33,7 @@
     % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     % spmplot([y X(:,2:end)],id)
-    yXplot(y,X,'group',id);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    yXplot(y,X,'group',id);</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     rng('default')
     rng(100)
     p=4; % p includes the intercept
@@ -44,7 +44,22 @@
     noiseunits=300;
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     yXplot(y,X,'group',id);
-    suplabel('2 regression lines with outliers from uniform','t')</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    suplabel('2 regression lines with outliers from uniform','t')</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Axes (suplabel) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.0952 0.0863 0.8498 0.8787]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\simdatasetreg_02.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     clear all
     close all
     rng('default')
@@ -57,7 +72,22 @@
     noiseunits=3000;
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     yXplot(y,X,'group',id);
-     suplabel('2 regression lines with outliers from uniform','t')</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     suplabel('2 regression lines with outliers from uniform','t')</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Axes (suplabel) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1055 0.0863 0.8395 0.8787]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\simdatasetreg_03.png" alt=""> </p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -66,7 +96,7 @@
     noiseunits.typeout={'Chisquare5'};
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_04.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -75,7 +105,7 @@
     noiseunits.typeout={'Chisquare40'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_05.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -84,7 +114,7 @@
     noiseunits.typeout={'normal'};
     [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_06.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -93,7 +123,22 @@
     noiseunits.typeout={'T5'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Axes (suplabel) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1055 0.0863 0.8395 0.8787]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\simdatasetreg_07.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars='';
     noiseunits=struct;
@@ -102,7 +147,22 @@
     noiseunits.typeout={'componentwise'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     yXplot(y,X,'group',id);
-    suplabel('4 groups with component wise outliers','t')</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    suplabel('4 groups with component wise outliers','t')</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Axes (suplabel) with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1055 0.0863 0.8395 0.8787]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\simdatasetreg_08.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -110,7 +170,7 @@
     noiseunits.typeout={'Chisquare3','T20'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_09.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -119,7 +179,7 @@
     noiseunits.alpha=0.002;
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_10.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noisevars=struct;
     noisevars.number=1;
@@ -128,7 +188,7 @@
     noiseunits.typeout={'pointmass' 'Chisquare5'};
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_11.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=300;
     noiseunits=struct;
     noiseunits.number=1000;
@@ -142,7 +202,7 @@
     noisevars.number=1;
     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
     [H,AX,BigAx]=yXplot(y,X,'group',id);
-    title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
+    title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_12.png" alt=""> </p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
      Generate 1000 outliers from uniform in the interval [-2 3] and
      1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     noiseunits=struct;
@@ -195,9 +255,9 @@
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X,'group',id,'tag','X_beta');
     set(gcf,'Name','X Beta distributed');
-    title('User-defined distribution for X');</pre></div></div></p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with user defined explanatory variables values (2).</li></span></a></span></h3><div class="collapse"><p>
-     Here the X distribution is specific for each component.
-<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    title('User-defined distribution for X');</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_13.png" alt=""> </p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with user defined explanatory variables values (2).</li></span></a></span></h3><div class="collapse"><p>
+     Here the X distribution is specific for each component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+
     clear all
     close all
 
@@ -247,7 +307,7 @@
     yXplot(y,X,'group',id,'tag','X_beta');
     set(gcf,'Name','X Beta distributed');
     title('User-defined distribution for X');
-</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
+</pre></div></div><img vspace="5" hspace="5" src="images\simdatasetreg_14.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
                coefficients for the k groups. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
                regression hyperplanes. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate
                each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>The following options are admitted for Xdistrib

@@ -23,7 +23,31 @@
     %Robust variable selection using log transformed values of the response
     % Monitoring of deletion t stat using log transformed values
     [out]=FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975]);
-    %Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRaddt with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+    %Conclusion: the forward analysis based on the deletion t statistics clearly reveals that variable X3, independently from the transformation which is chosen and the number of outliers which are declared, is NOT significant.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.430973e-16. 
+Warning: Matrix is close to singular or badly scaled. Results may be inaccurate.
+RCOND =  1.430973e-16. 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 13.5%
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 15.3%
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 13%
+</pre><img vspace="5" hspace="5" src="images\FSRaddt_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRaddt with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of FSRaddt with plot of deletion t with personalized line
      width for the envelopes and personalized confidence interval.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     n=200;
@@ -46,7 +70,10 @@
     X=randn(n,p);
     % Uncontaminated data
     y=randn(n,1);
-    [out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+    [out]=FSRaddt(y,X,'plots',1,'nameX',{'F1','F2','F3'},'lwdenv',3,'lwdt',4);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
+</pre><img vspace="5" hspace="5" src="images\FSRaddt_02.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable. It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')

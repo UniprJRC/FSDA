@@ -301,3 +301,5 @@ pp = repmat((1:n)', 1, m);
 pp = (pp-.5) ./ repmat(nvec, n, 1);
 pp(isnan(sx)) = NaN;
 end
+
+%FScategory:VIS-Reg

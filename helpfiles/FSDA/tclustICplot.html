@@ -13,7 +13,12 @@
     UnitsSameGroup=[15 30 69];
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out)
-</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
+</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+</pre><img vspace="5" hspace="5" src="images\tclustICplot_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICplot_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
        Gives the user the possibility of clicking on the different points
        and have information about
        1) value of k which has been selected
@@ -31,11 +36,11 @@
     datatooltip.DisplayStyle = 'datatip';
     tclustICplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     tclustICplot(out,'whichIC','ALL')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-     databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p>
-     Use all default options for databrush (brush just once)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Use all default options for databrush (brush just once)
     tclustICplot(out,'databrush',1)</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-     Repeated databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p>
-     enable repeated brushing and show boxplots of groups inside diag of spm<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Repeated databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % enable repeated brushing and show boxplots of groups inside diag of spm
     databrush=struct;
     % Set the shape of the brush
     databrush.selectionmode='Rect';
@@ -181,5 +186,5 @@
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained
  Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
-<a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
+ <a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
  Classification", Vol. 2, pp. 193-218.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

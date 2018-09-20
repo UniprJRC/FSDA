@@ -17,10 +17,10 @@ function [PD , pval] = CressieRead(N,varargin)
 %       la   :  Parameter $\lambda$ of the family. Scalar. Scalar which 
 %               contains the power in the Cressie-Read power divergence
 %               statistics. The default value of la is 2/3.
-%               If $\lambda=1$ we obtain Pearson's chi-squared statistic, 
+%               If $\lambda=1$ we obtain Pearson's chi-squared statistic ($X^2$), 
 %               see http://en.wikipedia.org/wiki/Chi-squared_test.
-%               If $\lambda=0$ we obtain the Log-likelihood ratio (G, or G^2
-%               test), see http://en.wikipedia.org/wiki/G-test.
+%               If $\lambda=0$ we obtain the Log-likelihood ratio ($G$, or
+%               $G^2$ test), see http://en.wikipedia.org/wiki/G-test.
 %               If $\lambda=-0.5$ we obtain the Freeman-Tukey statistic, or
 %               minumum Matusita distance (Hellinger distance).
 %               If $\lambda=-1$ we obtain the modified log-likelihood ratio.

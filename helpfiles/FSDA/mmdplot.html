@@ -16,16 +16,16 @@
     m0=20;
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs);
-    mmdplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmd with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    mmdplot(out)</pre></div></div><img vspace="5" hspace="5" src="images\mmdplot_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmd with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     mmdplot(out,'quant',[0.99;0.9999]);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-     mmdplot with option dataooltip.</li></span></a></span></h3><div class="collapse"><p>
-    Example of the use of function mmdplot with datatooltip passed as
-    scalar (that is using default options for datacursor (i.e.
-    DisplayStyle =window)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     mmdplot with option dataooltip.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %Example of the use of function mmdplot with datatooltip passed as
+    %scalar (that is using default options for datacursor (i.e.
+    %DisplayStyle =window)
      mmdplot(out,'datatooltip',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-     mmdplot with option dataooltip passed as structure.</li></span></a></span></h3><div class="collapse"><p>
-    Example of the use of function mmdplot with datatooltip passed as
-    structure<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     mmdplot with option dataooltip passed as structure.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    %Example of the use of function mmdplot with datatooltip passed as
+    %structure
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -35,8 +35,8 @@
 </pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
      Example of the use of function mdrplot with databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     mmdplot(out,'databrush',1);</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
-     Example of databrush passed as structure.</li></span></a></span></h3><div class="collapse"><p>
-     Example where databrush is a structure<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Example of databrush passed as structure.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Example where databrush is a structure
     databrush=struct
     databrush.selectionmode='Lasso'
     mmdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>

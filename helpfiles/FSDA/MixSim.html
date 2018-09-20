@@ -4,7 +4,46 @@
     out=MixSim(3,4)
     n=200;
     [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-    spmplot(X,id)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
+    spmplot(X,id)</pre></div></div><pre class="codeoutput">
+out = 
+
+  struct with fields:
+
+    OmegaMap: [3&times;3 double]
+    BarOmega: 0.0876
+    MaxOmega: 0.1500
+    StdOmega: 0.0542
+        fail: 0
+          Pi: [3&times;1 double]
+          Mu: [3&times;4 double]
+           S: [4&times;4&times;3 double]
+       rcMax: [2&times;1 double]
+
+
+ans(:,:,1) =
+
+   -1.0000    4.0118    7.0118   10.0118
+    1.0118   -1.0000    8.0118   11.0118
+    2.0118    5.0118   -1.0000   12.0118
+    3.0118    6.0118    9.0118   -1.0000
+
+
+ans(:,:,2) =
+
+   -1.0000   16.0118   19.0118   22.0118
+   13.0118   -1.0000   20.0118   23.0118
+   14.0118   17.0118   -1.0000   24.0118
+   15.0118   18.0118   21.0118   -1.0000
+
+
+ans(:,:,3) =
+
+         0   28.0118   31.0118   34.0118
+   25.0118         0   32.0118   35.0118
+   26.0118   29.0118         0   36.0118
+   27.0118   30.0118   33.0118         0
+
+</pre><img vspace="5" hspace="5" src="images\MixSim_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
      maximum overlap equal to 0.15.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     k=4;

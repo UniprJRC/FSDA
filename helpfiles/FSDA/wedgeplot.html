@@ -17,23 +17,23 @@
     model.lshift=10;
     out=LTSts(y,'model',model);
     wedgeplot(out,'transpose',true,'extradata',[y out.yhat])  </pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of double wedge plot in series with level shift.</li></span></a></span></h3><div class="collapse"><p>
-     Analysis of contaminated airline data.
-     Load the airline data.
-       1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
-    y = [112  115  145  171  196  204  242  284  315  340  360  417     Jan
-        118  126  150  180  196  188  233  277  301  318  342  391     Feb
-        132  141  178  193  236  235  267  317  356  362  406  419     Mar
-        129  135  163  181  235  227  269  313  348  348  396  461     Apr
-        121  125  172  183  229  234  270  318  355  363  420  472     May
-        135  149  178  218  243  264  315  374  422  435  472  535     Jun
-        148  170  199  230  264  302  364  413  465  491  548  622     Jul
-        148  170  199  242  272  293  347  405  467  505  559  606     Aug
-        136  158  184  209  237  259  312  355  404  404  463  508     Sep
-        119  133  162  191  211  229  274  306  347  359  407  461     Oct
-        104  114  146  172  180  203  237  271  305  310  362  390     Nov
-        118  140  166  194  201  229  278  306  336  337  405  432 ];  Dec
-     Source:
-     http://datamarket.com/data/list/?q=provider:tsdl<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Load the airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+        118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+        132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+        129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+        121  125  172  183  229  234  270  318  355  363  420  472    % May
+        135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+        148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+        148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+        136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+        119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+        104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+        118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
     y=(y(:));
     % Add a level shift contamintion plus some outliers.
     y(68:end)=y(68:end)+1300;
@@ -56,9 +56,9 @@
         'lts',lts,'h',h,'plots',0,'msg',0);
     % Create the double wedge plot.
     wedgeplot(out)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of double wedge plot in series with level shift with option transpose.</li></span></a></span></h3><div class="collapse"><p>
-     Analysis of contaminated airline data.
-     Load the airline data.
-       1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+     Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    % Load the airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
@@ -96,7 +96,20 @@
     % Remember to remove the last column of the matrix of the residuals
     % obtained for each level shift position if you want to avoid the
     % top orange band (just execute RES(:,64)=[] before line 258).
-    wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
+    wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Figure (1) with properties:
+
+      Number: 1
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [488 342 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\wedgeplot_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
      subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RES" class="clearfix"> </div> <h3 id="input_argument_RES" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RES</code> &#8212; absolute scaled residuals. </span>  </a><span class="example_desc">Matrix or structure.</span></span></h3> <div class="collapse"> <p><p>Matrix of size T-by-(T-lshift) containing scaled residuals
                 (in absolute value) for all the T units of the original time

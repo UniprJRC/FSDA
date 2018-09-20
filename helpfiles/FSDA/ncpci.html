@@ -3,7 +3,7 @@
  $t$ distribution with degrees of freedom $df$, given an abscissa value $x$.</p> <p>
  This function has been taken from the MATLAB toolbox 'Measures of effect
  Size' by Harald Hentschke and  Maik C. St&uuml;ttgen.</p><p>
-<a href="https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox">https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox</a>
+ <a href="https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox">https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox</a>
  and has been slighlty modified to be included into the FSDA
  toolbox.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ncpci.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_ci"><code>ci</code></a>=ncpci(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#inputarg_fType"><code>fType</code></a>,<a class="intrnllnk" href="#inputarg_df"><code>df</code></a>)</code></span>ncpci with all the default values.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="ncpci.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_ci"><code>ci</code></a>=ncpci(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#inputarg_fType"><code>fType</code></a>,<a class="intrnllnk" href="#inputarg_df"><code>df</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>ncpci with option confint.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with all the default values.</li></span></a></span></h3><div class="collapse"><p>
      Suppose that in a contingency table of size 3-times-4 the value of
@@ -12,17 +12,26 @@
      (3-1)(4-1)=8 degrees of freedom.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     ci=ncpci(52,'X2',8);
     disp('Confidence interval for the non centrality parameter')
-    disp(ci)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div><pre class="codeoutput">Confidence interval for the non centrality parameter
+   43.5345   76.2004
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
      A 99 per cent confidence interval is requested.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     confint=0.99;
     ci=ncpci(52,'X2',8,'confLevel',confint);
     disp([ num2str(100*confint) ' per cent confidence interval for the non centrality parameter'])
-    disp(ci)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div><pre class="codeoutput">99 per cent confidence interval for the non centrality parameter
+   47.9550   87.6262
+
+</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
      Increase the precision.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     prec=1e-12;
     ci=ncpci(52,'X2',8,'prec',prec);
     disp(['95 per cent confidence interval for the non centrality parameter'])
-    disp(ci)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
+    disp(ci)</pre></div></div><pre class="codeoutput">95 per cent confidence interval for the non centrality parameter
+   43.5345   76.2003
+
+</pre></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
      set doAnimate to true.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     doAnimate=true;
     ci=ncpci(52,'X2',8,'doAnimate',true);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Confidence interval based on the F distibution.</li></span></a></span></h3><div class="collapse"><p>
@@ -92,7 +101,7 @@
 
  This function has been taken and adapted from the MATLAB toolbox 'Measures of effect
  Size' by Harald Hentschke and  Maik C. St&uuml;ttgen.</p> <p>
-<a href="https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox">https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox</a>
+ <a href="https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox">https://www.mathworks.com/matlabcentral/fileexchange/32398-hhentschke-measures-of-effect-size-toolbox</a>
 
 
 

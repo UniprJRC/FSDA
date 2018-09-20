@@ -321,6 +321,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 
 %{
     %% Contaminated airline data (1).
+    % Load the data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan
         118  126  150  180  196  188  233  277  301  318  342  391    % Feb

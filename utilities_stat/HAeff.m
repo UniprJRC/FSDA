@@ -51,9 +51,12 @@ function ceff = HAeff(eff,v,abc)
 %                   $b$= 4*ctun. 
 %                   $c$= 8*ctun. 
 %
-%	It is necessary to have 0 <= a <= b <= c
+%	It is necessary to have 0 <= a <= b <= c.
 %
-% See also: TBeff, HYPeff, OPTeff
+% Parameter ctun multiplies parameters (a,b,c) of Hampel estimator.
+%
+%
+% See also: TBeff, HYPeff, OPTeff, RKeff, HUeff
 %
 % References:
 %
@@ -69,7 +72,6 @@ function ceff = HAeff(eff,v,abc)
 %
 %$LastChangedDate::                      $: Date of the last commit
 %
-% Paramter ceff multiplies parameters (a,b,c) of Hampel estimator
 %
 %
 % Examples:
@@ -80,7 +82,14 @@ function ceff = HAeff(eff,v,abc)
     % c = 0.690998716841394
     c=HAeff(0.95,1)
 %}
-%
+
+%{
+    % Example where three input parameters are supplied.
+    % Find constant c associated to a nominal location efficiency of 95 per
+    % cent in regression when tun=[1.5,3.5,8].
+     tun=[1.5,3,8];
+    c=HAeff(0.95,1,tun);
+%}
 %
 %
 
