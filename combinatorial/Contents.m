@@ -4,10 +4,10 @@
 %
 %   Name         - Description                                                                                                  - Category- Date last modified
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-%   bc           - Returns the Binomial coefficient                                                                             - UTICOMB- 2017 Nov 17
-%   combsFS      - Is an iterative algorithm equivalent to the MATLAB combs.m                                                   - UTICOMB- 2017 Nov 17
-%   lexunrank    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations - UTICOMB- 2017 Nov 17
-%   nchoosekFS   - Returns the Binomial coefficient or matrix containing all combinations                                       - UTICOMB- 2017 Nov 17
-%   randsampleFS - Generates a random sample of k elements from the integers 1 to n (k<=n)                                      - UTICOMB- 2017 Nov 17
-%   shuffling    - Does a random permutation of the elements of input vector                                                    - UTICOMB- 2017 Nov 17
-%   subsets      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements             - UTICOMB- 2017 Nov 17
+%   bc           - Returns the Binomial coefficient                                                                             - UTICOMB- 2018 Sep 15
+%   combsFS      - Is an iterative algorithm equivalent to the MATLAB combs.m                                                   - UTICOMB- 2018 Sep 15
+%   lexunrank    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations - UTICOMB- 2018 Sep 15
+%   nchoosekFS   - Returns the Binomial coefficient or matrix containing all combinations                                       - UTICOMB- 2018 Sep 15
+%   randsampleFS - Generates a random sample of k elements from the integers 1 to n (k<=n)                                      - UTICOMB- 2018 Jun 08
+%   shuffling    - Does a random permutation of the elements of input vector                                                    - UTICOMB- 2018 Jun 08
+%   subsets      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements             - UTICOMB- 2018 May 31

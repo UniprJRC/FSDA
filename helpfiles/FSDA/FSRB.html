@@ -440,7 +440,7 @@ Summary of the exceedances
            1          99         999        9999       99999
          838          77          76          73          73
 
-</pre><img vspace="5" hspace="5" src="images\FSRB_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_16.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_17.png" alt=""> <h2>Plot the outliers with a different symbol using a 3x3 layout<a name="5"></a></h2><pre class="codeinput">    selout=out.ListOut;
+</pre><img vspace="5" hspace="5" src="images\FSRB_15.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_16.png" alt=""> <h2>Plot the outliers with a different symbol using a 3x3 layout<a name="5"></a></h2><pre class="codeinput">    selout=out.ListOut;
     selin=setdiff(1:n,selout);
 
     close <span class="string">all</span>
@@ -470,7 +470,7 @@ Summary of the exceedances
         <span class="comment">% Add on the plot the variable name</span>
         text(0.75,0.1,[<span class="string">'x'</span> num2str(j)],<span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'FontSize'</span>,16)
     <span class="keyword">end</span>
-</pre><img vspace="5" hspace="5" src="images\FSRB_18.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+</pre><img vspace="5" hspace="5" src="images\FSRB_17.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

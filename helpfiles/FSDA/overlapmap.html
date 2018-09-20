@@ -32,8 +32,8 @@
     out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
     overl_2 = overlapmap(out2);
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.42 seconds 
-Total estimated time to complete trimmed k means:  0.94 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.34 seconds 
+Total estimated time to complete trimmed k means:  1.20 seconds 
 </pre><img vspace="5" hspace="5" src="images\overlapmap_01.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_02.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_03.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_04.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an 
      initial threshold omegaStar, a colormap, and allowing for additional 
      interactive plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -57,11 +57,11 @@ Total estimated time to complete trimmed k means:  0.94 seconds
     out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
     overl_2 = overlapmap(out_2, 'omegaStar', 0.025, 'plots', 'contourf', 'userColors', summer);
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  3.29 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  3.20 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  5.08 seconds 
+Total estimated time to complete tclust:  5.05 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 52%
 Number of supplied clusters =6
@@ -138,7 +138,7 @@ supplied
     % overlap map with interctive mode
     overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 44.91 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 43.15 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 37.3333%
 </pre><img vspace="5" hspace="5" src="images\overlapmap_10.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_11.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_12.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simdataset to create homogeneous and spherical clusters 
@@ -167,7 +167,7 @@ Warning: Number of subsets without convergence equal to 37.3333%
     % overlap map with interctive mode
     overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
 
-    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 10.57 seconds 
+    cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 11.14 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 36%
 </pre><img vspace="5" hspace="5" src="images\overlapmap_13.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_14.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_15.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_D" class="clearfix"> </div> <h3 id="input_argument_D" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>D</code> &#8212; Informations to compute the overlap matrix. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>D is a structure which can have the following fields (not

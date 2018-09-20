@@ -65,7 +65,11 @@ for i=1:size(InputCell,1)
     NameInputFile=InputCell{i,6};
     PurposeInputFile=InputCell{i,7};
     NameOutputFile=[NameInputFile '.html'];
+    try
     DescrRef=OUT{i};
+    catch
+        dd=1;
+    end
     [fileID,errMsg] = fopen([dirpathj filesep NameOutputFile],'w');
     if fileID < 0
         error(message('MATLAB:filebrowser:MakeContentsFileOpenError', errMsg))

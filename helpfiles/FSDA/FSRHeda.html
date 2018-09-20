@@ -7,7 +7,7 @@
     X=X./max(X);
     Z=log(X);
     [out]=LXS(y,X,'nsamp',1000);
-    out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
+    out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.05 seconds 
 m=100
 Warning: interchange greater than 10 when m=136
 m=200
@@ -229,7 +229,7 @@ Warning: Imaginary parts of complex X and/or Y arguments ignored
     % Add multiple title
     suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.62 seconds 
+        ']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.35 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 32.5%
 Warning: Matrix is singular, close to singular or badly scaled. Results may be

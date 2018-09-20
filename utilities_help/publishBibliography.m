@@ -269,6 +269,9 @@ for ii = 2:size(uniquesTab,1)
     strInsert = [strInsert '<p>' refText '</p>' newline]; %#ok<AGROW>
 end
 
+ strInsert = [strInsert '<p><hr /> <center><i>This page has been automatically generated' ...
+     ' by our routine <a href="publishBibliography.html">publishBibliography</a></i> </center></p>' newline];
+
 
 %% Open input bibliographyEmpty.html file, put it in a string and do a series of preliminary operations
 FileWithFullPath=[outputDir fsep 'bibliographyEmpty.html'];
