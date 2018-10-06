@@ -34,8 +34,8 @@ function weiRK = RKwei(u,c, M)
 % \[
 % RKwei(u)= \left\{
 %    \begin{array}{cc}
-% 1 &  0\leq |u| \leq M  \\
-%  \left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M \leq u \leq M+c \\
+% 1 &  0\leq u \leq M  \\
+%  \left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M < u \leq M+c \\
 % 0   &             u > M+c \\
 % \end{array}
 %    \right.

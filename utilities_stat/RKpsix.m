@@ -34,8 +34,8 @@ function psixRK = RKpsix(u,c, M)
 % \[
 % RKpsix(u)= \left\{
 %    \begin{array}{cc}
-% u^2 &  0\leq |u| \leq M  \\
-%  u\left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M \leq u \leq M+c \\
+% u^2 &  0\leq u \leq M  \\
+%  u^2 \left(1-\left( \frac{u-M}{c} \right)^2 \right)^2 &  M < u \leq M+c \\
 % 0   &             u > M+c \\
 % \end{array}
 %    \right.

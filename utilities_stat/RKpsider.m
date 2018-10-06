@@ -34,7 +34,7 @@ function psiderRK = RKpsider(u,c, M)
 % \[
 % RKpsider(u)= \left\{
 %    \begin{array}{cc}
-% 1 &  1 \leq |u| \leq M  \\
+% 1 &  1 \leq u \leq M  \\
 %  \left(1-\left( \frac{u-M}{c} \right)^2 \right)\left(1-\left( \frac{u-M}{c} \right)^2
 % -4u \frac{u-M}{c^2} \right)  &  M \leq u \leq M+c \\
 % 0   &             u > M+c \\

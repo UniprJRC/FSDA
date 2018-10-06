@@ -1,11 +1,11 @@
 function [c, M] = RKeff(eff,v,ARP)
-%ROeff finds the constants c and M which are associated to the requested efficiency and ARP
+%RKeff finds the constants c and M which are associated to the requested efficiency and ARP
 %
 %<a href="matlab: docsearchFS('RKeff')">Link to the help function</a>
 %
 %  Required input arguments:
 %
-%    eff:       required efficienty. Scalar.
+%    eff:       required efficiency. Scalar.
 %               Scalar which contains the required efficiency (of location
 %               or scale estimator).
 %               Generally eff=0.85, 0.9 or 0.95

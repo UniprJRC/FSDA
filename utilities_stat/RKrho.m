@@ -32,12 +32,12 @@ function rhoRK = RKrho(u,c, M)
 %
 % function RKrho transforms vector u as follows
 % \[
-% TBrho(u)= \left\{
+% RKrho(u)= \left\{
 %    \begin{array}{cc}
-% \frac{u^2}{2} &  0\leq |u| \leq M  \\
+% \frac{u^2}{2} &  0\leq u \leq M  \\
 %  \frac{M^2}{2} -M^2\frac{M^4-5 M^2 c^2 + 15c^4}{30c^4} + u^2 \left( 0.5+ \frac{M^4}{2c^4}  -\frac{M^2}{c^2} \right) \\
 %  +u^3 \left( \frac{4M}{3c^2} -\frac{4 M^3}{3c^4} \right) +u^4 \left( \frac{3M^2}{2c^4}- \frac{1}{2c^2} \right) \\
-%  -4M \frac{u^5}{5c^4} + \frac{u^6}{6c^4} &         M \leq u \leq M+c \\
+%  -4M \frac{u^5}{5c^4} + \frac{u^6}{6c^4} &         M < u \leq M+c \\
 % \frac{M^2}{2} + \frac{c(5c+ 16M)}{30}   &             u > M+c \\
 % \end{array}
 %    \right.
