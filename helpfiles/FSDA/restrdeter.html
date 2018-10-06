@@ -90,11 +90,13 @@ Maximum value of ratio among determinants
     a=restrdeter(av,niini,restr,tol,repm);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Determinant restriction when all eigenvalues of a group are 0.</li></span></a></span></h3><div class="collapse"><p>
      Two variables and five groups.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     av=abs(randn(2,5));
+    restr=1.6;
     niini=[30;40;20;10;50];
     av(:,2)=0;
     a=restrdeter(av,niini,restr);
     disp('Maximum value of ratio among determinants')
     disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Determinant restriction when all eigenvalues of two groups are 0.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    niini=[30;40;20;10;50];
     av=abs(randn(2,5));
     av(:,2:3)=0;
     a=restrdeter(av,niini,restr);
@@ -103,14 +105,56 @@ Maximum value of ratio among determinants
              of the covariance matrices of the k groups.</p> <p>
              v is the number of variables of the dataset which has to be
              clustered.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_niini" class="clearfix"> </div> <h3 id="input_argument_niini" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>niini</code> &#8212; Cluster size. </span>  </a><span class="example_desc">Column vector.</span></span></h3> <div class="collapse"> <p>k x 1 vector containing the size
-             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Scalar containing the restr parameter in tclust program.</p> <p>
-            More in detail, parameter restr defines the cluster's shape
-            restrictions, which are applied on all clusters during each
-            iteration.</p><p>
-            Setting restr to 1, yields the strongest restriction,
-            forcing all eigenvalues/determinants to be equal and so the
-            method looks for similarly scattered (respectively spherical)
-            clusters.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_tol" class="clearfix"> </div> <h3 id="input_argument_tol" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tol</code> &#8212; tolerance. </span>  </a><span class="example_desc">Scalar defining the tolerance of the procedure.</span></span></h3> <div class="collapse"> <p>The default value is 1e-8
+             of the k clusters</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restr" class="clearfix"> </div> <h3 id="input_argument_restr" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restr</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar (default) or vector of length 2.</span></span></h3> <div class="collapse"> <p><p>If restr is a scalar it defines the maximum ratio of the
+            determinants which is allowed. In other words, we impose the
+            constraint on the covariance matrices:</p> <p>
+            </p>\[
+               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+               |\Sigma_j|} \leq restr
+            \]
+           where $restr \geq 1$. In this case the "shape" constraint (as
+           defined below) applied to each group is fixed to
+           $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+           affine equivariant. In other words, the decomposition or the
+           $j$-th scatter matrix $\Sigma_j$ is
+           \[
+           \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+           \]<p>
+           where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+           diagonal matrix with $|\Gamma_j|=1$ and with elements
+           $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+           the eigenvalues of the $\Sigma_j$ matrix) and
+           $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+           known as "shape" matrices, because they determine the shape of the
+           fitted cluster components. The following $k$
+           constraints are then imposed on the shape matrices:</p> <p>
+           </p>\[
+           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+               c_{shape}, \text{ for } j=1,...,k,
+           \]<p>
+           The particular case $restr=1$ forces all determinants of the
+           scatter matrices to be equal i.e. $|\Sigma_1|=...= |\Sigma_k|$.</p> <p>
+           If $restr$ is a vector of length 2 the second element refers to
+           $c_{shape}$ of the previous equation. In other words, for example if
+           $restr=[3, 10]$ we impose the $k+1$ constraints
+           </p>\[
+               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+               |\Sigma_j|} \leq restr(1)=3
+            \]
+           and
+           \[
+           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}} \leq
+               restr(2)=10, \text{ for } j=1,...,k,
+           \]<p>
+
+           Different constrained clustering problems can be defined when
+           varying $restr(1)$ and $restr(2)$. In particular, we are
+           ideally searching for spherical clusters when $restr(2)=1$.</p> <p>
+           Models with variable volume and spherical clusters are handled
+           with $1&lt;restr(1)&lt;\infty$ and $restr(2)=1$. The
+           $restr(1)=restr(2)=1$ case often yields a very constrained
+           parametrization because it implies spherical clusters with equal
+           volumes.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_tol" class="clearfix"> </div> <h3 id="input_argument_tol" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tol</code> &#8212; tolerance. </span>  </a><span class="example_desc">Scalar defining the tolerance of the procedure.</span></span></h3> <div class="collapse"> <p>The default value is 1e-8
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code>'tol',[1e-18] 
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_userepmat" class="clearfix"> </div> <h3 id="input_argument_userepmat" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>userepmat</code> &#8212; use builtin repmat. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>If userepmat is true function repmat is used instead
              of bsxfun inside the procedure. Remark: repmat is built in

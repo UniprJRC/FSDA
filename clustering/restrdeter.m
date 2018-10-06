@@ -16,14 +16,57 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 %             clustered.
 %     niini: Cluster size. Column vector. k x 1 vector containing the size
 %             of the k clusters
-%     restr: Restriction factor. Scalar. Scalar containing the restr parameter in tclust program.
-%            More in detail, parameter restr defines the cluster's shape
-%            restrictions, which are applied on all clusters during each
-%            iteration.
-%            Setting restr to 1, yields the strongest restriction,
-%            forcing all eigenvalues/determinants to be equal and so the
-%            method looks for similarly scattered (respectively spherical)
-%            clusters.
+%     restr: Restriction factor. Scalar (default) or vector of length 2. 
+%            If restr is a scalar it defines the maximum ratio of the
+%            determinants which is allowed. In other words, we impose the
+%            constraint on the covariance matrices:
+%            \[
+%               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+%               |\Sigma_j|} \leq restr
+%            \]
+%           where $restr \geq 1$. In this case the "shape" constraint (as
+%           defined below) applied to each group is fixed to
+%           $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+%           affine equivariant. In other words, the decomposition or the
+%           $j$-th scatter matrix $\Sigma_j$ is
+%           \[
+%           \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%           \]
+%           where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%           diagonal matrix with $|\Gamma_j|=1$ and with elements
+%           $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%           the eigenvalues of the $\Sigma_j$ matrix) and
+%           $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%           known as "shape" matrices, because they determine the shape of the
+%           fitted cluster components. The following $k$
+%           constraints are then imposed on the shape matrices:
+%           \[
+%           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%               c_{shape}, \text{ for } j=1,...,k,
+%           \]
+%           The particular case $restr=1$ forces all determinants of the
+%           scatter matrices to be equal i.e. $|\Sigma_1|=...= |\Sigma_k|$.
+%           If $restr$ is a vector of length 2 the second element refers to
+%           $c_{shape}$ of the previous equation. In other words, for example if
+%           $restr=[3, 10]$ we impose the $k+1$ constraints
+%           \[
+%               \frac{\max_{j=1,...,k} |\Sigma_j|}{\min_{j=1,...,k}
+%               |\Sigma_j|} \leq restr(1)=3
+%            \]
+%           and
+%           \[
+%           \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}} \leq
+%               restr(2)=10, \text{ for } j=1,...,k,
+%           \]
+%
+%           Different constrained clustering problems can be defined when
+%           varying $restr(1)$ and $restr(2)$. In particular, we are
+%           ideally searching for spherical clusters when $restr(2)=1$.
+%           Models with variable volume and spherical clusters are handled
+%           with $1<restr(1)<\infty$ and $restr(2)=1$. The
+%           $restr(1)=restr(2)=1$ case often yields a very constrained
+%           parametrization because it implies spherical clusters with equal
+%           volumes.
 %
 %  Optional input arguments:
 %
@@ -141,6 +184,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
     % Determinant restriction when all eigenvalues of a group are 0.
     % Two variables and five groups.
     av=abs(randn(2,5));
+    restr=1.6;
     niini=[30;40;20;10;50];
     av(:,2)=0;
     a=restrdeter(av,niini,restr);
@@ -150,6 +194,7 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 
 %{
     % Determinant restriction when all eigenvalues of two groups are 0.
+    niini=[30;40;20;10;50];
     av=abs(randn(2,5));
     av(:,2:3)=0;
     a=restrdeter(av,niini,restr);
@@ -161,6 +206,13 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 
 if nargin<4
     tol =1e-8;
+end
+
+if length(restr)==2
+    c2=restr(2);
+    restr=restr(1);
+else
+    c2=10^10;
 end
 
 % userepmat specifies if it is necessary to use function repmat or bsxfun
@@ -178,7 +230,7 @@ eigenvalues(eigenvalues<1e-15)=0;
 % Eigenvalue restriction using a restriction factor 10^10 is initially
 % applied separately to each group
 for j=1:k
-    eigenvalues(:,j) = restreigen(eigenvalues(:,j), 1, 10^10,tol,userepmat);
+    eigenvalues(:,j) = restreigen(eigenvalues(:,j), 1, c2,tol,userepmat);
 end
 % product of the elements of all columns
 es=prod(eigenvalues,1);
