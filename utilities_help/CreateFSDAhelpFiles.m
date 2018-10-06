@@ -22,7 +22,9 @@ function outHELP=CreateFSDAhelpFiles()
 % and left buttons which enable us to navigate in alphabetical order inside the
 % HTML navigation system
 %
-% 5) Creare all pointer files using routine CreateFSDApointerFiles
+% 5) create bibliography file
+%
+% 6) Creare all pointer files using routine CreateFSDApointerFiles
 %
 % Remark: remember that your setup program must execaute command
 % builddocsearchdb in folder [FSDAroot filesep 'helpfiles'  filesep 'pointersHTML']
