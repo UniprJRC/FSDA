@@ -691,7 +691,7 @@ for i=1:nbestsol
     IDXout(:,i)=IDXi;
     if plots==1
         figure
-        spmplot(Y,IDXi,[],'box');
+        spmplot(Y,IDXi,1,'box');
         detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
         bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
         Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
