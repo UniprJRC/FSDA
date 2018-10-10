@@ -103,6 +103,18 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nsamp',1000
 %                 Data Types - double
 %
+% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                random numbers which are used to initialize the
+%                proportions of the groups. This option is effective just
+%                if nsamp is a matrix which contains pre-extracted
+%                subsamples and k is a scalat. The purpose of this option
+%                is to enable the user to replicate the results. 
+%                The default value of RandNumbForNini is empty,
+%                that is random numbers from uniform are used.
+%                   Example - 'RandNumbForNini',''
+%                   Data Types - single | double
+%
 %    refsteps : Number of refining iterations. Scalar. Number of refining
 %               iterations in subsample.  Default is 15. refsteps = 0 means
 %               "raw-subsampling" without iterations.
@@ -139,7 +151,9 @@ function out  = tclustIC(Y,varargin)
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
-%               implies restriction on the determinants.
+%               implies restriction on the determinants. If restrtype is
+%               'deter' it is possible to control the constraints on the
+%               shape matrices using optional input argument cshape.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
@@ -217,7 +231,8 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
-%   UnitsSameGroup : Units with same labels. Numeric vector.  List of the units which must (whenever possible)
+%   UnitsSameGroup : Units with same labels. Numeric vector.  
+%                   List of the units which must (whenever possible)
 %                   have the same label.  For example if
 %                   UnitsSameGroup=[20 26], it means that group which contains
 %                   unit 20 is always labelled with number 1. Similarly,
@@ -232,6 +247,38 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
+%       cshape :    constraint to apply to each of the shape matrices. 
+%                   Scalar greater or equal than 1. This options only works is 'restrtype' is
+%                   'deter'. 
+%               When restrtype is deter the default value of the "shape" constraint (as
+%               defined below) applied to each group is fixed to
+%               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+%               affine equivariant. In other words, the decomposition or the
+%               $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
+%                 Data Types - single | double
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -434,11 +481,14 @@ msg=1;
 cc=[1 2 4 8 16 32 64 128];
 cleanpool=true;
 UnitsSameGroup='';
+RandNumbForNini='';
+% cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
+cshape=10^10;
 
 options=struct('kk',kk,'cc',cc,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'plots',plots,'nocheck',0,...
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
-    'reftol',reftol,'startv1',startv1,'restrtype',restr,...
-    'UnitsSameGroup',UnitsSameGroup,...
+    'reftol',reftol,'startv1',startv1,'restrtype',restr,'cshape',cshape,...
+    'UnitsSameGroup',UnitsSameGroup,'RandNumbForNini',RandNumbForNini,...
     'numpool',numpool, 'cleanpool', cleanpool);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -487,6 +537,8 @@ if nargin > 1
     cleanpool=options.cleanpool;
     numpool=options.numpool;
     UnitsSameGroup=options.UnitsSameGroup;
+    RandNumbForNini=options.RandNumbForNini;
+     cshape=options.cshape;
 end
 
 if strcmp(whichIC,'ALL')
@@ -540,12 +592,20 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     
     % Cnsamp=subsets(nsamp,n,(v+1)*seqk);
     %seqk = number of groups to consider
-    % For each value of seqk extract subsamples once and for all
-    Cnsamp=subsets(nsamp,n,(v+1)*seqk);
-    % For each value of k extract random numbers to initialize proportions
-    % once and for all
-    RandNumbForNini=rand(seqk,nsamp);
-    
+    if isscalar(nsamp)
+        % For each value of seqk extract subsamples once and for all
+        Cnsamp=subsets(nsamp,n,(v+1)*seqk);
+    else
+        Cnsamp=nsamp;
+    end
+
+    if isempty(RandNumbForNini)
+        % For each value of k extract random numbers to initialize proportions
+        % once and for all
+        gRandNumbForNini=rand(seqk,nsamp);
+    else
+        gRandNumbForNini=RandNumbForNini;
+    end
     
     parfor (c=1:length(cc) , numpool)
         % columns = restr
@@ -554,7 +614,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         if typeIC>0
             outMixt=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',2, ...
                 'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                'reftol',reftol,'RandNumbForNini',RandNumbForNini);
+                'reftol',reftol,'RandNumbForNini',gRandNumbForNini,'cshape',cshape);
             IDXMIX{k,c}=outMixt.idx;
             if typeIC==2 || typeIC==3
                 MIXMIX(k,c)=outMixt.MIXMIX;
@@ -568,7 +628,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
             % tclust using classification likelihood
             outCla=tclust(Y,seqk,alpha,cc(c),'nsamp',Cnsamp,'plots',0,'msg',0, ...
                 'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-                'reftol',reftol,'RandNumbForNini',RandNumbForNini);
+                'reftol',reftol,'RandNumbForNini',gRandNumbForNini,'cshape',cshape);
             CLACLA(k,c)=outCla.CLACLA;
             IDXCLA{k,c}=outCla.idx;
         end
@@ -609,7 +669,8 @@ if typeIC==0 || typeIC==3
     out.CLACLA=CLACLA;
     if verMatlab == false
         % out.(IC) is also given in table format
-        out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,'VariableNames',colnamesIC);
+        out.CLACLAtable=array2table(CLACLA,'RowNames',rownamesIC,...
+            'VariableNames',matlab.lang.makeValidName(colnamesIC));
     end
     
     % Store whenever possible consistent labels

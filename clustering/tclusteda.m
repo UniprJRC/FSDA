@@ -40,7 +40,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               (respectively spherical) clusters. The default is to apply
 %               restrfactor to eigenvalues. In order to apply restrfactor
 %               to determinants it is is necessary to use optional input
-%               argument restr.
+%               argument cshape.
 %
 %  Optional input arguments:
 %
@@ -240,7 +240,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                subsamples. The purpose of this option is to enable to
 %                user to replicate the results in case routine tclust is
 %                called using a parfor instruction (as it happens for
-%                example in routine IC, where tclust is called through a
+%                example in routine tclustIC, where tclust is called through a
 %                parfor for different values of the restriction factor).
 %                The default value of RandNumbForNini is empty that is
 %                random numbers from uniform are used.
@@ -253,6 +253,38 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               implies restriction on the determinants.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
+%       cshape :    constraint to apply to each of the shape matrices. 
+%                   Scalar greater or equal than 1. This options only works is 'restrtype' is
+%                   'deter'. 
+%               When restrtype is deter the default value of the "shape" constraint (as
+%               defined below) applied to each group is fixed to
+%               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+%               affine equivariant. In other words, the decomposition or the
+%               $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
+%                 Data Types - single | double
 %   UnitsSameGroup :  list of the units which must (whenever possible)
 %                   have a particular label. Numeric vector.  For example if
 %                   UnitsSameGroup=[20 26], means that group which contains
@@ -337,7 +369,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %
 % References:
 %
-%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
@@ -401,7 +433,6 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     Y=load('geyser2.txt');
     close all
     % alphavec= vector which contains the trimming levels to consider
-    % in this case 31 values of alpha are considered
     alphavec=0.30:-0.10:0;
     % c = restriction factor to use
     c=100;
@@ -421,7 +452,6 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     Y=load('M5data.txt');
 
     % alphavec= vector which contains the trimming levels to consider
-    % in this case 31 values of alpha are considered
     alphavec=0.10:-0.02:0;
     out=tclusteda(Y(:,1:2),3,alphavec,1000,'nsamp',1000,'plots',1);
 %}
@@ -498,7 +528,9 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 
 %{
     % tclusteda using determinant constraint.
-    out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter');
+    % Search for spherical clusters.
+    cshape=1
+    out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter','cshape',cshape);
 %}
 
 
@@ -642,6 +674,8 @@ numpool = feature('numCores');
 cleanpool=false;
 UnitsSameGroup='';
 RandNumbForNini='';
+% cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
+cshape=10^10;
 
 UserOptions=varargin(1:2:length(varargin));
 
@@ -651,7 +685,7 @@ if ~isempty(UserOptions)
         'msg',1,'refsteps',refstepsdef,'equalweights',false,...
         'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen',...
         'UnitsSameGroup',UnitsSameGroup,...
-        'numpool',numpool, 'cleanpool', cleanpool);
+        'numpool',numpool, 'cleanpool', cleanpool,'cshape',cshape);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -701,6 +735,8 @@ if ~isempty(UserOptions)
         restrnum=1;
     elseif strcmp(restr,'deter')==1
         restrnum=2;
+       cshape=options.cshape;
+       restrfactor=[restrfactor cshape];
     else
         error('FSDAeda:tclusteda:Wrongrestr','Wrong restriction');
     end
@@ -849,7 +885,7 @@ for i=1:nselected
             
         else
             % Restrictions on the determinants
-            autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            autovalues=restrdeter(Lambda_vk,niini,restrfactor ,tolrestreigen,userepmat);
         end
         
         
@@ -894,7 +930,7 @@ npar=v*k;
 if equalweights==false
     npar=npar +(k-1);
 end
-nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor)^(1-1/(v*k))) +1;
+nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
 
 lalpha=length(alpha);
 if msg == 1
@@ -926,6 +962,11 @@ parfor (j=1:lalpha, numpool)
         progbar.progress;  %#ok<PFBNS>
     end
 end
+
+if msg == 1
+    progbar.stop;
+end
+
 
 if ~isempty(UnitsSameGroup)
     
@@ -980,7 +1021,7 @@ for j=2:lalpha
         % MU(:,:,j) =matrix of centroids for current alpha value
         
         %if verMatlab==true;
-            muij=bsxfun(@minus,muii,MU(:,:,j));
+        muij=bsxfun(@minus,muii,MU(:,:,j));
         %else
         %    muij=muii-MU(:,:,j);
         %end
