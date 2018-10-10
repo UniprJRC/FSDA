@@ -42,7 +42,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               to be equal and so the method looks for similarly scattered
 %               (respectively spherical) clusters. The default is to apply
 %               restrfactor to eigenvalues. In order to apply restrfactor
-%               to determinants it is is necessary to use optional input
+%               to determinants it is necessary to use optional input
 %               argument restr.
 %
 %  Optional input arguments:
@@ -200,7 +200,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %               Case 3: plots option used as struct.
 %                 If plots is a structure it may contain the following fields:
-%                 plots.type = in this case the 'type' supplied 
+%                 plots.type = in this case the 'type' supplied
 %                 is used to set the type of plot as when plots option is
 %                 a character array. Therefore, plots.type can be:
 %                 'contourf', 'contour', 'ellipse' or 'boxplotb'.
@@ -266,10 +266,46 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
 %               eigen implies restriction on the eigenvalues while deter
-%               implies restriction on the determinants.
+%               implies restriction on the determinants. If restrtype is
+%               'deter' it is also possible to specify  through optional
+%               parameter cshape the constraint to apply to the shape
+%               matrices.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
-%       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to request that the input matrix Y
+%       cshape  : constraint to apply to the shape matrices. Scalar greater or
+%               equal 1. This options only works is 'restrtype' is
+%               'deter'.
+%               When restrtype is deter the default value of the "shape" constraint (as
+%               defined below) applied to each group is fixed to
+%               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+%               affine equivariant. In other words, the decomposition or the
+%               $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
+%                 Data Types - single | double
+%       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to
+%               request that the input matrix Y
 %               is saved into the output structure out. Default is 0, id
 %               est no saving is done.
 %                 Example - 'Ysave',1
@@ -378,7 +414,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 % References:
 %
-%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+%   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
@@ -809,10 +845,12 @@ end
 
 % restrnum=1 implies eigenvalue restriction
 restrnum=1;
+% cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
+cshape=10^10;
 
 options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
-    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen');
+    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen','cshape',cshape);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -869,6 +907,9 @@ if nargin > 4
         restrnum=1;
     elseif strcmp(restr,'deter')==1
         restrnum=2;
+        cshape=options.cshape;
+        restrfactor=[restrfactor cshape];
+        
     else
         error('FSDA:tclust:Wrongrestr','Wrong restriction');
     end
@@ -1621,7 +1662,7 @@ for j=1:k
             values=sort(diag(values));
             eigun=values./values(1);
             % maximum value of r is v-1
-            r=sum(eigun(2:end)>=restrfactor);
+            r=sum(eigun(2:end)>=restrfactor(1));
             %
             constr(j)=r;
         else
@@ -1708,7 +1749,7 @@ end
 
 %% Compute INFORMATION CRITERIA
 
-nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor)^(1-1/(v*k))) +1;
+nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
 
 logh=log(h);
 
@@ -1852,7 +1893,7 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
     end
     
     % add title
-    str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor);
+    str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
     title(str,'Interpreter','Latex'); % , 'fontsize', 14
     
 elseif isscalar(plots) && plots == 0
