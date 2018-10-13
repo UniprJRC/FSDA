@@ -9,24 +9,31 @@ clearvars;close all;
 load('head.mat');
 Y=head.data;
 cnames=head.colnames;
-% Compare the output with Figure 3.9 p. 97
+% Compare the output with Figure 3.9 p. 97 of Atkinson et al. (2004)
 boxplot(Y,'labels',cnames,'LabelOrientation','inline');
 % Label the outliers with the unit number
 %Find in current plot the handles associated with the univariate outliers
 a=findobj(gca,'tag','Outliers');
-[n,v]=size(Y);
+v=size(Y,2);
 for j=1:v
     % Get the X and Y coordinates of the univariate outliers
     aYdata=get(a(j),'Ydata');
     aXdata=get(a(j),'Xdata');
     
-    % Loop over the outliers inside variable v-j+1
-    for i=1:length(aYdata)
-        % Find the row number of the outliers
-        ind=find(aYdata(i)==Y(:,end-j+1),n);
-        % Add the label to the current plot
-        text(aXdata(1),aYdata(i),num2str(ind'))
-    end
+    % Add the text (row number) for the outliers in the plot
+    [~,ind]=intersect(Y(:,v-j+1),aYdata);
+    text(aXdata',aYdata',num2str(ind))
+    
+    %     % An alternative instruction to label the outliers based on a loop is given below
+    %     % seq is sequence from 1 to n (of course seq does not depend on j
+    %     % and can be brought out of the loop on j)
+    %     seq=1:size(Y,1);
+    %     for i=1:length(aYdata)
+    %         % Find the row number of the outliers
+    %         ind=seq(aYdata(i)==Y(:,v-j+1));
+    %         % Add the label (row number) to the current plot
+    %         text(aXdata(1),aYdata(i),num2str(ind'))
+    %     end
 end
 
 %% HD (Heads data) analysis using S and MM estimators
