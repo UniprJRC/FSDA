@@ -522,16 +522,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % For the sake of code readability, the relevant sections of the code will
 % be identified with a "TRIMMING" or "THINNING" tag.
 
-
-
-
+stop_csteps = 1;
 
 %% initializations
 
 warning('off');
 
 % Groups with less than thinning_th units are not considered for thinning
-thinning_th = 50;
+thinning_th = 5;
 
 % tolerance for restriction factor
 tolrestreigen = 1e-08;
@@ -539,7 +537,6 @@ tolrestreigen = 1e-08;
 % initial objective function value (optimized during the random starts)
 vopt = -1e+20;
 obj = vopt;
-
 % repmat from Release 8.2 is faster than bsxfun
 if verLessThan('matlab','8.2.0') ==1
     userepmat=0;
@@ -608,8 +605,13 @@ if nargin>6
             if p == numel(interc) +1
                 
                 %apply thinning on the full dataset if there is only one exploratory variable.
-                [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one');
-                
+                bw = (range([X(:,numel(interc)+1),y]))/8;
+                %in order to reproduce results comparable with the paper
+                %Cerioli and Perrotta (2013) the bandwidth is divided by 3
+                bw = bw/3;
+                %bw = min(max(X),max(y))/8;
+                [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one','bandwidth',bw);
+                id_not_thinned = Wt4==1;
                 % save original data
                 Xori = X;
                 yori = y;
@@ -761,6 +763,9 @@ we         = options.we;
 % flag to control the type of weighting scheme
 wtrim      = options.wtrim;
 
+% in presence of second trimming level or thinning, the objective function
+% is not monothonic. Therefore the best refining step is not the last.
+zigzag = alphaX > 0 || wtrim == 3 || wtrim == 2;
 
 switch wtrim
     case 0
@@ -951,6 +956,9 @@ if p==1
     vary=var(y);
 end
 
+%obj_all = NaN(nselected,refsteps);
+%indmax_all = NaN(n,refsteps,nselected);
+%beta_all = NaN(k,refsteps,nselected);
 %%  Random starts
 for i =1:nselected
     
@@ -1017,7 +1025,21 @@ for i =1:nselected
     %X and y are identified for each group and the
     %residuals and covariance (sigmaini) are computed
     
+    %for tandem thinning, when the user passes the initial subset
+    %through parameter nsamp, it is necessary to find the position of the
+    %initial subset in the retained units
+    if wtrim==4 && ~isscalar(nsamp)
+        for f=1:length(C)
+            C_new(f) = find(C(f)==find(Wt4==1));
+        end
+        C = C_new;
+    end
     
+%         for nsample=1:size(C,1)
+%             for n_units_xsample=1:size(C,2)
+%                 C_new(nsample,n_units_xsample) = find(C(nsample,n_units_xsample)==find(Wt4==1));
+%             end
+%         end
     for j = 1:k
         ilow   = (j-1)*p+1;
         iup    = j*p;
@@ -1267,6 +1289,8 @@ for i =1:nselected
         
         % Mean of the weights must be 1
         % These weights will be used in first and second level trimming
+        mean_w4trim = mean(w4trim);
+        sum_w4trim = sum(w4trim);
         w4trim=w4trim/mean(w4trim);
         %%%%%%%%%%%%%%%%%%%END OF THINNING
         
@@ -1322,8 +1346,9 @@ for i =1:nselected
             % trimmed
             disc(w4trim==0)=1e+20;
             % Assign 0 to thinned units
-            indmax(w4trim==0)=0;
-            
+            if wtrim == 3
+                indmax(w4trim==0)=0;
+            end
             % Sort the n likelihood contributions and save in qq the largest n*(1-alpha) likelihood
             % contributions
             [~,qq] = sort(disc,'ascend');
@@ -1565,12 +1590,13 @@ for i =1:nselected
             
             %
             % Stop if two consecutive concentration steps have the same result
-            if indmax == indold
-                break
-            else
-                indold = indmax;
+            if stop_csteps ==1
+                if indmax == indold
+                    break
+                else
+                    indold = indmax;
+                end
             end
-            
             %% 4) Computation of the value of the target function
             obj = 0;
             not_empty_g = seqk(~( niini <= p + 1 ));
@@ -1578,20 +1604,29 @@ for i =1:nselected
                 
                 for jj = not_empty_g
                     
+                    ptermAIC = 2*p/mean_w4trim;
                     if equalweights ==1
-                        obj = obj + log(1/k) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                        %obj = obj + log(1/k) +...
+                        %    sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                         obj = obj + log(1/k) +...
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;
+                        
                     else
-                        obj = obj + niini(jj)*log(niini(jj)/sum(niini))+...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                        %obj = obj +    niini(jj)*log(niini(jj)/sum(niini))+...
+                        %    sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                        obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));                      
                     end
                     
                     if cwm==1
                         obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj)).*Z(:,jj));
+                        %obj con AIC????????
                     end
                     
                 end
                 
+                obj = 2*obj - ptermAIC;
+                %TODO: check CWM and mixture likelihood    
             else
                 % compute mixture likelihood
                 
@@ -1616,41 +1651,69 @@ for i =1:nselected
                 end
                 log_lh(indmax<=0,:)=[];
                 obj = estepFS(log_lh);
+                %obj con AIC????????
             end
             
             
         end
         % disp([cstep obj sum(indmax<=0)])
+        %obj_all(i,cstep) = obj; 
+%        indmax_all(:,cstep,i) = indmax;
+%        beta_all(:,cstep,i) = Beta;
+
         
+        %% Change the 'optimal' target value and 'optimal' parameters
+    
+        % The following if condition is done to check if an increase in the target value is achieved
+        if zigzag == 1
+            if obj >= vopt && sum(sum(isnan(Beta))) ==0
+                disp(['sample = ' num2str(i) ', concentration step = ' num2str(cstep)])
+                vopt                    = obj;
+                bopt                    = Beta;
+                numopt                  = niini;
+                sigma2opt                = sigma2ini;
+                w4trimopt               = w4trim;
+                weopt                   = we;
+                idxopt_before_tropt     = indmax_before_tr;
+                idxopt               = indmax;
+
+                if mixt ==2
+                    postprobopt = postprob;
+                end
         
+                if cwm==1
+                    muXopt=muX;
+                    sigmaXopt=sigmaX;
+                end
+            end
+        end
+
     end % End of concentration steps
     
-    %     close all
-    %     plot(obj_all(1,1:end))
     
     %% Change the 'optimal' target value and 'optimal' parameters
     
-    %the following two checks have to be commented if one can accept an optimal
-    %subset with less than k groups.
-    %if  (length(not_empty_g )== k && sum(sum(isnan(Beta))) == 0)
     % The following if condition is done to check if an increase in the target value is achieved
-    if obj >= vopt && sum(sum(isnan(Beta))) ==0
-        vopt                    = obj;
-        bopt                    = Beta;
-        numopt                  = niini;
-        sigma2opt                = sigma2ini;
-        w4trimopt               = w4trim;
-        weopt                   = we;
-        idxopt_before_tropt     = indmax_before_tr;
-        idxopt               = indmax;
+    if zigzag == 0
 
-        if mixt ==2
-            postprobopt = postprob;
-        end
-        
-        if cwm==1
-            muXopt=muX;
-            sigmaXopt=sigmaX;
+        if obj >= vopt && sum(sum(isnan(Beta))) ==0
+            vopt                    = obj;
+            bopt                    = Beta;
+            numopt                  = niini;
+            sigma2opt                = sigma2ini;
+            w4trimopt               = w4trim;
+            weopt                   = we;
+            idxopt_before_tropt     = indmax_before_tr;
+            idxopt               = indmax;
+
+            if mixt ==2
+                postprobopt = postprob;
+            end
+
+            if cwm==1
+                muXopt=muX;
+                sigmaXopt=sigmaX;
+            end
         end
     end
     
@@ -1713,6 +1776,9 @@ end
 
 %   obj           = value of the target function
 out.obj                = vopt;
+%out.obj_all            = obj_all;
+%out.indmax_all         = indmax_all;
+%out.beta_all           = beta_all;
 % out.idx = final allocation vector
 % out.idx==1 for units allocated to group 1
 % out.idx==2 for units allocated to group 2
@@ -1720,7 +1786,14 @@ out.obj                = vopt;
 % out.idx==k for units allocated to group k
 % out.idx==-1 for first  level trimmed units
 % out.idx==-2 for second level trimmed units
-out.idx   = idxopt;
+
+%in tandem thinning it is necessary to save information about not only retained units (idxopt), but also about thinned units.   
+if wtrim == 4
+    out.idx = zeros(length(Xori),1);
+    out.idx(id_not_thinned)=idxopt;
+else
+    out.idx   = idxopt;
+end
 % frequency distribution of the allocations
 out.siz=tabulateFS(idxopt);
 
