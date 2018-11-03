@@ -1077,6 +1077,8 @@ for i=1:size(AX,2)
             
         end
         
+        % Get the Ylim of ax
+        axYlim=get(ax,'Ylim');
         
         axPosition = get(ax,'position');
         
@@ -1097,6 +1099,9 @@ for i=1:size(AX,2)
         
         % Remove the y tick labels from the graph containing boxplots
         set(ax,'YTickLabel',{' '});
+        
+        % Set the proper Ylim to the boxplots
+        set(ax,'Ylim',axYlim)
         
         % Put the graph containing boxplots in the correct position
         set(ax,'position',axPosition);
@@ -1819,7 +1824,7 @@ if ~isempty(databrush) || iscell(databrush)
                     set(ahist,'MarkerEdgeColor','none','EdgeColor','none','FaceColor','none')
                 end
                 
-              
+                
                 % beginning of updating boxplots or histograms
                 % on the main diagonal
                 for i=1:size(AX,2)
