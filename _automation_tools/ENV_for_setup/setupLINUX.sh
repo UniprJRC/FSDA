@@ -1,5 +1,6 @@
 #!/bin/bash
 #set -x
+set -e
 
 #Installation script FSDA Toolbox for LINUX system
 
@@ -50,7 +51,7 @@ else
 fi
 
 
-if [ -e $where ]
+if [ -e "$where" ]
 then 
 	risp="yes"
 	echo $where " already exists. Do you want to continue ? (yes/no) (default : yes) --> "
@@ -61,7 +62,7 @@ then
 		exit 1
 	fi
 else
-	mkdir -p $where
+	mkdir -p "$where"
 fi
 
 
@@ -69,10 +70,10 @@ cd $CURDIR/FSDA
 
 echo "Copying FSDA Toolbox files in : " $where "............"
 
-cp -R * $where/.
+cp -R * "$where/."
 
 
-matlab -logfile $where/log.txt -nodesktop -nosplash -r "a=ver('MATLAB'); disp([a.Version]); quit;"
+matlab -logfile "$where/log.txt" -nodesktop -nosplash -r "a=ver('MATLAB'); disp([a.Version]); quit;"
 
 
 VER=`sed -n '$p' $where/log.txt`
@@ -85,11 +86,11 @@ MATPAT=${MATEXE%%/bin/matlab}
 
 if [ $REL -ge 8 ] 
 then
-    mv $where/helpfiles/FSDA $where/helpfiles/FSDAtomove
-	mkdir $where/helpfiles/FSDA
-	mv $where/helpfiles/FSDAtomove/helptoc.xml $where/helpfiles/FSDA/.
-	mv $where/helpfiles/FSDAtomove/fsda_product_page.html $where/helpfiles/FSDA/.
-	mv $where/helpfiles/FSDAtomove ${MATPAT}/help/.
+    mv "$where/helpfiles/FSDA" "$where/helpfiles/FSDAtomove"
+	mkdir "$where/helpfiles/FSDA"
+	mv "$where/helpfiles/FSDAtomove/helptoc.xml" "$where/helpfiles/FSDA/."
+#	mv $where/helpfiles/FSDAtomove/fsda_product_page.html $where/helpfiles/FSDA/.
+	mv "$where/helpfiles/FSDAtomove" ${MATPAT}/help/.
 	mv ${MATPAT}/help/FSDAtomove ${MATPAT}/help/FSDA
 #	matlab -nodesktop -r " addpath ${MATPAT}/help/FSDA ; builddocsearchdb ('${MATPAT}/help/FSDA') "
 fi
@@ -102,9 +103,9 @@ matlab -nodesktop -nojvm -r "addpath '$where/examples' ; addpath '$where/utiliti
 
 if [ $REL -ge 8 ] 
 then
-	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushRES'); catch; end; quit;"
-	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushFAN'); catch; end; quit;"
-	matlab -nodesktop -r " cd $where; try; matlab.apputil.install('brushROB'); catch; end; quit; "
+	matlab -nodesktop -r " cd '$where'; try; matlab.apputil.install('brushRES'); catch; end; quit;"
+	matlab -nodesktop -r " cd '$where'; try; matlab.apputil.install('brushFAN'); catch; end; quit;"
+	matlab -nodesktop -r " cd '$where'; try; matlab.apputil.install('brushROB'); catch; end; quit; "
 fi 
 
 echo ""
