@@ -229,7 +229,7 @@ function CorAnaplot(out,varargin)
 %               Scalar or struct.
 %               If confellipse is 1, 90 per cent confidence ellipses are
 %               drawn around each row and column point based on multinomial method.
-%               If confellipse is a struct it may contain the followgin
+%               If confellipse is a struct it may contain the following
 %               fields.
 %               confellipse.conflev= number in the interval (0 1) which
 %                   defines the confidence level of each ellipse.
@@ -243,12 +243,12 @@ function CorAnaplot(out,varargin)
 %                   $n_{ij}/n$.
 %                   {'bootRows'} = the values are bootstrapped row by row:
 %                   Given row i, $n_{i.}$ are extracted with repetition and
-%                   a frequencey distribution is computed using classes
+%                   a frequency distribution is computed using classes
 %                   $[0, n_{i1}]$,$[n_{i1}, n_{i1}+n_{i2}]$, $\ldots$
 %                   $[\sum_{j=1}^{J-1} n_{ij}, \sum_{j=1}^{J} n_{ij}$.
-%                   {'bootcols'} = the values are bootstrapped column by
+%                   {'bootCols'} = the values are bootstrapped column by
 %                   column. If  confellipse.method for example is
-%                   {'bootrows' 'bootcols'} two ellipses are drawn to each
+%                   {'bootRows' 'bootCols'} two ellipses are drawn for each
 %                   point. In this case it is possible to appreciate the
 %                   stability of both methods.
 %               confellipse.nsimul=scalar which defines the number of
@@ -256,7 +256,7 @@ function CorAnaplot(out,varargin)
 %                   default value of confellipse.nsimul is 1000. Thus
 %                   nsimul new contingency tables are projected as
 %                   supplementary rows and/or supplementary columns.
-%               confellipse.selrows= vector which specifies for which row
+%               confellipse.selRows= vector which specifies for which row
 %                   points it is necessary to draw the ellipses.
 %                   confellipse.selRows either a boolean vector of length
 %                   I containing a true in correspondence of the row
