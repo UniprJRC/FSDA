@@ -5,7 +5,7 @@ function mmdplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  Structure containing monitoring of mdr. Structure. 
+%  out :  Structure containing monitoring of mmd. Structure. 
 %               Structure containing the following fields.
 %        out.mmd =  a matrix containing the monitoring of minimum Mahalanobis 
 %               distance in each step of the forward search. The first
