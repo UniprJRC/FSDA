@@ -672,7 +672,7 @@ standarddef = struct(...
 
 % Default options for the trajectories in foreground
 fgrounddef = struct(...
-    'fthresh',fthresh,'funit','','flabstep','',...
+    'fthresh',fthresh,'funit','','flabstep',[],...
     'fmark',0,'LineWidth','','Color','','LineStyle','','FontSize',12);
 
 % Default options for the trajectories in background
@@ -948,9 +948,15 @@ if ~isempty(options.fground)
             % before, the steps outside range were not considered
             %steps=steps(steps>=x(1) & steps<=n);
         end
-    else
+    elseif isempty(fground.flabstep)&& ischar(fground.flabstep)
+        steps=[];
+        fground.flabstep=steps;
+    elseif isempty(fground.flabstep)&& ~ischar(fground.flabstep)
         steps=[x(1) x(end)];
         fground.flabstep=steps;
+    else
+        steps=[x(1) x(end)];
+        fground.flabstep=steps;        
     end
     
     % fthresh= threshold to define units which have to be displayed in foreground
