@@ -409,7 +409,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       NLS estimate.
 %           out.scale = Final scale estimate of the residuals using final weights.
 %                     \[
-%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)  
+%                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
 %                     \]
 %                     where $S_m$ is a set of cardinality $m$ which
 %                     contains the units not declared as outliers, $p$
@@ -1630,20 +1630,20 @@ residuals=yin-yhat;
 
 % Find the units with the smallest absolute p+1 residuals (before
 % reweighting step)
-  [~,IndBestRes]=sort(abs(residuals));
-  nofullrank=true;
-  bs=IndBestRes(1:p+1);
-  ij=0;
-  
-  while nofullrank
-  bs=IndBestRes(1:p+ij);
-  if rank(zscore(Xsel(bs,2:end)))<pini-1
-      ij=ij+1;
-  else
-      nofullrank = false;
-  end
-  end
-  
+[~,IndBestRes]=sort(abs(residuals));
+nofullrank=true;
+bs=IndBestRes(1:p+1);
+ij=0;
+
+while nofullrank
+    bs=IndBestRes(1:p+ij);
+    if rank(zscore(Xsel(bs,2:end)))<pini-1
+        ij=ij+1;
+    else
+        nofullrank = false;
+    end
+end
+
 if abs(s0) > 1e-7
     stdres = residuals/s0;
     
@@ -1865,8 +1865,8 @@ if lsh>0
     out.Likloc=Likloc;
 end
 
-    % Store response
-    out.y=yin;
+% Store response
+out.y=yin;
 
 if options.yxsave
     if options.intercept==1
@@ -1931,18 +1931,71 @@ end
 % plots is 1 a plot or residuals against index number appears else no plot
 % is produced.
 if plots>=1
+    % In MATLAB releases before R2012b properties of surface and colorbar
+    % objects were different
+    vlt15 = verLessThan('matlab', '7.15');
+    clr = 'bkgmcyr';
+    syb = {'-','--','-.',':','-','--','-.'};
+    FontSize = 12; SizeAxesNum=12;
+    
+    mine = min(yin(:));
+    maxe = max(yin(:));
+    delta = (maxe-mine)*0.1;
+    yaxlim = [mine - delta ; maxe + delta];
+    
+    
     % Time series + fitted values
     figure
     htmp = subplot(2,1,1);
-    plot([yin yhat]);
+    plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+    hold('on');
+    plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+    
     set(htmp,'Tag','LTSts:ts');
-    xlabel('Time')
-    ylabel('Real and fitted values')
+    %xlabel('Time','FontSize',FontSize);
+    ylabel('Real and fitted values','FontSize',FontSize);
+    if ~vlt15
+        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+    else
+        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
+    end
+    drawnow;
+    xtickval = get(htmp,'XTick');
+    xticklab = get(htmp,'XTickLabel');
+    set(htmp,'XTickMode','manual');
+    
+    % mark outliers with their severity
+    if ~isempty(residuals)
+        seq = 1:T;
+        quant = sqrt(chi2inv(conflev,1));
+        resboo=out.residuals(out.outliers);
+        th=8;resboo(abs(resboo)>th)=th;
+        %Rescale residuals in the interval [0 3]
+        sizeout=3*(abs(resboo)-quant)/(th-quant);
+        for i=1:length(sizeout)
+            plot(seq(out.outliers(i)),yin(out.outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+        end
+    end
+
+    % plot the vertical line of the level shift position and the
+    % associated label on the X axis
+    if ~isempty(out.posLS)
+        line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+        text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+    end
     
     % Index plot of robust residuals
     h2=subplot(2,1,2);
     laby='Robust lts residuals';
-    resindexplot(out.residuals,'conflev',conflev,'laby',laby,'numlab',out.outliers,'h',h2,'title','');
+    labx='Index number';
+    resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
+    if ~vlt15
+        set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+    else
+        set(h2,'FontSize',SizeAxesNum,'Box','on');
+    end
+    set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
+    drawnow;
 end
 
 if plots==2 && lsh>0
@@ -2114,7 +2167,7 @@ end
 % lik computes the objective function (residual sum of squares/2 = negative
 % log likelihood) which must be minimized for the units specified inside
 % global variable bsb. Note that given that yhat is global it is possible
-% to call this function to compute fitted values for the units specified in bsb 
+% to call this function to compute fitted values for the units specified in bsb
     function obj=lik(beta0)
         
         yhattrend=Xtrend(bsb,:)*beta0(1:trend+1);
