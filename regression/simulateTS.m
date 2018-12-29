@@ -692,43 +692,48 @@ end
 
 %% Create plots
 if plots==1
+    
+    % some general plot settings
+    vlt15 = verLessThan('matlab', '7.15');
+    %clr = 'bkrgmcy';
+    %syb = {'-','--','-.',':','-','--','-.'};
+    FontSize    = 12;
+    SizeAxesNum = 12;
+    
     if samescale
         % yscale to keep uniform across the plots
         [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatX,y-signal);
     end
     % Time series + fitted values
-    subplot(2,3,1);
+    sb1 = subplot(2,3,1);
     plot(datesnumeric,y);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Final simulated data',''},'Interpreter','LaTex','FontSize',12);
+    title({'Final simulated data',''},'interpreter','LaTex','FontSize',FontSize+6);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
             set(gca,'XTickLabelRotation',90);
         end
-        
     end
-    subplot(2,3,2);
+    
+    sb2 = subplot(2,3,2);
     plot(datesnumeric,signal);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'TR+SE+LS+X',''},'Interpreter','LaTex','FontSize',12);
+    title({'TR+SE+LS+X',''},'interpreter','LaTex','FontSize',FontSize+6);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
-        
         if ~verLessThanFS(8.4)
             set(gca,'XTickLabelRotation',90);
         end
-        
-        
     end
     
-    subplot(2,3,3);
+    sb3 = subplot(2,3,3);
     plot(datesnumeric,yhattrend);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Trend (TR)',''},'Interpreter','LaTex','FontSize',12);
+    title({'Trend (TR)',''},'interpreter','LaTex','FontSize',FontSize+6);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -736,11 +741,11 @@ if plots==1
         end
     end
     
-    subplot(2,3,4);
+    sb4 = subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Seasonal (SE)',''},'Interpreter','LaTex','FontSize',12);
+    title({'Seasonal (SE)',''},'interpreter','LaTex','FontSize',FontSize+6);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -748,11 +753,11 @@ if plots==1
         end
     end
     
-    subplot(2,3,5);
+    sb5 = subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Level shift (LS)',''},'Interpreter','LaTex','FontSize',12);
+    title({'Level shift (LS)',''},'interpreter','LaTex','FontSize',FontSize+6);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -760,17 +765,17 @@ if plots==1
         end
     end
     
-    subplot(2,3,6);
+    sb6 = subplot(2,3,6);
     if yhatX~=0
         plot(datesnumeric,yhatX);
         if samescale, ylim([minV,maxV]); end
         xlim([0,T]);
-        title({'Explanatory variables (X)',''},'Interpreter','LaTex','FontSize',12);
+        title({'Explanatory variables (X)',''},'interpreter','LaTex','FontSize',FontSize+6);
     else
         plot(datesnumeric,y-signal);
         if samescale, ylim([minV,maxV]); end
         xlim([0,T]);
-        title({'Irregular (I)',''},'Interpreter','LaTex','FontSize',12);
+        title({'Irregular (I)',''},'interpreter','LaTex','FontSize',FontSize+6);
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -778,6 +783,13 @@ if plots==1
             set(gca,'XTickLabelRotation',90);
         end
     end
+    
+    if ~vlt15
+        set([sb1 , sb2, sb3, sb4, sb5, sb6] ,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+    else
+        set([sb1 , sb2, sb3, sb4, sb5, sb6] ,'FontSize',SizeAxesNum,'Box','on');
+    end
+    
 end
     function [minV,maxV]=minmax(varargin)
         % returns the minimum and the maximum of all vectors in varargin,

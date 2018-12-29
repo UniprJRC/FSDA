@@ -518,9 +518,6 @@ function [out, varargout] = LTSts(y,varargin)
     title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'Interpreter','Latex');
 %}
 
-
-
-
 %{
     % Airline data: linear trend + just one harmonic for seasonal component.
     % Load airline data.
@@ -562,9 +559,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
-    title(gca,numpar,'Interpreter','Latex');
+    title(gca,numpar,'Interpreter','Latex','FontSize',16);
 %}
 
 %{
@@ -581,9 +578,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
-    title(gca,numpar,'Interpreter','Latex');
+    title(gca,numpar,'Interpreter','Latex','FontSize',16);
 
 %}
 
@@ -602,9 +599,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
-   title(gca,numpar,'Interpreter','Latex');
+   title(gca,numpar,'Interpreter','Latex','FontSize',16);
 %}
 
 %{
@@ -617,14 +614,15 @@ function [out, varargout] = LTSts(y,varargin)
     model.lshift=0;             % no level shift
     % out=fitTSLS(y,'model',model);
     out=LTSts(y,'model',model);
+
     close all
     % Plot real and fitted values
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
-   title(gca,numpar,'Interpreter','Latex');
+   title(gca,numpar,'Interpreter','Latex','FontSize',16);
 
 %}
 
@@ -640,16 +638,17 @@ function [out, varargout] = LTSts(y,varargin)
     model.seasonal=1;
     model.lshift=13;            % impose level shift
     out=LTSts(yLS,'model',model);
+
     close all
     % Plot real and fitted values
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex');
+    title(gca,numpar,'Interpreter','Latex','FontSize',16);
 
 %}
 
@@ -665,16 +664,17 @@ function [out, varargout] = LTSts(y,varargin)
     model.seasonal=106;
     model.lshift=13;
     out=LTSts(yLS,'model',model);
+
     close all
     % Plot real and fitted values
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex');
+    title(gca,numpar,'Interpreter','Latex','FontSize',16);
 %}
 
 %{
@@ -689,16 +689,17 @@ function [out, varargout] = LTSts(y,varargin)
     model.lshift=0;
     model.X=randn(length(y),1);
     out=LTSts(y1,'model',model);
+
     close all
     % Plot real and fitted values
     plot(y1);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast')
+    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_1=0$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex');
+    title(gca,numpar,'Interpreter','Latex','FontSize',16);
 %}
 
 %{
@@ -743,7 +744,7 @@ function [out, varargout] = LTSts(y,varargin)
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
     axeslast=findobj('-regexp','Tag','LTSts:ts');
-    title(axeslast(end),numpar,'Interpreter','Latex');
+    title(axeslast(end),numpar,'Interpreter','Latex','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -779,7 +780,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -815,7 +816,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex');
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -1927,22 +1928,23 @@ if dispresults
 end
 
 %% Create plots
-% If plots is a structure, plot directly those chosen by the user; elseif
-% plots is 1 a plot or residuals against index number appears else no plot
-% is produced.
+% plots = 1 generates a figure with two panels: one with the time series
+% and another with the residuals against index number; plots =2 produces
+% also a number of other informative plots; else no plot is produced.
 if plots>=1
-    % In MATLAB releases before R2012b properties of surface and colorbar
-    % objects were different
-    vlt15 = verLessThan('matlab', '7.15');
-    clr = 'bkgmcyr';
-    syb = {'-','--','-.',':','-','--','-.'};
-    FontSize = 12; SizeAxesNum=12;
     
+    % some general plot settings
+    vlt15 = verLessThan('matlab', '7.15');
+    clr = 'bkrgmcy';
+    syb = {'-','--','-.',':','-','--','-.'};
+    FontSize    = 14; 
+    SizeAxesNum = 14;
+    
+    % slightly increase the range of the time series axis values
     mine = min(yin(:));
     maxe = max(yin(:));
     delta = (maxe-mine)*0.1;
     yaxlim = [mine - delta ; maxe + delta];
-    
     
     % Time series + fitted values
     figure
@@ -1953,7 +1955,7 @@ if plots>=1
     
     set(htmp,'Tag','LTSts:ts');
     %xlabel('Time','FontSize',FontSize);
-    ylabel('Real and fitted values','FontSize',FontSize);
+    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','LaTex');
     if ~vlt15
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
     else
@@ -1977,9 +1979,9 @@ if plots>=1
         end
     end
 
-    % plot the vertical line of the level shift position and the
-    % associated label on the X axis
-    if ~isempty(out.posLS)
+    % plot the vertical line of the level shift position and the associated
+    % label on the X axis
+    if isfield(out,'posLS') && ~isempty(out.posLS)
         line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
         text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
     end
@@ -1989,6 +1991,8 @@ if plots>=1
     laby='Robust lts residuals';
     labx='Index number';
     resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
+    set(get(gca,'Xlabel'),'interpreter','LaTex');
+    set(get(gca,'Ylabel'),'interpreter','LaTex');
     if ~vlt15
         set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
     else
@@ -1999,68 +2003,85 @@ if plots>=1
 end
 
 if plots==2 && lsh>0
-    % Distribution of the values of the target function for each tentative
-    % level shift position
-    figure
-    boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline')
-    hold('on')
-    plot(numscale2LSH(:,2))
-    xlabel('Position of level shift')
-    title('Target function')
-    ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)])
+    
+    % Values of the target function for each tentative level shift position
+    figure;
+    boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline');
+    % boxplot uses text to put the labels on the X axes labeling, therefore
+    % we have to use findobj here to fix the font size
+    txt = findobj(gca,'Type','text');
+    %set(gca,'XTickLabel',{' '}); % this would delete all x labels
+    nx = numel(txt);
+    if nx > 20
+        txt2 = txt(1:mod(nx,20):nx,:);
+        delete(txt(setdiff(1:nx,1:mod(nx,20):nx),:));
+    end
+    set(txt2,'FontSize',SizeAxesNum,'VerticalAlignment', 'Middle');
+    hold('on');
+    plot(numscale2LSH(:,2));
+    set(gca,'Fontsize',SizeAxesNum);
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
+    title('Target function values','interpreter','LaTex','FontSize',FontSize+6);
+    ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
     
     % Level Shift local refinement
-    figure
-    subplot(2,1,1)
-    plot(Likloc(:,1),Likloc(:,2))
-    xlabel('Position of level shift')
-    ylabel('Raw residuals')
-    subplot(3,1,3)
-    plot(Likloc(:,1),Likloc(:,3))
-    xlabel('Position of level shift')
-    ylabel('Huber rho residuals')
+    figure;
+    sb1 = subplot(2,1,1);
+    plot(Likloc(:,1),Likloc(:,2));
+    %xlabel('Position of level shift','FontSize',FontSize);
+    ylabel('Raw residuals','FontSize',FontSize,'interpreter','LaTex');
+    set(gca,'Fontsize',SizeAxesNum);
+    subplot(2,1,2);
+    plot(Likloc(:,1),Likloc(:,3));
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
+    ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','LaTex');
+    set(gca,'Fontsize',SizeAxesNum);
+    title(sb1,'Level Shift local refinement','interpreter','LaTex','FontSize',FontSize+6);
     
     %     plot(LSH,NumScale2ind','o')
     %     set(gca,'FontSize',1)
     %     ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'])
     %     xlabel('Position of level shift')
     
-    figure
+    % Best solutions
+    figure;
     one=ones(lLSH,1);
     for j=1:nbestindexes
-        text(LSH,NumScale2ind(j,:)',num2str(j*one),'FontSize',12-j*1.5)
+        text(LSH,NumScale2ind(j,:)',num2str(j*one),'FontSize',12-j*1.5);
     end
-    xlim([LSH(1) LSH(end)])
-    ylim([1 bestr])
-    ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'])
-    xlabel('Position of level shift')
-    hold('on')
-    plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5)
+    xlim([LSH(1) LSH(end)]);
+    ylim([1 bestr]);
+    ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'],'FontSize',FontSize,'interpreter','LaTex');
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
+    set(gca,'Fontsize',SizeAxesNum);
+    hold('on');
+    plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5);
+    title('Best solutions','interpreter','LaTex','FontSize',FontSize+6);
     
-    figure
-    plot(LSH,Weimod','ko')
-    xlabel('Position of level shift')
-    ylabel('Index number')
-    title('o= units forming best h-subset')
-    set(gca,'Ytick',10:10:T)
+    % units forming best h-subset
+    figure;
+    plot(LSH,Weimod','ko','MarkerSize',4);
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
+    ylabel('Index number','FontSize',FontSize,'interpreter','LaTex');
+    title('o = units forming best h-subset','interpreter','LaTex','FontSize',FontSize+6);
+    set(gca,'Ytick',10:10:T,'Fontsize',SizeAxesNum);
     
+    % Frequency of inclusion inside subset
+    figure;
+    subplot(2,1,1);
+    bar(WEIisum(:,locmin)/nselected);
+    title({'Frequency of inclusion in the h subset:' , [' after ' num2str(refsteps) ' iterations']},'interpreter','LaTex','FontSize',FontSize+6);
+    %ylabel('Frequency','FontSize',FontSize);
+    %xlabel('Index number','FontSize',FontSize);
+    set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
     
-    %% Frequency of inclusion inside subset
-    figure
-    subplot(2,1,1)
-    bar(WEIisum(:,locmin)/nselected)
-    title(['Frequency of inclusion in the h  subset after ' num2str(refsteps) ' iterations'])
-    ylabel('Frequency')
-    xlabel('Index number')
-    set(gca,'Xtick',1:10:T)
+    subplot(2,1,2);
     
-    subplot(2,1,2)
-    
-    bar(WEIibest10sum(:,locmin)/size(bestyhatall,2))
-    title(['Frequency of inclusion in the h  subset among the  ' num2str(size(bestyhatall,2)) ' best subsets'])
-    ylabel('Frequency')
-    xlabel('Index number')
-    set(gca,'Xtick',1:10:T)
+    bar(WEIibest10sum(:,locmin)/size(bestyhatall,2));
+    title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','LaTex','FontSize',FontSize+6);
+    %ylabel('Frequency','FontSize',FontSize);
+    xlabel('Index number','FontSize',FontSize,'interpreter','LaTex');
+    set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
 end
 
 % Restore the previous state of the warnings

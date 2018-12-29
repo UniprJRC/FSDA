@@ -705,20 +705,28 @@ if dispresults
 end
 
 if plots==1
+    
+    % some general plot settings
+    vlt15 = verLessThan('matlab', '7.15');
+    clr = 'bkrgmcy';
+    syb = {'-','--','-.',':','-','--','-.'};
+    FontSize    = 14;
+    SizeAxesNum = 14;
+    
+    
     figure;
     yfore=outFORE.signal;
     % Plot original time series
-    plot(datesnumeric(1:n),y,'k')
+    plot(datesnumeric(1:n),y,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
     hold('on')
-    % plot the original series
-    plot(datesnumeric(1:n),yfore(1:n),'b-')
+    % plot the estimated values
+    plot(datesnumeric(1:n),yfore(1:n),'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
     % plot the forecasts
-    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'r')
+    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{3},'LineWidth',1);
     
     % plot the signal (TR+LS+X)
     % plot(datesnumeric,outFORE.trend+outFORE.lshift+outFORE.X,'color','m')
     
-    title('Fit and forecasts from LTS','interpreter','LaTex','FontSize',14)
     plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'r--')
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -728,8 +736,19 @@ if plots==1
     end
     ax=axis;
     ylimits=ax(3:4);
-    line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','g')
+    line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','r')
     
+    xlabel('Time or index number','FontSize',FontSize,'interpreter','LaTex');
+    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','LaTex');
+    
+    if ~vlt15
+        set(gca,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+    else
+        set(gca,'FontSize',SizeAxesNum,'Box','on');
+    end
+    
+    title('Fit and forecasts from LTS','interpreter','LaTex','FontSize',FontSize+6);
+
 end
 
     function [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(beta0)
