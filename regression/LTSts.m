@@ -515,7 +515,7 @@ function [out, varargout] = LTSts(y,varargin)
     out=LTSts(y,'model',model,'plots',1);
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
-    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'Interpreter','Latex');
+    title(findobj(gcf,'-regexp','Tag','LTSts:ts'),str,'interpreter','latex');
 %}
 
 %{
@@ -559,9 +559,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
-    title(gca,numpar,'Interpreter','Latex','FontSize',16);
+    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
 
 %{
@@ -578,9 +578,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
-    title(gca,numpar,'Interpreter','Latex','FontSize',16);
+    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 
 %}
 
@@ -599,9 +599,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
-   title(gca,numpar,'Interpreter','Latex','FontSize',16);
+   title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
 
 %{
@@ -620,9 +620,9 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
-   title(gca,numpar,'Interpreter','Latex','FontSize',16);
+   title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 
 %}
 
@@ -644,11 +644,11 @@ function [out, varargout] = LTSts(y,varargin)
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex','FontSize',16);
+    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 
 %}
 
@@ -670,11 +670,11 @@ function [out, varargout] = LTSts(y,varargin)
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex','FontSize',16);
+    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
 
 %{
@@ -695,11 +695,11 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y1);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','Interpreter','Latex','FontSize',14)
+    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_1=0$');
     numpar = {'model parameters:' , str};
-    title(gca,numpar,'Interpreter','Latex','FontSize',16);
+    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
 
 %{
@@ -744,7 +744,7 @@ function [out, varargout] = LTSts(y,varargin)
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
     axeslast=findobj('-regexp','Tag','LTSts:ts');
-    title(axeslast(end),numpar,'Interpreter','Latex','FontSize',16);
+    title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -780,7 +780,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex','FontSize',16);
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -816,7 +816,7 @@ function [out, varargout] = LTSts(y,varargin)
     % Using the notation of the paper RPRH: A=2, B=4, G=2 and $\delta_1>0$.
     str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
-    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'Interpreter','Latex','FontSize',16);
+    title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 
     % generate the wedgeplot
     % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);
@@ -1955,7 +1955,7 @@ if plots>=1
     
     set(htmp,'Tag','LTSts:ts');
     %xlabel('Time','FontSize',FontSize);
-    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','LaTex');
+    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
     if ~vlt15
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
     else
@@ -1991,8 +1991,8 @@ if plots>=1
     laby='Robust lts residuals';
     labx='Index number';
     resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
-    set(get(gca,'Xlabel'),'interpreter','LaTex');
-    set(get(gca,'Ylabel'),'interpreter','LaTex');
+    set(get(gca,'Xlabel'),'interpreter','none');
+    set(get(gca,'Ylabel'),'interpreter','none');
     if ~vlt15
         set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
     else
@@ -2020,8 +2020,8 @@ if plots==2 && lsh>0
     hold('on');
     plot(numscale2LSH(:,2));
     set(gca,'Fontsize',SizeAxesNum);
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
-    title('Target function values','interpreter','LaTex','FontSize',FontSize+6);
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+    title('Target function values','interpreter','none','FontSize',FontSize+2);
     ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
     
     % Level Shift local refinement
@@ -2029,14 +2029,14 @@ if plots==2 && lsh>0
     sb1 = subplot(2,1,1);
     plot(Likloc(:,1),Likloc(:,2));
     %xlabel('Position of level shift','FontSize',FontSize);
-    ylabel('Raw residuals','FontSize',FontSize,'interpreter','LaTex');
+    ylabel('Raw residuals','FontSize',FontSize,'interpreter','none');
     set(gca,'Fontsize',SizeAxesNum);
     subplot(2,1,2);
     plot(Likloc(:,1),Likloc(:,3));
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
-    ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','LaTex');
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+    ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','none');
     set(gca,'Fontsize',SizeAxesNum);
-    title(sb1,'Level Shift local refinement','interpreter','LaTex','FontSize',FontSize+6);
+    title(sb1,'Level Shift local refinement','interpreter','none','FontSize',FontSize+2);
     
     %     plot(LSH,NumScale2ind','o')
     %     set(gca,'FontSize',1)
@@ -2051,26 +2051,26 @@ if plots==2 && lsh>0
     end
     xlim([LSH(1) LSH(end)]);
     ylim([1 bestr]);
-    ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'],'FontSize',FontSize,'interpreter','LaTex');
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
+    ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'],'FontSize',FontSize,'interpreter','none');
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
     set(gca,'Fontsize',SizeAxesNum);
     hold('on');
     plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5);
-    title('Best solutions','interpreter','LaTex','FontSize',FontSize+6);
+    title('Best solutions','interpreter','none','FontSize',FontSize+2);
     
     % units forming best h-subset
     figure;
     plot(LSH,Weimod','ko','MarkerSize',4);
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','LaTex');
-    ylabel('Index number','FontSize',FontSize,'interpreter','LaTex');
-    title('o = units forming best h-subset','interpreter','LaTex','FontSize',FontSize+6);
+    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+    ylabel('Index number','FontSize',FontSize,'interpreter','none');
+    title('o = units forming best h-subset','interpreter','none','FontSize',FontSize+2);
     set(gca,'Ytick',10:10:T,'Fontsize',SizeAxesNum);
     
     % Frequency of inclusion inside subset
     figure;
     subplot(2,1,1);
     bar(WEIisum(:,locmin)/nselected);
-    title({'Frequency of inclusion in the h subset:' , [' after ' num2str(refsteps) ' iterations']},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'Frequency of inclusion in the h subset:' , [' after ' num2str(refsteps) ' iterations']},'interpreter','none','FontSize',FontSize+2);
     %ylabel('Frequency','FontSize',FontSize);
     %xlabel('Index number','FontSize',FontSize);
     set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
@@ -2078,9 +2078,9 @@ if plots==2 && lsh>0
     subplot(2,1,2);
     
     bar(WEIibest10sum(:,locmin)/size(bestyhatall,2));
-    title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','LaTex','FontSize',FontSize+6);
+    title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','none','FontSize',FontSize+2);
     %ylabel('Frequency','FontSize',FontSize);
-    xlabel('Index number','FontSize',FontSize,'interpreter','LaTex');
+    xlabel('Index number','FontSize',FontSize,'interpreter','none');
     set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
 end
 

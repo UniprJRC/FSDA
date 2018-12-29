@@ -709,7 +709,7 @@ if plots==1
     plot(datesnumeric,y);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Final simulated data',''},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'Final simulated data',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -721,7 +721,7 @@ if plots==1
     plot(datesnumeric,signal);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'TR+SE+LS+X',''},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'TR+SE+LS+X',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -733,7 +733,7 @@ if plots==1
     plot(datesnumeric,yhattrend);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Trend (TR)',''},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'Trend (TR)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -745,7 +745,7 @@ if plots==1
     plot(datesnumeric,yhatseaso);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Seasonal (SE)',''},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'Seasonal (SE)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -757,7 +757,7 @@ if plots==1
     plot(datesnumeric,yhatlshift);
     if samescale, ylim([minV,maxV]); end
     xlim([0,T]);
-    title({'Level shift (LS)',''},'interpreter','LaTex','FontSize',FontSize+6);
+    title({'Level shift (LS)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -770,12 +770,12 @@ if plots==1
         plot(datesnumeric,yhatX);
         if samescale, ylim([minV,maxV]); end
         xlim([0,T]);
-        title({'Explanatory variables (X)',''},'interpreter','LaTex','FontSize',FontSize+6);
+        title({'Explanatory variables (X)',''},'interpreter','none','FontSize',FontSize+2);
     else
         plot(datesnumeric,y-signal);
         if samescale, ylim([minV,maxV]); end
         xlim([0,T]);
-        title({'Irregular (I)',''},'interpreter','LaTex','FontSize',FontSize+6);
+        title({'Irregular (I)',''},'interpreter','none','FontSize',FontSize+2);
     end
     if ~isempty(StartDate)
         datetick('x','mmm-yy');

@@ -738,8 +738,8 @@ if plots==1
     ylimits=ax(3:4);
     line(0.5*sum(datesnumeric(n:n+1))*ones(2,1),ylimits,'color','r')
     
-    xlabel('Time or index number','FontSize',FontSize,'interpreter','LaTex');
-    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','LaTex');
+    xlabel('Time or index number','FontSize',FontSize,'interpreter','none');
+    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
     
     if ~vlt15
         set(gca,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
@@ -747,7 +747,7 @@ if plots==1
         set(gca,'FontSize',SizeAxesNum,'Box','on');
     end
     
-    title('Fit and forecasts from LTS','interpreter','LaTex','FontSize',FontSize+6);
+    title('Fit and forecasts from LTS','interpreter','none','FontSize',FontSize+2);
 
 end
 
