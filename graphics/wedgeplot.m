@@ -230,7 +230,7 @@ function hf = wedgeplot(RES,varargin)
 options=struct('extradata',[],'cmapname','hot',...
     'labls','Level shift position','labin','Index number',...
     'titl','Double wedge plot',...
-    'FontSize',12,'SizeAxesNum',12,'transpose',true);
+    'FontSize',14,'SizeAxesNum',14,'transpose',true);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -375,8 +375,8 @@ if transpose == false
     surface(zeros(size(Cres)),Cres,...
         'EdgeColor','none','Xdata',[LSH nan]','CDataMapping','direct');
     % axes labels
-    xlabel(labls,'Fontsize',FontSize);
-    ylabel(labin,'Fontsize',FontSize);
+    xlabel(labls,'Fontsize',FontSize,'interpreter','LaTex');
+    ylabel(labin,'Fontsize',FontSize,'interpreter','LaTex');
     
     % Colorbar and properties of the surface axes. Note the -1 and +1 in
     % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
@@ -399,7 +399,7 @@ if transpose == false
             'Fontsize',FontSize);
     end
     
-    title(titl);
+    title(titl,'interpreter','LaTex','FontSize',FontSize+6);
     
 else
     
@@ -417,7 +417,7 @@ else
         A(wps) = subplot(2,1,wps);
         
     else
-        xlabel(labin,'Fontsize',FontSize);
+        xlabel(labin,'Fontsize',FontSize,'interpreter','LaTex');
     end
     
     % the surface of the wedgeplot
@@ -425,7 +425,7 @@ else
         'EdgeColor','none','Ydata',[LSH nan]','CDataMapping','direct');
     % axes labels
     % xlabel(labin,'Fontsize',FontSize);
-    ylabel(labls,'FontSize',FontSize);
+    ylabel(labls,'FontSize',FontSize,'interpreter','LaTex');
     
     % Colorbar and properties of the surface axes. Note the -1 and +1 in
     % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
@@ -486,13 +486,13 @@ else
         
         % plot the time series
         dd  = size(extradata,2);
-        clr = 'bkgmcyr';
+        clr = 'bkrgmcy';
         syb = {'-','--','-.',':','-','--','-.'};
         for d=1:dd
             plot(extradata(:,d),'Color',clr(d),'LineStyle',syb{d},'LineWidth',1);
         end
         
-        xlabel(A(2),labin,'FontSize',FontSize);
+        xlabel(A(2),labin,'FontSize',FontSize,'interpreter','LaTex');
         if ~vlt15
             set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
         else
@@ -503,10 +503,10 @@ else
             axes(A(i)) ; %#ok<LAXES>
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
         end
-        title(A(1),titl);
+        title(A(1),titl,'interpreter','LaTex','FontSize',FontSize+6);
         box('on');
     else
-        title(titl);
+        title(titl,'interpreter','LaTex','FontSize',FontSize+6);
     end
     
 end
