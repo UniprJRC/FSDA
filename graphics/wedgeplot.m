@@ -375,8 +375,8 @@ if transpose == false
     surface(zeros(size(Cres)),Cres,...
         'EdgeColor','none','Xdata',[LSH nan]','CDataMapping','direct');
     % axes labels
-    xlabel(labls,'Fontsize',FontSize,'interpreter','LaTex');
-    ylabel(labin,'Fontsize',FontSize,'interpreter','LaTex');
+    xlabel(labls,'Fontsize',FontSize,'interpreter','none');
+    ylabel(labin,'Fontsize',FontSize,'interpreter','none');
     
     % Colorbar and properties of the surface axes. Note the -1 and +1 in
     % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
@@ -399,7 +399,7 @@ if transpose == false
             'Fontsize',FontSize);
     end
     
-    title(titl,'interpreter','LaTex','FontSize',FontSize+6);
+    title(titl,'interpreter','none','FontSize',FontSize+2);
     
 else
     
@@ -417,7 +417,7 @@ else
         A(wps) = subplot(2,1,wps);
         
     else
-        xlabel(labin,'Fontsize',FontSize,'interpreter','LaTex');
+        xlabel(labin,'Fontsize',FontSize,'interpreter','none');
     end
     
     % the surface of the wedgeplot
@@ -425,7 +425,7 @@ else
         'EdgeColor','none','Ydata',[LSH nan]','CDataMapping','direct');
     % axes labels
     % xlabel(labin,'Fontsize',FontSize);
-    ylabel(labls,'FontSize',FontSize,'interpreter','LaTex');
+    ylabel(labls,'FontSize',FontSize,'interpreter','none');
     
     % Colorbar and properties of the surface axes. Note the -1 and +1 in
     % the Ylim settings, i.e. in min(LSH-1) and max(LSH+1); this is needed
@@ -492,7 +492,7 @@ else
             plot(extradata(:,d),'Color',clr(d),'LineStyle',syb{d},'LineWidth',1);
         end
         
-        xlabel(A(2),labin,'FontSize',FontSize,'interpreter','LaTex');
+        xlabel(A(2),labin,'FontSize',FontSize,'interpreter','none');
         if ~vlt15
             set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
         else
@@ -503,10 +503,10 @@ else
             axes(A(i)) ; %#ok<LAXES>
             set(A(i), 'Position', [pos(1) pos(2) .6626 pos(4)]);
         end
-        title(A(1),titl,'interpreter','LaTex','FontSize',FontSize+6);
+        title(A(1),titl,'interpreter','none','FontSize',FontSize+2);
         box('on');
     else
-        title(titl,'interpreter','LaTex','FontSize',FontSize+6);
+        title(titl,'interpreter','none','FontSize',FontSize+2);
     end
     
 end
