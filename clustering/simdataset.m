@@ -619,7 +619,7 @@ else
     else
     end
     % Construct vector id
-    Nk=Pi*n;
+    Nk=round(Pi*n);
     id=zeros(n,1);
     for j=1:k
         a=sum(Nk(1:j-1))+1;
