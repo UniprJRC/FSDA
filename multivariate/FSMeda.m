@@ -333,7 +333,7 @@ BB=NaN(n,n-init1+1);
 
 % Initialize matrix which will contain the MD monitored in each
 % step of the fwd search
-MAL=NaN(n,n-init1+1);
+MAL=BB;
 
 % Initialize matrix which will contain the means of the variables monitored in
 % each step
