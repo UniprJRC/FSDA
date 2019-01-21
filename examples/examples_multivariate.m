@@ -55,13 +55,25 @@ figure;
 % Top panel: analysis based on S estimator 
 h1=subplot(2,1,1);
 [outS]=Smult(Y,'conflev',conflevEst);
-malindexplot(outS,v,'h',h1,'conflev',conflevPlot);
+% numoutSest = number of outliers found by the S estimator
+numoutSest= length(outS.outliers);
+
+% Show the index plot of Mahalanobis distances
+% The outliers (using the 99% confidence level) which are found by the S
+% estimator are labelled in the index plot of Mahalanobis distances
+malindexplot(outS,v,'h',h1,'conflev',conflevPlot,'numlab',{numoutSest});
 ylabel('S estimator')
 
 % Bottom panel: analysis based on MM estimator
 h2=subplot(2,1,2);
 [outMM]=MMmultcore(Y,outS.loc,outS.shape,outS.scale,'conflev',conflevEst);
-malindexplot(outMM,v,'h',h2,'conflev',conflevPlot);
+% numoutMMest = number of outliers found by the MM estimator
+numoutMMest= length(outMM.outliers);
+
+% Show the index plot of Mahalanobis distances
+% The outliers (using the 99% confidence level) which are found by the MM
+% estimator are labelled in the index plot of Mahalanobis distances
+malindexplot(outMM,v,'h',h2,'conflev',conflevPlot,'numlab',{numoutMMest});
 ylabel('MM estimator')
 
 
@@ -69,7 +81,11 @@ ylabel('MM estimator')
 % outliers (see outS.outliers). Using the same confidence level MM
 % estimator declares just 3 units as outliers (see outMM.outliers). Two
 % units which lie outside the confidence band of 0.99 for S estimator (namely
-% units 80 and 99) fall inside the confidence band after the MM loop.
+% units 80 and 99) fall inside the confidence band after the MM loop. 
+% The MM estimator keeps the estimate of the scale fixed and tries to
+% increase the efficiency of the estimator using a more tolerent rho
+% function, therefore generally the number of outliers found by the MM
+% estimator is smaller than that of the S estimator.
 
 %% HD (Heads data) -- Forward EDA (Exploratory Data Analysis):
 clearvars;close all;
