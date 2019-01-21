@@ -644,7 +644,7 @@ covrob1=Ksquare*vhat*invXWX;  %#ok<MINV>
 
 %% Find covrob2
 % See equation 7.81 of Huber and Ronchetti (2009) with X'X
-covrob2=Ksquare*vhat*invXX;
+covrob2=Ksquare*vhat*invXX; %#ok<MINV>
 
 %% Find covrob3
 % See equation 7.82 of Huber and Ronchetti (2009)
