@@ -51,7 +51,8 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %                 Number or character label which
 %                 denotes the points which do not belong to any cluster.
 %                 These points are not takern into account for the
-%                 computation of the Rand type indexes
+%                 computation of the Rand type indexes. The default is to
+%                 consider all points in order to compute the ARI index.
 %                 Example - 0 (in this case the units which in of the
 %                 two partitions have 0 class are not taken into account in the
 %                 index calculations)
