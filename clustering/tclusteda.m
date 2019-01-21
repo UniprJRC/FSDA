@@ -253,9 +253,9 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               implies restriction on the determinants.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
-%       cshape :    constraint to apply to each of the shape matrices. 
+%       cshape :    constraint to apply to each of the shape matrices.
 %                   Scalar greater or equal than 1. This options only works is 'restrtype' is
-%                   'deter'. 
+%                   'deter'.
 %               When restrtype is deter the default value of the "shape" constraint (as
 %               defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -735,8 +735,8 @@ if ~isempty(UserOptions)
         restrnum=1;
     elseif strcmp(restr,'deter')==1
         restrnum=2;
-       cshape=options.cshape;
-       restrfactor=[restrfactor cshape];
+        cshape=options.cshape;
+        restrfactor=[restrfactor cshape];
     else
         error('FSDAeda:tclusteda:Wrongrestr','Wrong restriction');
     end
@@ -1117,11 +1117,28 @@ if isstruct(plots)
     else
         alphasel=alpha;
     end
-else
-    name={'gscatter' 'monitor'};
-    alphasel=alpha;
+    
+    
+    d=find(strcmp('ylimy',fplots));
+    if d>0
+        ylimy=plots.ylimy;
+        [nylim,vylim]=size(ylimy);
+        if nylim~=3
+            error('FSDA:tclusteda:Wronginput','plots.ylimy must be a matrix with 3 rows')
+        end
+        if vylim~=2
+            error('FSDA:tclusteda:Wronginput','plots.ylimy must be a matrix with 2 columns')
+        end
+    else
+        name={'gscatter' 'monitor'};
+        alphasel=alpha;
+        ylimy='';
+    end
+elseif plots==1
+      name={'gscatter' 'monitor'};
+        alphasel=alpha;
+        ylimy='';   
 end
-
 
 d=find(strcmp('monitor',name));
 
@@ -1133,6 +1150,9 @@ if d>0
     xlabel('\alpha')
     ylabel('ARI index')
     set(gca,'FontSize',16)
+    if ~isempty(ylimy)
+        ylim(ylimy(1,:))
+    end
     
     % Monitoring of centroid changes
     subplot(3,1,2)
@@ -1141,6 +1161,9 @@ if d>0
     xlabel('\alpha')
     ylabel('Centroids')
     set(gca,'FontSize',16)
+    if ~isempty(ylimy)
+        ylim(ylimy(2,:))
+    end
     
     % Monitoring of covariance matrices change
     subplot(3,1,3)
@@ -1149,6 +1172,10 @@ if d>0
     xlabel('\alpha')
     ylabel('Covariance')
     set(gca,'FontSize',16)
+        if ~isempty(ylimy)
+        ylim(ylimy(3,:))
+    end
+
 end
 
 d=find(strcmp('gscatter',name));
