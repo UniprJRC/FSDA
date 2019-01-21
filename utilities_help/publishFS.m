@@ -1282,7 +1282,7 @@ end
 
 
 % Required input arguments
-% Find number of compulasory input arguments
+% Find number of compulsory input arguments
 % nargin = number of commas in string  functionname(inp1,inp2,inp3, ...)
 [startIndexInp] = regexp(fstring,'(');
 [endIndexInp] = regexp(fstring,')');
@@ -1622,9 +1622,22 @@ for j=1:length(sintax)
         
         % Find point where description ends
         inicr=regexp(stri,'\r');
-        %     if isempty(inicr)
-        %         inicr=regexp(stri,'\n');
-        %     end
+        
+        % TO DELETE
+        % stri=regexprep(stri,'\n','\r\n');
+        % [startIndexEx] = regexp(stri,'\n%\{[\s1-20]');
+        % inicr=regexp(stri,'\.\n');
+        
+        % if inicr is empty it means that the file has been generated using unix.
+        % In this case it is necessary to replace \n with \r\n because DOS uses
+        % carriage return and line feed ("\r\n") as a line ending,on the other hand Unix uses
+        % just line feed ("\n")
+        if isempty(inicr)
+            stri=regexprep(stri,'\n','\r\n');
+            inicr=regexp(stri,'\r');
+            % inicr=regexp(stri,'\.\n');
+            inicr=inicr(inicr>endtitle);
+        end
         
         if isempty(inicr) % && strcmp(stri,'EXAMPLES TO ADD')~=1
             disp('String below seems to be without carriage return')
@@ -1635,27 +1648,35 @@ for j=1:length(sintax)
             error('FSDA:wrongdelimiter',errmsg)
         end
         
-        % The end of the description is the first line which does not start
-        % with symbol "%" or is in correpondence of the line which follows the one
-        % which ends with a full stop (jjbreak=jj+1).
-        for jj=1:length(inicr)-1
-            strtest=stri(inicr(jj):inicr(jj+1));
-            if isempty(regexp(strtest,'%','once'))
-                jjbreak=jj;
-                break
-            elseif  (jj>1 && strcmp(strtest(end-1),'.'))
-                jjbreak=jj+1;
-                break
+        if length(inicr)>1
+            % The end of the description is the first line which does not start
+            % with symbol "%" or is in correpondence of the line which follows the one
+            % which ends with a full stop (jjbreak=jj+1).
+            for jj=1:length(inicr)-1
+                strtest=stri(inicr(jj):inicr(jj+1));
+                if isempty(regexp(strtest,'%','once'))
+                    jjbreak=jj;
+                    break
+                elseif  (jj>1 && strcmp(strtest(end-1),'.'))
+                    jjbreak=jj+1;
+                    break
+                else
+                    jjbreak=jj+1;
+                end
+                
+                
             end
+            jj=jjbreak;
+            findescriptionEx=inicr(jj);
+            strdescrEx=stri(endtitle+1:findescriptionEx);
+            
+            % remove % signs from strdescrEx
+            posPercentageSigns=regexp(strdescrEx,'\D%');
+            strdescrEx(posPercentageSigns+1)=[];
+        else
+            strdescrEx='';
+            findescriptionEx=endtitle+1;
         end
-        jj=jjbreak;
-        findescriptionEx=inicr(jj);
-        strdescrEx=stri(endtitle+1:findescriptionEx);
-        
-        % remove % signs from strdescrEx
-        posPercentageSigns=regexp(strdescrEx,'\D%');
-        strdescrEx(posPercentageSigns+1)=[];
-        
         
         listEx{j,2}=strdescrEx;
         % listEx{j,3}=stri(findescriptionEx+1:end);
