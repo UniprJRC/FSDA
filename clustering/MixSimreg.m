@@ -2109,7 +2109,7 @@ out = Q;
         
         if find(strcmp('Uniform',betadistrib.type))
             %Beta=betadistrib.a+rand(p,k)*(betadistrib.b-betadistrib.a);
-            Beta=betadistrib.a+bsxfun(@times,randn(p,k),(betadistrib.b-betadistrib.a));
+            Beta=betadistrib.a+bsxfun(@times,rand(p,k),(betadistrib.b-betadistrib.a));
 
         elseif find(strcmp('Normal',betadistrib.type))
             %Beta=betadistrib.mu+randn(p,k)*betadistrib.sigma;
