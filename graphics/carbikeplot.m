@@ -288,5 +288,4 @@ end
 set(gca,'FontSize',16)
 h=gcf;
 end
-
-%FScategory:CLUS-RobClaMULT
+%FScategory:VIS-Clu
