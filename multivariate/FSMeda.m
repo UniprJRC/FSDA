@@ -147,7 +147,7 @@ function out = FSMeda(Y,bsb,varargin)
     % Distance.
     n=100;
     v=3;
-    m0=3;
+    m0=4;
     Y=randn(n,v);
     % Contaminated data
     Ycont=Y;
