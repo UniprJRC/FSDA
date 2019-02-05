@@ -357,7 +357,16 @@ else
         bs=fre(1:m0+incre,1);
         incre = incre+1;
     end
+    
+    % To make sure that new value of init is minimum lenght of bs for which
+    % the Y matrix is full rank
+    if init<length(bs)
+        init=length(bs);
+    end
+    
 end
+
+
 
 % Compute Minimum Mahalanobis Distance for each step of the search
 if n<5000
@@ -1312,9 +1321,9 @@ if v<=15
     if isstruct(plo) || (~isstruct(plo) && plo~=0)
         figure('Tag','pl_spm_outliers');
         if ~isstruct(plo)
-        spmplot(Y,group,1);
+            spmplot(Y,group,1);
         else
-        spmplot(Y,group,plo);
+            spmplot(Y,group,plo);
         end
         set(gcf,'Name','FSM: scatter plot matrix with outliers highlighted');
     end
