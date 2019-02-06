@@ -77,7 +77,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 % Examples:
 
 %{
-    % Comparison between Box-Cox and Yeo-Johnson transformation
+    % Comparison between Box-Cox and Yeo-Johnson transformation.
     close all
     y=(-2:0.1:2)';
     n=length(y);
@@ -122,7 +122,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %}
 
 %{
-    % Check the inverse tranformation
+    % Check the inverse tranformation.
     load('mussels.mat');
     Y=mussels.data;
     la=[0.5 0 0.5 0 0];

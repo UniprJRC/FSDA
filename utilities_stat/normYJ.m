@@ -67,6 +67,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 % Examples:
 
 %{
+    % Example of use of normYJ with all default options.
     % Transform value -3, -2, ..., 3
     y=(-3:3)';
     lambda=0
@@ -78,7 +79,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %}
 
 %{
-    % Comparison between Box-Cox and Yeo-Johnson transformation
+    % Comparison between Box-Cox and Yeo-Johnson transformation.
     close all
     y=(-2:0.1:2)';
     n=length(y);

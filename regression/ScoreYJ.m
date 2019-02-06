@@ -52,9 +52,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
 %                           is produced just if input value Lik =1
 %
-% See also
-%
-% FSRfan, Score
+% See also: FSRfan, Score, normBoxCox, normYJ, ScoreYJpn
 %
 % References:
 %
