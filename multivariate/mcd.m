@@ -894,10 +894,10 @@ md=mahalFS(Y,superbestloc,cfactor*superbestcov);
 RAW.md = md;
 
 % The first h smallest ordered Mahalanobis distances have weight equal to 1
-[~,soridx]=sort(md);
-weights=zeros(n,1);
-weights(soridx(1:h))=1;
-RAW.weights=weights;
+% [~,soridx]=sort(md);     %deleted these four lines are not necessary
+% weights=zeros(n,1);      %deleted
+% weights(soridx(1:h))=1;  %deleted
+% RAW.weights=weights;     %deleted
 
 % Specify the distribution to use to compare Mahalanobis distances
 % if betathresh==1 a mixture of scaled beta and F is used
