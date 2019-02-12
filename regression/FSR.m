@@ -201,13 +201,13 @@ function [out]=FSR(y,X,varargin)
 %               1) the extracted subsets which contain
 %               at least one unit declared as outlier in the X space by FSM
 %               using a Bonferronized confidence level of 0.99
-%               are removedfrom the list of candidate subsets to find the
+%               are removed from the list of candidate subsets to find the
 %               LXS solution.
 %               2) imposes the contrainst that $h_i(m^*)$
 %               cannot exceed $10 \times p/m$.
 %               If threshoutX is a structure, it contains the following
 %               fields:
-%               threshoutX.bonflevoutX = specifies the bonferronized
+%               threshoutX.bonflevoutX = specifies the Bonferronized
 %               confidence level to be used to find the outliers in the X
 %               space. If this field is not present a 99 per cent
 %               confidence level is used.
