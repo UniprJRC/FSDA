@@ -86,7 +86,7 @@ function [out]=ace(y,X,varargin)
 %      out.niter = scalar. Number of iterations which have been necessary
 %               to achieve convergence.
 %
-% See also: aceplot.m
+% See also: aceplot.m, smothr.m, supsmu.m
 %
 % References:
 %

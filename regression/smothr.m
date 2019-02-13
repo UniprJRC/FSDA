@@ -63,9 +63,7 @@ function ysmo=smothr(l,x,y,w)
 %               be non monotonic if input value l=1;
 %
 %
-% See also: FSRfan
-%
-% ace.m, supsmu.m
+% See also: ace.m, supsmu.m
 %
 % References:
 %
@@ -254,12 +252,12 @@ else % Transformation must not necessarily be linear
         Period=Inf;
     else
         % Note that in this case the x values are assumed to be in [0, 1] and of period 1.
-        % Therefore x(end+1)=x(1) x(end+2) = x(2) ..... x(end+k-1)=x(k-1)
+        % Therefore x(end+1)=x(1)+period x(end+2) = x(2)+period ..... x(end+k-1)=x(k-1)
         % y(end+1)=y(1)  y(end+2) = y(2) ..... y(end+k-1)=y(k-1), that is
         % x = [x;x(1:k-1)+period];
         % y = [y;y(1:k-1)];
-        % The smoothed values in the last k-1 positions are put in the
-        % first k-1 positions
+        % The smoothed values in the first k-1 positions are added in the
+        % last k-1 positions
         Period=1;
     end
     [ysmo]=supsmu(x,y,'Alpha',alpha,'Weights',w,'Period',Period);
@@ -276,29 +274,9 @@ else % Transformation must not necessarily be linear
         % arithmetic mean (isotonic regression)
         scr1=montne(scr1);
         scr2=montne(scr2);
-        %         disp([scr1ori scr1])
-        %         disp([scr2ori scr2])
-        %         disp('-------------')
         
-        %         sm=0.0;
-        %         sw=sm;
-        %         for j=1:n
-        %             sm=sm+(ysmo(j)-scr1(j))^2;
-        %             sw=sw+(ysmo(j)-scr2(n-j+1))^2;
-        %         end
-        %
-        %         if sm<sw
-        %             for j=1:n
-        %                 ysmo(j)=scr1(j);
-        %             end
-        %         else
-        %             for j=1:n
-        %                 ysmo(j)=scr2(n-j+1);
-        %             end
-        %         end
-        
-        % Choose among scr1 and scr2 the one which is closer in terms of resiual
-        % sum of squares
+        % Choose between scr1 and scr2: the one which is closer in terms of
+        % residual sum of squares
         sm=sum((ysmo-scr1).^2);
         scr2flipped=flip(scr2,1);
         sw=sum((ysmo-scr2flipped).^2);
@@ -337,10 +315,6 @@ else % Transformation must not necessarily be linear
                 if a ==0.0
                     a=b;
                 end
-                
-                %                 for i=j0:jp
-                %                     ysmo(i)=ysmo(i)-a+d*(i-j0);
-                %                 end
                 ii=(j0:jp)';
                 ysmo(ii)=ysmo(ii)-a+d*(ii-j0);
             end
@@ -364,16 +338,10 @@ else % Transformation must not necessarily be linear
             if j==n-1
                 sm=sm/(j-j0+2);
                 ysmo(j0:j+1)=sm;
-                %for i=j0:j+1
-                %    ysmo(i)=sm;
-                %end
             end
         else
             salta=0;
             sm=sm/(j-j0+1);
-            %for i=j0:j
-            %    ysmo(i)=sm;
-            %end
             ysmo(j0:j)=sm;
             j0=j+1;
         end

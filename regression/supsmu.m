@@ -101,7 +101,7 @@ function smo = supsmu(x,y,varargin)
 %
 % 
 % 
-% See also: ace.m
+% See also: ace.m, aceplot.m, smothr.m
 %
 % References:
 %
@@ -110,6 +110,16 @@ function smo = supsmu(x,y,varargin)
 % Univ., California.
 %
 %
+% Copyright 2008-2018.
+% Written by FSDA team
+%
+%
+%
+%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
+%
+%$LastChangedDate:: 2018-09-17 19:38:55 #$: Date of the last commit
+
+% Examples:
 
 %{
     % Example of use of supsmu with all the default options.
