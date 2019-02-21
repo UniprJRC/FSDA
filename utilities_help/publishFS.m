@@ -1804,6 +1804,15 @@ if length(startIndexEx)>length(sintax)
         
         % Find point where description ends
         inicr=regexp(stri,'\r');
+        
+        % Sometimes when the file has been created with Unix if inicr is
+        % empty it means that string stri does not contain \r and therefore
+        % it is necessary to replace \n with \r
+        if isempty(inicr)
+            stri=regexprep(stri,'\n','\r');
+            inicr=regexp(stri,'\r');
+        end
+    
         %         for jj=1:length(inicr)-1
         %             strtest=stri(inicr(jj):inicr(jj+1));
         %
