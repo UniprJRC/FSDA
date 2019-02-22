@@ -1,5 +1,6 @@
 function newtX=backfit(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq)
-% Backfitting algorithm (inner loop) inside ace and avas functions
+% Backfitting algorithm (inner loop) inside ace function
+
 
 % ($nit$ = counter for number of iterations in the inner loop).
 nit=0;
