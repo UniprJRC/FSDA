@@ -7,16 +7,18 @@ Note that the default docroot in MATLAB 2018b is <a href="matlab:web([docrootFS 
          <!--
             
             
-             function newDoc() {
-              	window.location.assign("http://www.riani.it")
+             function Redirect() {
+              	window.location=  "matlab:web([docrootFS '/FSDA/index.html'])";
             }
+   
+            
+            setTimeout('Redirect()', 10);
          //-->
       </script>
 
 
 <body>
 
-<input type="button" value="load page" onclick="newDoc()">
 
 </body>
 
