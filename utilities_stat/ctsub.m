@@ -100,10 +100,10 @@ function a=ctsub(x,y,z)
 
 %{
     % Transform a linear relation.
-    n=100;
-    x=sort(randn(n,1));
-    y=2*x+2+randn(n,1)*0.1;
-    y(50:70)=-5;
+    n=1000;
+    x=sort(randn(n,1))+10;
+    y=1+2*x+ randn(n,1);
+    % y(50:70)=-5;
     z=randn(n,1);
     a=ctsub(x,y,z);
     subplot(2,1,1)
@@ -123,7 +123,23 @@ function a=ctsub(x,y,z)
     disp(max(abs(res-res1)))
 %}
 
-
+%{
+    % Apply ctsub to heteroskedastic data.
+    n=1000;
+    x=10*sort(randn(n,1))+10;
+    % The variance of y depends on x.
+    y=1+1*x+ 10*x.*randn(n,1);
+    % Upper limits of integration.
+    z=rand(n,1)*100-50;
+    a=ctsub(x,y,z);
+    subplot(2,1,1)
+    plot(x,y)
+    title('Original data')
+    subplot(2,1,2)
+    plot(x,a)
+    title('Transformed data after the variance stabilizing transformation')
+%}
+    
 % Note that trapz([1/3 pi],[sin(1/3) sin(pi)]) =
 % ctsub([1/3 pi],[sin(1/3) sin(pi)],[[1/3 pi]])
 
