@@ -35,6 +35,9 @@ function ysmo=smothr(l,x,y,w)
 %           l=4 => transformation is to be linear. In this case the smoothed
 %                  values are simply the fitted values from least squares
 %                  fit.
+%           l=5 => the predictor variable is categorical. In this case the smoothed
+%                  values are simply the (weighted) values of y in
+%                  correspondence of each value of x.
 %    x   :      Predictor variable sorted. Vector.  Ordered abscissa values.
 %               Note that the x values are assumed non decreasing.
 %    y  :       Response variable. Vector. Response variable which has to
@@ -63,7 +66,7 @@ function ysmo=smothr(l,x,y,w)
 %               be non monotonic if input value l=1;
 %
 %
-% See also: ace.m, supsmu.m
+% See also: ace.m, supsmu.m, avas.m, rlsmo.m
 %
 % References:
 %
@@ -188,6 +191,23 @@ function ysmo=smothr(l,x,y,w)
     % ylabel('Distance')
 %}
 
+%{
+    % An example where the predicted variable is categorical.
+    seed=20;
+    n=5;
+    y1=exp(-0.5+0.5*mtR(n,1,seed));
+    y2=exp(0.5+0.5*mtR(n,1,-seed));
+    y=[y1;y2];
+    X=[-0.5*ones(n,1); 0.5*ones(n,1)];
+    X(9:10)=1;
+    ysmo=smothr(5,X,y);
+    plot(X,y,'o')
+    hold('on')
+    plot(X,ysmo)
+    xlabel('Variable with 3 levels')
+    ylabel('Original and smoothed y values')
+%}
+
 %% Beginning of code
 n=length(y);
 
@@ -243,6 +263,36 @@ if l==4 % Transformation is forced to be linear
     %         yw=yori.*wsqrt;
     %         bb=Xw\yw;
     %         ysmo=bb(1)+x*bb(2);
+elseif l==5 % variable is categorical 
+    ysmo=zeros(n,1);
+   % In this case the smoothed values are equal to the local weighted
+   % arithmetic mean of y in correspondence of the equal consecutive
+   % values of x. Note that the x values are preliminarly ordered therefere
+   % the weighted arithmetic mean of equal consecutive values considers all the
+   % values of x which have a particular value.
+    j0=1;
+    salta=0;
+    for j=1:n-1
+        if salta==0
+            sm=y(j)*w(j);
+            sw=w(j);
+        end
+        
+        if x(j+1) <=x(j)
+            sm=sm+y(j+1)*w(j+1);
+            sw=sw+w(j+1);
+            salta=1;
+            if j==n-1
+                sm=sm/sw;
+                ysmo(j0:j+1)=sm;
+            end
+        else
+            salta=0;
+            sm=sm/sw;
+            ysmo(j0:j)=sm;
+            j0=j+1;
+        end
+    end
     
 else % Transformation must not necessarily be linear
     
