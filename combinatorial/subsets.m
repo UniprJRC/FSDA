@@ -62,6 +62,10 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %       random sampling with a reservoir, Information Processing Letters, Volume
 %       97, Issue 5, 16 March 2006, Pages 181-185.
 %
+%       Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
+%       Sampling Without Replacement", SIAM Journal of Computing,
+%       9(1):111-113.
+%
 %
 % Copyright 2008-2018.
 % Written by FSDA team

@@ -1819,7 +1819,9 @@ end
 %% Store quantities in the out structure
 outliers=abs(stdres)>norminv((conflev+1)/2);
 out.outliers=seq(outliers);
-
+p_all = normcdf(-abs(stdres));
+[min_p_outl ,~] = min(p_all);
+out.min_p_outl = min_p_outl;
 % Store robust estimate of s
 out.scale=s0;
 

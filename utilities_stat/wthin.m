@@ -299,7 +299,7 @@ varargout{3} = xout;
 
 % replace the zero or negative (in case of rounding problems) sampling
 % probability with a very small value
-pdfe(pdfe<10^(-10))=10^(-10);
+pdfe(pdfe<10^(-15))=10^(-15);
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.
