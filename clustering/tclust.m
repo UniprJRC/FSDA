@@ -1749,7 +1749,8 @@ end
 
 %% Compute INFORMATION CRITERIA
 
-nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
+% nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
+nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*(1-1/restrfactor(1)) +1;
 
 logh=log(h);
 
