@@ -215,7 +215,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %  out :  structure containing the following fields
 %
-%   out.bopt             = $p \times k$ matrix containing the regression
+%   out.bopt             = $(p+1) \times k$ matrix containing the regression
 %                          parameters.
 %   out.sigma2opt       = $k$ row vector containing the estimated group
 %                          variances.
@@ -264,6 +264,20 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                           posterior probabilitiy of unit i from component
 %                           (cluster) j. For the trimmed units posterior
 %                           probabilities are 0.
+%          out.MIXMIX = BIC which uses parameters estimated using the
+%                       mixture loglikelihood and the maximized mixture
+%                       likelihood as goodness of fit measure.
+%                       Remark: this output is present just if input option
+%                       mixt is >0.
+%          out.MIXCLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the mixture likelihood
+%                       (In some books this quantity is called ICL).
+%                       Remark: this output is present just if input option
+%                       mixt is >0.
+%          out.CLACLA = BIC which uses the classification likelihood based on
+%                       parameters estimated using the classification likelihood.
+%                       Remark: this output is present just if input option
+%                       mixt is =0.
 %
 %
 %  Optional Output:
@@ -273,15 +287,15 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                    the indices of the subsamples extracted for computing
 %                    the estimate.
 %
-% More about:
+% More About:
 %
 %  Computational issues to be addressed in future releases.
-%  1.
+%  [1] 
 %  FSDA function "wthin" uses the MATLAB function ksdensity. The calls to
 %  ksdensity have been optimized. The only possibility to further reduce
 %  time execution is to replace ksdensity with a more efficient kernel
 %  density estimator.
-%  2.
+%  [2]
 %  The weighted version of tclustreg requires weighted sampling. This is
 %  now implemented in randsampleFS. A computaionally more efficient
 %  algorithm, based on a binary tree approach introduced by
@@ -295,11 +309,11 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %  checks, is not sufficient, as datasample relies on a mex file wswor
 %  which is platform dependent. The issue is usually referred to as "code
 %  signature".
-%  3.
+%  [3]
 %  In the plots, the use of text to highlight the groups with their index
 %  is terribly slow (more than 10 seconds to generate a scatter of 7000
 %  units. ClickableMultiLegend and legend are also slow.
-%  4.
+%  [4]
 %  FSDA function restreigen could be improved. In some cases it is one of
 %  the most expensive functions.
 %
@@ -310,7 +324,16 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %   observation weighting.
 % For the sake of code readability, the relevant sections of the code are
 % identified with a "TRIMMING" or "THINNING" tag.
-%
+% 
+% REMARK: the number of parameters to penalize the likelihood are given
+% below:
+% $k(p+1)$ = number of regression coefficients including the intercept.
+% $k-1$ = number of proportions -1 (because their sum is 1).
+% $(k-1)(1-1/restrfact(1))+1$ = constraints on the $\sigma^2_j$.
+% To the above parameters, if $alphaX=1$ we must add:
+% $k(p-1)p/2$ = rotation parameters for $\Sigma_X=cov(X)$.
+% $(kp-1)(1-1/restrfactor(2))+1$ = eigenvalue parameters for
+% $\Sigma_X=cov(X)$.
 %
 % See also: tclust, tkmeans, rlga
 %
@@ -1992,10 +2015,10 @@ if equalweights==false
 end
 
 % Add paramters referred to sigma2 restrictions
-nParam=npar+ (k-1)*((1-1/restrfact)^(1-1/k)) +1;
+nParam=npar+ (k-1)*(1-1/restrfact) +1;
 
 if cwm==1
-    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*((1-1/restrfactX)^(1-1/(p*k))) +1;
+    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
 end
 
 logh=log(h);
