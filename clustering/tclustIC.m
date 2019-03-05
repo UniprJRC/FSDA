@@ -550,8 +550,8 @@ elseif strcmp(whichIC,'MIXCLA')
 elseif strcmp(whichIC,'CLACLA')
     typeIC=0;
 else
-    warning('FSDA:tclustICsol:WrongOpt','Supplied string for whichIC is not supported.')
-    error('FSDA:tclustICsol:WrongIC','Specified information criterion is not supported: possible values are ''MIXMIX'' , ''MIXCLA'',  ''CLACLA'', ''ALL''')
+    warning('FSDA:tclustIC:WrongOpt','Supplied string for whichIC is not supported.')
+    error('FSDA:tclustIC:WrongIC','Specified information criterion is not supported: possible values are ''MIXMIX'' , ''MIXCLA'',  ''CLACLA'', ''ALL''')
 end
 
 % Default values for the optional
