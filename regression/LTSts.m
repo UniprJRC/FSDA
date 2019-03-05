@@ -1814,6 +1814,7 @@ else % Perfect fit
     
     % Standardized residuals are artificially set equal to raw residuals.
     stdres=residuals;
+    invXX=NaN;
 end
 
 %% Store quantities in the out structure
