@@ -167,7 +167,7 @@ function [out]=FSRfan(y,X,varargin)
 %               search for la(end).
 %  out.Scorep = (n-init) x length(la)+1 matrix containing the values of the
 %               score test for positive observations for each value of the
-%               transformation parameter. 
+%               transformation parameter.
 %               1st col = fwd search index;
 %               2nd col = value of the (positive) score test in each step
 %               of the fwd search for la(1);
@@ -178,7 +178,7 @@ function [out]=FSRfan(y,X,varargin)
 %               family is 'YJpn'
 % out.Scoren  = (n-init) x length(la)+1 matrix containing the values of the
 %               score test for positive observations for each value of the
-%               transformation parameter: 
+%               transformation parameter:
 %               1st col = fwd search index;
 %               2nd col = value of the (negative) score test in each step
 %               of the fwd search for la(1);
@@ -350,7 +350,7 @@ function [out]=FSRfan(y,X,varargin)
     title(BigAx,'Data in the original scale')
 
 
-    % Find the data to transform 
+    % Find the data to transform
     la=-0.25;
     ytra=normYJ(y,[],la,'inverse',true);
     if any(isnan(ytra))
@@ -674,9 +674,17 @@ if plo==1
     
     if isempty(ylimy)
         
-        % Use default limits for y axis
-        ylim1=max(-20,min(min(Sco(:,2:end))));
-        ylim2=min(20,max(max(Sco(:,2:end))));
+        if BoxCox == -1
+            Scog=[Sco(:,2:end);Scop(:,2:end);Scon(:,2:end)];
+            maxSco=max(max(Scog));
+            minSco=min(min(Scog));
+            ylim1=max(-20,minSco);
+            ylim2=min(20,maxSco);
+        else
+            % Use default limits for y axis
+            ylim1=max(-20,min(min(Sco(:,2:end))));
+            ylim2=min(20,max(max(Sco(:,2:end))));
+        end
         ylim([ylim1 ylim2]);
     else
         

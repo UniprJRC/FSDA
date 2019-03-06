@@ -23,18 +23,20 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %             Data Types - single|double
 %
 % restrfact : restriction factor for regression residuals and covariance
-%             matrices of explanatory variables. Scalar or vector with two
+%             matrices of the explanatory variables. Scalar or vector with two
 %             elements. If restrfact is a scalar it controls the
 %             differences among group scatters of the residuals. The value
 %             1 is the strongest restriction. If restrfactor is a vector
 %             with two elements the first element controls the differences
 %             among group scatters of the residuals and the second the
 %             differences among covariance matrices of the explanatory
-%             variables.
+%             variables. Note that restrfactor(2) is used just if
+%             input option $alphaX=1$, that is if constrained weighted
+%             model for X is assumed.
 %            Data Types - single|double
 %
 %   alphaLik : Trimming level. Scalar.
-%            alpha1 is a value between 0 and 0.5 or an  integer specifying
+%            alphaLik is a value between 0 and 0.5 or an  integer specifying
 %            the number of observations which have to be trimmed. If
 %            alphaLik=0 there is no trimming. More in detail, if 0<alphaLik<1
 %            clustering is based on h=fix(n*(1-alphaLik)) observations.
@@ -45,7 +47,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Data Types - single|double
 %
 %   alphaX : Second-level trimming or constrained weighted model for X. Scalar.
-%            alphaX is a value between [0 and 1).
+%            alphaX is a value in the interval [0 1].
 %            - If alphaX=0 there is no second-level trimming.
 %            - If alphaX is in the interval [0 0.5] it indicates the
 %               fixed proportion of units subject to second level trimming.
@@ -62,7 +64,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               take into account different distributions for the explanatory
 %               variables across groups, so overcoming an intrinsic limitation
 %               of mixtures of regression, because they are implicitly
-%               assumed equally distributed.
+%               assumed equally distributed. Note that if alphaX=1 it is
+%               also possible to apply using restrfactor(2) the constraints
+%               on the cov matrices of the explanatory variables.
 %               For further details about CWM see Garcia-Escudero et al.
 %               (2017) or Torti et al. (2018).
 %            Data Types - single|double
@@ -153,10 +157,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Data Types - double
 %   wtrim: Application of observation weights. Scalar. A flag taking values [0, 1, 2, 3, 4]
 %          to control the application of weights on the observations.
-%          -  If \texttt{wtrim}=0 (no weights) and \texttt{mixt}=0, the
+%          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
 %             algorithm reduces to the standard tclustreg algorithm.
 %          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
-%             probability $D\_i$ of equation 7 of Garcia et al. 2010 is
+%             probability $D_i$ of equation 7 of Garcia et al. 2010 is
 %             computing by maximizing the log-likelihood contributions of
 %             the mixture model of each observation.
 %          -  If \texttt{wtrim} = 1, trimming is done by weighting the
@@ -592,11 +596,11 @@ end
 nnargin=nargin;
 vvarargin=varargin;
 
-[~,p0] = size(X);
+% [~,p0] = size(X);
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
-% Intercept, yes/no
-if p>p0
+% Check the presence of the intercept in matrix X
+if min(max(X)-min(X))==0
     intercept = 1;
 else
     intercept = 0;
@@ -604,9 +608,9 @@ end
 
 % check restrfact option
 if nargin < 4 || isempty(restrfact) || ~isnumeric(restrfact)
-    restrfact = 12;         % AGUSTIN: deafult 12 OK?
+    restrfact = 12;         % This is the default in R 
 elseif min(restrfact)<1
-    disp('Restriction factor smaller than 1. It is set to 1 (maximum contraint==>spherical groups)');
+    disp('Restriction factor smaller than 1. It is set to 1 (maximum constraint==>spherical groups)');
     restrfact(restrfact<1)=1;
 else
 end
@@ -1938,7 +1942,8 @@ out.obj_all            = obj_all;
 % out.idx==-1 for first  level trimmed units
 % out.idx==-2 for second level trimmed units
 
-%in tandem thinning it is necessary to save information about not only retained units (idxopt), but also about thinned units.
+%in tandem thinning it is necessary to save information about not only
+%retained units (idxopt), but also about thinned units.
 if wtrim == 4
     out.idx = zeros(length(Xori),1);
     out.idx(id_unthinned)=idxopt;
