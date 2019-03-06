@@ -795,7 +795,7 @@ options = struct('intercept',1,'mixt',mixtdef,...
     'reftol',reftoldef,...
     'we',wedef,'wtrim',wtrimdef,...
     'equalweights',equalweightsdef,...
-    'RandNumbForNini','','msg',1,'plots',1);
+    'RandNumbForNini','','msg',1,'plots',1,'nocheck',1);
 
 if nargin > 6
     UserOptions = varargin(1:2:length(varargin));
@@ -2067,9 +2067,13 @@ if plots
         fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
+        % Create labels for beta coefficients
+        betacoeff=sprintf('%0.3f; ',out.bopt(end,:));
+        % remove the last ; at the end
+        betacoeff=betacoeff(1:end-2);
         
-        title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_1=' num2str(alphaLik) '\quad \alpha_2=' num2str(alphaX) '$'] , ...
-            ['$ obj=' num2str(out.obj) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
+        title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
+            ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
             'interpreter' , 'LaTex', 'fontsize' , 14);
         
         for jj = 1:k
@@ -2101,8 +2105,6 @@ if plots
                     'Color',clrdef(jj));
             end
             
-            
-            
         end
         
         % Plot the outliers (trimmed points)
@@ -2127,9 +2129,9 @@ if plots
         
         % Position the legends and make them clickable. For some reason
         % clickableMultiLegend does not set properly the FontSize: to be fixed.
-        lh=legend('show');
+        lh=legend('show','Location','best');
         legstr = get(lh,'String');
-        clickableMultiLegend(legstr,'Location','northwest','interpreter' , 'LaTex', 'fontsize' , 12);
+        clickableMultiLegend(legstr,'Location','best','interpreter' , 'LaTex', 'fontsize' , 10);
         
         axis('manual');
         
@@ -2150,8 +2152,9 @@ if plots
             gca(fh);
             hold on;
             
+            betacoeff=sprintf('%0.3f ;',out.bopt(end,:));
             title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_1=' num2str(alphaLik) '\quad \alpha_2=' num2str(alphaX) '$'] , ...
-                ['$ obj=' num2str(out.obj) '\quad b=(' sprintf('%0.3f ;',out.bopt(end,:)) ') $']} , ...
+                ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
                 'interpreter' , 'LaTex', 'fontsize' , 14);
             
             for jj = 1:k
