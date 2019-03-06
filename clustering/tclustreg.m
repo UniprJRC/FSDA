@@ -1022,7 +1022,7 @@ if cwm==1
     % each extracted subset
     % sigmaX = matrix of size (p-intercept)-by-(p-intercept)-k which
     % contains covariance matrices of each extracted subset
-    muX       = zeros(p-intercept,k);
+    muX       = zeros(k,p-intercept);
     sigmaX    = zeros(p-intercept,p-intercept,k);
     
     % U = 3D array which contains the eigenvectors of covariance matrix of
@@ -1031,7 +1031,7 @@ if cwm==1
     
     % Lambda_pk = matrix which contains the eigenvalues of sigmaX referred
     % to the gruops (first column is associated with group 1....)
-    Lambda_pk = muX;
+    Lambda_pk = muX';
 end
 
 %w4trimopt = vector of {0,1} weights with 1 to identify units that are not
@@ -1168,7 +1168,7 @@ for i =1:nselected
             % centroids of the current subset i
             % sigmaX = matrix of size (p-intercept)-by-(p-intercept)-k which
             % contains covariance matrices of the current subset i
-            muX(:,j)=mean(Xb(:,intercept+1:end),1);
+            muX(j,:)=mean(Xb(:,intercept+1:end),1);
             if length(yb)==1
                 sigmaX(:,:,j)=var(X);
             else
@@ -1218,7 +1218,7 @@ for i =1:nselected
         for jj = 1:k
             ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
-                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
+                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
             end
         end
     % the group weights (niini) are estimated
@@ -1226,7 +1226,7 @@ for i =1:nselected
         for jj = 1:k
             ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
-                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
+                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
             end
         end
     end
@@ -1295,32 +1295,27 @@ for i =1:nselected
                 
                 w4trim = ones(n,1);
                 for jj=1:k
-                    % Boolean index of units forming group j
-                    groupj=idx==jj;
-                    
-                    % ijj: indices of units in group jj
-                    ijj = find(groupj);
-                    
-                    % update w4trim (only if the group has more than
-                    % skipthin_th units)
-                    if  length(ijj) > skipthin_th 
+                    % Boolean index of units in group j   
+                    groupj=idx==jj;          
+                    if  sum(groupj) > skipthin_th 
+                        % update w4trim if the group has more than
+                        % skipthin_th units.
+                        Xj = X(groupj,:);
+                        yhat = Xj*Beta(:,jj);
+                        % thinning
+                        [~ , pretain]  = wthin(yhat);  
+                        w4trim(groupj) = pretain;
                         % pretain: the retention probabilities are based on
                         % the predicted values (yhat) estimated at the
                         % previous concentration step. REMARK: trimmed and
                         % non-trimmed units are both considered.
-                        Xj = X(ijj,:);
-                        yhat = Xj*Beta(:,jj);
-                        
-                        [~ , pretain] = wthin(yhat);
-                        w4trim(ijj)   = pretain;
-                        
                     else 
                         % The group is too small: skip thinning, flag
                         % with 1 vector small_group and with jj
                         % small_group_obs. If the group is completely
                         % empty, it is not necessary to flag the two
                         % vectors.
-                        if ~isempty(ijj)
+                        if sum(groupj) > 0 
                             small_group(jj) = 1;
                             small_group_obs(:) = jj*groupj;
                         end
@@ -1414,14 +1409,14 @@ for i =1:nselected
                 for jj = 1:k
                     ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
-                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
+                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
                     end
                 end
             else
                 for jj = 1:k
                     ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
-                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
+                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
                     end
                 end
             end
@@ -1666,8 +1661,8 @@ for i =1:nselected
                     sigma2ini(jj) = sigma2;
                     
                     if cwm ==1
-                        muX(:,jj)=sum(bsxfun(@times, X(:,intercept+1:end), Z(:,jj)),1)/sum(Z(:,jj))';
-                        sigmaX(:,:,jj)= (Xw(:,intercept+1:end)'*Xw(:,intercept+1:end))/sum(Z(:,jj))-muX(:,jj)*(muX(:,jj)');
+                        muX(jj,:)=sum(bsxfun(@times, X(:,intercept+1:end), Z(:,jj)),1)/sum(Z(:,jj))';
+                        sigmaX(:,:,jj)= (Xw(:,intercept+1:end)'*Xw(:,intercept+1:end))/sum(Z(:,jj))-muX(jj,:)'*(muX(jj,:));
                     end
                 else
                     
@@ -1765,7 +1760,7 @@ for i =1:nselected
                     end
                     
                     if cwm==1
-                        obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj)).*Z(:,jj));
+                        obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj)).*Z(:,jj));
                         %obj con AIC????????
                     end
                     
@@ -1792,7 +1787,7 @@ for i =1:nselected
                             y - X*Beta(:,jj),0,sigma2ini(jj) ) );
                     end
                     if cwm==1
-                        log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
+                        log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
                     end
                 end
                 log_lh(idx<=0,:)=[];
@@ -1904,14 +1899,13 @@ vt = norminv(0.5*(1+hh/n));
 %factor=1/sqrt(1-(2*vt.*normpdf(vt))./(2*normcdf(vt)-1));
 if hh<n
     factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
+    % Apply the asymptotic consistency factor to the preliminary squared scale estimate
+    sigma2opt_corr = sigma2opt*factor;
+    % Apply small sample correction factor of Pison et al.
+    sigma2opt_corr = sigma2opt_corr*corfactorRAW(1,n,hh/n);
 else
-    factor=1;
+    sigma2opt_corr = sigma2opt;
 end
-
-% Apply the asymptotic consistency factor to the preliminary squared scale estimate
-sigma2opt_corr=sigma2opt*factor;
-% Apply small sample correction factor of Pison et al.
-sigma2opt_corr=sigma2opt_corr*corfactorRAW(1,n,hh/n);
 
 %%  Set the output structure
 
@@ -1932,7 +1926,7 @@ if cwm==1
     %            out.muXopt= k-by-p matrix containing cluster centroid
     %                       locations. Robust estimate of final centroids of
     %                       the groups.
-    out.muXopt=muXopt;
+    out.muXopt=muXopt';
     %         out.sigmaXopt= p-by-p-by-k array containing estimated constrained
     %                       covariance covariance matrices of the explanatory variables for the k groups.
     out.sigmaXopt=sigmaXopt;
@@ -1982,14 +1976,14 @@ if equalweights == 1
     for jj = 1:k
         ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
         if cwm==1
-            ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(:,jj),sigmaXopt(:,:,jj));
+            ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
         end
     end
 else
     for jj = 1:k
         ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
         if cwm==1
-            ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(:,jj),sigmaXopt(:,:,jj));
+            ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
         end
     end
 end
