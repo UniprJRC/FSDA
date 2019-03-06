@@ -148,6 +148,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',15
 %                 Data Types - single | double
+%     reftol  : Tolerance for the refining steps. Scalar.
+%               The default value is 1e-14;
+%                 Example - 'reftol',1e-05
+%                 Data Types - single | double
 %    plots : Plot on the screen. Scalar. A flag to control the
 %            generation of the plots.
 %            If plots=1 a plot is showed on the screen with the
@@ -155,8 +159,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            associated to the groups)
 %            Example - 'plots',1
 %            Data Types - double
-%   wtrim: Application of observation weights. Scalar. A flag taking values [0, 1, 2, 3, 4]
-%          to control the application of weights on the observations.
+%   wtrim: Application of observation weights. Scalar. A flag taking values
+%          in [0, 1, 2, 3, 4], to control the application of weights on the 
+%          observations.
 %          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
 %             algorithm reduces to the standard tclustreg algorithm.
 %          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
@@ -765,6 +770,10 @@ end
 % default number of concentration steps
 refstepsdef  = 10;
 
+% default tolerance for comparing the classifications in two subsequent
+% concentration steps
+reftoldef=1e-5;
+
 % default value for wtrim: the thinning strategy (wtrim can be 0,1,2,3,4)
 wtrimdef = 0;
 
@@ -783,6 +792,7 @@ seqk = 1:k;
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
+    'reftol',reftoldef,...
     'we',wedef,'wtrim',wtrimdef,...
     'equalweights',equalweightsdef,...
     'RandNumbForNini','','msg',1,'plots',1);
@@ -832,6 +842,7 @@ nsamp = options.nsamp;
 
 % Concentration steps
 refsteps = options.refsteps;
+reftol=options.reftol;
 
 % Equalweights constraints
 equalweights = options.equalweights;
@@ -1207,7 +1218,7 @@ for i =1:nselected
         for jj = 1:k
             ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
-                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
+                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
             end
         end
     % the group weights (niini) are estimated
@@ -1215,7 +1226,7 @@ for i =1:nselected
         for jj = 1:k
             ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
             if cwm==1
-                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
+                ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
             end
         end
     end
@@ -1257,10 +1268,9 @@ for i =1:nselected
         
         %%% -- -- Componentwise Thinning (the wtrim option)
         
-        % w4trim = vector of weights {0,1}; 1 identifies units that were not
-        % thinned. In the first trimming step, it is used to compute the
-        % likelihood contribution on the units that are potentially subject
-        % to trimming.
+        % w4trim = vector of weights in {0,1}; w4trim = 1 identifies units
+        % that are not thinned and contribute to the likelihood in the
+        % first trimming step.
         
         switch wtrim
             
@@ -1269,12 +1279,12 @@ for i =1:nselected
                 w4trim = ones(n,1);
                 
             case 1
-                % w4trim contains the user-specific weights
+                % w4trim contains user-specific weights
                 w4trim = we;
                 
             case 2
                 % w4trim contains the retention probabilities on yhat,
-                % estimated with function wthin 
+                % estimated with FSDA function wthin. 
 
                 % small_group: kx1 vector identifying groups that are too
                 % small to be thinned.
@@ -1291,9 +1301,8 @@ for i =1:nselected
                     % ijj: indices of units in group jj
                     ijj = find(groupj);
                     
-                    % update the weight vector w4trim: elements with
-                    % indices of units in group jj are updated only if the
-                    % group has more than skipthin_th units
+                    % update w4trim (only if the group has more than
+                    % skipthin_th units)
                     if  length(ijj) > skipthin_th 
                         % pretain: the retention probabilities are based on
                         % the predicted values (yhat) estimated at the
@@ -1405,14 +1414,14 @@ for i =1:nselected
                 for jj = 1:k
                     ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
-                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
+                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
                     end
                 end
             else
                 for jj = 1:k
                     ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
                     if cwm==1
-                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
+                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
                     end
                 end
             end
@@ -1756,7 +1765,7 @@ for i =1:nselected
                     end
                     
                     if cwm==1
-                        obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj)).*Z(:,jj));
+                        obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj)).*Z(:,jj));
                         %obj con AIC????????
                     end
                     
@@ -1783,7 +1792,7 @@ for i =1:nselected
                             y - X*Beta(:,jj),0,sigma2ini(jj) ) );
                     end
                     if cwm==1
-                        log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj),sigmaX(:,:,jj));
+                        log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(:,jj)',sigmaX(:,:,jj));
                     end
                 end
                 log_lh(idx<=0,:)=[];
