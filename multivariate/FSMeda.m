@@ -595,11 +595,11 @@ else
             MAL(:,mm-init1+1)=MD;
         end
         
-        if verLessThan2016b
-            MDsor=sort(MD);
-        else
-            MDsor=sort(MD,'ComparisonMethod','real');
-        end
+        %         if verLessThan2017a
+        MDsor=sort(MD);
+        %         else
+        %             MDsor=sort(MD,'ComparisonMethod','real');
+        %         end
         
         if mm>=init1
             if mm<=percn
