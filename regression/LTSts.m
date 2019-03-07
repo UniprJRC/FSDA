@@ -110,7 +110,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               detection than h does not have to be smaller than
 %               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
 %               that if h is supplied input argument bdp is ignored.
-%                 Example - 'h',round(n*0,75)
+%                 Example - 'h',round(n*0.75)
 %                 Data Types - double
 %         bdp : breakdown point. Scalar. It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
@@ -1083,7 +1083,7 @@ elseif  options.nsamp<0
 end
 
 
-h=options.h;                % Number of data points on which estimates are based
+h=floor(options.h);                % Number of data points on which estimates are based
 plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
 nsampsubsequentsteps=nsamp/2;
@@ -1612,7 +1612,7 @@ if  lsh>0
         Likloc(ij,3)=sum((yin(bsb)-yhat).^2);
         
     end
-    % Use Huberrized residual sum of squares to find minimum
+    % Use Huberized residual sum of squares to find minimum
     [~,locmin]=min(Likloc(:,typeres+1));
     finalLS=Likloc(locmin,1);
     Xlshift=[zeros(finalLS-1,1);ones(T-finalLS+1,1)];
@@ -1648,9 +1648,32 @@ while nofullrank
     end
 end
 
-if abs(s0) > 1e-7
-    stdres = residuals/s0;
+%if the robust s0 is too small, compute it with a set of different methods:
+%Qn, Sn, std and the interquantile difference for increasing percentages
+%([0.25-0.75], [0.26-0.76], ...)
+if abs(s0) < 1e-7
+    if msg==1
+        disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
+    end
+    [~,~,s0]=zscoreFS(residuals,'median','Qn');
+    if s0==0
+        [~,~,s0]=zscoreFS(residuals,'median','Sn');
+    end
+    if s0==0
+        [~,~,s0]=zscoreFS(residuals,'median','std');
+    end
+    absr=abs(residuals);
+    for j=75:1:99
+        s0=prctile(absr,j)- prctile(absr,100-j);
+        if s0>0
+            break
+        end
+    end
+    weights = abs(residuals)<=1e-7;
+    % stdres = residuals/s0;
+else
     
+    stdres = residuals/s0;
     if SmallSampleCor==1
         plinear=pini+(lshift>0);
         robest='LTS';
@@ -1662,6 +1685,10 @@ if abs(s0) > 1e-7
             Ttouse=50;
         else
             Ttouse=T;
+        end
+        
+        if ~exist('bdp','var')
+            bdp=1-options.h/T;
         end
         thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
         extracoeff=sqrt(thresh/chi2inv(0.99,1));
@@ -1676,153 +1703,163 @@ if abs(s0) > 1e-7
     else
         error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
     end
-    % weights is a boolean vector.
-    bsb=seq(weights);
-    
-    % Find new estimate of beta using only observations which have
-    % weight equal to 1. Notice that new brob overwrites old brob
-    % computed previously.
-    
-    %
-    if varampl==0 && lshift==0 % In this case the model is linear
-        % Function lik constructs fitted values and residual sum of
-        % squares
-        betaout = Xsel(bsb,:) \ yin(bsb);
-        % update fitted values
-        yhat = Xsel * betaout;
-        
-        % find fitted values using all observations
-        yhat =  Xsel * betaout;
-        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
-        invXX=inv(Xsel'*Xsel);
-        covB=s2*invXX; %#ok<MINV>
-        Xlin=Xsel;
-        
-    elseif   varampl==0 && lshift>0
-        % In this case there is just level shift however we do not redo
-        % the non linear estimation but a simple LS
-        
-        Xseldum=[Xsel Xlshift];
-        betaout = Xseldum(bsb,:) \ yin(bsb);
-        
-        
-        % find fitted values using all observations
-        yhat =  Xseldum * betaout;
-        s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
-        invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
-        covB=s2*invXX; %#ok<MINV>
-        Xlin=Xseldum;
-    else % model is non linear because there is time varying amplitude in seasonal component
-        Xtrendf=Xtrend(bsb,:);
-        Xseasof=Xseaso(bsb,:);
-        if ~isempty(X)
-            Xf=X(bsb,:);
-        end
-        Seqf=Seq(bsb,:);
-        yf=yin(bsb);
-        
-        % Find new estimate of scale using only observations which have
-        % weight equal to 1.
-        weights=false(T,1);
-        weights(bsb)=true;
-        
-        if lshift>0
-            Xlshiftf=Xlshift(bsb);
-            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
-        else
-            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-            %
-            % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-            % Note that MSE*inv(J'*J) = covB
-        end
-        
-        % yfitFS = likyhat(betaout,Xtrendf);
-        % nans=false(length(yfitFS),1);
-        % sqweights=ones(length(yfitFS),1);
-        % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
-        % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
-        
-        invXX=covB/MSE;
-        
-        % Now compute again vector yhat using final vector betaout
-        bsb=seq;
-        lik(betaout);
-        
-    end
-    
-    % Store beta standard error, t stat and p values
-    sebetaout=sqrt(diag(covB));
-    tout=betaout./sebetaout;
-    dfe=T-length(betaout);
-    pval=2*(tcdf(-abs(tout), dfe));
-    B=[betaout sebetaout tout pval];
-    
-    out.B=B;
-    
-    if lsh>0
-        % Store position of level shift
-        out.posLS=finalLS;
-    end
-    
-    % Computation of reweighted residuals.
-    residuals=yin-yhat;
-    
-    % s0 =sqrt(MSE)
-    s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
-    % Compute new standardized residuals.
-    
-    % Apply consistency factor to reweighted estimate of sigma
-    hrew=sum(weights);
-    if hrew<T
-        % factor=consistencyfactor(hrew,n,1);
-        a=norminv(0.5*(1+hrew/T));
-        %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
-        factor=1/sqrt(1-2*(T/hrew)*a.*normpdf(a));
-        % Apply small sample correction factor to reweighted estimate
-        % of sigma
-        factor=factor*sqrt(corfactorREW(1,T,hrew/T));
-    else
-        factor=1;
-    end
-    
-    s0=s0*factor;
-    stdres=residuals/s0;
-    
-    % Declare as outliers the observations which have a standardized
-    % residual greater than cutoff. REMARK: while the first threshold
-    % was based on the Student T (with modified degrees of freedom), in
-    % this second round the threshold is based on the Normal. Notice
-    % that: sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) =
-    % norminv(0.9875)
-    
-    out.yhat=yhat;
-    
-else % Perfect fit
-    if msg==1
-        disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
-    end
-    % There is an approximate perfect fit for the first h observations. We
-    % consider as outliers all units with residual greater than 1e-7.
-    weights = abs(residuals)<=1e-7;
-    
-    % Store the weights
-    out.weights=weights;
-    
-    
-    % s is set to 0
-    s0=0;
-    
-    % Standardized residuals are artificially set equal to raw residuals.
-    stdres=residuals;
-    invXX=NaN;
 end
+
+% else
+%     % There is an approximate perfect fit for the first h observations. We
+%     % consider as outliers all units with residual greater than 1e-7.
+%     weights = abs(residuals)<=1e-7;
+%
+%     %     % Store the weights
+%     %     out.weights=weights;
+%
+%
+%     % s is set to 0
+% %     s0=0;
+% %
+% %     % Standardized residuals are artificially set equal to raw residuals.
+% %     stdres=residuals;
+% end
+
+
+% weights is a boolean vector.
+bsb=seq(weights);
+
+% Find new estimate of beta using only observations which have
+% weight equal to 1. Notice that new brob overwrites old brob
+% computed previously.
+
+%
+if varampl==0 && lshift==0 % In this case the model is linear
+    % Function lik constructs fitted values and residual sum of
+    % squares
+    betaout = Xsel(bsb,:) \ yin(bsb);
+    % update fitted values
+    yhat = Xsel * betaout;
+    
+    % find fitted values using all observations
+    yhat =  Xsel * betaout;
+    s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xsel,2));
+    invXX=inv(Xsel'*Xsel);
+    covB=s2*invXX; %#ok<MINV>
+    Xlin=Xsel;
+    
+elseif   varampl==0 && lshift>0
+    % In this case there is just level shift however we do not redo
+    % the non linear estimation but a simple LS
+    
+    Xseldum=[Xsel Xlshift];
+    betaout = Xseldum(bsb,:) \ yin(bsb);
+    
+    
+    % find fitted values using all observations
+    yhat =  Xseldum * betaout;
+    s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
+    invXX=inv(Xseldum(bsb,:)'*Xseldum(bsb,:));
+    covB=s2*invXX; %#ok<MINV>
+    Xlin=Xseldum;
+else % model is non linear because there is time varying amplitude in seasonal component
+    Xtrendf=Xtrend(bsb,:);
+    Xseasof=Xseaso(bsb,:);
+    if ~isempty(X)
+        Xf=X(bsb,:);
+    end
+    Seqf=Seq(bsb,:);
+    yf=yin(bsb);
+    
+    % Find new estimate of scale using only observations which have
+    % weight equal to 1.
+    weights=false(T,1);
+    weights(bsb)=true;
+    
+    if lshift>0
+        Xlshiftf=Xlshift(bsb);
+        [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+    else
+        [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+        %
+        % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+        % Note that MSE*inv(J'*J) = covB
+    end
+    
+    % yfitFS = likyhat(betaout,Xtrendf);
+    % nans=false(length(yfitFS),1);
+    % sqweights=ones(length(yfitFS),1);
+    % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
+    % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
+    
+    invXX=covB/MSE;
+    
+    % Now compute again vector yhat using final vector betaout
+    bsb=seq;
+    lik(betaout);
+    
+end
+
+% Store beta standard error, t stat and p values
+sebetaout=sqrt(diag(covB));
+tout=betaout./sebetaout;
+dfe=T-length(betaout);
+pval=2*(tcdf(-abs(tout), dfe));
+B=[betaout sebetaout tout pval];
+
+out.B=B;
+
+if lsh>0
+    % Store position of level shift
+    out.posLS=finalLS;
+end
+
+% Computation of reweighted residuals.
+residuals=yin-yhat;
+
+% s0 =sqrt(MSE)
+s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
+% Compute new standardized residuals.
+
+% Apply consistency factor to reweighted estimate of sigma
+hrew=sum(weights);
+if hrew<T
+    % Make sure that hrew has at least T/2 observations
+    if hrew<T/2
+        hrew=T/2;
+    end
+    
+    % factor=consistencyfactor(hrew,n,1);
+    a=norminv(0.5*(1+hrew/T));
+    %factor=1/sqrt(1-(2*a.*normpdf(a))./(2*normcdf(a)-1));
+    factor=1/sqrt(1-2*(T/hrew)*a.*normpdf(a));
+    % Apply small sample correction factor to reweighted estimate
+    % of sigma
+    factor=factor*sqrt(corfactorREW(1,T,hrew/T));
+else
+    factor=1;
+end
+
+s0=s0*factor;
+if s0==0
+    stdres=residuals;
+else
+    stdres=residuals/s0;
+end
+
+% Declare as outliers the observations which have a standardized
+% residual greater than cutoff. REMARK: while the first threshold
+% was based on the Student T (with modified degrees of freedom), in
+% this second round the threshold is based on the Normal. Notice
+% that: sqrt(chi2inv(0.975,1)) = tinv(0.9875,\infinity) =
+% norminv(0.9875)
+
+out.yhat=yhat;
+
 
 %% Store quantities in the out structure
 outliers=abs(stdres)>norminv((conflev+1)/2);
 out.outliers=seq(outliers);
-p_all = normcdf(-abs(stdres));
-[min_p_outl ,~] = min(p_all);
-out.min_p_outl = min_p_outl;
+%decomment the following two lines to get outlier pvalues
+%p_all = normcdf(-abs(stdres));
+%out.outliers_pvalues = p_all(outliers);
+
 % Store robust estimate of s
 out.scale=s0;
 
@@ -1943,7 +1980,7 @@ if plots>=1
     vlt15 = verLessThan('matlab', '7.15');
     clr = 'bkrgmcy';
     syb = {'-','--','-.',':','-','--','-.'};
-    FontSize    = 14; 
+    FontSize    = 14;
     SizeAxesNum = 14;
     
     % slightly increase the range of the time series axis values
@@ -1984,7 +2021,7 @@ if plots>=1
             plot(seq(out.outliers(i)),yin(out.outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
         end
     end
-
+    
     % plot the vertical line of the level shift position and the associated
     % label on the X axis
     if isfield(out,'posLS') && ~isempty(out.posLS)
