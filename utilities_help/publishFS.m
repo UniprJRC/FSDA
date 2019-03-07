@@ -2325,6 +2325,7 @@ if isempty(outsel)
 end
 % substring to search starting from Output:
 fstringsel=fstring(outsel(1):end);
+fstringsel(1:7)='%';
 
 % cell which will contain the details of output arguments
 listOutArgs=cell(length(listargouts),5);
@@ -3377,7 +3378,11 @@ if evalCode==true
         
         for j=1:totex
             if j<totex && totex>1 && length(fHTML)>1
+                try
                 fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
+                catch
+                fcand=fstringHTML(fHTML(j):end);
+                end
             else
                 fendHTML=regexp(fstringHTML,'<p class="footer">','once');
                 fcand=fstringHTML(fHTML(end):fendHTML-1);
@@ -3718,10 +3723,20 @@ end
 function descrHTTPwithref=formatHTML(descrlong)
 % Find all lines which terminate with full stop
 newlinewithFullStop=regexp(descrlong,'\.\s*\r');
-% Do not consider the line which terminate with full stop but are preeceed
-% by "one space" and then "pp."
+% Do not consider the lines which terminate with
+% 1) "one space" and then "pp."
+% 2) i.e.
+% 3) i. e.
+% 4) "one space" and then Vol.
+% 5) "one space" and then vol.
 [ppwithfullstop]=regexp(descrlong,'\spp\.\s*\r')+3;
-newlinewithFullStop=setdiff(newlinewithFullStop,ppwithfullstop);
+[iewithfullstop]=regexp(descrlong,'i\.e.\s*\r')+3;
+[ispaceewithfullstop]=regexp(descrlong,'i\.\se.\s*\r')+4;
+[volwithfullstop]=regexp(descrlong,'\s[v-V]ol\.s*\r')+4;
+
+exceptions=[ppwithfullstop iewithfullstop ispaceewithfullstop volwithfullstop];
+newlinewithFullStop=setdiff(newlinewithFullStop,exceptions);
+
 
 % Find all lines which terminate with symbol : or with symbol ;
 newlinewithColon=regexp(descrlong,'\:\s*\r');
