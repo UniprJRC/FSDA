@@ -31,7 +31,7 @@ function out  = tclustIC(Y,varargin)
 %
 %           cc: values of restriction factor. Vector. A vector specifying
 %               the values of the restriction factor
-%               which have to be considered. 
+%               which have to be considered for the covariance matrices. 
 %               The default value of cc is [1 2 4 8 16 32 64 128]
 %                 Example - 'cc',[1 2 4 8 128]
 %                 Data Types - double
