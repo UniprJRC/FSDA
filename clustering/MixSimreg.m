@@ -12,7 +12,9 @@ function [out] = MixSimreg(k,p,varargin)
 %  $\phi(x,\mu_i,\sigma_i^2)$ and $\phi(x,\mu_j, \sigma_j^2)$ with probabilities of
 %  occurrence $\pi_i$ and $\pi_j$, the misclassification probability with
 %  respect to cluster $i$ (denoted with $w_{j|i}$) is defined as 
-%  \[ Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) < \pi_j \phi(x,\mu_j,\sigma_j^2)] \]
+%  \[ 
+%   Pr[\pi_i \phi(x,\mu_i,\sigma_i^2) < \pi_j \phi(x,\mu_j,\sigma_j^2)] 
+%   \]
 %  where, in the regression context, $\mu_i={\overline x}_i' \beta_i$ and
 %  $\mu_j= \overline x_j' \beta_j$. We assume that the length of vectors $x_i$,
 %  $x_j$, $\beta_i$, and $\beta_j$ is $p$ (number of explanatory variables
@@ -43,12 +45,9 @@ function [out] = MixSimreg(k,p,varargin)
 %  combination of non central $\chi^2$ distributions with 1 degree of freedom
 %  plus a linear combination of $N(0,1)$ evaluated in a point $c$.
 %  The coefficients of the linear combinations of non central $\chi^2$ and
-%  $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix
-%  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
-%  Point c depends on the same eigenvalues and eigenvectors of matrix
-%  $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the determinants
-%  $|\Sigma_i|$ and $|\Sigma_j|$. This probability is computed using routine
-%  ncx2mixtcdf
+%  $N(0,1)$ and point c depend on 
+%  $\sigma_{j|i}^2 = \sigma_i^2/\sigma_j^2$.
+%  This probability is computed using routine ncx2mixtcdf
 %
 %  Required input arguments:
 %
@@ -74,9 +73,9 @@ function [out] = MixSimreg(k,p,varargin)
 %    StdOmega : Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
 %               Remark 1: The probability of overlapping between two
-%               clusters i and j (i \ne j=1, 2, ..., k), called pij, is
+%               clusters $i$ and $j$ ($i \ne j=1, 2, ..., k$), called $p_{ij}$, is
 %               defined as the sum of the two misclassification
-%               probabilities pij=w_{j|i} + w_{i|j}
+%               probabilities $p_{ij}=w_{j|i} + w_{i|j}$.
 %
 %               Remark 2: it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
@@ -90,15 +89,15 @@ function [out] = MixSimreg(k,p,varargin)
 %               Example - 'hom',false 
 %               Data Types - boolean
 %  restrfactor: restriction factor. Scalar. 
-%               Scalar in the interval [1 \infty] which specifies the
-%               maximum ratio to allow between the largest \sigma^2 and
-%               the smallest \sigma^2 which are generated. If, for example,
-%               restrfactor=10, after generating the covariance matrices we
-%               check that the ratio
-%                     \sigma^2_i/sigma^2_j i \ne j=1, ..., k
+%               Scalar in the interval $[1, \infty]$ which specifies the
+%               maximum ratio to allow between the largest $\sigma^2$ and
+%               the smallest $\sigma^2$ which are generated. If, for example,
+%               restrfactor=10, after generating the mixtures of regression
+%               lines (hyperplanes) we check that the ratio
+%                     $\sigma^2_i/\sigma^2_j$, $i \ne j=1, ..., k$,
 %               is not larger than restrfactor. In order to apply this
-%               restriction (which is typical of tclust.m, we call routine
-%               restreigen.m)
+%               restriction, which is typical of tclust.m, we call routine
+%               restreigen.m.
 %               Example - 'restrfactor',8 
 %               Data Types - double
 %       PiLow : Smallest miximg proportion. Scalar. 
@@ -271,9 +270,9 @@ function [out] = MixSimreg(k,p,varargin)
 %         out:   structure which contains the following fields
 %
 %       out.OmegaMap = matrix of misclassification probabilities (k-by-k);
-%                      OmegaMap(i,j) = w_{j|i} is the probability that X,
-%                      coming from the i-th component (group), is classified
-%                      to the j-th component.
+%                      OmegaMap(i,j) = $w_{j|i}$ is the probability that X,
+%                      coming from the $i$-th component (group), is classified
+%                      to the $j$-th component.
 %       out.BarOmega = scalar. Value of average overlap. BarOmega is computed
 %                      as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
 %       out.MaxOmega = scalar. Value of maximum overlap. MaxOmega is the
@@ -324,12 +323,12 @@ function [out] = MixSimreg(k,p,varargin)
 %   Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
 %   A General Trimming Approach to Robust Cluster Analysis. Annals
 %   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
-%   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
-% Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
-% mixtures of multivariate data with fixed cluster overlap in FSDA,
-% "Advances in data analysis and classification", Vol. 9, pp. 461-481. 
-% [DOI 10.1007/s11634-015-0223-9].
-%
+%   http://www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf].
+% Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+% Methodologies for Clustering Linear Regression Data, "Advances in Data
+% Analysis and Classification". [doi
+% https://doi.org/10.1007/s11634-018-0331-4].
+
 % Copyright 2008-2018.
 % Written by FSDA team
 %
