@@ -495,7 +495,7 @@ function out=publishFS(file,varargin)
 %
 %
 %                         Chaloner and Brant (1988). A Bayesian Approach to Outlier
-%                         Detection and Residual Analysis, Biometrika, Vol 75
+%                         Detection and Residual Analysis, "Biometrika", Vol. 75
 %                         pp. 651-659.
 %                         Riani M., Corbellini A., Atkinson A.C. (2015), Very
 %                         Robust Bayesian Regression for Fraud Detection,
@@ -3818,12 +3818,13 @@ if ~isempty(IniRefhttp)
             namehttp=namehttp(1:end-4);
         end
         
+        % If namehttp ends with namehttp is . or , or / or ] or a combination of
+        % these characters remove them 
+        extrasp=0;
         
-        if strcmp(namehttp(end),'.') || strcmp(namehttp(end),',') || strcmp(namehttp(end),'/')
+        while strcmp(namehttp(end),'.') || strcmp(namehttp(end),',') || strcmp(namehttp(end),'/') || strcmp(namehttp(end),']')
             namehttp=namehttp(1:end-1);
-            extrasp=1;
-        else
-            extrasp=0;
+            extrasp=extrasp+1;
         end
         
         FinRefhttp(i)=IniRefhttp(i)+length(namehttp);
