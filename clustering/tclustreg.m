@@ -560,17 +560,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);
 %}
 
-
-%% Variables settings
-
-%%% - Internal Debugging Flags
+%% Control variables, tolerances and internal flags
 
 warning('off');
 
-%  csteps_stop == 0 is to monitor the stability of the objective
-% function for a fixed number of loops (refsteps option). Otherwise, if it
-% is set to 1, the loop stops when the classification does not change in 2
-% consective c-steps.
+% csteps_stop == 0 is to monitor the stability of the objective function
+% for a fixed number of loops (refsteps option). Otherwise, if it is set to
+% 1, the loop stops when the classification does not change in 2 consective
+% c-steps.
 csteps_stop = 0;
 
 % obj_with_thinned == 1 is to use thinned units in the computation of
@@ -579,8 +576,6 @@ obj_with_thinned = 1;
 
 % Groups with less than skipthin_th units are not considered for thinning
 skipthin_th = 50;
-
-%%% - Default values
 
 % current and best objective function values
 vopt = -1e+20;
@@ -599,10 +594,10 @@ else
     userepmat=1;
 end
 
-%%% - Input parameters checking
+%% Input parameters checking
 
-nnargin=nargin;
-vvarargin=varargin;
+nnargin   = nargin;
+vvarargin = varargin;
 
 % [~,p0] = size(X);
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
@@ -657,20 +652,21 @@ else
 end
 
 
-%% Bivariate thinning
-%
-% *If wtrim == 4 and p == 2*, bivariate thinning is applied
-% once at the very beginning on the full dataset. This has to be done
-% before setting the number of random samples nsamp.
+%% Bivariate thinning (_if wtrim == 4 and p == 2_)
+
+% Bivariate thinning is applied once on the full dataset, at the start.
+% This is done before setting the number of random samples nsamp.
 
 if nargin>6
     chknwtrim = strcmp(varargin,'wtrim');
     if sum(chknwtrim)>0 && cell2mat(varargin(find(chknwtrim)+1)) == 4
         interc = find(max(X,[],1)-min(X,[],1) == 0);
         if p == numel(interc) + 1
+            
             % The bandwidth is chosen following Baddeley, as in the R
             % spatstats package (density.ppp function).
             bw = (range([X(:,numel(interc)+1),y]))/8;
+            
             %in order to reproduce results comparable with the paper
             %Cerioli and Perrotta (2013) the bandwidth is divided by 3
             bw = bw/3;
@@ -696,13 +692,9 @@ if nargin>6
     end
 end
 
-%% User options
+%% User options and their default values
 
-%%% - Get initial subsets pre-specified by the User.
-%
-% *nsamp* can contain the number of subsets to extract randomly, but also
-% the indexes of the subsets which have to be extracted from the data
-% matrix
+%%% - nsamp: the number of subsets to extract randomly, or the indexes of the initial subsets pre-specified by the User
 
 if nargin>6
     
@@ -770,7 +762,7 @@ if NoPriorSubsets == 1
 end
 
 
-%%% - Main parameters
+%%% - Other user options
 
 % default number of concentration steps
 refstepsdef  = 10;
@@ -906,7 +898,9 @@ else
     NoPriorNini=0;
 end
 
-%% Initializations: observation weights (we)
+%% Initializations
+
+%%% - Observation weights (we)
 
 % Initialize we, a vector of application-specific weights associated to the
 % observations, according to the trimming/thinning strategy.
@@ -982,7 +976,7 @@ switch wtrim
         
 end
 
-%% Initializations: subsets extraction, if not pre-specified by the User.
+%%% - Subsets extraction
 
 %case with no prior subsets from the User
 if NoPriorSubsets
@@ -998,7 +992,7 @@ if NoPriorSubsets
     
 end
 
-%% Initializations: output structures
+%%% - Output structures
 
 % timer to monitor performances.
 tsampling = ceil(min(nselected/5 , 50));
@@ -1378,7 +1372,7 @@ for i =1:nselected
         w4trim      = w4trim/mean(w4trim);
         
         if sum(isnan(Beta(:)))>0
-            %%% -- -- *Stop* if one of the current beta parameters is undefined, and go to another subset  
+            %%% -- -- _Stop if one of the current beta parameters is undefined, and go to another subset_  
             break
         else
             %% -- -- Classification E-Step (inside concentration steps) 
@@ -1607,7 +1601,7 @@ for i =1:nselected
                             idx_ne0(groupjind(trimj))=-2;
                         end
                     else
-                        %%% -- -- *Stop* if we end up with less than k groups, and go to another subset  
+                        %%% -- -- _Stop if we end up with less than k groups, and go to another subset_ 
                         ltkg = 1;
                         break
                     end
@@ -1624,7 +1618,7 @@ for i =1:nselected
                 postprob(idx==-2,:)=0;
             end
             
-            %%% -- -- *Stop* if we end up with less than k groups, and go to another subset  
+            %%% -- -- _Stop if we end up with less than k groups, and go to another subset_ 
             if ltkg==1
                 Beta=NaN;
                 break
@@ -1676,13 +1670,13 @@ for i =1:nselected
                         sigmaX(:,:,jj)= (Xw(:,intercept+1:end)'*Xw(:,intercept+1:end))/sum(Z(:,jj))-muX(jj,:)'*(muX(jj,:));
                     end
                 else
-                    %%% -- -- *Stop* if we end up with less than k groups
+                    %%% -- -- _Stop if we end up with less than k groups_
                     ltkg=1;
                     break
                 end
             end % loop on groups
             
-            %%% -- -- *Stop* if we end up with less than k groups
+            %%% -- -- _Stop if we end up with less than k groups_
             if ltkg==1
                 Beta=NaN;
                 break
@@ -1903,6 +1897,7 @@ for i =1:nselected
         end
     end
 end % end of loop over the nsamp subsets
+
 %%  END OF RANDOM STARTS
 
 
@@ -2279,7 +2274,7 @@ if plots
 end
 
 
-%% Subfunctions
+%% _SUB-FUNCTIONS_
 
 % corfactorRAW function
     function rawcorfac = corfactorRAW(p,n,alpha)
