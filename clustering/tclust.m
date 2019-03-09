@@ -529,6 +529,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     % tclust in presence of structured noise.
     % The data have been generated using the following R instructions
     %    set.seed (0)
+    %    library(MASS)         
     %    v <- runif (100, -2 * pi, 2 * pi)
     %    noise <- cbind (100 + 25 * sin (v), 10 + 5 * v)
     %
