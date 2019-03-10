@@ -560,15 +560,80 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);
 %}
 
-%% Control variables, tolerances and internal flags
+%{
+    %% CWM, adaptive and fixed 2nd level trimming.
+    % Comparison among CWM, adaptive second level trimming and fixed second
+    % level trimming
+    close all
+    % Generate two groups and a set of concentrated outliers
+    rng(100)
+    p=1;
+    n1=90;
+    x1=(randn(n1,p)+2)*2.1-1;
+    y1=-1.2*x1*1+randn(n1,1)*0.6+2.1;
 
+    n2=90;
+    x2=(randn(n1,p)+4)*1.5-4;
+    y2=5+x2*0.7+randn(n2,p)*0.6;
+
+    n3=20;
+    x3=randn(n3,p)*0.1+12-4;
+    y3=randn(n3,p)*0.1+16-2;
+    %x3=0;
+    %y3=0;
+
+    X=[x1;x2;x3];
+    y=[y1;y2;y3];
+
+    n=n1+n2+n3;
+    group=[ones(n1,1); 2*ones(n2,1); 3*ones(n3,1)];
+    yXplot(y,X,group);
+    legend('Location','best')
+    % gscatter(X,y,group)
+    % Run the 3 models and compare the results 
+    k=2;
+    % Specify restriction factor for variance of residuals
+    restrfact=5;
+    % 10 per cent first level trimming.
+    alphaLik=0.1;
+    % number of subsamples to extract
+    nsamp=1000;
+    addnoisevariable = false;
+
+    if addnoisevariable ==true
+        X=[X randn(n,1)];
+    end
+
+    % In this case we use CWM model
+    alphaXcwm=1;
+    [outCWM]=tclustreg(y,X,k,restrfact,alphaLik,alphaXcwm,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('CWM model')
+
+    % In this case we use an adaptive second level of trimming.
+    alphaXada=0.95;
+    [outADA]=tclustreg(y,X,k,restrfact,alphaLik,alphaXada,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('Adaptive second level trimming')
+
+    % In this case we use a fixed level of trimming
+    alphaXfixed=0.02;
+    [out2LT]=tclustreg(y,X,k,restrfact,alphaLik,alphaXfixed,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('Fixed second level trimming')
+    disp('CWM model and adaptive second level trimming')
+    disp('can recover the real structure of the data') 
+%}
+
+%% Beginning of code
+% Control variables, tolerances and internal flags
 warning('off');
 
 % csteps_stop == 0 is to monitor the stability of the objective function
 % for a fixed number of loops (refsteps option). Otherwise, if it is set to
 % 1, the loop stops when the classification does not change in 2 consective
 % c-steps.
-csteps_stop = 0;
+% csteps_stop = 1;
 
 % obj_with_thinned == 1 is to use thinned units in the computation of
 % the objective function.
@@ -579,7 +644,7 @@ skipthin_th = 50;
 
 % current and best objective function values
 vopt = -1e+20;
-obj = vopt;
+% obj = vopt;
 
 % tolerance for restriction factor
 tolrestreigen = 1e-08;
@@ -855,7 +920,7 @@ wtrim      = options.wtrim;
 % be monothonic and a different strategy for choosing the best refining
 % step can be considered.
 
-zigzag = (alphaX > 0 || wtrim == 3 || wtrim == 2);
+zigzag = (alphaX > 0 && alphaX<1) || wtrim == 3 || wtrim == 2;
 
 % Mixt option: type of membership of the observations to the sub-populations
 % Control the mixture model to use (classification/mixture, likelihood or a
@@ -1058,6 +1123,22 @@ obj_all = NaN(nselected,refsteps);
 %indmax_all = NaN(n,refsteps,nselected);
 %beta_all   = NaN(k,refsteps,nselected);
 
+
+%% Find NParam penalty term to use inside AIC and BIC
+npar=p*k;
+
+if equalweights==false
+    npar=npar +(k-1);
+end
+
+% Add paramters referred to sigma2 restrictions
+nParam=npar+ (k-1)*(1-1/restrfact) +1;
+
+if cwm==1
+    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
+end
+
+
 %%  RANDOM STARTS
 
 for i =1:nselected
@@ -1074,6 +1155,7 @@ for i =1:nselected
             % monitor iteration step
             disp(['Iteration ' num2str(i)]);
     end
+    
     
     % ltkg = becomes 1 if a particular subset leads to less than k groups
     ltkg=0;
@@ -1210,7 +1292,7 @@ for i =1:nselected
     
     %%% -- Classification E-Step (before concentration steps):
     %%% -- -- Log-likelihood of all observations based on the estimated regression parameters
-
+    
     % equalweight: each group has the same weight, $1/k$.
     if equalweights == 1
         for jj = 1:k
@@ -1219,7 +1301,7 @@ for i =1:nselected
                 ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
             end
         end
-    % the group weights (niini) are estimated
+        % the group weights (niini) are estimated
     else
         for jj = 1:k
             ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
@@ -1262,7 +1344,10 @@ for i =1:nselected
     %% -- CONCENTRATION STEPS
     
     indold = zeros(n,1)-1;
-    for cstep = 1:refsteps
+    mudiff=1e+15;
+    cstep=0;
+    while mudiff > reftol && cstep <= refsteps
+        cstep = cstep + 1;
         
         %%% -- -- Observation weighting, according to wtrim option
         
@@ -1331,11 +1416,11 @@ for i =1:nselected
                 % find indices of units in group jj
                 for jj=1:k
                     %The first concentration step uses idx which takes
-                    %values in {1, ... , k}. 
+                    %values in {1, ... , k}.
                     %The following concentration steps, where idx takes
                     %values in {1, ... , k, 0, -1 , -2}, use idx_ne0 which
                     %takes values  {1, ... , k, -1 , -2}
-
+                    
                     if cstep == 1
                         ijj = idx==jj;
                     else
@@ -1367,465 +1452,462 @@ for i =1:nselected
                 w4trim = Wt4;
         end
         
-        % Mean of the weights must be 1. 
+        % Mean of the weights must be 1.
         mean_w4trim = mean(w4trim);
         w4trim      = w4trim/mean(w4trim);
         
         if sum(isnan(Beta(:)))>0
-            %%% -- -- _Stop if one of the current beta parameters is undefined, and go to another subset_  
+            %%% -- -- _Stop if one of the current beta parameters is undefined, and go to another subset_
             break
-        else
-            %% -- -- Classification E-Step (inside concentration steps) 
-            
-            %%% -- -- -- Log-likelihood of all observations based on the estimated regression parameters
-
-            % equalweight: each group has the same weight, 1/k.
-            if equalweights == 1
-                for jj = 1:k
-                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
-                    if cwm==1
-                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
-                    end
-                end
-            % the group weights (niini) are estimated
-            else
-                for jj = 1:k
-                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
-                    if cwm==1
-                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
-                    end
-                end
-            end
-            
-            %%% -- -- -- Posterior probabilities of all observations
-    
-            % Mixture likelihood model
-            if mixt == 2
-                %E-step is run to compute the posterior probabilities of all
-                %observations 
-                [~,postprob,disc] = estepFS(ll);
-                % idx: (nx1) vector indicating the group for which each observation
-                % has the largest posterior probability. It takes values in  {1,
-                % ... , k}; at the end of the algorithm it will take values in {1,
-                % ... , k,0, -1 , -2}, respectively for group assignement, thinned
-                % units, first and second trimmed units. 
-                [~,idx]= max(postprob,[],2);
+        end
         
-            %classification likelihood model
-            else
-                
-                % idx: (nx1) vector indicating the group for which each
-                % observation has the largest log-likelihood as in point
-                % 2.1 of appendix of Garcia Escudero et al. It takes values
-                % in  {1, ... , k}; at the end of the algorithm it will
-                % take values in {1, ... , k,0, -1 , -2}, respectively for
-                % group assignement, thinned units, first and second
-                % trimmed units.
-                [disc,idx] = max(ll,[],2);
-                
-                postprob=zeronk;
-                for j=1:k
-                    postprob(idx==j,j)=1;
+        %% -- -- Classification E-Step (inside concentration steps)
+        
+        %%% -- -- -- Log-likelihood of all observations based on the estimated regression parameters
+        
+        % equalweight: each group has the same weight, 1/k.
+        if equalweights == 1
+            for jj = 1:k
+                ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                if cwm==1
+                    ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
                 end
             end
-            
-            % Assign infinite weights to thinned units so that they can
-            % never be trimmed
-            disc(w4trim==0)=1e+20;
-            
-            % Sort the n likelihood contributions and save them in qq
-            [~,qq] = sort(disc,'ascend');
-            
-            % remember to which group the thinned units belong.
-            if wtrim == 3
-                % idx_ne0, computed only for wtrim = 3, is a (nx1) vector of
-                % cluster assignements, taking values in  {1, ... , k}; at the
-                % end it will take values in {1, ... , k,  -1 , -2}.
-                
-                % idx is a (nx1) vector of cluster assignements, taking values
-                % in  {1, ... , k, 0}; at the end it will take values in {1,
-                % ... , k, 0, -1 , -2}.
-                % idx could be always obtained as idx=idx_ne0.*w4trim
-                
-                idx_ne0=idx;
-                idx(w4trim==0)=0;
+            % the group weights (niini) are estimated
+        else
+            for jj = 1:k
+                ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                if cwm==1
+                    ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                end
             end
+        end
+        
+        %%% -- -- -- Posterior probabilities of all observations
+        
+        % Mixture likelihood model
+        if mixt == 2
+            % Store previously computed posterior probabilities
+            postprobold=postprob;
             
+            %E-step is run to compute the posterior probabilities of all
+            %observations
+            [~,postprob,disc] = estepFS(ll);
+            % idx: (nx1) vector indicating the group for which each observation
+            % has the largest posterior probability. It takes values in  {1,
+            % ... , k}; at the end of the algorithm it will take values in {1,
+            % ... , k,0, -1 , -2}, respectively for group assignement, thinned
+            % units, first and second trimmed units.
+            [~,idx]= max(postprob,[],2);
             
-            %% -- -- First level trimming 
+            %classification likelihood model
+        else
             
-            % Order the weights according to qq
-            w4trimordered=w4trim(qq);
+            % idx: (nx1) vector indicating the group for which each
+            % observation has the largest log-likelihood as in point
+            % 2.1 of appendix of Garcia Escudero et al. It takes values
+            % in  {1, ... , k}; at the end of the algorithm it will
+            % take values in {1, ... , k,0, -1 , -2}, respectively for
+            % group assignement, thinned units, first and second
+            % trimmed units.
+            [disc,idx] = max(ll,[],2);
             
-            % Find cumlative sum of weights
-            cumsumww = cumsum(w4trimordered);
-            
-            % qqunassigned_small = a n-by-1 Boolean vector 
-            % containing true for the units which
-            % have to be trimmed)
-            qqunassigned_small = cumsumww <= n*alphaLik;
-            
-            % qqunassigned = indexes of units subject to first
-            % level trimming
-            qqunassigned = qq(qqunassigned_small);
-            
-            %indmax_before_tr should be saved in order to be able
-            %to understand which groups the two trimmings affect more
-            %indmax_before_tr = idxtt; TO DELETE
-            
-            
-            % idx takes values in {1, ... , k, 0,  -1}. At the end it will
-            % takes values in {1, ... , k, 0,  -1, -2}.
-            idx(qqunassigned)=-1;
-            if wtrim==3
-                % idx_ne0 takes values in {1, ... , k,  -1}. At the end it
-                % will takes values in {1, ... , k,  -1, -2}.
-                idx_ne0(qqunassigned)=-1;
+            postprob=zeronk;
+            for j=1:k
+                postprob(idx==j,j)=1;
             end
-            % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
-            % are the posterior probabilities referring to not trimmed
-            % units and 0 to trimmed units.
-            postprob(qqunassigned,:)=0;
+        end
+        
+        % Assign infinite weights to thinned units so that they can
+        % never be trimmed
+        disc(w4trim==0)=1e+20;
+        
+        % Sort the n likelihood contributions and save them in qq
+        [~,qq] = sort(disc,'ascend');
+        
+        % remember to which group the thinned units belong.
+        if wtrim == 3
+            % idx_ne0, computed only for wtrim = 3, is a (nx1) vector of
+            % cluster assignements, taking values in  {1, ... , k}; at the
+            % end it will take values in {1, ... , k,  -1 , -2}.
+            
+            % idx is a (nx1) vector of cluster assignements, taking values
+            % in  {1, ... , k, 0}; at the end it will take values in {1,
+            % ... , k, 0, -1 , -2}.
+            % idx could be always obtained as idx=idx_ne0.*w4trim
+            
+            idx_ne0=idx;
+            idx(w4trim==0)=0;
+        end
+        
+        
+        %% -- -- First level trimming
+        
+        % Order the weights according to qq
+        w4trimordered=w4trim(qq);
+        
+        % Find cumlative sum of weights
+        cumsumww = cumsum(w4trimordered);
+        
+        % qqunassigned_small = a n-by-1 Boolean vector
+        % containing true for the units which
+        % have to be trimmed)
+        qqunassigned_small = cumsumww <= n*alphaLik;
+        
+        % qqunassigned = indexes of units subject to first
+        % level trimming
+        qqunassigned = qq(qqunassigned_small);
+        
+        %indmax_before_tr should be saved in order to be able
+        %to understand which groups the two trimmings affect more
+        %indmax_before_tr = idxtt; TO DELETE
+        
+        
+        % idx takes values in {1, ... , k, 0,  -1}. At the end it will
+        % takes values in {1, ... , k, 0,  -1, -2}.
+        idx(qqunassigned)=-1;
+        if wtrim==3
+            % idx_ne0 takes values in {1, ... , k,  -1}. At the end it
+            % will takes values in {1, ... , k,  -1, -2}.
+            idx_ne0(qqunassigned)=-1;
+        end
+        % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
+        % are the posterior probabilities referring to not trimmed
+        % units and 0 to trimmed units.
+        postprob(qqunassigned,:)=0;
+        
+        % Z = vector nxk taking values in {[0 1], 0}: (0 1] are the
+        % posterior probabilities referring to not trimmed and not
+        % thinned units, 0 to trimmed or thinned units.
+        Z=bsxfun(@times,postprob,w4trim);
+        
+        %% -- -- Second level of trimming or CWM
+        
+        % FS or MCD are used to find units to trim
+        
+        %alphaX < 1: is the the fixed (<0.5) or adaptive (>0.5)
+        %proportion of units to trim
+        if alphaX<1
+            for jj=1:k
+                % groupjind = indices of units belonging to group j
+                groupjind = find(idx==jj);
+                %Xjnointercept = X of units belonging to group j
+                Xjnointercept  = X(groupjind,intercept+1:end);
+                %Xjnointercept = X and possible intercept of units belonging to group j
+                Xj=X(groupjind,:);
+                %number of units in group j
+                njj=size(Xj,1);
+                
+                % hj = number of units to retain for group j after
+                % second trimming level.
+                if alphaX>0.5
+                    %For adaptive trimming hj is the number of units in group j
+                    hj=njj;
+                else
+                    %For (traditional) fixed trimming hj is the number of
+                    %units in group j - trimmed units
+                    hj = floor(njj*(1-alphaX));
+                end
+                
+                %check number of units in absolute terms: (1) the size
+                %of group after second level trimming is not smaller
+                %than p and (2) the size of a group before second level
+                %trimming is at least greater than p+2 (necessary to
+                %run the FS)
+                if hj >=p && njj>p+2
+                    
+                    % check number of units in relation to the number
+                    % of variables
+                    if njj/(p-intercept)>10 && alphaX>0
+                        
+                        %The MCD is applied only when p=1, because in
+                        %this case it is faster than the FS.
+                        if p-intercept==1
+                            
+                            %R2016a has introduced robustcov, which could be used here as below.
+                            %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
+                            %{
+                                [~,~,mah,~,~] = robustcov(Xjnointercept,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
+                                plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
+                                close;
+                            %}
+                            
+                            if alphaX>0.5
+                                %In adaptive second trimming step, units
+                                %outside the confidence bands are trimmed.
+                                [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alphaX)/njj,'betathresh',1);
+                                if isfield(REW,'outliers')
+                                    trimj=REW.outliers;
+                                else
+                                    trimj = [];
+                                end
+                                
+                            else
+                                %In traditional fixed second trimming step,
+                                %units with the largest njj-hj residuals
+                                %are trimmed.
+                                [~,REW]      = mcd(Xjnointercept,'msg',0,'betathresh',1);
+                                
+                                if isfield(REW,'md')
+                                    [~,indmdsor] = sort(REW.md);
+                                    trimj=indmdsor(hj+1:end);
+                                else
+                                    trimj = [];
+                                end
+                            end
+                        else
+                            % With multiple explanatory variables, the
+                            % Forward Search is faster than MCD.
+                            
+                            if alphaX>0.5
+                                %In adaptive second trimming step, units
+                                %outside the confidence bands are trimmed.
+                                outj=FSM(Xjnointercept,'nocheck',1,'init',round(njj*0.9),'msg',0,'bonflev',alphaX,'plots',0);
+                                
+                                trimj=outj.outliers;
+                                if isnan(trimj)
+                                    trimj=[];
+                                end
+                            else
+                                %In traditional fixed second trimming step,
+                                %units with the largest njj-hj residuals
+                                %are trimmed.
+                                [~,BBsel]=FSMbsb(Xjnointercept,0,'bsbsteps',hj,'init',hj,'nocheck',1,'msg',0);
+                                seqj=1:njj;
+                                % BBsel contains a NAN for the units
+                                % not belonging to subset in step hj
+                                trimj=seqj(isnan(BBsel));
+                            end
+                        end
+                    else
+                        trimj=[];
+                    end
+                    
+                    % idx takes values in {1, ... , k, 0,  -1,-2}.
+                    idx(groupjind(trimj))=-2;
+                    if wtrim==3
+                        % idx_ne0 takes values in {1, ... , k, -1,-2}.
+                        idx_ne0(groupjind(trimj))=-2;
+                    end
+                else
+                    %%% -- -- _Stop if we end up with less than k groups, and go to another subset_
+                    ltkg = 1;
+                    break
+                end
+            end
             
             % Z = vector nxk taking values in {[0 1], 0}: (0 1] are the
             % posterior probabilities referring to not trimmed and not
             % thinned units, 0 to trimmed or thinned units.
-            Z=bsxfun(@times,postprob,w4trim);
+            Z(idx==-2,:)=0;
             
-            %% -- -- Second level of trimming or CWM 
+            % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
+            % are the posterior probabilities referring to not trimmed
+            % units and 0 to trimmed units.
+            postprob(idx==-2,:)=0;
+        end
+        
+        %%% -- -- _Stop if we end up with less than k groups, and go to another subset_
+        if ltkg==1
+            Beta=NaN;
+            break
+        end
+        
+        %% -- -- M-Step: find beta coefficients and sigma2 using weighted regression
+        for jj=1:k
             
-            % FS or MCD are used to find units to trim
+            %sqweights = weights (for beta estimation) of observations
+            %belonging to group jj. Note that the weights of the
+            %trimmed and thinned units are 0, while the weights of the
+            %other observations are the sqrt of the posterior
+            %probabilities.
+            sqweights = sqrt(Z(:,jj));
+            % nj = sum of the weights (posterior probabilities of not
+            % trimmed and not thinned observations) for group jj.
+            nj=sum(Z(:,jj));
+            % ninini = kx1 vector containing the sum of the weights for each group
+            niini(jj)=nj;
             
-            %alphaX < 1: is the the fixed (<0.5) or adaptive (>0.5)
-            %proportion of units to trim
-            if alphaX<1
-                for jj=1:k
-                    % groupjind = indices of units belonging to group j
-                    groupjind = find(idx==jj);
-                    %Xjnointercept = X of units belonging to group j
-                    Xjnointercept  = X(groupjind,intercept+1:end);
-                    %Xjnointercept = X and possible intercept of units belonging to group j
-                    Xj=X(groupjind,:);
-                    %number of units in group j
-                    njj=size(Xj,1);
-                    
-                    % hj = number of units to retain for group j after
-                    % second trimming level.  
-                    if alphaX>0.5
-                        %For adaptive trimming hj is the number of units in group j
-                        hj=njj;
-                    else
-                        %For (traditional) fixed trimming hj is the number of
-                        %units in group j - trimmed units
-                        hj = floor(njj*(1-alphaX));
-                    end
-                    
-                    %check number of units in absolute terms: (1) the size
-                    %of group after second level trimming is not smaller
-                    %than p and (2) the size of a group before second level
-                    %trimming is at least greater than p+2 (necessary to
-                    %run the FS)
-                    if hj >=p && njj>p+2
-                       
-                        % check number of units in relation to the number
-                        % of variables
-                        if njj/(p-intercept)>10 && alphaX>0
-                            
-                            %The MCD is applied only when p=1, because in
-                            %this case it is faster than the FS.
-                            if p-intercept==1
-                                
-                                %R2016a has introduced robustcov, which could be used here as below.
-                                %Remember however that mcd returns the squared distances, i.e. RAW.md = mah.^2.
-                                %{
-                                [~,~,mah,~,~] = robustcov(Xjnointercept,'Method','fmcd','NumTrials',nsampmcd,'OutlierFraction',alpha2b,'BiasCorrection',1); %
-                                plot(1:ni(jk),mah.^2,'-r',1:ni(jk),RAW.md,'-b');
-                                close;
-                                %}
-                                
-                                if alphaX>0.5
-                                    %In adaptive second trimming step, units
-                                    %outside the confidence bands are trimmed.
-                                    [~,REW]      = mcd(Xjnointercept,'msg',0,'conflev',1-(1-alphaX)/njj,'betathresh',1);
-                                    if isfield(REW,'outliers')
-                                        trimj=REW.outliers;
-                                    else
-                                        trimj = [];
-                                    end
-
-                                else
-                                    %In traditional fixed second trimming step,
-                                    %units with the largest njj-hj residuals
-                                    %are trimmed.
-                                    [~,REW]      = mcd(Xjnointercept,'msg',0,'betathresh',1);
-                                    
-                                    if isfield(REW,'md')
-                                        [~,indmdsor] = sort(REW.md);
-                                        trimj=indmdsor(hj+1:end);
-                                    else
-                                        trimj = [];
-                                    end
-                                end
-                            else
-                                % With multiple explanatory variables, the
-                                % Forward Search is faster than MCD.
-                                
-                                if alphaX>0.5
-                                %In adaptive second trimming step, units
-                                %outside the confidence bands are trimmed.
-                                    outj=FSM(Xjnointercept,'nocheck',1,'init',round(njj*0.9),'msg',0,'bonflev',alphaX,'plots',0);
-                                    
-                                    trimj=outj.outliers;
-                                    if isnan(trimj)
-                                        trimj=[];
-                                    end
-                                else
-                                %In traditional fixed second trimming step,
-                                %units with the largest njj-hj residuals
-                                %are trimmed.    
-                                    [~,BBsel]=FSMbsb(Xjnointercept,0,'bsbsteps',hj,'init',hj,'nocheck',1,'msg',0);
-                                    seqj=1:njj;
-                                    % BBsel contains a NAN for the units
-                                    % not belonging to subset in step hj
-                                    trimj=seqj(isnan(BBsel));
-                                end
-                            end
-                        else
-                            trimj=[];
-                        end
-                        
-                        % idx takes values in {1, ... , k, 0,  -1,-2}.
-                        idx(groupjind(trimj))=-2;
-                        if wtrim==3
-                            % idx_ne0 takes values in {1, ... , k, -1,-2}.
-                            idx_ne0(groupjind(trimj))=-2;
-                        end
-                    else
-                        %%% -- -- _Stop if we end up with less than k groups, and go to another subset_ 
-                        ltkg = 1;
-                        break
-                    end
-                end
-                
-                % Z = vector nxk taking values in {[0 1], 0}: (0 1] are the
-                % posterior probabilities referring to not trimmed and not
-                % thinned units, 0 to trimmed or thinned units.
-                Z(idx==-2,:)=0;
-
-                % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
-                % are the posterior probabilities referring to not trimmed
-                % units and 0 to trimmed units.
-                postprob(idx==-2,:)=0;
-            end
-            
-            %%% -- -- _Stop if we end up with less than k groups, and go to another subset_ 
-            if ltkg==1
-                Beta=NaN;
-                break
-            end
-            
-            %% -- -- M-Step: find beta coefficients and sigma2 using weighted regression
-            for jj=1:k
-                
-                %sqweights = weights (for beta estimation) of observations
-                %belonging to group jj. Note that the weights of the
-                %trimmed and thinned units are 0, while the weights of the
-                %other observations are the sqrt of the posterior
-                %probabilities.
-                sqweights = sqrt(Z(:,jj));
-                % nj = sum of the weights (posterior probabilities of not
-                % trimmed and not thinned observations) for group jj. 
-                nj=sum(Z(:,jj));
-                % ninini = kx1 vector containing the sum of the weights for each group
-                niini(jj)=nj;
-                
-                %check if current groups is large enought to do estimation
-                if nj>p+1
+            %check if current groups is large enought to do estimation
+            if nj>p+1
                 %multiple X and y for the observations weights (posterior
                 %probabilities of not trimmed and not thinned observations)
-                    Xw = bsxfun(@times, X, sqweights);
-                    yw = y .* sqweights;
-                    
-                    % breg = estimate of beta of group jj from (re)weighted regression
-                    % (RWLS)  
-                    breg = Xw\yw;
-                    % Beta = estimate of beta of all group from (re)weighted regression
-                    % (RWLS).
-                    Beta(:,jj)=breg;
-                    
-                    % sigma2 = estimate of sigma2 of group jj after
-                    % weighted regression.
-                    res2=(yw-Xw*breg).^2;
-                    sigma2=sum(res2)/nj;
-                    
-                    % sigma2ini = estimate of sigma2 of all group from
-                    % (re)weighted regression (RWLS).
-                    sigma2ini(jj) = sigma2;
-                    
-                    %CWM
-                    if cwm ==1
-                        %muX = estimate of centroids of X
-                        muX(jj,:)=sum(bsxfun(@times, X(:,intercept+1:end), Z(:,jj)),1)/sum(Z(:,jj))';
-                        %sigmaX = estimate of sigma of X
-                        sigmaX(:,:,jj)= (Xw(:,intercept+1:end)'*Xw(:,intercept+1:end))/sum(Z(:,jj))-muX(jj,:)'*(muX(jj,:));
-                    end
-                else
-                    %%% -- -- _Stop if we end up with less than k groups_
-                    ltkg=1;
-                    break
+                Xw = bsxfun(@times, X, sqweights);
+                yw = y .* sqweights;
+                
+                % breg = estimate of beta of group jj from (re)weighted regression
+                % (RWLS)
+                breg = Xw\yw;
+                % Beta = estimate of beta of all group from (re)weighted regression
+                % (RWLS).
+                Beta(:,jj)=breg;
+                
+                % sigma2 = estimate of sigma2 of group jj after
+                % weighted regression.
+                res2=(yw-Xw*breg).^2;
+                sigma2=sum(res2)/nj;
+                
+                % sigma2ini = estimate of sigma2 of all group from
+                % (re)weighted regression (RWLS).
+                sigma2ini(jj) = sigma2;
+                
+                %CWM
+                if cwm ==1
+                    %muX = estimate of centroids of X
+                    muX(jj,:)=sum(bsxfun(@times, X(:,intercept+1:end), Z(:,jj)),1)/sum(Z(:,jj))';
+                    %sigmaX = estimate of sigma of X
+                    sigmaX(:,:,jj)= (Xw(:,intercept+1:end)'*Xw(:,intercept+1:end))/sum(Z(:,jj))-muX(jj,:)'*(muX(jj,:));
                 end
-            end % loop on groups
-            
-            %%% -- -- _Stop if we end up with less than k groups_
-            if ltkg==1
-                Beta=NaN;
+            else
+                %%% -- -- _Stop if we end up with less than k groups_
+                ltkg=1;
                 break
             end
+        end % loop on groups
+        
+        %%% -- -- _Stop if we end up with less than k groups_
+        if ltkg==1
+            Beta=NaN;
+            break
+        end
+        
+        %%% -- -- Application of the eigenvector-eigenvalue restriction
+        
+        % CWM
+        if cwm==1
+            for j=1:k
+                % Eigenvalue eigenvector decomposition for group j
+                [Uj,Lambdaj] = eig(sigmaX(:,:,j));
+                % Store eigenvectors and eigenvalues of group j
+                U(:,:,j)=Uj;
+                Lambda_pk(:,j)=diag(Lambdaj);
+            end
+        end
+        
+        % equalweights =1: equal proportions are supplied for group sizes
+        if equalweights==1
+            sigma2ini= restreigen(sigma2ini,ones(k,1),restrfact,tolrestreigen,userepmat);
             
-            %%% -- -- Application of the eigenvector-eigenvalue restriction
-            
-            % CWM 
             if cwm==1
-                for j=1:k
-                    % Eigenvalue eigenvector decomposition for group j
-                    [Uj,Lambdaj] = eig(sigmaX(:,:,j));
-                    % Store eigenvectors and eigenvalues of group j
-                    U(:,:,j)=Uj;
-                    Lambda_pk(:,j)=diag(Lambdaj);
-                end
+                autovalues= restreigen(Lambda_pk,ones(k,1),restrfactX,tolrestreigen,userepmat);
             end
-            
-            % equalweights =1: equal proportions are supplied for group sizes
-            if equalweights==1
-                sigma2ini= restreigen(sigma2ini,ones(k,1),restrfact,tolrestreigen,userepmat);
-                
-                if cwm==1
-                    autovalues= restreigen(Lambda_pk,ones(k,1),restrfactX,tolrestreigen,userepmat);
-                end
-            % equalweights = 0: proportions are set equal to the group sizes          
-            else
-                sigma2ini= restreigen(sigma2ini,niini,restrfact,tolrestreigen,userepmat);
-                if cwm==1
-                    autovalues= restreigen(Lambda_pk,niini,restrfactX,tolrestreigen,userepmat);
-                end
-                
-            end
-            
-            % CWM
+            % equalweights = 0: proportions are set equal to the group sizes
+        else
+            sigma2ini= restreigen(sigma2ini,niini,restrfact,tolrestreigen,userepmat);
             if cwm==1
-                % Covariance matrices are reconstructed keeping into account the
-                % constraints on the eigenvalues
-                for j=1:k
-                    sigmaX(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                    
-                    % Alternative code: in principle more efficient but slower
-                    % because diag is a built in function
-                    % sigmaX(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-                end
+                autovalues= restreigen(Lambda_pk,niini,restrfactX,tolrestreigen,userepmat);
             end
             
-            %%% -- -- *Stop* if two consecutive concentration steps have the same result
-            if csteps_stop ==1
-                if idx == indold
-                    break
-                else
-                    indold = idx;
-                end
-            end
-            
-            %% -- -- Computation of the value of the target function (Decide if thinned units have to enter or not in the obj)
-            obj = 0;
-            
-            %identify possible empty groups
-            not_empty_g = seqk(~( niini <= p + 1 ));
-            
-            %%% -- -- -- Classification likelihood
-            if mixt == 0
+        end
+        
+        % CWM
+        if cwm==1
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the eigenvalues
+            for j=1:k
+                sigmaX(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
                 
-                %loop on not-empty groups
-                for jj = not_empty_g
-                    
-                    % penalized term (to be corrected)
-                    ptermAIC = 2*p/mean_w4trim;
-                    
-                    % equalweights =1: equal proportions are supplied for group sizes
-                    if equalweights ==1
-                        %the next if-then-else statement is an experiment to
-                        %decide if the thinned units must be considered or
-                        %not in the obj function. The same if-then-else is
-                        %not present for equalweights == 0                 
-                        if wtrim==3 && obj_with_thinned ==1
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaX(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
+        end
+        
+        
+        %% -- -- Computation of the value of the target function (Decide if thinned units have to enter or not in the obj)
+        obj = 0;
+        
+        %identify possible empty groups
+        not_empty_g = seqk(~( niini <= p + 1 ));
+        
+        %%% -- -- -- Classification likelihood
+        if mixt == 0
+            
+            %loop on not-empty groups
+            for jj = not_empty_g
+                
+                
+                % equalweights =1: equal proportions are supplied for group sizes
+                if equalweights ==1
+                    %the next if-then-else statement is an experiment to
+                    %decide if the thinned units must be considered or
+                    %not in the obj function. The same if-then-else is
+                    %not present for equalweights == 0
+                    if wtrim==3 && obj_with_thinned ==1
                         %In case of bernoulli thinning, if the flag
                         %obj_with_thinned == 1, the objective function
                         %is computed excluding only trimmed units, by using
                         %matrix postprob.
-
-                            obj = obj + log(1/k) +...
-                                sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj)) ;
-                            
-                        else
+                        
+                        obj = obj + log(1/k) +...
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj)) ;
+                        
+                    else
                         %In all the othe cases (no weights, user weights,
                         %thinning with probabilities, bernoulli thinning if
                         %the flag obj_with_thinned == 0), the objective function
                         %is computed excluding both thinned and trimmed
                         %units, by using matrix Z.
-                            obj = obj + log(1/k) +...
-                                sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;
-                        end
-                    
-                    
-                    % equalweights = 0: proportions are set equal to the group sizes. 
-                    else
-                        %the objective function is computed excluding both
-                        %thinned and trimmed (matrix Z)
-                        obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                        obj = obj + log(1/k) +...
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;
                     end
                     
-                    %CWM
-                    if cwm==1
-                        %the objective function is computed excluding both
-                        %thinned and trimmed (matrix Z)
-                        obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj)).*Z(:,jj));
-                    end
                     
+                    % equalweights = 0: proportions are set equal to the group sizes.
+                else
+                    %the objective function is computed excluding both
+                    %thinned and trimmed (matrix Z)
+                    obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
+                        sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
                 end
-                %Penalization of objective function
-                obj = 2*obj - ptermAIC;
                 
+                %CWM
+                if cwm==1
+                    %the objective function is computed excluding both
+                    %thinned and trimmed (matrix Z)
+                    obj=obj+sum(logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj)).*Z(:,jj));
+                end
+                
+            end
+            
             %%% -- -- -- Mixture likelihood (check penalization)
-            else
-
-                %initialization of log-likelihood
-                log_lh=NaN(n,size(not_empty_g,2));
-                
-                for jj = 1:k
-                    % equalweights =1: proportions are set equal to the
-                    % group sizes.
-                    if equalweights ==1
-                        log_lh(:,jj) = ...
-                            log(1/k) + (logmvnpdfFS(y -X * Beta(:,jj),0,sigma2ini(jj) ) );
+        else
+            
+            %initialization of log-likelihood
+            log_lh=NaN(n,size(not_empty_g,2));
+            
+            for jj = 1:k
+                % equalweights =1: proportions are set equal to the
+                % group sizes.
+                if equalweights ==1
+                    log_lh(:,jj) = ...
+                        log(1/k) + (logmvnpdfFS(y -X * Beta(:,jj),0,sigma2ini(jj) ) );
                     
                     % equalweights = 0: equal proportions are supplied for
                     % group sizes.
-                    else
-                        log_lh(:,jj) = ...
-                            log(niini(jj)/sum(niini)) + (logmvnpdfFS(...
-                            y - X*Beta(:,jj),0,sigma2ini(jj) ) );
-                    end
-                    %CWM
-                    if cwm==1
-                        log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
-                    end
+                else
+                    log_lh(:,jj) = ...
+                        log(niini(jj)/sum(niini)) + (logmvnpdfFS(...
+                        y - X*Beta(:,jj),0,sigma2ini(jj) ) );
                 end
-                
-                %the objective function is computed excluding both thinned
-                %and trimmed.
-                log_lh(idx<=0,:)=[];
-                obj = estepFS(log_lh);
+                %CWM
+                if cwm==1
+                    log_lh(:,jj)=log_lh(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                end
             end
             
+            %the objective function is computed excluding both thinned
+            %and trimmed.
+            log_lh(idx<=0,:)=[];
+            obj = estepFS(log_lh);
         end
+        
+        % penalized term (to be corrected)
+        ptermAIC = 2*nParam/mean_w4trim;
+        %Penalization of objective function
+        % obj = 2*obj - ptermAIC;
+        
+        
         %obj_all = (nselected x refsteps) vector containing the obj values
         %of all subsets and all concentration steps.
         obj_all(i,cstep) = obj;
@@ -1833,14 +1915,25 @@ for i =1:nselected
         
         %%% -- -- Update the 'optimal' target value and parameters
         
+        if mixt>0
+            % if mixt >0 stopping criterion is referred to postprob
+            mudiff=sum(sum(abs(postprob-postprobold)))/n;
+            % disp(mudiff)
+        else
+            % if mixt=0 stopping criterion is referred to no modiification in the classification
+            mudiff=sum(abs(indold-idx)>0)/n;
+            % disp(mudiff)
+        end
+        
+        
         % This is done every step if the function is non-monotonic (i.e.
         % when second-level triming and/or thinning are applied);
         % otherwise, this is done once at the final step.
-
-        if zigzag == 1 || (zigzag == 0  && cstep == refsteps)
+        
+        if zigzag == 1 || mudiff<reftol || (zigzag == 0  && cstep == refsteps)
             
-        % obj >= vopt: to check an increase in the target value.
-            if obj >= vopt && sum(sum(isnan(Beta))) ==0
+            % obj >= vopt: to check an increase in the target value.
+            if obj >= vopt && sum(isnan(Beta(:))) ==0
                 if msg
                     disp(['sample = ' num2str(i) ', concentration step = ' num2str(cstep)])
                 end
@@ -1880,11 +1973,13 @@ for i =1:nselected
                     sigmaXopt = sigmaX;
                 end
             end
-        end
+        end % End of zigzag if
         
-    end
+        
+        
+    end % Loop on the concentration steps
     
-    %% -- END OF CONCENTRATION STEPS       
+    %% -- END OF CONCENTRATION STEPS
     
     % monitor time execution
     if msg==1
@@ -1935,7 +2030,7 @@ out.sigma2opt_corr      = sigma2opt_corr;
 
 %CWM
 if cwm==1
-    %out.muXopt= k-by-p matrix containing cluster centroid locations. 
+    %out.muXopt= k-by-p matrix containing cluster centroid locations.
     out.muXopt=muXopt';
     %out.sigmaXopt= p-by-p-by-k array containing estimated constrained
     %covariance covariance matrices of the explanatory variables for the k
@@ -2018,19 +2113,6 @@ loglik= max(ll,[],2);
 % -vopt
 NlogL =-sum(loglik);
 
-
-npar=p*k;
-
-if equalweights==false
-    npar=npar +(k-1);
-end
-
-% Add paramters referred to sigma2 restrictions
-nParam=npar+ (k-1)*(1-1/restrfact) +1;
-
-if cwm==1
-    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
-end
 
 logh=log(h);
 

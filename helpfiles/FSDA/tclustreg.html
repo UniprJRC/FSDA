@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustreg</title><meta content="refpage" name="chunktype"><meta content="function:tclustreg" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustreg performs robust linear grouping analysis." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustreg</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclustreg of 'X data'.</a></li><li><a class="intrnllnk" href="#Example_2">tclustreg of fishery data 1.</a></li><li><a class="intrnllnk" href="#Example_3">tclustreg of fishery data 2.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">tclustreg of simulated data 1.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">tclustreg of simulated data 2.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of nsamp passed as a matrix.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_restrfact">restrfact</a></li><li><a class="intrnllnk" href="#input_argument_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_alphaX">alphaX</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_wtrim">wtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustreg</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustreg performs robust linear grouping analysis</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustreg(y,X,k,restrfact,alphaLik,alphaX)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustreg(y,X,k,restrfact,alphaLik,alphaX,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_2">example</a></span></li><li><code class="synopsis">[out, varargout]=tclustreg(___)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustreg(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>)</code></span>tclustreg of 'X data'.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustreg(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>tclustreg of fishery data 1.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tclustreg(___)</code></span>tclustreg of fishery data 2.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustreg of 'X data'.</li></span></a></span></h3><div class="collapse"><p>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustreg</title><meta content="refpage" name="chunktype"><meta content="function:tclustreg" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustreg performs robust linear grouping analysis." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustreg</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclustreg of 'X data'.</a></li><li><a class="intrnllnk" href="#Example_2">tclustreg of fishery data 1.</a></li><li><a class="intrnllnk" href="#Example_3">tclustreg of fishery data 2.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">tclustreg of simulated data 1.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">tclustreg of simulated data 2.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of nsamp passed as a matrix.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">CWM, adaptive and fixed 2nd level trimming.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_restrfact">restrfact</a></li><li><a class="intrnllnk" href="#input_argument_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_alphaX">alphaX</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_wtrim">wtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustreg</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustreg performs robust linear grouping analysis</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustreg(y,X,k,restrfact,alphaLik,alphaX)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustreg(y,X,k,restrfact,alphaLik,alphaX,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_2">example</a></span></li><li><code class="synopsis">[out, varargout]=tclustreg(___)</code><span class="syntax_example"><a class="intrnllnk" href="tclustreg.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustreg(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>)</code></span>tclustreg of 'X data'.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustreg(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>tclustreg of fishery data 1.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustreg.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tclustreg(___)</code></span>tclustreg of fishery data 2.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustreg of 'X data'.</li></span></a></span></h3><div class="collapse"><p>
      The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
@@ -26,42 +26,28 @@ sample = 1, concentration step = 7
 sample = 1, concentration step = 8
 sample = 1, concentration step = 9
 sample = 1, concentration step = 10
-sample = 2, concentration step = 2
-sample = 2, concentration step = 3
-sample = 2, concentration step = 4
-sample = 2, concentration step = 5
-sample = 2, concentration step = 6
-sample = 2, concentration step = 7
-sample = 2, concentration step = 8
-sample = 2, concentration step = 9
-sample = 2, concentration step = 10
-sample = 3, concentration step = 4
-sample = 3, concentration step = 5
-sample = 3, concentration step = 6
-sample = 3, concentration step = 7
-sample = 3, concentration step = 8
-sample = 3, concentration step = 9
-sample = 3, concentration step = 10
-sample = 4, concentration step = 5
-sample = 4, concentration step = 6
-sample = 4, concentration step = 7
-sample = 4, concentration step = 8
-sample = 4, concentration step = 9
-sample = 4, concentration step = 10
-sample = 6, concentration step = 10
-sample = 9, concentration step = 10
-sample = 13, concentration step = 5
-sample = 32, concentration step = 6
-sample = 42, concentration step = 5
-Total estimated time to complete tclustreg:  6.03 seconds 
-sample = 87, concentration step = 10
-sample = 131, concentration step = 8
-sample = 138, concentration step = 5
-sample = 180, concentration step = 7
-sample = 183, concentration step = 9
-sample = 221, concentration step = 8
-sample = 254, concentration step = 10
-sample = 264, concentration step = 9
+sample = 1, concentration step = 11
+sample = 5, concentration step = 5
+sample = 5, concentration step = 6
+sample = 5, concentration step = 7
+sample = 5, concentration step = 8
+sample = 5, concentration step = 9
+sample = 5, concentration step = 10
+sample = 5, concentration step = 11
+sample = 14, concentration step = 6
+sample = 14, concentration step = 7
+Total estimated time to complete tclustreg:  5.66 seconds 
+sample = 59, concentration step = 6
+sample = 124, concentration step = 8
+sample = 146, concentration step = 5
+sample = 164, concentration step = 9
+sample = 172, concentration step = 9
+sample = 181, concentration step = 8
+sample = 189, concentration step = 4
+sample = 192, concentration step = 4
+sample = 195, concentration step = 5
+sample = 234, concentration step = 6
+sample = 273, concentration step = 4
 MixLik with untrimmed units selected using h largest lik contributions
 sample = 1, concentration step = 1
 sample = 1, concentration step = 2
@@ -73,28 +59,29 @@ sample = 1, concentration step = 7
 sample = 1, concentration step = 8
 sample = 1, concentration step = 9
 sample = 1, concentration step = 10
-sample = 2, concentration step = 2
-sample = 2, concentration step = 3
-sample = 2, concentration step = 4
-sample = 2, concentration step = 5
-sample = 2, concentration step = 6
-sample = 2, concentration step = 7
-sample = 2, concentration step = 8
-sample = 2, concentration step = 9
-sample = 2, concentration step = 10
-sample = 5, concentration step = 8
-sample = 5, concentration step = 9
-sample = 5, concentration step = 10
-sample = 11, concentration step = 6
-sample = 11, concentration step = 7
-sample = 11, concentration step = 8
-sample = 11, concentration step = 9
-sample = 11, concentration step = 10
-sample = 24, concentration step = 5
-Total estimated time to complete tclustreg:  6.35 seconds 
-sample = 65, concentration step = 4
-sample = 83, concentration step = 6
-sample = 295, concentration step = 5
+sample = 1, concentration step = 11
+sample = 3, concentration step = 5
+sample = 3, concentration step = 6
+sample = 3, concentration step = 7
+sample = 3, concentration step = 8
+sample = 3, concentration step = 9
+sample = 3, concentration step = 10
+sample = 3, concentration step = 11
+sample = 10, concentration step = 11
+sample = 14, concentration step = 11
+sample = 15, concentration step = 11
+sample = 17, concentration step = 5
+sample = 17, concentration step = 6
+sample = 17, concentration step = 7
+sample = 17, concentration step = 8
+sample = 17, concentration step = 9
+sample = 17, concentration step = 10
+sample = 17, concentration step = 11
+Total estimated time to complete tclustreg:  5.68 seconds 
+sample = 52, concentration step = 6
+sample = 52, concentration step = 7
+sample = 57, concentration step = 6
+sample = 211, concentration step = 6
 RLGA Algorithm k =2 biter =7 niter =10
 Finished.
 </pre><img vspace="5" hspace="5" src="images\tclustreg_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of fishery data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
@@ -234,7 +221,70 @@ Finished.
     restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     nsamp=200;
     Cnsamp=subsets(nsamp,n,(size(X1,2)+1)*k);
-    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CWM, adaptive and fixed 2nd level trimming.</li></span></a></span></h3><div class="collapse"><p>
+     Comparison among CWM, adaptive second level trimming and fixed second
+     level trimming<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
+    close all
+    % Generate two groups and a set of concentrated outliers
+    rng(100)
+    p=1;
+    n1=90;
+    x1=(randn(n1,p)+2)*2.1-1;
+    y1=-1.2*x1*1+randn(n1,1)*0.6+2.1;
+
+    n2=90;
+    x2=(randn(n1,p)+4)*1.5-4;
+    y2=5+x2*0.7+randn(n2,p)*0.6;
+
+    n3=20;
+    x3=randn(n3,p)*0.1+12-4;
+    y3=randn(n3,p)*0.1+16-2;
+    %x3=0;
+    %y3=0;
+
+    X=[x1;x2;x3];
+    y=[y1;y2;y3];
+
+    n=n1+n2+n3;
+    group=[ones(n1,1); 2*ones(n2,1); 3*ones(n3,1)];
+    yXplot(y,X,group);
+    legend('Location','best')
+    % gscatter(X,y,group)
+    % Run the 3 models and compare the results 
+    k=2;
+    % Specify restriction factor for variance of residuals
+    restrfact=5;
+    % 10 per cent first level trimming.
+    alphaLik=0.1;
+    % number of subsamples to extract
+    nsamp=1000;
+    addnoisevariable = false;
+
+    if addnoisevariable ==true
+        X=[X randn(n,1)];
+    end
+
+    % In this case we use CWM model
+    alphaXcwm=1;
+    [outCWM]=tclustreg(y,X,k,restrfact,alphaLik,alphaXcwm,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('CWM model')
+
+    % In this case we use an adaptive second level of trimming.
+    alphaXada=0.95;
+    [outADA]=tclustreg(y,X,k,restrfact,alphaLik,alphaXada,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('Adaptive second level trimming')
+
+    % In this case we use a fixed level of trimming
+    alphaXfixed=0.02;
+    [out2LT]=tclustreg(y,X,k,restrfact,alphaLik,alphaXfixed,...
+        'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
+    title('Fixed second level trimming')
+    disp('CWM model and adaptive second level trimming')
+    disp('can recover the real structure of the data') </pre></div></div><pre class="codeoutput">CWM model and adaptive second level trimming
+can recover the real structure of the data
+</pre><img vspace="5" hspace="5" src="images\tclustreg_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustreg_07.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
              y can be either a row or a column vector.</p><p>
              </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Explanatory variables (also called 'regressors'). </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of dimension $(n \times p-1)$. Rows of X represent
              observations, and columns represent variables. Missing values
@@ -243,15 +293,17 @@ Finished.
              automatically be excluded from the computations.</p> <p>
              </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of clusters. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>This is a guess on the number of data groups.</p> <p>
              </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfact" class="clearfix"> </div> <h3 id="input_argument_restrfact" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfact</code> &#8212; restriction factor for regression residuals and covariance
-             matrices of explanatory variables. </span>  </a><span class="example_desc">Scalar or vector with two
+             matrices of the explanatory variables. </span>  </a><span class="example_desc">Scalar or vector with two
              elements.</span></span></h3> <div class="collapse"> <p><p>If restrfact is a scalar it controls the
              differences among group scatters of the residuals. The value
              1 is the strongest restriction. If restrfactor is a vector
              with two elements the first element controls the differences
              among group scatters of the residuals and the second the
              differences among covariance matrices of the explanatory
-             variables.</p> <p>
-            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaLik" class="clearfix"> </div> <h3 id="input_argument_alphaLik" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaLik</code> &#8212; Trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alpha1 is a value between 0 and 0.5 or an  integer specifying
+             variables. Note that restrfactor(2) is used just if
+             input option $alphaX=1$, that is if constrained weighted
+             model for X is assumed.</p> <p>
+            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaLik" class="clearfix"> </div> <h3 id="input_argument_alphaLik" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaLik</code> &#8212; Trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alphaLik is a value between 0 and 0.5 or an  integer specifying
             the number of observations which have to be trimmed. If
             alphaLik=0 there is no trimming. More in detail, if 0&lt;alphaLik&lt;1
             clustering is based on h=fix(n*(1-alphaLik)) observations.</p> <p>
@@ -259,7 +311,7 @@ Finished.
             based on h=n-floor(alphaLik). More in detail, likelihood
             contributions are sorted and the units associated with the
             smallest n-h contributions are trimmed.</p><p>
-            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaX" class="clearfix"> </div> <h3 id="input_argument_alphaX" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaX</code> &#8212; Second-level trimming or constrained weighted model for X. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alphaX is a value between [0 and 1).</p> <p>
+            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaX" class="clearfix"> </div> <h3 id="input_argument_alphaX" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaX</code> &#8212; Second-level trimming or constrained weighted model for X. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alphaX is a value in the interval [0 1].</p> <p>
             - If alphaX=0 there is no second-level trimming.</p> <p>
             - If alphaX is in the interval [0 0.5] it indicates the
                fixed proportion of units subject to second level trimming.</p> <p>
@@ -276,7 +328,9 @@ Finished.
                take into account different distributions for the explanatory
                variables across groups, so overcoming an intrinsic limitation
                of mixtures of regression, because they are implicitly
-               assumed equally distributed.</p> <p>
+               assumed equally distributed. Note that if alphaX=1 it is
+               also possible to apply using restrfactor(2) the constraints
+               on the cov matrices of the explanatory variables.</p> <p>
                For further details about CWM see Garcia-Escudero et al.</p> <p>
                (2017) or Torti et al. (2018).</p><p>
             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
@@ -284,6 +338,7 @@ Finished.
 </code>,<code> 'equalweights',true
 </code>,<code> 'nsamp',1000
 </code>,<code> 'refsteps',15
+</code>,<code> 'reftol',1e-05
 </code>,<code> 'plots',1
 </code>,<code> 'wtrim',1
 </code>,<code> 'we',[0.2 0.2 0.2 0.2 0.2]
@@ -353,18 +408,21 @@ Finished.
                iterations in each subsample.  Default is 10.</p> <p>
                refsteps = 0 means "raw-subsampling" without iterations.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',15
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Tolerance for the refining steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14;</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>A flag to control the
             generation of the plots.</p> <p>
             If plots=1 a plot is showed on the screen with the
             final allocation (and if size(X,2)==2 with the lines
             associated to the groups)
             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_wtrim" class="clearfix"></div><h3 id="input_argument_namevalue_wtrim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>wtrim</code> &#8212;Application of observation weights.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>A flag taking values [0, 1, 2, 3, 4]
-          to control the application of weights on the observations.</p> <p>
-          -  If \texttt{wtrim}=0 (no weights) and \texttt{mixt}=0, the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_wtrim" class="clearfix"></div><h3 id="input_argument_namevalue_wtrim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>wtrim</code> &#8212;Application of observation weights.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>A flag taking values
+          in [0, 1, 2, 3, 4], to control the application of weights on the
+          observations.</p> <p>
+          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
              algorithm reduces to the standard tclustreg algorithm.</p> <p>
           -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
-             probability $D\_i$ of equation 7 of Garcia et al. 2010 is
+             probability $D_i$ of equation 7 of Garcia et al. 2010 is
              computing by maximizing the log-likelihood contributions of
              the mixture model of each observation.</p> <p>
           -  If \texttt{wtrim} = 1, trimming is done by weighting the
@@ -500,7 +558,7 @@ Finished.
    observation weighting.</p> <p>
  For the sake of code readability, the relevant sections of the code are
  identified with a "TRIMMING" or "THINNING" tag.</p> <p>
- 
+
  REMARK: the number of parameters to penalize the likelihood are given
  below:</p> <p>
  $k(p+1)$ = number of regression coefficients including the intercept.</p> <p>
