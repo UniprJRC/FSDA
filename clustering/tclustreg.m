@@ -590,7 +590,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     yXplot(y,X,group);
     legend('Location','best')
     % gscatter(X,y,group)
-    % Run the 3 models and compare the results 
+    % Run the 3 models and compare the results
     k=2;
     % Specify restriction factor for variance of residuals
     restrfact=5;
@@ -622,7 +622,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
         'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
     title('Fixed second level trimming')
     disp('CWM model and adaptive second level trimming')
-    disp('can recover the real structure of the data') 
+    disp('can recover the real structure of the data')
 %}
 
 %% Beginning of code
@@ -637,7 +637,7 @@ warning('off');
 
 % obj_with_thinned == 1 is to use thinned units in the computation of
 % the objective function.
-obj_with_thinned = 1;
+obj_with_thinned = 0;
 
 % Groups with less than skipthin_th units are not considered for thinning
 skipthin_th = 50;
@@ -717,7 +717,7 @@ else
 end
 
 
-%% Bivariate thinning (_if wtrim == 4 and p == 2_)
+%% *Bivariate thinning* (_if wtrim == 4 and p == 2_)
 
 % Bivariate thinning is applied once on the full dataset, at the start.
 % This is done before setting the number of random samples nsamp.
@@ -930,9 +930,9 @@ zigzag = (alphaX > 0 && alphaX<1) || wtrim == 3 || wtrim == 2;
 % * mixt = 1: Mixture likelihood, with crisp assignement
 % * mixt = 2: Mixture likelihood
 %
-% $$ \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j) $$ $$ \quad $$
-% $$ \prod_{j=1}^k  \prod_{i\in R_j} \pi_j \phi(x_i;\mu_j,\Sigma_j) $$ $$ \quad $$
-% $$ \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right] $$
+%%% $$ \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j) $$ $$ \quad $$
+%%% $$ \prod_{j=1}^k  \prod_{i\in R_j} \pi_j \phi(x_i;\theta_j) $$ $$ \quad $$
+%%% $$ \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right] $$
 mixt       = options.mixt;
 
 if msg == 1
@@ -1124,7 +1124,7 @@ obj_all = NaN(nselected,refsteps);
 %beta_all   = NaN(k,refsteps,nselected);
 
 
-%% Find NParam penalty term to use inside AIC and BIC
+%%% - Find NParam penalty term to use inside AIC and BIC
 npar=p*k;
 
 if equalweights==false
@@ -1290,7 +1290,7 @@ for i =1:nselected
         end
     end
     
-    %%% -- Classification E-Step (before concentration steps):
+    %%% -- Classification *E-Step* (before concentration steps):
     %%% -- -- Log-likelihood of all observations based on the estimated regression parameters
     
     % equalweight: each group has the same weight, $1/k$.
@@ -1349,7 +1349,7 @@ for i =1:nselected
     while mudiff > reftol && cstep <= refsteps
         cstep = cstep + 1;
         
-        %%% -- -- Observation weighting, according to wtrim option
+        %%% -- -- Observation weighting, according to wtrim option (*componentwise thinning* is applied here)
         
         % w4trim = vector of weights in {0,1}; w4trim = 1 identifies units
         % that are not thinned and contribute to the likelihood in the
@@ -1449,19 +1449,20 @@ for i =1:nselected
                 
             case 4
                 %%% -- -- * case 4: Bivariate tandem thinning
-                w4trim = Wt4;
+                %w4trim = Wt4;
+                 w4trim = ones(n,1);
         end
         
         % Mean of the weights must be 1.
         mean_w4trim = mean(w4trim);
-        w4trim      = w4trim/mean(w4trim);
+        w4trim      = w4trim/mean_w4trim;
         
         if sum(isnan(Beta(:)))>0
             %%% -- -- _Stop if one of the current beta parameters is undefined, and go to another subset_
             break
         end
         
-        %% -- -- Classification E-Step (inside concentration steps)
+        %% -- -- Classification *E-Step* (inside concentration steps)
         
         %%% -- -- -- Log-likelihood of all observations based on the estimated regression parameters
         
@@ -1713,7 +1714,7 @@ for i =1:nselected
             break
         end
         
-        %% -- -- M-Step: find beta coefficients and sigma2 using weighted regression
+        %% -- -- *M-Step*: find beta coefficients and sigma2 using weighted regression
         for jj=1:k
             
             %sqweights = weights (for beta estimation) of observations
@@ -1833,23 +1834,28 @@ for i =1:nselected
                     %decide if the thinned units must be considered or
                     %not in the obj function. The same if-then-else is
                     %not present for equalweights == 0
-                    if wtrim==3 && obj_with_thinned ==1
+                    if (wtrim==3 || wtrim==2) && obj_with_thinned ==1
                         %In case of bernoulli thinning, if the flag
-                        %obj_with_thinned == 1, the objective function
-                        %is computed excluding only trimmed units, by using
-                        %matrix postprob.
+                        %obj_with_thinned == 1, the objective function is
+                        %computed excluding only trimmed units, by using
+                        %matrix postprob. REMARK: when classification
+                        %likelihood is used (mixt = 2), postprob is a
+                        %boolean matrix.
                         
                         obj = obj + log(1/k) +...
                             sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj)) ;
                         
                     else
-                        %In all the othe cases (no weights, user weights,
-                        %thinning with probabilities, bernoulli thinning if
-                        %the flag obj_with_thinned == 0), the objective function
-                        %is computed excluding both thinned and trimmed
-                        %units, by using matrix Z.
+                        %In all other cases, which are
+                        %- 1 = no weights, 
+                        %- 2 = user weights, 
+                        %- 3 = thinning with probabilities and obj_with_thinned == 0,
+                        %- 4 = bernoulli thinning and obj_with_thinned == 0
+                        %the thinned and trimmed units do not contribute to
+                        %the objective function; matrix Z below does the job:
+                        % Z = (bsxfun(@times,postprob,w4trim)) 
                         obj = obj + log(1/k) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;
+                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;                       
                     end
                     
                     
@@ -2248,7 +2254,7 @@ if plots
                 % plot of the good units allocated to the current group.
                 % Indices are taken after the second level trimming.
                 % Trimmed points are not plotted by group.
-                ucg = find(out.idx(:,end)==jj);
+                ucg = find(out.idx(:,end)==jj & w4trimopt > 0);
                 
                 
                 % misteriously text does not show a legend. This is why
