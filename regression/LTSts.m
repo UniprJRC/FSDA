@@ -1086,7 +1086,7 @@ end
 h=floor(options.h);                % Number of data points on which estimates are based
 plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
-nsampsubsequentsteps=nsamp/2;
+nsampsubsequentsteps=round(nsamp/2);
 
 lts=options.lts;
 SmallSampleCor=options.SmallSampleCor; % small sample correction factor
