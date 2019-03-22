@@ -1090,11 +1090,15 @@ nsampsubsequentsteps=round(nsamp/2);
 
 lts=options.lts;
 SmallSampleCor=options.SmallSampleCor; % small sample correction factor
+if varampl>0
+    % Convergence criteria inside ALS loop
+    reftolALS=options.reftolALS;
+    refstepsALS=options.refstepsALS;
+    verLess2016b=verLessThanFS(9.1);
+end
 
-% Convergence criteria inside ALS loop
-reftolALS=options.reftolALS;
-refstepsALS=options.refstepsALS;
 constr=0;
+
 
 if ~isstruct(lts) && isempty(lts)
     refsteps=2;
@@ -1158,7 +1162,7 @@ if lshift>0
     LSH = (lshift+1):(T-lshift);
     % total number of subsets to pass to procedure subsets
     ncombLSH=bc(T-1,pini+1);
-
+    
 else
     LSH=0;
 end
@@ -1273,7 +1277,7 @@ for lsh=LSH
     end
     
     if lsh>0
-
+        
         [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncombLSH,msg);
         C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
         
@@ -1371,7 +1375,13 @@ for lsh=LSH
             end
             
             if varampl>0
-                [betaout]=ALS(beta0);
+                if verLess2016b==1
+                    [betaout]=ALSbsxfun(beta0);
+                else
+                    [betaout]=ALS(beta0);
+                end
+                %  betaoutCHK=ALSbsxfun(beta0);
+                % dd=1;
             else
                 betaout=beta0;
                 
@@ -2153,6 +2163,96 @@ end
         % implies normal convergence, else no convergence has been obtained
         exitflag=0;
         
+        % Define all the relevant matrices before the loop
+        Seqbsb=Seq(bsb,1);
+        Xseasobsb=Xseaso(bsb,:);
+        Xtrendbsb=Xtrend(bsb,:);
+        yinbsb=yin(bsb);
+        indnlseaso=(trend+2+nexpl):(trend+2+nexpl+varampl-1);
+        Seqbsbvarampl=Seq(bsb,2:varampl+1);
+        
+        if isemptyX
+            if lshift>0
+                Xlshiftbsb=Xlshift(bsb);
+                XtrendXbsbXseasonXlshift=[Xtrendbsb Seqbsbvarampl Xlshiftbsb];
+                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xlshiftbsb];
+                indnlseasoc=[1:trend+1 trend+2+nexpl+varampl];
+            else
+                XtrendXbsbXseasonXlshift=[Xtrendbsb Seqbsbvarampl];
+                XtrendbsbXbsbXlshiftbsb=Xtrendbsb;
+                indnlseasoc=1:(trend+1);
+            end
+        else
+            Xbsb= X(bsb,:);
+            XtrendbsbXbsb=[Xtrendbsb Xbsb];
+            if lshift>0
+                Xlshiftbsb=Xlshift(bsb);
+                XtrendXbsbXseasonXlshift=[XtrendbsbXbsb Seqbsbvarampl Xlshiftbsb];
+                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xbsb Xlshiftbsb];
+                indnlseasoc=[1:trend+1+nexpl trend+2+nexpl+varampl];
+            else
+                XtrendXbsbXseasonXlshift=[XtrendbsbXbsb Seqbsbvarampl];
+                XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xbsb];
+                indnlseasoc=1:trend+1+nexpl;
+            end
+        end
+        
+        while ( (betadiff > reftolALS) && (iter < refstepsALS) )
+            iter = iter + 1;
+            
+            % b2378 estimate of linear part of seasonal component
+            b2378=newbeta(indlinsc);
+            % at= yhatseaso = fitted values for linear part of seasonal
+            % component
+            at=Xseasobsb*b2378;
+            
+            % OLS to estimate coefficients of trend + expl variables + non lin coeff of
+            % seasonal + coefficient of fixed level shift
+            % trlshift is the matrix of explanatory variables
+            XtrendXbsbXseasonXlshift(:,indnlseaso)=at.*Seqbsbvarampl;
+            
+            % b0145 = coefficients of intercept trend + expl var + non
+            % linear part of seasonal component + level shift
+            b0145=XtrendXbsbXseasonXlshift\(yinbsb-at) ;
+            
+            % Now find new coefficients of linear part of seasonal
+            % component in the regression of y-trend-expl-lsihft versus
+            % vector which contains non linear part of seasonal component
+            % which multiplies each column of matrix Xseaso (linear part of
+            % seasonal component)
+            yhatnlseaso=Seqbsb+ Seqbsbvarampl*b0145(indnlseaso);
+            b2378=(yhatnlseaso.*Xseasobsb)\(yinbsb -XtrendbsbXbsbXlshiftbsb*b0145(indnlseasoc));
+            
+            % Store new value of beta
+            newbeta(indlinsc)=b2378;
+            newbeta(otherind)=b0145;
+            
+            % betadiff is linked to the tolerance (specified in scalar
+            % reftol)
+            betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
+            
+            oldbeta=newbeta;
+            
+            % exit from the loop if the new beta has singular values. In
+            % such a case, any intermediate estimate is not reliable and we
+            % can just keep the initialbeta and initial scale.
+            if (any(isnan(newbeta)))
+                newbeta = beta0;
+                exitflag=-1;
+                break
+            end
+        end
+    end
+
+    function [newbeta,exitflag]=ALSbsxfun(beta0)
+        iter        = 0;
+        betadiff    = 9999;
+        newbeta=beta0;
+        oldbeta=beta0;
+        % exitflag = flag which informs about convergence. exitflag =0
+        % implies normal convergence, else no convergence has been obtained
+        exitflag=0;
+        
         while ( (betadiff > reftolALS) && (iter < refstepsALS) )
             iter = iter + 1;
             
@@ -2228,7 +2328,6 @@ end
             end
         end
     end
-
 
 % lik computes the objective function (residual sum of squares/2 = negative
 % log likelihood) which must be minimized for the units specified inside
