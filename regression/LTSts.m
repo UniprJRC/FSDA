@@ -1156,6 +1156,9 @@ if lshift>0
     % function (residual sum of squares/2 = negative log
     % likelihood)
     LSH = (lshift+1):(T-lshift);
+    % total number of subsets to pass to procedure subsets
+    ncombLSH=bc(T-1,pini+1);
+
 else
     LSH=0;
 end
@@ -1270,9 +1273,8 @@ for lsh=LSH
     end
     
     if lsh>0
-        
-        [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncomb,msg);
-        
+
+        [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncombLSH,msg);
         C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
         
         
