@@ -1153,8 +1153,10 @@ else
         '<script src="includesFS/bootstrap.min.js" type="text/javascript"></script>\r'...
         '<script src="includesFS/global.js"></script>\r'...   ' enables scrolling
         '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
-        '<script src="includesFS/suggest.js" type="text/javascript"></script>\r'... % for search engine
         '<script src="includesFS/underscore-min.js"></script>\r'...                 % for search engine
+        '<script src="includesFS/F1help.js" type="text/javascript"></script>\r'... % for F1 key
+        '<script src="includesFS/suggest.js" type="text/javascript"></script>\r'... % docsuggestion for search engine
+        '<script src="includesFS/helpservices.js" type="text/javascript"></script>\r'... % for mouse right click engine
         '<link href="includesFS/reset.css" rel="stylesheet" type="text/css">\r'...
         '<link href="includesFS/960.css" rel="stylesheet" type="text/css">\r'...
         '<link href="includesFS/doc_center.css" rel="stylesheet" type="text/css">\r'...
@@ -1684,6 +1686,12 @@ for j=1:length(sintax)
         StringWithLTandGT=stri(findescriptionEx+1:end);
         StringWithoutLTandGT=strrep(StringWithLTandGT,'<','&lt;');
         StringWithoutLTandGT=strrep(StringWithoutLTandGT,'>','&gt;');
+        %  StringWithoutLTandGT=regexprep(StringWithoutLTandGT,'\x0D','\x0A');
+        %  StringWithoutLTandGT=regexprep(StringWithoutLTandGT,'\x0A*','\x0A');
+        %  StringWithoutLTandGT=regexprep(StringWithoutLTandGT,'\r\n','\n');
+        
+        % Remove white spaces at the beginning of each line
+        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));        
         listEx{j,3}=StringWithoutLTandGT;
         
     catch
@@ -1861,7 +1869,9 @@ if length(startIndexEx)>length(sintax)
         StringWithLTandGT=stri(findescriptionEx+1:end);
         StringWithoutLTandGT=strrep(StringWithLTandGT,'<','&lt;');
         StringWithoutLTandGT=strrep(StringWithoutLTandGT,'>','&gt;');
-        
+        % Remove white spaces at the beginning of each line
+        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));        
+
         % listExtraEx{j,3}=stri(findescriptionEx+1:end);
         listExtraEx{j,3}=StringWithoutLTandGT;
     end
