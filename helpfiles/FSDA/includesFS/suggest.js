@@ -2,20 +2,10 @@ window.JST = window.JST || {};
 var suggestionsObj;
 $(function() {
     var searchField = $('#docsearch');
-    suggestionsObj = new Suggestions(getSuggestions, getMore, searchField);
+    suggestionsObj = new Suggestions(searchField);
 });
 
-function getSuggestions() {
-    var text = suggestionsObj.searchField.val();
-    document.location='docsuggestion:' + text;
-}
-
-function getMore(type) {
-    var text = suggestionsObj.searchField.val();
-    document.location='docsuggestion:' + type + ':' + text;
-}
-
-function Suggestions(retrievalFunction, moreFunction, searchField) {
+function Suggestions(searchField) {
 
     JST['pagesuggestion'] = _.template(
 		'<% var docroot = getDocRoot(); %>' +
@@ -48,7 +38,7 @@ function Suggestions(retrievalFunction, moreFunction, searchField) {
     JST['morepages'] = _.template(
         '<div id="more<%= type %>" tabindex="-1" class="suggestion suggestion-more" data-pagetype="<%= type %>">' +
             '<span class="suggestmore">' +
-            '<%= more %> more' +
+            '<%= more %> <%= morei18n %>' +
             '</span>' +
             '</div>'
     )
@@ -56,7 +46,7 @@ function Suggestions(retrievalFunction, moreFunction, searchField) {
     JST['morewords'] = _.template(
         '<div id="moreword" tabindex="-1" class="suggestion suggestion-more" data-pagetype="word"">' +
             '<span class="suggestmore">' +
-            '<%= more %> more' +
+            '<%= more %> <%= morei18n %>' +
             '</span>' +
             '</div>'
     );
@@ -70,17 +60,19 @@ function Suggestions(retrievalFunction, moreFunction, searchField) {
 				'<%= pageSuggestionTemplate({suggestions: pageGroup.suggestions, displaySuggestionText:displaySuggestionText})' +
 				'%>' +
 				'<% if (pageGroup["more"] && pageGroup["more"] > 0) { %>' +
+                '<% pageGroup.morei18n = morei18n %>' +
 				'<%= morePagesTemplate(pageGroup) %>' +
 				'<% } %>' +
 			'</div>' +
 			'<% }) %>' +
 			'<% var wordGroup = words; %>' +
 			'<% if (wordGroup && wordGroup.wordlist.length > 0) { %>' +
-			'<div class="suggestionheader">Search Suggestions</div>' +
+			'<div class="suggestionheader"><%= getLocalizedSearchSuggestionString("search_suggestions", "Search Suggestions") %></div>' +
 			'<div id="wordarea" class="suggestionarea">' +
 				'<%= wordSuggestionTemplate({wordlist: wordGroup.wordlist, displaySuggestionText: displaySuggestionText})' +
 				'%>' +
 				'<% if (wordGroup["more"] && wordGroup["more"] > 0) { %>' +
+                '<% wordGroup.morei18n = morei18n %>' +
 				'<%= moreWordsTemplate(wordGroup) %>' +
 				'<% } %>' +
 			'</div>' +
@@ -102,12 +94,28 @@ function Suggestions(retrievalFunction, moreFunction, searchField) {
     var suggestionsObj = this;
     this.retrieveSuggestions = function() {
         var text = suggestionsObj.searchField.val();
-        document.location = 'docsuggestion:' + encodeURIComponent(text);
+        var suggestionData = {"q":text};
+        var services = {
+          "messagechannel":"suggest",
+          "requesthandler":"docsuggestion:suggest",
+          "webservice":"/help/search/suggest/doccenter/en/R2016b"
+        };
+        requestHelpService(suggestionData, services, function(data) {
+            suggestionsObj.displaySuggestions(data);
+        });
     };
 
     this.retrieveMore = function(type) {
         var text = suggestionsObj.searchField.val();
-        document.location = 'docsuggestion:' + type + '|' + encodeURIComponent(text);
+        var suggestionData = {"q":type + '|' + text};
+        var services = {
+          "messagechannel":"suggest",
+          "requesthandler":"docsuggestion:suggest",
+          "webservice":"/help/search/suggest/doccenter/en/R2016b"
+        };
+        requestHelpService(suggestionData, services, function(data) {
+            suggestionsObj.displayMoreSuggestions(data.type, data.template, data.suggestions);
+        });
     };
     this.selectionMode = 'keyboard';
 
@@ -434,6 +442,14 @@ function getNextSelection() {
         return $('.suggestion:first');
     }
 }
+
+function getLocalizedSearchSuggestionString(l10nKey, defaultString) {
+    var suggestion_string = defaultString;
+    if (typeof getLocalizedString !== "undefined") {
+        suggestion_string = getLocalizedString(l10nKey);
+    }
+    return suggestion_string;
+};
 
 function getPreviousSelection() {
     var selected = $('.selected-suggestion');

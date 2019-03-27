@@ -57,10 +57,6 @@
                     });
                 });
             }
-        } else {
-            if ($.fn.setupToc) {
-                $('div.toc_container_wrapper').setupToc();
-            }
         }
     });
 })(window.jQuery);

@@ -18,12 +18,16 @@ headJS=headJS +	"<link href='includesFS/site6_xs.css?201601120052' media='screen
 headJS=headJS +	"<link href='includesFS/site6_offcanvas.css?201601120052' rel='stylesheet' type='text/css'>";
 headJS=headJS +	"<script src='includesFS/l10n.js'></script>";
 headJS=headJS +	"<script src='includesFS/SHAREDdocscripts.js'></script>";
-headJS=headJS +	"<script src='includesFS/f1help.js'></script>";
 headJS=headJS +	"<script src='includesFS/PRODUCTdocscripts.js'></script>";
 headJS=headJS +	"<script src='includesFS/mw.imageanimation.js'></script>";
 headJS=headJS +	"<script src='includesFS/jquery.highlight.js'></script>";
 headJS=headJS +	"<script src='includesFS/underscore-min.js'></script>";
-headJS=headJS +	"<script src='includesFS/suggest.js'></script>";
+
+headJS=headJS + "<script xmlns='http://www.w3.org/1999/xhtml' src='includeFS/f1help.js'></script>";
+headJS=headJS + "<script xmlns='http://www.w3.org/1999/xhtml' src='includesFS/suggest.js'></script>";
+headJS=headJS + "<script xmlns='http://www.w3.org/1999/xhtml' src='includesFS/helpservices.js'></script>";
+
+
 headJS=headJS +	"<script src='includesFS/bootstrap.min.js' type='text/javascript'></script>";
 headJS=headJS +	"<script src='includesFS/global.js'></script>";
 headJS=headJS +	"<script src='includesFS/bottom.js' type='text/javascript'></script>";
