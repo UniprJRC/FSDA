@@ -562,7 +562,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
     title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
@@ -581,7 +581,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
     title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 
@@ -602,7 +602,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
@@ -623,7 +623,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 
@@ -647,7 +647,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
@@ -673,7 +673,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(yLS);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
@@ -698,7 +698,7 @@ function [out, varargout] = LTSts(y,varargin)
     plot(y1);
     hold('on')
     plot(out.yhat,'red')
-    legend('real values','fitted values','Location','SouthEast','interpreter','LaTeX','FontSize',14)
+    legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_1=0$');
     numpar = {'model parameters:' , str};
