@@ -69,7 +69,7 @@ ExclDir={'privateFS'  'datasets'};
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
-force=true;
+force=false;
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
@@ -85,24 +85,26 @@ format short
 % examples
 % [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false');
 
-% Check correctness of HTML link inside each .m file
-chkHTMLlink=cell2mat(FilesWithProblems(1:10,6));
-if max(chkHTMLlink)>0
-    disp('Files with wrong reference to HTML page')
-    disp(FilesWithProblems{chkHTMLlink==1,1})
-    error('FSDA:CreateFSDAhelpFiles','Files with wrong references in docsearchFS')
-end
-
-% Check correctness of HTML file creation
-boo=~cellfun('isempty',FilesWithProblems(:,5));
-seq=1:size(FilesWithProblems,1);
-IndexesofFiles=seq(boo);
-if ~isempty(IndexesofFiles)
-    disp('Files whose HTML reference page could not be created')
-    for i=1:length(IndexesofFiles)
-        disp(FilesWithProblems{IndexesofFiles(i),1})
+if ~isempty(FilesWithProblems)
+    % Check correctness of HTML link inside each .m file
+    chkHTMLlink=cell2mat(FilesWithProblems(1:10,6));
+    if max(chkHTMLlink)>0
+        disp('Files with wrong reference to HTML page')
+        disp(FilesWithProblems{chkHTMLlink==1,1})
+        error('FSDA:CreateFSDAhelpFiles','Files with wrong references in docsearchFS')
     end
-    error('FSDA:CreateFSDAhelpFiles','Files without HTML web page')
+    
+    % Check correctness of HTML file creation
+    boo=~cellfun('isempty',FilesWithProblems(:,5));
+    seq=1:size(FilesWithProblems,1);
+    IndexesofFiles=seq(boo);
+    if ~isempty(IndexesofFiles)
+        disp('Files whose HTML reference page could not be created')
+        for i=1:length(IndexesofFiles)
+            disp(FilesWithProblems{IndexesofFiles(i),1})
+        end
+        error('FSDA:CreateFSDAhelpFiles','Files without HTML web page')
+    end
 end
 
 %% STEP 3: create alphabetical list of functions and txt file
@@ -158,8 +160,8 @@ if h
     disp('Successful creation of pointer files')
 end
 
-%% STEP not compulsory: create searchable database 
-% Use as folder the one which contains all pointers files 
+%% STEP not compulsory: create searchable database
+% Use as folder the one which contains all pointers files
 FileName='addFSDA2path';
 FullPath=which(FileName);
 %Navigate to the main folder of FSDA
@@ -192,7 +194,7 @@ if ~isempty(IndexesofFiles)
 end
 
 %% STEP 2web: Insert in all files not parsed by publishFSallFiles Google search engine
-%  Patch with Google Search module all static files. 
+%  Patch with Google Search module all static files.
 %  Then, copy external static files: acknowledgments.html, developers.html, group.html
 %  license.txt, links_relevant.html, poster_fsda.pdf to FSDAweb folder.
 %  In the end create a sitemap for Google Search module.
