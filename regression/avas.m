@@ -33,7 +33,7 @@ function [out]=avas(y,X,varargin)
 %
 %       l :  type of transformation. Vector. Vector of length p which
 %           specifies how the type of transformation for the explanatory
-%           variables. 
+%           variables.
 %           l(j)=1 => j-th variable assumes orderable values.
 %           l(j)=2 => j-th variable assumes circular (periodic) values
 %                 in the range (0.0,1.0) with period 1.0.
@@ -146,7 +146,7 @@ function [out]=avas(y,X,varargin)
     % plotbb(bbdat = brain)
 %}
 
-%{    
+%{
     %% Example 3 from TIB88: unequal variances.
     n=200;
     rng('default')
@@ -193,7 +193,7 @@ function [out]=avas(y,X,varargin)
 
 %}
 
-%{  
+%{
     % Example 4 from TIB88: non constant underlying variance.
     close all
     negstate=-100;
@@ -260,7 +260,7 @@ function [out]=avas(y,X,varargin)
 %}
 
 %{
-    % Example 6 from TIB88: binary. 
+    % Example 6 from TIB88: binary.
     seed=20;
     n=50;
     y1=exp(-0.5+0.5*mtR(n,1,seed));
@@ -356,7 +356,6 @@ end
 
 % sw = sum of the weights
 sw=sum(w);
-
 % Center and standardize y
 mey=sum(y.*w)/sw;
 ty=y-mey;
@@ -366,8 +365,15 @@ ty=ty/sqrt(sv);
 % var(ty,1) =1
 
 % Center X matrix
-meX=sum(X.*w,1)/sw;
-tX=X-meX;
+verLess2016b=verLessThanFS(9.1);
+if verLess2016b == false
+    meX=sum(X.*w,1)/sw;
+    tX=X-meX;
+else
+    meX=sum(bsxfun(@times,X,w),1)/sw;
+    tX=bsxfun(@minus,X,meX);
+end
+
 
 % Initial transformation for matrix X.
 % X is transformed so that its columns are equally weighted when predicting y.
@@ -384,7 +390,7 @@ ct(1:nterm)=100;
 
 
 % M matrix of dimension n-by-(p+1) containing the ranks
-% (ordered positions) for each of the p explanatory variables 
+% (ordered positions) for each of the p explanatory variables
 M=zeros(n,p);
 for j=1:p
     [~,pos]=sort(X(:,j),1);
@@ -444,7 +450,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % Compute the variance stabilizing transformation
     % h(t)= \int_{z1_1}^t v(u)^{-0.5} du
     % z1 = yhat sorted
-    % z7 reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5} 
+    % z7 reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
     % z8 = values of ty sorted using the ordering of z1
     z9=ctsub(z1,z7,z8);
     
@@ -472,7 +478,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     rr=sum(((ty-z1).^2).*w)/sw;
     
-    % New value of R2 
+    % New value of R2
     rsq=1-rr;
     
     sumlog=sumlog+n*log(sv);

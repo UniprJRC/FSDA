@@ -1,6 +1,6 @@
 function [out]=ace(y,X,varargin)
 %ace computes alternative conditional expectation
-% 
+%
 %<a href="matlab: docsearchFS('ace')">Link to the help page for this function</a>
 %
 %   This function uses the alternating conditional expectations algorithm
@@ -202,16 +202,26 @@ ty=ty/sqrt(sv);
 % ty is standardized
 % var(ty,1) =1
 
-% Center X matrix
-meX=sum(X.*w,1)/sw;
-tX=X-meX;
+sqrtw=sqrt(w);
+yw=ty.*sqrtw;
 
+% Center X matrix
 % Initial transformation for matrix X.
 % X is transformed so that its columns are equally weighted when predicting y.
-Xw=tX.*sqrt(w);
-yw=ty.*sqrt(w);
-b=Xw\yw;
-tX=tX.*(b');
+verLess2016b=verLessThanFS(9.1);
+if verLess2016b == false
+    meX=sum(X.*w,1)/sw;
+    tX=X-meX;
+    Xw=tX.*sqrtw;
+    b=Xw\yw;
+    tX=tX.*(b');
+else
+    meX=sum(bsxfun(@times,X,w),1)/sw;
+    tX=bsxfun(@minus,X,meX);
+    Xw=bsxfun(@times,tX,sqrtw);
+    b=Xw\yw;
+    tX=bsxfun(@times,tX,(b'));
+end
 
 % In the Fortran program vector b is found iteratively
 % (procedure using subroutine scail)
@@ -252,7 +262,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
     
     % Call backfitting algorithm to find transformed values of X
-    tX=backfit(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);    
+    tX=backfit(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
     
     ordy=M(:,pp1);
     z2=y(ordy);
