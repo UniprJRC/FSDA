@@ -2552,7 +2552,13 @@ end
                 
                 if varampl>0
                     % No minimization is used but just ALS
-                    [newbeta,exitfl]=ALS(initialbeta);
+                    
+                    if verLess2016b==1
+                        [newbeta,exitfl]=ALSbsxfun(initialbeta);
+                    else
+                        [newbeta,exitfl]=ALS(initialbeta);
+                    end
+                    
                     
                     % Construct vector of fitted values for all the
                     % observations
@@ -2580,7 +2586,14 @@ end
                 
                 % Use Alternative least squares to update beta (just using
                 % the units forming subset)
-                [newbeta,exitfl]=ALS(beta);
+                
+                if verLess2016b==1
+                    [newbeta,exitfl]=ALSbsxfun(beta);
+                else
+                    [newbeta,exitfl]=ALS(beta);
+                end
+                
+                
                 % Call lik  with bsb=seq in order to create the vector
                 % of fitted values (yhat) using all the observations
                 bsb=seq;
