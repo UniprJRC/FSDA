@@ -1154,9 +1154,9 @@ else
         '<script src="includesFS/global.js"></script>\r'...   ' enables scrolling
         '<script src="includesFS/bottom.js" type="text/javascript"></script>\r'...
         '<script src="includesFS/underscore-min.js"></script>\r'...                 % for search engine
-        '<script src="includesFS/F1help.js" type="text/javascript"></script>\r'... % for F1 key
-        '<script src="includesFS/suggest.js" type="text/javascript"></script>\r'... % docsuggestion for search engine
-        '<script src="includesFS/helpservices.js" type="text/javascript"></script>\r'... % for mouse right click engine
+        '<script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script>\r'... % for F1 key
+        '<script src="../includes/product/scripts/suggest.js" type="text/javascript"></script>\r'... % docsuggestion for search engine
+        '<script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script>\r'... % for mouse right click engine
         '<link href="includesFS/reset.css" rel="stylesheet" type="text/css">\r'...
         '<link href="includesFS/960.css" rel="stylesheet" type="text/css">\r'...
         '<link href="includesFS/doc_center.css" rel="stylesheet" type="text/css">\r'...
@@ -3289,7 +3289,8 @@ if evalCode==true
     numexToExec=0;
     for i=1:size(listEx,1)
         if listEx{i,4}==1
-            ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
+            ExToExec=[[ExToExec '%% Ex' num2str(i)] char(13) listEx{i,3}];
+            % ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
             numexToExec=numexToExec+1;
         end
     end
@@ -3298,7 +3299,8 @@ if evalCode==true
     if ~isempty(listExtraEx)
         for i=1:size(listExtraEx,1)
             if listExtraEx{i,4}==1
-                ExToExec=[ExToExec '%% ExExtra' num2str(i) listExtraEx{i,3}];
+                ExToExec=[[ExToExec '%% ExExtra' num2str(i)] char(13) listExtraEx{i,3}];
+                % ExToExec=[ExToExec '%% ExExtra' num2str(i) listExtraEx{i,3}];
                 numextraexToExec=numextraexToExec+1;
             end
         end
