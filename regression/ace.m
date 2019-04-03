@@ -34,7 +34,7 @@ function [out]=ace(y,X,varargin)
 %  Optional input arguments:
 %
 %       l :  type of transformation. Vector. Vector of length p+1 which
-%           specifies how the type of transformation for the exaplanatory
+%           specifies how the type of transformation for the explanatory
 %           variables and the response. The fitst p element of this vector
 %           refer to the p explanatory variables, the last element refers to
 %           the response.
