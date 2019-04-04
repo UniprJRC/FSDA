@@ -57,6 +57,12 @@ function add2spm(H,AX,BigAx,varargin)
 %                 then such strings are used for the legend.
 %               Example - 'userleg','1'
 %               Data Types - char
+% RowNamesLabels :  cell of length n, where n is the number of points in
+%                   each scatter, containing the labels of the units. If
+%                   this field is empty the sequence 1:n will be used to
+%                   label the units.
+%               Example - 'RowNamesLabels',{'a' 'bb' 'cc' 'mmm'}
+%               Data Types - cell
 %
 % Output:
 %
@@ -98,7 +104,7 @@ function add2spm(H,AX,BigAx,varargin)
 %
 %{
     %% add2spm with all default options.
-    % load Fisher iris  data
+    % load Fisher iris  data.
     load fisheriris;
     % Create scatter plot matrix with specific legends
     [H,AX,BigAx]=gplotmatrix(meas,[],species);
@@ -149,8 +155,7 @@ function add2spm(H,AX,BigAx,varargin)
 %}
 
 %{
-    %% Use of labeladd.
-    
+    %% Example of use of option 'labeladd'.
     close all;
     % 'labeladd' is set to '1' to add labels found in the UserData
     % property of the last group in each panel of the scatter matrix.
@@ -172,21 +177,41 @@ function add2spm(H,AX,BigAx,varargin)
     add2spm(H,AX,BigAx,'labeladd','1');
 
 %}
-%
 
+%{
+    %% Example of use of option 'labeladd' combined with 'RowNamesLabels'.
+    close all;
+    n=8;
+    Y = randn(n,3);
+    group = ones(n,1); 
+    group(1:5) = 2; 
+    [H,AX,BigAx] = spmplot(Y,group);
+    % Create cell containing the name of the rows.
+    label={'ddf1' 'ddf2' 'ddf3' 'ddf4' 'ddf5' 'ddf6' 'ddf7' 'ddf8'};
+    % Labels are added to the units which belong to group 2 (that is to the
+    % first 5 units). The labels are taken from cell label
+    add2spm(H,AX,BigAx,'labeladd','1','RowNamesLabels',label);
+%}
+    
 %% Beginning of code
 H=double(H);
+labeladd='';
+userleg='';
+RowNamesLabels='';
 
-options=struct('labeladd','','userleg','');
-UserOptions=varargin(1:2:length(varargin));
-% Write in structure 'options' the options chosen by the user
-if ~isempty(UserOptions)
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
+if nargin>1
+    options=struct('labeladd',labeladd,'userleg',userleg,'RowNamesLabels',RowNamesLabels);
+    UserOptions=varargin(1:2:length(varargin));
+    % Write in structure 'options' the options chosen by the user
+    if ~isempty(UserOptions)
+        for i=1:2:length(varargin)
+            options.(varargin{i})=varargin{i+1};
+        end
     end
+    labeladd = options.labeladd;
+    userleg  = options.userleg;
+    RowNamesLabels=options.RowNamesLabels;
 end
-labeladd = options.labeladd;
-userleg  = options.userleg;
 
 % To take account a change in property names of the legend object in 2016b
 if verLessThan('matlab','9.1')
@@ -310,8 +335,8 @@ end
 hLines  = findobj(AX(1,end), 'type', 'line');
 if ~isempty(legnew)
     spmclickleg = clickableMultiLegend(sort(double(hLines)), legnew{:});
-    % add Tag in order to recover easily the legend on spmplot    
-    set(spmclickleg, 'Tag', 'spmclickleg'); 
+    % add Tag in order to recover easily the legend on spmplot
+    set(spmclickleg, 'Tag', 'spmclickleg');
 end
 % Remark:
 % hLines is an array of handles before R2014b and a HG2 object wirh R2014b
@@ -382,7 +407,13 @@ if strcmp('1',labeladd)
                 % Add the id labels for the units in last group.
                 XDataLast = get(H(i,j,end),'XData');
                 YDataLast = get(H(i,j,end),'YData');
-                htxt=text(XDataLast,YDataLast,num2str(nbrush,'% d'),'HorizontalAlignment', 'Center','VerticalAlignment','Top');
+                if isempty(RowNamesLabels)
+                    numtext=num2str(nbrush,'% d');
+                else
+                    numtext=RowNamesLabels(nbrush);
+                end
+                
+                htxt=text(XDataLast,YDataLast,numtext,'HorizontalAlignment', 'Center','VerticalAlignment','Top');
                 % Remark DisplayName with releases>2014a does not work
                 % anymore. It must bre replaced by String
                 %  if  isempty(userleg)

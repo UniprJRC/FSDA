@@ -96,7 +96,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         If plo is a structure, it is possible to control not only the names but also, point labels, colors, symbols.
 %         More precisely structure pl may contain the following fields:
 %         plo.labeladd = if it is '1', the elements belonging to the max(group)
-%                in the spm are labelled with their unit row index.
+%                in the spm are labelled with their unit row index or their
+%                rowname. The rowname is taken from plo.label or if
+%                plo.label is empty from
 %                The default value is labeladd = '', i.e. no label is added.
 %         plo.nameY = cell array of strings containing the labels of the
 %                variables. As default value, the labels which are added
@@ -115,6 +117,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                the figure window. Default is siz = '' (empty value).
 %        plo.doleg: a string to control whether legends are created or not.
 %                Set doleg to 'on' (default) or 'off'.
+%       plo.label : cell of length n containing the labels of the units. If
+%                   this field is empty the sequence 1:n will be used to
+%                   label the units.
 %                   Example - 'plo',1
 %                   Data Types - Empty value, scalar or structure.
 %
@@ -187,6 +192,39 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               selecting the figure and then: set(gcf,'Tag','newTag');).
 %                   Example - 'undock', [1 1; 1 3; 3 4]
 %                   Data Types - single | double | logical
+%
+%   selunit :   unit labelling in the spmplot and in the malfwdplot.
+%               Cell array of strings or string or numeric vector for
+%               labelling units. When input argument Y is a structure
+%               the threshold is associated with the trajectories of
+%               the Mahalanobis distances monitored along the search.
+%               If it is a cell array of strings, only the the units that
+%               in at least one step of the search had a Mahalanobis
+%               distance greater than selunit{1} or smaller than selline{2}
+%               will have a textbox in the scatter plot matrix and in the
+%               associated malfwdplot after brushing.
+%               If it is a string it specifies the threshold
+%               above which labels have to be put. For example
+%               selunit='2.6' means that the text labels in the scatter plot matrix (and
+%               in the malfwdplot after brushing) are added
+%               only for the units which have in at least one step of
+%               the search a value of the Mahalanobis distance greater than
+%               2.6.
+%               If it is a numeric vector it contains the list of the units
+%               for which it is necessary to put the text labels in each
+%               panel of the spmplot and in the associated malfwdplot (if
+%               input option databrush is not empty). For example if
+%               selunit is [20 34], the labels associated to rows 20 and 34
+%               are added to each scatter plot. The labels which are used
+%               are taken from Y.label is Y is a structure or from
+%               plo.label if Y is not matrix if this fields exist else the
+%               numbers 1:n are used.
+%               The default value of selunit is string '2.5' if input
+%               argument Y is a structure else it is an empty value if
+%               input argument Y is a matrix.
+%                   Example - 'selunit','3'
+%                   Data Types - numeric or character
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. If datatooltip is not empty the user can use
 %                   the mouse in order to have information about the unit
@@ -276,32 +314,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
-%       selunit :   unit labelling in the spmplot and in the malfwdplot.
-%                   Cell array of strings or string or numeric vector for
-%                   labelling units. When input argument Y is a structure
-%                   the threshold is associated with the trajectories of
-%                   the Mahalanobis distances monitored along the search.
-%               If it is a cell array of strings, only the the units that
-%               in at least one step of the search had a Mahalanobis
-%               distance greater than selunit{1} or smaller than selline{2}
-%               will have a textbox in the scatter plot matrix and in the
-%               associated malfwdplot after brushing.
-%               If it is a string it specifies the threshold
-%               above which labels have to be put. For example
-%               selunit='2.6' means that the text labels in the scatter plot matrix (and
-%               in the malfwdplot after brushing) are added
-%               only for the units which have in at least one step of
-%               the search a value of the Mahalanobis distance greater than
-%               2.6.
-%               If it is a numeric vector it contains the list of the units
-%               for which it is necessary to put the text labels in each panel of the
-%               spmplot and in the associated malfwdplot (if input option
-%               databrush is not empty).
-%               The default value of selunit is string '2.5' if input
-%               argument Y is a structure else it is an empty value if
-%               input argument Y is a matrix.
-%                   Example - 'selunit','3'
-%                   Data Types - numeric or character
 %
 %  Output:
 %
@@ -603,26 +615,60 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %}
 
 %{
-    %% Option datatooltip combined with rownames
+    %   First example of the use of options selunit when first input argument is a 2D array.
+    %   In this case row names of Y are not
+    %   specified so numbers in the interval 1:n are added to the scatters.
+    n=100; p=5;
+    seluni=[10 30];
+    Y =randn(n,p);
+    Y(seluni,:)=Y(seluni,:)+2;
+    % add labels for units inside vector seluni
+    spmplot(Y,'selunit',seluni)
+%}
+
+%{
+    %   Second  example of the use of options selunit when first input argument is a 2D array.
+    %   In this case the row names
+    %   are contained inside input argument plo.label
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    RowLabelsMatrixY=Model(boo,:);
+    seluni=[10 30];
+    plo=struct;
+    plo.label=cellstr(RowLabelsMatrixY);
+    % add labels for units inside vector seluni
+    spmplot(Y,'selunit',seluni,'plo',plo)
+%}
+
+%{
+    %% Option datatooltip combined with rownames.
     % Example of use of option datatooltip.
     % First input argument is a structure.
     close all
     load carsmall
     x1 = Weight;
     x2 = Horsepower;    % Contains NaN data
-    y = MPG;    % Contaminated data
-    Ycont=[x1 x2 y];
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
     boo=~isnan(y);
-    Ycont=Ycont(boo,:);
+    Y=Y(boo,:);
     Model=Model(boo,:);
 
     m0=5;
-    [fre]=unibiv(Ycont);
+    [fre]=unibiv(Y);
     %create an initial subset with the 3 observations with the lowest
     %Mahalanobis Distance
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
-    [out]=FSMeda(Ycont,bs,'plots',0);
+    [out]=FSMeda(Y,bs,'plots',0);
     % field label (rownames) is added to structure out
     % In this case datatooltip will display the rowname and not the default
     % string row.
@@ -632,11 +678,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo.labeladd='1';
 	plo.clr = 'b';
     spmplot(out,'datatooltip',1,'plo',plo)
+    % The units which are already labelled in each panel of the scatter
+    % plot matrix are those which in the search had a Mahalanobis distance
+    % greater than 2.5. Note that the labelling is controlled by option seleunit.
 %}
+
 
 %{
     % Interactive_example
-    %   Example of the use of options selstep and selunit.
+    %   Example of the use of options selstep and selunit combined with databrush.
     %   selunit is passed as a character.
     %   It produces a scatter plot matrix in which labels are put for units
     %   which have a Mahalanobis distance greater than str2num(selunit). When a set of
@@ -686,7 +736,9 @@ if ~isstruct(Y)
     % seq= column vector containing the sequence 1 to n
     seq= (1:n)';
     
-    numtext=cellstr(num2str(seq,'%d'));
+    % numtext are the labels to add to the units. The type of labels to add
+    % are specified in option plo.label.
+    % numtext=cellstr(num2str(seq,'%d'));
     
 else
     % The first argument (Y) is a structure
@@ -822,6 +874,7 @@ if nargin>1
         
     end
     
+    
     if isnotstructY ==1
         if ~isempty(databrush)
             disp('It is not possible to use option databrush without supplying structure out produced by FSReda')
@@ -919,6 +972,16 @@ if isstruct(plo)
     else
         labeladd='';
     end
+    
+    if isnotstructY ==1
+        d=max(strcmp('label',fplo));
+        if d>0 && ~isempty(plo.label)
+            numtext=plo.label;
+        else
+            numtext=cellstr(num2str(seq,'%d'));
+        end
+    end
+    
     d=find(strcmp('clr',fplo));
     if d>0
         clr=plo.clr;
@@ -996,6 +1059,7 @@ else
     sym=symdef;
     siz=sizdef;
     doleg=dolegdef;
+    numtext=[];
 end
 
 if iscell(group)
@@ -1154,10 +1218,10 @@ if ndims(H) == 3
         % of the selections
         if isnumeric(group)
             % use context sensitive legends
-            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1','RowNamesLabels',numtext);
         else
             % use legends in guni
-            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+            add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg',guni,'RowNamesLabels',numtext);
         end
     end
 end
@@ -1943,7 +2007,7 @@ if ~isempty(databrush) || iscell(databrush)
                     % Add to the spm the clickable multilegend and eventually the text labels
                     % of the selections
                     % use context sensitive legends
-                    add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+                    add2spm(H,AX,BigAx,'labeladd',labeladd,'userleg','1','RowNamesLabels',numtext);
                 end
                 
                 hLines = findobj(AX(1,end), 'type', 'line');

@@ -404,6 +404,7 @@ function plotopt=malfwdplot(out,varargin)
     databrush.selectionmode='Rect';
     malfwdplot(out,'databrush',databrush)
 %}
+
 %{
     % Example of the use of some options inside structure fground.
     % load Swiss banknotes
@@ -434,7 +435,7 @@ function plotopt=malfwdplot(out,varargin)
     %   into the subset and the associated label
     malfwdplot(out,'datatooltip',1);
 %}
-%
+
 %{
     % Example of the use of option datatooltip personalized.
     % Gives the user the possibility of clicking on the different points
@@ -602,6 +603,29 @@ function plotopt=malfwdplot(out,varargin)
     malfwdplot(out,'conflev',0.99)
 %}
 
+%{
+    %   Example of use of databrush with RowNames labels shown inside spmplot. 
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    %   RowLabelsMatrixY is the cell which contains the names of the rows.
+    RowLabelsMatrixY=cellstr(Model(boo,:));
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'init',30);
+    % Row names of Y are added to structure out
+    out.label=RowLabelsMatrixY;
+    databrush=struct;
+    databrush.labeladd='1';
+    malfwdplot(out,'databrush',databrush)
+%}
 
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
@@ -1553,7 +1577,10 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             end
             
             % generate the scatterplot matrix
-            plo=struct; plo.nameY=nameY; plo.labeladd=labeladd;
+            plo=struct; plo.nameY=nameY; plo.labeladd=labeladd; 
+            if max(strcmp('label',fieldnames(out)))>0 && ~isempty(out.label)
+                plo.label=out.label(:);
+            end
             H = spmplot(Y,group,plo);
             
             % Assign to this figure a name
