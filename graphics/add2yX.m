@@ -71,6 +71,14 @@ function add2yX(H,AX,BigAx,varargin)
 %               Example - 'userleg','1'
 %               Data Types - char
 %
+% RowNamesLabels :  cell of length n, where n is the number of points in
+%                   each scatter, containing the labels of the units. If
+%                   this field is empty the sequence 1:n will be used to
+%                   label the units.
+%               Example - 'RowNamesLabels',{'a' 'bb' 'cc' 'mmm'}
+%               Data Types - cell
+%
+%
 % Output:
 %
 % More About:
@@ -156,6 +164,23 @@ function add2yX(H,AX,BigAx,varargin)
     add2yX(H,AX,BigAx,'bivarfit','0')
 %}
 
+%{ 
+    %% Example of use of option 'labeladd' combined with 'RowNamesLabels'.
+    close all;
+    n=8;
+    y = randn(n,1);
+    X = randn(n,3);
+    group = ones(n,1); 
+    group(1:5) = 2; 
+    [H,AX,BigAx] = yXplot(y,X,group);
+    % Create cell containing the name of the rows.
+    label={'ddf1' 'ddf2' 'ddf3' 'ddf4' 'ddf5' 'ddf6' 'ddf7' 'ddf8'};
+    % Labels are added to the units which belong to group 2 (that is to the
+    % first 5 units). The labels are taken from cell label
+    add2yX(H,AX,BigAx,'labeladd','1','RowNamesLabels',label);
+%}
+
+
 %% Beginning of code
 
 % FontSizelabeladd= height of text labels
@@ -166,11 +191,13 @@ bivarfit='';
 multivarfit='';
 labeladd='';
 userleg='';
+RowNamesLabels='';
 
 %get optional user options
 if nargin>3
     % user options
-    options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','','userleg','');
+    options= struct('intercept',1,'bivarfit','','multivarfit','','labeladd','',...
+        'userleg','','RowNamesLabels',RowNamesLabels);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -190,7 +217,7 @@ if nargin>3
     multivarfit = options.multivarfit;
     labeladd    = options.labeladd;
     userleg  = options.userleg;
-    
+    RowNamesLabels=options.RowNamesLabels;
 end
 
 
@@ -207,6 +234,9 @@ end
 
 % get its handle
 fig = ancestor(BigAx,'figure');
+
+%  set(fig,'NextPlot','add');
+
 
 % BigAx: the handle to big (invisible) axes framing the entire plot matrix.
 % remark: fig = ancestor(BigAx,'figure');
@@ -266,6 +296,11 @@ else
     ngroups = size(hPlotMatrixAxC,1);
 end
 
+% Get the labels of the last selected group of units before the handles
+% within each panel are rearranged by instruction below
+nbrush = get(H(:,1,end), 'UserData');
+
+
 % H: the handles of the groups within each panel are rearranged in a
 %    three-dimensional matrix H having the structure of that produced by
 %    gplotmatrix. Then, matrix H is used to extract the values of the
@@ -322,11 +357,6 @@ elseif nAX==1
 else
     disp('Error: nAX cannot be negative or zero.');
 end
-
-
-
-% Get the labels of the last selected group of units.
-nbrush = get(H(:,1,end), 'UserData');
 
 % Get the legenda of the last selected group of units.
 %DisplayNameLast = get(H(1,1,end), 'DisplayName');
@@ -441,7 +471,7 @@ if ~isempty(legnew)
     
     % For retrocompatibility with older version of MATLAB instead of using
     % hNames={hLines.DisplayName}; we use
-
+    
     if nleg>1
         hNames=get(hLines,'DisplayName');
         sorindlegnew=zeros(nleg,1);
@@ -461,8 +491,12 @@ end
 %% Add the objects
 
 % We need to add objects to the scatterplots of y|X
-set(fig,'NextPlot','add');
-set(AX,'NextPlot','add');
+
+if isempty(RowNamesLabels)
+    numtext=num2str(nbrush,'% d');
+else
+    numtext=RowNamesLabels(nbrush);
+end
 
 % Now, for each scatter of y|X do:
 for i = 1:length(AX)
@@ -516,7 +550,8 @@ for i = 1:length(AX)
         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
         %       text(Xi(nbrush,i)+dx,y(nbrush)+dy,numtext(nbrush),'HorizontalAlignment', 'Left');
-        text(Xilast(:,i) + dx,ylast + dy,cellstr(num2str(nbrush,'%d')),'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd);
+        
+        text(Xilast(:,i) + dx,ylast + dy,numtext,'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd);
     end
     
     % Add to each plot AX(i) the line(s) based on the hyperplane fit to y|X

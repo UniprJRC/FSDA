@@ -198,18 +198,17 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               labelling units. When input argument Y is a structure
 %               the threshold is associated with the trajectories of
 %               the Mahalanobis distances monitored along the search.
-%               If it is a cell array of strings, only the the units that
+%               If it is a cell array of strings, only the units that
 %               in at least one step of the search had a Mahalanobis
 %               distance greater than selunit{1} or smaller than selline{2}
 %               will have a textbox in the scatter plot matrix and in the
 %               associated malfwdplot after brushing.
-%               If it is a string it specifies the threshold
-%               above which labels have to be put. For example
-%               selunit='2.6' means that the text labels in the scatter plot matrix (and
-%               in the malfwdplot after brushing) are added
-%               only for the units which have in at least one step of
-%               the search a value of the Mahalanobis distance greater than
-%               2.6.
+%               If it is a string it specifies the threshold above which
+%               labels have to be put. For example selunit='2.6' means that
+%               the text labels in the scatter plot matrix (and in the
+%               malfwdplot after brushing) are added only for the units
+%               which have in at least one step of the search a value of
+%               the Mahalanobis distance greater than 2.6.
 %               If it is a numeric vector it contains the list of the units
 %               for which it is necessary to put the text labels in each
 %               panel of the spmplot and in the associated malfwdplot (if
@@ -217,7 +216,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               selunit is [20 34], the labels associated to rows 20 and 34
 %               are added to each scatter plot. The labels which are used
 %               are taken from Y.label is Y is a structure or from
-%               plo.label if Y is not matrix if this fields exist else the
+%               plo.label if plo.label is notemp and Y is a 2D array, else the
 %               numbers 1:n are used.
 %               The default value of selunit is string '2.5' if input
 %               argument Y is a structure else it is an empty value if
@@ -2575,7 +2574,7 @@ end
                 % order objects to group [To Enhance, initializing hpp if the length is known in advance]
                 if ~isempty(findobj(gcf,'Tag',['boxplot' num2str(1)]))
                     for zpp=1:nleg
-                        hpp = [hpp;findobj(gca,'Tag',['boxplot' num2str(zpp)])];
+                        hpp = [hpp;findobj(gca,'Tag',['boxplot' num2str(zpp)])]; %#ok<AGROW>
                     end
                 end
                 

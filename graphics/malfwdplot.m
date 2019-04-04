@@ -236,10 +236,10 @@ function plotopt=malfwdplot(out,varargin)
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
 %       label   :   row labels. Cell of strings. Cell containing the labels
-%                   of the units (optional argument used when
+%                   of the units. This optional argument is also used when
 %                   datatooltip=1. If this field is not present labels
 %                   row1, ..., rown will be automatically created and
-%                   included in the pop up datatooltip window).
+%                   included in the pop up datatooltip window.
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
@@ -604,6 +604,7 @@ function plotopt=malfwdplot(out,varargin)
 %}
 
 %{
+    % Interactive_example
     %   Example of use of databrush with RowNames labels shown inside spmplot. 
     close all
     load carsmall
@@ -1068,8 +1069,6 @@ if ~isempty(options.fground)
             reshape(MDvalues(funit,indsteps),lall,1),...
             reshape(repmat(strings,1,lsteps),lall,1),...
             'FontSize',fground.FontSize);
-        
-        
         
         set(h,{'HorizontalAlignment'},HA)
     end

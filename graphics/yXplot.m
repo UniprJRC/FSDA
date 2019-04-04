@@ -142,6 +142,9 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   on the x axis. Default value is '' (automatic scale).
 %                   Note that the x limits can also be specified
 %                   using optional option xlimx.
+%       plo.label : cell of length n containing the labels of the units. If
+%                   this field is empty the sequence 1:n will be used to
+%                   label the units.
 %                   Example - 'plo','1'
 %                   Data Types - scalar or structure.
 %
@@ -317,7 +320,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               along the search else it refers to the values of the
 %               response variable.
 %               If it is a cell array of strings, only
-%               the the units that in at least
+%               the units that in at least
 %               one step of the search had a residual smaller than
 %               selunit{1} or greater than selline{2} will have a
 %               textbox in the yXplot and in the associated resfwdplot
@@ -330,9 +333,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               the search a value of the scaled residual greater than
 %               2.6 in absolute value.
 %               If it is a numeric vector it contains the list of the units
-%               for which it is necessary to put the text labels in each panel of the
-%               yXplot and in the associated resfwdplot (if input option
-%               databrush is not empty).
+%               for which it is necessary to put the text labels in each
+%               panel of the yXplot and in the associated resfwdplot (if
+%               input option databrush is not empty). For example if
+%               selunit is [20 34], the labels associated to rows 20 and 34
+%               are added to each scatter plot. The labels which are used
+%               are taken from y.label is y is a structure or from
+%               plo.label if y is a vector and plo.label is not empty, else the
+%               numbers 1:n are used.
 %               The default value of selunit is string '2.5' if input
 %               argument y is a structure else it is an empty value if
 %               input argument y is a vector
@@ -361,7 +369,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %   will be centered with respect to the matrix of axes.
 %
 %
-% See also: spmplot, mdrplot, fanplot, resfwdplot
+% See also: spmplot, mdrplot, fanplot, resfwdplot, add2yX
 %
 % Copyright 2008-2018.
 % Written by FSDA team
@@ -468,6 +476,28 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % the list of the units which have to be labelled in the yXplot.
     selth=[2 10 20];
     yXplot(y,X,'selunit',selth);
+%}
+
+%{
+    %%   options selunit with row names.
+    %   In this case the row names
+    %   are contained inside input argument plo.label
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    X=[x1 x2];
+    % Remove Nans
+    boo=~isnan(y);
+    y=y(boo,:);
+    X=X(boo,:);
+    RowLabelsMatrixY=Model(boo,:);
+    seluni=[10 30];
+    plo=struct;
+    plo.label=cellstr(RowLabelsMatrixY);
+    % add labels for units inside vector seluni
+    yXplot(y,X,'selunit',seluni,'plo',plo)
 %}
 
 %{
@@ -590,7 +620,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Interactive_example
     %   Example of the use of rectangular brush. Superimposed labels for
     %   the brushed units and persistent labels in the yXplot which has been
-    %   brushed 
+    %   brushed
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
 %}
 
@@ -622,7 +652,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 
 %{
     % Interactive_example
-    % Example of persistent cumulative brushing. 
+    % Example of persistent cumulative brushing.
     % The options are 'persist' 'on'  labeladd '1' 'Label' 'on' 'RemoveLabels' 'off'.
     %  Now option labeladd '1'. In this case the row numbers of the
     %  selected units are displayed in the monitoring residuals plot
@@ -1000,6 +1030,17 @@ if isstruct(plo)
     else
         labeladd='';
     end
+    
+    if isnotstructy ==1
+        d=max(strcmp('label',fplo));
+        if d>0 && ~isempty(plo.label)
+            numtext=plo.label;
+        else
+            numtext=cellstr(num2str(seq,'%d'));
+        end
+    end
+    
+    
     d=find(strcmp('clr',fplo));
     if d>0
         clr=plo.clr;
@@ -1099,7 +1140,7 @@ styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
 % Display the initial gplotmatrix
 [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigrouplist),charsym,siz,doleg,[],nameX,namey);
 
-% default legenda
+% default legend
 if isnotstructy ~=1
     set(H,'DisplayName',' Units');
 end
@@ -1143,10 +1184,10 @@ if ndims(H) == 3
         % of the selections
         if isnumeric(group)
             % use context sensitive legends
-            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg','1');
+            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg','1','RowNamesLabels',numtext);
         else
             % use legends in guni
-            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg',guni);
+            add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg',guni,'RowNamesLabels',numtext);
         end
     end
 end
@@ -1516,11 +1557,11 @@ if ~isempty(databrush) || iscell(databrush)
                 % is set to off and persist is on the labels must remain in the yXplot
                 chkexist=find(strcmp('RemoveLabels',sele)==1);
                 if strcmp(persist,'on')
-                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off') 
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off')
                         units=unique([units(:); nbrush]);
                     end
                 else
-                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off') 
+                    if ~isempty(chkexist) && strcmp(sele(chkexist+1),'off')
                         units=unique([unitsori(:); nbrush]);
                     end
                 end

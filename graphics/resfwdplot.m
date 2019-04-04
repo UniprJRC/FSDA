@@ -714,6 +714,31 @@ function plotopt=resfwdplot(out,varargin)
     resfwdplot(out);
 %}
 
+%{
+    % Interactive_example
+    % Example of brushing with rownames.
+    %   The labels of the units appear both in the resfwdplot.
+    %   The names of the brushed rows appear automatically in the yXplot
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    X=[x1 x2];
+    % Remove Nans
+    boo=~isnan(y);
+    y=y(boo,:);
+    X=X(boo,:);
+    RowLabelsy=cellstr(Model(boo,:));
+    [out]=LXS(y,X,'nsamp',10000);
+    [out]=FSReda(y,X,out.bs);
+
+    databrush=struct;
+    databrush.labeladd='1';
+    resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
+%}
+
+
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
 %   cannot be used at the same time. These options will be replaced by a
@@ -736,9 +761,6 @@ residuals = out.RES;
 
 % seq: column vector containing the sequence 1 to n
 seq = (1:n)';
-% numtext: cell of strings used to label the units and their position in
-% the dataset
-numtext = cellstr(num2str(seq,'%d'));
 
 % x: vector which contains the subset size (numbers on the x axis)
 x = (n-nsteps+1):n;
@@ -1140,10 +1162,17 @@ if ~isempty(options.fground)
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
         if isempty(options.label)
+            
+            % numtext: cell of strings used to label the units and their position in
+            % the dataset
+            numtext = cellstr(num2str(seq,'%d'));
             strings = numtext(funit);
         else
-            out.label=options.label;
-            strings = out.label(funit);
+            %             out.label=options.label;
+            %             strings = out.label(funit);
+            %             numtext=out.label;
+            strings = options.label(funit);
+            numtext=options.label;
         end
         
         % Label the units
@@ -1620,6 +1649,18 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             end
             [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
             
+            
+            %             % generate the scatterplot matrix
+            %             plo=struct;
+            %             % plo.namey=namey; plo.nameX=nameX;
+            %             plo.clr=clr(unigroup);
+            %             plo.sym=char(styp{unigroup});
+            %             plo.labeladd=labeladd;
+            %             if max(strcmp('label',fieldnames(out)))>0 && ~isempty(out.label)
+            %                 plo.label=out.label(:);
+            %             end
+            %             [H,AX,BigAx]=yXplot(y,Xsel,group,plo,'namey',namey,'nameX',nameX);
+            
             % Assign to this figure a name and a tag=pl_yX
             set(gcf,'Name','Scatter plot matrix y|X with selected groups highlighted');
             set(gcf,'tag','pl_yX');
@@ -1629,7 +1670,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 set(findobj(gcf,'marker',char(styp(unigroup(mfc)))),'MarkerFaceColor',clr(unigroup(mfc)));
             end
             
-            % Set the legenda properties of the gplotmatrix
+            % Set the legend properties of the gplotmatrix
             set(H(:,:,1),'DisplayName','Unbrushed units');
             for brugrp = 2:length(unigroup)
                 set(H(:,:,brugrp),'DisplayName',['Brushed units ' num2str(brugrp-1)]);
@@ -1641,7 +1682,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             
             % add objects to the panels of the yX
             % add2yX(H,AX,BigAx,out,group,nbrush,bivarfit,multivarfit,labeladd);
-            add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
+            add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,...
+                'multivarfit',multivarfit,'labeladd',labeladd,'RowNamesLabels',numtext);
             
             %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out
