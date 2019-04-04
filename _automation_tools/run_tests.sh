@@ -20,7 +20,7 @@ do
 
     x=`cygpath -w $func_file`
 
-    y="try; run('$x'); diary('execution_log2009b.txt'); disp([datestr(clock) ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2009b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2009b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2009b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2009b.m
 	  echo -e "\n" >>test_runner2009b.m
@@ -38,7 +38,7 @@ do
 
     x=`cygpath -w $func_file`
 
-    y="try; run('$x'); diary('execution_log2016b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2016b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2016b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2016b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2016b.m
 	  echo -e "\n" >>test_runner2016b.m
@@ -57,7 +57,7 @@ do
 
     x=`cygpath -w $func_file`
 
-    y="try; run('$x'); diary('execution_log2014b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2014b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2014b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2014b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2014b.m
 	  echo -e "\n" >>test_runner2014b.m
@@ -76,7 +76,7 @@ do
 
     x=`cygpath -w $func_file`
 
-    y="try; run('$x'); diary('execution_log2012a.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2012a.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2012a.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2012a.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2012a.m
 	  echo -e "\n" >>test_runner2012a.m
@@ -94,7 +94,7 @@ cat flist | while read func_file
 do 
 
     x=`cygpath -w $func_file`
-    y="try; run('$x'); diary('execution_log2018b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2018b.txt'); disp([datestr(clock) ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+    y="try; run('$x'); diary('execution_log2018b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2018b.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
 	
     echo $y >>test_runner2018b.m
 	  echo -e "\n" >>test_runner2018b.m
