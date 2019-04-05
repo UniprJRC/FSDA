@@ -605,7 +605,7 @@ function plotopt=malfwdplot(out,varargin)
 
 %{
     % Interactive_example
-    %   Example of use of databrush with RowNames labels shown inside spmplot. 
+    % Example of use of databrush with RowNames labels shown inside spmplot. 
     close all
     load carsmall
     x1 = Weight;
