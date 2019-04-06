@@ -126,20 +126,21 @@ randgen=zeros(n,1);
 persistent seed1;
 persistent seed2;
 
-if nargin<2 || isempty(distrib)
-    % user supplied only n 
+if nargin < 2 || isempty(distrib)
+    % user supplied only n
     distrib=0;
     s1=12345;
     s2=56789;
     
-elseif nargin <3 || ( ~isempty(seed1) ||  ~isempty(seed2))
+elseif nargin < 3 
+     % user supplied n and distrib
+    if ( ~isempty(seed1) ||  ~isempty(seed2))
+        s1=seed1;
+        s2=seed2;
+    end
+elseif  nargin < 5 
+    % user supplied n, distrib, s1, s2
     
-    s1=seed1;
-    s2=seed2;
-    
-elseif isempty(s1) || isempty(s2)
-    s1=12345;
-    s2=56789;
 end
 
 
