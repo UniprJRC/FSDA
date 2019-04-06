@@ -13,7 +13,7 @@ function [out]= genr8(n, distrib, s1, s2)
 %
 %
 %   n       :    Number of random numbers. Positive integer. The number of
-%                random numbers to generate. 
+%                random numbers to generate.
 %                Data Types - integer value
 %
 %
@@ -24,15 +24,15 @@ function [out]= genr8(n, distrib, s1, s2)
 %                   indicates the use of the uniform distribution in [0 1],
 %                   while distrib=1 indicates the use of the standard normal
 %                   with 0 mean and standard deviation 1
-%   s1:       First value used as the seed for the sequence. Scalar. 
+%   s1:       First value used as the seed for the sequence. Scalar.
 %                   Whenever needed, the user can initialize s1 to a value
 %                   between 1 and 2147483562.
-%                   Example - 4356123 
+%                   Example - 4356123
 %                   Data Types - integer value
-%   s2:       Second value used as the seed for the sequence. Scalar.  
+%   s2:       Second value used as the seed for the sequence. Scalar.
 %                   Whenever needed, s2 can be initialized to
-%                   a value between 1 and 2147483398. 
-%                   Example - 123 
+%                   a value between 1 and 2147483398.
+%                   Example - 123
 %                   Data Types - integer value
 %
 %
@@ -59,11 +59,11 @@ function [out]= genr8(n, distrib, s1, s2)
 % References:
 %
 % L'Ecuyer, P. (1988), Efficient and Portable Combined Random Number Generators,
-%    "Communications of the ACM", Vol. 31, pp. 742-751. 
-% Wichmann, B. and Hill, D. (1982), An Efficient and Portable Pseudo-random 
-%    Number Generator, "Applied Statistics", Vol. 31, pp. 188-190. 
+%    "Communications of the ACM", Vol. 31, pp. 742-751.
+% Wichmann, B. and Hill, D. (1982), An Efficient and Portable Pseudo-random
+%    Number Generator, "Applied Statistics", Vol. 31, pp. 188-190.
 %
-% Acknowledgements: 
+% Acknowledgements:
 %
 %    Original PASCAL version by Pierre L'Ecuyer.
 %    Modifications by John Burkardt.
@@ -127,17 +127,19 @@ persistent seed1;
 persistent seed2;
 
 if nargin<2 || isempty(distrib)
+    % user supplied only n 
     distrib=0;
-        s1=12345;
+    s1=12345;
     s2=56789;
-
-elseif nargin <3 || isempty(seed1) 
+    
+elseif nargin <3 || ( ~isempty(seed1) ||  ~isempty(seed2))
+    
     s1=seed1;
-    s2=56789;
-elseif nargin <4 || isempty(seed2)   
     s2=seed2;
-else
-
+    
+elseif isempty(s1) || isempty(s2)
+    s1=12345;
+    s2=56789;
 end
 
 
@@ -157,23 +159,23 @@ end
 
 function [ r, s1, s2 ] = r8_uni ( s1, s2 )
 
-  k = floor ( s1 / 53668 );
-  s1 = 40014 * ( s1 - k * 53668 ) - k * 12211;
-  if ( s1 < 0 )
+k = floor ( s1 / 53668 );
+s1 = 40014 * ( s1 - k * 53668 ) - k * 12211;
+if ( s1 < 0 )
     s1 = s1 + 2147483563;
-  end
+end
 
-  k = floor ( s2 / 52774 );
-  s2 = 40692 * ( s2 - k * 52774 ) - k * 3791;
-  if ( s2 < 0 )
+k = floor ( s2 / 52774 );
+s2 = 40692 * ( s2 - k * 52774 ) - k * 3791;
+if ( s2 < 0 )
     s2 = s2 + 2147483399;
-  end
+end
 
-  z = s1 - s2;
-  if ( z < 1 )
-    z = z + 2147483562;
-  end
+z = s1 - s2;
+if ( z < 1 )
+    z = z + 2147483563;
+end
 
-  r = z / 2147483563.0;
+r = z / 2147483563.0;
 
 end
