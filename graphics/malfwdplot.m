@@ -7,16 +7,42 @@ function plotopt=malfwdplot(out,varargin)
 %
 %  out :  Structure containing monitoring of Mahalanobis distance. Structure.
 %               Structure containing the following fields.
-%       out.MAL =   matrix containing the squared Mahalanobis distances monitored in each
-%               step of the forward search. Every row is associated with a
-%               unit (row of data matrix Y).
-%               This matrix can be created using function FSMeda
-%               (compulsory argument)
-%       out.Un  =   matrix containing the order of entry of each unit
-%               (necessary if datatooltip is true or databrush is not empty)
-%       out.Y   =   n x v data matrix; n observations
-%               and v variables
-%                Data Types - single|double
+%       out.MAL =  n-by-k matrix containing the squared Mahalanobis distances
+%               monitored in each step of the forward search or more in
+%               general any other trajectories monitored in k steps (e.g. the MCD
+%               monitored for k different values of break down point, the
+%               MM estimators monitored for k values of efficiency).
+%               This matrix can be created using functions FSMeda or
+%               Smulteda or MMmulteda ... This field is compulsory.
+%       out.Y   =  n-by-v matrix.  It can be either the original data matrix
+%               or another matrix with n rows and p variables (i.e. the
+%               matrix of the first p principal components). This field is
+%               compulsory if brushing, through option databrush, is
+%               invoked. The points of the scatter plot matrix which
+%               correspond to the selected trajectories will be
+%               automatically highlighted. The labels which will be
+%               inserted in the spmplot depend on optional input argument
+%               'nameY'.
+%    out.class  = character which specifies how to label the x
+%                and y axes axis and the message in the datatooltip window. If
+%                out.class is a character then if:
+%               out.class='Smulteda' or 'mveeda' or 'mcdeda' the label in
+%               the x axis is 'Break down point' the label in the x axis is
+%               'Efficiency';
+%               If out.class is a structure it may contain the fields xlab
+%               and ylab which specify the labels to be put respectively to
+%               the x and y axis.
+%               In all the other cases or if this field is not present the
+%               x label is 'Subset size m'. 
+%               This field is not compulsory. Also notice that the labels
+%               of the axes can be also personalized using option standard.
+%       out.Un  =  matrix of size (k-1)-by r containing the order of entry
+%               of each unit, where k is the number of columns of matrix MAL.
+%               The first column of matrix out.Un contains the subset size
+%               while the other columns the units entered. The nmber of
+%               columns is k before more than one unit can enter the
+%               seubset at a particular step.
+%               This field is not compulsory.
 %
 %
 %  Optional input arguments:
@@ -38,7 +64,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       labels of the axes. Default value is 12.
 %                   standard.subsize = numeric vector containing the subset size
 %                       with length equal to the number of columns of
-%                       matrix of MD. The default value of subsize is
+%                       matrix of MAL. The default value of subsize is
 %                       size(MAL,1)-size(MAL,2)+1:size(MAL,1)
 %                   standard.LineWidth = scalar specifying line width for the
 %                       trajectories.
@@ -236,10 +262,14 @@ function plotopt=malfwdplot(out,varargin)
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
 %       label   :   row labels. Cell of strings. Cell containing the labels
-%                   of the units. This optional argument is also used when
-%                   datatooltip=1. If this field is not present labels
+%                   of the n units. This optional argument is used for
+%                   datattoltip and brushing. If label is present the
+%                   rownames of the units will be used  during brushing and
+%                   in the datatootip.
+%                   If this field is not present labels
 %                   row1, ..., rown will be automatically created and
-%                   included in the pop up datatooltip window.
+%                   included in the pop up datatooltip window and the
+%                   numbers 1:n will be used for the brushed trajectories.
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
@@ -288,10 +318,11 @@ function plotopt=malfwdplot(out,varargin)
 %                   Data Types - single | double | struct
 %       nameY   :   variable labels. Cell array of strings.
 %                   Cell array of strings of length v containing the labels
-%                   of the variables of the dataset. Cell of strings. If it
-%                   is empty (default) the sequence Y1, ..., Yv will be used
+%                   of the variables of the dataset which will be added to
+%                   the spmplot after brushing. Cell of strings. If it is
+%                   empty (default) the sequence Y1, ..., Yv will be used
 %                   automatically
-%                   Example - 'nameY',{'var1', var2, 'var3'}
+%                   Example - 'nameY',{'PC1', PC2, 'PC3'}
 %                   Data Types - cell of strings
 %       msg     :   display or save used options. Scalar. Scalar which
 %                   controls whether to display or to save
@@ -605,13 +636,19 @@ function plotopt=malfwdplot(out,varargin)
 
 %{
     % Interactive_example
-    % Example of use of databrush with RowNames labels shown inside spmplot. 
+    %  Example of use of databrush combined with option 'label'.
+    % If option label is supplied (that is if rownames of the input matrix
+    % are supplied), brushed units are shown with their names rather than
+    % with their row numbers, both in the malfwdplot and in the associated
+    % scatter plot matrix. In this examples brushing is done just once. To
+    % see what happens when persist is on see the next example-
     close all
     load carsmall
     x1 = Weight;
     x2 = Horsepower;    % Contains NaN data
     y = MPG;    % response
     Y=[x1 x2 y];
+    NameY={'Weight', 'HorsePower' 'MPG'};
     % Remove Nans
     boo=~isnan(y);
     Y=Y(boo,:);
@@ -621,11 +658,56 @@ function plotopt=malfwdplot(out,varargin)
     m0=20;
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'init',30);
-    % Row names of Y are added to structure out
-    out.label=RowLabelsMatrixY;
     databrush=struct;
-    databrush.labeladd='1';
-    malfwdplot(out,'databrush',databrush)
+    % Write labels of trajectories inside the malfwdplot while brushing
+    databrush.Label='on'; 
+    % Do not remove labels after selection in the malfwdplot
+    databrush.RemoveLabels='off';
+    % Add the labels of the units in the associated scatter plot matrix
+    databrush.labeladd='1'; % 
+    % Just write labels for units which have a trajectory
+    % greater than fground.fthresh.
+    fground=struct;
+    fground.fthresh=15;
+    malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,'nameY',NameY)
+%}
+
+%{
+    % Interactive_example
+    %  Second example of use of databrush combined with option 'label'.
+    % This example is exactly equal as before but now persist is 'on'.
+    % In this case each set of brushed units appears with a particular
+    % color (both the points and the assocaited labels)
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    NameY={'Weight', 'HorsePower' 'MPG'};
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    %   RowLabelsMatrixY is the cell which contains the names of the rows.
+    RowLabelsMatrixY=cellstr(Model(boo,:));
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'init',30);
+    databrush=struct;
+    % Write labels of trajectories inside the malfwdplot while brushing
+    databrush.Label='on'; 
+    % Do not remove labels after selection in the malfwdplot
+    databrush.RemoveLabels='off';
+    % Add the labels of the units in the associated scatter plot matrix
+    databrush.labeladd='1'; % 
+    % Enable repeated brushing actions
+    databrush.persist='on';
+    % Just write labels for units which have a trajectory
+    % greater than fground.fthresh.
+    fground=struct;
+    fground.fthresh=15;
+    malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,'nameY',NameY)
 %}
 
 %
@@ -649,8 +731,7 @@ Y=out.Y;
 % seq= column vector containing the sequence 1 to n
 seq= (1:n)';
 
-% numtext= a cell of strings used to labels the units with their position
-% in the dataset.
+% numtext= a cell of strings used to labels the units (that is the rownames of the units)
 numtext=cellstr(num2str(seq,'%d'));
 
 % x= vector which contains the subset size (numbers on the x axis)
@@ -659,7 +740,6 @@ x=(n-nsteps+1):n;
 % selthdef= threshold to select the MDs labelled in the malfwdplot.
 % selline=  threshold to select the MDs highlighted in the malfwdplot.
 % unselline= to select how to represent the unselected units ('faint' 'hide' 'greish');
-% laby=     label used for the y-axis of the malfwdplot.
 if isfield(out,'class')
     if strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
         labx= 'Break down point';
@@ -672,8 +752,14 @@ else
     labx= 'Subset size m';
 end
 
+% laby=     label used for the y-axis of the malfwdplot.
 laby='Mahalanobis distances';
-fthresh=2.5^2;
+
+
+% fthresh=2.5^2;
+v=size(Y,2);
+fthresh=v+2*sqrt(2*v);
+
 if n>100
     bthresh=2.5^2;
     bstyle='faint';
@@ -768,8 +854,6 @@ if isstruct(datatooltip)
         end
     end
 end
-
-
 
 databrush=options.databrush;
 
@@ -1052,11 +1136,26 @@ if ~isempty(options.fground)
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
         if isempty(options.label)
+            % In old releases of FSDA it was possible to supply row names
+            % directly from input structure out, so for compatibility we
+            % leave the instruction below
+            % If structure out does not contain labels for the rows then
+            % labels row1....rown are added automatically
+            if isempty(intersect('label',fieldnames(out)))
+                out.label=numtext;
+            end
             strings = numtext(funit);
         else
+            numtext=options.label;
             out.label=options.label;
-            strings = out.label(funit);
+            strings = numtext(funit);
         end
+        
+                   % If structure out does not contain labels for the rows then
+            % labels row1....rown are added automatically
+            if isempty(intersect('label',fieldnames(out)))
+                out.label=cellstr(num2str((1:length(out.Y))','row %d'));
+            end
         
         % Label the units
         %         h=text(reshape(repmat(steps,lunits,1),lall,1),...
@@ -1164,7 +1263,14 @@ set(gca,'Position',[0.1 0.1 0.85 0.85])
 %         from now on, plot1 is the handle of the resfwdplot figure.
 plot1=gcf;
 
-Un=out.Un;
+% Check if field Un is present inside input structure out
+ d=find(strcmp('Un',fieldnames(out)),1);
+    if  isempty(d)
+        Un='';    
+    else
+        Un=out.Un;
+    end
+
 
 if ~isempty(options.conflev)
     conflev=options.conflev;
@@ -1267,35 +1373,10 @@ if ~isempty(datatooltip)
     
     % Declare a custom datatooltip update function to display additional
     % information about the selected unit
-    set(hdt,'UpdateFcn',{@malfwdplotLbl,out,LineColor});
+    set(hdt,'UpdateFcn',{@malfwdplotLbl,out,LineColor},'Interpreter','Latex');
 end
 
-%% Datatooltip mode (call to function ginputFS)
-% This is to highlight trajectories of unit in the subset at given step
 
-% if ~isempty(options.datatooltip)
-%
-%     hTarget=[];
-%     hTargetlwd=[];
-%     hTargetcol=[];
-%     % datacursormode on;
-%
-%
-%     % datacursormode on;
-%     hdt = datacursormode;
-%     set(hdt,'Enable','on');
-%     % If options.datatooltip is not a struct then use our default options
-%     if ~isstruct(options.datatooltip)
-%         set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
-%     else
-%         % options.datatooltip contains a structure where the user can set the
-%         % properties of the data cursor
-%         set(hdt,options.datatooltip);
-%     end
-%     % Declare a custom datatooltip update function to display additional
-%     % information about the selected unit
-%     set(hdt,'UpdateFcn',{@malfwdplotLbl,out})
-% end
 
 %% Brush mode (call to function selectdataFS)
 if ~isempty(options.databrush) || isstruct(options.databrush)
@@ -1314,19 +1395,20 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
     
-    % sele={sele{:} 'Tag' options.tag}; OLD inefficient code
-    sele=[sele 'Tag' {options.tag}];
+    % pass to selextdataFS the row names of the units and the Tag
+    sele=[sele 'Tag' {options.tag} 'RowNamesLabels' {numtext}];
     
     % Check if X includes the constant term for the intercept.
     v=size(Y,2);
     p1=1:v;
     
-    % Set the labels of the axes.
-    d=find(strcmp('nameY',fieldnames(out)),1);
+    % Set the labels of the axes in the scatter plot matrix.
+    d=options.nameY;
+    % d=find(strcmp('nameY',fieldnames(out)),1);
     if  isempty(d)
         nameY=cellstr(num2str(p1','y%d'));
     else
-        nameY=out.nameY;
+        nameY=d;
     end
     
     % group = vector which will contain the identifier of each group e.g.
@@ -1451,7 +1533,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % nbrush= vector which contains the brushed steps selstesp=
             % vector which will contain the steps in which the brushed
             % units enter the search Given nbrush, find selstesp
-            selsteps=zeros(n,11);
+            % selsteps=zeros(n,11);
+            selsteps=zeros(n,size(Un,2));
             ii=0;
             for i=1:length(nbrush)
                 idx = find(Un(:,2:end) == nbrush(i));
@@ -1577,9 +1660,20 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             
             % generate the scatterplot matrix
             plo=struct; plo.nameY=nameY; plo.labeladd=labeladd; 
-            if max(strcmp('label',fieldnames(out)))>0 && ~isempty(out.label)
-                plo.label=out.label(:);
+            
+            if strcmp(persist,'on')
+                plo.clr=clr(1:ij+1);
+            else
+                plo.clr=clr([1 ij+1]);
             end
+            
+            % numtext is a cell array containing the (row)names of the
+            % units or a cell containing {'1', ..., 'n'}. 
+            %             if max(strcmp('label',fieldnames(out)))>0 && ~isempty(out.label)
+            %                 plo.label=out.label(:);
+            %             end
+            plo.label=numtext;            
+
             H = spmplot(Y,group,plo);
             
             % Assign to this figure a name
@@ -1722,14 +1816,6 @@ end % close options.databrush
         if isempty(row)
             output_txt{1}=['no MD has coordinates x,y' num2str(x1) '' num2str(y1)] ;
         else
-            
-            % If structure out does not contain labels for the rows then
-            % labels row1....rown are added automatically
-            if isempty(intersect('label',fieldnames(out)))
-                out.label=cellstr(num2str((1:length(out.Y))','row %d'));
-            end
-            
-            
             
             output_txt=cell(5,1);
             

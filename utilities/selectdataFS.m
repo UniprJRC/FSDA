@@ -118,6 +118,13 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %
 %           DEFAULT VALUE: 'off'
 %
+% 'RowNamesLabels' - cell of length n, where n is the number of points in
+%                   the graph, containing the labels of the units. If
+%                   this field is empty the sequence 1:n will be used to
+%                   label the units.
+%
+%           DEFAULT VALUE: ''
+%
 %  'Pointer' - {'crosshair' | 'fullcrosshair' | 'arrow' | 'ibeam' |
 %           'watch' | 'topl' | 'topr' | 'botl' | 'botr' | 'left' |
 %           'top' | 'right' | 'bottom' | 'circle' | 'cross' | 'fleur' |
@@ -315,6 +322,7 @@ params.Pointer = 'cross';
 params.Return = 'selected';
 params.Verify = 'off';
 params.Label = 'off';
+params.RowNamesLabels=[];
 
 % Undocumented options, also unchecked for validity.
 % These parameters control the marker used to identify
@@ -1092,6 +1100,12 @@ end
                 strcmp(get(gcf,'tag'),'pl_levfwd') || ...
                 strcmp(get(gcf,'tag'),'pl_malfwd')
             
+            if isempty(params.RowNamesLabels)
+                numtext=cellstr(num2str((1:length(xselect))','% d'));
+            else
+                numtext=params.RowNamesLabels;
+            end    
+                
             % xsel is a vector which contains the list of the trajectories
             % which have been selected
             xsel=find(cellfun('isempty',xselect)==0);
@@ -1113,12 +1127,19 @@ end
                 % label to include on the plot
                 textlabels{ii}=num2str(xsel(ii));
             end
+            
             %  if params.RemoveLabels
             if strcmpi(params.RemoveLabels,'on')
-                texthandles = text(xtext,ytext,textlabels,'tag','selected','FontSize',12);
+                texthandles = text(xtext,ytext,numtext(xsel),'tag','selected','FontSize',12,'Color',params.FlagColor);
             else
-                texthandles = text(xtext,ytext,textlabels,'FontSize',12);
+                texthandles = text(xtext,ytext,numtext(xsel),'FontSize',12,'Color',params.FlagColor);
             end
+            
+%             if strcmpi(params.RemoveLabels,'on')
+%                 texthandles = text(xtext,ytext,numtext(textlabels{:}),'tag','selected','FontSize',12);
+%             else
+%                 texthandles = text(xtext,ytext,numtext(textlabels),'FontSize',12);
+%             end
             
         elseif strcmp(get(gcf,'tag'),'pl_mdr') || ...
                 strcmp(get(gcf,'tag'),'pl_mmd')
