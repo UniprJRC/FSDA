@@ -70,7 +70,7 @@ function [out]= genr8(n, distrib, s1, s2)
 %    Further modifications by FSDA team
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %
@@ -82,7 +82,7 @@ function [out]= genr8(n, distrib, s1, s2)
 
 %{
     % genr8 using all default arguments.
-    out = gen_r8uni(1)
+    out = genr8(1)
 %}
 
 %{
@@ -96,22 +96,22 @@ function [out]= genr8(n, distrib, s1, s2)
 %}
 
 %{
-    % genr8 specifing the type of distribution and the first of the 2 seeds.
+    % genr8 specifing the type of distribution and 1 seed.
     
-    %  vector of 10 uniform distributed random numbers with 1st seed
-    out = genr8(10, 0, 12345)
-    %  vector of 5 normal distributed random numbers with 1st seed
-    out = genr8(5, 1, 45678)
+    % vector of 5 uniform distributed random numbers and 1 seed
+    out = genr8(5, 0, 12345)
+    % vector of 50 normal distributed random numbers and 1 seed
+     out = genr8(10, 1, 45678)
 
 %}
 
 %{
-    % genr8 specifing the type of distribution and both seeds.
+    % genr8 specifing the type of distribution and the 2 seeds.
     
     % vector of 5 uniform distributed random numbers with both seeds
-    out= enr8(5, 0, 12345, 45678)
+    out = genr8(5, 0, 12345, 45678)
     % vector of 50 normal distributed random numbers with both seeds
-     out= enr8(50, 1, 12345, 45678)
+     out = genr8(10, 1, 12345, 45678)
 
 %}
 
@@ -121,7 +121,7 @@ if nargin <1 || isempty(n)
     error('FSDA:gen_r8uni:MissingInput','n must be specified');
 end
 
-randgen=zeros(n,1);
+randvec=zeros(n,1);
 
 persistent seed1;
 persistent seed2;
@@ -132,30 +132,45 @@ if nargin < 2 || isempty(distrib)
     s1=12345;
     s2=56789;
     
-elseif nargin < 3 
-     % user supplied n and distrib
+elseif nargin < 3
+    % user supplied n and distrib
     if ( ~isempty(seed1) ||  ~isempty(seed2))
+        % not the first run
         s1=seed1;
         s2=seed2;
+    else
+        % first run, default seeds
+        s1=12345;
+        s2=56789;
     end
-elseif  nargin < 5 
+elseif nargin < 4
+    % user supplied n, distrib and only one seed:
+    % the seed supplied is assigned to seed1
+    if ( ~isempty(seed1) ||  ~isempty(seed2))
+        % not the first run
+        s2=seed2;
+    else
+        % first run, default seed2
+        s2=56789;
+    end
+elseif  nargin < 5
     % user supplied n, distrib, s1, s2
-    
+    % nothing to do
 end
 
 
 for i = 1 : n
-    [ randgen(i), s1, s2 ] = r8_uni ( s1, s2 );
+    [ randvec(i), s1, s2 ] = r8_uni ( s1, s2 );
 end
 
 
 if distrib==1
-    randgen=norminv(randgen);
+    randvec=norminv(randvec);
 end
 
 seed1=s1;
 seed2=s2;
-out=randgen;
+out=randvec;
 end
 
 function [ r, s1, s2 ] = r8_uni ( s1, s2 )
