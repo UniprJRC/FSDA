@@ -102,6 +102,25 @@ done
 echo -e "exit(0);\n" >>test_runner2018b.m
 # END MATLAB R2018b
 
+# MATLAB R2019a
+rm -f test_runner2019a.m
+rm -f execution_log2019a.txt
+
+echo -e "\n" >>test_runner2019a.m
+
+cat flist | while read func_file
+do 
+
+    x=`cygpath -w $func_file`
+    y="try; run('$x'); diary('execution_log2019a.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x completed successfully']); diary('off'); catch error; diary('execution_log2019a.txt'); disp([datestr(clock,'dd-mmm-yyyy HH:MM:SS.FFF') ' - Execution of $x FAILED: ' error.message]); diary('off'); end;" 	
+	
+    echo $y >>test_runner2019a.m
+	  echo -e "\n" >>test_runner2019a.m
+done
+echo -e "exit(0);\n" >>test_runner2019a.m
+# END MATLAB R2019a
+
+
 if [ $TEST_2009b == "YES" ]; then
 '/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
 fi 
@@ -120,4 +139,8 @@ fi
 
 if [ $TEST_2018b == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2018b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2018b"
+fi 
+
+if [ $TEST_2019a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2019a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2019a"
 fi 
