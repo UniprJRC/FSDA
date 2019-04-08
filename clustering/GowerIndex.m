@@ -1,13 +1,10 @@
-function S = GowerIndex(Y, varargin)
+function [S, Stable] = GowerIndex(Y, varargin)
 %GowerIndex computes matrix of similarity indexes using Gower metric
 %
 %
 %<a href="matlab: docsearchFS('GowerIndex')">Link to the help page for this function</a>
 %
-%   This function uses the alternating conditional expectations algorithm
-%   to find the transformations of y and X that maximise the proportion of
-%   variation in y explained by X. When X is a matrix, it is transformed so
-%   that its columns are equally weighted when predicting y.
+%   This function computes the matrix of Gower similarity indexes
 %
 %
 % Required input arguments:
@@ -44,9 +41,13 @@ function S = GowerIndex(Y, varargin)
 %
 % Output:
 %
-%   S   :  matrix with Gower similarity coefficients. n-by-n symmetric matrix.
-%          n-by-n natrix whose i-th j-th entry contains the Gower
-%          similarity index between row i and row j of input matrix Y.
+%      S   :  matrix with Gower similarity coefficients. n-by-n symmetric matrix.
+%             n-by-n matrix whose i-th j-th entry contains the Gower
+%             similarity index between row i and row j of input matrix Y.
+%   Stable :  matrix with Gower similarity coefficients in table format. n-by-n table.
+%             n-by-n table whose i-th j-th entry contains the Gower
+%             similarity index between row i and row j of input matrix Y.  
+%
 %
 %
 %
@@ -97,13 +98,23 @@ function S = GowerIndex(Y, varargin)
 
 
 %{
-    % Example of use of option l.
+    % Example 1 of use of option l.
     p=3;
     n=30;
     Y=randi(20,n,p);
     % Specify that all variables are quantitative.
     l=ones(p,1);
     S=GowerIndex(Y,'l',l);
+%}
+
+%{
+    % An example of Gowerindex called with two ouptut arguments.
+    X=[380	700	    1	0	0  3 
+      500	1800	1	1	1  3
+      310	480	    0	0	0  2];
+    % The first two variables are quantitative and 3:5 are
+    % dichotomous and the last is polithomous.
+    [S,Stable]=GowerIndex(X,'l',[ 1 1 2 2 2 3]);
 %}
 
 
@@ -115,6 +126,34 @@ function S = GowerIndex(Y, varargin)
     % Specify that first variable is quantitative and the other 2 are categorical.
     l=[1 3 3];
     S=GowerIndex(Y,'l',l);
+%}
+
+%{
+    % Example where input is a table with categorical variables containing numbers.
+    % For the categorical variables nummbers are supplied.
+    X=[380	700	    1	0	0 3
+      500	1800	1	1	1 3
+      310	480	    0	0	0 2];
+    NameRows={'AEG' 'BOSCH' 'IGNIS'};
+    NameCols={'Capacity' 'Price' 'Alarm' 'Dispenser' 'Display' 'Certificate'}; 
+    Xtable=array2table(X,'RowNames',NameRows,'VariableNames',NameCols);
+    S=GowerIndex(Xtable,'l',[ 1 1 2 2 2 3]);
+%}
+
+%{
+    %% Example where input is a table with categorical variables containing labels.
+    Capacity=[380; 500; 310];
+    Price=[700; 1800; 480];
+    Alarm={'Yes'; 'Yes'; 'No'};
+    Dispenser={'No'; 'Yes'; 'No'};
+    Display={'No'; 'Yes'; 'No'};
+    Certificate={'World';'World';'Europe'};
+    % Binary variable for which the corresponding value is 'yes' or 'Yes'
+    % is coded as 1 (presence)
+    Xtable=table(Capacity,Price,Alarm,Dispenser,Display,Certificate,'RowNames',NameRows);
+    [S,Stable]=GowerIndex(Xtable,'l',[ 1 1 2 2 2 3]);
+    disp('Matrix of Gower similarity indexes')
+    disp(Stable)
 %}
 
 %% Beginning of code
@@ -144,10 +183,19 @@ end
 
 [n,p]=size(Y);
 
+
 if isempty(l)
+    % Check if input Y is a table or an array.
+    if istable(Y)
+        error('FSDA:GowerIndex:needl','The input is a table therefore it is necessary to supply vector l which specifies the type of variables for each column')
+    else
+    end
+    
     booquant=false(p,1); % Initialize Boolean for quantitative variables
     boobin=booquant;  % Initialize Boolean for binary variables
     boocat=booquant; % Initialize Boolean for categorical variables
+    % If Y is not table program tries to determine automatically the type
+    % of variable for each column
     for j=1:p
         uniYj=unique(Y(:,j));
         m=length(uniYj);
@@ -163,6 +211,7 @@ if isempty(l)
             booquant(j)=true;
         end
     end
+        RowNames=cellstr(num2str((1:n)','Row%d'));
 else
     
     % Check that the length of supplied vector l is equal to p
@@ -175,7 +224,36 @@ else
     booquant=l==1; % Boolean for quantitative variables
     boobin=l==2;  % Boolean for binary variables
     boocat=l==3;  % Boolean for categorical variables
+    
+    if istable(Y)
+        Ynum=zeros(n,p);
+        
+        for j=1:p
+            if l(j)==3 % if column j is a cell which contains a categorical variable
+                if iscell(Y{:,j})
+                    Ynum(:,j)=grp2idx(categorical(Y{:,j}));
+                else
+                    Ynum(:,j)=Y{:,j};
+                end
+                % variable is binary
+            elseif l(j)==2
+                if iscell(Y{:,j})
+                    boojbinary= strcmp(Y{:,j},'yes') | strcmp(Y{:,j},'Yes') | strcmp(Y{:,j},1);
+                    Ynum(boojbinary,j)=1;
+                else
+                    Ynum(:,j)=Y{:,j};
+                end
+            else
+                Ynum(:,j)=Y{:,j};
+            end
+        end
+        RowNames=Y.Properties.RowNames;
+        Y=Ynum;
+    else
+        RowNames=cellstr(num2str((1:n)','Row%d'));
+    end
 end
+
 
 p1=sum(booquant);
 
@@ -216,5 +294,9 @@ for i=1:n
 end
 % Computation of Gower similarity index
 S=(C+A+Alpha)./(p-D);
+
+% Output in table format
+Stable=array2table(S,'RowNames',RowNames,'VariableNames',RowNames);
+
 end
 %FScategory:CLUS-RobClaMULT
