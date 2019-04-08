@@ -549,9 +549,9 @@ for i = 1:length(AX)
     if strcmp('1',labeladd) && ngroups > 1
         xlimits = get(AX(i),'Xlim'); ylimits = get(AX(i),'Ylim');
         dx = (xlimits(2)-xlimits(1))*0.01*length(AX); dy = (ylimits(2)-ylimits(1))*0.01*length(AX)/2; % displacement
-        %       text(Xi(nbrush,i)+dx,y(nbrush)+dy,numtext(nbrush),'HorizontalAlignment', 'Left');
         
-        text(Xilast(:,i) + dx,ylast + dy,numtext,'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd);
+        % Add text labels with the same color of brushed units 
+        text(Xilast(:,i) + dx,ylast + dy,numtext,'HorizontalAlignment', 'Left','FontSize',FontSizelabeladd,'Color',get(H(1,i,end),'Color'));
     end
     
     % Add to each plot AX(i) the line(s) based on the hyperplane fit to y|X

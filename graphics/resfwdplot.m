@@ -716,9 +716,11 @@ function plotopt=resfwdplot(out,varargin)
 
 %{
     % Interactive_example
-    % Example of brushing with rownames.
-    %   The labels of the units appear both in the resfwdplot.
-    %   The names of the brushed rows appear automatically in the yXplot
+    % First example of brushing with row names.
+    % The labels of the units appear in the resfwdplot
+    % and automatically in the yXplot with the same color.
+    % In this example brushing is done just once. To
+    % check what happens when persist is 'on', see the next example.
     close all
     load carsmall
     x1 = Weight;
@@ -733,11 +735,45 @@ function plotopt=resfwdplot(out,varargin)
     [out]=LXS(y,X,'nsamp',10000);
     [out]=FSReda(y,X,out.bs);
 
-    databrush=struct;
-    databrush.labeladd='1';
+    % Write labels of trajectories inside the resfwdplot while brushing
+    databrush.Label='on'; 
+    % Do not remove labels after selection in the resfwdplot
+    databrush.RemoveLabels='off';
+    % Add the labels of the units in the associated yXplot matrix
+    databrush.labeladd='1'; % 
     resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
 %}
 
+%{
+    % Interactive_example
+    % Second example of brushing with row names.
+    % This example is exactly equal as before but now persist is 'on'.
+    % In this case each set of brushed units appears with a particular
+    % color (both the points and the associated labels)
+    close all
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    X=[x1 x2];
+    % Remove Nans
+    boo=~isnan(y);
+    y=y(boo,:);
+    X=X(boo,:);
+    RowLabelsy=cellstr(Model(boo,:));
+    [out]=LXS(y,X,'nsamp',10000);
+    [out]=FSReda(y,X,out.bs);
+
+    % Write labels of trajectories inside the resfwdplot while brushing
+    databrush.Label='on'; 
+    % Do not remove labels after selection in the resfwdplot
+    databrush.RemoveLabels='off';
+    % Add the labels of the units in the associated yXplot matrix
+    databrush.labeladd='1'; 
+    % Enable repeated brushing actions
+    databrush.persist='on';
+    resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
+%}
 
 %
 %   REMARK: note that at present options.databrush and options.datatooltip
@@ -761,6 +797,9 @@ residuals = out.RES;
 
 % seq: column vector containing the sequence 1 to n
 seq = (1:n)';
+
+% numtext= a cell of strings used to labels the units (that is the rownames of the units)
+numtext=cellstr(num2str(seq,'%d'));
 
 % x: vector which contains the subset size (numbers on the x axis)
 x = (n-nsteps+1):n;
@@ -1161,19 +1200,41 @@ if ~isempty(options.fground)
         
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
-        if isempty(options.label)
-            
-            % numtext: cell of strings used to label the units and their position in
-            % the dataset
-            numtext = cellstr(num2str(seq,'%d'));
+%         if isempty(options.label)
+%             
+%             % numtext: cell of strings used to label the units and their position in
+%             % the dataset
+%             numtext = cellstr(num2str(seq,'%d'));
+%             strings = numtext(funit);
+%         else
+%             %             out.label=options.label;
+%             %             strings = out.label(funit);
+%             %             numtext=out.label;
+%             strings = options.label(funit);
+%             numtext=options.label;
+%         end
+        
+        %%%%%%%%%%%%%%%%%%%%
+                if isempty(options.label)
+            % In old releases of FSDA it was possible to supply row names
+            % directly from input structure out, so for compatibility we
+            % leave the instruction below
+            % If structure out does not contain labels for the rows then
+            % labels row1....rown are added automatically
+            if isempty(intersect('label',fieldnames(out)))
+                out.label=numtext;
+            end
             strings = numtext(funit);
         else
-            %             out.label=options.label;
-            %             strings = out.label(funit);
-            %             numtext=out.label;
-            strings = options.label(funit);
             numtext=options.label;
+            out.label=options.label;
+            strings = numtext(funit);
         end
+        
+        
+        
+        %%%%%%%%%%%%%%%%%%%%
+        
         
         % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
@@ -1373,7 +1434,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
     
-    sele=[sele 'Tag' {options.tag}];
+    sele=[sele 'Tag' {options.tag}  'RowNamesLabels' {numtext}]; 
     
     % Check if X includes the constant term for the intercept.
     p=size(X,2);
@@ -1647,6 +1708,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 figure;
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
             end
+            
+            
             [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
             
             
@@ -1814,12 +1877,6 @@ end % close options.databrush
         if isempty(row)
             output_txt{1}=['no residual has coordinates x,y' num2str(x1) '' num2str(y1)] ;
         else
-            
-            % If structure out does not contain labels for the rows then
-            % labels row1....rown are added automatically
-            if isempty(intersect('label',fieldnames(out)))
-                out.label=cellstr(num2str((1:length(out.y))','row %d'));
-            end
             
             output_txt=cell(5,1);
             

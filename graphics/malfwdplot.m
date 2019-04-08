@@ -33,7 +33,7 @@ function plotopt=malfwdplot(out,varargin)
 %               and ylab which specify the labels to be put respectively to
 %               the x and y axis.
 %               In all the other cases or if this field is not present the
-%               x label is 'Subset size m'. 
+%               x label is 'Subset size m'.
 %               This field is not compulsory. Also notice that the labels
 %               of the axes can be also personalized using option standard.
 %       out.Un  =  matrix of size (k-1)-by r containing the order of entry
@@ -48,7 +48,7 @@ function plotopt=malfwdplot(out,varargin)
 %  Optional input arguments:
 %           standard : plot layout. Structure. Appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. 
+%                   style, color of the lines, etc.
 %                   Structure standard contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -640,8 +640,8 @@ function plotopt=malfwdplot(out,varargin)
     % If option label is supplied (that is if rownames of the input matrix
     % are supplied), brushed units are shown with their names rather than
     % with their row numbers, both in the malfwdplot and in the associated
-    % scatter plot matrix. In this examples brushing is done just once. To
-    % see what happens when persist is on see the next example-
+    % scatter plot matrix. In this example brushing is done just once. To
+    % check what happens when persist is 'on', see the next example.
     close all
     load carsmall
     x1 = Weight;
@@ -660,11 +660,11 @@ function plotopt=malfwdplot(out,varargin)
     [out]=FSMeda(Y,bs,'init',30);
     databrush=struct;
     % Write labels of trajectories inside the malfwdplot while brushing
-    databrush.Label='on'; 
+    databrush.Label='on';
     % Do not remove labels after selection in the malfwdplot
     databrush.RemoveLabels='off';
     % Add the labels of the units in the associated scatter plot matrix
-    databrush.labeladd='1'; % 
+    databrush.labeladd='1'; %
     % Just write labels for units which have a trajectory
     % greater than fground.fthresh.
     fground=struct;
@@ -677,7 +677,7 @@ function plotopt=malfwdplot(out,varargin)
     %  Second example of use of databrush combined with option 'label'.
     % This example is exactly equal as before but now persist is 'on'.
     % In this case each set of brushed units appears with a particular
-    % color (both the points and the assocaited labels)
+    % color (both the points and the associated labels)
     close all
     load carsmall
     x1 = Weight;
@@ -696,11 +696,11 @@ function plotopt=malfwdplot(out,varargin)
     [out]=FSMeda(Y,bs,'init',30);
     databrush=struct;
     % Write labels of trajectories inside the malfwdplot while brushing
-    databrush.Label='on'; 
+    databrush.Label='on';
     % Do not remove labels after selection in the malfwdplot
     databrush.RemoveLabels='off';
     % Add the labels of the units in the associated scatter plot matrix
-    databrush.labeladd='1'; % 
+    databrush.labeladd='1'; %
     % Enable repeated brushing actions
     databrush.persist='on';
     % Just write labels for units which have a trajectory
@@ -1065,7 +1065,7 @@ if ~isempty(options.fground)
         fground.flabstep=steps;
     else
         steps=[x(1) x(end)];
-        fground.flabstep=steps;        
+        fground.flabstep=steps;
     end
     
     % fthresh= threshold to define units which have to be displayed in foreground
@@ -1151,11 +1151,11 @@ if ~isempty(options.fground)
             strings = numtext(funit);
         end
         
-                   % If structure out does not contain labels for the rows then
-            % labels row1....rown are added automatically
-            if isempty(intersect('label',fieldnames(out)))
-                out.label=cellstr(num2str((1:length(out.Y))','row %d'));
-            end
+        % If structure out does not contain labels for the rows then
+        % labels row1....rown are added automatically
+        if isempty(intersect('label',fieldnames(out)))
+            out.label=cellstr(num2str((1:length(out.Y))','row %d'));
+        end
         
         % Label the units
         %         h=text(reshape(repmat(steps,lunits,1),lall,1),...
@@ -1264,12 +1264,12 @@ set(gca,'Position',[0.1 0.1 0.85 0.85])
 plot1=gcf;
 
 % Check if field Un is present inside input structure out
- d=find(strcmp('Un',fieldnames(out)),1);
-    if  isempty(d)
-        Un='';    
-    else
-        Un=out.Un;
-    end
+d=find(strcmp('Un',fieldnames(out)),1);
+if  isempty(d)
+    Un='';
+else
+    Un=out.Un;
+end
 
 
 if ~isempty(options.conflev)
@@ -1659,7 +1659,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             end
             
             % generate the scatterplot matrix
-            plo=struct; plo.nameY=nameY; plo.labeladd=labeladd; 
+            plo=struct; plo.nameY=nameY; plo.labeladd=labeladd;
             
             if strcmp(persist,'on')
                 plo.clr=clr(1:ij+1);
@@ -1668,12 +1668,12 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             end
             
             % numtext is a cell array containing the (row)names of the
-            % units or a cell containing {'1', ..., 'n'}. 
+            % units or a cell containing {'1', ..., 'n'}.
             %             if max(strcmp('label',fieldnames(out)))>0 && ~isempty(out.label)
             %                 plo.label=out.label(:);
             %             end
-            plo.label=numtext;            
-
+            plo.label=numtext;
+            
             H = spmplot(Y,group,plo);
             
             % Assign to this figure a name
