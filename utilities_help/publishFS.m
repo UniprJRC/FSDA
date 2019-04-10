@@ -1985,7 +1985,7 @@ for i=1:nTOTargin
     inipoint=regexp(fstringsel,['%\s*' listargins{i} '\s*:']);
     if isempty(inipoint)
         error('FSDA:missInpDescr',['No description has been found for compulsory input argument '  listargins{i} ])
-        
+    
     else
     end
     
@@ -1996,6 +1996,13 @@ for i=1:nTOTargin
             disp('Please check .m input file')
             error('FSDA:missInps',['Input .m file does not contain the description' ...
                 ' for input argument '''  listargins{i+1} ''''])
+        elseif endpoint <inipoint
+            disp('Please check .m input file')
+            disp('Probably the description of input arguments has been inverted')
+            disp(['Stop when processing input arguments ' listargins{i} ' and ' listargins{i+1}])
+                        error('FSDA:wrongOrderDescr',['Wrong order description for' ...
+                ' input argument '''  listargins{i} ''''])
+        else
         end
         
     elseif i==nREQargin
@@ -2156,7 +2163,7 @@ for i=1:nTOTargin
             else
                 listInpArgs{i,4}=descrlong;
                 listInpArgs{i,7}=descrlong;
-                warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain an Example'])
+                warning('FSDA:publishFS:MissingExample',['Optional input argument ''' inpi ''' does not contain Example/Data Type'])
                 jins=5;
                 
             end
