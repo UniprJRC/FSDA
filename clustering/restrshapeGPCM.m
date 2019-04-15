@@ -1,4 +1,4 @@
-function GAM  = restrshapepars(lmd, Omega, SigmaB, niini, pa)
+function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %restrshapepars controls the shape restriction within and between groups
 %
 % This routine copes with the second of the 3 letters. It deals with the
@@ -26,16 +26,18 @@ function GAM  = restrshapepars(lmd, Omega, SigmaB, niini, pa)
 %
 % Output:
 %
-%     GAM : constrained shape matrix. Matrix of size p-by-k containing in
+%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
-%           $\Gamma_j$. The elements of GAM satisfy the following
+%           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:
 %           The product of the elements of each column is equal to 1.
 %           The ratio of the elements of each row is not greater than pa.shb.
 %           The ratio of the elements of each column is not greater than
 %           pa.shw. All the columns of matrix GAM are equal if the second
 %           letter of modeltype is E. All the columns of matrix GAM are
-%           equal to 1 if the second letter of modeltype is I.
+%           equal to 1 if the second letter of modeltype is I. This is
+%           matrix will be an input of routine restrshapepars to compute
+%           constrained determinants.
 %
 
 %% Beginning of code
@@ -76,10 +78,10 @@ if strcmp(pars(2),'E')
     GAMpooledc=GAMpooledc./es;
     
     % replicate p-by-1 GAMpooledc vector k times
-    GAM=repmat(GAMpooledc,1,K);
+    GAMc=repmat(GAMpooledc,1,K);
     
 elseif strcmp(pars(2),'I')
-    GAM=ones(p,K);
+    GAMc=ones(p,K);
     
 else % This is the case strcmp(pars(2),'V')
     lamGAM =NaN(p,K);
@@ -90,7 +92,7 @@ else % This is the case strcmp(pars(2),'V')
     for j=1:K
         lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) );
     end
-    GAM = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tol);
+    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tol);
 end
 
 
@@ -123,7 +125,7 @@ function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, it
 %           matrix GAMc will not be greater than 3.
 %     shb  : scalar greater or equal 1. Constraint to impose among groups.
 %           For example, if shb is 5 the ratio of each row of output
-%           matrix GAMc will not be greater than 4.
+%           matrix GAMc will not be greater than 5.
 %  zerotol : scalar. Tolerance value to declare all input values equal to 0
 %           in the eigenvalues restriction routine (file restreigen.m).
 % maxiterS : maximum number of iterations in the iterative procedure.

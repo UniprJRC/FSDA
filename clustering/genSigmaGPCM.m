@@ -30,7 +30,7 @@ function S=genSigmaGPCM(v, k, modeltype)
 %                  groups.
 %
 %
-
+%
 %  More About:
 %
 %  Generate covariance matrices from the 14 parsimonious Gaussian
