@@ -17,12 +17,12 @@ function [out]  = MixSim(k,v,varargin)
 %
 %    BarOmega : Requested average overlap. Scalar. Value of desired average
 %               overlap. The default value is ''
-%               Example - 'BarOmega',0.05 
+%               Example - 'BarOmega',0.05
 %               Data Types - double
 %    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
 %               overlap. If BarOmega is empty the default value of MaxOmega
 %               is 0.15.
-%               Example - 'MaxOmega',0.05 
+%               Example - 'MaxOmega',0.05
 %               Data Types - double
 %    StdOmega : Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
@@ -33,36 +33,65 @@ function [out]  = MixSim(k,v,varargin)
 %               $p_ij=w_{j|i} + w_{i|j}$
 %               Remark2- it is possible to specify up to two values among
 %               BarOmega MaxOmega and StdOmega.
-%               Example - 'StdOmega',0.05 
+%               Example - 'StdOmega',0.05
 %               Data Types - double
-%         sph : Spherical covariances. Scalar boolean. 
-%               Scalar boolean which specifies covariance matrix structure:
-%               sph=false (default) ==> non-spherical;
-%               sph=true            ==> spherical = const*I.
-%               Example - 'sph',false 
+%         sph : Spherical covariances. Scalar logical or structure.
+%               Scalar boolean or structure which specifies covariance
+%               matrix. When sph is logical value, if:
+%               sph=false (default) ==> non-spherical clusters;
+%               sph=true            ==> spherical clusters= const*I.
+%               The following options "hom", "ecc" and "restrfactor" have
+%               an effect just if sph is a scalar boolean. The default
+%               value of sph is false that is non spherical clusters are
+%               generated.
+%               If sph is a structure it may contain the following fields.
+%               sph.pars = a 3 letter character in the set:
+%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%               'EVI','VEI','EEI','VII','EII' which
+%               specifies the type of Gaussian Parsimonious Clustering
+%               Model which nedds to be generated. Note that this field is
+%               compulsory.
+%               sph.cdet = scalar which specifies the restriction factor
+%                          for determinants across groups. If this field is
+%                          empty or if this field is missing no contraint
+%                          is imposed among determinants.
+%               sph.shw = scalar which specifies the restriction factor for
+%                         shape matrices within each group. If this field is
+%                          empty or if this field is missing, no contraint
+%                          is imposed among the elements of each shape
+%                          matrix of a particular group.
+%               sph.shb = scalar which specifies the restriction factor for
+%                         shape matrices between each group. If this field is
+%                          empty or if this field is missing, no contraint
+%                          is imposed across the elements of each shape
+%                          matrix between the groups.
+%               Example - 'sph',false
 %               Data Types - boolean
-%         hom : Equal Sigmas. Scalar boolean. 
+%         hom : Equal Sigmas. Scalar logical.
 %               Scalar boolean which specifies heterogeneous or homogeneous
-%               clusters.
+%               clusters. This option has an effect just if previous option
+%               sph is a scalar boolean.
 %               hom=false (default) ==> heterogeneous;
 %               hom=true            ==> homogeneous $\Sigma_1 = ... =
 %               \Sigma_k$
-%               Example - 'hom',false 
+%               Example - 'hom',false
 %               Data Types - boolean
 %         ecc : maximum eccentricity. Scalar.
 %               Scalar in the interval (0, 1] which defines maximum eccentricity.
 %               For example, if ecc=0.9 (default value), we require for
 %               each group that sqrt(1 - minL / maxL) <= 0.9 where minL and
 %               maxL are respectively the min and max eigenvalue of the cov
-%               matrix of a particular group
-%               Example - 'ecc',0.8 
+%               matrix of a particular group. This option has an effect
+%               just if previous option sph is a scalar boolean.
+%               Example - 'ecc',0.8
 %               Data Types - double
-%  restrfactor: eigenvalue restriction factor. Scalar. 
+%  restrfactor: eigenvalue restriction factor. Scalar.
 %               Scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest eigenvalue and
 %               the smallest eigenvalue of the k covariance matrices which
-%               are generated. The default value is ''. More in details if for example
-%               restrfactor=10 after generating the covariance matrices we
+%               are generated. The default value is ''. More in details if
+%               for example restrfactor=10 after generating the covariance
+%               matrices we
 %               check that the ratio
 %               \[
 %                 \frac{   \max_{l=1, \ldots, v} \max_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}{   \min_{l=1, \ldots, v} \min_{j=1, \ldots, k}  \lambda_l(\hat \Sigma_j)}.
@@ -70,28 +99,31 @@ function [out]  = MixSim(k,v,varargin)
 %               between the largest eigenvalue of the k cov matrices
 %               and the smallest eigenvalue of the k cov matrices is not
 %               larger than restrfactor. In order to apply this restriction
-%               (which is typical of tclust.m) we call routine restreigen.m
-%               Example - 'restrfactor',8 
+%               (which is typical of tclust.m) we call routine
+%               restreigen.m.
+%               This option has an effect just if previous option sph is a
+%               scalar boolean.
+%               Example - 'restrfactor',8
 %               Data Types - double
-%       PiLow : Smallest miximg proportion. Scalar.
+%       PiLow : Smallest mixing proportion. Scalar.
 %               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
 %               taken; PiLow = 1.0 implies equal proportions by default).
 %               PiLow must be a number in the interval (0 1]. Default value
 %               0.
-%               Example - 'PiLow',0.1 
+%               Example - 'PiLow',0.1
 %               Data Types - double
-%         int : Simulation interval of mean vectors. vector of length 2. 
+%         int : Simulation interval of mean vectors. vector of length 2.
 %               Mean vectors are simulated uniformly on a hypercube with
 %               sides specified by int = [lower.bound, upper.bound].
 %               The default value of int is [0 1].
-%               Example - 'int',[0 2] 
+%               Example - 'int',[0 2]
 %               Data Types - double
-%        resN : number of simulations. Scalar. 
+%        resN : number of simulations. Scalar.
 %               Maximum number of mixture resimulations to find a
 %               similation setting with prespecified level of overlapping.
 %               The default value of resN is 100
-%               Example - 'resN',20 
+%               Example - 'resN',20
 %               Data Types - double
 %         tol : Tolerances. Vector of length 2.
 %               tol(1) (which will be called tolmap) specifies
@@ -101,7 +133,7 @@ function [out]  = MixSim(k,v,varargin)
 %               tolerance to use in routine ncx2mixtcdf.m (which computes cdf
 %               of linear combinations of non central chi2 distributions).
 %               The default value of tol(2) 1e-06.
-%               Example - 'tol',[1e-06 1e-08] 
+%               Example - 'tol',[1e-06 1e-08]
 %               Data Types - double
 %         lim : Precision in the calculation of probabilities of overlapping.
 %               Scalar. Maximum number of integration terms to use inside routine
@@ -110,7 +142,7 @@ function [out]  = MixSim(k,v,varargin)
 %               used by function ncx2mixtcdf.m which computes the cdf of a
 %               linear combination of non central chi2 r.v.. This is the
 %               probability of misclassification
-%               Example - 'lim',1e6 
+%               Example - 'lim',1e6
 %               Data Types - double
 %     Display : Level of display. Character.
 %               'off' displays no output;
@@ -118,7 +150,7 @@ function [out]  = MixSim(k,v,varargin)
 %               overlap cannot be reached in a particular simulation
 %               'iter' displays output at each iteration of each
 %               simulation
-%               Example - 'Display','off' 
+%               Example - 'Display','off'
 %               Data Types - character
 %      R_seed : use random numbers from R. scalar.
 %               If scalar > 0 for the seed to be used to generate random numbers
@@ -128,7 +160,7 @@ function [out]  = MixSim(k,v,varargin)
 %               with R.  This option requires the installation of the
 %               R-(D)COM Interface. Default is 0, i.e. random numbers are
 %               generated by matlab.
-%               Example - 'R_seed',0 
+%               Example - 'R_seed',0
 %               Data Types - double
 %
 %       Remark: The user should only give the input arguments that have to
@@ -222,13 +254,13 @@ function [out]  = MixSim(k,v,varargin)
 % "Journal of Statistical Software", Vol. 51, pp. 1-25.
 % Davies, R. (1980), The distribution of a linear combination of
 % chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
-% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+% Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008),
 % A General Trimming Approach to Robust Cluster Analysis. Annals
 % of Statistics, Vol. 36, 1324-1345. [Technical Report available at:
 % www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 % Riani, M., Cerioli, A., Perrotta, D. and Torti, F. (2015), Simulating
 % mixtures of multivariate data with fixed cluster overlap in FSDA,
-% "Advances in data analysis and classification", Vol. 9, pp. 461-481. 
+% "Advances in data analysis and classification", Vol. 9, pp. 461-481.
 % Parlett, B.N. and Reinsch, C. (1969), Balancing a matrix for calculation
 % of eigenvalues and eigenvectors, "Numerische Mathematik", Vol. 13,
 % pp. 293-304.
@@ -461,8 +493,13 @@ if R_seed > 0
     [~] = evalR(setseed);
 end
 
-if ~islogical(sph)
-    error('FSDA:MixSim:Wrongsph','option sph must be a logical value')
+if ~islogical(sph) && ~isstruct(sph)
+    error('FSDA:MixSim:Wrongsph','option sph must be a logical value or a structure')
+elseif isstruct(sph)
+    % Make sure the strcut sph has the fields p and and k
+    sph.p=v;
+    sph.K=k;
+else
 end
 
 if ~islogical(hom)
@@ -663,16 +700,19 @@ out = Q;
             % not (0)
             
             % Generate the covariance matrices
-            if sph == 0
+            if islogical(sph) && sph  == 0
                 % genSigmaEcc generates the covariance matrices with a
                 % prespecified level of eccentricity
                 Sgen=genSigmaEcc(v, k, emax, hom);
-            else
+            elseif islogical(sph) && sph ==1
                 % genSphSigma generates spherical covariance matrices
                 Sgen=genSphSigma(v, k, hom);
+            else
+                Sgen=genSigmaGPCM(v, k, sph.pars);
             end
             
-            if nargin>13 && ~isempty(restrfactor)
+            
+            if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                 U=zeros(v,v,k);
                 S05=Sgen;
                 Sinv=Sgen;
@@ -702,6 +742,13 @@ out = Q;
                     % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
                 end
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
+                
+            elseif isstruct(sph)
+                % Apply the requested restrictions to Sgen
+                [Sgen]  = restrpars(Sgen, Pigen', sph);
+                
+                % prepare parameters:  row 953 of file libOverlap.c
+                [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
             else
                 % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
@@ -864,8 +911,15 @@ out = Q;
         % tol, lim : parameters for ncx2mixtcdf function which computes the
         %            probabilities of overlapping
         %     resN : scalar, number of resamplings allowed
-        %      sph : scalar, if sph =1 spherical covariance matrices are
-        %            generated
+        %         sph : Spherical covariances. Scalar logical or structure.
+        %               Scalar boolean or structure which specifies covariance
+        %               matrix. When sph is logical value, if:
+        %               sph=false (default) ==> non-spherical clusters;
+        %               sph=true            ==> spherical clusters= const*I.
+        %               The following option "hom", has
+        %               an effect just if sph is a scalar boolean. The default
+        %               value of sph is false that is non spherical clusters are
+        %               generated.
         %      hom : scalar. If hom =1 equal covariance matrices are
         %            generated. REMARK: in MM2010 JCGS this routine is
         %            always called using hom=0
@@ -950,18 +1004,18 @@ out = Q;
                 % (1) or not (0)
                 
                 % Generate the covariance matrices
-                if sph == 0
+                if islogical(sph) && sph  == 0
                     % genSigmaEcc generates the covariance matrices with a
                     % prespecified level of eccentricity
-                    % in MM2010 JCGS the procedure is always called using hom=0
                     Sgen=genSigmaEcc(p, k, emax, hom);
-                else
+                elseif islogical(sph) && sph ==1
                     % genSphSigma generates spherical covariance matrices
-                    % in MM2010 JCGS the procedure is always called using hom=0
                     Sgen=genSphSigma(p, k, hom);
+                else
+                    Sgen=genSigmaGPCM(p, k, sph.pars);
                 end
                 
-                if nargin>13 && ~isempty(restrfactor)
+                if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                     U=zeros(v,v,k);
                     S05=Sgen;
                     Sinv=Sgen;
@@ -993,10 +1047,16 @@ out = Q;
                     % prepare parameters:  row 953 of file libOverlap.c
                     [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
                     
+                    
+                elseif isstruct(sph)
+                    % Apply the requested restrictions to Sgen
+                    [Sgen]  = restrpars(Sgen, Pigen', sph);
+                    
+                    % prepare parameters:  row 953 of file libOverlap.c
+                    [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
                 else
                     % prepare parameters:  row 953 of file libOverlap.c
                     [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
-                    
                 end
                 
                 % Check if maximum overlap is reachable.  Maximum
@@ -1117,7 +1177,7 @@ out = Q;
                     %  OmegaMax is reached and OmegaBar is reachable
                     %  correct covariances by multiplier c
                     
-                    if nargin>13 && ~isempty(restrfactor)
+                    if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                         S05=(c^0.5)*S05;
                         Sinv=(1/c)*Sinv;
                         detS=(c^v)*detS;
@@ -1226,8 +1286,15 @@ out = Q;
         % tol, lim : parameters for ncx2mixtcdf function which computes the
         %            probabilities of overlapping
         %     resN : scalar, number of resamplings allowed
-        %      sph : scalar, if sph =1 spherical covariance matrices are
-        %            generated
+        %         sph : Spherical covariances. Scalar logical or structure.
+        %               Scalar boolean or structure which specifies covariance
+        %               matrix. When sph is logical value, if:
+        %               sph=false (default) ==> non-spherical clusters;
+        %               sph=true            ==> spherical clusters= const*I.
+        %               The following option "hom", has
+        %               an effect just if sph is a scalar boolean. The default
+        %               value of sph is false that is non spherical clusters are
+        %               generated.
         %      hom : scalar. If hom =1 equal covariance matrices are
         %            generated. REMARK: in MM2010 JCGS this routine is
         %            always called using hom=0
@@ -1306,23 +1373,25 @@ out = Q;
             % procedure genMu generates random centroids
             Mugen=genMu(p, k, Lbound, Ubound);
             
-            % The last input parameter of genSigmaEcc and genSphSigma is a
+            % The last input parameter (hom) of genSigmaEcc and genSphSigma is a
             % boolean which specifies whether the matrices are equal
             % (1) or not (0)
             
             % Generate the covariance matrices
-            if sph == 0
+            if islogical(sph) && sph == 0
                 % genSigmaEcc generates the covariance matrices with a
-                % prespecified level of eccentricity
+                % maximum level of eccentricity specified by emax
                 % in MM2010 JCGS the procedure is always called using hom=0
                 Sgen=genSigmaEcc(p, k, emax, hom);
-            else
+            elseif islogical(sph) && sph ==1
                 % genSphSigma generates spherical covariance matrices
                 % in MM2010 JCGS the procedure is always called using hom=0
                 Sgen=genSphSigma(p, k, hom);
+            else
+                Sgen=genSigmaGPCM(p, k, sph.pars);
             end
             
-            if nargin>13 && ~isempty(restrfactor)
+            if islogical(sph) && nargin>13 && ~isempty(restrfactor) 
                 U=zeros(v,v,k);
                 S05=Sgen;
                 Sinv=Sgen;
@@ -1353,6 +1422,13 @@ out = Q;
                 end
                 % prepare parameters:  row 953 of file libOverlap.c
                 [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
+                
+            elseif isstruct(sph)
+                % Apply the requested restrictions to Sgen
+                [Sgen]  = restrpars(Sgen, Pigen', sph);
+                
+                % prepare parameters:  row 953 of file libOverlap.c
+                [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen);
                 
             else
                 % prepare parameters:  row 953 of file libOverlap.c
@@ -1523,7 +1599,7 @@ out = Q;
                         %   new value of c which produces the average
                         %   requested overlap
                         
-                        if nargin>13 && ~isempty(restrfactor)
+                       if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                             S05=(c^0.5)*S05;
                             Sinv=(1/c)*Sinv;
                             detS=(c^v)*detS;
@@ -1571,7 +1647,7 @@ out = Q;
                     
                     
                     % Compute standard deviation of overlap
-                    % If fail was 0 the OmegaMap which is used is the one 
+                    % If fail was 0 the OmegaMap which is used is the one
                     % which has been which uses a value of c associted to
                     % requested BarOmega, else is the OmegaMap found using
                     % c associated with MaxOmegaloop
@@ -1787,7 +1863,8 @@ out = Q;
 
 
     function S=genSigmaEcc(v, k, emax, hom)
-        % genSigmaEcc generates covariance matrix with prespecified eccentricity
+        % genSigmaEcc generates covariance matrix with a level of
+        % eccentricity not greater than emax
         %
         %  Required input arguments:
         %
