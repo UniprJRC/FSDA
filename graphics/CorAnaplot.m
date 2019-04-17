@@ -212,6 +212,11 @@ function CorAnaplot(out,varargin)
 %              plot. The defalut value of addx is 0.04.
 %              Example - 'addx',0.01
 %              Data Types - double
+%       addy : vertical displacement for labels. Scalar. Amount of
+%              vertical displacement which has been put on the labels in the
+%              plot. The defalut value of addy is 0.
+%              Example - 'addy',0.01
+%              Data Types - double
 %changedimsign: change chosen dimension sign. Boolean vector of length 2.
 %               Sometimes for better interpretability it is necessary to
 %               change the sign of the coordinates for the chosen
@@ -790,7 +795,7 @@ FontSizedef=10;
 MarkerSizedef=10;
 
 options=struct('plots',1,'xlimx','','ylimy','','changedimsign',[false false],...
-    'addx',0.04,'confellipse',0,'d1',1,'d2',2,'h','');
+    'addy',0,'addx',0.04,'confellipse',0,'d1',1,'d2',2,'h','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -1184,11 +1189,14 @@ plot(afig,Cacols(:,d1),Cacols(:,d2),'LineStyle','none','Marker',SymbolCols ,'Col
     'MarkerSize',MarkerSize,'MarkerFaceColor', MarkerFaceColorCols)
 
 % Add labels for row points and column points
-% addx = adds a small right horizontal displacement for labels
+% addx = adds a small horizontal displacement for labels
 addx=options.addx;
+% addy = adds a small vertical displacement for labels
+addy=options.addy;
 
-text(Carows(:,d1)+addx , Carows(:,d2), Lr,'Interpreter','None','FontSize',FontSize,'Color', ColorRows )
-text(Cacols(:,d1)+addx , Cacols(:,d2), Lc,'Interpreter','None','FontSize',FontSize,'Color', ColorCols )
+
+text(Carows(:,d1)+addx , Carows(:,d2)+addy, Lr,'Interpreter','None','FontSize',FontSize,'Color', ColorRows )
+text(Cacols(:,d1)+addx , Cacols(:,d2)+addy, Lc,'Interpreter','None','FontSize',FontSize,'Color', ColorCols )
 
 
 % Add points and text associated to supplementary rows
@@ -1196,7 +1204,7 @@ if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
     plot(afig,CarowsSup(:,d1),CarowsSup(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
-    text(CarowsSup(:,d1)+addx , CarowsSup(:,d2), LrSup,'Interpreter','None','FontSize',FontSize,'Color', ColorRowsSup )
+    text(CarowsSup(:,d1)+addx , CarowsSup(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSize,'Color', ColorRowsSup )
 end
 
 % Add points and text associated to supplementary columns
@@ -1204,7 +1212,7 @@ if ~isempty(LcSup)
     CacolsSup= eval(typeCSup);
     plot(afig,CacolsSup(:,d1),CacolsSup(:,d2),'LineStyle','none','Marker',SymbolColsSup ,...
         'Color', ColorColsSup , 'MarkerFaceColor', MarkerFaceColorColsSup, 'MarkerSize',MarkerSize)
-    text(CacolsSup(:,d1)+addx , CacolsSup(:,d2), LcSup,'Interpreter','None','FontSize',FontSize,'Color', ColorColsSup )
+    text(CacolsSup(:,d1)+addx , CacolsSup(:,d2)+addy, LcSup,'Interpreter','None','FontSize',FontSize,'Color', ColorColsSup )
 end
 
 % set the x and y axis
