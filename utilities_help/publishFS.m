@@ -1996,7 +1996,7 @@ for i=1:nTOTargin
             disp('Please check .m input file')
             error('FSDA:missInps',['Input .m file does not contain the description' ...
                 ' for input argument '''  listargins{i+1} ''''])
-        elseif endpoint <inipoint
+        elseif endpoint(1) <inipoint(1)
             disp('Please check .m input file')
             disp('Probably the description of input arguments has been inverted')
             disp(['Stop when processing input arguments ' listargins{i} ' and ' listargins{i+1}])
@@ -2705,7 +2705,7 @@ else
     
     endref=min([inipointAcknowledgements(:);inipointCopyright(:)]);
     
-    if isempty(endref)
+    if isempty(endref) || isinf(endref)
         disp('Please check .m input file')
         error('FSDA:missOuts','Input .m file does not contain ''Copyright'' string')
     end
