@@ -1,5 +1,5 @@
 function S=genSigmaGPCM(v, k, modeltype)
-% genSigmaGPCM generates covariance matrix for the 14 Gaussian Parsimonious Clustering Models
+%genSigmaGPCM generates covariance matrix for the 14 Gaussian Parsimonious Clustering Models
 %
 %<a href="matlab: docsearchFS('genSigmaGPCM')">Link to the help function</a>
 %

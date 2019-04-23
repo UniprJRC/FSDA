@@ -24,7 +24,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
 %           The ratio of the elements of each column is not greater than
 %           pa.shw. All the columns of matrix GAM are equal if the second
 %           letter of modeltype is E. All the columns of matrix GAM are
-%           equal to 1 if the second letter of modeltype is I. 
+%           equal to 1 if the second letter of modeltype is I.
 %   Omega2D : p-by-p matrix containing the common rotation matrix.
 %   SigmaB : p-by-p-by-k array containing the k covariance matrices for the
 %           k groups.
@@ -32,7 +32,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
 %     pa : structure containing: 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
 %            The fields of pars which are used in this routine are pa.p,
-%            pa.k and pa.maxiterR
+%            pa.k,  pa.maxiterR and pa.itertol
 %
 % Output:
 %
@@ -42,7 +42,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
 %   Omega2D : p-by-p matrix containing the updated common rotation matrix.
 %
 %
-% References 
+% References
 %
 % McNicholas, P.D., Browne, R.P. (2014), Estimating common principal
 % components in high dimensions, Advances in Data Analysis and
@@ -55,19 +55,82 @@ maxiterR=pa.maxiterR;
 Wk = NaN(p,p,k);
 wk = NaN(1,k);
 Fk = NaN(p, p, k);
+
+Omega2Dini=Omega2D;
+
 Omega = Fk;
 sumnini=sum(niini);
-for i=1:maxiterR
+
+% Get the tolerance
+itertol=pa.tol;
+
+% Apply the iterative procedure to find Omega2D  matrix
+iter=0;
+% diffOMG value of the relative sum of squares of the difference between
+% the element of matrix Omega2D in two consecutive iterations
+diffOMG = 9999;
+tmp=9999;
+
+while ( (diffOMG > itertol) && (iter < maxiterR) )
+    iter=iter+1;
+    
+    F=0;
+    
     for j=1:k
         Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
         wk(j) = max(eig(Wk(:,:,j)));
-        Fk(:,:,j) = (1/lmdc(j)) * diag(1./(GAMc(:,j))) * (Omega2D') * Wk(:,:,j)...
-            - wk(j)*(lmdc(j)^(-1/ p))*diag(1./GAMc(:,j)) * (Omega2D');
+        %         Fk(:,:,j) = (1/lmdc(j)) * diag(1./(GAMc(:,j))) * (Omega2D') * Wk(:,:,j)...
+        %             - wk(j)*(lmdc(j)^(-1/p))*diag(1./GAMc(:,j)) * (Omega2D');
+        
+        GAMjinv=diag(1./(GAMc(:,j)));
+        F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
+            - wk(j)*(lmdc(j)^(-1/p))*GAMjinv * (Omega2D');
+        
     end
-    F = sum(Fk,3);
-    [U,~,V] = svd(F);
+    % F = sum(Fk,3);
+    
+    [U,~,V] = svd(F,'econ');
     Omega2D = V*U;
+    
+    % Omega2Dold = old values of matrix Omega2D in vectorized form
+    Omega2Dold=tmp;
+    
+    % Omega2new = new values of matrix Omega2D in vectorized form
+    Omega2new=abs(Omega2D(:));
+    % diff = (new values of Omega) - (old values of Omega)
+    diff=Omega2new-Omega2Dold;
+    % relative sum of squares of the differences
+    % Note that (Omega2Dold'*Omega2Dold)=p
+    diffOMG=diff'*diff/p;
+    
+    tmp = abs(Omega2new);
 end
+
+corm=corr(Omega2Dini,Omega2D);
+corm=abs(corm);
+[maxcor,colindmaxcor]=max(corm,[],2);
+seqp=(1:p)';
+if isequal(sort(colindmaxcor),seqp)
+    Omega2D=Omega2D(:,colindmaxcor);
+else
+    oldnewv=zeros(p,2);
+    for i=1:p
+        [~,indrow]=max(maxcor);
+        indcol=colindmaxcor(indrow);
+        oldnewv(i,:)=[indrow, indcol];
+        % Put -Inf for row indrow and column indcol
+        corm(indrow,:)=-Inf;
+        corm(:,indcol)=-Inf;
+        [maxcor,colindmaxcor]=max(corm,[],2);
+    end
+    oldnewv=sortrows(oldnewv,1);
+    Omega2D=Omega2D(:,oldnewv(:,2));
+end
+    %  corr(Omega2Dini,Omega2D)
+
+% dd=1;
+
+% Replicate Omega2D  k times
 for j=1:k
     Omega(:,:,j) = Omega2D;
 end

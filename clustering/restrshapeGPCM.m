@@ -1,44 +1,89 @@
 function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
-%restrshapepars controls the shape restriction within and between groups
+%restrshapeGPCM produces the restricted shape matrix for the 14 GPCM
 %
-% This routine copes with the second of the 3 letters. It deals with the
-% cases in which the second letter is E, or I or V. If the second letter is
-% V procedure restrshapecore is invoked and both cshw and cshb are imposed.
-% If the second letter of modeltype is E just schw is used. If the second
-% letter is I than GAM becomes a matrix of ones.
+%
+%<a href="matlab: docsearchFS('restrshapeGPCM')">Link to the help function</a>
+%
+%
+%
+% The purpose of this routine is to produce the constrained shape matrix
+% $\Gamma$.
+% This routine copes with the second of the 3 letters of modeltype. It
+% deals with the cases in which the second letter is E, or I or V. If the
+% second letter is V procedure restrshapecore is invoked and both (within
+% groups) cshw, and (between groups) cshb constraints are imposed. If the
+% second letter of modeltype is E just cshw is used. If the second letter
+% is I, GAMc becomes a matrix of ones. 
 %
 %
 % Required input arguments:
 %
-%     lmd : row vector of length k containing in the j-th position
+%     lmd : Determinants. Vector. 
+%            Row vector of length k containing in the j-th position
 %           $|\Sigma_j|^(1/p)$, $j=1, 2, \ldots, k$ if different
-%           determinants are allowed else it is a row vector of ones. Of
-%           lmd is supplied with NaN lmd(j) becomes equal to
-%           $det(SigmaB(:,:,j))^(1/p)$.
-%    Omega : p-by-p-by-k 3D array containing in position j the rotation
-%           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$
-%   niini  : vector of length k containing the size of the groups.
-%     pa : structure containing 3 letter character specifying modeltype,
+%           determinants are allowed else it is a row vector of ones. 
+%    Omega : Rotation. 3D array. 
+%           p-by-p-by-k 3D array containing in
+%           position (:,:,j) the rotation
+%           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$.
+%   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
+%            p-by-p-by-k array containing the k unconstrained covariance
+%            matrices for the k groups.
+%   niini  : size of the groups. Vector.  
+%           Row vector of length k containing the size of the groups.
+%     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
-%            The fields of pars which are used in this routine are pa.p,
-%            pa.k, pa.pars, pa.shb, pa.shw pa.zerotol pa.maxiterS
+%            pa must contain the following fields: 
+%            pa.p = scalar, number of variables.
+%            pa.k = scalar, number of groups.
+%            pa.pars = type of Gaussian Parsimonious Clustering Model. 
+%               A 3 letter word in the set:
+%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%               'EVI','VEI','EEI','VII','EII'
+%            pa.shb = between groups shape constraint
+%            pa.shw = within groups shape constraint
+%            pa.zerotol = tolerance to decleare elements equal to 0.
+%            pa.maxiterS = maximum number of iterations in presence of 
+%            varying shape matrices.
+%
+%
+%  Optional input arguments:
 %
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
-%           column j the elements on the main diagonal of shape matrix
-%           $\Gamma_j$. The elements of GAMc satisfy the following
-%           constraints:
+%     GAMc : constrained shape matrix. Matrix. Matrix of size p-by-k
+%           containing in column j the elements on the main diagonal of
+%           shape matrix $\Gamma_j$. The elements of GAMc satisfy the
+%           following constraints:
 %           The product of the elements of each column is equal to 1.
 %           The ratio of the elements of each row is not greater than pa.shb.
 %           The ratio of the elements of each column is not greater than
 %           pa.shw. All the columns of matrix GAM are equal if the second
 %           letter of modeltype is E. All the columns of matrix GAM are
-%           equal to 1 if the second letter of modeltype is I. This is
-%           matrix will be an input of routine restrshapepars to compute
+%           equal to 1 if the second letter of modeltype is I. This matrix
+%           will be an input of routine restrshapepars to compute
 %           constrained determinants.
 %
+%
+% See also: restrSigmaGPCM, restrdeterGPCM, restreigen, tclust
+%
+%
+% References:
+%
+%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
+%   Robust parsimonious clustering models. Submitted.
+%
+%
+% Copyright 2008-2018.
+% Written by FSDA team
+%
+%
+%<a href="matlab: docsearchFS('restrshapeGPCM')">Link to the help function</a>
+%
+%$LastChangedDate:: 2018-09-15 00:27:12 #$: Date of the last commit
+
+% Examples:
 
 %% Beginning of code
 K=pa.K;
@@ -179,15 +224,20 @@ while ( (diffGAM > itertol) && (iter < maxiterS) )
     GAM=GAM./repmat(es,p,1);
     GAM(GAM==0)=1;
     
+ %   TODO TODO
+    for j=1:K
+    GAM(:,j)=sort(GAM(:,j),'desc');
+    end
+    
     % Apply restriction between groups
     % The elements of each column of GAM are sorted from largest to smallest
     % The ratio of each row of matrix GAMc is not greater than shb
     for i=1:p
         GAMc(i,:) = restreigen(GAM(i,:), niini, shb, zerotol);
     end
-    % Old values of matrix Gamma in vectorized form
+    % GAMold = old values of matrix Gamma in vectorized form
     GAMold=lamGAMc(:);
-    % diff new values of Gamma - new values of Gamma
+    % diff = (new values of Gamma) - (old values of Gamma)
     diff=GAMc(:)-GAMold;
     % relative sum of squares of the differences
     diffGAM=diff'*diff/(GAMold'*GAMold);

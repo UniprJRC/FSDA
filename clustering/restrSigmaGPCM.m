@@ -1,5 +1,5 @@
 function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
-%restrpars computes updated common rotation matrix when shapes are equal
+%restrSigmaGPCM computes constrained covariance matrices for the 14 GPCM specifications
 %
 %
 %<a href="matlab: docsearchFS('restrSigmaGPCM')">Link to the help function</a>
@@ -14,9 +14,11 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
 %            p-by-p-by-k array containing the k covariance matrices for the
 %            k groups.
-% 
+%               Data Types - single|double
+%
 %   niini  : sizes of the groups. Vector. Row vector of length k containing
 %           the size of the groups.
+%               Data Types - single|double
 %
 %      pa  : Constraints to apply and model specification. Structure.
 %            Structure containing the following fields:
@@ -24,18 +26,18 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
 %               'EVI','VEI','EEI','VII','EII'
-%             pa.cdet = scalar in the interval [1 Inf) which specifies the 
+%             pa.cdet = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the determinants.
-%               If pa.cdet=1 all determinants are forced to be equal. 
+%               If pa.cdet=1 all determinants are forced to be equal.
 %               See section More About for additional details.
-%             pa.shw = scalar in the interval [1 Inf) which specifies the 
+%             pa.shw = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the elements of
 %               the shape matrices inside each group. If pa.shw=1 all diagonal
 %               elements of the shape matrix of cluster j (with j=1, ...,
 %               k) will be equal.
-%             pa.shb = scalar in the interval [1 Inf) which specifies the 
+%             pa.shb = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the elements of
-%               the shape matrices across each group. 
+%               the shape matrices across each group.
 %             pa.maxiterS = positive integer which specifies the maximum
 %               number of iterations to obtain the restricted shape matrix.
 %               This parameter is used by routine restrshapepars. The
@@ -57,16 +59,17 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %               iterations. The default value of pa.tol is 1e-12.
 %      pa.zerotol = tolerance value to declare all input values equal to 0
 %               in the eigenvalues restriction routine (file restreigen.m)
-%               or in the final reconstruction of covariance matrices. 
+%               or in the final reconstruction of covariance matrices.
 %               The default value of zerotol is 1e-10.
 %           pa.k  = the number of groups.
 %           pa.p  = the number of variables.
+%               Data Types - struct
 %
 %  Optional input arguments:
 %
 %
 % Output:
-% 
+%
 %
 %             Sigma  : constrained covariance matrices. p-by-p-by-k array.
 %                     p-by-p-by-k array containing the k covariance
@@ -75,22 +78,23 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 % More About:
 % The notation for the eigen-decomposition of the
 % component covariance matrices is as follows
-% 
+%
 % \[
 % \Sigma_j= \lambda_j^{1/p} \Omega_j \Gamma_j \Omega_j'  \qquad j=1, 2, \ldots, k
 % \]
 % The dimension of matrices $\Omega_j$ and $\Lambda_j$ is $p\times p$.
-% 
+%
 % $c_{det}=$ scalar, constraint associated with the determinants.
-% 
+%
 % $c_{shw}=$ scalar, constraint inside each group of the shape matrix.
-% 
+%
 % $c_{shb}=$ scalar, constraint among groups of the shape matrix.
-% 
-% Note that if you impose equal volumes $c_{det}=1$. Similarly, if you impose a spherical shape $c_{shw}=1$.
+%
+% Note that if you impose equal volumes $c_{det}=1$. Similarly, if you
+% impose a spherical shape $c_{shw}=1$.
 %
 % We also denote with
-% 
+%
 %   [1] $\Sigma$ the 3D array of size $p\times p \times k$ containing the
 %   empirical covariance matrices of the $k$ groups, before applying the
 %   constraints coming from the 14 parametrizations. In the code $\Sigma$
@@ -103,21 +107,33 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %   [3] $\Gamma$ the $p\times k$ matrix containing in column $j$, with
 %   $j=1, 2, \ldots, k$, the diagonal elements of matrix $\Gamma_j$ (shape
 %   matrix of group j). In the code matrix $\Gamma$ is called GAM.
+%   After the application of this routine, the product of the elements of
+%   each column of matrix GAM is equal to 1.
+%   The ratio of the elements of each row is not greater than $c_{shb}$ (pa.shb).
+%   The ratio of the elements of each column is not greater than
+%   $c_{shw}$ (pa.shb). All the columns of matrix GAM are equal if the second
+%   letter of modeltype is E. All the columns of matrix GAM are
+%   equal to 1 if the second letter of modeltype is I. 
 %   [4] niini the vector of length $k$ containing the number of units
-%   (weights) associated to each group. 
+%   (weights) associated to each group.
 %   [5]  $\lambda$ = the vector of length $p$ containing in the $j$-th
 %   position $\lambda_j^{1/p}=|\Sigma_j|^{1/p}$. In the code  vector
 %   $\lambda$ is called $lmd$.
-%	
-% 	
+%   The elements of lmd satisfy the constraint pa.cdet in the sense that
+%   $\max(lmd) / \min(lmd) \leq pa.cdet^{(1/p)}$. In other words, the
+%   ratio between the largest and the smallest determinant is not
+%   greater than pa.cdet. All the elements of vector lmd are equal
+%   if modeltype is E** or if $c_{det}=1$ (pa.cdet=1).
 %
-% See also restrshape, restrdeter, restreigen, tclust
+%
+%
+% See also restrshapeGPCM, restrdeterGPCM, restreigen, tclust
 %
 %
 % References:
 %
 %   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
-%   A General Trimming Approach to Robust Cluster Analysis. Submitted.
+%   Robust parsimonious clustering models. Submitted.
 %
 %
 % Copyright 2008-2018.
@@ -140,13 +156,14 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %% Beginning of code
 
 % SigmaB = v-times-v-times-k = empirical covariance matrix
-% pa = structure containing modeltype, number of iterations .....
 Sigma=SigmaB;
-K=length(niini);
-lmd=NaN(1,K);
+k=length(niini);
+lmd=NaN(1,k);
 
 % OMG = initialize 3D array containing rotation matrices
 OMG=zeros(size(Sigma));
+
+% pa = structure containing modeltype, number of iterations .....
 
 % Tolerance associated to the maximum of the elements which have to be
 % constrained. If the maximum  is smaller than zerotol restreigen
@@ -188,6 +205,7 @@ if strcmp(pars(3),'E')
     
     % Find initial values of lmd (unconstrained determinants) and OMG (rotation)
     [lmd, OMG]  = initR(SigmaB, niini, pa);
+    
     % Find initial constrained shape matrix GAM
     % pa.shw and pa.shb constraining parameters are used
     [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
@@ -196,10 +214,9 @@ if strcmp(pars(3),'E')
     
 elseif  strcmp(pars(3),'V')
     % Find initial (and final value for OMG)
-    for j=1:K
+    for j=1:k
         [V,~]= eig(SigmaB(:,:,j));
         V=fliplr(V);
-        % D=fliplr(D);
         OMG(:,:,j)=V;
     end
     
@@ -207,25 +224,42 @@ else % The remaning case is when **I
     % Find initial (and final value for OMG).
     % in this case OMG is a 3D arry contaning identity matrices
     eyep=eye(pa.p);
-    for j=1:K
+    for j=1:k
         OMG(:,:,j)=eyep;
     end
 end
 
 % End of initialization
+maxiterDSR=pa.maxiterDSR;
 
 %% Beginning of iterative process
-for i=1:pa.maxiterDSR
+
+OMGchk=zeros(pa.p,pa.p);
+% Apply the iterative procedure to find Det Shape and Rot matrices
+iter=0;
+% diffOMG value of the relative sum of squares of the difference between
+% the element of matrix Omega2D in two consecutive iterations
+diffglob = 9999;
+tmp=9999;
+OMGtmp=tmp;
+GAMtmp=tmp;
+lmdtmp=tmp;
+itertol=pa.tol;
+p=pa.p;
+upd=1;
+while ( (diffglob > itertol) && (iter < maxiterDSR) )
+    iter=iter+1;
+    
     
     % In the **E case (except for the case EEE) it is necessary to update in each step of the
-    % iterative procedure OMG 
+    % iterative procedure OMG
     
-    if strcmp(pars,'VVE') || strcmp(pars,'EVE')
+    if (strcmp(pars,'VVE') || strcmp(pars,'EVE')) && upd==1
         % Variable shape: update OMG (rotation)
         % parameter pa.maxiterR is used here
         [OMG]  = cpcV(lmd, GAM, OMG(:,:,1), SigmaB, niini, pa);
         
-    elseif strcmp(pars,'VEE') || strcmp(pars,'EEE') % TODO check if EEE is necessary here because given that all lmd are equal the order of the eigenvectors can change
+    elseif strcmp(pars,'VEE') || strcmp(pars,'EEE') && upd==1 % TODO check if EEE is necessary here because given that all lmd are equal the order of the eigenvectors can change
         % Equal shape: update OMG (rotation)
         % old eiggiroe
         [OMG]  = cpcE(lmd, SigmaB, niini, pa);
@@ -238,6 +272,51 @@ for i=1:pa.maxiterDSR
     % Find new value of lmd (determinants) starting from constrained shape
     % GAM and updated OMG
     [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
+    % TODO
+    % lmd=sort(lmd);
+    
+    % Omega2Dold = old values of matrix Omega2D in vectorized form
+    OMGold=OMGtmp;
+    GAMold=GAMtmp;
+    lmdold=lmdtmp;
+    
+    % OMGnew = new values of matrix OMG in vectorized form
+    OMGnew=abs(OMG(:));
+    % diff = (new values of Omega - old values of Omega)
+    diff=OMGnew-OMGold;
+    % relative sum of squares of the differences
+    % Note that (Omega2Dold'*Omega2Dold)=p
+    diffOMG=diff'*diff/(p*k);
+    
+    % GAMnew = new values of matrix GAM in vectorized form
+    GAMnew=GAM(:);
+    % diff = (new values of GAM - old values of GAM)
+    diff=GAMnew-GAMold;
+    % relative sum of squares of the differences
+    diffGAM=diff'*diff/(GAMold'*GAMold);
+    
+    % lmdnew = new values of vector lmd 
+    lmdnew=lmd(:);
+    % diff = (new values of lmd) - (old values of lmd)
+    diff=lmdnew-lmdold;
+    % relative sum of squares of the differences
+    difflmd=diff'*diff/(lmdold'*lmdold);
+    
+        corrm=abs(corr(OMG(:,:,1),OMGchk));
+    if upd==1 && min(max(corrm,[],2))>0.99
+        upd=0;
+    end
+    
+    diffglob=max([diffGAM,diffOMG,difflmd]);
+%     disp([diffGAM,diffOMG,difflmd])
+    OMGtmp=abs(OMG(:));
+    GAMtmp=GAM(:);
+    lmdtmp=lmd(:);
+    OMGchk=OMG(:,:,1);
+    GAMchk=GAM;
+    
+    % 
+
 end
 
 % Check if all is well
@@ -245,13 +324,13 @@ codenonZero = max(max(GAM)) > zero_tol;
 
 if  codenonZero
     % Reconstruct the cov matrices using final values of lmd, OMG and GAM
-    for j=1:K
+    for j=1:k
         Sigma(:,:,j) = lmd(j) * OMG(:,:,j)* diag(GAM(:,j))* (OMG(:,:,j)');
     end
 else
     % In this case final Sigma is the identity matrix replicated k times
     eyep=eye(p);
-    for j=1:K
+    for j=1:k
         Sigma(:,:,j) = eyep;
     end
 end
