@@ -120,27 +120,26 @@ done
 echo -e "exit(0);\n" >>test_runner2019a.m
 # END MATLAB R2019a
 
-
-if [ $TEST_2009b == "YES" ]; then
-'/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
-fi 
-
-if [ $TEST_2012a == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
-fi 
-
-if [ $TEST_2014b == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
-fi
-
-if [ $TEST_2016b == "YES" ]; then
-'/cygdrive/C/Program Files/MATLAB/R2016b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2016b"
+if [ $TEST_2019a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2019a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2019a"
 fi 
 
 if [ $TEST_2018b == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2018b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2018b"
 fi 
 
-if [ $TEST_2019a == "YES" ]; then
-'/cygdrive/c/Program Files/MATLAB/R2019a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2019a"
+if [ $TEST_2016b == "YES" ]; then
+'/cygdrive/C/Program Files/MATLAB/R2016b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2016b"
+fi 
+
+if [ $TEST_2014b == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2014b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2014b"
+fi
+
+if [ $TEST_2012a == "YES" ]; then
+'/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
+fi 
+
+if [ $TEST_2009b == "YES" ]; then
+'/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
 fi 
