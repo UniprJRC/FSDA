@@ -140,6 +140,6 @@ if [ $TEST_2012a == "YES" ]; then
 '/cygdrive/c/Program Files/MATLAB/R2012a/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2012a"
 fi 
 
-if [ $TEST_2009b == "YES" ]; then
-'/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
-fi 
+# if [ $TEST_2009b == "YES" ]; then
+# '/cygdrive/C/Program Files/MATLAB/R2009b/bin/matlab' -nodisplay -nosplash -noFigureWindows -minimize -wait -r "addpath('$wksp_matlab'); $addpath('$pths_matlab'); addpath(genpath('$pth_fsda')); test_runner2009b"
+# fi 
