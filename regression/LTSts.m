@@ -1737,11 +1737,15 @@ end
 % weights is a boolean vector.
 bsb=seq(weights);
 
+% Store bsb to use in order to find sum of squares of residuals for
+% reduced model.
+bsbModSel=bsb;
+
 % Find new estimate of beta using only observations which have
 % weight equal to 1. Notice that new brob overwrites old brob
 % computed previously.
 
-%
+
 if varampl==0 && lshift==0 % In this case the model is linear
     % Function lik constructs fitted values and residual sum of
     % squares
@@ -1824,6 +1828,9 @@ end
 
 % Computation of reweighted residuals.
 residuals=yin-yhat;
+
+% s2full
+s2full=residuals(bsbModSel)'*residuals(bsbModSel);
 
 % s0 =sqrt(MSE)
 s0=sqrt(sum(weights.*residuals.^2)/(sum(weights)-1));
@@ -1937,36 +1944,42 @@ out.invXX=invXX;
 
 dispresults=options.dispresults;
 
-if dispresults
-    
-    b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
-    b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
-        'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
-    b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
-    b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
-    b_lshift={'b_lshift'; 't_lshift'};
-    
-    if seasonal>0
-        if 2*seasonal==s
-            lab=[b_trend(1:trend+1); b_seaso];
-        else
-            lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
-        end
+
+
+b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
+b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
+    'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
+b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
+b_lshift={'b_lshift'; 't_lshift'};
+
+if seasonal>0
+    if 2*seasonal==s
+        lab=[b_trend(1:trend+1); b_seaso];
     else
-        lab=b_trend(1:trend+1);
+        lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
     end
-    
-    if nexpl>0
-        lab=[lab;b_expl(1:nexpl)];
-    end
-    if varampl>0
-        lab=[lab;b_varampl(1:varampl)];
-    end
-    if lshift>0
-        lab=[lab; b_lshift(1)];
-    end
-    
-    
+else
+    lab=b_trend(1:trend+1);
+end
+
+if nexpl>0
+    lab=[lab;b_expl(1:nexpl)];
+end
+if varampl>0
+    lab=[lab;b_varampl(1:varampl)];
+end
+if lshift>0
+    lab=[lab; b_lshift(1)];
+end
+
+if verLessThan ('matlab','8.2.0')
+else
+    % Store matrix B in table format (with labels for rows and columns)
+    out.Btable=array2table(out.B,'RowNames',lab,'VariableNames',{'Coeff','SE','t','pval'});
+end
+
+if dispresults
     bhat=out.B(:,1);
     se=out.B(:,2);
     tstat=out.B(:,3);
@@ -2137,6 +2150,91 @@ if plots==2 && lsh>0
     %ylabel('Frequency','FontSize',FontSize);
     xlabel('Index number','FontSize',FontSize,'interpreter','none');
     set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
+end
+
+
+% Part of the code to find the F test for the final harmonic of the seasonal
+% component part
+bsb=bsbModSel;
+
+if seasonal<6
+    % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
+    selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
+    
+    if varampl==0 && lshift==0 % In this case the model is linear
+        % Function lik constructs fitted values and residual sum of
+        % squares
+        betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
+        % update fitted values
+        yhat = Xsel(bsb,selWithoutLastHarmonic) * betaout;
+        
+        s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
+        
+    elseif   varampl==0 && lshift>0
+        % In this case there is just level shift however we do not redo
+        % the non linear estimation but a simple LS
+        Xselreduced= Xsel(:,selWithoutLastHarmonic);
+        Xseldum=[Xselreduced  Xlshift];
+        betaout = Xseldum(bsb,:) \ yin(bsb);
+        
+        % find fitted values using all observations
+        yhat =  Xseldum * betaout;
+        
+        s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
+        
+    else % model is non linear because there is time varying amplitude in seasonal component
+        Xtrendf=Xtrend(bsb,:);
+        
+        % Remove the last harmonic from Xseaso
+        seasonal=seasonal-1;
+        if seasonal==0
+            Xseaso=[];
+            Xseasof=[];
+            yhatseaso=0;
+        else
+            Xseaso=Xseaso(:,1:end-2);
+            Xseasof=Xseaso(bsb,:);
+        end
+        
+        if ~isempty(X)
+            Xf=X(bsb,:);
+        end
+        Seqf=Seq(bsb,:);
+        yf=yin(bsb);
+        
+        lasind=length(brobfinal);
+        selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+        
+        if lshift>0
+            Xlshiftf=Xlshift(bsb);
+            [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic(1:end-1)));
+        else
+            [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic));
+        end
+        
+        
+        lik(betaout);
+        % Computation of residuals.
+        residuals=yin(bsb)-yhat;
+        s2reduced=sum(residuals.^2);
+    end
+    v1=2;
+    numFtest=(s2reduced-s2full)/v1;
+    v2=(length(bsb)-p);
+    denFtest=s2full/v2;
+    pval=1-fcdf(numFtest/denFtest,v1,v2);
+else
+    % In presence of 6 harmonics, the last one is just made up of a single
+    % variable, therefore the p value is just the p value of the assocaited
+    % t-stat
+    pval=out.B(ntrend+nseaso,4);
+end
+out.LastHarmonicPval=pval;
+
+if lshift>0
+    lsdet=FSRinvmdr([length(LSH) out.B(end,3)],p-1);
+    LevelShiftPval=1-lsdet(1,2);
+    out.LevelShiftPval=LevelShiftPval;
 end
 
 % Restore the previous state of the warnings
