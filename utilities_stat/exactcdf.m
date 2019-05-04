@@ -5,7 +5,7 @@ function p=exactcdf(x,empdist)
 %
 %
 % Function for finding the exact cdf of each element in the vector x with
-% respect to the empirical distribution, represented by the vector y, i.e.
+% respect to the empirical distribution, represented by the vector empdist, i.e.
 % the generic element i of the output vector p is the result of:
 % \[
 %  \frac{ \displaystyle \sum_{j=1}^K I_{empdist(j) \leq x_i}}{K}
