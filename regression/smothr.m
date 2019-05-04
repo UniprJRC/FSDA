@@ -1,5 +1,5 @@
 function ysmo=smothr(l,x,y,w)
-% smothr produces smoothed values with constraints
+%smothr produces smoothed values with constraints
 %
 %
 %<a href="matlab: docsearchFS('smothr')">Link to the help page for this function</a>

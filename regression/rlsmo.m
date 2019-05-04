@@ -1,5 +1,5 @@
 function [smo,span]=rlsmo(x,y,w,span)
-% rlsmo computes a running-lines smoother with global cross-validation.
+%rlsmo computes a running-lines smoother with global cross-validation.
 % 
 %<a href="matlab: docsearchFS('rlsmo')">Link to the help page for this function</a>
 %

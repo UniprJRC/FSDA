@@ -1,5 +1,5 @@
 function smo = supsmu(x,y,varargin)
-%supsmu: Smoothing of scatterplots using Friedman's supersmoother algorithm.
+%supsmu smooths scatterplots using Friedman's supersmoother algorithm.
 %
 % 
 %<a href="matlab: docsearchFS('supsmu')">Link to the help page for this function</a>

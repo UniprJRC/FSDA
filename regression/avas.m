@@ -32,7 +32,7 @@ function [out]=avas(y,X,varargin)
 %  Optional input arguments:
 %
 %       l :  type of transformation. Vector. Vector of length p which
-%           specifies how the type of transformation for the explanatory
+%           specifies the type of transformation for the explanatory
 %           variables.
 %           l(j)=1 => j-th variable assumes orderable values.
 %           l(j)=2 => j-th variable assumes circular (periodic) values
@@ -41,9 +41,10 @@ function [out]=avas(y,X,varargin)
 %           l(j)=4 => j-th variable transformation is to be linear.
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
 %           j =1, 2, \ldots, p+1.
-%           The default value of l is is a vector of ones of length p+1,
+%           The default value of l is a vector of ones of length p,
 %           that is the procedure assumes that both the explanatory
-%           variables and the response have orderable values.
+%           variables and the response have orderable values. Note that in
+%           avas procedure the reponse is always transformed
 %           Example - 'l',[3 3 1]
 %           Data Types - double
 %       w  : weights for the observations. Vector. Row or column vector of
