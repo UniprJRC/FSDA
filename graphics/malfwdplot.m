@@ -43,6 +43,7 @@ function plotopt=malfwdplot(out,varargin)
 %               columns is k before more than one unit can enter the
 %               seubset at a particular step.
 %               This field is not compulsory.
+%                   Data Types - struct
 %
 %
 %  Optional input arguments:
@@ -1373,7 +1374,7 @@ if ~isempty(datatooltip)
     
     % Declare a custom datatooltip update function to display additional
     % information about the selected unit
-    set(hdt,'UpdateFcn',{@malfwdplotLbl,out,LineColor},'Interpreter','Latex');
+    set(hdt,'UpdateFcn',{@malfwdplotLbl,out,LineColor});
 end
 
 
