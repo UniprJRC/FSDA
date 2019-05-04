@@ -375,6 +375,28 @@ function [out] = FSReda(y,X,bsb,varargin)
         ' step prior to the inclusion of the first outlier'])
 %}
 
+%{
+    % Interactive_example
+    % Reveal masked outliers.
+    % Load the data
+    clearvars;close all;
+    load('multiple_regression.txt');
+    y=multiple_regression(:,4);
+    X=multiple_regression(:,1:3);
+    % yX plot
+    yXplot(y,X)
+    % Robust analysis
+    % LMS using 1000 subsamples
+    [out]=LXS(y,X,'nsamp',10000);
+    % Forward Search
+    [out]=FSReda(y,X,out.bs);
+    out1=out;
+    % Create scaled squared residuals
+    out1.RES=out.RES.^2;
+
+    resfwdplot(out1,'databrush',1);
+%}
+
 %% Input parameters checking
 %this example is run as a demonstration in case the user runs FSReda
 %without input parameters.
