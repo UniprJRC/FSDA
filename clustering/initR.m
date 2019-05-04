@@ -31,18 +31,18 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 
 %% Beginning of code
 p=pa.p;
-K=pa.K;
+k=pa.K;
 pars=pa.pars;
 
- % Initialize lmd
-lmd = NaN(1,K);
+% Initialize lmd
+lmd = NaN(1,k);
 
 if strcmp(pars(1),'V')
-    for j=1:K
+    for j=1:k
         lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / p);
     end
 else
-    lmd = ones(1,K);
+    lmd = ones(1,k);
 end
 
 sumniini=sum(niini);
@@ -54,7 +54,7 @@ sumniini=sum(niini);
 % within-group covariance matrix)
 % Sw = sum(Sigma,3);
 Sw=zeros(p,p);
-for j=1:K
+for j=1:k
     Sw = Sw + (niini(j) / sumniini) * (1 /lmd(j) ) * SigmaB(:,:,j);
 end
 
@@ -67,18 +67,17 @@ if isnan(maxsigma_) || isinf(maxsigma_)
 else
     % The common rotation matrix is formed by the eigenvectors of the
     % pooled within-group covariance matrix Sw
-    [V,~]= eig(Sw);
-    Omega2D=fliplr(V);
+    [V,eigunsorted]= eig(Sw);
+    % Sort eigenvalues from largest to smallest and reorder the columns
+    % of the matrix of eigenvectors accordingly
+    [~,ordeig]=sort(diag(eigunsorted),'desc');
+    V=V(:,ordeig);
+    Omega2D=V;
 end
 
-%     for j=1:K
-%         % D=fliplr(D);
-%         Omega(:,:,j)=V;
-%     end
-    
-    % Omega = array of size p-by-p-by-k
-    % containing k replicates of matrix V
-    Omega=repmat(V,1,1,K);
+% Omega = array of size p-by-p-by-k
+% containing k replicates of matrix V
+Omega=repmat(Omega2D,1,1,k);
 end
 
 

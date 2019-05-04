@@ -1,4 +1,4 @@
-function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
+function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 %cpcV computes updated common rotation matrix when shapes are different
 %
 %  This routine is called when the parametrization is *VE that is when
@@ -22,8 +22,8 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
 %           The product of the elements of each column is equal to 1.
 %           The ratio of the elements of each row is not greater than pa.shb.
 %           The ratio of the elements of each column is not greater than
-%           pa.shw. All the columns of matrix GAM are equal if the second
-%           letter of modeltype is E. All the columns of matrix GAM are
+%           pa.shw. All the columns of matrix GAMc are equal if the second
+%           letter of modeltype is E. All the columns of matrix GAMc are
 %           equal to 1 if the second letter of modeltype is I.
 %   Omega2D : p-by-p matrix containing the common rotation matrix.
 %   SigmaB : p-by-p-by-k array containing the k covariance matrices for the
@@ -52,14 +52,14 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, SigmaB, niini, pa)
 p=pa.p;
 k=pa.K;
 maxiterR=pa.maxiterR;
-Wk = NaN(p,p,k);
-wk = NaN(1,k);
+% Wk = NaN(p,p,k);
+% wk = NaN(1,k);
 Fk = NaN(p, p, k);
 
 Omega2Dini=Omega2D;
 
 Omega = Fk;
-sumnini=sum(niini);
+% sumnini=sum(niini);
 
 % Get the tolerance
 itertol=pa.tol;
@@ -75,10 +75,10 @@ while ( (diffOMG > itertol) && (iter < maxiterR) )
     iter=iter+1;
     
     F=0;
-    
     for j=1:k
-        Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
-        wk(j) = max(eig(Wk(:,:,j)));
+        % Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
+        % wk(j) = max(eig(Wk(:,:,j)));
+        
         %         Fk(:,:,j) = (1/lmdc(j)) * diag(1./(GAMc(:,j))) * (Omega2D') * Wk(:,:,j)...
         %             - wk(j)*(lmdc(j)^(-1/p))*diag(1./GAMc(:,j)) * (Omega2D');
         
@@ -86,7 +86,15 @@ while ( (diffOMG > itertol) && (iter < maxiterR) )
         F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
             - wk(j)*(lmdc(j)^(-1/p))*GAMjinv * (Omega2D');
         
+        %                F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
+        %            - wk(j)*exp((-1/p)*log(lmdc(j)))*GAMjinv * (Omega2D');
+        
+        %         F1=F1+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j);
+        %
+        %         F2=F2+wk(j)*(lmdc(j)^(-1/p))*GAMjinv;
     end
+    %    F=F1-F2*(Omega2D');
+    
     % F = sum(Fk,3);
     
     [U,~,V] = svd(F,'econ');
@@ -105,28 +113,30 @@ while ( (diffOMG > itertol) && (iter < maxiterR) )
     
     tmp = abs(Omega2new);
 end
-
-corm=corr(Omega2Dini,Omega2D);
-corm=abs(corm);
-[maxcor,colindmaxcor]=max(corm,[],2);
-seqp=(1:p)';
-if isequal(sort(colindmaxcor),seqp)
-    Omega2D=Omega2D(:,colindmaxcor);
-else
-    oldnewv=zeros(p,2);
-    for i=1:p
-        [~,indrow]=max(maxcor);
-        indcol=colindmaxcor(indrow);
-        oldnewv(i,:)=[indrow, indcol];
-        % Put -Inf for row indrow and column indcol
-        corm(indrow,:)=-Inf;
-        corm(:,indcol)=-Inf;
-        [maxcor,colindmaxcor]=max(corm,[],2);
+if p>2
+    corm=corr(Omega2Dini,Omega2D);
+    corm=abs(corm);
+    [maxcor,colindmaxcor]=max(corm,[],2);
+    % seqp=(p:-1:1)';
+    seqp=(1:p)';
+    if isequal(sort(colindmaxcor,'ascend'),seqp)
+        Omega2D=Omega2D(:,colindmaxcor);
+    else
+        oldnewv=zeros(p,2);
+        for i=1:p
+            [~,indrow]=max(maxcor);
+            indcol=colindmaxcor(indrow);
+            oldnewv(i,:)=[indrow, indcol];
+            % Put -Inf for row indrow and column indcol
+            corm(indrow,:)=-Inf;
+            corm(:,indcol)=-Inf;
+            [maxcor,colindmaxcor]=max(corm,[],2);
+        end
+        oldnewv=sortrows(oldnewv,1,'ascend');
+        Omega2D=Omega2D(:,oldnewv(:,2));
     end
-    oldnewv=sortrows(oldnewv,1);
-    Omega2D=Omega2D(:,oldnewv(:,2));
 end
-    %  corr(Omega2Dini,Omega2D)
+%  corr(Omega2Dini,Omega2D)
 
 % dd=1;
 

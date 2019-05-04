@@ -1,4 +1,4 @@
-function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
+function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %restrSigmaGPCM computes constrained covariance matrices for the 14 GPCM specifications
 %
 %
@@ -71,9 +71,39 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 % Output:
 %
 %
-%             Sigma  : constrained covariance matrices. p-by-p-by-k array.
-%                     p-by-p-by-k array containing the k covariance
-%                     matrices for the k groups.
+%    Sigma  : constrained covariance matrices. p-by-p-by-k array.
+%             p-by-p-by-k array containing the k covariance matrices for
+%             the k groups. See section 'More About' for the notation for
+%             the eigen-decomposition of the component covariance matrices.
+%     lmd  : restricted determinants. Vector. 
+%             Row vector of length $k$ containing restricted determinants.
+%             More precisely, the $j$-th element of lmd contains
+%             $\lambda_j^{1/p}$. The elements of lmd satisfy the
+%             constraint pa.cdet in the sense that $\max(lmd) / \min(lmd)
+%             \leq pa.cdet^{(1/p)}$. In other words, the ratio between the
+%             largest and the smallest determinant is not greater than
+%             pa.cdet. All the elements of vector lmd are equal if
+%             modeltype is E** or if pa.cdet=1.
+%      OMG : constrained rotation matrices. p-by-p-by-k array.
+%             p-by-p-by-k array containing the k rotation matrices for
+%             the k groups. If common rotation is imposed (third letter is
+%             equal to E), OMG(:,:,1)=...=OMG(:,:,k).
+%     GAM : constrained shape matrix. 2D array.
+%           Matrix of size p-by-k containing in
+%           column j the elements on the main diagonal of shape matrix
+%           $\Gamma_j$. The elements of GAM satisfy the following
+%           constraints:
+%           The product of the elements of each column is equal to 1.
+%           The ratio among the largest elements of each column is
+%           not greater than pa.shb.
+%           The ratio among the second largest elements of each column is
+%           not greater than pa.shb.
+%           ....
+%           The ratio among the smallest elements of each column is
+%           not greater than pa.shb.
+%           The ratio of the elements of each column is not greater than
+%           pa.shw.
+%
 %
 % More About:
 % The notation for the eigen-decomposition of the
@@ -82,7 +112,7 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 % \[
 % \Sigma_j= \lambda_j^{1/p} \Omega_j \Gamma_j \Omega_j'  \qquad j=1, 2, \ldots, k
 % \]
-% The dimension of matrices $\Omega_j$ and $\Lambda_j$ is $p\times p$.
+% The dimension of matrices $\Omega_j$ (rotation) and $\Gamma_j$ (shape) is $p\times p$.
 %
 % $c_{det}=$ scalar, constraint associated with the determinants.
 %
@@ -95,9 +125,9 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %
 % We also denote with
 %
-%   [1] $\Sigma$ the 3D array of size $p\times p \times k$ containing the
+%   [1] $\Sigma_B$ the 3D array of size $p\times p \times k$ containing the
 %   empirical covariance matrices of the $k$ groups, before applying the
-%   constraints coming from the 14 parametrizations. In the code $\Sigma$
+%   constraints coming from the 14 parametrizations. In the code $\Sigma_B$
 %   is called $SigmaB$. The $j$-th slice of this 3D array of size $p\times
 %   p$ is denoted with symbol $\hat \Sigma_j$.
 %   [2] $\Omega$ the 3D array of size $p\times p \times k$ containing the
@@ -109,11 +139,12 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 %   matrix of group j). In the code matrix $\Gamma$ is called GAM.
 %   After the application of this routine, the product of the elements of
 %   each column of matrix GAM is equal to 1.
-%   The ratio of the elements of each row is not greater than $c_{shb}$ (pa.shb).
+%   The ratio among the largest (second largest, ...smallest) elements of
+%   each column is not greater than $c_{shb}$ (pa.shb).
 %   The ratio of the elements of each column is not greater than
 %   $c_{shw}$ (pa.shb). All the columns of matrix GAM are equal if the second
 %   letter of modeltype is E. All the columns of matrix GAM are
-%   equal to 1 if the second letter of modeltype is I. 
+%   equal to 1 if the second letter of modeltype is I.
 %   [4] niini the vector of length $k$ containing the number of units
 %   (weights) associated to each group.
 %   [5]  $\lambda$ = the vector of length $p$ containing in the $j$-th
@@ -155,7 +186,7 @@ function [Sigma]  = restrSigmaGPCM(SigmaB, niini, pa)
 
 %% Beginning of code
 
-% SigmaB = v-times-v-times-k = empirical covariance matrix
+% SigmaB = p-times-p-times-k = empirical covariance matrix
 Sigma=SigmaB;
 k=length(niini);
 lmd=NaN(1,k);
@@ -176,7 +207,7 @@ OMG=zeros(size(Sigma));
 zero_tol=pa.zerotol;
 
 % pa.pars = character vector with three letters specifying the type of the
-% 14 contraints (i.e. EEE, CVVV, EVE, ...)
+% 14 constraints (i.e. EEE, CVVV, EVE, ...)
 pars=pa.pars;
 
 
@@ -212,11 +243,30 @@ if strcmp(pars(3),'E')
     % Find initial constrained determinants (lmd vector)
     lmd =restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
     
+    % In presence of variable shape 
+    % compute Wk and wk once and for all.
+    % Wk(:,:,j) contains (n_j/n) \Sigma_j
+    % wk(j) contains largest eigenvalue of Wk(:,:,j)
+    % These two matrices will be used inside routine cpcV
+    if (strcmp(pars,'VVE') || strcmp(pars,'EVE'))
+        p=pa.p;
+        Wk=zeros(p,p,k);
+        wk=zeros(k,1);
+        sumnini=sum(niini);
+        for j=1:k
+            Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
+            wk(j) = max(eig(Wk(:,:,j)));
+        end
+    end
+    
 elseif  strcmp(pars(3),'V')
     % Find initial (and final value for OMG)
     for j=1:k
-        [V,~]= eig(SigmaB(:,:,j));
-        V=fliplr(V);
+        [V,eigunsorted]= eig(SigmaB(:,:,j));
+        % Sort eigenvalues from largest to smallest and reorder the columns
+        % of the matrix of eigenvectors accordingly
+        [~,ordeig]=sort(diag(eigunsorted),'desc');
+        V=V(:,ordeig);
         OMG(:,:,j)=V;
     end
     
@@ -234,7 +284,6 @@ maxiterDSR=pa.maxiterDSR;
 
 %% Beginning of iterative process
 
-OMGchk=zeros(pa.p,pa.p);
 % Apply the iterative procedure to find Det Shape and Rot matrices
 iter=0;
 % diffOMG value of the relative sum of squares of the difference between
@@ -246,47 +295,76 @@ GAMtmp=tmp;
 lmdtmp=tmp;
 itertol=pa.tol;
 p=pa.p;
-upd=1;
+updOMG=1;
+updlmd=1;
+updGAM=1;
+diffOMGold=Inf;
+tolToStopIter=1e-10;
+
 while ( (diffglob > itertol) && (iter < maxiterDSR) )
     iter=iter+1;
-    
     
     % In the **E case (except for the case EEE) it is necessary to update in each step of the
     % iterative procedure OMG
     
-    if (strcmp(pars,'VVE') || strcmp(pars,'EVE')) && upd==1
+    if (strcmp(pars,'VVE') || strcmp(pars,'EVE')) && updOMG==1
         % Variable shape: update OMG (rotation)
         % parameter pa.maxiterR is used here
-        [OMG]  = cpcV(lmd, GAM, OMG(:,:,1), SigmaB, niini, pa);
+        [OMGtry]  = cpcV(lmd, GAM, OMG(:,:,1), Wk, wk, pa);
         
-    elseif strcmp(pars,'VEE') || strcmp(pars,'EEE') && upd==1 % TODO check if EEE is necessary here because given that all lmd are equal the order of the eigenvectors can change
+    elseif strcmp(pars,'VEE') || strcmp(pars,'EEE') && updOMG==1 
         % Equal shape: update OMG (rotation)
         % old eiggiroe
-        [OMG]  = cpcE(lmd, SigmaB, niini, pa);
+        [OMGtry]  = cpcE(lmd, SigmaB, niini, pa);
     else
         % In all the other cases OMG is not updated
     end
     
-    % Find new value of GAM (shape matrix) using updated OMG
-    [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
-    % Find new value of lmd (determinants) starting from constrained shape
-    % GAM and updated OMG
-    [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
-    % TODO
-    % lmd=sort(lmd);
-    
     % Omega2Dold = old values of matrix Omega2D in vectorized form
     OMGold=OMGtmp;
-    GAMold=GAMtmp;
-    lmdold=lmdtmp;
-    
     % OMGnew = new values of matrix OMG in vectorized form
-    OMGnew=abs(OMG(:));
+    OMGnew=abs(OMGtry(:));
     % diff = (new values of Omega - old values of Omega)
     diff=OMGnew-OMGold;
     % relative sum of squares of the differences
     % Note that (Omega2Dold'*Omega2Dold)=p
     diffOMG=diff'*diff/(p*k);
+    
+    % Update OMG just is the relative difference in smaller than that of
+    % previous iteration
+    if diffOMG<= diffOMGold
+        OMG=OMGtry;
+        % if diffOMG is smaller than tolToStopIter do not update omega
+        % anymore
+        if updOMG==1 && diffOMG<tolToStopIter
+             diffOMG=0;
+             updOMG=0;
+         end
+    else
+        % If there are more differences in difflmd and diffGAM set diffOMG
+        % to 0 and do not call anymore procedure to update OMG
+        if difflmd ==0 && diffGAM==0
+            diffOMG=0;
+        else
+            diffOMG=diffOMGold;
+        end
+    end
+    
+    if updGAM==1
+        % Find new value of GAM (shape matrix) using updated versions of OMG
+        % and lmd
+        [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
+    end
+    
+    if updlmd==1
+        % Find new value of lmd (determinants) starting from constrained shape
+        % GAM and updated OMG
+        [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
+    end
+    
+    GAMold=GAMtmp;
+    lmdold=lmdtmp;
+    
     
     % GAMnew = new values of matrix GAM in vectorized form
     GAMnew=GAM(:);
@@ -294,29 +372,35 @@ while ( (diffglob > itertol) && (iter < maxiterDSR) )
     diff=GAMnew-GAMold;
     % relative sum of squares of the differences
     diffGAM=diff'*diff/(GAMold'*GAMold);
+    if updGAM==1 && diffGAM<tolToStopIter
+        updGAM=0;
+    end
     
-    % lmdnew = new values of vector lmd 
+    % lmdnew = new values of vector lmd
     lmdnew=lmd(:);
     % diff = (new values of lmd) - (old values of lmd)
     diff=lmdnew-lmdold;
     % relative sum of squares of the differences
     difflmd=diff'*diff/(lmdold'*lmdold);
-    
-        corrm=abs(corr(OMG(:,:,1),OMGchk));
-    if upd==1 && min(max(corrm,[],2))>0.99
-        upd=0;
+    if updlmd==1 && difflmd<tolToStopIter
+        updlmd=0;
     end
     
+        %     corrm=abs(corr(OMG(:,:,1),OMGchk));
+    %     if updOMG==1 && min(max(corrm,[],2))>0.99
+    %         updOMG=0;
+    %     end
+
     diffglob=max([diffGAM,diffOMG,difflmd]);
-%     disp([diffGAM,diffOMG,difflmd])
+    disp([diffGAM,diffOMG,difflmd])
+    
+    % Store values of OMG, GAM and lmd in vectorized form
     OMGtmp=abs(OMG(:));
     GAMtmp=GAM(:);
     lmdtmp=lmd(:);
-    OMGchk=OMG(:,:,1);
-    GAMchk=GAM;
     
-    % 
-
+    diffOMGold=diffOMG;
+    
 end
 
 % Check if all is well
