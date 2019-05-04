@@ -90,7 +90,7 @@ document.write(divsbefore);</script>
 	</p>
 	<table border="2" cellpadding="4" cellspacing="0" class="body" style="width: 100%;">
 		<colgroup>
-			<col><col width="20%"><col width="20%"><col width="20%">
+			<col><col><col width="20%"><col width="20%">
 			<col width="20%">
 		</colgroup>
 		<thead>
@@ -98,11 +98,119 @@ document.write(divsbefore);</script>
 				<th bgcolor="#b2b2b2" valign="top">Version (Release)</th>
 				<th bgcolor="#b2b2b2" style="width: 32%;" valign="top">New Features 
 				and Changes</th>
-				<th bgcolor="#b2b2b2" valign="top">Version Compatibility Considerations</th>
+				<th bgcolor="#b2b2b2" valign="top" style="width: 20%">Version Compatibility Considerations</th>
 				<th bgcolor="#b2b2b2" valign="top">Fixed Bugs and Known Problems</th>
 				<th bgcolor="#b2b2b2" valign="top">Release dates</th>
 			</tr>
 		</thead>
+		<tr>
+			<td style="vertical-align: top;"><strong>V2019a</strong></td>
+			<td style="vertical-align: top;">
+		<p class="p5">CLUSTER ANALYSIS</p>
+			<p class="p5">Function <a href="tclustreg.html">tclustreg</a> has 
+			been enhanced considerable: robust BIC has been added, possibility 
+			of constraing the determinants of the cov matrices of the explanatry 
+			variables has been added. New thinning capabilities ....</p>
+			<p class="p5">New function <a href="tclustregIC.html">tclustregIC</a> which (if present) 
+				uses the Parallel Computing toolbox to compute robust BIC&nbsp; 
+				for mixture and classification likeilhood for different values 
+				of k (number of groups) and different values of c (restriction 
+				factor for the variances of the residuals),<br>for a 
+				prespecified level of trimming. </p>
+			<p class="p5">New function&nbsp; for constraining the 
+				determinants 
+			&nbsp;<a href="restrdeter.html">restrdeter</a>. This function is has its own interest but is 
+				called in every&nbsp; concentration step of function tclust in 
+				case determinant restriction is needed.</p>
+			<p class="p1">Routines for constraining the determinants 
+				(<a href="restrdeterGPCM.html">restrdeterGPCM</a>), the shape matrices (<a href="restrshapeGPCM.html">restrshapeGPCM</a>) and to 
+				impose common rotation matrices (common principal components) in 
+				presense of equal shape (cpcE.m) or varying shape (cpcV.m) and a 
+				general routine to impose constraints in the family of the 14 
+				Gaussian Parsimonious Clustering Models (<a href="restrSigmaGPCM.html">restrSigmaGPCM</a>).</p>
+			<p class="p1">Routine to generate data based on the 14 Gaussian 
+				Parsimonious Clustering Models (<a href="genSigmaGPCM.html">genSigmaGPCM</a>). This routine can 
+				be called directly for function <a href="MixSim.html">MixSim</a> in order to generate each 
+				of the 14 Gaussian Parsimonious Clustering Models with a 
+				prespecified level of overlapping (see option sph inside MixSim).</p>
+			<p class="p1">New Routine <a href="GowerIndex.html">GowerIndex</a> 
+			to compute matrix of similarity indexes using Gower metric</p>
+				<p class="p5">DATASETS</p>
+				
+		
+			<p class="p1">&nbsp;New datasets added to the collection. </p>
+			<p class="p1">animals, P12119085, P17049075</p>
+			<p class="p1">COMBINATORIAL</p>
+			<p class="p1">function subset....</p>
+			<p class="p1">GRAPHICS</p>
+			<p class="p1">Possibility of brushing using rownames. Rownames also 
+			appear in the associated scatter plot matrix both for regression and 
+			multivariate analysis. See the new examples added to
+			<a href="resfwdplot.html">resfwdplot</a> and
+			<a href="malfwdplot.html">malfwdplot</a></p>
+			<p class="p1">New function <a href="aceplot.html">aceplot</a> to 
+			visualize the results of the output produced by functions
+			<a href="ace.html">ace</a> and <a href="avas.html">avas</a>.</p>
+			<p class="p1">Function rug.m da discutere (questa è una funzione di 
+			terze parti)</p>
+			<p class="p1">MULTIVARITATE</p>
+			<p class="p1">Funciton <a href="FSMeda.html">FSMeda</a> has been 
+			made faster. Old function FSMeda has been renamed FSMedaeasy</p>
+			<p class="p1">REGRESSION</p>
+			<p class="p1">New functions <a href="ace.html">ace</a> which 
+			implements the alternating conditional expectations algorithm to 
+			find the transformations of y and X that maximise the proportion of<br>
+			variation in y explained by X and <a href="avas.html">avas</a> which 
+			uses a (nonparametric) variance-stabilizing transformation for the 
+			response variable.</p>
+			<p class="p1">New function <a href="smothr.html">smothr</a> to 
+			smooth values imposing variour constraints (e.g. monotonicity, 
+			circularity,..). This function calls the supersmoother routine of 
+			Friedman</p>
+			<p class="p1">New function <a href="rlsmo.html">rlssmo</a> to 
+			compute a running line smoother with global cross validation</p>
+			<p class="p1">New function <a href="supsmu.html">supsmu</a> to 
+			smooth scatterplots using Friedman's supersmoother algorithm.</p>
+			<p class="p1">In function <a href="RobCov.html">RobCov</a> the 
+			estimator covrobc (a corrected version of the covariance matrix of&nbsp; 
+			robust beta coefficients) has been added. A motivating example&nbsp; 
+			example which shows a case why covrobc should be always used has 
+			been added.</p>
+			<p class="p1">UTILITIES</p>
+			<p class="p1">New function <a href="repDupValWithMean.html">
+			repDupValWithMean</a> has been added which enables us to replace 
+			values of y which have non unique elements in vector x with local 
+			means</p>
+			<p class="p1">UTILITIES HELP</p>
+			<p class="p1">Function <a href="publishFS.html">publishFS</a> has 
+			been furterly improved. This function automatically transforms 
+			structuerd .m files into MATLAB pure style files. In the HTML help 
+			files now the right click of the mouse (similarly to pure Mathworks 
+			pages) enables to execute, select or find help (F1 key) for all the 
+			versions of MATLAB starting from 2017a.</p>
+			<p class="p1">&nbsp;</p>
+			<p class="p1">STATISTICAL UTITLIES</p>
+			<p class="p1">New function <a href="genr8.html">genr8</a> to 
+			generate random numbers which are congruent across different 
+			softwares and platforms.</p>
+			<p class="p1">New function <a href="exactcdf.html">exactcdf</a> 
+			which enables us to find exact cdf values of each element of an 
+			input vector x with respect to an empirical distribution. </p>
+			<p class="p1">New function <a href="wthin.html">wthin</a> which 
+			thins a uni/bi-dimensional dataset</p>
+			<p class="p1">New function <a href="ctsub.html">ctsub</a> which 
+			computes numerical integrarion from x(1) to z(i) of y=f(x)</p>
+			<p class="p1">&nbsp;</p>
+			<p class="p1">&nbsp;</p>
+			</td>
+			<td style="vertical-align: top; width: 20%;">This is the last 
+			release where we&nbsp; we support old 
+			releases up to 2012a. <br></td>
+			<td class="auto-style1" style="vertical-align: top;">Fixed a bug in 
+			mtR when the user wanted to continue the simulation using a negative 
+			seed<br><br></td>
+			<td style="vertical-align: top;">May &nbsp;2019</td>
+		</tr>
 		<tr>
 			<td style="vertical-align: top;"><strong>V2018b</strong></td>
 			<td style="vertical-align: top;">
@@ -127,8 +235,7 @@ document.write(divsbefore);</script>
 			automatic way the bibliography from the citations present inside the 
 			.m files.</p>
 			</td>
-			<td style="vertical-align: top;">From release 2018a we support old 
-			releases up to 2012a. <br></td>
+			<td style="vertical-align: top; width: 20%;"> <br></td>
 			<td class="auto-style1" style="vertical-align: top;">Fixed a problem 
 			in the brushing from spmplot and on the diagonal there are the 
 			boxplots.&nbsp; See for more details the additional examples in <a href="yXplot.html">yXplot</a> and
@@ -181,7 +288,7 @@ document.write(divsbefore);</script>
 			<a href="ClusterRelabel.html">ClusterRelabel</a>,  to track 
 			the indexes permutations used to rearch a desired cluster labelling.</p>
 			</td>
-			<td style="vertical-align: top;">From release 2018a we support old 
+			<td style="vertical-align: top; width: 20%;">From release 2018a we support old 
 			releases up to 2012a. <br><br>From 2018a the use of subfunctions 
 			tinvFS, finvFS, tcdfFS, fpdfFS, fcdfFS which compute inverse, pdf, 
 			cdf of the T and F distribution are not supported anymore.<br><br>
@@ -251,7 +358,7 @@ document.write(divsbefore);</script>
 			enriched to superimpose ellipses, density and contour functions to data 
 			and extract single panels from the scatter matrix.</span></p>
 			</td>
-			<td style="vertical-align: top;">&nbsp;</td>
+			<td style="vertical-align: top; width: 20%;">&nbsp;</td>
 			<td class="auto-style1" style="vertical-align: top;">Various inconsistencies 
 			in the browsing of the documentation pages and the bibliography have 
 			been fixed.</td>
@@ -300,7 +407,7 @@ document.write(divsbefore);</script>
 			in order to take as input the output of procedures which monitor robust 
 			estimators.<br><br></p>
 			</td>
-			<td style="vertical-align: top;">&nbsp;</td>
+			<td style="vertical-align: top; width: 20%;">&nbsp;</td>
 			<td style="vertical-align: top;">Control version added in many graphical 
 			routines to take account the modifications in MATLAB 2017a
 			<p></p>
@@ -321,7 +428,7 @@ document.write(divsbefore);</script>
 			or using a GUI the functions documentation, in html as well as in the 
 			function head. <br><br>New html documentation generated with
 			<a href="publishFS.html">publishFS</a>.<br></td>
-			<td style="vertical-align: top;">We are monitoring&nbsp; possible compatibility 
+			<td style="vertical-align: top; width: 20%;">We are monitoring&nbsp; possible compatibility 
 			issues that may emerge from&nbsp; changes in the tagging policy of the graphical 
 			objects in MATLAB.<br></td>
 			<td style="vertical-align: top;">add2spm modified to take into account 
@@ -356,7 +463,7 @@ document.write(divsbefore);</script>
 			efficiency (HUeff), the psi functions (HUpsi), its derivative (HUpsider), 
 			etc. For a full list, see functions under utilities_stats folder.
 			<br><br><br></td>
-			<td style="vertical-align: top;">Documentation made compatible with 
+			<td style="vertical-align: top; width: 20%;">Documentation made compatible with 
 			the new MATLAB help navigation and browser-style, which was redesigned 
 			in release R2015b. <br><br><br></td>
 			<td style="vertical-align: top;">Many small bugs fixed. Functions affected 
@@ -393,7 +500,7 @@ document.write(divsbefore);</script>
 			<p>New routine for automatic outlier detection in heteroskdastic regression 
 			(FSRH.m)</p>
 			</td>
-			<td><br></td>
+			<td style="width: 20%"><br></td>
 			<td>In function spmplot, the multiple histograms (boxplots) on the main 
 			diagonal of the scatter plot matrix is now working also with R2015a 
 			and R2015b.
@@ -429,7 +536,7 @@ document.write(divsbefore);</script>
 			New function to compute the cdf of the linear combination of non central 
 			chi-squared random variables (<a href="ncx2mixtcdf.html">ncx2mixtcdf</a>).</p>
 			</td>
-			<td bgcolor="#f2f2f2">
+			<td bgcolor="#f2f2f2" style="width: 20%">
 			<p>Documentation made compatible with the new help system introduced 
 			with MATLAB R2015a</p>
 			</td>
@@ -456,7 +563,7 @@ document.write(divsbefore);</script>
 			groups and multiple boxplots on the main diagonal (<a href="spmplot.html">spmplot</a>).<br>
 			</p>
 			</td>
-			<td bgcolor="#f2f2f2">
+			<td bgcolor="#f2f2f2" style="width: 20%">
 			<p>Structure modified for compatibility with MATLAB R2012b to R2013a 
 			releases. Three APPs introduced in release R2013a. </p>
 			</td>
@@ -480,7 +587,7 @@ document.write(divsbefore);</script>
 			and bivariate analysis (<a href="unibiv.html">unibiv</a>). New interactive 
 			plots and interactive graphics features.<br></p>
 			</td>
-			<td bgcolor="#f2f2f2">
+			<td bgcolor="#f2f2f2" style="width: 20%">
 			<p>Redesigned the definition of many optional input parameters in terms 
 			of structures </p>
 			</td>
@@ -501,7 +608,7 @@ document.write(divsbefore);</script>
 			<a href="resfwdplot.html">resfwdplot</a> considerably improved. <br>
 			</p>
 			</td>
-			<td bgcolor="#f2f2f2">
+			<td bgcolor="#f2f2f2" style="width: 20%">
 			<p><br>-</p>
 			</td>
 			<td bgcolor="#f2f2f2">
@@ -519,7 +626,7 @@ document.write(divsbefore);</script>
 			<td bgcolor="#f2f2f2" style="width: 32%;">
 			<p>-<br></p>
 			</td>
-			<td bgcolor="#f2f2f2">
+			<td bgcolor="#f2f2f2" style="width: 20%">
 			<p>A few functions use ~ to denote unused output parameters as from 
 			release 2009b</p>
 			</td>
@@ -534,7 +641,7 @@ document.write(divsbefore);</script>
 		<tr>
 			<td style="vertical-align: top;"><br></td>
 			<td style="vertical-align: top;"><br></td>
-			<td style="vertical-align: top;"><br></td>
+			<td style="vertical-align: top; width: 20%;"><br></td>
 			<td style="vertical-align: top;"><br></td>
 			<td style="vertical-align: top;"><br></td>
 		</tr>
