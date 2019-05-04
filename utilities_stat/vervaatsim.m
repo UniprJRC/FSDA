@@ -1,5 +1,5 @@
 function y = vervaatsim(betav,steps,d)
-% vervaatsim returns a Vervaat perpetuity.
+%vervaatsim returns a Vervaat perpetuity.
 %
 %<a href="matlab: docsearchFS('vervaatsim')">Link to the help function</a>
 %
@@ -69,7 +69,7 @@ function y = vervaatsim(betav,steps,d)
 % for implement it is by Barabesi and Pratelli (2019).
 %
 %
-% See also: %vervaatrnd, vervaatxdf, quickselectFS
+% See also: vervaatrnd, vervaatxdf, quickselectFS
 %
 %
 %
@@ -301,57 +301,55 @@ else
 end
 
 end
-%FScategory:UTISTAT
 
 
-%{
-
-# This code implements the Vervaat perpetuity algorithm for R version 3.0.2
-# (2013-09-25), following Section 2 of Cloud, Huber (2018), Fast Perfect
-# Simulation of Vervaat Perpetuities, Journal of Complexity, Volume 42,
-# October 2017, Pages 19-30.
-
-vervaat <- function(beta = 1,
-                    steps = 1,
-                    d = -1) {
-  x0 <- (1 + (2 / 3) ^ (1 / beta)) / (1 - (2 / 3) ^ (1 / beta))
-  if (d == -1)
-    d <- x0 - 1 + rgeom(1, prob = 1 / 2)
-  d <- c(rep(0, steps), d)
-  a <- runif(steps)
-  for (t in steps:1)
-    d[t] <- d[t + 1] + (a[t] > 2 / 3) - (a[t] <= 2 / 3) * (d[t + 1] >= x0)
-  m <- 0
-  M <- d[1]
-  u1 <- rep(0, steps)
-  u2 <- runif(steps)
-  for (t in 2:(steps + 1)) {
-    up <- d[t] > d[t - 1]
-    u1[t - 1] <- runif(1, min = 2 / 3 * up, max = 2 / 3 + 1 / 3 * up)
-  }
-  for (t in 2:(steps + 1)) {
-    m <- (1 + m) * u2[t - 1] ^ (1 / beta)
-    a <- u1[t - 1] ^ (1 / beta)
-    s <- (a < ((1 + m) / (1 + M)))
-    M <- s * m + (1 - s) * a * (1 + M)
-  }
-  if (m == M)
-    return(m)
-  else {
-    y <- vervaat(beta, 2 * steps, d[1])
-    m <- 0
-    M <- d[1]
-    for (t in 2:(steps + 1)) {
-      r <- (u1[t - 1] < ((1 + m) / (1 + y)) ^ beta)
-      m <- (1 + m) * u2[t - 1] ^ (1 / beta)
-      y <- r * m + (1 - r) * u1[t - 1] ^ (1 / beta) * (1 + y)
-    }
-    return(y)
-  }
-}
-
-%}
+% 
+% 
+% # This code implements the Vervaat perpetuity algorithm for R version 3.0.2
+% # (2013-09-25), following Section 2 of Cloud, Huber (2018), Fast Perfect
+% # Simulation of Vervaat Perpetuities, Journal of Complexity, Volume 42,
+% # October 2017, Pages 19-30.
+% 
+% vervaat <- function(beta = 1,
+%                     steps = 1,
+%                     d = -1) {
+%   x0 <- (1 + (2 / 3) ^ (1 / beta)) / (1 - (2 / 3) ^ (1 / beta))
+%   if (d == -1)
+%     d <- x0 - 1 + rgeom(1, prob = 1 / 2)
+%   d <- c(rep(0, steps), d)
+%   a <- runif(steps)
+%   for (t in steps:1)
+%     d[t] <- d[t + 1] + (a[t] > 2 / 3) - (a[t] <= 2 / 3) * (d[t + 1] >= x0)
+%   m <- 0
+%   M <- d[1]
+%   u1 <- rep(0, steps)
+%   u2 <- runif(steps)
+%   for (t in 2:(steps + 1)) {
+%     up <- d[t] > d[t - 1]
+%     u1[t - 1] <- runif(1, min = 2 / 3 * up, max = 2 / 3 + 1 / 3 * up)
+%   }
+%   for (t in 2:(steps + 1)) {
+%     m <- (1 + m) * u2[t - 1] ^ (1 / beta)
+%     a <- u1[t - 1] ^ (1 / beta)
+%     s <- (a < ((1 + m) / (1 + M)))
+%     M <- s * m + (1 - s) * a * (1 + M)
+%   }
+%   if (m == M)
+%     return(m)
+%   else {
+%     y <- vervaat(beta, 2 * steps, d[1])
+%     m <- 0
+%     M <- d[1]
+%     for (t in 2:(steps + 1)) {
+%       r <- (u1[t - 1] < ((1 + m) / (1 + y)) ^ beta)
+%       m <- (1 + m) * u2[t - 1] ^ (1 / beta)
+%       y <- r * m + (1 - r) * u1[t - 1] ^ (1 / beta) * (1 + y)
+%     }
+%     return(y)
+%   }
+% }
 
 % (although some authors define it as $1 + Y$ for $Y$ being a Vervaat
 % perpetutiy with $\beta = 1$).
 
+%FScategory:UTISTAT

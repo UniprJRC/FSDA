@@ -1,5 +1,5 @@
 function [f , F , x] = vervaatxdf(betav,nx,pascalM)
-% vervaatxdf returns the pdf and cdf of a Vervaat perpetuity.
+%vervaatxdf returns the pdf and cdf of a Vervaat perpetuity.
 %
 %<a href="matlab: docsearchFS('vervaatxdf')">Link to the help function</a>
 %
@@ -72,7 +72,7 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 % equal to $1$, which is known as Takacs distribution. 
 % 
 %
-% See also: %vervaatsim, vervaatrnd, quickselectFS.
+% See also: vervaatsim, vervaatrnd, quickselectFS
 %
 %
 %
@@ -85,16 +85,16 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 % Perpetuities, "Journal of Complexity", Vol. 42, pp. 19-30.
 %
 % Devroye, L. (2001), Simulating  perpetuities, "Methodology And Computing
-% In Applied Probability", Vol. 3, Num. 1, pp. 97–115.
+% In Applied Probability", Vol. 3, Num. 1, pp. 97-115.
 %
 % Fill, J. A. and  Huber, M. (2010), Perfect  simulation  of  Vervaat
-% perpetuities, "Electronic Journal of Probability", Vol. 15, pp. 96–109.
+% perpetuities, "Electronic Journal of Probability", Vol. 15, pp. 96-109.
 %
 % Devroye, L. and Fawzi, O. (2010), Simulating the Dickman distribution,
-% "Statistics and Probability Letters", Vol. 80, pp. 242–247.
+% "Statistics and Probability Letters", Vol. 80, pp. 242-247.
 %
 % Blanchet, J. H. and Sigman, K. (2011), On exact sampling of stochastic
-% perpetuities, "Journal of Applied Probability", Vol. 48A, pp. 165–182.
+% perpetuities, "Journal of Applied Probability", Vol. 48A, pp. 165-182.
 %
 % Takacs, L. (1955), On stochastic processes connected with certain
 % physical recording apparatuses. "Acta Mathematica Academiae
@@ -261,3 +261,4 @@ for k=1:nx
 end
 
 end
+%FScategory:UTISTAT
