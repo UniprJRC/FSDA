@@ -1,5 +1,5 @@
 function [out]= genr8(n, distrib, s1, s2)
-% genr8 returns a vector of pseudorandom number sequence.
+%genr8 returns a vector of pseudorandom number sequence.
 %
 %<a href="matlab: docsearchFS('genr8')">Link to the help function</a>
 %
