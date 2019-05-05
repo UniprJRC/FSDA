@@ -58,9 +58,9 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 %
 % We are interested in this distribution because the running time of the
 % Quickselect algorithm of Hoare, for finding the order statistics in a
-% numerical array, approaches asymptotically the Dickman distribution,
-% which is a perpetuity with $W \sim Unif([0,1])$. Unfortunately there is
-% no known closed form for the Dickman.
+% numerical array, approaches asymptotically a particular perpetuity,
+% called Dickman distribution, with $W \sim Unif([0,1])$. Unfortunately
+% such distribution has no closed form.
 %
 % The Dickman distribution can be also seen as a special case of Vervaat
 % perpetuity, which is such that $W_i \sim U^{1/\beta}$ for some $\beta

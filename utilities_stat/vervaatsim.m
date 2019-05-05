@@ -54,19 +54,18 @@ function y = vervaatsim(betav,steps,d)
 %
 % We are interested in this distribution because the running time of the
 % Quickselect algorithm of Hoare, for finding the order statistics in a
-% numerical array, approaches asymptotically the Dickman distribution,
-% which is a perpetuity with $W \sim Unif([0,1])$. Unfortunately there is
-% no known closed form for the Dickman.
+% numerical array, approaches asymptotically a particular perpetuity,
+% called Dickman distribution, with $W \sim Unif([0,1])$. Unfortunately
+% such distribution has no closed form.
 %
 % The Dickman distribution can be also seen as a special case of Vervaat
 % perpetuity, which is such that $W_i \sim U^{1/\beta}$ for some $\beta
 % \in (0,\infty)$ for $U \sim Unif([0,1])$. In other words, the Dickman
 % distributon is a Vervaat perpetutiy with $\beta = 1$.
 %
-% We finallly mention a generalization of the perpetuity of the form \[ Y =
+% A generalization of the perpetuity takes the form \[ Y =
 % \sum_{n=0}^{\infty}A_n \prod_{i}^{n} W_i\] with $A_n$ not necessarily
-% equal to $1$, which is known as Takacs distribution. A feasible method
-% for implement it is by Barabesi and Pratelli (2019).
+% equal to $1$, which is known as Takacs distribution. 
 %
 %
 % See also: vervaatrnd, vervaatxdf, quickselectFS
