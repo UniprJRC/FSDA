@@ -214,6 +214,9 @@ function X = vervaatrnd(betav,n,method)
     % The superimposed normal kernel density is for illustration: 
     % a more precise density can be simulated with function vervaatxdf.
 
+    clear all;
+    close all;
+
     betav10 = 10;
     betav01 = 1;
     N = 5000;
