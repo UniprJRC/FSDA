@@ -139,8 +139,11 @@ function y = vervaatsim(betav,steps,d)
     %% N=5000 random values extracted from two Vervaat perpetuities.
     % Vervaat parameters ate: $\beta = 1$ and $\beta = 10$.
     % The superimposed normal kernel density is just for illustration.
+    % The same for the superimposed cdf, made using FSDA function exactcdf.
 
-    clear all; close all;
+    clear all; 
+    close all;
+
     betav10 = 10;
     betav01 = 1;
     N = 5000;
@@ -255,8 +258,6 @@ function y = vervaatsim(betav,steps,d)
 
 %}
 
-
-
 %% Beginning of code
 
 if nargin<3
@@ -311,11 +312,8 @@ else
     end
 end
 
-end
-
-
-% 
-% 
+%% remarks from the original R code
+%
 % # This code implements the Vervaat perpetuity algorithm for R version 3.0.2
 % # (2013-09-25), following Section 2 of Cloud, Huber (2018), Fast Perfect
 % # Simulation of Vervaat Perpetuities, Journal of Complexity, Volume 42,
@@ -359,8 +357,9 @@ end
 %     return(y)
 %   }
 % }
-
+%
 % (although some authors define it as $1 + Y$ for $Y$ being a Vervaat
 % perpetutiy with $\beta = 1$).
 
+end
 %FScategory:UTISTAT
