@@ -3296,7 +3296,7 @@ if evalCode==true
     numexToExec=0;
     for i=1:size(listEx,1)
         if listEx{i,4}==1
-            ExToExec=[[ExToExec '%% Ex' num2str(i)] char(13) listEx{i,3}];
+            ExToExec=[[ExToExec char(13) '%% Ex' num2str(i)] char(13) listEx{i,3}];
             % ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
             numexToExec=numexToExec+1;
         end
@@ -3306,7 +3306,7 @@ if evalCode==true
     if ~isempty(listExtraEx)
         for i=1:size(listExtraEx,1)
             if listExtraEx{i,4}==1
-                ExToExec=[[ExToExec '%% ExExtra' num2str(i)] char(13) listExtraEx{i,3}];
+                ExToExec=[[ExToExec char(13) '%% ExExtra' num2str(i)] char(13) listExtraEx{i,3}];
                 % ExToExec=[ExToExec '%% ExExtra' num2str(i) listExtraEx{i,3}];
                 numextraexToExec=numextraexToExec+1;
             end
