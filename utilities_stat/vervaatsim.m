@@ -148,6 +148,7 @@ function y = vervaatsim(betav,steps,d)
     betav01 = 1;
     N = 5000;
 
+    y10 = zeros(N,1); y01 = y10;
     for i=1:N
         y10(i) = vervaatsim(betav10);
         y01(i) = vervaatsim(betav01);
