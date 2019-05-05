@@ -1,5 +1,5 @@
 function a=ctsub(x,y,z)
-%ctsub computes numerical integrarion from x(1) to z(i) of y=f(x)
+%ctsub computes numerical integrarion from x(1) to z(i) of y=f(x).
 %
 %<a href="matlab: docsearchFS('ctsub')">Link to the help page for this function</a>
 %

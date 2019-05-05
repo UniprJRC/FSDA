@@ -108,9 +108,9 @@ document.write(divsbefore);</script>
 			<td style="vertical-align: top;">
 		<p class="p5">CLUSTER ANALYSIS</p>
 			<p class="p5">Function <a href="tclustreg.html">tclustreg</a> has 
-			been enhanced considerable: robust BIC has been added, possibility 
-			of constraing the determinants of the cov matrices of the explanatry 
-			variables has been added. New thinning capabilities ....</p>
+			been considerably enhanced. Now the function includes: (i) robust BIC, (ii) possibility 
+			of constraining the determinants of the covariance matrices of the explanatory 
+			variables, (iii) options for treating datasets with concentrated noise, making use of concentration steps appropriately modified using observation weighting and thinning methods.</p>
 			<p class="p5">New function <a href="tclustregIC.html">tclustregIC</a> which (if present) 
 				uses the Parallel Computing toolbox to compute robust BIC&nbsp; 
 				for mixture and classification likeilhood for different values 
@@ -119,7 +119,7 @@ document.write(divsbefore);</script>
 				prespecified level of trimming. </p>
 			<p class="p5">New function&nbsp; for constraining the 
 				determinants 
-			&nbsp;<a href="restrdeter.html">restrdeter</a>. This function is has its own interest but is 
+			&nbsp;<a href="restrdeter.html">restrdeter</a>. This function has its own interest but is 
 				called in every&nbsp; concentration step of function tclust in 
 				case determinant restriction is needed.</p>
 			<p class="p1">Routines for constraining the determinants 
@@ -130,60 +130,57 @@ document.write(divsbefore);</script>
 				Gaussian Parsimonious Clustering Models (<a href="restrSigmaGPCM.html">restrSigmaGPCM</a>).</p>
 			<p class="p1">Routine to generate data based on the 14 Gaussian 
 				Parsimonious Clustering Models (<a href="genSigmaGPCM.html">genSigmaGPCM</a>). This routine can 
-				be called directly for function <a href="MixSim.html">MixSim</a> in order to generate each 
+				be called directly from function <a href="MixSim.html">MixSim</a> in order to generate each 
 				of the 14 Gaussian Parsimonious Clustering Models with a 
-				prespecified level of overlapping (see option sph inside MixSim).</p>
-			<p class="p1">New Routine <a href="GowerIndex.html">GowerIndex</a> 
-			to compute matrix of similarity indexes using Gower metric</p>
+				prespecified level of overlap (see option sph inside MixSim).</p>
+			<p class="p1">Routine <a href="GowerIndex.html">GowerIndex</a> 
+			to compute matrix of similarity indexes using Gower metric.</p>
 				<p class="p5">DATASETS</p>
 				
 		
-			<p class="p1">&nbsp;New datasets added to the collection. </p>
-			<p class="p1">animals, P12119085, P17049075</p>
+			<p class="p1">&nbsp;New datasets added to the collection: </p>
+			<p class="p1">animals, P12119085, P17049075.</p>
 			<p class="p1">COMBINATORIAL</p>
 			<p class="p1">function subset....</p>
 			<p class="p1">GRAPHICS</p>
 			<p class="p1">Possibility of brushing using rownames. Rownames also 
-			appear in the associated scatter plot matrix both for regression and 
-			multivariate analysis. See the new examples added to
+			appear in the associated scatter plot matrix, both for regression and 
+			multivariate analysis: se new examples in
 			<a href="resfwdplot.html">resfwdplot</a> and
-			<a href="malfwdplot.html">malfwdplot</a></p>
+			<a href="malfwdplot.html">malfwdplot.</a></p>
 			<p class="p1">New function <a href="aceplot.html">aceplot</a> to 
 			visualize the results of the output produced by functions
 			<a href="ace.html">ace</a> and <a href="avas.html">avas</a>.</p>
 			<p class="p1">Function rug.m da discutere (questa è una funzione di 
 			terze parti)</p>
 			<p class="p1">MULTIVARITATE</p>
-			<p class="p1">Funciton <a href="FSMeda.html">FSMeda</a> has been 
-			made faster. Old function FSMeda has been renamed FSMedaeasy</p>
+			<p class="p1">Funciton <a href="FSMeda.html">FSMeda</a> is now much faster; the original function FSMeda has been kept, renamed FSMedaeasy, because the algorithm is much easier to follow.</p>
 			<p class="p1">REGRESSION</p>
-			<p class="p1">New functions <a href="ace.html">ace</a> which 
+			<p class="p1">New functions: (i) <a href="ace.html">ace</a> which 
 			implements the alternating conditional expectations algorithm to 
-			find the transformations of y and X that maximise the proportion of<br>
-			variation in y explained by X and <a href="avas.html">avas</a> which 
+			find the transformations of y and X that maximise the proportion of
+			variation in y explained by X and (ii) <a href="avas.html">avas</a> which 
 			uses a (nonparametric) variance-stabilizing transformation for the 
 			response variable.</p>
 			<p class="p1">New function <a href="smothr.html">smothr</a> to 
 			smooth values imposing variour constraints (e.g. monotonicity, 
 			circularity,..). This function calls the supersmoother routine of 
-			Friedman</p>
+			Friedman.</p>
 			<p class="p1">New function <a href="rlsmo.html">rlssmo</a> to 
-			compute a running line smoother with global cross validation</p>
+			compute a running line smoother with global cross validation.</p>
 			<p class="p1">New function <a href="supsmu.html">supsmu</a> to 
 			smooth scatterplots using Friedman's supersmoother algorithm.</p>
-			<p class="p1">In function <a href="RobCov.html">RobCov</a> the 
+			<p class="p1">Function <a href="RobCov.html">RobCov</a> now includes the 
 			estimator covrobc (a corrected version of the covariance matrix of&nbsp; 
-			robust beta coefficients) has been added. A motivating example&nbsp; 
-			example which shows a case why covrobc should be always used has 
-			been added.</p>
+			robust beta coefficients). A new motivating example&nbsp; 
+			shows a case why covrobc should be always used.</p>
 			<p class="p1">UTILITIES</p>
 			<p class="p1">New function <a href="repDupValWithMean.html">
-			repDupValWithMean</a> has been added which enables us to replace 
-			values of y which have non unique elements in vector x with local 
-			means</p>
+			repDupValWithMean</a> that enable to replace 
+			values of y including non unique elements in vector x with local 
+			means.</p>
 			<p class="p1">UTILITIES HELP</p>
-			<p class="p1">Function <a href="publishFS.html">publishFS</a> has 
-			been furterly improved. This function automatically transforms 
+			<p class="p1">Function <a href="publishFS.html">publishFS</a> is fourthly improved. This function automatically transforms 
 			structuerd .m files into MATLAB pure style files. In the HTML help 
 			files now the right click of the mouse (similarly to pure Mathworks 
 			pages) enables to execute, select or find help (F1 key) for all the 
@@ -191,21 +188,21 @@ document.write(divsbefore);</script>
 			<p class="p1">&nbsp;</p>
 			<p class="p1">STATISTICAL UTITLIES</p>
 			<p class="p1">New function <a href="genr8.html">genr8</a> to 
-			generate random numbers which are congruent across different 
-			softwares and platforms.</p>
+			generate random numbers which are coherent across different 
+			software platforms.</p>
 			<p class="p1">New function <a href="exactcdf.html">exactcdf</a> 
-			which enables us to find exact cdf values of each element of an 
+			to find exact cdf values of each element of an 
 			input vector x with respect to an empirical distribution. </p>
 			<p class="p1">New function <a href="wthin.html">wthin</a> which 
-			thins a uni/bi-dimensional dataset</p>
+			thins a uni/bi-dimensional dataset.</p>
 			<p class="p1">New function <a href="ctsub.html">ctsub</a> which 
 			computes numerical integrarion from x(1) to z(i) of y=f(x)</p>
-			<p class="p1">New functions <a href="vervaatsim.html">vervaatsim</a> 
-			(to simulate exactly from a Vervaat perpetuity<br>distribution)&nbsp;
-			<a href="vervaatxdf.html">vervaarxdf</a> , to obtain the pdf or the 
-			cdf from a Vervaat perpetuity distribution) and
+			<p class="p1">New functions (i) <a href="vervaatsim.html">vervaatsim</a> 
+			(to simulate precisely from a Vervaat perpetuity<br>distribution)&nbsp;
+			(ii) <a href="vervaatxdf.html">vervaarxdf</a> (to obtain the pdf or the 
+			cdf of a Vervaat perpetuity distribution) and (iii)
 			<a href="vervaatrnd.html">vervaatrnd</a> (to simulate random 
-			variates from the Vervaat perpetuity distribution)</p>
+			variates from the Vervaat perpetuity distribution).</p>
 			<p class="p1">&nbsp;</p>
 			<p class="p1">&nbsp;</p>
 			</td>
