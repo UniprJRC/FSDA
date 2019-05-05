@@ -1,36 +1,34 @@
 function a=ctsub(x,y,z)
-%ctsub computes numerical integrarion from x(1) to z(i) of y=f(x).
+%ctsub computes numerical integration from x(1) to z(i) of y=f(x).
 %
 %<a href="matlab: docsearchFS('ctsub')">Link to the help page for this function</a>
 %
-% For a function defined $y=f(x)$ with $n$ pairs  
-% $(x_1,y_1)$ $\ldots$ $(x_n,y_n)$, with
-% $x_1 \leq x_2 \leq, \ldots, \leq x_n$
-% this routine computes the (approximate) integral  using the trapezoidal rule
+% For a function defined $y=f(x)$ with $n$ pairs $(x_1,y_1)$ $\ldots$
+% $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$ this routine
+% computes the (approximate) integral using the trapezoidal rule
 % \[
-% a_i =
-% \int_{x_1}^{z_i} f(x) dx
+% a_i = \int_{x_1}^{z_i} f(x) dx
 % \]   
-% For further details see the section "more about".  
+% For further details see "more about".  
 %
 % Required input arguments:
 %
-%    x   :      Predictor variable sorted. Vector.  Vector of length n
+%    x   :      Predictor variable sorted. Vector. Vector of length n
 %               containing ordered abscissa values.
 %               Note that the x values are assumed non decreasing.
 %    y  :       Response variable. Vector. Vector of length n
 %               containing ordinate values.
 %    z  :       Upper limits of integration. Vector. Vector of length n
-%               containing the upper limits of integration.
+%               containing the upper integration limits.
 %
 %  Optional input arguments:
 %
 % Output:
 %
-%    a   :      Result of numerical integration. Vector.  Vector of length n
-%               containing the results of the n numerical integrations. The
-%               $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is equal
-%               to:
+%    a   :      Result of numerical integration. Vector.  Vector of length
+%               n containing the results of the n numerical integrations. 
+%               The $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is 
+%               equal to:
 %               \[
 %               a_i =
 %               \int_{x_1}^{z_i} f(x) dx
@@ -38,11 +36,9 @@ function a=ctsub(x,y,z)
 %
 % More About:
 % 
-% This function computes the approximate integral of Y via the trapezoidal
-% method. 
+% This function estimates the integral of Y via the trapezoidal method.
 % For a function defined $y=f(x)$ with $n$ pairs  $(x_1,y_1)$ $\ldots$
-% $(x_n,y_n)$, with
-% $x_1 \leq x_2 \leq, \ldots, \leq x_n$
+% $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$,
 % if $x_i<z_i \leq x_{i+1}$, $i=1, \ldots, n-1$, this routine computes the
 % (approximate) integral  using the trapezoidal rule:
 % \[

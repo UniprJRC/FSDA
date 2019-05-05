@@ -161,6 +161,12 @@ function y = vervaatsim(betav,steps,d)
     figure;
     h1=subplot(2,1,1);
     plot(x10,pdf10,'-','LineWidth',2); ylim([0,1]);
+    % now superimpose the cdf using function exactcdf
+    cdf10 = exactcdf(x10,y10);
+    hold on;
+    plot(x10,cdf10,'-r','LineWidth',2); ylim([0,1]);
+    hold off;
+    % superimpose the histogram
     if ~verLessThan('matlab','1.7.0')
         hold on
         h=histogram(y10);
@@ -169,9 +175,15 @@ function y = vervaatsim(betav,steps,d)
         h.EdgeColor='none'; 
         hold off
     end
-
+    drawnow;
     h2=subplot(2,1,2);
     plot(x01,pdf01,'-','LineWidth',2); ylim([0,1]);
+    % now superimpose the cdf using function exactcdf
+    cdf01 = exactcdf(x01,y01);
+    hold on;
+    plot(x01,cdf01,'-r','LineWidth',2); ylim([0,1]);
+    hold off;
+    % superimpose the histogram
     if ~verLessThan('matlab','1.7.0')
         hold on
         h=histogram(y01);
@@ -180,9 +192,9 @@ function y = vervaatsim(betav,steps,d)
         h.EdgeColor='none'; 
         hold off
     end
-
-    title(h1,'$$\beta = 10$$' ,'Fontsize',20,'interpreter','latex');
-    title(h2,'$$\beta = 1 $$ (Dickman)'  ,'Fontsize',20,'interpreter','latex');
+    drawnow;
+    title(h1,'$$\beta = 10$$ with cdf superimposed' ,'Fontsize',20,'interpreter','latex');
+    title(h2,'$$\beta = 1 $$ (Dickman) with cdf superimposed'  ,'Fontsize',20,'interpreter','latex');
 
 %}
 
