@@ -28,10 +28,13 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %                 Data Types - double
 % plots :    It specify whether it is necessary to produce the plots of the
 %               monitoring of minMD.
-%                 Scalar. If plots=1, a plot of the monitoring of minMD among
+%               Scalar. If plots=0 (default), all plots are suppressed.
+%               If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
-%               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
-%               else (default), all plots are suppressed.
+%               screen with 1 per cent, 50 per cent and 99 per cent
+%               confidence bands.
+%               If plots=2, the monitoring is also extended to the
+%               centroid, which is tracked in the data scatterplot.
 %               Example - 'plots',0
 %               Data Types - double
 %  msg  :       It controls whether to display or not messages
@@ -161,7 +164,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %}
 
 %{
-    %% FSMeda with optional arguments.
+    %% FSMeda with optional arguments (minimum Mahlanobis distance monitoring).
     % Monitoring the evolution of minimum Mahlanobis distance.
     n=100;
     v=3;
@@ -176,6 +179,40 @@ function out = FSMedaeasy(Y,bsb,varargin)
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
     [out]=FSMedaeasy(Ycont,bs,'plots',1);
+%}
+
+%{
+    %% FSMeda with optional arguments (centroid position monitoring).
+    % Monitoring the minimum Mahlanobis distance and the centroid position.
+    % In this example the figures of minimum Mahlanobis distance are closed.
+
+    Y=load('sixty_eighty.txt');
+    G = 60*ones(140,1); 
+    G(1:80)=80;
+    n = size(Y,1);
+    init = floor(n/2);
+
+    % start from G80
+    bs80 = [1,2,3];
+    [out80]=FSMedaeasy(Y,bs80,'plots',2,'init',init,'scaled',1);
+    close(findobj('tag','pl_mmd'));
+    title('Start from G80','Fontsize',14);
+
+    % start from G60
+    bs60 = [81,82,83];
+    [out60]=FSMeda(Y,bs60,'plots',2,'init',init,'scaled',1);
+    close(findobj('tag','pl_mmd'));
+    title('Start from G60','Fontsize',14);
+
+    % start in an optimal way automatically
+    [fre]=unibiv(Y,'plots',0,'rf',0.5);
+    fre=sortrows(fre,4);
+    init=2;
+    bs=fre(1:init,1);
+    [out]=FSMeda(Y,bs,'plots',2,'init',init,'scaled',1);
+    close(findobj('tag','pl_mmd'));
+    title('Start carefully chosen using unibiv','Fontsize',14);
+
 %}
 
 %{
@@ -378,6 +415,17 @@ if (rank(Y(bsb,:))<v)
     disp('FSMeda:message: FS loop will not be performed');
     out=struct;
 else
+    % this is to monitor the centroid position
+    if options.plots==2 && v==2
+        figure;
+        plot(Y(:,1),Y(:,2),'o'); 
+        
+        % include specified tag in the current plot
+        set(gcf,'tag','pl_centroid');
+        set(gcf,'Name', 'Monitoring the centroid position', 'NumberTitle', 'off');
+        
+        hold on;  
+    end
     
     for mm = ini0:n
         
@@ -385,10 +433,18 @@ else
         Yb=Y(bsb,:);
         
         
-        % Find vector of means inside subset
+        % Find vector of means inside subset. 
         % Note that ym is a row vector
         ym=mean(Yb);
         
+        % this is to monitor the centroid position
+        if options.plots==2 && v==2
+            if ~mod(mm,20) || mm==1
+                text(ym(1),ym(2),num2str(mm),'FontSize',18);
+            else
+                plot(ym(1),ym(2),'r*');
+            end
+        end
         
         % Squared Mahalanobis distances computed using QR decomposition
         Ym=Y-one*ym;
@@ -498,7 +554,7 @@ else
     
     
     % Plot minimum Mahalanobis distance with 1%, 50% and 99% envelopes
-    if options.plots==1
+    if options.plots==1 || options.plots==2
         figure;
         quant=[0.01;0.5;0.99];
         % Compute theoretical envelops for minimum Mahalanobis distance based on all
