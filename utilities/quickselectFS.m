@@ -1,4 +1,4 @@
-function kE = quickselectFS(A,k,kiniindex)
+function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %quickselectFS finds the k-th order statistic
 %
 %<a href="matlab: docsearchFS('quickselectFS')">Link to the help function</a>
@@ -123,6 +123,10 @@ while (position ~= k)
 end
 
 kE=A(k);
+
+if nargout == 2
+    varargout{1} = A;
+end
 
 end
 %FScategory:UTIGEN
