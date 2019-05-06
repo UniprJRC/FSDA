@@ -199,6 +199,13 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   alpha=0.02; If this field is
 %                   not specified plots.alphasel=alpha and therefore the
 %                   classification is shown for each value of alpha.
+%                 plots.ylimy = 2D array of size 3-by 2 which specifies the
+%                   lower and upper limits for the monitoring plots. The
+%                   first row refers the ARI index (top panel), the second
+%                   row refers to the the change in centroids using squared
+%                   euclidean distances (central panel), the third row is
+%                   associated with the change in covariance matrices using
+%                   squared euclidean distance (bottom panel).
 %                   Example - 'plots', 1
 %                   Data Types - single | double | struct
 %
@@ -533,7 +540,32 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter','cshape',cshape);
 %}
 
+%{
+    % An example of use of plots as a structure with field ylimy.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    [n,v]=size(Y);
+    alphavec=0.15:-0.01:0;
+    % alphavec=0.12:-0.005:0;
 
+    % c = restriction factor to use
+    c=100;
+    % k= number of groups
+    k=2;
+    % restriction on the determinants is imposed
+    restrtype='deter';
+    % Specify lower and upper limits for the monitoring plot
+    plots=struct;
+    % ylimits for monitoring of ARI index
+    ylimARI=[0.95 1];
+    % ylimits for change in centroids
+    ylimCENT=[0 0.02];
+    % ylimits for change in cov matrices
+    ylimCOV=[0 0.01];
+    ylimy=[ylimARI;ylimCENT;ylimCOV];
+    plots.ylimy=ylimy;
+    [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000);
+%}
 
 %% Input parameters checking
 nnargin=nargin;
@@ -1135,9 +1167,9 @@ if isstruct(plots)
         ylimy='';
     end
 elseif plots==1
-      name={'gscatter' 'monitor'};
-        alphasel=alpha;
-        ylimy='';   
+    name={'gscatter' 'monitor'};
+    alphasel=alpha;
+    ylimy='';
 end
 
 d=find(strcmp('monitor',name));
@@ -1172,10 +1204,10 @@ if d>0
     xlabel('\alpha')
     ylabel('Covariance')
     set(gca,'FontSize',16)
-        if ~isempty(ylimy)
+    if ~isempty(ylimy)
         ylim(ylimy(3,:))
     end
-
+    
 end
 
 d=find(strcmp('gscatter',name));
