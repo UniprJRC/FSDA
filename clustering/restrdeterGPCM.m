@@ -107,3 +107,5 @@ end
 lmdc = restreigen(lmd,niini', pa.cdet^(1/pa.p),pa.zerotol);
 
 end
+
+%FScategory:CLUS-RobClaMULT

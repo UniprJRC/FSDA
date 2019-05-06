@@ -76,6 +76,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %                   explanatory variables for the k groups.
 %                   Xdistrib.id =identifier vector which labes the rows of
 %                   matrix Xdistrib.X
+%               Data Types - struct
 %
 %  Optional input arguments:
 %

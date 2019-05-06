@@ -142,6 +142,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 
 %{
     %% Example where input is a table with categorical variables containing labels.
+    NameRows={'AEG' 'BOSCH' 'IGNIS'};
     Capacity=[380; 500; 310];
     Price=[700; 1800; 480];
     Alarm={'Yes'; 'Yes'; 'No'};

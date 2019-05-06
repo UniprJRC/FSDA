@@ -45,6 +45,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %            pa.zerotol = tolerance to decleare elements equal to 0.
 %            pa.maxiterS = maximum number of iterations in presence of
 %            varying shape matrices.
+%                 Data Types - struct
 %
 %
 %  Optional input arguments:
@@ -269,3 +270,4 @@ while ( (diffGAM > itertol) && (iter < maxiterS) )
 end
 
 end
+%FScategory:CLUS-RobClaMULT

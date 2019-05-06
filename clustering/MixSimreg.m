@@ -341,7 +341,7 @@ function [out] = MixSimreg(k,p,varargin)
 % Examples:
 %
 %{
-    % Example 1: Mixture of regression with prefixed average overlap.
+    %% Example 1: Mixture of regression with prefixed average overlap.
     % Generate mixture of regression using an average overlapping at
     % centroids =0.01. Use all default options
     % 1) Beta is generated according to random normal for each group with
