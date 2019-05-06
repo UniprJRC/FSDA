@@ -260,7 +260,7 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-    % FSMtra based on log trasnformed data.
+    % FSMtra based on log transformed data.
     % Baby food data.
     load('baby.mat');
     Y=baby.data(:,6:end);
@@ -406,7 +406,6 @@ function out = FSMtra(Y,varargin)
 %}
 
 %{
-
     %% Track records data.
     load('recordfg');
     Y=recordfg.data;
@@ -424,7 +423,7 @@ function out = FSMtra(Y,varargin)
         ii=ii+1;
     end
     disp(out)
-% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)
+    % Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)
 %}
 
 %{
@@ -441,7 +440,6 @@ function out = FSMtra(Y,varargin)
     colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};
     [out]=FSMtra(Y1,'plotsmle',1,'colnames',colnames);
     % Compare the plot with Figure 4.31 p. 188 of ARC (2004)
-
 %}
 
 %{
@@ -528,7 +526,6 @@ function out = FSMtra(Y,varargin)
     la0=[0.5 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];
     [out]=FSMtra(Y1,'plotslrt',1,'la0',la0,'colnames',colnames);
     % Compare the plot with Figure 4.40 p. 196 of ARC (2004)
-
 %}
 
 %{
