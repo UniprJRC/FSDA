@@ -2166,7 +2166,7 @@ if seasonal<6
         % squares
         betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
         % update fitted values
-        yhat = Xsel(bsb,selWithoutLastHarmonic) * betaout;
+        yhat = Xsel(:,selWithoutLastHarmonic) * betaout;
         
         s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
         
@@ -2232,7 +2232,7 @@ end
 out.LastHarmonicPval=pval;
 
 if lshift>0
-    lsdet=FSRinvmdr([length(LSH) out.B(end,3)],p-1);
+    lsdet=FSRinvmdr([length(LSH) abs(out.B(end,3))],p-1);
     LevelShiftPval=1-lsdet(1,2);
     out.LevelShiftPval=LevelShiftPval;
 end
