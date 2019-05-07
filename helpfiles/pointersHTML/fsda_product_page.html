@@ -1,23 +1,21 @@
 ﻿<html>
 Redirect to main page of FSDA inside docroot.
 <br>
-Note that the default docroot in MATLAB 2018b is <a href="matlab:web([docrootFS '/FSDA/index.html'])">'\Program Files\MATLAB\R2018b\help'</a> in windows or <a href="matlab:web([docrootFS '/FSDA/index.html'])">'/Applications/MATLAB_R2018b/help'</a> in Mac 
+Make sure that the FSDA help files are copied inside docroot!
 
 <script type="text/javascript">
-         <!--
-            
-            
-             function Redirect() {
-              	window.location=  "matlab:web([docrootFS '/FSDA/index.html'])";
-            }
-   
-            
-            setTimeout('Redirect()', 10);
-         //-->
-      </script>
-
+<!--
+   function Redirect() {
+var l = document.getElementById('link');
+l.click();
+   }
+   setTimeout('Redirect()', 10);
+//-->
+</script>
 
 <body>
+<p></p>
+ <a href="matlab:web([docrootFS '/FSDA/index.html'])"; target="_top" id="link">Link to formatted HTML documentation of FSDA in Mathworks style</a> 
 
 
 </body>

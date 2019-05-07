@@ -129,12 +129,10 @@ function [out]=avas(y,X,varargin)
 
 %{
     % Example 1 from TIB88: brain body weight data.
-    Y=readtable('Animals.xlsx','ReadRowNames',true,'ReadVariableNames',true);
-    plot(Y(1:62,1),Y(1:62,2),'o')
-
-    Yarray=table2array(Y(1:62,:));
-    X=Yarray(:,1);
-    y=Yarray(:,2);
+    % Comparison between ace and avas.
+    YY=load('animals.txt')
+    y=YY(1:62,2);
+    X=YY(1:62,1);
     out=ace(y,X);
     aceplot(out)
 
@@ -511,3 +509,4 @@ out.rsq=rsq;
 out.niter=iter;
 end
 
+%FScategory:REG-Transformations

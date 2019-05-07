@@ -24,6 +24,7 @@ function [out]= genr8(n, distrib, s1, s2)
 %                   indicates the use of the uniform distribution in [0 1],
 %                   while distrib=1 indicates the use of the standard normal
 %                   with 0 mean and standard deviation 1
+%                   Data Types - integer value
 %   s1:       First value used as the seed for the sequence. Scalar.
 %                   Whenever needed, the user can initialize s1 to a value
 %                   between 1 and 2147483562.
@@ -195,3 +196,4 @@ end
 r = z / 2147483563.0;
 
 end
+%FScategory:UTISTAT

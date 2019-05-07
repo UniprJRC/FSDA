@@ -103,6 +103,8 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 % See also:    publishfunctionAlpha.m, publishfunctionCate.m, publishFS.m
 %
 %
+% References:
+%
 % Copyright 2008-2018.
 % Written by FSDA team
 %

@@ -41,7 +41,7 @@ function w = TBwei(u,c)
 % This means that  $\psi (u)/u$ is approximately constant over the linear region of $\psi$,
 % so the points in that region tend to get equal weight.
 %
-% See also HYPwei, HAwei, OPTwei
+% See also: HYPwei, HAwei, OPTwei
 %
 % References:
 %
@@ -73,9 +73,8 @@ function w = TBwei(u,c)
 %}
 
 %{
-
     %% Compare four different weight functions.
-    % Do comparison.
+    % Initialize graphical parameters.
     FontSize=14;
     x=-6:0.01:6;
     ylim1=-0.05;

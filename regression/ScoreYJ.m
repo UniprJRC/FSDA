@@ -79,6 +79,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
     X=XX(:,1:end-1);
     % Score test using the five most common values of lambda
     [outSc]=ScoreYJ(y,X);
+    disp(outSc.Score)
 %}
 
 %{
@@ -112,7 +113,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %}
 
 %{
-    % Score test using Darwin data given by Yeo and Yohnson.
+    %% Score test using Darwin data given by Yeo and Yohnson.
      y=[6.1, -8.4, 1.0, 2.0, 0.7, 2.9, 3.5, 5.1, 1.8, 3.6, 7.0, 3.0, 9.3, 7.5 -6.0]';
      n=length(y);
      X=ones(n,1);
@@ -123,7 +124,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
      plot(la',out.Score)
      xax=axis;
      line(xax(1:2),zeros(1,2))
-     xlabel('lambda')
+     xlabel('\lambda')
      ylabel('Value of the score test')
      title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$','Interpreter','Latex')
 %}

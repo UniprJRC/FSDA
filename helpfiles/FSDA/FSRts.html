@@ -1,94 +1,46 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRts</title><meta content="refpage" name="chunktype"><meta content="function:FSRts" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRts is an automatic adaptive procedure to detect outliers in time series." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRts</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRts with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRts with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">FSRts with optional arguments in time series with outliers.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example of the use of option lms as a vector.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of the use of option lms as struct.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Automatic outlier and level shift detection.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bivarfit">bivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_multivarfit">multivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labeladd">labeladd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameX">nameX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_namey">namey</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylim">ylim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlim">xlim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflev">bonflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bsbmfullrank">bsbmfullrank</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRts</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRts is an automatic adaptive procedure to detect outliers in time series</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSRts(y)</code><span class="syntax_example"><a class="intrnllnk" href="FSRts.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSRts(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRts.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRts.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>FSRts with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRts.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRts with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRts with all default options.</li></span></a></span></h3><div class="collapse"><p>
-     Reset the random generator<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng('default')
-    n=200;
-    rng(123456);
-    outSIM=simulateTS(n,'plots',1);
-    % Uncontaminated data
-    y=outSIM.y;
-
-    % FSRts and LTSts on Uncontaminated data (conflev defaults differ)
-    [outFSRu] = FSRts(y,'plots',1);
-    [outLTSu] = LTSts(y,'plots',1,'conflev',0.99);
-    outFSRu.outliers
-    outLTSu.outliers'
-
-    % Contaminated data
-    close all
-    ycont=y;
-    ycont(10:15) = ycont(10:15)+2*mean(ycont)*sign(ycont(10:15));
-
-    % FSRts and LTSts on contaminated data (conflev defaults differ)
-    [outFSR] = FSRts(ycont,'plots',1);
-    [outLTS] = LTSts(ycont,'plots',1,'conflev',0.99);
-    outFSR.outliers
-    outLTS.outliers'</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRts with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng(1)
-    model=struct;
-    model.trend=[];
-    model.trendb=[];
-    model.seasonal=103;
-    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
-    model.signal2noiseratio=20;
-    T=100;
-    outSIM=simulateTS(T,'model',model,'plots',1);
-    y=outSIM.y;
-    model1=struct;
-    model1.trend=1;              % linear trend
-    model1.s=12;                 % monthly time series
-    model1.lshift=0;             % No level shift
-    model1.seasonal=104;         % Four harmonics
-    out=FSRts(y,'model',model1);</pre></div></div><pre class="codeoutput">-------------------------
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRts</title><meta content="refpage" name="chunktype"><meta content="function:FSRts" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRts is an automatic adaptive procedure to detect outliers in time series." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRts</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRts with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRts with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">FSRts with optional arguments in time series with outliers.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example of the use of option lms as a vector.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of the use of option lms as struct.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Automatic outlier and level shift detection.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bivarfit">bivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_multivarfit">multivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labeladd">labeladd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameX">nameX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_namey">namey</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylim">ylim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlim">xlim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflev">bonflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bsbmfullrank">bsbmfullrank</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRts</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRts is an automatic adaptive procedure to detect outliers in time series</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSRts(y)</code><span class="syntax_example"><a class="intrnllnk" href="FSRts.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSRts(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRts.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRts.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>FSRts with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRts.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRts with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRts with all default options.</li></span></a></span></h3><div class="collapse"><p>
+     Reset the random generator<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+n=200;
+rng(123456);
+outSIM=simulateTS(n,'plots',1);
+% Uncontaminated data
+y=outSIM.y;
+% FSRts and LTSts on Uncontaminated data (conflev defaults differ)
+[outFSRu] = FSRts(y,'plots',1);
+[outLTSu] = LTSts(y,'plots',1,'conflev',0.99);
+outFSRu.outliers
+outLTSu.outliers'
+% Contaminated data
+close all
+ycont=y;
+ycont(10:15) = ycont(10:15)+2*mean(ycont)*sign(ycont(10:15));
+% FSRts and LTSts on contaminated data (conflev defaults differ)
+[outFSR] = FSRts(ycont,'plots',1);
+[outLTS] = LTSts(ycont,'plots',1,'conflev',0.99);
+outFSR.outliers
+outLTS.outliers'</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRts with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=[];
+model.trendb=[];
+model.seasonal=103;
+model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+model.signal2noiseratio=20;
+T=100;
+outSIM=simulateTS(T,'model',model,'plots',1);
+y=outSIM.y;
+model1=struct;
+model1.trend=1;              % linear trend
+model1.s=12;                 % monthly time series
+model1.lshift=0;             % No level shift
+model1.seasonal=104;         % Four harmonics
+out=FSRts(y,'model',model1);</pre></div></div><pre class="codeoutput">-------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
            4           0           0           0           0
 
-</pre><img vspace="5" hspace="5" src="images\FSRts_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRts with optional arguments in time series with outliers.</li></span></a></span></h3><div class="collapse"><p>
-     A time series of 100 observations is simulated from a model which
-     contains no trend, a linear time varying seasonal component with
-     three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng(1)
-    model=struct;
-    model.trend=[];
-    model.trendb=[];
-    model.seasonal=103;
-    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
-    model.signal2noiseratio=20;
-    T=100;
-    outSIM=simulateTS(T,'model',model,'plots',1);
-    y=outSIM.y;
-    y(80:90)=y(80:90)+15000;
-    model1=struct;
-    model1.trend=1;              % linear trend
-    model1.s=12;                 % monthly time series
-    model1.lshift=0;
-    model1.seasonal=104;
-    out=FSRts(y,'model',model1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as a vector.</li></span></a></span></h3><div class="collapse"><p>
-     A time series of 100 observations is simulated from a model which
-     contains no trend, a linear time varying seasonal component with
-     three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng(1)
-    model=struct;
-    model.trend=[];
-    model.trendb=[];
-    model.seasonal=103;
-    model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
-    model.signal2noiseratio=20;
-    T=100;
-    outSIM=simulateTS(T,'model',model);
-    y=outSIM.y;
-    % Contaminate the series.
-    y(80:90)=y(80:90)+15000;
-    model1=struct;
-    model1.trend=1;              % linear trend
-    model1.s=12;                 % monthly time series
-    model1.seasonal=104;
-    % Initialize the search with the first 20 units.
-    out=FSRts(y,'model',model1,'lms',1:20);</pre></div></div><pre class="codeoutput">-------------------------
+-------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=89 because
 rmin(89,100)&gt;99.999%
@@ -107,34 +59,7 @@ Summary of the exceedances
            1          99         999        9999       99999
           16           9           6           6           5
 
-</pre><img vspace="5" hspace="5" src="images\FSRts_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
-     A time series of 100 observations is simulated from a model which
-     contains no trend, a linear time varying seasonal component with
-     three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng(1)
-    model=struct;
-    model.trend=[];
-    model.trendb=[];
-    model.seasonal=102;
-    model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
-    model.signal2noiseratio=20;
-    model.lshift=30;
-    model.lshiftb=2000;
-    T=100;
-    outSIM=simulateTS(T,'model',model,'plots',1);
-    y=outSIM.y;
-    % Contaminate the series.
-    y(80:90)=y(80:90)+2000;
-    model1=struct;
-    model1.trend=1;              % linear trend
-    model1.s=12;                 % monthly time series
-    model1.seasonal=104;
-    lms=struct;
-    lms.bsb=[1:20 80:85];
-    lms.posLS=30;
-    % Initialize the search with the units inside lms.bsb.
-    out=FSRts(y,'model',model1,'lms',lms);</pre></div></div><pre class="codeoutput">-------------------------
+-------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=89 because
 rmin(89,100)&gt;99.999%
@@ -153,32 +78,233 @@ Summary of the exceedances
            1          99         999        9999       99999
           16           9           7           7           6
 
-</pre><img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
+</pre><img vspace="5" hspace="5" src="images\FSRts_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRts with optional arguments in time series with outliers.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    rng(1)
-    model=struct;
-    model.trend=[];
-    model.trendb=[];
-    model.seasonal=102;
-    model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
-    model.signal2noiseratio=20;
-    model.lshift=30;
-    model.lshiftb=2000;
-    T=100;
-    outSIM=simulateTS(T,'model',model,'plots',1);
-    y=outSIM.y;
-    % Contaminate the series.
-    y(80:90)=y(80:90)+2000;
-    model1=struct;
-    model1.trend=1;              % linear trend
-    model1.s=12;                 % monthly time series
-    model1.seasonal=104;
-    model1.lshift=10;
-    % Automatically serch for level shift and outliers
-    out=FSRts(y,'model',model1,'msg',0);</pre></div></div><img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_14.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_15.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=[];
+model.trendb=[];
+model.seasonal=103;
+model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+model.signal2noiseratio=20;
+T=100;
+outSIM=simulateTS(T,'model',model,'plots',1);
+y=outSIM.y;
+y(80:90)=y(80:90)+15000;
+model1=struct;
+model1.trend=1;              % linear trend
+model1.s=12;                 % monthly time series
+model1.lshift=0;
+model1.seasonal=104;
+out=FSRts(y,'model',model1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as a vector.</li></span></a></span></h3><div class="collapse"><p>
+     A time series of 100 observations is simulated from a model which
+     contains no trend, a linear time varying seasonal component with
+     three harmonics, no explanatory variables and a signal to noise ratio
+     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=[];
+model.trendb=[];
+model.seasonal=103;
+model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
+model.signal2noiseratio=20;
+T=100;
+outSIM=simulateTS(T,'model',model);
+y=outSIM.y;
+% Contaminate the series.
+y(80:90)=y(80:90)+15000;
+model1=struct;
+model1.trend=1;              % linear trend
+model1.s=12;                 % monthly time series
+model1.seasonal=104;
+% Initialize the search with the first 20 units.
+out=FSRts(y,'model',model1,'lms',1:20);</pre></div></div><pre class="codeoutput">-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           4           0           0           0           0
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,91)&gt;99% envelope
+$r_{min}(89,91)&gt;99$\% envelope
+Subsample of 90 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=10
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           6           6           5
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+rmin(89,100)&gt;99% at final step: Bonferroni signal in the central part of the search.
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,90)&gt;99% envelope
+$r_{min}(89,90)&gt;99$\% envelope
+----------------------------
+Final output
+Number of units declared as outliers=11
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           7           7           6
+
+</pre><img vspace="5" hspace="5" src="images\FSRts_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
+     A time series of 100 observations is simulated from a model which
+     contains no trend, a linear time varying seasonal component with
+     three harmonics, no explanatory variables and a signal to noise ratio
+     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=[];
+model.trendb=[];
+model.seasonal=102;
+model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
+model.signal2noiseratio=20;
+model.lshift=30;
+model.lshiftb=2000;
+T=100;
+outSIM=simulateTS(T,'model',model,'plots',1);
+y=outSIM.y;
+% Contaminate the series.
+y(80:90)=y(80:90)+2000;
+model1=struct;
+model1.trend=1;              % linear trend
+model1.s=12;                 % monthly time series
+model1.seasonal=104;
+lms=struct;
+lms.bsb=[1:20 80:85];
+lms.posLS=30;
+% Initialize the search with the units inside lms.bsb.
+out=FSRts(y,'model',model1,'lms',lms);</pre></div></div><pre class="codeoutput">-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           4           0           0           0           0
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,91)&gt;99% envelope
+$r_{min}(89,91)&gt;99$\% envelope
+Subsample of 90 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=10
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           6           6           5
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+rmin(89,100)&gt;99% at final step: Bonferroni signal in the central part of the search.
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,90)&gt;99% envelope
+$r_{min}(89,90)&gt;99$\% envelope
+----------------------------
+Final output
+Number of units declared as outliers=11
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           7           7           6
+
+</pre><img vspace="5" hspace="5" src="images\FSRts_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
+     A time series of 100 observations is simulated from a model which
+     contains no trend, a linear time varying seasonal component with
+     three harmonics, no explanatory variables and a signal to noise ratio
+     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=[];
+model.trendb=[];
+model.seasonal=102;
+model.seasonalb=40*[0.1 -0.5 0.2 0.3 0.01];
+model.signal2noiseratio=20;
+model.lshift=30;
+model.lshiftb=2000;
+T=100;
+outSIM=simulateTS(T,'model',model,'plots',1);
+y=outSIM.y;
+% Contaminate the series.
+y(80:90)=y(80:90)+2000;
+model1=struct;
+model1.trend=1;              % linear trend
+model1.s=12;                 % monthly time series
+model1.seasonal=104;
+model1.lshift=10;
+% Automatically serch for level shift and outliers
+out=FSRts(y,'model',model1,'msg',0);</pre></div></div><pre class="codeoutput">-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           4           0           0           0           0
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,91)&gt;99% envelope
+$r_{min}(89,91)&gt;99$\% envelope
+Subsample of 90 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=10
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           6           6           5
+
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=89 because
+rmin(89,100)&gt;99.999%
+rmin(89,100)&gt;99% at final step: Bonferroni signal in the central part of the search.
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=88
+Superimposition stopped because r_{min}(89,90)&gt;99% envelope
+$r_{min}(89,90)&gt;99$\% envelope
+----------------------------
+Final output
+Number of units declared as outliers=11
+Summary of the exceedances
+           1          99         999        9999       99999
+          16           9           7           7           6
+
+</pre><img vspace="5" hspace="5" src="images\FSRts_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'nsamp',1000
 </code>,<code> 'lms',1

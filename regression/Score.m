@@ -82,10 +82,10 @@ function [outSC]=Score(y,X,varargin)
     y=XX(:,end);
     X=XX(:,1:end-1);
     % Score test using the five most common values of lambda
-    [outSc]=Score(y,X);
+    [outSC]=Score(y,X);
     disp('Values of the score test')
     disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})  
-    disp(outSc.Score')
+    disp(outSC.Score')
 %}
 
 %{

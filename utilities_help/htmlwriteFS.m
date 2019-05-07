@@ -83,6 +83,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %                 Third column = MATLAB code;
 %                 Fourth column = dummy variable which indicates whether
 %                 the example must be executed or not) If 1 example is executed
+%             Data Types - struct
 %
 %
 % Optional input arguments:

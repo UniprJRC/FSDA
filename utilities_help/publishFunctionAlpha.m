@@ -86,6 +86,8 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %
 % See also:    publishFunctionCate.m, publishFS.m
 %
+% References:
+%
 %
 % Copyright 2008-2018.
 % Written by FSDA team

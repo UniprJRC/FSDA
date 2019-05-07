@@ -125,9 +125,8 @@ function [smo,span]=rlsmo(x,y,w,span)
     n=200;
     x=sort(randn(n,1));
     y=2*x.^2+-3*x+2*randn(n,1);
-    [ysmo,span]=rlsmo(x,y);
+    ysmo=rlsmo(x,y);
     plot(x,[y ysmo])
-    title(['span chosen by cross validation= ' num2str(span)])
 %}
 
 %{
@@ -152,6 +151,15 @@ function [smo,span]=rlsmo(x,y,w,span)
     title(['Fixed value of span = ' num2str(span)])
 %}
 
+%{
+    % rlsmo called with two outputs.
+    n=200;
+    x=sort(randn(n,1));
+    y=2*x.^2+-3*x+2*randn(n,1);
+    [ysmo,span]=rlsmo(x,y);
+    plot(x,[y ysmo])
+    title(['span chosen by cross validation= ' num2str(span)])
+%}
 
 %% Beginning of code
 
@@ -312,5 +320,5 @@ end
 
 end
 
-
+%FScategory:REG-Transformations
 

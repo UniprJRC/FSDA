@@ -581,3 +581,4 @@ if nargout > 1
     smo_cv([m+1:n,1:m],:) = a_cv + b_cv.*x(m+1:n+m); % fast
     acvr = abs(smo_cv - y(1:n));
 end
+%FScategory:REG-Transformations

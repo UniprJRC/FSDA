@@ -113,6 +113,8 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %
 % See also: publishFunctionAlpha, publishFunctionCate, publishFS
 %
+% References:
+%
 % Copyright 2008-2018.
 % Written by FSDA team
 %
@@ -290,7 +292,13 @@ for j=1:ldirpath
                 noContentsFlag = 0;
             else
                 disp(d(i).name)
-                [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
+                try
+                    [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
+                catch
+                    description='';
+                    category='';
+                    % error('FSDA:normBoxCox:WrongInputFile',['error while parsing file :' d(i).name])
+                end
                 d(i).description=description;
                 d(i).category=category;
                 % Store also the path

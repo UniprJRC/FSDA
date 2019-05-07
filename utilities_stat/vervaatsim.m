@@ -137,7 +137,7 @@ function y = vervaatsim(betav,steps,d)
 
 %{
     %% N=5000 random values extracted from two Vervaat perpetuities.
-    % Vervaat parameters ate: $\beta = 1$ and $\beta = 10$.
+    % Vervaat parameters are: $\beta = 1$ and $\beta = 10$.
     % The superimposed normal kernel density is just for illustration.
     % The same for the superimposed cdf, made using FSDA function exactcdf.
 
@@ -199,7 +199,6 @@ function y = vervaatsim(betav,steps,d)
     drawnow;
     title(h1,'$$\beta = 10$$ with cdf superimposed' ,'Fontsize',20,'interpreter','latex');
     title(h2,'$$\beta = 1 $$ (Dickman) with cdf superimposed'  ,'Fontsize',20,'interpreter','latex');
-
 %}
 
 %{ 
@@ -256,7 +255,6 @@ function y = vervaatsim(betav,steps,d)
     disp('runif(1) ');
     disp('vervaat(beta = 1,steps = 10,d = 3) ');
     disp(' ');
-
 %}
 
 %% Beginning of code

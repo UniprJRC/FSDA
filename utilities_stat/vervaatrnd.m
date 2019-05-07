@@ -185,7 +185,6 @@ function X = vervaatrnd(betav,n,method)
     % method 1 computes the pascal matrix at each replicate).
 
     clear all;
-    close all;
     betav = 1;
     rep = 10;
     n = 10000;
@@ -213,7 +212,7 @@ function X = vervaatrnd(betav,n,method)
     % Parameters are: $\beta = 1$ and $\beta = 10$.
     % The superimposed normal kernel density is for illustration: 
     % a more precise density can be simulated with function vervaatxdf.
-
+    close all
     clear all;
     close all;
 
@@ -261,7 +260,7 @@ function X = vervaatrnd(betav,n,method)
 %}
 
 
-
+%% Beginning of code
 
 if nargin<3 || isempty(method)
     method=1;

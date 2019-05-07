@@ -1,4 +1,4 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>levfwdplot</title><meta content="refpage" name="chunktype"><meta content="function:levfwdplot" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="levfwdplot plots the trajectories of leverage along the search." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/suggest.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">levfwdplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Produce monitoring leverage plot with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of some options inside structure standard.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of the use of some options inside structure fground.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Same as above, but the colormap used for leverage trajectories is
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>levfwdplot</title><meta content="refpage" name="chunktype"><meta content="function:levfwdplot" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="levfwdplot plots the trajectories of leverage along the search." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">levfwdplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Produce monitoring leverage plot with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of some options inside structure standard.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of the use of some options inside structure fground.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Same as above, but the colormap used for leverage trajectories is
      based on residual values.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example of the use of some options inside structure bground
     bground = struct;
      Specify a threshold to define the "background" trajectories
@@ -33,204 +33,180 @@
        The same but now add the line mean(y)+Ci*Xi.</a></li><li><a class="intrnllnk" href="#ExtraExample_16"><i>Interactive example 12.</i>
      Example of use of option databrush suboptions multivarfit 2, persist on.</a></li><li><a class="intrnllnk" href="#ExtraExample_17"><i>Interactive example 13.</i>
      Fidelity cards data 1.</a></li><li><a class="intrnllnk" href="#ExtraExample_18">Fidelity cards data 2.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_standard">standard</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_fground">fground</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bground">bground</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xground">xground</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_label">label</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameX">nameX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_namey">namey</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_plotopt">plotopt</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">levfwdplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">levfwdplot plots the trajectories of leverage along the search</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">plotopt=levfwdplot(out)</code><span class="syntax_example"><a class="intrnllnk" href="levfwdplot.html#Example_1">example</a></span></li><li><code class="synopsis">plotopt=levfwdplot(out,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="levfwdplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="levfwdplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_plotopt"><code>plotopt</code></a>=levfwdplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>)</code></span>Produce monitoring leverage plot with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="levfwdplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_plotopt"><code>plotopt</code></a>=levfwdplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of some options inside structure standard.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Produce monitoring leverage plot with all the default options.</li></span></a></span></h3><div class="collapse"><p>
-     Generate input structure for the levfwdplot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    n=200;
-    p=3;
-    randn('state', 123456);
-    X=randn(n,p);
-    % Uncontaminated data
-    y=randn(n,1);
-    % Contaminated data
-    y(1:5)=y(1:5)+6;
-    [out]=LXS(y,X,'nsamp',1000);
-    [out]=FSReda(y,X,out.bs);
-    levfwdplot(out);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
+     Generate input structure for the levfwdplot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+p=3;
+randn('state', 123456);
+X=randn(n,p);
+% Uncontaminated data
+y=randn(n,1);
+% Contaminated data
+y(1:5)=y(1:5)+6;
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+levfwdplot(out);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
      Initialize structure standard
-     Specify the steps in which labels have to be put<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    standard=struct;
-    standard.LineStyle={'-';'-.';':'};
-    % Specify the line width
-    standard.LineWidth=0.5;
-    levfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
-     Initialize structure fground<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    fground = struct;
-    % Specify which trajectories have to be highlighted
-    fground.funit=[2 5 20 23 35 45];
-    % Specify the steps in which labels have to be put
-    n=length(y);
-    fground.flabstep=[n/2 n*0.75 n+0.5];;
-    % Specify the line width of the highlighted trajectories
-    fground.LineWidth=3;
-    % Produce a monitoring residuals plot in which labels are put for units
-    % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
-    levfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same as above, but the colormap used for leverage trajectories is
-     based on residual values.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    levfwdplot(out,'fground',fground,'xground','res')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground
+     Specify the steps in which labels have to be put<div class="programlisting"><div class="codeinput"><pre class="matlab-code">standard=struct;
+standard.LineStyle={'-';'-.';':'};
+% Specify the line width
+standard.LineWidth=0.5;
+levfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
+     Initialize structure fground<div class="programlisting"><div class="codeinput"><pre class="matlab-code">fground = struct;
+% Specify which trajectories have to be highlighted
+fground.funit=[2 5 20 23 35 45];
+% Specify the steps in which labels have to be put
+n=length(y);
+fground.flabstep=[n/2 n*0.75 n+0.5];;
+% Specify the line width of the highlighted trajectories
+fground.LineWidth=3;
+% Produce a monitoring residuals plot in which labels are put for units
+% [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
+levfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same as above, but the colormap used for leverage trajectories is
+     based on residual values.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">levfwdplot(out,'fground',fground,'xground','res')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground
     bground = struct;
      Specify a threshold to define the "background" trajectories
-    bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    bground = struct;
-    % Specify a threshold to define the "background" trajectories
-    bground.bthresh=0.1;
-    % Trajectories whose leverage is always between -btresh and +bthresh
-    % are shown as specified in bground.bstyle
-    bground.bstyle='hide';
-    levfwdplot(out,'bground',bground)</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
+    bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">bground = struct;
+% Specify a threshold to define the "background" trajectories
+bground.bthresh=0.1;
+% Trajectories whose leverage is always between -btresh and +bthresh
+% are shown as specified in bground.bstyle
+bground.bstyle='hide';
+levfwdplot(out,'bground',bground)</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
        Gives the user the possibility of clicking on the different points
        and have information about the unit selected, the step of entry
-       into the subset and the associated label. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    datatooltip = struct;
-    % In this example the style of the datatooltip is 'datatip'. Click on a
-    % trajectory when the levfwdplot is displayed.
-    datatooltip.DisplayStyle = 'datatip';
-    levfwdplot(out,'datatooltip',datatooltip);
-    % Now we use the default style, which is 'window'.
-    datatooltip.DisplayStyle = 'window';
-    levfwdplot(out,'datatooltip',datatooltip);
-</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+       into the subset and the associated label. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">datatooltip = struct;
+% In this example the style of the datatooltip is 'datatip'. Click on a
+% trajectory when the levfwdplot is displayed.
+datatooltip.DisplayStyle = 'datatip';
+levfwdplot(out,'datatooltip',datatooltip);
+% Now we use the default style, which is 'window'.
+datatooltip.DisplayStyle = 'window';
+levfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
        Example of the use of option databrush
        (brushing is done only once using a rectangular selection tool)
     levfwdplot(out,'databrush',1)
        An equivalent statement is
     databrush=struct;
-    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    levfwdplot(out,'databrush',1)
-    %   An equivalent statement is
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    levfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
+    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">levfwdplot(out,'databrush',1)
+%   An equivalent statement is
+databrush=struct;
+databrush.selectionmode='Rect';
+levfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
      Example of the use of brush using selection with circular tool
     databrush=struct;
-    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Brush';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
+    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Brush';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of brush using lasso selection tool and fleur
        pointer
     databrush=struct;
-    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='lasso';
-    databrush.Pointer='fleur';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
+    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='lasso';
+databrush.Pointer='fleur';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
        Example of the use of rectangular brush with superimposed labels
        for the brushed units and persistent labels in the plot which has
        been brushed
     databrush=struct;
-    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
+    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
        Example of the use of persistent non cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
-       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='off';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
+       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='off';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
        Example of the use of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
        brushing action is performed current highlightments are added to
-       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='on';
-    databrush.persist='on';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
+       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='on';
+databrush.persist='on';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
        The same as before, but also fit one ols line to each selected group
     databrush=struct;
-    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='on';
-    databrush.persist='on';
-    databrush.bivarfit='0';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
-       The same but now fit a single ols line to all data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='on';
-    databrush.bivarfit='1';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
+    databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='on';
+databrush.persist='on';
+databrush.bivarfit='0';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
+       The same but now fit a single ols line to all data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='on';
+databrush.bivarfit='1';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
        The same but now fit a first ols line to all data and a second line
-       on the group of observations which remain unselected.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='on';
-    databrush.bivarfit='2';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
-       The same but now fit a single ols line to the group with index 4.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='on';
-    databrush.bivarfit='i4';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
-       The same but now add the line mean(y)+Ci*Xi.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='on';
-    databrush.multivarfit='1';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
-     Example of use of option databrush suboptions multivarfit 2, persist on.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    load('multiple_regression.txt');
-    y=multiple_regression(:,4);
-    X=multiple_regression(:,1:3);
-    [out]=LXS(y,X,'nsamp',10000);
-    [out]=FSReda(y,X,out.bs);
-    out1=out;
-    out1.RES=out.RES.^2;
-    mdrplot(out,'ylimy',[1 5]);
-
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='off';
-    databrush.persist='on';
-    databrush.multivarfit='2';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 13.</i>
-     Fidelity cards data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    XX=load('loyalty.txt');
-    namey='Sales'
-    y=XX(:,end);
-    y=y.^0.4;
-    nameX={'Number of visits', 'Age', 'Number of persons in the family'};
-
-    X=XX(:,1:end-1);
-    [out]=LXS(y,X,'nsamp',10000);
-    [out]=FSReda(y,X,out.bs);
-    mdrplot(out,'ylimy',[1.6 4.5],'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);
-    mdrplot(out,'ylimy',[1.6 4.5],'envm',489,'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);
-
-    databrush=struct;
-    databrush.selectionmode='Rect';
-    databrush.Label='on';
-    databrush.RemoveLabels='on';
-    databrush.persist='on';
-    databrush.multivarfit='2';
-    levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Fidelity cards data 2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">
-    XX=load('loyalty.txt');
-    namey='Sales'
-    y=XX(:,end);
-    y=y.^0.4;
-    X=XX(:,1:end-1);
-    [out]=LXS(y,X,'nsamp',10000);
-    [out]=FSReda(y,X,out.bs);
-    plotopt=levfwdplot(out,'msg',2)
-    % In order to reuse the options which have been stored inside plotopt
-    % use the following sintax
-    % levfwdplot(out,plotopt{:})</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing monitoring of leverage. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>LEV</code></td><td><p><p>matrix containing the leverage monitored in each step of
+       on the group of observations which remain unselected.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='on';
+databrush.bivarfit='2';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
+       The same but now fit a single ols line to the group with index 4.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='on';
+databrush.bivarfit='i4';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
+       The same but now add the line mean(y)+Ci*Xi.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='on';
+databrush.multivarfit='1';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
+     Example of use of option databrush suboptions multivarfit 2, persist on.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('multiple_regression.txt');
+y=multiple_regression(:,4);
+X=multiple_regression(:,1:3);
+[out]=LXS(y,X,'nsamp',10000);
+[out]=FSReda(y,X,out.bs);
+out1=out;
+out1.RES=out.RES.^2;
+mdrplot(out,'ylimy',[1 5]);
+databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='off';
+databrush.persist='on';
+databrush.multivarfit='2';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 13.</i>
+     Fidelity cards data 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('loyalty.txt');
+namey='Sales'
+y=XX(:,end);
+y=y.^0.4;
+nameX={'Number of visits', 'Age', 'Number of persons in the family'};
+X=XX(:,1:end-1);
+[out]=LXS(y,X,'nsamp',10000);
+[out]=FSReda(y,X,out.bs);
+mdrplot(out,'ylimy',[1.6 4.5],'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);
+mdrplot(out,'ylimy',[1.6 4.5],'envm',489,'xlimx',[420 510],'lwd',2,'FontSize',16,'SizeAxesNum',16,'lwdenv',2);
+databrush=struct;
+databrush.selectionmode='Rect';
+databrush.Label='on';
+databrush.RemoveLabels='on';
+databrush.persist='on';
+databrush.multivarfit='2';
+levfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Fidelity cards data 2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('loyalty.txt');
+namey='Sales'
+y=XX(:,end);
+y=y.^0.4;
+X=XX(:,1:end-1);
+[out]=LXS(y,X,'nsamp',10000);
+[out]=FSReda(y,X,out.bs);
+plotopt=levfwdplot(out,'msg',2)
+% In order to reuse the options which have been stored inside plotopt
+% use the following sintax
+% levfwdplot(out,plotopt{:})</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing monitoring of leverage. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields.<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>LEV</code></td><td><p><p>matrix containing the leverage monitored in each step of
                the forward search. Every row is associated with a unit.</p> <p>
                This matrix can be created using function FSReda
                (compulsory argument)</p></p></td></tr><tr valign="top"><td><code>RES</code></td><td><p><p>matrix containing the residuals monitored in each step of

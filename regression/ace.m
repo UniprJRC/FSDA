@@ -131,6 +131,26 @@ function [out]=ace(y,X,varargin)
     aceplot(out)
 %}
 
+
+%{
+    % Example 1 from TIB88: brain body weight data.
+    % Comparison between ace and avas.
+    YY=load('animals.txt')
+    y=YY(1:62,2);
+    X=YY(1:62,1);
+    out=ace(y,X);
+    aceplot(out)
+
+    out=avas(y,X);
+    aceplot(out)
+    % https://vincentarelbundock.github.io/Rdatasets/doc/robustbase/Animals2.html
+    % ## The `same' plot for Rousseeuw's subset:
+    % data(Animals, package = "MASS")
+    % brain <- Animals[c(1:24, 26:25, 27:28),]
+    % plotbb(bbdat = brain)
+%}
+
+
 %% Beginning of code
 
 if nargin <2
@@ -320,3 +340,4 @@ out.rsq=rsq;
 out.niter=iter;
 end
 
+%FScategory:REG-Transformations

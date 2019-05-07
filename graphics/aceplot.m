@@ -18,6 +18,7 @@ function aceplot(out,varargin)
 %               the last iteration of the outer loop.
 %      out.y  = n x 1 vector containing the original y values.
 %      out.X  = n x p matrix containing the original X matrix.
+%                 Data Types - struct
 %
 % Optional input arguments:
 %
@@ -25,7 +26,15 @@ function aceplot(out,varargin)
 %               the numbers associate to the units to highlight in the plots.
 %                 Example - 'highlight',1:10
 %                 Data Types - double
-%
+%        ylimy  : 2D array of size 3-by-2 which specifies the
+%                lower and upper limits for the 3 plots of the second
+%                figure. The first row refers to the plot of transformed y
+%                vs. y, the second row refers to the plot of residuals vs.
+%                fit and the third row to the the plot of transformed y vs.
+%                fit. The default value of ylimy is [], that is automtic
+%                scale is used.
+%                   Example - 'plots', [-3 3; -2 2; -2 2]
+%                   Data Types - single | double
 %
 % Output:
 %
@@ -78,10 +87,11 @@ function aceplot(out,varargin)
 
 
 highlight=[];
+ylimy=[];
 if nargin >1
     UserOptions=varargin(1:2:length(varargin));
     
-    options=struct('highlight',highlight);
+    options=struct('highlight',highlight,'ylimy',ylimy);
     
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -101,6 +111,17 @@ if nargin >1
         options.(varargin{i})=varargin{i+1};
     end
     highlight=options.highlight;
+    ylimy=options.ylimy;
+end
+
+if ~isempty(ylimy)
+    [nylim,vylim]=size(ylimy);
+    if nylim~=3
+        error('FSDA:aceplot:Wronginput','ylimy must be a matrix with 3 rows')
+    end
+    if vylim~=2
+        error('FSDA:aceplot:Wronginput','ylimy must be a matrix with 2 columns')
+    end
 end
 
 
@@ -153,7 +174,10 @@ if addout ==true
     hold('on')
     plot(y(highlight),ty(highlight),'ro','MarkerFaceColor','r')
 end
-
+% Set the ylimits
+if ~isempty(ylimy)
+    ylim(ylimy(1,:))
+end
 
 yhat=sum(tX,2);
 res = ty - yhat;
@@ -167,16 +191,24 @@ if addout ==true
     hold('on')
     plot(yhat(highlight),res(highlight),'ro','MarkerFaceColor','r')
 end
+% Set the ylimits
+if ~isempty(ylimy)
+    ylim(ylimy(2,:))
+end
 
 
 subplot(2,2,3)
 plot(yhat,ty,'o')
 title('Plot of ty vs. fit')
-ylabel('ty')
-xlabel('yhat')
+ylabel('Transformed y')
+xlabel('Fitted values')
 if addout ==true
     hold('on')
     plot(yhat(highlight),ty(highlight),'ro','MarkerFaceColor','r')
+end
+% Set the ylimits
+if ~isempty(ylimy)
+    ylim(ylimy(3,:))
 end
 
 

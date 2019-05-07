@@ -399,3 +399,4 @@ else % Transformation must not necessarily be linear
 end
 
 end
+%FScategory:REG-Transformations

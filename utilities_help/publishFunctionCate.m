@@ -65,6 +65,10 @@ function fstring=publishFunctionCate(InputCell, varargin)
 % See also:    publishfunctionAlpha.m, publishFS.m
 %
 %
+%
+% References:
+%
+%
 % Copyright 2008-2018.
 % Written by FSDA team
 %

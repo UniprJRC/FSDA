@@ -200,7 +200,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
 
     % start from G60
     bs60 = [81,82,83];
-    [out60]=FSMeda(Y,bs60,'plots',2,'init',init,'scaled',1);
+    [out60]=FSMedaeasy(Y,bs60,'plots',2,'init',init,'scaled',1);
     close(findobj('tag','pl_mmd'));
     title('Start from G60','Fontsize',14);
 
@@ -209,7 +209,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
     fre=sortrows(fre,4);
     init=2;
     bs=fre(1:init,1);
-    [out]=FSMeda(Y,bs,'plots',2,'init',init,'scaled',1);
+    [out]=FSMedaeasy(Y,bs,'plots',2,'init',init,'scaled',1);
     close(findobj('tag','pl_mmd'));
     title('Start carefully chosen using unibiv','Fontsize',14);
 
