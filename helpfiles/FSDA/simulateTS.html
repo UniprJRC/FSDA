@@ -19,7 +19,7 @@ model.seasonal=103;
 model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];
 model.signal2noiseratio=20;
 T=100;
-out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with a quadratic time varying seasonal component.</li></span></a></span></h3><div class="collapse"><p>
+out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_02.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with a quadratic time varying seasonal component.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a quadratic time varying seasonal component with
      one harmonic, no explanatory variables and a signal to noise ratio
@@ -31,7 +31,7 @@ model.seasonal=201;
 model.seasonalb=40*[0.1 -0.5 10.222 -10];
 model.signal2noiseratio=20;
 T=100;
-out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and level shift.</li></span></a></span></h3><div class="collapse"><p>
+out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_03.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and level shift.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains a quadratic trend, a seasonal component with two harmonics
      no explanatory variables and a level shift in position 30 with size
@@ -45,7 +45,7 @@ model.signal2noiseratio=20;
 model.lshift=30;
 model.lshiftb=5000;
 T=100;
-out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and LS.</li></span></a></span></h3><div class="collapse"><p>
+out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_04.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and LS.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model
      which contains a quadratic trend, a linear time varying seasonal
      component with two harmonics no explanatory variables and a level
@@ -60,7 +60,7 @@ model.signal2noiseratio=20;
 model.lshift=30;
 model.lshiftb=-10000;
 T=100;
-out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal, LS and
+out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_05.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal, LS and
      two explanatory variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% A time series of 100 observations is simulated from a model
 % which contains a quadratic trend, a linear time varying seasonal
 % component with two harmonics, two explanatory variables and a level
@@ -78,13 +78,13 @@ model.lshiftb=-40000;
 model.X=2;
 model.Xb=[10000 20000];
 T=100;
-out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option FileNameOutput.</li></span></a></span></h3><div class="collapse"><p>
+out=simulateTS(T,'model',model,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_06.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option FileNameOutput.</li></span></a></span></h3><div class="collapse"><p>
      In this example the simulated time series is saved into a file named
      ysimout.txt in the current folder<div class="programlisting"><div class="codeinput"><pre class="matlab-code">FileNameOutput=[pwd filesep 'ysimout.txt'];
 out=simulateTS(T,'FileNameOutput',FileNameOutput);</pre></div></div></p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option StartDate.</li></span></a></span></h3><div class="collapse"><p>
      Suppose that the inital observation refers to February 2016.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">StartDate=[2016 2];
 % The x axis of the plots contains the dates using format mmm-yyyy
-out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option samescale.</li></span></a></span></h3><div class="collapse"><p>
+out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);</pre></div></div><img vspace="5" hspace="5" src="images\simulateTS_07.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option samescale.</li></span></a></span></h3><div class="collapse"><p>
      Use a different scale for each panel in the output plot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(T,'model',model,'plots',1,'samescale',false);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_T" class="clearfix"> </div> <h3 id="input_argument_T" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>T</code> &#8212; time series length. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>T is a positive integer
                which defines the length of the simulated time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'plots',1
@@ -172,19 +172,26 @@ out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);</pre></div></d
                        of the level shift component.</p> <p>
                        For example model.lshift = 26 and model.lshiftb = 3
                        generates the following explanatory variable
-                        $ [zeros(25,1) + 3*ones(T-25+1,1)] $.</p> <p>
+                        $ [zeros(25,1) + 3*ones(T-25+1,1)] $.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not contain a level
-                       shift.</p> <p>
+                       shift.</p></p></td></tr><tr valign="top"><td><code>signal2noiseratio</code></td><td><p><p>scalar wich defines the ratio
+                       between the variance of the systematic part of the
+                       model (signal) and the variance of the noise
+                       (irregular model). The greater is this value, the
+                       smaller is the effect of the irregular component.</p> <p>
+                       If this field is empty or not present the default
+                       value of 1 is used.</p> <p>
                                 Remark: the default model is for monthly data with a linear
-               trend with slope 1 and intercept 0, no seasonal and no
-               level shift, that is
+               trend with slope 1 and intercept 0, no seasonal, no
+               level shift and a signal to noise ratio equal to 1, that is
                                model=struct;</p> <p>
                                model.s=[];</p> <p>
                                model.trend=1;</p> <p>
-                               model.trendb=[0 1]
-                               model.X=[];</p><p>
-                               model.lshift=[];</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
+                               model.trendb=[0 1];</p> <p>
+                               model.X=[];</p> <p>
+                               model.lshift=[];</p><p>
+                               model.signal2noiseratio=1;</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plots on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots == 1 a six panel plot appears on the screen.</p> <p>
                Top left panel contains the simulated time series y.</p> <p>
                y=TR+SE+X+LS+I.</p> <p>

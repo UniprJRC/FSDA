@@ -335,14 +335,12 @@ function [out, varargout] = LTSts(y,varargin)
 %                        4) non linear part of seasonal component, that is
 %                        varying amplitude. If varying amplitude is of order
 %                        k there are k coefficients (if present);
-%                        5) level shift component (if present). In this case
-%                        there are two coefficients, the second (which is
-%                        also the last element of vector beta) is an integer
-%                        which specifies the time in which level shift takes
-%                        place and the first (which is also the penultime
-%                        element of vector beta) is a real number which
-%                        identifies the magnitude of the upward (downward)
-%                        level shift;
+%                        5) level shift component (if present). In out.B it
+%                        is shown just the real number which identifies the
+%                        magnitude of the upward (downward) level shift.
+%                        The integer which specifies the time in which
+%                        level shift takes place is given in output
+%                        out.posLS.
 %                       2nd col = standard errors;
 %                       3rd col = t-statistics;
 %                       4th col = p values.

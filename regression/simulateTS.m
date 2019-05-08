@@ -107,17 +107,25 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain a level
 %                       shift.
+%                model.signal2noiseratio = scalar wich defines the ratio
+%                       between the variance of the systematic part of the
+%                       model (signal) and the variance of the noise
+%                       (irregular model). The greater is this value, the
+%                       smaller is the effect of the irregular component.
+%                       If this field is empty or not present the default
+%                       value of 1 is used.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
-%               trend with slope 1 and intercept 0, no seasonal and no
-%               level shift, that is
+%               trend with slope 1 and intercept 0, no seasonal, no
+%               level shift and a signal to noise ratio equal to 1, that is
 %                               model=struct;
 %                               model.s=[];
 %                               model.trend=1;
-%                               model.trendb=[0 1]
+%                               model.trendb=[0 1];
 %                               model.X=[];
 %                               model.lshift=[];
+%                               model.signal2noiseratio=1;
 %
 %       plots : Plots on the screen. Scalar.
 %               If plots == 1 a six panel plot appears on the screen.

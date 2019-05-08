@@ -203,7 +203,7 @@ numpar = {'model parameters:' , str};
 axeslast=findobj('-regexp','Tag','LTSts:ts');
 title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 y1=y(:);
@@ -232,7 +232,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
      other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=y(:);
 y1(50:55)=y1(50:55)-300;
@@ -261,7 +261,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'intercept',1
 </code>,<code> 'h',round(n*0.75)
@@ -555,14 +555,12 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                         4) non linear part of seasonal component, that is
                         varying amplitude. If varying amplitude is of order
                         k there are k coefficients (if present);</p> <p>
-                        5) level shift component (if present). In this case
-                        there are two coefficients, the second (which is
-                        also the last element of vector beta) is an integer
-                        which specifies the time in which level shift takes
-                        place and the first (which is also the penultime
-                        element of vector beta) is a real number which
-                        identifies the magnitude of the upward (downward)
-                        level shift;</p> <p>
+                        5) level shift component (if present). In out.B it
+                        is shown just the real number which identifies the
+                        magnitude of the upward (downward) level shift.</p> <p>
+                        The integer which specifies the time in which
+                        level shift takes place is given in output
+                        out.posLS.</p> <p>
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
                        4th col = p values.</p></p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
