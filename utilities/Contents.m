@@ -14,8 +14,9 @@
 %   PoolClose               - Closes the pool of MATLAB instances opened with PoolPrepare to execute code in parallel                      - UTIGEN- 2018 May 31
 %   PoolPrepare             - Prepares a pool of MATLAB instances for executing code in parallel                                           - UTIGEN- 2018 May 31
 %   position                - Controls the position of the open figures                                                                    - UTIGEN- 2018 May 31
-%   quickselectFS           - Finds the k-th order statistic                                                                               - UTIGEN- 2018 Jun 08
+%   quickselectFS           - Finds the k-th order statistic                                                                               - UTIGEN- 2019 May 05
 %   removeExtraSpacesLF     - Removes extra spaces and selected carriage returns from input string                                         - UTIGEN- 2018 May 31
+%   repDupValWithMean       - Replaces values of y which have non unique elements in vector x with local means                             - UTIGEN- 2019 May 04
 %   suplabel                - Places text as a title, xlabel, or ylabel on a group of subplots                                             - UTIGEN- 2018 May 31
 %   triu2vec                - Extracts in a vector the linear indexes or the elements on and above the k-th diagonal of a square matrix    - UTIGEN- 2018 Jun 08
 %   upperfracpos            - Positions two figures on the upper part of the screen                                                        - UTIGEN- 2018 Sep 15

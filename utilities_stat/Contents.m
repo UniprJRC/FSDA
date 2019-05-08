@@ -7,10 +7,13 @@
 %   basicPower                - Computes the basic power transformation                                                                                         - UTISTAT         - 2018 Jun 08
 %   bwe                       - Estimates the bandwidth smoothing parameter for kernel density estimation                                                       - UTISTAT         - 2018 Sep 15
 %   crosstab2datamatrix       - Recreates the original data matrix X from contingency table N                                                                   - MULT-Categorical- 2018 May 31
+%   ctsub                     - Computes numerical integration from x(1) to z(i) of y=f(x)                                                                      - UTISTAT         - 2019 May 05
 %   ellipse                   - Generates an ellipse given mu (location vector) and Sigma (scatter matrix)                                                      - UTISTAT         - 2018 Sep 15
+%   exactcdf                  - Finds exact p-values                                                                                                            - UTISTAT         - 2019 May 04
 %   FowlkesMallowsIndex       - Computes the Fowlkes and Mallows index                                                                                          - UTISTAT         - 2018 Jun 08
 %   FSMbonfbound              - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                      - UTISTAT         - 2018 Jun 08
 %   FSRbonfbound              - Computes Bonferroni bounds for each step of the search (in linear regression)                                                   - UTISTAT         - 2018 Jun 08
+%   genr8                     - Returns a vector of pseudorandom number sequence                                                                                - UTISTAT         - 2019 May 04
 %   HAbdp                     - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT         - 2018 Jun 08
 %   HAc                       - Computes breakdown point and efficiency associated with constant c                                                              - UTISTAT         - 2018 Jun 08
 %   HAeff                     - Finds the tuning constant that guarrantees a requested asymptotic efficiency                                                    - UTISTAT         - 2018 Sep 20
@@ -42,10 +45,11 @@
 %   logmvnpdfFS               - Produces log of Multivariate normal probability density function (pdf)                                                          - UTISTAT         - 2018 Jun 19
 %   mahalFS                   - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                      - UTISTAT         - 2018 May 31
 %   Mscale                    - Finds the M estimator of the scale                                                                                              - UTISTAT         - 2018 Sep 15
+%   mtR                       - Generates the same random numbers produced by R software with Mersenne Twister mt19937ar                                        - UTISTAT         - 2019 Jan 21
 %   ncpci                     - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                - UTISTAT         - 2018 Sep 15
 %   ncx2mixtcdf               - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                     - UTISTAT         - 2018 Jun 08
-%   normBoxCox                - Computes (normalized) Box-Cox transformation                                                                                    - UTISTAT         - 2018 Jun 08
-%   normYJ                    - Computes (normalized) Yeo-Johnson transformation                                                                                - UTISTAT         - 2018 Sep 15
+%   normBoxCox                - Computes (normalized) Box-Cox transformation                                                                                    - UTISTAT         - 2019 Feb 06
+%   normYJ                    - Computes (normalized) Yeo-Johnson transformation                                                                                - UTISTAT         - 2019 Feb 06
 %   OPTbdp                    - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT         - 2018 Jun 08
 %   OPTc                      - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                     - UTISTAT         - 2018 Jun 08
 %   OPTeff                    - Finds the constant c which is associated to the requested efficiency                                                            - UTISTAT         - 2018 Jun 08
@@ -57,14 +61,14 @@
 %   Powertra                  - Computes power transformation (Box-Cox or  Yeo-Johnson)                                                                         - UTISTAT         - 2018 Sep 15
 %   Qn                        - Robust estimator of scale (first quartile of interpoint distances $|x_i-x_j|$)                                                  - UTISTAT         - 2018 Sep 15
 %   qqplotFS                  - Qqplot of studentized residuals with envelopes                                                                                  - VIS-Reg         - 2018 Sep 20
-%   RandIndexFS               - Calculates Rand type Indices to compare two partitions                                                                          - UTISTAT         - 2018 Jun 08
+%   RandIndexFS               - Calculates Rand type Indices to compare two partitions                                                                          - UTISTAT         - 2019 Jan 21
 %   RKbdp                     - Finds the constants c associated to the supplied breakdown point and asymptotic rejection point                                 - UTISTAT         - 2018 Jul 08
-%   RKeff                     - ROeff finds the constants c and M which are associated to the requested efficiency and ARP                                      - UTISTAT         - 2018 Jul 09
-%   RKpsi                     - Computes psi function for Rocke (translated Tukey's) biweight                                                                   - UTISTAT         - 2018 Jul 06
-%   RKpsider                  - Computes derivative of psi function (second derivative of rho function) for Rocke (translated Tukey's) biweight                 - UTISTAT         - 2018 Jul 06
-%   RKpsix                    - Computes psi function times x for Rocke (translated Tukey's) biweight                                                           - UTISTAT         - 2018 Jul 06
-%   RKrho                     - Computes rho function for Rocke (translated Tukey's) biweight                                                                   - UTISTAT         - 2018 Sep 17
-%   RKwei                     - Computes weight function psi(u)/u for Rocke (translated Tukey's) biweight                                                       - UTISTAT         - 2018 Sep 03
+%   RKeff                     - Finds the constants c and M which are associated to the requested efficiency and ARP                                            - UTISTAT         - 2018 Oct 05
+%   RKpsi                     - Computes psi function for Rocke (translated Tukey's) biweight                                                                   - UTISTAT         - 2018 Oct 05
+%   RKpsider                  - Computes derivative of psi function (second derivative of rho function) for Rocke (translated Tukey's) biweight                 - UTISTAT         - 2018 Oct 05
+%   RKpsix                    - Computes psi function times x for Rocke (translated Tukey's) biweight                                                           - UTISTAT         - 2018 Oct 05
+%   RKrho                     - Computes rho function for Rocke (translated Tukey's) biweight                                                                   - UTISTAT         - 2018 Oct 05
+%   RKwei                     - Computes weight function psi(u)/u for Rocke (translated Tukey's) biweight                                                       - UTISTAT         - 2018 Oct 05
 %   rthin                     - Applies independent random thinning to a point pattern                                                                          - UTISTAT         - 2018 Sep 20
 %   Sn                        - Robust estimator of scale (robust version of Gini's average difference)                                                         - UTISTAT         - 2018 Sep 15
 %   tabulateFS                - Creates frequency table of unique values of x, excluding possible 0 counts                                                      - UTISTAT         - 2018 May 31
@@ -75,7 +79,10 @@
 %   TBpsider                  - Computes derivative of psi function (second derivative of rho function) for Tukey's biweight                                    - UTISTAT         - 2018 Jun 08
 %   TBpsix                    - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                 - UTISTAT         - 2018 Jun 08
 %   TBrho                     - Computes rho function for Tukey's biweight                                                                                      - UTISTAT         - 2018 Jun 08
-%   TBwei                     - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT         - 2018 Sep 20
+%   TBwei                     - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT         - 2019 May 07
+%   vervaatrnd                - Simulates random variates from the Vervaat perpetuity distribution                                                              - UTISTAT         - 2019 May 05
+%   vervaatsim                - Returns a Vervaat perpetuity                                                                                                    - UTISTAT         - 2019 May 07
+%   vervaatxdf                - Returns the pdf and cdf of a Vervaat perpetuity                                                                                 - UTISTAT         - 2019 May 05
 %   winsor                    - Returns a winsorized copy of input                                                                                              - UTISTAT         - 2018 Jun 08
 %   WNChygepdf                - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT         - 2018 Jun 08
-%   wthin                     - Thins a uni/bi-dimensional dataset                                                                                              - UTISTAT         - 2018 Jun 08
+%   wthin                     - Thins a uni/bi-dimensional dataset                                                                                              - UTISTAT         - 2019 May 04
