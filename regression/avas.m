@@ -443,7 +443,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % z6=smo;
     z7=exp(-smo);
-    sumlog=2*n*sum(smo.*w)/sw;
+    % sumlog=2*n*sum(smo.*w)/sw;
     z8=ty(ordyhat);
     
     % Compute the variance stabilizing transformation
@@ -471,7 +471,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % that is backfit \hat g(y) on X_1, \ldots, X_p
     % to get new tX
     
-    [tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
+    [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
     % z1 contains fitted values sorted
     z1=sum(tX,2);    % z1 is z10 in AVAS
     
@@ -480,7 +480,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % New value of R2
     rsq=1-rr;
     
-    sumlog=sumlog+n*log(sv);
+    % sumlog=sumlog+n*log(sv);
     % rnew=sumlog+rr;
     
     nt=mod(nt,nterm)+1;
