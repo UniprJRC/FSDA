@@ -7,7 +7,16 @@
 document.write(headJS);
 </script>
 <!--Insert title of the page-->
+
+<head>
 <title>FSDA main page</title>
+<style type="text/css">
+.auto-style1 {
+	background-color: #F2F2F2;
+}
+</style>
+</head>
+
 <!--Beginning of body-->
 <body id="responsive_offcanvas">
 
@@ -71,10 +80,22 @@ document.write(divsbefore);
         on the corrected MCD, observation 15 is no longer detected as outlier.
       </td>
 	</tr>
+      <tr>
+      <td bgcolor="#F2F2F2"><tt>animals</tt></td>
+      <td bgcolor="#F2F2F2">The animals dataset contains Brain and Body Weights for 65 Species 
+	  of land animals. References for these dataset are contained in
+	  <a href="https://vincentarelbundock.github.io/Rdatasets/doc/robustbase/Animals2.html">
+	  https://vincentarelbundock.github.io/Rdatasets/doc/robustbase/Animals2.html</a>
+      </td>
+	  </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>animals</tt></td>
-      <td bgcolor="#F2F2F2">The animals dataset contains Brain and Body Weights for 65 Species.
-      </td>
+      <td bgcolor="#F2F2F2">We simulated 1,000 observations, with three 
+	  explanatory variables. Different transformations were applied to the 
+	  positive and negative observations and 200 of the observations were 
+	  shifted to provide outliers. This is a challengingly high contamination 
+	  proportion unless the outliers are distinct. However, they are not evident 
+	  on the counterplots of y against the individualx vectors</td>
 	</tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>Balancesheets</tt></td>
@@ -158,7 +179,7 @@ document.write(divsbefore);
         the period (date) in which the transaction took place. It referes to
         year 2004. </td>
     </tr>
-    <tr valign="top">
+      <tr>
       <td bgcolor="#F2F2F2"><tt>forbes</tt></td>
       <td bgcolor="#F2F2F2">Forbes' data on air pressure in the Alps and the
         boiling point of water (Weisberg, 1985). There are 17 observations on
@@ -170,6 +191,16 @@ document.write(divsbefore);
         - x: boiling point<br>
         - y: 100×log(pressure) <br>
         The dataset is characterized by one clear outlier. </td>
+      </tr>
+    <tr valign="top">
+      <td bgcolor="#F2F2F2"><tt>gasoline</tt></td>
+      <td bgcolor="#F2F2F2">The data in Table 1 Chen Lockart and Stephens (2002) 
+	  are 107 readings with response the distance driven and explanatory 
+	  variable the amount of gasoline consumed.. The variables are: <br>
+        - x: liters of gasoline used <br class="auto-style1">- y: Values of 
+	  distance driven in kilometers<br>
+        The fanplot provides a very clear indication that the gasoline data have 
+	  no transformation potential. </td>
     </tr>
     <tr valign="top">
       <td bgcolor="#F2F2F2"><tt>hawkins</tt></td>
@@ -191,6 +222,10 @@ document.write(divsbefore);
         FS plots (Riani and Atkinson, 2007), we conclude that these two groups
         are significantly different. </td>
     </tr>
+      <tr>
+      <td bgcolor="#F2F2F2"><tt>JohnDraper </tt></td>
+      <td bgcolor="#F2F2F2">John and Draper (1980) present data on the subjective assessment of the thickness of pipe. Five inspectors assessed wall thickness at four different locations on the pipe. The experiment was repeated three times. The sixty responses are a multiple of the difference between the inspector's assessment and the `true' value determined by an ultrasonic reader. If both readings were available the Box-Cox transformation could be applied to all 120 readings and the difference analysed in the transformed scale. But the ultrasonic readings are no longer known.&nbsp;</td>
+      </tr>
     <tr>
       <td bgcolor="#F2F2F2"><tt>krafft </tt></td>
       <td bgcolor="#F2F2F2">The krafft dataset (Jalali-Heravi and Knouz, 2002)
@@ -216,7 +251,7 @@ document.write(divsbefore);
         of customer characterized by a different purchasing behaviour 
         (Atkinson and Riani, 2006).</td>
     </tr>
-    <tr>
+      <tr>
       <td bgcolor="#F2F2F2"><tt>mineral</tt></td>
       <td bgcolor="#F2F2F2">The mineral dataset (Smith, Campbell and Lichfield,
         1984) contains the measurement of the contents (in parts per million)
@@ -231,6 +266,24 @@ document.write(divsbefore);
         the second figure shows an approximate linear relationship between
         residuals and fitted values (excepting observation 15) and this
         indicates that the fit is not correct. </td>
+      </tr>
+    <tr>
+      <td bgcolor="#F2F2F2"><tt>ms212</tt></td>
+      <td bgcolor="#F2F2F2">Students in an introductory statistics class at the 
+	  University of Queensland participated in a simple 
+	  experiment. They took their own pulse rate. They were then<br class="auto-style1">
+	  randomized to run in place for one minute or to sit for that minute. Then 
+	  every<br class="auto-style1">one measured their pulse rate again. There 
+	  are 109 complete observations, nine<br class="auto-style1">explanatory 
+	  variables covering physiological and lifestyle data and the two pulse<br class="auto-style1">
+	  rates. One research question was how does the difference in pulse rate 
+	  before and af<br class="auto-style1">ter the minute depend on lifestyle 
+	  and physiological measurements? It is expected<br class="auto-style1">
+	  to depend heavily on whether the students ran or not. The data, posted by 
+	  John<br class="auto-style1">Eccleston and Richard Wilson, are available 
+	  with a more complete description at<br class="auto-style1">
+	  <a href="http://www.statsci.org/data/oz/ms212.html">
+	  http://www.statsci.org/data/oz/ms212.html</a> <br class="auto-style1"></td>
     </tr>
     <tr valign="top">
       <td bgcolor="#F2F2F2"><tt>multiple_regression</tt></td>
@@ -279,15 +332,6 @@ document.write(divsbefore);
         need appropriate transformation before being analyzed. </td>
     </tr>
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>ozone_330_obs</tt></td>
-      <td bgcolor="#F2F2F2">They are a superset of the 80 ozone data described
-        above. Through the analysis of the fan plot, the minimum deletion
-        residual plot and the generalised candlestick plot, it is possible to
-        see that the data should be transformed in the logarithmic scale, that
-        only two out of eight variables are significant and that four outliers
-        can be detected. </td>
-    </tr>
-	<tr valign="top">
       <td bgcolor="#F2F2F2"><tt>ozone_330_obs</tt></td>
       <td bgcolor="#F2F2F2">They are a superset of the 80 ozone data described
         above. Through the analysis of the fan plot, the minimum deletion
