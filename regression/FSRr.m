@@ -124,7 +124,6 @@ function [out , varargout] = FSRr(y, X, varargin)
 
 %{
         % Example of outlier detection in a case of almost perfect fit: all default options.
-        rng(12345);
         n=200; p=1;
         X = rand(n,p);
         y = X + 0.01*randn(n,1);
@@ -142,7 +141,6 @@ function [out , varargout] = FSRr(y, X, varargin)
 
 %{
         % Example of outlier detection in a case of almost perfect fit.
-        rng(12345);
         n=200; p=1;
         X = rand(n,p);
         y = X + 0.01*randn(n,1);
@@ -178,7 +176,6 @@ function [out , varargout] = FSRr(y, X, varargin)
         %  Methods compared: LTS, FSR and FSRr.
         close all;
         clear all;
-        rng(12345);
 
         load fishery
         data = fishery.data;
