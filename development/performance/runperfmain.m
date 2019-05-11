@@ -1,5 +1,5 @@
 %% Load necessary elements for performance test
-load OUT
+% load OUT
 
 FileName='addFSDA2path';
 FullPath=which(FileName);
@@ -21,14 +21,15 @@ disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
 [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
 
-%% Performance part
-% nfiles = number of files
-nfiles=length(OUT);
 ij=1;
+nfiles=length(OUT);
 sz=[5000, 7];
 TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'double' 'double' 'cellstr' 'cellstr'},...
     'VariableNames',{'FileName' 'Category', 'Identifier' 'MeanTime' 'MedianTime'  'Code' 'TestActivity'});
-for i=6 % [5:7 19 20] % 1:nfiles
+
+%% Performance part
+% nfiles = number of files
+for i=52:nfiles
     
     Ex=OUT{i,1}.Ex;
     Extra=OUT{i,1}.ExtraEx;
@@ -40,7 +41,7 @@ for i=6 % [5:7 19 20] % 1:nfiles
         if ~isempty(Exi) && isempty(strfind(Excomb{iEx,1},'Interactive example'))
             
             Exi=regexprep(Exi,'&lt;','<');
-            Exi=regexprep(Exi,'>','&gt;');
+            Exi=regexprep(Exi,'&gt;','>');
             
             % Write Exi to a file
             file1ID=fopen('tempfile.m','w');
@@ -48,8 +49,16 @@ for i=6 % [5:7 19 20] % 1:nfiles
             fclose('all');
             outp=runperf('tempfile.m');
             
-            TotSummary{ij,'MeanTime'}= outp.sampleSummary.Mean;
-            TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
+            MeanS=outp.sampleSummary.Mean;
+            FindNaN=isnan(MeanS);
+            MeanS=MeanS(~FindNaN);
+            TotSummary{ij,'MeanTime'}= MeanS;
+
+            MedianS=outp.sampleSummary.Median;
+            MedianS=MedianS(~FindNaN);
+            TotSummary{ij,'MedianTime'}= MedianS;
+            
+            % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
             TotSummary(ij,'Code')=Ex(1,3);
             TotSummary(ij,'TestActivity')={outp.TestActivity};
             TotSummary(ij,'FileName')=FilesIncluded(i,1);
