@@ -199,9 +199,9 @@ function [out]=FSM(Y,varargin)
     randn('state', 123456);
     Y=randn(n,v);
     % Contaminated data
-    Ycont=Y;
-    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    Ycont=Y; Ycont(1:5,[1,3]) = Ycont(1:5,[1,3])+sign(randn(5,2))*4.5;
     [out]=FSM(Ycont);
+    title('Outliers detected by FSM','Fontsize',24,'Interpreter','LaTex');
 %}
 
 %{

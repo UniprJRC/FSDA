@@ -5,69 +5,29 @@ v=3;
 randn('state', 123456);
 Y=randn(n,v);
 % Contaminated data
-Ycont=Y;
-Ycont(1:5,:)=Ycont(1:5,:)+3;
-[out]=FSM(Ycont);</pre></div></div><pre class="codeoutput">-------------------------
+Ycont=Y; Ycont(1:5,[1,3]) = Ycont(1:5,[1,3])+sign(randn(5,2))*4.5;
+[out]=FSM(Ycont);
+title('Outliers detected by FSM','Fontsize',24,'Interpreter','LaTex');</pre></div></div><pre class="codeoutput">-------------------------
 Signal detection loop
 dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
 drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
+dmin(195,200)&gt;99% at final step: Bonferroni signal in the final part of the search.
 dmin(195,200)&gt;99.999%
 -------------------
 Signal validation
 Validated signal
 -------------------------------
 Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
+Superimposition stopped because d_{min}(195,196)&gt;99% envelope
+$d_{min}(195,196)&gt;99$\% envelope
 ----------------------------
 Final output
-Number of units declared as outliers=3
+Number of units declared as outliers=5
 Summary of the exceedances
            1          99         999        9999       99999
-           0           6           5           3           3
+           0           6           6           4           4
 
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_10.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+</pre><img vspace="5" hspace="5" src="images/FSM_01.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      FSM with plots showing envelope superimposition.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -95,47 +55,7 @@ Summary of the exceedances
            1          99         999        9999       99999
            0           6           5           3           3
 
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_10.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with plots showing envelope superimposition in normal
+</pre><img vspace="5" hspace="5" src="images/FSM_03.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_04.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_05.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_06.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSM with plots showing envelope superimposition in normal
      coordinates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -165,47 +85,7 @@ Summary of the exceedances
            1          99         999        9999       99999
            0           6           5           3           3
 
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
--------------------------
-Signal detection loop
-dmin(195,200)&gt;99.9% and dmin(196,200)&gt;99.9% and rmin(194,200)&gt;99%
-drmin(194,200)&gt;99.9% and dmin(195,200)&gt;99.9% and rmin(196,200)&gt;99%
-dmin(195,200)&gt;99.999%
--------------------
-Signal validation
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=194
-Superimposition stopped because d_{min}(195,198)&gt;99% envelope
-$d_{min}(195,198)&gt;99$\% envelope
-Subsample of 197 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=3
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           6           5           3           3
-
-</pre><img vspace="5" hspace="5" src="images\FSM_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSM_10.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Monitor the exceedances from m=200 without showing plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=1000;
+</pre><img vspace="5" hspace="5" src="images/FSM_07.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_08.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_09.png" alt=""> <img vspace="5" hspace="5" src="images/FSM_10.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Monitor the exceedances from m=200 without showing plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=1000;
 v=10;
 Y=randn(n,v);
 [out]=FSM(Y,'init',200,'plots',0);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Choosing an initial subset formed by the three observations with
