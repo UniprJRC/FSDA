@@ -29,8 +29,9 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 
 %% Performance part
 % nfiles = number of files
-for i=52:nfiles
-    
+
+for i=1:nfiles
+    try
     Ex=OUT{i,1}.Ex;
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
@@ -66,5 +67,9 @@ for i=52:nfiles
             TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
             ij=ij+1;
         end
+    end
+    catch
+        disp(['Error on the following function: (fx .num:)' int2str(i)])
+        OUT{i,1}.titl;   
     end
 end
