@@ -172,7 +172,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %}
 
 %{
-        %% Almost perfect fit issue in a real dataset from international trade.
+        %% Use of FSRr in a real dataset from international trade.
         close all; clear all;
 
         load fishery;
@@ -206,7 +206,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %}
 
 %{
-        %% Comparing LTS, FSR and FSRr on the international trade dataset.
+        % Comparing LTS, FSR and FSRr on the international trade dataset.
         close all;
         clear all;
 
