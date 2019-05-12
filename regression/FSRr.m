@@ -185,7 +185,7 @@ function [out , varargout] = FSRr(y, X, varargin)
         
         % FSRr, with scale rescaled so that R2 is forced to be 0.85 
         outFSr = FSRr(y,X,'alpha',cl,'R2th',0.85,'fullreweight',true,'plotsPI',1,'plots',0);
-        h3 = allchild(gca); a3 = gca; f3 = gcf;
+        h3 = allchild(gca); a3 = gca; f3 = gcf; set(f3,'visible','off');
 
         % Scatter of outliers detected with R2th=0.85 
         FSroutliersr = ones(n,1); FSroutliersr(outFSr.outliersr) = 0;
@@ -193,7 +193,7 @@ function [out , varargout] = FSRr(y, X, varargin)
         yXplot(y,X,'group',FSroutliersr,'plo',plo,'tag','FSrfit');
         olsline(1)
         price_FSr = X(logical(FSroutliersr))\y(logical(FSroutliersr));
-        h4 = allchild(gca); a4 = gca; f4 = gcf;
+        h4 = allchild(gca); a4 = gca; f4 = gcf; set(f4,'visible','off');
 
         % move the figures above into a single one with two panels
         figure; ax3 = subplot(2,1,1); ax4 = subplot(2,1,2);

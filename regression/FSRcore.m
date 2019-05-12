@@ -182,42 +182,46 @@ function [out]=FSRcore(INP,model,options)
 
 %% Beginning of code
 
-y=INP.y;
-n=INP.n;
-p=INP.p;
-mdr=INP.mdr;
-init=INP.init;
-Un=INP.Un;
-bb=INP.bb;
-Bcoeff=INP.Bcoeff;
+% Extract required input variables
+y       = INP.y;
+n       = INP.n;
+p       = INP.p;
+mdr     = INP.mdr;
+init    = INP.init;
+Un      = INP.Un;
+bb      = INP.bb;
+Bcoeff  = INP.Bcoeff;
+S2      = INP.S2;
 
-S2=INP.S2;
-
+% Set the intercept
 if strcmp(model,'ts')
+    % ts: regression in time series always requires intercept
     intercept=1;
 else
-X=INP.X;
-% intcolumn = the index of the first constant column found in X, or empty.
-% Used here to check if X includes the constant term for the intercept.
-% The variable 'intercept' will be used later for plotting.
-intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
-if any(intcolumn) && p>1
-    intercept=1;
-else
-    intercept=0;
-end
+    X=INP.X;
+    % intcolumn = the index of the first constant column found in X, or empty.
+    % Used here to check if X includes the constant term for the intercept.
+    % The variable 'intercept' will be used later for plotting.
+    intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
+    if any(intcolumn) && p>1
+        intercept=1;
+    else
+        intercept=0;
+    end
 end
 
-plo=options.plots;
-labeladd=options.labeladd;
-bivarfit=options.bivarfit;
-multivarfit=options.multivarfit;
-xlimx=options.xlim;
-ylimy=options.ylim;
-msg=options.msg;
+% Extract other options
+plo         = options.plots;
+labeladd    = options.labeladd;
+bivarfit    = options.bivarfit;
+multivarfit = options.multivarfit;
+xlimx       = options.xlim;
+ylimy       = options.ylim;
+msg         = options.msg;
+bonflev     = options.bonflev;
+seq         = 1:n;
 
-bonflev=options.bonflev;
-seq=1:n;
+%% Model-related settings
 
 % correction in case of Bayesian model to account for number of
 % (fictitious) observations in the prior
@@ -315,6 +319,7 @@ end
 
 
 %% Part 1. Signal detection and validation
+
 nmdr=size(mdr,1);
 if nmdr<4  && isempty(bonflev)
     error('FSDA:FSRcore:TooSmallRationp','Ratio n/p too small; modify init (i.e. decrease initial subset size) or use option bonflev (i.e. ''bonflev'', 0.99)')
@@ -578,6 +583,7 @@ else
 end
 
 %% Create figure containing mdr + envelopes based on all the observations.
+
 if plo==1 || plo ==2
     % get screen size [left, bottom, width, height]
     scrsz = get(0,'ScreenSize');
@@ -1166,6 +1172,7 @@ end
 
 
 %% End of the forward search
+
 if msg && isempty(bonflev)
     disp('Summary of the exceedances');
     disp(nout);
@@ -1246,26 +1253,26 @@ if ndecl>0
     end
     
     if ~strcmp(model,'ts')
-    % Add to ListOut all the units which have equal values in terms of X
-    % and to y to those declared as outliers
-    add=zeros(round(n*5),1);
-    good=setdiff(seq,ListOut);
-    Xy=[X y];
-    ij=0;
-    for i=1:length(ListOut)
-        for j=1:length(good)
-            if isequal(Xy(good(j),:),Xy(ListOut(i),:))
-                ij=ij+1;
-                add(ij)=good(j);
+        % Add to ListOut all the units which have equal values in terms of X
+        % and to y to those declared as outliers
+        add=zeros(round(n*5),1);
+        good=setdiff(seq,ListOut);
+        Xy=[X y];
+        ij=0;
+        for i=1:length(ListOut)
+            for j=1:length(good)
+                if isequal(Xy(good(j),:),Xy(ListOut(i),:))
+                    ij=ij+1;
+                    add(ij)=good(j);
+                end
+                %   disp(['i' num2str(i) 'j' num2str(j)])
             end
-            %   disp(['i' num2str(i) 'j' num2str(j)])
         end
-    end
-    if ij>0
-        add=add(1:ij);
-        add=unique(add);
-        ListOut=[ListOut,add'];
-    end
+        if ij>0
+            add=add(1:ij);
+            add=unique(add);
+            ListOut=[ListOut,add'];
+        end
     end
     
     % Store the values of beta coefficients in step n-ndecl
@@ -1339,6 +1346,11 @@ else
 end
 
 
+
+%% Plots
+% the plots section has been placed after the output structures to resure
+% "as is" plot sections copied from other functions: LTSts in paeticular.
+
 %% Scatter plot matrix with the outliers shown with a different symbol
 
 if plo==1 || plo==2
@@ -1389,40 +1401,126 @@ if plo==1 || plo==2
     % The following line adds objects to the panels of the yX
     % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
     add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
-
-if strcmp(model,'ts')
     
-    yhat=out1.yhat;
-      % Time series + fitted values
-    figure
-    subplot(2,1,1)
-    plot([y yhat])
-    xlabel('Time')
-    ylabel('Real and fitted values')
     
-    % Index plot of robust residuals
-    h2=subplot(2,1,2);
-    laby='Robust FS residuals';
-    residuals=(y-yhat)/scale;
-    conflev=0.99;
-    if ~isnan(ListOut)
-        outl=ListOut;
-    else
-        outl=[];
+    %% Figure for Time Series
+    % Generates a figure with two panels: one with the time series
+    % and another with the residuals against index number; plots =2 produces
+    % also a number of other informative plots; else no plot is produced.
+    if strcmp(model,'ts')
+        
+        % most of this section has been copied as is from LTSts
+        conflev   = 0.99;
+        yin       = y;
+        T         = length(y);
+        yhat      = out1.yhat;
+        residuals = out1.residuals; % they are computed as: (y-yhat)/scale;
+        if ~isnan(ListOut)
+            outliers=ListOut;
+        else
+            outliers=[];
+        end
+        
+        % some general plot settings
+        vlt15 = verLessThan('matlab', '7.15');
+        clr = 'bkrgmcy';
+        syb = {'-','--','-.',':','-','--','-.'};
+        FontSize    = 14;
+        SizeAxesNum = 14;
+        
+        % slightly increase the range of the time series axis values
+        mine = min(yin(:));
+        maxe = max(yin(:));
+        delta = (maxe-mine)*0.1;
+        yaxlim = [mine - delta ; maxe + delta];
+        
+        % Time series + fitted values
+        figure
+        htmp = subplot(2,1,1);
+        plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+        hold('on');
+        plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+        
+        set(htmp,'Tag','FSRts:ts');
+        %xlabel('Time','FontSize',FontSize);
+        ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
+        if ~vlt15
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+        else
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
+        end
+        drawnow;
+        xtickval = get(htmp,'XTick');
+        xticklab = get(htmp,'XTickLabel');
+        set(htmp,'XTickMode','manual');
+        
+        % mark outliers with their severity
+        if ~isempty(residuals)
+            seq = 1:T;
+            quant = sqrt(chi2inv(conflev,1));
+            resboo = residuals(outliers);
+            th=8;resboo(abs(resboo)>th)=th;
+            %Rescale residuals in the interval [0 3]
+            sizeout=3*(abs(resboo)-quant)/(th-quant);
+            for i=1:length(sizeout)
+                plot(seq(outliers(i)),yin(outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+            end
+        end
+        
+        % plot the vertical line of the level shift position and the associated
+        % label on the X axis
+        if isfield(out1,'posLS') && ~isempty(out1.posLS)
+            line(out1.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+            text(out1.posLS , yaxlim(1) , num2str(out1.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+        end
+        
+        % Index plot of robust residuals
+        h2=subplot(2,1,2);
+        laby='Robust FS residuals';
+        labx='Index number';
+        resindexplot(residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',outliers,'h',h2,'title','');
+        set(get(gca,'Xlabel'),'interpreter','none');
+        set(get(gca,'Ylabel'),'interpreter','none');
+        if ~vlt15
+            set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+        else
+            set(h2,'FontSize',SizeAxesNum,'Box','on');
+        end
+        set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
+        drawnow;
     end
-    resindexplot(residuals,'conflev',conflev,'laby',laby,'numlab',outl,'h',h2,'title','');
-  
+    
+    %     if strcmp(model,'ts')
+    %
+    %         yhat=out1.yhat;
+    %         % Time series + fitted values
+    %         figure
+    %         subplot(2,1,1)
+    %         plot([y yhat])
+    %         xlabel('Time')
+    %         ylabel('Real and fitted values')
+    %
+    %         % Index plot of robust residuals
+    %         h2=subplot(2,1,2);
+    %         laby='Robust FS residuals';
+    %         residuals=(y-yhat)/scale;
+    %         conflev=0.99;
+    %         if ~isnan(ListOut)
+    %             outl=ListOut;
+    %         else
+    %             outl=[];
+    %         end
+    %         resindexplot(residuals,'conflev',conflev,'laby',laby,'numlab',outl,'h',h2,'title','');
+    %     end
+    
 end
-
-end
-
 
 
 %% Structure returned by function FSR
+
 out=struct;
 out.ListOut  = ListOut;
 out.outliers = ListOut;
-
 
 % If you wish that the output also contains the list of units not declared
 % as outliers, please uncomment the two following lines.
@@ -1440,8 +1538,9 @@ if strcmp(model,'H')
 elseif strcmp(model,'ts')
     out.yhat=out1.yhat;
 end
-
 out.scale=scale;
+
+
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.
 

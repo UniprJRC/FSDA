@@ -749,6 +749,7 @@ out.residuals    = (y-out.fittedvalues)/out.scale;
 
 out.class  =  'FSRts';
 out.Exflag=Exflag;
+
 end
 
 %FScategory:REG-Regression

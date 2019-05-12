@@ -1994,6 +1994,7 @@ if dispresults
 end
 
 %% Create plots
+
 % plots = 1 generates a figure with two panels: one with the time series
 % and another with the residuals against index number; plots =2 produces
 % also a number of other informative plots; else no plot is produced.
