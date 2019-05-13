@@ -79,6 +79,12 @@ function [S, Stable] = GowerIndex(Y, varargin)
 % Joint Metric Approach to Profile Construction and Outlier Detection",
 % Sociological Methods & Research, Vol. 47, pp. 207-239
 %
+%
+% Acknowledgements: 
+%
+% This function has been written jointly with Professor Aurea Grane',
+% Universidad Carlos III de Madrid, Statistics Department.
+%
 % Copyright 2008-2018.
 % Written by FSDA team
 %
