@@ -48,6 +48,11 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 % components in high dimensions, Advances in Data Analysis and
 % Classification, Vol. 8, pp. 217-226
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 %% Beginning of code
 p=pa.p;
 k=pa.K;

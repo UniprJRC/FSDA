@@ -1,6 +1,11 @@
 function out=xmlreadFS(FileName)
 % read xml file and converts it to a structure with dedicated fields
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 %% Beginning of code
 [FSDAroot]=fileparts(which('docsearchFS.m'));
 

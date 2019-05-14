@@ -102,7 +102,7 @@ function X = vervaatrnd(betav,n,method)
 % distribution, "Statistics and Probability Letters", Vol. 148, pp. 66-73.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

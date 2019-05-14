@@ -50,6 +50,12 @@ function [ypred, yci] = predci(X,beta,Sigma,mse,dfe,alpha,sim,pred,hasintercept)
 % one interval. The meaning of the confidence interval depends on the
 % settings of input parameters sim and pred
 %
+
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 ypred = X * beta;
 
 if nargout > 1 % Calculate confidence interval

@@ -43,7 +43,7 @@ function ceff = TBeff(eff, v, shapeeff, approxsheff)
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

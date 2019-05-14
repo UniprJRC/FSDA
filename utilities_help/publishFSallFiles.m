@@ -91,6 +91,10 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %                        and InputCell is lost if it is not an output
 %                        argument
 %
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
 
 %{
     % Example of the use of options dirpath and  FilterFileContent.

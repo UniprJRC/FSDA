@@ -342,7 +342,7 @@ function CorAnaplot(out,varargin)
 % CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
 % "Journal of Statistical Software", Vol. 31.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

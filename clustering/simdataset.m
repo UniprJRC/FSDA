@@ -224,7 +224,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 % "Advances in data analysis and classification", Vol. 9, pp. 461-481.
 % [DOI 10.1007/s11634-015-0223-9].
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

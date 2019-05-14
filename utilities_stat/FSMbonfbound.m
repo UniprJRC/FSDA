@@ -51,7 +51,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
 % Computational and Graphical Statistics", Vol. 15, pp. 460-476.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

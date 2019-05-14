@@ -216,7 +216,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 % "Mining Massive Data Sets for Security", F. Fogelman-Soulie et al. Eds.,
 % pp. 271-286, IOS Press.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -47,7 +47,7 @@ function outHELP=CreateFSDAhelpFiles()
 %              outHELP.fileCate    = string containing function-cate.html
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

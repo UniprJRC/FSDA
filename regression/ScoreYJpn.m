@@ -66,7 +66,7 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 % Submitted.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -134,7 +134,7 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 % Regression with the Forward Search: Theory and Data Analysis, "Test",
 % Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('FSRBbsb')">Link to the help function</a>

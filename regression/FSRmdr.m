@@ -212,7 +212,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 % search for testing multiple outliers in regression, "Advances in Data
 % Analysis and Classification", Vol. 1, pp. 123-141.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -1,6 +1,10 @@
 function newtX=backfit(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq)
 % Backfitting algorithm (inner loop) inside ace function
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
 
 % ($nit$ = counter for number of iterations in the inner loop).
 nit=0;

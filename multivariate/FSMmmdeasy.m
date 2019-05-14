@@ -84,7 +84,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

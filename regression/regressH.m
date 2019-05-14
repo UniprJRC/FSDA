@@ -134,7 +134,7 @@ function out=regressH(y,X,Z,varargin)
 % heteroskedastic regression, "Computational Statistics and Data Analysis",
 % Vol. 104, pp. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 [ART]
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -5,6 +5,10 @@ classdef ProgressBar < handle
 %
 % Code, comments and authorship follows.
 %
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
 %PROGRESSBAR Progress bar class for matlab loops which also works with parfor.
     %   PROGRESSBAR works by creating a file called progressbar_(random_number).txt
     %   in your working directory, and then keeping track of the loop's

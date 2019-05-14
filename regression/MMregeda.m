@@ -157,7 +157,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 % been completely redesigned, with considerable increase of the
 % computational performance.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

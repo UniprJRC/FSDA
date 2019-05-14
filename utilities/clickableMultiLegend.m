@@ -35,7 +35,7 @@ function [varargout] = clickableMultiLegend(varargin)
 % [clickableMultiLegend extends the clickableLegend by Ameya Deoras to
 % figures with one legend for several subplots].
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % clickableMultiLegend has been adapted to this toolbox by FSDA team
 %
 %<a href="matlab: docsearchFS('clickableMultiLegend')">Link to the help page for this function</a>

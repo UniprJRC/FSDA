@@ -50,7 +50,7 @@ function rhoOPT=OPTrho(u, c)
 % regression. "Journal of Planning and Statistical Inference", Vol. 64, pp.
 % 309-323.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

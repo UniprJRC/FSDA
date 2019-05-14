@@ -9,6 +9,11 @@ function [outstring]=mwriteFS(out)
 % At the end open the output file and write it into a string outstring
 % fileID = fopen(fullpathFileName,'w');
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 
 StartColumn=22;
 StartColOutArg=22;

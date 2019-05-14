@@ -88,7 +88,7 @@ function y = inversegamcdf(x,a,b,nocheck)
 %
 % https://en.wikipedia.org/wiki/Inverse-gamma_distribution
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -50,7 +50,7 @@ function aceplot(out,varargin)
 % regression using the ACE algorithm, "Journal of Applied Statistics",
 % Vol. 32, pp. 243-258.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

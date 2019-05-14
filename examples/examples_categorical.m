@@ -1,6 +1,6 @@
 %% EXAMPLES OF CATEGORICAL DATA ANALYSIS
 % examples_categorical shows a series of analysis of regression datasets
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %$LastChangedDate::                      $: Date of the last commit

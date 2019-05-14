@@ -60,7 +60,7 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %              To be precise, sums in (1) and (3) are for l:li(i,j,l) is different from 1
 %              Similarly, sums in (2) and (4) are for l:li(i,j,l) is = 1
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 %
 %$LastChangedDate::                      $: Date of the last commit
 

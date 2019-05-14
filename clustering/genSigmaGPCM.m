@@ -44,7 +44,7 @@ function S=genSigmaGPCM(v, k, modeltype)
 % Celeux, G., Govaert, G. (1995), Gaussian parsimonious clustering models,
 % "Pattern Recognition", 28, pp. 781-793.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

@@ -129,7 +129,7 @@ function out = FSMeda(Y,bsb,varargin)
 % Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
 % data with the forward search", Springer Verlag, New York.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

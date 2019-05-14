@@ -144,7 +144,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %   Regression Diagnostics, "International Statistical Review", Vol. 84,
 %   pp. 99-127.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

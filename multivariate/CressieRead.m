@@ -114,7 +114,7 @@ function [PD , pval] = CressieRead(N,varargin)
 % Ewens, W.J. and Grant, G.R. (2001), "Statistical Methods in Bioinformatics",
 % Springer Verlag.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('CressieRead')">Link to the help function</a>

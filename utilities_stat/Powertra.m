@@ -72,7 +72,7 @@ function Ytra=Powertra(Y,la,varargin)
 %
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

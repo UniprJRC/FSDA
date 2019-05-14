@@ -55,7 +55,7 @@ function ysmo=repDupValWithMean(x,y,consec)
 % References:
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

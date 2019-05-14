@@ -44,7 +44,7 @@
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 
 %

@@ -35,7 +35,7 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 % Riani, M., Perrotta, D. and Cerioli, A. (2015), The Forward Search for
 % Very Large Datasets, "Journal of Statistical Software"
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

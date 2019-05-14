@@ -52,7 +52,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 % Analysis and Classification", Vol. 1, pp. 123-141.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

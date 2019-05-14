@@ -188,7 +188,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Analysis", Springer Verlag, New York.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

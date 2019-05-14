@@ -165,7 +165,7 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 %   Knuth, D. (2005). Generating All Combinations and Partitions. The Art of
 %   Computer Programming, Vol. 4, Fascicle 3. Reading, Mass., Addison-Wesley.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('lexunrank')">Link to the help function</a>

@@ -1,6 +1,11 @@
 function docr=docrootFS()
 %docrootFS calls docroot or subfolder of FSDA according to Matlab version
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 a=ver('matlab');
 
 if str2double(a.Version)>7.14 

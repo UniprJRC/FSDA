@@ -48,7 +48,7 @@ function p=exactcdf(x,empdist)
 % 113, pp. 230-240.
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

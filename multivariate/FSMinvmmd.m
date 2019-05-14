@@ -120,7 +120,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 % search for testing multiple outliers in regression, "Advances in Data
 % Analysis and Classification", Vol. 1, pp. 123-141.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

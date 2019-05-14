@@ -180,7 +180,7 @@ function tclustICplot(IC,varargin)
 % Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
 % Classification", Vol. 2, pp. 193-218.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('tclustICplot')">Link to the help function</a>

@@ -83,7 +83,7 @@ function a=ctsub(x,y,z)
 % Tibshirani R. (1987), Estimating optimal transformations for regression,
 % "Journal of the American Statistical Association", Vol. 83, 394-405.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

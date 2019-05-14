@@ -337,7 +337,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 % See also: gplotmatrix, yXplot, boxplotb
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('spmplot')">Link to the help function</a>

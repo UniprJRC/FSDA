@@ -261,7 +261,7 @@ function out = regressts(y,varargin)
 % "Econometrics and Statistics". [RPRH]
 %
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

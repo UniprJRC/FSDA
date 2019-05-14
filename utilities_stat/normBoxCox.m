@@ -64,7 +64,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 % Discussion), "Journal of the Royal Statistical Society Series B", 
 % Vol. 26, pp. 211-252.
 %
-% Copyright 2008-2018.
+% Copyright 2008-2019.
 % Written by FSDA team
 %
 %

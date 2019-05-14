@@ -24,6 +24,12 @@ function varargout=rug(varargin)
 % Outputs
 % - handles [optional] - plot handles for each set of rug objects.
 %
+
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
+
 % Examples
 % - Rug plot with two populations denoted by different colours
 %{

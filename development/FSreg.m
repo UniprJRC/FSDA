@@ -135,6 +135,10 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %
 %
 
+% Copyright 2008-2019.
+% Written by FSDA team
+%$LastChangedDate::                      $: Date of the last commit
+
 
 
 
