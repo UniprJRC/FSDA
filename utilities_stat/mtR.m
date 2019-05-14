@@ -1,5 +1,5 @@
 function [rn , varargout] = mtR(n, distrib, Rstate)
-%Generates the same random numbers produced by R software with Mersenne Twister mt19937ar
+%mtR generates the same random numbers produced by R software with Mersenne Twister mt19937ar
 %
 %<a href="matlab: docsearchFS('mtR')">Link to the help page for this function</a>
 %
@@ -63,7 +63,7 @@ function [rn , varargout] = mtR(n, distrib, Rstate)
 %               wants to continue the simulation and uses a negative seed,
 %               or/and needs to generate data from a different
 %               distribution, a seed=0 is returned.
-
+%
 %               Data Types - Double.
 %
 % More About:
@@ -134,9 +134,8 @@ function [rn , varargout] = mtR(n, distrib, Rstate)
 % Copyright 2008-2018.
 % Written by FSDA team
 %
-%
 %<a href="matlab: docsearchFS('mtR')">Link to the help page for this function</a>
-%
+
 %$LastChangedDate:: 2018-05-31 10:53:11 #$: Date of the last commit
 %
 % Examples:
