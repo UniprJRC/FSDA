@@ -57,6 +57,7 @@ function [out] = overlapmap(D, varargin)
 %               component.
 %       REMARK: in case there is a field structure named emp containing the 
 %               same informations, these ones will be used               
+%                   Data Types - struct
 % 
 % Optional input arguments:
 % 
