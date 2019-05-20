@@ -1672,48 +1672,52 @@ if abs(s0) < 1e-7
     if s0==0
         [~,~,s0]=zscoreFS(residuals,'median','std');
     end
-    absr=abs(residuals);
-    for j=75:1:99
-        s0=prctile(absr,j)- prctile(absr,100-j);
-        if s0>0
-            break
+    if s0==0
+        absr=abs(residuals);
+        for j=75:1:99
+            s0=prctile(absr,j)- prctile(absr,100-j);
+            if s0>0
+                break
+            end
         end
     end
-    weights = abs(residuals)<=1e-7;
+    
+    %weights = abs(residuals)<=1e-7;
     % stdres = residuals/s0;
 else
-    
-    stdres = residuals/s0;
-    if SmallSampleCor==1
-        plinear=pini+(lshift>0);
-        robest='LTS';
-        eff='';
-        rhofunc='';
-        sizesim=0;
-        Tallis=1;
-        if T<50
-            Ttouse=50;
-        else
-            Ttouse=T;
-        end
-        
-        if ~exist('bdp','var')
-            bdp=1-options.h/T;
-        end
-        thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
-        extracoeff=sqrt(thresh/chi2inv(0.99,1));
-        weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
-        
-    elseif  SmallSampleCor==2
-        weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
-    elseif  SmallSampleCor==3
-        weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
-    elseif SmallSampleCor==4
-        weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
-    else
-        error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
-    end
 end
+
+stdres = residuals/s0;
+if SmallSampleCor==1
+    plinear=pini+(lshift>0);
+    robest='LTS';
+    eff='';
+    rhofunc='';
+    sizesim=0;
+    Tallis=1;
+    if T<50
+        Ttouse=50;
+    else
+        Ttouse=T;
+    end
+    
+    if ~exist('bdp','var')
+        bdp=1-options.h/T;
+    end
+    thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
+    extracoeff=sqrt(thresh/chi2inv(0.99,1));
+    weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
+    
+elseif  SmallSampleCor==2
+    weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+elseif  SmallSampleCor==3
+    weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+elseif SmallSampleCor==4
+    weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+else
+    error('FSDA:ltsTS:WrongInputOpt','wrong small sample cor factor')
+end
+
 
 % else
 %     % There is an approximate perfect fit for the first h observations. We
