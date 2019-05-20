@@ -81,26 +81,13 @@ while ( (diffOMG > itertol) && (iter < maxiterR) )
     
     F=0;
     for j=1:k
-        % Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
-        % wk(j) = max(eig(Wk(:,:,j)));
-        
-        %         Fk(:,:,j) = (1/lmdc(j)) * diag(1./(GAMc(:,j))) * (Omega2D') * Wk(:,:,j)...
-        %             - wk(j)*(lmdc(j)^(-1/p))*diag(1./GAMc(:,j)) * (Omega2D');
+
         
         GAMjinv=diag(1./(GAMc(:,j)));
         F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
             - wk(j)*(lmdc(j)^(-1/p))*GAMjinv * (Omega2D');
         
-        %                F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
-        %            - wk(j)*exp((-1/p)*log(lmdc(j)))*GAMjinv * (Omega2D');
-        
-        %         F1=F1+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j);
-        %
-        %         F2=F2+wk(j)*(lmdc(j)^(-1/p))*GAMjinv;
     end
-    %    F=F1-F2*(Omega2D');
-    
-    % F = sum(Fk,3);
     
     [U,~,V] = svd(F,'econ');
     Omega2D = V*U;
