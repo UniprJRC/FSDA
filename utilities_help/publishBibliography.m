@@ -55,6 +55,12 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
 %             Data Types - string
+% write2file: Option to write HTML file. Logical. Option which specifies
+%             whether HTML file must be created or if just HTML string
+%             fstring must be created. The default value of write2file is
+%             true, that is html file is created
+%             Example - 'write2file',false
+%             Data Types - logical
 %
 %
 % Output:
@@ -118,7 +124,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %
 
 %{
-    % publishBibliography with all the default options.
+    % publishBibliography with all the default options (and write2file false).
     % Create the requested input arguments.
     FileName='addFSDA2path';
     FullPath=which(FileName);
@@ -136,9 +142,9 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % and required subfolders.
     force=false;
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false');
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
     % Create HTML file containing all the items which make up the bibliography
-    fileBiblio=publishBibliography(FilesIncluded,OUT);
+    fileBiblio=publishBibliography(FilesIncluded,OUT,'write2file',false);
 %}
 
 %{
@@ -146,14 +152,14 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % We assume that path outpuPath exist and that inside this path there
     % is template file
     outputPath='C:\temp';
-    fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath);
+    fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',false);
 %}
 
 %{
     % Example where second output is returned.
     % In this case output Citations contains the list of the citations
     % which have been found.
-    [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT);
+    [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT,'write2file',false);
     disp(Citations)
 %}
 
@@ -163,7 +169,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 % % \ = Windows
 % % / = Unix
 fsep=filesep;
-
+write2file=true;
 
 if nargin>1
     UserOptions=varargin(1:2:length(varargin));
@@ -187,7 +193,7 @@ else
 end
 
 if nargin>3
-    options=struct('outputDir',outputDir,'webhelp',webhelp);
+    options=struct('outputDir',outputDir,'webhelp',webhelp,'write2file',write2file);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid
@@ -203,7 +209,7 @@ if nargin>3
     end
     
     outputDir=options.outputDir;
-    %    webhelp=options.webhelp;
+    write2file=options.write2file;
 end
 
 
@@ -277,6 +283,7 @@ end
 
 %% Open input bibliographyEmpty.html file, put it in a string and do a series of preliminary operations
 FileWithFullPath=[outputDir fsep 'bibliographyEmpty.html'];
+
 fileID = fopen(char(FileWithFullPath), 'r');
 
 if fileID==-1
@@ -310,7 +317,9 @@ if file1ID==-1
     error('FSDA:publishBibliography:WrngOutFolder',errmsg);
 end
 
-fprintf(file1ID,'%s',fstring);
+if write2file == true
+    fprintf(file1ID,'%s',fstring);
+end
 fclose('all');
 
 end
