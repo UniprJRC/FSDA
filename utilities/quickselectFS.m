@@ -5,7 +5,9 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %
 % Required input arguments:
 %
-%   A:  a set of unique numbers. Vector. Vector containing a set of n (distinct) numbers.
+%   A:  a set of unique numbers. Vector. Vector containing a set of n
+%       (distinct) numbers.
+%                 Data Types - double
 %   k:  order statistic index. Scalar. An integer between 1 and n indicating the
 %       desired order statistic.
 %                 Data Types - double
@@ -27,6 +29,9 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
 %
 % kE : k-th order statistic. Scalar. Element in A that is larger than exactly k - 1 other elements of A.
 %
+% Optional Output:
+%    
+%    Asor   : Sorted input. Vector. Input vector A sorted.
 %
 % See also:  FSMmmd
 %
@@ -66,6 +71,17 @@ function [kE , varargout] = quickselectFS(A,k,kiniindex)
     % Check the result
     sorY=sort(Y);
     disp([out,sorY(k)])
+%}
+
+%{
+    %% quickselectFS with two output arguments.
+    n=10;
+    Y=randn(n,1);
+    k=3;
+    % kiniindex is supplied 
+    [out,Ysor]=quickselectFS(Y,k);
+    % Check the result
+    disp([Y, Ysor])
 %}
 
 %% Beginning of code
