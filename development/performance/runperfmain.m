@@ -30,46 +30,55 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 %% Performance part
 % nfiles = number of files
 
-for i=1:nfiles
-    try
+for i=24:nfiles
+    
     Ex=OUT{i,1}.Ex;
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
     for iEx=1:size(Excomb,1)
         close all
         Exi=Excomb{iEx,3};
-        
         if ~isempty(Exi) && isempty(strfind(Excomb{iEx,1},'Interactive example'))
             
             Exi=regexprep(Exi,'&lt;','<');
             Exi=regexprep(Exi,'&gt;','>');
             
+            if iEx==1
+                Exif=[Exi,newline 'save tempfileWS'];
+            else
+                Exif=['load tempfileWS',newline,Exi];
+            end
+            
             % Write Exi to a file
             file1ID=fopen('tempfile.m','w');
-            fprintf(file1ID,'%s',Exi);
+            fprintf(file1ID,'%s',Exif);
             fclose('all');
-            outp=runperf('tempfile.m');
+            try
+                
+                outp=runperf('tempfile.m');
+                MeanS=outp.sampleSummary.Mean;
+                FindNaN=isnan(MeanS);
+                MeanS=MeanS(~FindNaN);
+                TotSummary{ij,'MeanTime'}= MeanS;
+                
+                MedianS=outp.sampleSummary.Median;
+                MedianS=MedianS(~FindNaN);
+                TotSummary{ij,'MedianTime'}= MedianS;
+                
+                % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
+                TotSummary(ij,'Code')=Ex(1,3);
+                TotSummary(ij,'TestActivity')={outp.TestActivity};
+                TotSummary(ij,'FileName')=FilesIncluded(i,1);
+                TotSummary(ij,'Category')=FilesIncluded(i,8);
+                TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+                ij=ij+1;
+            catch
+                disp(['Error on example ' num2str(iEx)])
+                disp(['Name of the file: '  FilesIncluded{i,1}])
+            end
             
-            MeanS=outp.sampleSummary.Mean;
-            FindNaN=isnan(MeanS);
-            MeanS=MeanS(~FindNaN);
-            TotSummary{ij,'MeanTime'}= MeanS;
-
-            MedianS=outp.sampleSummary.Median;
-            MedianS=MedianS(~FindNaN);
-            TotSummary{ij,'MedianTime'}= MedianS;
-            
-            % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
-            TotSummary(ij,'Code')=Ex(1,3);
-            TotSummary(ij,'TestActivity')={outp.TestActivity};
-            TotSummary(ij,'FileName')=FilesIncluded(i,1);
-            TotSummary(ij,'Category')=FilesIncluded(i,8);
-            TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-            ij=ij+1;
         end
     end
-    catch
-        disp(['Error on the following function: (fx .num:)' int2str(i)])
-        OUT{i,1}.titl;   
-    end
+    % disp(['Error on the following function: (fx .num:)' int2str(i)])
+    % OUT{i,1}.titl;
 end
