@@ -30,8 +30,10 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 %% Performance part
 % nfiles = number of files
 
-for i=24:nfiles
-    
+for i=76:nfiles
+    clc
+    disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
+    disp(['File: ' FilesIncluded{i,1}]);
     Ex=OUT{i,1}.Ex;
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
@@ -42,11 +44,11 @@ for i=24:nfiles
             
             Exi=regexprep(Exi,'&lt;','<');
             Exi=regexprep(Exi,'&gt;','>');
-            
+            close all
             if iEx==1
-                Exif=[Exi,newline 'save tempfileWS'];
+                Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
             else
-                Exif=['load tempfileWS',newline,Exi];
+                Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
             
             % Write Exi to a file
@@ -75,6 +77,7 @@ for i=24:nfiles
             catch
                 disp(['Error on example ' num2str(iEx)])
                 disp(['Name of the file: '  FilesIncluded{i,1}])
+                error('Stop here')
             end
             
         end
