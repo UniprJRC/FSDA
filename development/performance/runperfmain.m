@@ -30,7 +30,7 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 %% Performance part
 % nfiles = number of files
 
-for i=76:nfiles
+for i=159:nfiles
     clc
     disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
     disp(['File: ' FilesIncluded{i,1}]);
@@ -77,7 +77,7 @@ for i=76:nfiles
             catch
                 disp(['Error on example ' num2str(iEx)])
                 disp(['Name of the file: '  FilesIncluded{i,1}])
-                error('Stop here')
+                warning('Stop here')
             end
             
         end
@@ -85,3 +85,5 @@ for i=76:nfiles
     % disp(['Error on the following function: (fx .num:)' int2str(i)])
     % OUT{i,1}.titl;
 end
+
+TotSummary1=TotSummary(1:ij-1,:);
