@@ -89,7 +89,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 % out.betar     =  p-by-1 vector containing the estimated regression parameter
 %                  after the reweighting step
 % out.rstud     =  n-by-2 matrix.
-%                   First column = studentized residuals
+%                   First column = studentized residuals;
 %                   Second column = p-values (computed using as reference
 %                   distribution the Student t)
 %  out.class  =  'FSRr'.
