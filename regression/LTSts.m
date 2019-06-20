@@ -84,6 +84,10 @@ function [out, varargout] = LTSts(y,varargin)
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
+%               model.ARp = scalar greater or equal than 0 which
+%                         specifies the length of the autoregressive
+%                         component. The default value of model.ARp is 0,
+%                         that is there is no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
 %               Remark: the default model is for monthly data with a linear
@@ -331,7 +335,10 @@ function [out, varargout] = LTSts(y,varargin)
 %                        s-2, s-1 coefficients (if present);
 %                        3) coefficients associated with the matrix of
 %                        explanatory variables which have a potential effect
-%                        on the time series under study (X);
+%                        on the time series under study (X or
+%                        autoregressive part); If model.ARp>0 the first
+%                        model.ARp elements refer to the autoregressive
+%                        component.
 %                        4) non linear part of seasonal component, that is
 %                        varying amplitude. If varying amplitude is of order
 %                        k there are k coefficients (if present);
@@ -442,7 +449,8 @@ function [out, varargout] = LTSts(y,varargin)
 %                           & = & \hat \eta_i + e_i
 %                       \end{eqnarray}
 %            out.y    = response vector y.
-%            out.X    = data matrix X containing trend, seasonal, expl and
+%            out.X    = data matrix X containing trend, seasonal, expl
+%                       (with autoregressive component) and
 %                       lshift, if the model is linear or linearized
 %                       version of $\eta(x_i, \beta)$ if the model is non
 %                       linear containing in the columns partial
@@ -846,8 +854,9 @@ modeldef         =struct;
 modeldef.trend   =1;        % linear trend
 modeldef.s       =12;       % monthly time series
 modeldef.seasonal=1;        % just one harmonic
-modeldef.X       ='';       % no extra explanatory variable
+modeldef.X       =[];       % no extra explanatory variable
 modeldef.lshift  =0;        % no level shift
+modeldef.ARp     =0;        % no autoregressive component
 
 % h to be implemented for LTS
 
@@ -1008,6 +1017,18 @@ else
 end
 
 X=model.X;
+% Order of the autoregressive component
+ARp=model.ARp;
+if ARp>0
+    % Ylagged = matrix which contains lagged values of Y
+    Ylagged=zeros(T,ARp);
+    for j=1:ARp
+        Ylagged(:,j)=[y(1:j); y(1:end-j)];
+    end
+    X=[Ylagged X];
+end
+
+
 isemptyX=isempty(X);
 if isemptyX
     % nexpl = number of potential explanatory variables
@@ -1951,7 +1972,14 @@ dispresults=options.dispresults;
 b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
 b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
     'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
-b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+b_AR={'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR'};
+b_X={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+if ARp>0
+    b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
+else
+    b_expl=b_X;
+end
+
 b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
 b_lshift={'b_lshift'; 't_lshift'};
 
@@ -2478,6 +2506,19 @@ end
         % (yhatseaso), explanatory variables (yhatX) and level shift
         % component (yhatlshift)
         yhat=yhattrend+yhatseaso+yhatX+yhatlshift;
+        
+        %         % Additional regression due to the presence of the autoregressive
+        %         % component
+        %         if ARp>0
+        %             Yhatlagged=zeros(length(bsb),ARp);
+        %             for jj=1:ARp
+        %                 Yhatlagged(:,jj)=[NaN(jj,1); yhat(1:end-jj)];
+        %             end
+        %             Yhatlagged=Yhatlagged(ARp+1:end,:);
+        %             yinbsb=yin(bsb);
+        %             blagged=Yhatlagged\yinbsb(ARp+1:end);
+        %             yhat(ARp+1:end)=Yhatlagged*blagged;
+        %         end
         
         % obj = sum of squares of residuals/2 = negative log likelihood
         obj=sum((yin(bsb)-yhat).^2)/2;

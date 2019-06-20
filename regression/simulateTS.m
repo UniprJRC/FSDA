@@ -95,6 +95,14 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain explanatory
 %                       variables.
+%               model.ARb = vector of doubles containing the beta
+%                       coefficients for the autoregressive component.
+%                       For example model.ARbX = [0.5 -0.2]
+%                       generates an AR(2) time series of the
+%                       kind: $y_t=0.5 y_{t-1} -0.2 y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
+%                       If this field is an empty double (default) the
+%                       simulated time series will not have an
+%                       autoregressive component.
 %               model.lshift = scalar greater than 0 which specifies the
 %                       position where to include a level shift component.
 %                       If this field is an empty double (default) the
@@ -366,6 +374,52 @@ function [out] = simulateTS(T,varargin)
     out=simulateTS(T,'model',model,'plots',1,'samescale',false);
 %}
 
+%{
+    % Simulated data with linear trend and errors with AR(2) component.
+    % No seasonal component.
+    rng(100)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,1000];
+    model.seasonal='';
+    model.signal2noiseratio=10;
+    model.ARb=[0.2 0.7];
+    T=100;
+    out=simulateTS(T,'model',model,'plots',1);
+    y=out.y;
+    % The lines below just work if the econometric toolbox is present
+    % The autocorrelation function of y shows just two peaks in
+    % correspondence of the first two lags
+    figure
+    parcorr(out.y)
+%}
+
+%{
+    % Example of simulation and fitting.
+    % Simulated data with linear trend, errors with AR(2) component and 1
+    % explanatory variable.
+    rng(100)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,1000];
+    model.seasonal='';
+    model.signal2noiseratio=10;
+    model.ARb=[0.2 0.7];
+    T=100;
+    X=1e+2*randn(T,1);
+    model.X=X;
+    model.Xb=100;
+    out=simulateTS(T,'model',model,'plots',1);
+    y=out.y;
+    % Fit a model with linear trend, AR(3) and the true expl. variable  
+    model=struct;
+    model.trend=1;
+    model.seasonal=0;
+    model.lshift=0;
+    model.X=X;
+    model.ARp=3;
+    out=LTSts(y,'model',model,'plots',1,'dispresults',true);
+%}
 
 %% Beginning of code
 
@@ -388,6 +442,7 @@ modeldef.X        = [];       % no explanatory variables
 modeldef.Xb       = [];       %
 modeldef.lshift   = [];       % no level shift
 modeldef.lshiftb  = [];       %
+modeldef.ARb      = [];       % no autoregressive component
 modeldef.signal2noiseratio=1;
 nocheck           = false;
 plots             = 0;
@@ -456,6 +511,7 @@ X        = model.X;
 Xb       = model.Xb;
 lshift   = model.lshift;      % get level shift
 lshiftb  = model.lshiftb;     % get coefficient of level shift
+ARb      = model.ARb;         % order of the autoregressive component
 signal2noiseratio=model.signal2noiseratio;
 
 Seq = [one seq seq.^2 seq.^3];
@@ -663,13 +719,28 @@ signal=yhattrend+yhatseaso+yhatX+yhatlshift;
 
 % Using the signal2noiseratio define the standard deviation of the
 % irregular component
-sigmaeps= sqrt(var(signal)/signal2noiseratio);
+varsignal=var(signal);
+if varsignal>0
+    sigmaeps= sqrt(varsignal/signal2noiseratio);
+else
+    sigmaeps= sqrt(1/signal2noiseratio);
+end
 
-% Simulate the irregular component
-irregular=sigmaeps*randn(T,1);
+% Add autoregressive part to the irregular
+if ~isempty(ARb)
+   
+    % regARIMA generates regression models with ARMA errors
+    Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+    % arima generates ARIMAX models
+    % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+    [y,irregular] = simulate(Mdl1,T,'X',signal);
+else
+    % Simulate the irregular component
+    irregular=sigmaeps*randn(T,1);
+    % y is the final simulated time series (signal + irregular component)
+    y=signal+irregular;
+end
 
-% y is the final simulated time series (signal + irregular component)
-y=signal+irregular;
 
 out=struct;
 out.y=y;
@@ -695,7 +766,7 @@ if ~isempty(StartDate)
     % Convert date and time to serial date number
     datesnumeric=datenum(years(:), months(:), 1);
 else
-    datesnumeric=1:T;
+    datesnumeric=(1):T;
 end
 
 %% Create plots
@@ -712,11 +783,15 @@ if plots==1
         % yscale to keep uniform across the plots
         [minV,maxV]=minmax(y,signal,yhattrend,yhatseaso,yhatlshift,yhatX,y-signal);
     end
+    
+    % Minimum value for xlim
+    minxlim=0;
+    
     % Time series + fitted values
     sb1 = subplot(2,3,1);
     plot(datesnumeric,y);
     if samescale, ylim([minV,maxV]); end
-    xlim([0,T]);
+    xlim([minxlim,T]);
     title({'Final simulated data',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -728,7 +803,7 @@ if plots==1
     sb2 = subplot(2,3,2);
     plot(datesnumeric,signal);
     if samescale, ylim([minV,maxV]); end
-    xlim([0,T]);
+    xlim([minxlim,T]);
     title({'TR+SE+LS+X',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -740,7 +815,7 @@ if plots==1
     sb3 = subplot(2,3,3);
     plot(datesnumeric,yhattrend);
     if samescale, ylim([minV,maxV]); end
-    xlim([0,T]);
+    xlim([minxlim,T]);
     title({'Trend (TR)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -752,7 +827,7 @@ if plots==1
     sb4 = subplot(2,3,4);
     plot(datesnumeric,yhatseaso);
     if samescale, ylim([minV,maxV]); end
-    xlim([0,T]);
+    xlim([minxlim,T]);
     title({'Seasonal (SE)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -764,7 +839,7 @@ if plots==1
     sb5 = subplot(2,3,5);
     plot(datesnumeric,yhatlshift);
     if samescale, ylim([minV,maxV]); end
-    xlim([0,T]);
+    xlim([minxlim,T]);
     title({'Level shift (LS)',''},'interpreter','none','FontSize',FontSize+2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
@@ -777,12 +852,12 @@ if plots==1
     if yhatX~=0
         plot(datesnumeric,yhatX);
         if samescale, ylim([minV,maxV]); end
-        xlim([0,T]);
+        xlim([minxlim,T]);
         title({'Explanatory variables (X)',''},'interpreter','none','FontSize',FontSize+2);
     else
         plot(datesnumeric,y-signal);
         if samescale, ylim([minV,maxV]); end
-        xlim([0,T]);
+        xlim([minxlim,T]);
         title({'Irregular (I)',''},'interpreter','none','FontSize',FontSize+2);
     end
     if ~isempty(StartDate)

@@ -26,8 +26,9 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                        2) linear part of seasonal component 2, 4, 6, ...,
 %                        s-2, s-1 coefficients (if present);
 %                        3) coefficients associated with the matrix of
-%                        explanatory variables which have a potential effect
-%                        on the time series under study (X);
+%                        explanatory variables and/or autoregressive part
+%                        which have a potential effect on the time series
+%                        under study (X);
 %                        4) non linear part of seasonal component, that is
 %                        varying amplitude. If varying amplitude is of order
 %                        k there are k coefficients (if present);
@@ -123,12 +124,18 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                       If this field is an empty double (default) the
 %                       simulated time series will not contain a seasonal
 %                       component.
-%               model.X  = explanatory variabels. Matrix of size T-by-nexpl. If model.X
-%                       is a matrix of size T-by-nexpl, it contains the
-%                       values of nexpl extra covariates which
-%                       affect y.
-%                       If this field is an empty double (default) there is
-%                       no effect of explanatory variables.
+%               model.X  = explanatory variabels. Matrix of size
+%                       (length(y)+nfore)-by-nexpl.
+%                       If model.X is a matrix of size (length(y)+nfore)-by-nexpl, it
+%                       contains the values of nexpl extra covariates which
+%                       affect y for periods 1:(length(y)+nfore) where
+%                       nfore is the requested number of forecasts. If this
+%                       field is an empty double (default) there is no
+%                       effect of explanatory variables.
+%               model.ARp = scalar greater or equal than 0 which
+%                         specifies the length of the autoregressive
+%                         component. The default value of model.ARp is 0,
+%                         that is there is no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
 %
@@ -426,6 +433,104 @@ function [outFORE] = forecastTS(outEST,varargin)
     OUTfore=forecastTS(outEST,'model',modelEST,'nfore',nfore,'conflev',0.999);
 %}
 
+%{
+    % Example of foreasting in a model with explanatory variables.
+    % Simulated data with linear trend, varying seasonal and 1
+    % explanatory variable.
+    rng(1000)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,1000];
+    model.seasonal=102;
+    model.seasonalb=100*[2 4 0.1 8 0.001];
+    model.signal2noiseratio=10;
+    T=120;
+    Xall=1e+2*randn(T,1);
+    model.X=Xall;
+    model.Xb=100;
+    out=simulateTS(T,'model',model,'plots',1);
+    % Fit a model using just the first 100 obs
+    yall=out.y;
+    Tred=100;
+    y=yall(1:Tred);
+    X=Xall(1:Tred,:);
+    model=struct;
+    model.trend=1;
+    model.seasonal=102;
+    % Potential level shift position is investigated in positions:
+    % t=10, t=11, ..., t=T-10.
+    model.lshift=0;
+    model.X=X;
+    out=LTSts(y,'model',model,'plots',1,'dispresults',true);
+    % Note that in this case all the 120 values of Xall are supplied and
+    % the number of forecasts is 20
+    model.X=Xall;
+    forecastTS(out,'model',model,'nfore',20)
+%}
+
+%{
+    %% Forecast with autoregressive components and expl var.
+    % Simulated data with linear trend, varying seasonal and AR(2)
+    rng(1000)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,1000];
+    model.seasonal=102;
+    model.seasonalb=100*[2 4 0.1 8 0.001];
+    model.signal2noiseratio=10;
+    model.ARb=[0.2 0.7];
+    T=100;
+    out=simulateTS(T,'model',model,'plots',1);
+    % Fit a model imposing linear trend, sesonal component and AR(2)
+    y=out.y;
+    nfore=20;
+    Xall=1e+2*randn(T+nfore,1);
+    X=Xall(1:T,:);
+    model=struct;
+    model.trend=1;
+    model.seasonal=102;
+    % No level shift
+    model.lshift=0;
+    % Add a nonn important expl. variable
+    model.X=X;
+    model.ARp=2;
+    out=LTSts(y,'model',model,'plots',1,'dispresults',true);
+    % Note that in this case all the 120 values of Xall are supplied and
+    % the number of forecasts is 20
+    model.X=Xall;
+    forecastTS(out,'model',model,'nfore',20)
+%}
+
+%{
+    % Check accuracy of forecasts.
+    % AR(2) model with fixed seasonal
+    rng(1000)
+    model=struct;
+    model.trend=1;
+    model.trendb=[5,0.01];
+    model.seasonal=2;
+    model.seasonalb=0.1*[2 4 0.1 2];
+    model.signal2noiseratio=10;
+    model.ARb=[0.2 0.3];
+    T=150;
+    out=simulateTS(T,'model',model,'plots',1);
+    yall=out.y;
+    % Fit a model imposing linear trend, sesonal component and AR(2)
+    y=out.y(1:100);
+    nfore=50;
+    model=struct;
+    model.trend=1;
+    model.seasonal=2;
+    % No level shift
+    model.lshift=0;
+    model.ARp=2;
+    out=LTSts(y,'model',model,'plots',1,'dispresults',true);
+    % Note that in this case all the 120 values of Xall are supplied and
+    % the number of forecasts is 20
+    forecastTS(out,'model',model,'nfore',50,'conflev',0.75)
+    hold('on')
+    plot(1:length(yall),yall)
+%}
 
 %% Beginning of code
 if nargin<1
@@ -439,6 +544,7 @@ modeldef.s        = 12;       % monthly time series
 modeldef.seasonal = [];
 modeldef.X        = [];       % no explanatory variables
 modeldef.lshift   = [];       % no level shift
+modeldef.ARp      = 0;        % no autoregressive component
 nocheck           = false;
 plots             = 1;
 FileNameOutput    = '';
@@ -504,6 +610,7 @@ model = modeldef;
 trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
+ARp      = model.ARp;
 
 if isfield(outEST,'posLS')
     lshift   = outEST.posLS;
@@ -559,6 +666,15 @@ else
 end
 
 X=model.X;
+if ARp>0
+    % Ylagged = matrix which contains lagged values of Y
+    Ylagged=zeros(T,ARp);
+    for j=1:ARp
+        Ylagged(1:n,j)=[y(1:j); y(1:end-j)];
+    end
+    X=[Ylagged X];
+end
+
 isemptyX=isempty(X);
 if isemptyX
     % nexpl = number of potential explanatory variables
@@ -604,6 +720,35 @@ end
 
 [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(betaout);
 
+
+% Autoregressive recursion
+if ARp>0
+    % Find final fitted values
+    % yFore contains in the first n positions the real values of the time
+    % series and in the n+fore positions the preliminary forecasts based
+    % on all components of the time series excluding the autoregressive
+    % part
+    yhatini=yhat;
+    yFore=yhat;
+    yFore(1:n)=y;
+    yhatfinal=yhat;
+    
+    % Extract vector of ARp coefficients
+    bARp=betaout(ntrend+nseaso+1:ntrend+nseaso+ARp);
+    % For the forecast use previous estimated values if the autoregressive
+    % cofficients multiply y_{n+1}, y_{n+2} ... of real values of the time
+    % series if the autoregressive cofficients multiply y_{n}, y_{n-1} ..
+    for i=1:nfore
+        for j=1:ARp
+            yhatfinal(n+i)=yhatfinal(n+i) +bARp(j)*yFore(n+i-j);
+        end
+        yFore(n+i)=yhatfinal(n+i);
+    end
+    
+    yhat=yhatfinal;
+end
+
+
 % yfitFS = likyhat(betaout,Xtrendf);
 yfitFS = yhat;
 
@@ -611,7 +756,13 @@ if varampl==0
     J=[Xtrend Xseaso X Xlshift];
 else
     fdiffstep=[];
-    J = getjacobianFS(betaout,fdiffstep,@lik,yfitFS);
+    % If there is the autoregressive component the Jaobian is based on the
+    % initial signal before the autoregressive recursion
+    if ARp>0
+        J = getjacobianFS(betaout,fdiffstep,@lik,yhatini);
+    else
+        J = getjacobianFS(betaout,fdiffstep,@lik,yfitFS);
+    end
 end
 
 confband=NaN(length(yhat),2);
@@ -665,7 +816,13 @@ if dispresults
     b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
     b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
         'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
-    b_expl={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+    b_AR={'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR'};
+    b_X={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+    if ARp>0
+        b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
+    else
+        b_expl=b_X;
+    end
     b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
     b_lshift={'b_lshift'; 't_lshift'};
     
@@ -715,7 +872,7 @@ if plots==1
     
     
     figure;
-    yfore=outFORE.signal;
+    yfore=yhat;
     % Plot original time series
     plot(datesnumeric(1:n),y,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
     hold('on')
@@ -748,7 +905,7 @@ if plots==1
     end
     
     title('Fit and forecasts from LTS','interpreter','none','FontSize',FontSize+2);
-
+    
 end
 
     function [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(beta0)
