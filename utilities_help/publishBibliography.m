@@ -124,6 +124,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %
 
 %{
+    % Skip_example
     % publishBibliography with all the default options (and write2file false).
     % Create the requested input arguments.
     FileName='addFSDA2path';
@@ -148,6 +149,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %}
 
 %{
+    % Skip_example
     % Example of use of option outputDir.
     % We assume that path outpuPath exist and that inside this path there
     % is template file
@@ -156,6 +158,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %}
 
 %{
+    % Skip_example
     % Example where second output is returned.
     % In this case output Citations contains the list of the citations
     % which have been found.
