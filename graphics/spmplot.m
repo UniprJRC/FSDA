@@ -1058,7 +1058,8 @@ else
     sym=symdef;
     siz=sizdef;
     doleg=dolegdef;
-    numtext=[];
+    % numtext=[];
+    numtext=cellstr(num2str(seq,'%d'));
 end
 
 if iscell(group)
