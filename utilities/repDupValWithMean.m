@@ -125,7 +125,7 @@ function ysmo=repDupValWithMean(x,y,consec)
 %{
     % The implementation of this function using loops is given below.
     % A simulation study to compare the two implementation is also given.
-function  ysmoC=repDupValWithMeanLoop(x,y)
+    function  ysmoC=repDupValWithMeanLoop(x,y)
     n=length(x);
     ysmoC=y;
     j0=1;
