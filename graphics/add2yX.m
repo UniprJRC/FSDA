@@ -581,7 +581,7 @@ for i = 1:length(AX)
                 hline2 = line(xlimits , meaot  + coef(i).*xlimits);
                 
                 %'fit on unbrushed units of y|X'
-                set(hline2,'Color',get(H(1,i,1),'Color'),'LineWidth',2,...
+                set(hline2,'Color',get(H(1,i,1),'Color'),'LineWidth',2,'LineStyle','--',...
                     'DisplayName',['multivarfit on ' DisplayNameFirst]);
             end
         otherwise
