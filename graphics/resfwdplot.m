@@ -736,11 +736,11 @@ function plotopt=resfwdplot(out,varargin)
     [out]=FSReda(y,X,out.bs);
 
     % Write labels of trajectories inside the resfwdplot while brushing
-    databrush.Label='on'; 
+    databrush.Label='on';
     % Do not remove labels after selection in the resfwdplot
     databrush.RemoveLabels='off';
     % Add the labels of the units in the associated yXplot matrix
-    databrush.labeladd='1'; % 
+    databrush.labeladd='1'; %
     resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
 %}
 
@@ -765,11 +765,11 @@ function plotopt=resfwdplot(out,varargin)
     [out]=FSReda(y,X,out.bs);
 
     % Write labels of trajectories inside the resfwdplot while brushing
-    databrush.Label='on'; 
+    databrush.Label='on';
     % Do not remove labels after selection in the resfwdplot
     databrush.RemoveLabels='off';
     % Add the labels of the units in the associated yXplot matrix
-    databrush.labeladd='1'; 
+    databrush.labeladd='1';
     % Enable repeated brushing actions
     databrush.persist='on';
     resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
@@ -1200,22 +1200,22 @@ if ~isempty(options.fground)
         
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
-%         if isempty(options.label)
-%             
-%             % numtext: cell of strings used to label the units and their position in
-%             % the dataset
-%             numtext = cellstr(num2str(seq,'%d'));
-%             strings = numtext(funit);
-%         else
-%             %             out.label=options.label;
-%             %             strings = out.label(funit);
-%             %             numtext=out.label;
-%             strings = options.label(funit);
-%             numtext=options.label;
-%         end
+        %         if isempty(options.label)
+        %
+        %             % numtext: cell of strings used to label the units and their position in
+        %             % the dataset
+        %             numtext = cellstr(num2str(seq,'%d'));
+        %             strings = numtext(funit);
+        %         else
+        %             %             out.label=options.label;
+        %             %             strings = out.label(funit);
+        %             %             numtext=out.label;
+        %             strings = options.label(funit);
+        %             numtext=options.label;
+        %         end
         
         %%%%%%%%%%%%%%%%%%%%
-                if isempty(options.label)
+        if isempty(options.label)
             % In old releases of FSDA it was possible to supply row names
             % directly from input structure out, so for compatibility we
             % leave the instruction below
@@ -1434,7 +1434,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
     
-    sele=[sele 'Tag' {options.tag}  'RowNamesLabels' {numtext}]; 
+    sele=[sele 'Tag' {options.tag}  'RowNamesLabels' {numtext}];
     
     % Check if X includes the constant term for the intercept.
     p=size(X,2);
