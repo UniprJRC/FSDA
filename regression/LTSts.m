@@ -832,6 +832,45 @@ function [out, varargout] = LTSts(y,varargin)
 
 %}
 
+%{ 
+
+    %% Examples 4 and 5 used in the paper RPRH: trade data.
+    
+    close all; clear all;
+
+    % the datasets
+    load('P12119085');
+    load('P17049075');
+    Y4 = P12119085.data;
+    Y5 = P17049075.data;
+
+    % the model
+    model           = struct;
+    model.trend     = 1;
+    model.seasonal  = 102;
+    model.s         = 12;
+    model.lshift    = 13;
+
+    % LTSts
+    out4 = LTSts(Y4,'model',model,'plots',0);
+    out5 = LTSts(Y5,'model',model,'plots',0);
+
+    % the wedgeplot with the time series and the detected outliers and 
+    % level shift
+    wedgeplot(out4,'extradata',Y4);
+    wedgeplot(out5,'extradata',Y5);
+
+    % Forecasts with a 99.9 per cent confidence level
+    nfore=10;
+    outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999);
+    outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999);
+
+    % Comparing with FS (needs conflev option)
+    outLTS1 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99);
+    outFRS1 = FSRts(Y5,'model',model,'plots',1);
+
+%}
+
 %% Input parameters checking
 
 % setting global variable yin

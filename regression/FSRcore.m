@@ -1478,6 +1478,7 @@ if plo==1 || plo==2
         laby='Robust FS residuals';
         labx='Index number';
         resindexplot(residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',outliers,'h',h2,'title','');
+        drawnow;
         set(get(gca,'Xlabel'),'interpreter','none');
         set(get(gca,'Ylabel'),'interpreter','none');
         if ~vlt15
