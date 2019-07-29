@@ -161,6 +161,12 @@ function [outFORE] = forecastTS(outEST,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
+%     titl     : Title. String. A label for the title (default: 'Double wedge
+%                plot').
+%                Example - 'titl','Plot with two wedges'
+%                Data Types - char
+%
+%
 %   StartDate : The time of the first observation.
 %               Numeric vector of length 2. Vector with two integers, which
 %               specify a natural time unit and a (1-based) number of
@@ -552,9 +558,10 @@ StartDate         = '';
 dispresults     =false;
 nfore           =24;    % number of forecasts
 conflev         = 0.99; % default confidence level for the forecasts
+titl            = 'Fit and forecasts from LTS'; %default title for the plot
 
 options=struct('model',modeldef,...
-    'dispresults',dispresults,'nfore',nfore,'plots',plots,...
+    'dispresults',dispresults,'nfore',nfore,'plots',plots,'titl',titl,...
     'FileNameOutput',FileNameOutput,'StartDate',StartDate,'conflev',conflev);
 
 
@@ -587,6 +594,7 @@ if ~isempty(UserOptions)
     FileNameOutput=options.FileNameOutput;
     StartDate=options.StartDate;
     conflev=options.conflev;
+    titl = options.titl;
 end
 
 % Default values for the optional parameters are set inside structure
@@ -904,7 +912,7 @@ if plots==1
         set(gca,'FontSize',SizeAxesNum,'Box','on');
     end
     
-    title('Fit and forecasts from LTS','interpreter','none','FontSize',FontSize+2);
+    title(titl,'interpreter','none','FontSize',FontSize+2);
     
 end
 

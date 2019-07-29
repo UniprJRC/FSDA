@@ -1474,6 +1474,7 @@ if plo==1 || plo==2
         end
         
         % Index plot of robust residuals
+        drawnow;
         h2=subplot(2,1,2);
         laby='Robust FS residuals';
         labx='Index number';

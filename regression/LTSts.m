@@ -857,17 +857,27 @@ function [out, varargout] = LTSts(y,varargin)
 
     % the wedgeplot with the time series and the detected outliers and 
     % level shift
-    wedgeplot(out4,'extradata',Y4);
-    wedgeplot(out5,'extradata',Y5);
+    wedgeplot(out4,'extradata',Y4,'titl','P12119085, imports of plants from KN to UK');
+    wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT');
 
     % Forecasts with a 99.9 per cent confidence level
     nfore=10;
-    outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999);
-    outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999);
+    outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P12119085, imports of plants from KN to UK');
+    outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugars from UA to LT');
 
     % Comparing with FS (needs conflev option)
-    outLTS1 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99);
-    outFRS1 = FSRts(Y5,'model',model,'plots',1);
+
+    outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99);
+    title(findobj(gcf,'Tag','LTSts:ts'),'P12119085, LTS with conflev=0.99');
+    
+    outFRS4 = FSRts(Y4,'model',model,'plots',1);
+    title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
+
+    outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99);
+    title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
+
+    outFRS5 = FSRts(Y5,'model',model,'plots',1);
+    title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');
 
 %}
 
