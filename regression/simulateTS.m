@@ -97,7 +97,7 @@ function [out] = simulateTS(T,varargin)
 %                       variables.
 %               model.ARb = vector of doubles containing the beta
 %                       coefficients for the autoregressive component.
-%                       For example model.ARbX = [0.5 -0.2]
+%                       For example model.ARb = [0.5 -0.2]
 %                       generates an AR(2) time series of the
 %                       kind: $y_t=0.5 y_{t-1} -0.2 y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
 %                       If this field is an empty double (default) the
@@ -728,7 +728,10 @@ end
 
 % Add autoregressive part to the irregular
 if ~isempty(ARb)
-   
+    if ARb>6
+        disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
+        ARb=6;
+    end
     % regARIMA generates regression models with ARMA errors
     Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
     % arima generates ARIMAX models

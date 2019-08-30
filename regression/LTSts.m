@@ -26,8 +26,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       trend = 1 implies linear trend with intercept (default),
 %                       trend = 2 implies quadratic trend
 %                       trend = 3 implies cubic trend
-%                       Admissible values for trend are, 0, 1, 2 and
-%                       3.
+%                       Admissible values for trend are, 0, 1, 2 and 3.
 %                       In the paper RPRH to denote the order of the trend
 %                       symbol A is used.
 %               model.seasonal = scalar (integer specifying number of
@@ -46,7 +45,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                        If seasonal is a number greater than 100 then it
 %                        is possible to specify how the seasonal component
 %                        grows over time.
-%                        For example, seasonal =101 implies a seasonal
+%                        For example, seasonal = 101 implies a seasonal
 %                        component which just uses one frequency
 %                        which grows linearly over time as follows:
 %                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
@@ -971,7 +970,6 @@ if ~isempty(UserOptions)
         error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
-    
     % Extract the names of the optional arguments
     chklist=varargin(1:2:length(varargin));
     
@@ -1065,9 +1063,14 @@ else
     Xseaso=[];
 end
 
-X=model.X;
+X = model.X;
+
 % Order of the autoregressive component
 ARp=model.ARp;
+if ARp>6
+    disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
+    ARp=6;
+end
 if ARp>0
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,ARp);
@@ -1077,15 +1080,13 @@ if ARp>0
     X=[Ylagged X];
 end
 
-
+% nexpl = number of potential explanatory variables
 isemptyX=isempty(X);
 if isemptyX
-    % nexpl = number of potential explanatory variables
     nexpl=0;
 else
     nexpl=size(X,2);
 end
-
 
 % pini = number of parameters in the linear model without level shifts nor
 % varying amplitude
@@ -1151,7 +1152,7 @@ elseif  options.nsamp<0
 end
 
 
-h=floor(options.h);                % Number of data points on which estimates are based
+h=floor(options.h);         % Number of data points on which estimates are based
 plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
 nsampsubsequentsteps=round(nsamp/2);
@@ -1282,7 +1283,6 @@ if seasonal==0
         Xsel=[Xtrend X];
     end
 else
-    
     if isemptyX
         Xsel=[Xtrend Xseaso];
     else
@@ -1839,7 +1839,6 @@ elseif   varampl==0 && lshift>0
     Xseldum=[Xsel Xlshift];
     betaout = Xseldum(bsb,:) \ yin(bsb);
     
-    
     % find fitted values using all observations
     yhat =  Xseldum * betaout;
     s2=sum((yin(bsb)-yhat(bsb)).^2)/(h-size(Xseldum,2));
@@ -1961,7 +1960,6 @@ out.numscale2=ALLnumscale2;
 % Store indices forming the bestrdiv2 best estimates of the target function
 out.BestIndexes=NumScale2ind;
 
-
 % Store scaled residuals
 out.residuals=stdres;
 
@@ -2016,21 +2014,20 @@ out.invXX=invXX;
 
 dispresults=options.dispresults;
 
-
-
-b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
-b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
-    'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
-b_AR={'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR'};
-b_X={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
+b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
+           'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
+           'b_cos5'; 'b_sin5'; 'b_cos6'};
+b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
+b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
 if ARp>0
     b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
 else
     b_expl=b_X;
 end
 
-b_varampl={'b_varampl'; 'b_varamp2'; 'b_varamp3'};
-b_lshift={'b_lshift'; 't_lshift'};
+b_varampl = {'b_varampl'; 'b_varamp2'; 'b_varamp3'};
+b_lshift  = {'b_lshift' ; 't_lshift'};
 
 if seasonal>0
     if 2*seasonal==s

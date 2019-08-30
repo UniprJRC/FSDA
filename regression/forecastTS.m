@@ -555,10 +555,10 @@ nocheck           = false;
 plots             = 1;
 FileNameOutput    = '';
 StartDate         = '';
-dispresults     =false;
-nfore           =24;    % number of forecasts
-conflev         = 0.99; % default confidence level for the forecasts
-titl            = 'Fit and forecasts from LTS'; %default title for the plot
+dispresults       = false;
+nfore             = 24;    % number of forecasts
+conflev           = 0.99;  % default confidence level for the forecasts
+titl              = 'Fit and forecasts from LTS'; %default title for the plot
 
 options=struct('model',modeldef,...
     'dispresults',dispresults,'nfore',nfore,'plots',plots,'titl',titl,...
@@ -618,7 +618,6 @@ model = modeldef;
 trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
 seasonal = model.seasonal;    % get number of harmonics
-ARp      = model.ARp;
 
 if isfield(outEST,'posLS')
     lshift   = outEST.posLS;
@@ -673,7 +672,14 @@ else
     varampl=0;
 end
 
-X=model.X;
+X = model.X;
+
+% Order of the autoregressive component
+ARp = model.ARp; 
+if ARp>6
+    disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
+    ARp=6;
+end
 if ARp>0
     % Ylagged = matrix which contains lagged values of Y
     Ylagged=zeros(T,ARp);
@@ -818,14 +824,14 @@ outFORE.datesnumeric=datesnumeric;
 % Store linearized version of \eta(X,\hat \beta)
 outFORE.X=J(1:n,:);
 
-
 if dispresults
     
-    b_trend={'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
-    b_seaso={'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; 'b_cos3'; 'b_sin3'; ...
-        'b_cos4'; 'b_sin4'; 'b_cos5'; 'b_sin5'; 'b_cos6'};
-    b_AR={'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR'};
-    b_X={'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+    b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
+    b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
+               'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
+               'b_cos5'; 'b_sin5'; 'b_cos6'};
+    b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
+    b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
     if ARp>0
         b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
     else
@@ -878,21 +884,26 @@ if plots==1
     FontSize    = 14;
     SizeAxesNum = 14;
     
+    % slightly increase the range of the time series axis values
+    mine = min(y(:));
+    maxe = max(y(:));
+    deltay = (maxe-mine)*0.1;
+    yaxlim = [mine - deltay ; maxe + deltay];
     
     figure;
     yfore=yhat;
     % Plot original time series
-    plot(datesnumeric(1:n),y,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+    plot(datesnumeric(1:n),y,'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
     hold('on')
     % plot the estimated values
-    plot(datesnumeric(1:n),yfore(1:n),'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+    plot(datesnumeric(1:n),yfore(1:n),'Color',clr(2),'LineStyle',syb{1},'LineWidth',1);
     % plot the forecasts
-    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{3},'LineWidth',1);
+    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{1},'LineWidth',1);
     
     % plot the signal (TR+LS+X)
     % plot(datesnumeric,outFORE.trend+outFORE.lshift+outFORE.X,'color','m')
     
-    plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'r--')
+    plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'Color',clr(3),'LineStyle',syb{3},'LineWidth',1);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -907,9 +918,9 @@ if plots==1
     ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
     
     if ~vlt15
-        set(gca,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
     else
-        set(gca,'FontSize',SizeAxesNum,'Box','on');
+        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
     end
     
     title(titl,'interpreter','none','FontSize',FontSize+2);
