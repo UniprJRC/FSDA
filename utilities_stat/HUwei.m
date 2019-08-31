@@ -70,9 +70,9 @@ function wei = HUwei(u,c)
 
 %% beginning of code
 w = (abs(u)<=c);
-
-wei=w +(1-w).*(c*sign(u)./u);
-
+signu=sign(u);
+wei=w +(1-w).*(c*signu./u);
+wei(signu==0)=1;
 
 end
 %FScategory:UTISTAT
