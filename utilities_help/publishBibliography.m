@@ -151,7 +151,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %{
     % Skip_example
     % Example of use of option outputDir.
-    % We assume that path outpuPath exist and that inside this path there
+    % We assume that path outputPath exist and that inside this path there
     % is template file
     outputPath='C:\temp';
     fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',false);
