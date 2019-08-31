@@ -245,7 +245,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                 Data Types - double
 %        msg  : Messages on the screen. Scalar.
 %               Scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed on
+%               on the screen. If msg==1 (default) messages are displayed on
 %               the screen about estimated time to compute the estimator
 %               and the warnings about 'MATLAB:rankDeficientMatrix',
 %               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
@@ -373,7 +373,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       This output is present just if input option
 %                       model.lshift>0.
 %     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing
-%                       (in the columns the values of the lts.bestr smallest
+%                       (in the columns) the values of the lts.bestr smallest
 %                       values of the target function. Target function = truncated
 %                       residuals sum of squares.
 %     out.BestIndexes = matrix of size nbestindexes-by-(T-2*lshift)
@@ -851,8 +851,8 @@ function [out, varargout] = LTSts(y,varargin)
     model.lshift    = 13;
 
     % LTSts
-    out4 = LTSts(Y4,'model',model,'plots',0);
-    out5 = LTSts(Y5,'model',model,'plots',0);
+    out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true);
+    out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true);
 
     % the wedgeplot with the time series and the detected outliers and 
     % level shift
