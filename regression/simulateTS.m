@@ -728,9 +728,9 @@ end
 
 % Add autoregressive part to the irregular
 if ~isempty(ARb)
-    if ARb>6
+    if length(ARb)>6
         disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
-        ARb=6;
+        ARb=ARb(1:6);
     end
     % regARIMA generates regression models with ARMA errors
     Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
