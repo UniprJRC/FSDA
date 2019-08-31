@@ -201,8 +201,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %  Optional Output:
 %
-%         msgstr     : String containing the last warning message. 
-%                      This relates to the execution of the LTS. 
+%         msgstr     : String containing the last warning message.
+%                      This relates to the execution of the LTS.
 %
 % See also LTSts
 %
@@ -227,29 +227,31 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %{
     % run LTStsVarSel with all default options.
 
-    % generate data
-    n=100;
+    % data model
     model=struct;
-    model.trend=1;                  %linear trend
+    model.trend=1;                  % linear trend
     model.trendb=[0 1];             % parameters of the linear trend
     model.s=12;                     % monthly time series
     model.seasonal=1;               % 1 harmonic with linear trend
     model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
-    model.lshiftb=100;              %level shift amplitude
-    model.lshift= 30;               %level shift amplitude
-    model.signal2noiseratio = 100;  %signal to noise
-    tmp = rand(n,1);                %an extra explanatory variable
-    model.X= tmp.*[1:n]';
-    model.Xb = 1;
+    model.lshiftb=100;              % level shift amplitude
+    model.lshift= 30;               % level shift amplitude
+    model.signal2noiseratio = 100;  % signal to noise
+    
+    n = 100;                        % sample size
+    tmp = rand(n,1);                
+    model.X = tmp.*[1:n]';          % a extra covariate
+    model.Xb = 1;                   % beta coefficient of the covariate
+    % generate data
     out_sim=simulateTS(n,'plots',1,'model',model);
 
     %run LTStsVarSel with all default options
-
     rng(1);
     [out_reduced_0, out_model_0] = LTStsVarSel(out_sim.y);
  
     % optional: add a FS step to the LTSts estimator
-    outFS = FSRts(out_sim.y,'model',model_sel_vars);
+    % outFS = FSRts(out_sim.y,'model',out_model_0);
+    % To be fixed: 'Non existent user option found-> '    'ARp'
 %}
 
 %{
@@ -260,13 +262,13 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     overmodel.trend=3;              % quadratic trend
     overmodel.s=12;                 % monthly time series
     overmodel.seasonal=303;         % number of harmonics
-    overmodel.lshift=0;             % position where to start monitoring level shift
+    overmodel.lshift=4;             % position where to start monitoring level shift
     overmodel.X=tmp.*[1:n]';
 
     % pval threshold
     thPval=0.01;
 
-    [out_reduced_1, out_model_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
+    [out_reduced_1, out_model_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval,'plots',1);
 
 %}
 
@@ -364,7 +366,21 @@ if plots
     end
 end
 
-%% Step 2: iterate and reduce the model 
+%% Step 2: iterate and reduce the model
+
+% Step (2a) tests the model parameters. It consists in identifying the
+% largest p-value among the parameters of:
+% - level shift,
+% - harmonics,
+% - covariates,
+% - the largest degree component of:
+%   * trend,
+%   * amplitude of harmonics.
+%
+% Step (2b) re-estimates the model. It remove the less significant parameter
+% and re-estimates the model with LTSts. Remark: the level shift position
+% is not re-estimated, but the original estimate is kept as is.
+
 
 % Initializations
 
@@ -382,9 +398,11 @@ lLSH = n-model.lshift*2;
 % initialize a flag to check the initial presence of level shift
 lshift_present = 0;
 
-% Iterative model "simplification". The loop terminates when all p-values
-% are smaller than thPval. In this case AllPvalSig will become equal to 1
+% Iterative model reduction.
 while AllPvalSig == 0
+    % The loop terminates when all p-values are smaller than thPval. In
+    % this case AllPvalSig will become equal to 1
+    
     rownam=out_LTSts.Btable.Properties.RowNames;
     seqp=1:length(rownam);
     
@@ -455,55 +473,58 @@ while AllPvalSig == 0
         LastVarAmplPval;...
         LevelShiftPval];
     
+    % Start of model reduction (step 2b)
     [maxPvalall,indmaxPvalall]=max(Pvalall);
     
     if maxPvalall>thPval
-        % Remove from model the last term of the trend component
-        if indmaxPvalall ==1
-            if msg==1 || plots==1
-                removed =['Removing trend of order ' num2str(model.trend)];
-            end
-            model.trend=model.trend-1;
-            
-            % Remove from model the last term of the seaonal component that is
-            % remove last harmonic
-        elseif indmaxPvalall ==2
-            if msg==1 || plots==1
-                tmp = num2str(model.seasonal);
-                tmp = tmp(end);
-                removed =['Removing harmonic number ' tmp];
-            end
-            model.seasonal= model.seasonal-1;
-            
-            
-        % Remove from model the non signif expl var
-        elseif indmaxPvalall ==3
-            if posmaxPvalX==size(model.X,2) && iniloop==0
+        switch indmaxPvalall
+            case 1
+                % if indmaxPvalall == 1
+                % Remove from model the last term of the trend component
                 if msg==1 || plots==1
-                    removed ='Removing level shift component';
+                    removed =['Removing trend of order ' num2str(model.trend)];
                 end
-            else
+                model.trend=model.trend-1;
+            case 2
+                % elseif indmaxPvalall ==2
+                % Remove from model the last term of the seaonal component that
+                % is remove last harmonic
                 if msg==1 || plots==1
-                    removed =['Removing expl. variable number ' num2str(posmaxPvalX)];
+                    tmp = num2str(model.seasonal);
+                    tmp = tmp(end);
+                    removed =['Removing harmonic number ' tmp];
                 end
-            end
-            model.X(:,posmaxPvalX)= [];
-            
-            % Remove from model the high order term of non linear seasonality
-        elseif indmaxPvalall ==4
-            if msg==1 || plots==1
-                strseaso=num2str(model.seasonal);
-                removed = ['Removing amplitude of order ' strseaso(1) ' of seas. comp.'];
-            end
-            model.seasonal= model.seasonal-100;
-            
-            % Remove from model the level shift component
-        elseif indmaxPvalall ==5
-            model.lshift=0;
-            if msg==1 || plots==1
-                removed ='Remove level shift component';
-            end
-        else
+                model.seasonal= model.seasonal-1;
+            case 3
+                % elseif indmaxPvalall ==3
+                % Remove from model the non signif expl var
+                if posmaxPvalX==size(model.X,2) && iniloop==0
+                    if msg==1 || plots==1
+                        removed ='Removing level shift component';
+                    end
+                else
+                    if msg==1 || plots==1
+                        removed =['Removing expl. variable number ' num2str(posmaxPvalX)];
+                    end
+                end
+                model.X(:,posmaxPvalX)= [];
+            case 4
+                % elseif indmaxPvalall ==4
+                % Remove from model the high order term of non linear seasonality
+                if msg==1 || plots==1
+                    strseaso=num2str(model.seasonal);
+                    removed = ['Removing amplitude of order ' strseaso(1) ' of seas. comp.'];
+                end
+                model.seasonal= model.seasonal-100;
+            case 5
+                % elseif indmaxPvalall ==5
+                % Remove from model the level shift component
+                model.lshift=0;
+                if msg==1 || plots==1
+                    removed ='Remove level shift component';
+                end
+            otherwise
+                %else
         end
         
         % keep the level shift component and transfer it to X part
