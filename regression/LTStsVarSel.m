@@ -116,6 +116,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %    thPval:    threshold for pvalues. Scalar. A value between 0 and 1.
 %               An estimated parameter/variable is eliminated if the
 %               associated pvalue is below thPval. Default is thPval=0.01.
+%                 Example - 'thPval',0.05
+%                 Data Types - double
 %
 %    plots:     Plots on the screen. Scalar.
 %               If plots = 1, the typical LTSts plots will be shown on the
@@ -199,9 +201,10 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %  Optional Output:
 %
-%         msgstr     : last warning message, produced by the LTS
+%         msgstr     : String containing the last warning message. 
+%                      This relates to the execution of the LTS. 
 %
-% See also LTSts.
+% See also LTSts
 %
 % References:
 %
@@ -211,8 +214,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %
 % Copyright 2008-2019.
-% Written by Marco Riani, Domenico Perrotta, Peter
-% Rousseeuw and Mia Hubert
+% Written by FSDA team
 %
 %
 %<a href="matlab: docsearchFS('LTStsVarSel')">Link to the help function</a>
@@ -223,9 +225,9 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %
 %{
-    % run LTStsVarSel with all default options
+    % run LTStsVarSel with all default options.
 
-    %generate data
+    % generate data
     n=100;
     model=struct;
     model.trend=1;                  %linear trend
@@ -251,9 +253,9 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %}
 
 %{
-    % run LTStsVarSel starting from a specific over-parametrized model
+    % run LTStsVarSel starting from a specific over-parametrized model.
 
-    % complete model to be tested
+    % complete model to be tested.
     overmodel=struct;
     overmodel.trend=3;              % quadratic trend
     overmodel.s=12;                 % monthly time series
@@ -269,15 +271,21 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %}
 
 %{
-    % run LTStsVarSel starting from over-parametrized model including
-    % autoregressive components
+    % run LTStsVarSel starting from over-parametrized model with autoregressive components.
 
-    % add three autoregressive components to the complete model to be tested
-    overmodel.ARp=3;
-
+    % add three autoregressive components to the complete model.
+     
+     overmodel.ARp=3;
     [out_reduced_2, out_model_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
 
 %}
+
+%{
+    % run LTStsVarSel with default pptions and return warning messages.
+     
+    [out_reduced_3, out_model_3, messages] = LTStsVarSel(out_sim.y);
+%}
+
 
 %% Input parameters checking
 
@@ -452,7 +460,7 @@ while AllPvalSig == 0
     if maxPvalall>thPval
         % Remove from model the last term of the trend component
         if indmaxPvalall ==1
-            if msg==1
+            if msg==1 || plots==1
                 removed =['Removing trend of order ' num2str(model.trend)];
             end
             model.trend=model.trend-1;
@@ -460,7 +468,7 @@ while AllPvalSig == 0
             % Remove from model the last term of the seaonal component that is
             % remove last harmonic
         elseif indmaxPvalall ==2
-            if msg==1
+            if msg==1 || plots==1
                 tmp = num2str(model.seasonal);
                 tmp = tmp(end);
                 removed =['Removing harmonic number ' tmp];
@@ -468,14 +476,14 @@ while AllPvalSig == 0
             model.seasonal= model.seasonal-1;
             
             
-            % Remove from model the non signif expl var
+        % Remove from model the non signif expl var
         elseif indmaxPvalall ==3
             if posmaxPvalX==size(model.X,2) && iniloop==0
-                if msg==1
+                if msg==1 || plots==1
                     removed ='Removing level shift component';
                 end
             else
-                if msg==1
+                if msg==1 || plots==1
                     removed =['Removing expl. variable number ' num2str(posmaxPvalX)];
                 end
             end
@@ -483,17 +491,16 @@ while AllPvalSig == 0
             
             % Remove from model the high order term of non linear seasonality
         elseif indmaxPvalall ==4
-            if msg==1
+            if msg==1 || plots==1
                 strseaso=num2str(model.seasonal);
                 removed = ['Removing amplitude of order ' strseaso(1) ' of seas. comp.'];
             end
             model.seasonal= model.seasonal-100;
             
-            
             % Remove from model the level shift component
         elseif indmaxPvalall ==5
             model.lshift=0;
-            if msg==1
+            if msg==1 || plots==1
                 removed ='Remove level shift component';
             end
         else
@@ -518,11 +525,16 @@ while AllPvalSig == 0
         
         if plots==1
             a=gcf;
-            title(a.Children(end),{['trend =' num2str(model.trend) ', seas = ' num2str(model.seasonal) ' every ' num2str(model.s) ' months', ', LS = ' num2str(lshift_present), ', X = ' num2str(size(model.X,2)-1) ],num2str(removed)});
-            %             if lshift_present>0
-            %                 hold on;
-            %                 line([lshift_present lshift_present],[min(out_LTSts.y),max(out_LTSts.y)],'Color','black','LineStyle','--','Linewidth',3);
-            %             end
+            title(a.Children(end),{['trend = ' num2str(model.trend) ...
+                ', seas = ' num2str(model.seasonal) ...
+                ' every ' num2str(model.s) ...
+                ' months', ', LS = ' num2str(lshift_present), ...
+                ', X = ' num2str(size(model.X,2)-1) ],num2str(removed)});
+            if lshift_present>0
+                hold on;
+                line([lshift_present lshift_present],[min(out_LTSts.y),max(out_LTSts.y)],...
+                    'Color','black','LineStyle','--','Linewidth',1);
+            end
         end
     else
         % All the variables are significant, variable selection procedure
@@ -531,7 +543,7 @@ while AllPvalSig == 0
     end
     
 end
-% if lshift_present > 0 & ~isempty(model.X)
+% if lshift_present > 0 && ~isempty(model.X)
 %     tmp = find(model.X(:,end)>0);
 %     model.lshift=tmp(1);
 %     model.X(:,end) = [];
@@ -541,11 +553,12 @@ end
 reduced_est   = out_LTSts;
 reduced_model = model;
 
-%if msg==1
-disp('The final select model has these parameters:')
-disp(reduced_model);
-%end
+if msg==1
+    disp('The final select model has these parameters:')
+    disp(reduced_model);
+end
 
 [msgstr, ~] = lastwarn;
 
 end
+%FScategory:REG-Regression
