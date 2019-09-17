@@ -1,24 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Sn</title> <meta content="refpage" name="chunktype"><meta content="function:Sn " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Sn Robust estimator of scale (robust version of Gini's average difference)" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 10);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/Sn.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/Sn.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: Sn</em></p><h1 itemprop="title">Sn</h1><h1 class="reftitle">Sn Robust estimator of scale (robust version of Gini's average difference)</h1><h2>Description</h2><P></P><h2>More About</h2><P>
-   For vectors, Sn(X) is the scale estimator of the elements in X. For
-   matrices, Sn(X) is a row vector containing the scale estimator value of
-   each column.  For 3D arrays, Sn(X) is the robust scale estimator of the
-   elements along the first non-singleton dimension of X.
-
-   Sn(X,dim) takes the robust estimator along the dimension dim of X.
-
-   $Sn= cn \times c \times med_i { med_j |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$.
-   For each $i$ we compute the median of $|x_i-x_j|$, $j=1, 2, ..., n$.
-   This yields $n$ numbers, the median of which gives the final estimate of
-   $S_n$. This estimator is the robust version of Gini's average difference,
-   which one would obtain when replacing medians by averages
-   More in detail $Sn = cn \times c \times lomed_i { highmed_j
-   |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$, where $lomed$ (low
-   median) is $[(n+1)/2]$-th order statistic out of $n$ numbers) and
-   $himed$ (high median) is the $([n/2]+1)$-th order statistic out of the
-   $n$ numbers. $c$ is the so called asymptotic consistency factor and is
-   equal to 1.1926 while $cn$ is a finite sample correction factor to make
-   the estimator unbiased.
- 
-</P><h2>References</h2><P>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute
- deviation, "Journal of American Statistical Association", Vol. 88, pp.
- 1273-1283</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>Sn</title> <meta content="refpage" name="chunktype"><meta content="function:Sn " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Sn Robust estimator of scale (robust version of Gini's average difference)" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
+//--></script></head> <a href="matlab:web([docrootFS '/FSDA/Sn.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/Sn.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: Sn</em></p><h1 itemprop="title">Sn</h1><h1 class="reftitle">Sn Robust estimator of scale (robust version of Gini's average difference)</h1><h2>Description</h2><P></P><h2>More About</h2><P>   For vectors, Sn(X) is the scale estimator of the elements in X. For   matrices, Sn(X) is a row vector containing the scale estimator value of   each column.  For 3D arrays, Sn(X) is the robust scale estimator of the   elements along the first non-singleton dimension of X.   Sn(X,dim) takes the robust estimator along the dimension dim of X.   $Sn= cn \times c \times med_i { med_j |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$.   For each $i$ we compute the median of $|x_i-x_j|$, $j=1, 2, ..., n$.   This yields $n$ numbers, the median of which gives the final estimate of   $S_n$. This estimator is the robust version of Gini's average difference,   which one would obtain when replacing medians by averages   More in detail $Sn = cn \times c \times lomed_i { highmed_j   |x_i-x_j|}$, $i=1,2, ...n$, $j=1, 2, ..., n$, where $lomed$ (low   median) is $[(n+1)/2]$-th order statistic out of $n$ numbers) and   $himed$ (high median) is the $([n/2]+1)$-th order statistic out of the   $n$ numbers. $c$ is the so called asymptotic consistency factor and is   equal to 1.1926 while $cn$ is a finite sample correction factor to make   the estimator unbiased. </P><h2>References</h2><P>Rousseeuw P.J. and Croux C., (1993), Alternatives to the median absolute deviation, "Journal of American Statistical Association", Vol. 88, pp. 1273-1283</P></html>

@@ -1,56 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FSMinvmmd</title> <meta content="refpage" name="chunktype"><meta content="function:FSMinvmmd " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSMinvmmd Converts values of minimum Mahalanobis distance into confidence levels" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 10);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/FSMinvmmd.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FSMinvmmd.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FSMinvmmd</em></p><h1 itemprop="title">FSMinvmmd</h1><h1 class="reftitle">FSMinvmmd Converts values of minimum Mahalanobis distance into confidence levels</h1><h2>Description</h2><P></P><h2>More About</h2><P>
-Let $d^2_i(m )$ and  $d_{\mbox{min}}(m)$ be respectively the deletion
-distance for unit $i$ based
- on a subset of size $m$ and $d_{\mbox{min}}(m)$ the min. Mahalanobis
- distance in the forward search at step m. Testing for outliers requires a
- reference distribution for $d^2_i(m )$ in and hence for
- $d_{\mbox{min}}(m)$ in (\ref{min}). When $\Sigma$ is estimated from all
- $n$ observations, the squared statistics  have an $F$ distribution.
- However, the estimate $\hat{\Sigma}(m)$ in the search uses the central
- $m$ out of $n$ observations, so that the variability is underestimated.
- The consistency factor $c(m,n)$ given below
- \[
-  c(m,n)=\frac{n}{m} C_{v+2} \{C_{v}^{-1} (m/n) \}
- \]
- where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of
- freedom, allows for estimation from this truncated distribution,  providing an
-  approximately unbiased estimate of $\Sigma$.
- 
- We can treat the distribution of the rescaled deletion Mahalanobis distance
- $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$
- degrees of freedom, whose distribution is (Atkinson Riani and Cerioli,
- 2004; pp. 43-44)
- \begin{equation}\label{F}
-   \frac{m^2-1}{m(m-v)} F_{v,m-v},
- \end{equation}
- 
- The distribution of the rescaled min Mahalanobis distance
-  $c(m,n) d_{\mbox{min}}^2(m)$
- of a subset of size $m$ constructed in such a way that
-  the centroid and covariance matrix of the subset are taken using the
-  units having the $m$ smallest Mahalanobis distances can be treated as
-  the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).
- 
- The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that
- \begin{equation}
- \label{orderstat}
-  P\{Y_{(m+1)} \le y \}  =  P \left\{ F_{2(n-m),2(m+1)} &gt;  \frac{1-G(y)}{G(y)} \times
-  \frac{m+1}{n-m} \right\}
-  \end{equation}
- Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as
- 
- \begin{eqnarray*}
-   &&  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\
-    && 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right)
- \end{eqnarray*}
- where $F_{a,b}(y)$ is the CDF of the $F$ distribution with $a$ and $b$ degrees of freedom evaluated in $y$.
- The value of the min. Mahalanobis distance transformed in normal coordinates computed by this routine is
- nothing but
- \[
- \Phi^{-1} \left(  P\left\{ d_{\mbox{min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \right\}    \right)
- \]
- where $\Phi^{-1}$ is the inverse of the CDF of the standard normal distribution.
-
-</P><h2>References</h2><P>Atkinson, A.C. and Riani, M. (2006), Distribution theory and
- simulations for tests of outliers in regression, "Journal of
- Computational and Graphical Statistics", Vol. 15, pp. 460-476.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>FSMinvmmd</title> <meta content="refpage" name="chunktype"><meta content="function:FSMinvmmd " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSMinvmmd Converts values of minimum Mahalanobis distance into confidence levels" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
+//--></script></head> <a href="matlab:web([docrootFS '/FSDA/FSMinvmmd.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/FSMinvmmd.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: FSMinvmmd</em></p><h1 itemprop="title">FSMinvmmd</h1><h1 class="reftitle">FSMinvmmd Converts values of minimum Mahalanobis distance into confidence levels</h1><h2>Description</h2><P></P><h2>More About</h2><P>Let $d^2_i(m )$ and  $d_{\mbox{min}}(m)$ be respectively the deletiondistance for unit $i$ based on a subset of size $m$ and $d_{\mbox{min}}(m)$ the min. Mahalanobis distance in the forward search at step m. Testing for outliers requires a reference distribution for $d^2_i(m )$ in and hence for $d_{\mbox{min}}(m)$ in (\ref{min}). When $\Sigma$ is estimated from all $n$ observations, the squared statistics  have an $F$ distribution. However, the estimate $\hat{\Sigma}(m)$ in the search uses the central $m$ out of $n$ observations, so that the variability is underestimated. The consistency factor $c(m,n)$ given below \[  c(m,n)=\frac{n}{m} C_{v+2} \{C_{v}^{-1} (m/n) \} \] where $C_r$ is the c.d.f. of the $\chi^2$ distribution on $r$ degrees of freedom, allows for estimation from this truncated distribution,  providing an  approximately unbiased estimate of $\Sigma$.  We can treat the distribution of the rescaled deletion Mahalanobis distance $c(m,n)d_{\mbox{min}}^2(m)$ as a squared deletion distance on $m-1$ degrees of freedom, whose distribution is (Atkinson Riani and Cerioli, 2004; pp. 43-44) \begin{equation}\label{F}   \frac{m^2-1}{m(m-v)} F_{v,m-v}, \end{equation}  The distribution of the rescaled min Mahalanobis distance  $c(m,n) d_{\mbox{min}}^2(m)$ of a subset of size $m$ constructed in such a way that  the centroid and covariance matrix of the subset are taken using the  units having the $m$ smallest Mahalanobis distances can be treated as  the distribution of the $(m+1)$th order statistic from ($F_{v,m-v}$).  The results of order statistics $Y_{(1)}$, $Y_{(2)}$, $\cdots$,  $Y_{(n)}$ from a sample of size $n$ from a distribution with CDF $G(y)$, state that \begin{equation} \label{orderstat}  P\{Y_{(m+1)} \le y \}  =  P \left\{ F_{2(n-m),2(m+1)} &gt;  \frac{1-G(y)}{G(y)} \times  \frac{m+1}{n-m} \right\}  \end{equation} Given that in our case $G(y)$ is the CDF of the  $F_{v,m-v}$ we can rewrite this equation  as  \begin{eqnarray*}   &&  P\{d_{\mbox{ min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \} = \\    && 1-  F_{2(n-m),2(m+1)} \left( \left( \frac{1}{  F_{v,m-v} \left( \frac{m(m-v)}{m^2-1 } c(m,n) d_{\mbox{min}}^2(m) \right)  }-1 \right) \frac{m+1}{n-m} \right) \end{eqnarray*} where $F_{a,b}(y)$ is the CDF of the $F$ distribution with $a$ and $b$ degrees of freedom evaluated in $y$. The value of the min. Mahalanobis distance transformed in normal coordinates computed by this routine is nothing but \[ \Phi^{-1} \left(  P\left\{ d_{\mbox{min}}^2(m)  \leq \widehat{ d_{\mbox{min}}^2(m)} \right\}    \right) \] where $\Phi^{-1}$ is the inverse of the CDF of the standard normal distribution.</P><h2>References</h2><P>Atkinson, A.C. and Riani, M. (2006), Distribution theory and simulations for tests of outliers in regression, "Journal of Computational and Graphical Statistics", Vol. 15, pp. 460-476.</P></html>

@@ -1,33 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>overlapmap</title> <meta content="refpage" name="chunktype"><meta content="function:overlapmap " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="overlapmap Produce an interactive overlap map" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 10);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/overlapmap.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/overlapmap.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: overlapmap</em></p><h1 itemprop="title">overlapmap</h1><h1 class="reftitle">overlapmap Produce an interactive overlap map</h1><h2>Description</h2><P>The function overlapmap plots the ordered pairwise overlap values between
- components. These components are ordered according to a specific rule:
- first the closest pair is plotted in the lowest left corner, then the
- components closer to the ones already included are plotted (when all of
- them have a zero overlap value with the ones already included, the
- closest pair between all the remaining ones is inserted). The overlap map
- can either shows with different colors the closeness between components
- (i.e. in a descriptive manner), or it becomes an interactive plot with a
- left click on the color bar, which find and visualize the closest
- components according to a specific threshold value $ \omega^* $ (i.e.
- omegaStar), which specifies the minimum paiwise overlap threshold value
- used to merge the components. The interactive process ends with a right
- click on the white grid in the upper left corner of the plot, it also
- updates the results creating in the workspace a new variable
- 'userOverlap'. See the More About section for further informations.</P><h2>More About</h2><P>      
- In the code 'overM' represents a triangular matrix, denoted as $ \Omega $,
- which contains the pairwise overlap values. The merging phase starts
- searching the maximum pairwise overlap value in $ \Omega $, i.e. $ \max
- (\Omega_{k k'}) $, and then deletes this value (e.g. setting it to NaN).
- This new matrix obtained is denoted as $ \Omega' $. The respective rows and
- columns corresponding to the element deleted in $ \Omega' $ are placed in
- a new matrix $ \Omega'' $. The algorithm progressively continue the same
- process, searching the highest pairwise overlap value in the components
- closest to the ones previously found, i.e. in the respective rows or
- columns of the components $ k $ and $ k' $. When the latter are all
- zeros, the process starts again considering the remaining values in 
- $ \Omega $.
- 
- The values $ \max(\Omega'_{k k'}) $ and the respective $ k $ and $ k' $
- labels are sequentially saved in a $ k(k-1)/2 \times 3 $ matrix MergMat.
- 
-</P><h2>References</h2><P>Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging
-   K-means solutions". Submitted.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>overlapmap</title> <meta content="refpage" name="chunktype"><meta content="function:overlapmap " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="overlapmap Produce an interactive overlap map" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
+//--></script></head> <a href="matlab:web([docrootFS '/FSDA/overlapmap.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/overlapmap.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: overlapmap</em></p><h1 itemprop="title">overlapmap</h1><h1 class="reftitle">overlapmap Produce an interactive overlap map</h1><h2>Description</h2><P>The function overlapmap plots the ordered pairwise overlap values between components. These components are ordered according to a specific rule: first the closest pair is plotted in the lowest left corner, then the components closer to the ones already included are plotted (when all of them have a zero overlap value with the ones already included, the closest pair between all the remaining ones is inserted). The overlap map can either shows with different colors the closeness between components (i.e. in a descriptive manner), or it becomes an interactive plot with a left click on the color bar, which find and visualize the closest components according to a specific threshold value $ \omega^* $ (i.e. omegaStar), which specifies the minimum paiwise overlap threshold value used to merge the components. The interactive process ends with a right click on the white grid in the upper left corner of the plot, it also updates the results creating in the workspace a new variable 'userOverlap'. See the More About section for further informations.</P><h2>More About</h2><P>       In the code 'overM' represents a triangular matrix, denoted as $ \Omega $, which contains the pairwise overlap values. The merging phase starts searching the maximum pairwise overlap value in $ \Omega $, i.e. $ \max (\Omega_{k k'}) $, and then deletes this value (e.g. setting it to NaN). This new matrix obtained is denoted as $ \Omega' $. The respective rows and columns corresponding to the element deleted in $ \Omega' $ are placed in a new matrix $ \Omega'' $. The algorithm progressively continue the same process, searching the highest pairwise overlap value in the components closest to the ones previously found, i.e. in the respective rows or columns of the components $ k $ and $ k' $. When the latter are all zeros, the process starts again considering the remaining values in  $ \Omega $.  The values $ \max(\Omega'_{k k'}) $ and the respective $ k $ and $ k' $ labels are sequentially saved in a $ k(k-1)/2 \times 3 $ matrix MergMat. </P><h2>References</h2><P>Melnykov, V., Michael, S. (2017), "Clustering large datasets by merging   K-means solutions". Submitted.</P></html>

@@ -1,22 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTpsix</title> <meta content="refpage" name="chunktype"><meta content="function:OPTpsix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTpsix Computes psi function (derivative of rho function) times x" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 10);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/OPTpsix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTpsix.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTpsix</em></p><h1 itemprop="title">OPTpsix</h1><h1 class="reftitle">OPTpsix Computes psi function (derivative of rho function) times x</h1><h2>Description</h2><P></P><h2>More About</h2><P>
-
- Function OPTpsix transforms vector u as follows
-
- 
- \[
-   OPTpsix(u,c) = \left\{
- \begin{array}{cc}                                                                              
-                 \frac{1}{3.25*c^2} u^2                           &                         |u| \leq 2c   \\         
-                
-    (1/3.25) * (-1.944 * \frac{u^2}{c^2} + 1.728 \frac{u^4}{c^4} - 0.312 \frac{x^6}{c^6} + 0.016 \frac{x^8}{c^8}  &   \qquad 2c \leq |u| \leq 3c \\
-                
-                  0                                                                         &                      |u|&gt;3c \\    
- \end{array}
-    \right.
-  \]
-
- Remark: function $\psi(x) *x$ has been precalculated because it is used to find
- the weights in case of Tau estimators
-
-</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
- and Methods", Wiley, New York.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTpsix</title> <meta content="refpage" name="chunktype"><meta content="function:OPTpsix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTpsix Computes psi function (derivative of rho function) times x" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
+//--></script></head> <a href="matlab:web([docrootFS '/FSDA/OPTpsix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTpsix.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTpsix</em></p><h1 itemprop="title">OPTpsix</h1><h1 class="reftitle">OPTpsix Computes psi function (derivative of rho function) times x</h1><h2>Description</h2><P></P><h2>More About</h2><P> Function OPTpsix transforms vector u as follows  \[   OPTpsix(u,c) = \left\{ \begin{array}{cc}                                                                                               \frac{1}{3.25*c^2} u^2                           &                         |u| \leq 2c   \\                             (1/3.25) * (-1.944 * \frac{u^2}{c^2} + 1.728 \frac{u^4}{c^4} - 0.312 \frac{x^6}{c^6} + 0.016 \frac{x^8}{c^8}  &   \qquad 2c \leq |u| \leq 3c \\                                  0                                                                         &                      |u|&gt;3c \\     \end{array}    \right.  \] Remark: function $\psi(x) *x$ has been precalculated because it is used to find the weights in case of Tau estimators</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory and Methods", Wiley, New York.</P></html>

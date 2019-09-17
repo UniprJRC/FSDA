@@ -1,397 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>mreadFS</title> <meta content="refpage" name="chunktype"><meta content="function:mreadFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mreadFS Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 10);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/mreadFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/mreadFS.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: mreadFS</em></p><h1 itemprop="title">mreadFS</h1><h1 class="reftitle">mreadFS Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files</h1><h2>Description</h2><P>mreadFS creates a structure from .m fucntion file. To understand the
-   characteristics the .m file must have, please see the "More About" section</P><h2>More About</h2><P>
-         The .m file (which must be located on the MATLAB path or on the currect
-         folder) must satisfy the following characteristics to be correctly
-         processed.
-
-         [1] The row below the row which starts with 'function ....' must contain the
-         description of the purpose of the .m file.
-         Remark: generally the row which starts with 'function ....' is the first
-         row of an .m file.
-         [2] String 'Required input arguments:' must be present. The lines below
-         this string must contain the description of the compulsory input
-         arguments. Each argument must have the name (a series of spaces from 0
-         to 10) symbol ':' and then the description. The format of the description
-         is as follows:
-         The first sentence after symbol ':' is the title of the input argument
-         and in the HTML file it will appear in bold face in the same line of the
-         input argument (this is the short description of the required input
-         argument).
-         The second sentence after symbol ':' describes the objects
-         (for example, scalar, vector, 3D array) and in the HTML file will appear
-         in the second row.
-         These first two rows will always be visible.
-         What starts with the third sentence after symbol ':' is the detailed
-         description of that particular input argument and in the HTML file it
-         will be visible just if the user clicks on any point in the first two
-         lines or the user clicks on the option expand all.
-         The last line may start with the words "Data Types:" and contains the
-         specification of a particular input argument (e.g. Data Types: single |
-         double). For example, suppose that the .m routine which has to be
-         processed has two required input arguments which are respectively called
-         y and X, then the accepted format is as follows.
-
-                       Required input arguments:
-
-                        y:         Response variable. Vector. Response variable,
-                                   specified as a vector of length n, where n is
-                                   the number of observations. Each entry in y is
-                                   the response for the corresponding row of X.
-                                   Data Types: single | double.
-                      X :          Predictor variables. Matrix of explanatory
-                                   variables (also called 'regressors') of
-                                   dimension n x (p-1) where p denotes the number
-                                   of explanatory variables including the
-                                   intercept. Rows of X represent observations,
-                                   and columns represent variables. By default,
-                                   there is a constant term in the model, unless
-                                   you explicitly remove it using input option
-                                   intercept, so do not include a column of 1s in
-                                   X.
-                                   Data Types: single | double.
-
-         IMPORTANT NOTICE: if an input argument is a structure (publishFS
-         automatically checks if the input argument contains the word "structure"
-         then the fields of the structure will be automatically included into a
-         HTML table). In this case the fields of the structure are identified as
-         the lines which contain "a series of spaces" "a_word" "a series
-         of spaces followed by symbol '='". For example suppose the an input
-         option is called bayes and object bayes is a structure with field names
-         beta0, R, tau0 and n0, the accepted format is as follows.
-
-            bayes      : prior information. Structure.
-                               It contains the following fields.
-                   out.beta0=  p-times-1 vector containing prior mean of \beta.
-                   out.R    =  p-times-p positive definite matrix which can be
-                               interpreted as X0'X0 where X0 is a n0 x p matrix
-                               coming from previous experiments (assuming that the
-                               intercept is included in the model.
-                     out.tau0 = scalar. Prior estimate of tau.
-                     out.n0   = scalar. Sometimes it helps to think of the prior
-                              information as coming from n0 previous experiments.
-
-
-
-         [3] If the input .m file between the row which starts with
-          &lt;a href="matlab: docsearchFS(.....
-          and the row with the string
-          "Required input arguments:"
-          contains a series of sentences, they will be automatically included in
-          the HTML output just below the description.
-
-          An example is given below:
-                 'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);
-                 tclust computes trimmed clustering with restricitons on
-                 the eigenvalues.
-
-                 &lt;a href="matlab: docsearchFS('tclust')"&gt;Link to the help function&lt;/a&gt;;
-
-                   tclust partitions the points in the n-by-v data matrix Y into k
-                   clusters.  This partition minimizes the trimmed sum, over all
-                   clusters, of the within-cluster sums of
-                   point-to-cluster-centroid distances....
-
-                  Required input arguments:'.
-
-         [4] String 'Optional input arguments:' must be present even if there are
-         no optional arguments.
-         publishFS, in order to understand what are the names of the optional
-         input arguments scans the rows below the string "Optional input
-         arguments:" and identifies the lines which contain the optional arguments
-         as those which contain "a series of spaces" "a_word" "a series of spaces
-         followed by symbol ':'".
-         The first sentence after symbol ':' is the title of the optional input
-         argument and in the HTML file it will appear in the same row of the name
-         of the optional input argument (this is the short description of the
-         optional input argument).
-         The second sentence after symbol ':' describes the objects (for example,
-         scalar, vector, 3D array) and in the HTML file will appear in the second
-         row. These first two rows will always be visible.
-         What starts with the third sentence after symbol ':' is the detailed
-         description of that particular optional input argument and in the HTML
-         file it will be visible just if the user clicks on any point in the first
-         two lines or the user clicks on the option expand all.
-         The last two lines of each optional input argument MUST start with the
-         words 'Example -' and 'Data Types -' followed by a string without spaces
-         which specifies a possible use of the option and the type of data. For
-         example, suppose that the first two optional arguments are called
-         respecively 'intercept' and 'h', then the
-         accepted format is as follows:
-
-
-                       Optional input arguments:
-
-                       intercept :  Indicator for constant term. Scalar.
-                                   If 1, a model with constant term will be fitted
-                                   (default),
-                                   else no constant term will be included.
-                                   Example - 'intercept',1.
-                                   Data Types - double.
-                               h : The number of observations that have determined the least
-                                     trimmed squares estimator. Scalar.
-                                     Example - 'h',round(n*0,75).
-                                     Data Types - double.
-
-
-
-
-          IMPORTANT NOTICE: given that options are identified as those which have
-          symbol "%" followed by "a series of spaces" then "a word" then "a series
-          of spaces" then symbol ":", each line inside the description does not
-          have to start as follows "%   ANYWORD   :" because the parser will
-          wrongly identify "ANYWORD" as an additional optional input argument. The
-          only once exception to this rule is the word "%  REMARK :". However, if
-          there is a remark, it must be put at the very end of the description of
-          the optional input argument. At the very end means after the rows
-           Example and Data Types.
-
-         [5] String 'Output:' must be present.
-         The lines after string 'Output:'
-         must contain the list of the output arguments using the same rules
-         described above for the optional arguments. In this case, however, the
-         identification of the ouptut arguments is easier because they are
-         extracted directly from the first line of the file (e.g. if the first
-         line is as follows
-         function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
-         output arguments are immediately known to the parser).
-         In the case of output argument publishFS checks if the first 50
-         characters contain the words "which contains" or "containing" e.g.:
-
-                      mdr:         n -init x 2
-                                   matrix containing the
-                                   monitoring of minimum deletion residual.
-                                   1st col = fwd search
-                                   ........
-                        Un:        (n-init) x 11 Matrix
-                                   which contains the unit(s) included in the
-                                   subset at each step of the search.
-                                   ...........
-
-         In this case what is after the strings "which contains" or "containing"
-         will appear in bold face as the title of the output argument. What is
-         before the strings "which contains" or "containing" will appear in the
-         second row.
-
-         For example, the above lines will be processed as follows:
-
-              mdr   -  Monitoring of minimum deletion residual;
-              n -init x 2 matrix.
-
-              Un    - unit(s) included in the subset at each step of the search.
-              (n-init) x 11 Matrix which contains the unit(s) included in the
-              subset at each step of the search.
-
-         If in the HTML file the user clicks on them the expdanded description
-         (that is what starts after the second full stop will appear).
-
-         Alternatively, if the first 50 characters of each output argument do not
-         contain the strings "which contains" or "containing" the following
-         convention is used. The first sentence after symbol ":" is assumed
-         to be the title of the output argument and in the HTML file it will
-         appear in bold face in the same line of the name of output
-         argument. The second sentence (words between first and second full stop)
-         will appear in the second row. The third sentence is the full description
-         of the output argument. For example, suppose that the output of a
-         procedure contains the objects mdr and Un, the accepted format
-         is as follows.
-               Output:
-
-                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
-                                   matrix which contains the
-                                   monitoring of minimum deletion residual.
-                                   1st col = ...
-                      Un:          Units included. Matrix. (n-init) x 11 Matrix
-                                   which contains the unit(s) included in the
-                                   subset at each step of the search.
-                                   REMARK: in every step ....
-
-         The above lines will be processed as follows:
-
-              mdr   -  Minimum deletion residual. Matrix.
-                       n -init x 2 matrix which contains the
-                       monitoring of minimum deletion residual.
-                       1st col = ...
-
-              Un    - Units included. Matrix.
-                       (n-init) x 11 Matrix which contains the unit(s)
-                       included in the subset at each step of the search.
-                       REMARK: in every step ....
-
-         If in the HTML file the user clicks on them the expdanded description
-         (that is what starts after the second full stop will appear).
-
-         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
-         an output argument is a structure, publishFS automatically checks if it
-         contains the words "structure" and "field". In this case, the fields of
-         the structure will be automatically included into a HTML table. The
-         fields of the structure are identified as the lines which contain "a
-         series of spaces" "name_of_output_structure.a_word" "a series of spaces
-         followed by symbol '='". For example suppose that the output of a
-         procedure is an object called out which is a structure with two fields
-         out.rew and out.beta, an accepted format is as follows:
-
-                                    Output:
-
-                                  out :     A structure containing the following fields:
-                                            out.rew  = Scalar if out.rew=1 all
-                                                       subsequent output refers to
-                                                       reweighted else no
-                                                       reweighting is done.
-                                            out.beta = Vector of beta LTS (LMS)
-                                                       coefficient estimates,
-                                                       including the intercept
-                                                       when options.intercept=1.
-                                                       out.beta=[intercept
-                                                       slopes].
-
-
-         PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
-         "=" SIGN AND NOT THE ":" SIGN.
-
-         REMARK: If there is the string REMARK after the description of the last
-         field of the structure, all the words after REMARK are put outside and
-         below the HTML table.
-
-         If the description of a particular output has the string "which contains"
-         or "containing",  as follows
-
-                      mdr:          n -init x 2 matrix which contains the
-                                   monitoring of minimum deletion residual at each
-                                   step of the forward search.
-                                   1st col = fwd search index (from init to n-1).
-                                   2nd col = minimum deletion residual.
-
-         publishFS will try to put what comes before the string "which
-         contains" or "containing" inside the subtitle (second row) of the each
-         ouptut argument in the HTML file. For example, the example above in the
-         HTML file will be processed as follows:
-                        mdr -Monitoring of minimum deletion residual at each step of the forward search.
-                        n -init -by- 2 matrix.
-         If, in the HTML file, the user clicks on the first line:
-                       "mdr -Monitoring...";
-         the expanded description will automatically appear.
-
-         [6] A line which starts with string "See also:" must be present.
-         Linked m files must be separated by symbol ",". For example, suppose that
-         files FSRBmdr.m and FSR.m have connections with the current file, then an
-         accepted format is         See also: FSRBmdr.m, FSR.m.
-
-         [7] A line which starts with string "References:" must be present.
-         The year of each reference must be enclosed in round parenthesis.
-         PublishFS decides that a new reference starts if a new line contains
-         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
-         because the reference can be for example 2003 or 2003a" + symbol ")"
-         For example, an acceptable format for the two references below is:
-
-
-                         Chaloner and Brant (1988). A Bayesian Approach to Outlier
-                         Detection and Residual Analysis, Biometrika, Vol 75
-                         pp. 651-659.
-                         Riani M., Corbellini A., Atkinson A.C. (2015), Very
-                         Robust Bayesian Regression for Fraud Detection,
-                         submitted.
-
-         [8] All the examples associated with the file which has to be processed
-         must be enclosed inside Percent-braces (comments blocks, i.e.
-         symbols "%{" and "%}" ).
-         The first sentence identifies the title of the comment which
-         will appear in the HTML file.
-         IMPORTANT NOTICE: if the comment has to be executed, the first line
-         associated with the title must start with two "%%" symbols instead of just
-         one "%" symbol. The examples in the first positions will appear in
-         the HTML file under the caption "Examples" while the latest will appear
-         under the caption "Related Examples". More precisely, if the output of a
-         procedure contains k outputs and some optional input arguments the first
-         k+1 comment blocks will appear in the HTML file under "Examples".
-         First comment block is associated with the call of the procedure with
-         just one output and all default input arguments.
-         Second comment block is associated with the call of the procedure with
-         just one output and with some optional input arguments.
-         Third comment block is associated with the call of the procedure with
-         two output arguments.
-         ...
-         k+1 comment block is associated with the call of the procedure with
-         k output arguments.
-         k+2 comment block is the first which in the HTML file will appear under
-         the heading "Related Examples".
-         For example, suppose that the first example of procedure FSRmdr has to be
-         executed and its output must be included into the HTML file, then the accepted
-         format is as follows ("please notice the two symbols "%%" in the
-         first row").
-
-
-                         "%{".
-                             "%% FSRmdr with all default options".
-                             "% Compute minimum deletion residual".
-                             "% Monitor minimum deletion residual in each step of the forward search".
-                             "% Common part to all examples: load fishery dataset".
-                              load('fishery');
-                              y=fishery.data(:,2);
-                              X=fishery.data(:,1);
-                              "% Find starting subset"
-                              [out]=LXS(y,X,'nsamp',10000);
-                              [mdr] = FSRmdr(y,X,out.bs);
-                              plot(mdr(:,1),mdr(:,2))
-                              title('Monitoring of minimum deletion residual')
-                         "%}".
-
-                         "%{".
-                             "% FSRmdr with optional arguments".
-                             "% Choose step to start monitoring".
-                             "% Compute minimum deletion residual and
-                              start monitoring it from step 60".
-                             [mdr] = FSRmdr(y,X,out.bs,'init',60).
-                         "%}".
-
-          In order to understand where the example finish and the MATLAB code
-          starts publishFS checks if one of the following strings
-         is present
-         "Input parameters checking",
-         "Beginning of code",
-         "nargin".
-         If this is the case the search of "comments blocks signs"
-         (i.e. symbols  "%{" and "%}") is limited to the first character prior
-         to the detection of one of the previous strings. This
-         modification has been added in order to make sure that there are
-         no additional block signs within matlab code.
-
-         [9] If a procedure contains varargout, then the string:
-                       "Optional Output:"
-         must be present. For example suppose there is a function called mcd which
-         has the following sintax:
-
-                         function [RAW,REW,varargout] = mcd(Y,varargin).
-
-         Then at the end of the output argument the format must be as follows:
-
-                               Optional Output:
-
-                                         C     : matrix of the indices of the
-                                                 subsamples extracted for
-                                                 computing the estimate.
-
-
---------------------------------------------------------------------------
-
-         GENERAL REMARKS:
-
-         -----------------------------------------------------------------------:.
-         REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
-         must be replaced by words "per cent". For example, string "50 envelope"
-         must become "50 per cent" envelope.
-         -----------------------------------------------------------------------:.
-         REMARK2: If there is just one output argument it can be without square
-         brackets. Among the input elements of a procedure the number of spaces
-         between them is not important. For example
-         "y,X,varargin" or "y, X   ,  varargin"   are both fine.
-         -----------------------------------------------------------------------:.
-         REMARK 4: publishFS uses MathJax javascript in order to interpret the
-         equations inside the .m file written in Latex style. For in line
-         equations both symbols dollar dollar  and backslash(  backslash) are accepted.
-         For single line equations symbols backslash[ backslash] must be used.
-         -----------------------------------------------------------------------:.
-         REMARK 5: if there are not enough examples in the .m file the procedure
-         still runs but a warning will be automatically produced.
-         -----------------------------------------------------------------------:.
-
-</P><h2>References</h2><P></P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>mreadFS</title> <meta content="refpage" name="chunktype"><meta content="function:mreadFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mreadFS Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
+//--></script></head> <a href="matlab:web([docrootFS '/FSDA/mreadFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/mreadFS.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: mreadFS</em></p><h1 itemprop="title">mreadFS</h1><h1 class="reftitle">mreadFS Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files</h1><h2>Description</h2><P>mreadFS creates a structure from .m fucntion file. To understand the   characteristics the .m file must have, please see the "More About" section</P><h2>More About</h2><P>         The .m file (which must be located on the MATLAB path or on the currect         folder) must satisfy the following characteristics to be correctly         processed.         [1] The row below the row which starts with 'function ....' must contain the         description of the purpose of the .m file.         Remark: generally the row which starts with 'function ....' is the first         row of an .m file.         [2] String 'Required input arguments:' must be present. The lines below         this string must contain the description of the compulsory input         arguments. Each argument must have the name (a series of spaces from 0         to 10) symbol ':' and then the description. The format of the description         is as follows:         The first sentence after symbol ':' is the title of the input argument         and in the HTML file it will appear in bold face in the same line of the         input argument (this is the short description of the required input         argument).         The second sentence after symbol ':' describes the objects         (for example, scalar, vector, 3D array) and in the HTML file will appear         in the second row.         These first two rows will always be visible.         What starts with the third sentence after symbol ':' is the detailed         description of that particular input argument and in the HTML file it         will be visible just if the user clicks on any point in the first two         lines or the user clicks on the option expand all.         The last line may start with the words "Data Types:" and contains the         specification of a particular input argument (e.g. Data Types: single |         double). For example, suppose that the .m routine which has to be         processed has two required input arguments which are respectively called         y and X, then the accepted format is as follows.                       Required input arguments:                        y:         Response variable. Vector. Response variable,                                   specified as a vector of length n, where n is                                   the number of observations. Each entry in y is                                   the response for the corresponding row of X.                                   Data Types: single | double.                      X :          Predictor variables. Matrix of explanatory                                   variables (also called 'regressors') of                                   dimension n x (p-1) where p denotes the number                                   of explanatory variables including the                                   intercept. Rows of X represent observations,                                   and columns represent variables. By default,                                   there is a constant term in the model, unless                                   you explicitly remove it using input option                                   intercept, so do not include a column of 1s in                                   X.                                   Data Types: single | double.         IMPORTANT NOTICE: if an input argument is a structure (publishFS         automatically checks if the input argument contains the word "structure"         then the fields of the structure will be automatically included into a         HTML table). In this case the fields of the structure are identified as         the lines which contain "a series of spaces" "a_word" "a series         of spaces followed by symbol '='". For example suppose the an input         option is called bayes and object bayes is a structure with field names         beta0, R, tau0 and n0, the accepted format is as follows.            bayes      : prior information. Structure.                               It contains the following fields.                   out.beta0=  p-times-1 vector containing prior mean of \beta.                   out.R    =  p-times-p positive definite matrix which can be                               interpreted as X0'X0 where X0 is a n0 x p matrix                               coming from previous experiments (assuming that the                               intercept is included in the model.                     out.tau0 = scalar. Prior estimate of tau.                     out.n0   = scalar. Sometimes it helps to think of the prior                              information as coming from n0 previous experiments.         [3] If the input .m file between the row which starts with          &lt;a href="matlab: docsearchFS(.....          and the row with the string          "Required input arguments:"          contains a series of sentences, they will be automatically included in          the HTML output just below the description.          An example is given below:                 'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);                 tclust computes trimmed clustering with restricitons on                 the eigenvalues.                 &lt;a href="matlab: docsearchFS('tclust')"&gt;Link to the help function&lt;/a&gt;;                   tclust partitions the points in the n-by-v data matrix Y into k                   clusters.  This partition minimizes the trimmed sum, over all                   clusters, of the within-cluster sums of                   point-to-cluster-centroid distances....                  Required input arguments:'.         [4] String 'Optional input arguments:' must be present even if there are         no optional arguments.         publishFS, in order to understand what are the names of the optional         input arguments scans the rows below the string "Optional input         arguments:" and identifies the lines which contain the optional arguments         as those which contain "a series of spaces" "a_word" "a series of spaces         followed by symbol ':'".         The first sentence after symbol ':' is the title of the optional input         argument and in the HTML file it will appear in the same row of the name         of the optional input argument (this is the short description of the         optional input argument).         The second sentence after symbol ':' describes the objects (for example,         scalar, vector, 3D array) and in the HTML file will appear in the second         row. These first two rows will always be visible.         What starts with the third sentence after symbol ':' is the detailed         description of that particular optional input argument and in the HTML         file it will be visible just if the user clicks on any point in the first         two lines or the user clicks on the option expand all.         The last two lines of each optional input argument MUST start with the         words 'Example -' and 'Data Types -' followed by a string without spaces         which specifies a possible use of the option and the type of data. For         example, suppose that the first two optional arguments are called         respecively 'intercept' and 'h', then the         accepted format is as follows:                       Optional input arguments:                       intercept :  Indicator for constant term. Scalar.                                   If 1, a model with constant term will be fitted                                   (default),                                   else no constant term will be included.                                   Example - 'intercept',1.                                   Data Types - double.                               h : The number of observations that have determined the least                                     trimmed squares estimator. Scalar.                                     Example - 'h',round(n*0,75).                                     Data Types - double.          IMPORTANT NOTICE: given that options are identified as those which have          symbol "%" followed by "a series of spaces" then "a word" then "a series          of spaces" then symbol ":", each line inside the description does not          have to start as follows "%   ANYWORD   :" because the parser will          wrongly identify "ANYWORD" as an additional optional input argument. The          only once exception to this rule is the word "%  REMARK :". However, if          there is a remark, it must be put at the very end of the description of          the optional input argument. At the very end means after the rows           Example and Data Types.         [5] String 'Output:' must be present.         The lines after string 'Output:'         must contain the list of the output arguments using the same rules         described above for the optional arguments. In this case, however, the         identification of the ouptut arguments is easier because they are         extracted directly from the first line of the file (e.g. if the first         line is as follows         function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5         output arguments are immediately known to the parser).         In the case of output argument publishFS checks if the first 50         characters contain the words "which contains" or "containing" e.g.:                      mdr:         n -init x 2                                   matrix containing the                                   monitoring of minimum deletion residual.                                   1st col = fwd search                                   ........                        Un:        (n-init) x 11 Matrix                                   which contains the unit(s) included in the                                   subset at each step of the search.                                   ...........         In this case what is after the strings "which contains" or "containing"         will appear in bold face as the title of the output argument. What is         before the strings "which contains" or "containing" will appear in the         second row.         For example, the above lines will be processed as follows:              mdr   -  Monitoring of minimum deletion residual;              n -init x 2 matrix.              Un    - unit(s) included in the subset at each step of the search.              (n-init) x 11 Matrix which contains the unit(s) included in the              subset at each step of the search.         If in the HTML file the user clicks on them the expdanded description         (that is what starts after the second full stop will appear).         Alternatively, if the first 50 characters of each output argument do not         contain the strings "which contains" or "containing" the following         convention is used. The first sentence after symbol ":" is assumed         to be the title of the output argument and in the HTML file it will         appear in bold face in the same line of the name of output         argument. The second sentence (words between first and second full stop)         will appear in the second row. The third sentence is the full description         of the output argument. For example, suppose that the output of a         procedure contains the objects mdr and Un, the accepted format         is as follows.               Output:                      mdr:         Minimum deletion residual. Matrix.  n -init x 2                                   matrix which contains the                                   monitoring of minimum deletion residual.                                   1st col = ...                      Un:          Units included. Matrix. (n-init) x 11 Matrix                                   which contains the unit(s) included in the                                   subset at each step of the search.                                   REMARK: in every step ....         The above lines will be processed as follows:              mdr   -  Minimum deletion residual. Matrix.                       n -init x 2 matrix which contains the                       monitoring of minimum deletion residual.                       1st col = ...              Un    - Units included. Matrix.                       (n-init) x 11 Matrix which contains the unit(s)                       included in the subset at each step of the search.                       REMARK: in every step ....         If in the HTML file the user clicks on them the expdanded description         (that is what starts after the second full stop will appear).         IMPORTANT NOTICE: Similarly to what happend for each input argument, if         an output argument is a structure, publishFS automatically checks if it         contains the words "structure" and "field". In this case, the fields of         the structure will be automatically included into a HTML table. The         fields of the structure are identified as the lines which contain "a         series of spaces" "name_of_output_structure.a_word" "a series of spaces         followed by symbol '='". For example suppose that the output of a         procedure is an object called out which is a structure with two fields         out.rew and out.beta, an accepted format is as follows:                                    Output:                                  out :     A structure containing the following fields:                                            out.rew  = Scalar if out.rew=1 all                                                       subsequent output refers to                                                       reweighted else no                                                       reweighting is done.                                            out.beta = Vector of beta LTS (LMS)                                                       coefficient estimates,                                                       including the intercept                                                       when options.intercept=1.                                                       out.beta=[intercept                                                       slopes].         PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE         "=" SIGN AND NOT THE ":" SIGN.         REMARK: If there is the string REMARK after the description of the last         field of the structure, all the words after REMARK are put outside and         below the HTML table.         If the description of a particular output has the string "which contains"         or "containing",  as follows                      mdr:          n -init x 2 matrix which contains the                                   monitoring of minimum deletion residual at each                                   step of the forward search.                                   1st col = fwd search index (from init to n-1).                                   2nd col = minimum deletion residual.         publishFS will try to put what comes before the string "which         contains" or "containing" inside the subtitle (second row) of the each         ouptut argument in the HTML file. For example, the example above in the         HTML file will be processed as follows:                        mdr -Monitoring of minimum deletion residual at each step of the forward search.                        n -init -by- 2 matrix.         If, in the HTML file, the user clicks on the first line:                       "mdr -Monitoring...";         the expanded description will automatically appear.         [6] A line which starts with string "See also:" must be present.         Linked m files must be separated by symbol ",". For example, suppose that         files FSRBmdr.m and FSR.m have connections with the current file, then an         accepted format is         See also: FSRBmdr.m, FSR.m.         [7] A line which starts with string "References:" must be present.         The year of each reference must be enclosed in round parenthesis.         PublishFS decides that a new reference starts if a new line contains         symbol "(" + "a sequence of 4 or 5 characthers identifying the year         because the reference can be for example 2003 or 2003a" + symbol ")"         For example, an acceptable format for the two references below is:                         Chaloner and Brant (1988). A Bayesian Approach to Outlier                         Detection and Residual Analysis, Biometrika, Vol 75                         pp. 651-659.                         Riani M., Corbellini A., Atkinson A.C. (2015), Very                         Robust Bayesian Regression for Fraud Detection,                         submitted.         [8] All the examples associated with the file which has to be processed         must be enclosed inside Percent-braces (comments blocks, i.e.         symbols "%{" and "%}" ).         The first sentence identifies the title of the comment which         will appear in the HTML file.         IMPORTANT NOTICE: if the comment has to be executed, the first line         associated with the title must start with two "%%" symbols instead of just         one "%" symbol. The examples in the first positions will appear in         the HTML file under the caption "Examples" while the latest will appear         under the caption "Related Examples". More precisely, if the output of a         procedure contains k outputs and some optional input arguments the first         k+1 comment blocks will appear in the HTML file under "Examples".         First comment block is associated with the call of the procedure with         just one output and all default input arguments.         Second comment block is associated with the call of the procedure with         just one output and with some optional input arguments.         Third comment block is associated with the call of the procedure with         two output arguments.         ...         k+1 comment block is associated with the call of the procedure with         k output arguments.         k+2 comment block is the first which in the HTML file will appear under         the heading "Related Examples".         For example, suppose that the first example of procedure FSRmdr has to be         executed and its output must be included into the HTML file, then the accepted         format is as follows ("please notice the two symbols "%%" in the         first row").                         "%{".                             "%% FSRmdr with all default options".                             "% Compute minimum deletion residual".                             "% Monitor minimum deletion residual in each step of the forward search".                             "% Common part to all examples: load fishery dataset".                              load('fishery');                              y=fishery.data(:,2);                              X=fishery.data(:,1);                              "% Find starting subset"                              [out]=LXS(y,X,'nsamp',10000);                              [mdr] = FSRmdr(y,X,out.bs);                              plot(mdr(:,1),mdr(:,2))                              title('Monitoring of minimum deletion residual')                         "%}".                         "%{".                             "% FSRmdr with optional arguments".                             "% Choose step to start monitoring".                             "% Compute minimum deletion residual and                              start monitoring it from step 60".                             [mdr] = FSRmdr(y,X,out.bs,'init',60).                         "%}".          In order to understand where the example finish and the MATLAB code          starts publishFS checks if one of the following strings         is present         "Input parameters checking",         "Beginning of code",         "nargin".         If this is the case the search of "comments blocks signs"         (i.e. symbols  "%{" and "%}") is limited to the first character prior         to the detection of one of the previous strings. This         modification has been added in order to make sure that there are         no additional block signs within matlab code.         [9] If a procedure contains varargout, then the string:                       "Optional Output:"         must be present. For example suppose there is a function called mcd which         has the following sintax:                         function [RAW,REW,varargout] = mcd(Y,varargin).         Then at the end of the output argument the format must be as follows:                               Optional Output:                                         C     : matrix of the indices of the                                                 subsamples extracted for                                                 computing the estimate.--------------------------------------------------------------------------         GENERAL REMARKS:         -----------------------------------------------------------------------:.         REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it         must be replaced by words "per cent". For example, string "50 envelope"         must become "50 per cent" envelope.         -----------------------------------------------------------------------:.         REMARK2: If there is just one output argument it can be without square         brackets. Among the input elements of a procedure the number of spaces         between them is not important. For example         "y,X,varargin" or "y, X   ,  varargin"   are both fine.         -----------------------------------------------------------------------:.         REMARK 4: publishFS uses MathJax javascript in order to interpret the         equations inside the .m file written in Latex style. For in line         equations both symbols dollar dollar  and backslash(  backslash) are accepted.         For single line equations symbols backslash[ backslash] must be used.         -----------------------------------------------------------------------:.         REMARK 5: if there are not enough examples in the .m file the procedure         still runs but a warning will be automatically produced.         -----------------------------------------------------------------------:.</P><h2>References</h2><P></P></html>
