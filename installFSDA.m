@@ -43,6 +43,23 @@ end
 try
     addFSDA2path
     disp('FSDA added to the MATLAB path')
+    disp('The following folders are added to MATLAB path:')
+    disp([pwd filesep 'clustering'])
+    disp([pwd filesep 'regression'])
+    disp([pwd filesep 'multivariate'])
+    disp([pwd filesep 'utilities_stat'])
+    disp([pwd filesep 'utilities_help'])
+    disp([pwd filesep 'FSDAdemos'])
+    disp([pwd filesep 'graphics'])
+    disp([pwd filesep 'utilities'])
+    disp([pwd filesep 'examples'])
+    disp([pwd filesep 'combinatorial'])
+    disp([pwd filesep 'datasets' filesep 'clustering'])
+    disp([pwd filesep 'datasets' filesep 'multivariate'])
+    disp([pwd filesep 'datasets' filesep 'regression'])
+    disp([pwd filesep 'datasets' filesep 'multivariate_regression'])
+    disp('')
+    disp('Please do not remove them otherwise the FSDA toolbox will not work.')
 catch
     disp('Unknown error when trying to add FSDA folders to MATLAB path')
     disp('File: addFSDA2path could not run')
