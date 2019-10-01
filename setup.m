@@ -25,7 +25,7 @@ try
     if status ==1
         disp('HTML files correctly copied')
     else
-        disp('Due to write permissions problems HTML files in:')
+        disp('Due to write permission problems HTML files in:')
         disp([pwd filesep source])
         disp('could not be copied inside folder')
         disp(destination)
@@ -42,6 +42,7 @@ end
 %% 2) ADD relevant FSDA paths to MATLAB path
 try
     addFSDA2path
+    disp('FSDA added to the MATLAB path')
 catch
     disp('Unknown error when trying to add FSDA folders to MATLAB path')
     disp('File: addFSDA2path could not run')
@@ -50,7 +51,8 @@ end
 %% 3) Launch buildocsearchdb
 folderwithSearchableDatabase=[pwd filesep 'helpfiles' filesep 'pointersHTML'];
 try
-    builddocsearchdb()
+    builddocsearchdb(folderwithSearchableDatabase)
+    disp('FSDA searchable database correctly added')
 catch
     disp('Unknown error when trying to run MATLAB routine builddocsearchdb')
     disp(['in folder:  '  folderwithSearchableDatabase])
