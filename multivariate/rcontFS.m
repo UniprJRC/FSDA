@@ -195,17 +195,17 @@ if nocheck == false
     end
     
     if length(nrowt)~=I
-        error(['FSDA:rcontFS:WrongInputOpt:','length of vector which contains marginal row totals bust be equal to nrow.'...
+        error('FSDA:rcontFS:WrongInputOpt',['length of vector which contains marginal row totals bust be equal to nrow.'...
             ' Now length(nrowt)=' num2str(length(nrowt)) ' and nrow='  num2str(I)])
     end
     
     if length(ncolt)~=J
-        error(['FSDA:rcontFS:WrongInputOpt:','length of vector which contains marginal row totals bust be equal to nrow.'...
+        error('FSDA:rcontFS:WrongInputOpt',['length of vector which contains marginal row totals bust be equal to nrow.'...
             ' Now length(nrowt)=' num2str(length(ncolt)) ' and nrow='  num2str(J)])
     end
     
     if sum(ncolt)~=sum(nrowt)
-        error(['FSDA:rcontFS:WrongInputOpt:','column sum vectors have the same sum.'...
+        error('FSDA:rcontFS:WrongInputOpt',['column sum vectors have the same sum.'...
             ' Now sum(nrowt)=' num2str(sum(nrowt)) ' and sum(ncolt)='  num2str(ncoly)])
     end
 end
