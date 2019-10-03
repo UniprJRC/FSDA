@@ -745,7 +745,7 @@ out = Q;
                 
             elseif isstruct(sph)
                 % Apply the requested restrictions to Sgen
-                [Sgen]  = restrpars(Sgen, Pigen', sph);
+                [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
@@ -1050,7 +1050,7 @@ out = Q;
                     
                 elseif isstruct(sph)
                     % Apply the requested restrictions to Sgen
-                    [Sgen]  = restrpars(Sgen, Pigen', sph);
+                    [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
                     
                     % prepare parameters:  row 953 of file libOverlap.c
                     [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
@@ -1425,7 +1425,7 @@ out = Q;
                 
             elseif isstruct(sph)
                 % Apply the requested restrictions to Sgen
-                [Sgen]  = restrpars(Sgen, Pigen', sph);
+                [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen);
