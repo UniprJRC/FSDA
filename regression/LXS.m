@@ -1199,12 +1199,12 @@ end
 rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
-    if msg==1
+    % if msg==1
         disp('Warning: problem in subfunction corfactorRAW')
         disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
         disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
         disp('This may happen when n is very small and p is large')
-    end
+    % end
 end
 end
 
@@ -1249,12 +1249,12 @@ end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
-    if msg==1
+    % if msg==1
         disp('Warning: problem in subfunction corfactorREW');
         disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
         disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
         disp('This may happen when n is very small and p is large');
-    end
+    % end
 end
 end
 %FScategory:REG-Regression
