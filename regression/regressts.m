@@ -743,7 +743,7 @@ if dispresults
         disp([table(lab) table(betaout) table(sebetaout) table(tout) table(pval)]);
     end
     if lshift>0
-        disp(['Level shift position t=' num2str(outEST.posLS)])
+        disp(['Level shift position t=' num2str(posLS)])
     end
 end
 
