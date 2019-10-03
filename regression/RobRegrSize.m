@@ -232,7 +232,7 @@ else
         end
         
         if n>500 && p>10
-            warninging('FSDA:RobRegrSize:Wrongn','Simulations have been done for n in the range [50 500] and p<=10')
+            warning('FSDA:RobRegrSize:Wrongn','Simulations have been done for n in the range [50 500] and p<=10')
             warning('FSDA:RobRegrSize:Wrongn','The resulting interpolated factors may produce a conservative test')
             n=500;
         end
