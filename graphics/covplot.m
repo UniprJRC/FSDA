@@ -8,16 +8,16 @@ function covplot(out,varargin)
 %  out :  Data to plot. Structure. Structure containing the following fields
 %  out.S2cov=   (n-init+1) x (v*(v+1)/2+1) matrix containing the monitoring
 %               of the elements of the covariance matrix in each step
-%               of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of S(1,1); 
-%               3rd col = monitoring of S(1,2); 
-%               ...; 
+%               of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of S(1,1);
+%               3rd col = monitoring of S(1,2);
+%               ...;
 %               (compulsory argument).
 %     out.Un=   matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true).
 %     out.Y =   n x v data matrix; n observations
-%               and v variables. 
+%               and v variables.
 %      Data Types - struct
 %
 %
@@ -25,7 +25,7 @@ function covplot(out,varargin)
 %
 %       standard:   Appearance of the plot. Structure. Structure which defines the appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. 
+%                   style, color of the lines, etc.
 %                   The structure contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -51,7 +51,7 @@ function covplot(out,varargin)
 %                   standard.LineStyle = cell containing the line types.
 %                   Example - 'standard',standard
 %                   Data Types - structure
-%         fground : Trajectories in foregroud. Structure. 
+%         fground : Trajectories in foregroud. Structure.
 %                   Structure which defines the trajectories in foregroud,
 %                   that is which trajectories are highlighted and how
 %                   they are plotted to be distinguishable from the others.
@@ -61,11 +61,11 @@ function covplot(out,varargin)
 %                   fields:
 %                   fground.fthresh = (alternative to funit) numeric vector of
 %                       length 1 or 2 which specifies the highlighted
-%                       trajectories. 
+%                       trajectories.
 %                       If length(fthresh)=1 the highlighted trajectories
 %                       are those of units that throughtout the search had
 %                       at leat once a covariance greater (in absolute value)
-%                       than thresh. The default value of fthresh is Inf. 
+%                       than thresh. The default value of fthresh is Inf.
 %                       If length(fthresh)=2 the highlighted trajectories
 %                       are those of units that throughtout the search had
 %                       a covariance at leat once bigger than fthresh(2) or
@@ -88,10 +88,10 @@ function covplot(out,varargin)
 %                   fground.Color = cell array of strings containing the colors to
 %                       be used for the highlighted trajectories (units).
 %                       If length(scolor)==1 the same color will be used for
-%                       all highlighted units. 
+%                       all highlighted units.
 %                       If for example length(scolor)=2 and there are 6 highlighted units,
 %                       3 highlighted trajectories appear with selunitcolor{1} and 3 highlighted trajectories with
-%                       selunitcolor{2}. 
+%                       selunitcolor{2}.
 %                   fground.LineStyle = cell containing the line type of the highlighted
 %                       trajectories.
 %                   fground.fmark  = scalar controlling whether to plot highlighted
@@ -107,7 +107,7 @@ function covplot(out,varargin)
 %                   in the same window else a new window is created.
 %                   Example - 'tag','pl_mycov'
 %                   Data Types - string
-%   datatooltip :   Information about the unit selected. Empty value or structure. 
+%   datatooltip :   Information about the unit selected. Empty value or structure.
 %                   The default is datatooltip=1.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
@@ -192,7 +192,7 @@ function covplot(out,varargin)
     [fre]=unibiv(Y);
     m0=20;
     bs=fre(1:m0,1);
-    [out]=FSMeda(Y,bs,'init',30);    
+    [out]=FSMeda(Y,bs,'init',30);
     % Initialize structure fground
     fground = struct;
     % Specify the number of trajectories which have to be highlighted
@@ -219,7 +219,7 @@ function covplot(out,varargin)
     [fre]=unibiv(Y);
     m0=20;
     bs=fre(1:m0,1);
-    [out]=FSMeda(Y,bs,'init',30);    
+    [out]=FSMeda(Y,bs,'init',30);
      % Initialize structure fground
     fground = struct;
     % Specify the number of trajectories which have to be highlighted
@@ -424,20 +424,20 @@ if ~isempty(options.fground)
     fthresh=fground.fthresh;
     % funit= List of the units to be displayed in foreground (highlighted)
     funit=fground.funit;
-        
+    
     if ~isempty(funit)
-      selmaxabs=max(abs(residuals),[],2);
-      [~,IX]=sort(selmaxabs,'descend');
-
-      % Some checks on minimum and maximum of vector funit
+        selmaxabs=max(abs(residuals),[],2);
+        [~,IX]=sort(selmaxabs,'descend');
+        
+        % Some checks on minimum and maximum of vector funit
         if max(funit)>vv || min(funit)<1
             sprintf(['Warning: the number of trajectories to label',...
                 'must be >1 and smaller than ' num2str(vv) ]);
         end
-      
-      funit=IX(1:min(round(funit),length(IX)));
+        
+        funit=IX(1:min(round(funit),length(IX)));
     else
-   	selmax=max(residuals,[],2);
+        selmax=max(residuals,[],2);
         selmin=min(residuals,[],2);
         if length(fthresh)>1
             funit=seq(selmax>fthresh(2) | selmin<fthresh(1));
@@ -483,7 +483,9 @@ if ~isempty(options.fground)
     
     % If requested, add markers to all the trajectories
     if fground.fmark==1
-        set(plot1(funit),{'Marker'},stype(funit))
+        styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
+        styp=repmat(styp,ceil(n/13),1);
+        set(plot1(funit),{'Marker'},styp(funit))
     end
     
 end
