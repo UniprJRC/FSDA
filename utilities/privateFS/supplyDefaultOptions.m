@@ -37,7 +37,7 @@ elseif strcmp(options.imageFormat,'jpg')
 elseif strcmp(options.imageFormat,'tif')
     options.imageFormat = 'tiff';
 elseif strcmp(options.imageFormat,'gif')
-    error(pm('NoGIFs'));
+        error('FSDA:supplyDefaultOptions:NoGIFs','no gif images');
 end
 if ~isfield(options,'useNewFigure')
     options.useNewFigure = true;
