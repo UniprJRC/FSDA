@@ -40,7 +40,7 @@ function psiHYP = HYPpsi(u, cktuning)
 % Function HYPpsi transforms vector u as follows
 %
 %  \[
-%   HYPpsi(u) = 
+%   HYPpsi(u) =
 % \left\{
 %   \begin{array}{cc}
 %  	 u &        |u| \leq  d \\
@@ -117,7 +117,7 @@ function psiHYP = HYPpsi(u, cktuning)
     c=2.158325031399727
     k=4;
     A=0.000162707412432;
-    B=0.006991738279441   
+    B=0.006991738279441
     d=0.016982948780061
     x=-8:0.001:8;
     psiHYP=HYPpsi(x,[c,k,A,B,d]);
@@ -132,15 +132,18 @@ function psiHYP = HYPpsi(u, cktuning)
 c = cktuning(1);
 k = cktuning(2);
 if length(cktuning)>2
-
-        A=cktuning(3);
-        B=cktuning(4);
-        d=cktuning(5);
-
+    
+    A=cktuning(3);
+    B=cktuning(4);
+    d=cktuning(5);
+    
     if ((A < 0) || (B < A) || (B>1))
-        error('FSDA:HYPpsi:WrongAorB',[' Illegal choice of parameters in hyperbolic tangent estimator: ' ...
-            num2str(param) ]')
-    else   
+        disp('A must be >=0')
+        disp('B must be >=A')
+        disp('B must be <=1')
+        disp(['B=' num2str(B) ' and A=' num2str(A)])
+        error('FSDA:HYPpsi:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator:')
+    else
     end
     
 else
