@@ -227,7 +227,7 @@ elseif isfunction(P)
         disp('Function P returned a vector of incorrect length');
         return;
     end
-    if(~isnumeric(PX))
+    if(~isnumeric(pX))
         disp('Function P returned non-numeric values');
     end
     if(any(isnan(pX)))
