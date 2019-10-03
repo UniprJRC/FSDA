@@ -1,4 +1,4 @@
-function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
+function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2, noisecluster)
 %FowlkesMallowsIndex computes the Fowlkes and Mallows index.
 %
 %<a href="matlab: docsearchFS('FowlkesMallowsIndex')">Link to the help function</a>
@@ -131,7 +131,7 @@ function [ABk,Bk,EBk,VarBk] = FowlkesMallowsIndex(c1,c2)
         c2=out.idx;
         % Units inside c2 which contain number 0 are referred to trimmed observations
         noisecluster=0;
-        [~,FM,EFM,VARFM]=RandIndexFS(c1,c2,noisecluster);
+        [~,FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2,noisecluster);
 %}
 
 %{
