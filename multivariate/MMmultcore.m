@@ -7,7 +7,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %
 %  Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -18,7 +18,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %        loc0 :  initial estimate of location. Vector.
 %               Vector containing initial estimate of location (generally
 %               an S estimate with high breakdown point, eg 0.5)
-%     shape0 :  initial estimate of shape. Matrix. 
+%     shape0 :  initial estimate of shape. Matrix.
 %               v x v matrix containing initial estimate of shape
 %               (generally an S estimate with high breakdown point, eg 0.5)
 %   auxscale :  initial estimate of scale. Scalar.
@@ -36,8 +36,8 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %                 efficiency or c=6.096 in case of shape efficiency
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%     effshape : locacation or scale effiicency. dummy scalar. 
-%                If effshape=1 efficiency refers to shape 
+%     effshape : locacation or scale effiicency. dummy scalar.
+%                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
@@ -64,20 +64,20 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %               confidence bands for the MD is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - single | double
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
 %                 no check is performed on
 %                 matrix Y. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %       ysave : input data matrix Y is saved into the output
-%                structure out. Scalar. 
+%                structure out. Scalar.
 %               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
-%               Example - 'ysave',1 
+%               Example - 'ysave',1
 %
 %  Output:
 %
@@ -268,8 +268,8 @@ if newobj <= origobj
     out.cov = auxscale^2*newshape;
     out.weights = weights;
 else % isn't supposed to happen
-    warning(warnrank.state,'Initial solutions for location and shape parameters have been kept')
-    warning(warnrank.state,'Because MM-loop does not produce better estimates');
+    warning('FSDA:MMmultcore:NoImpr','Initial solutions for location and shape parameters have been kept')
+    warning('FSDA:MMmultcore:NoImpr','Because MM-loop does not produce better estimates')
     out.loc = loc0;
     out.shape = shape0;
     out.cov = auxscale^2*shape0;
@@ -303,7 +303,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         group(out.outliers)=2;
     end
     spmplot(Y,group,plo);
-    set(gcf,'Name',' MM estimator: scatter plot matrix with outliers highlighted');   
+    set(gcf,'Name',' MM estimator: scatter plot matrix with outliers highlighted');
     
 end
 
