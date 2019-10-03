@@ -840,8 +840,11 @@ if nargin>2
         
         UserOptions=varargin(1:2:length(varargin));
         if ~isempty(UserOptions)
+            
             % Check if number of supplied options is valid
             if length(varargin) ~= 2*length(UserOptions)
+                inpchk=isfield(options,UserOptions);
+                WrongOptions=UserOptions(inpchk==0);
                 error('FSDA:yXplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
             end
             % Check if user options are valid options
