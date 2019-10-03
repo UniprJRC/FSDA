@@ -156,6 +156,7 @@ if nargin<=2 || shapeeff ~=1
     
 else
 %TODO:OPTc:shapeff
+    c2=c.^2/2;
     p4=(v+4);
     p6=p4*(v+6);
     p8=p6*(v+8);
