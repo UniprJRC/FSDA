@@ -486,13 +486,13 @@ if ~isempty(databrush) || isstruct(databrush)
     if  typeIC==3
         sd=input(['Please choose the plot you wish to brush:\n Please type MIXMIX, MIXCLA or CLACLA\n' ...
             'Remark: to avoid this message please choose directly MIXMIX, MIXCLA or CLACLA in the optional input arguments\n'],'s');
-        if strcmp(sd,MIXMIX)
+        if strcmp(sd,'MIXMIX')
             Xcla=IC.MIXMIX;
             IDX=IC.IDXMIX;
-        elseif strcmp(sd,MIXCLA)
+        elseif strcmp(sd,'MIXCLA')
             Xcla=IC.MIXCLA;
             IDX=IC.IDXMIX;
-        elseif strcmp(sd,CLACLA)
+        elseif strcmp(sd,'CLACLA')
             Xcla=IC.CLACLA;
             IDX=IC.IDXCLA;
         else
