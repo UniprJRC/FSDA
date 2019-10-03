@@ -445,6 +445,7 @@ InputArgs=IPS.InpArgs(:,1);
 sintax=cell(nargout+1+nOPTargin,1);
 
 if nOPTargin>0
+    [commasIn] = regexp(InputArgs,',');
     for j=1:nOPTargin
         if ~isempty(OutArgsNames)
             sintax{j}=[OutArgsNames{1} '=' name InputArgs{j} ')'];
