@@ -529,7 +529,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     % tclust in presence of structured noise.
     % The data have been generated using the following R instructions
     %    set.seed (0)
-    %    library(MASS)         
+    %    library(MASS)
     %    v <- runif (100, -2 * pi, 2 * pi)
     %    noise <- cbind (100 + 25 * sin (v), 10 + 5 * v)
     %
@@ -716,6 +716,12 @@ nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
+
+% callmex is a Boolean which is equal to true if the mex file exists
+callmex=existFS('DfM.mexw64');
+% verLess2016b is true if current version is smaller than 2016b
+verLess2016b=verLessThanFS(9.1);
+  
 
 % User options
 % startv1def = default value of startv1 =1, initialization using covariance
@@ -1077,7 +1083,11 @@ for i=1:nselected
             Yselj=Y(selj,:);
             cini(j,:)=sum(Yselj)/(v+1);
             
-            Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+            if verLess2016b ==true
+                Yseljc = bsxfun(@minus,Yselj,cini(j,:));
+            else
+                Yseljc = Yselj-cini(j,:);
+            end
             sigmaini(:,:,j) = (Yseljc' * Yseljc) / (v+1);
             % lines above are a faster solution for instruction below
             % sigmaini(:,:,j)=cov(Y(selj,:));
@@ -1248,16 +1258,26 @@ for i=1:nselected
                 % are given by the posterior probabilities.
                 % Note that Y is used instead of Ytri because posterior
                 % probabilities for unassigned units are 0.
-                cini(j,:)= sum(bsxfun(@times, Y, postprob(:,j)),1)/niini(j);
+                if verLess2016b ==true
+                    cini(j,:)= sum(bsxfun(@times, Y, postprob(:,j)),1)/niini(j);
+                else
+                    cini(j,:)= sum(Y.*postprob(:,j),1)/niini(j);
+                end
                 
                 if niini(j)>0
-                    Ytric = bsxfun(@minus,Y,cini(j,:));
-                    
+                    if verLess2016b ==true
+                        Ytric = bsxfun(@minus,Y,cini(j,:));
+                    else
+                        Ytric =Y-cini(j,:);
+                    end
                     sqweights = postprob(:,j).^(1/2);
                     
                     % Ytric = [X(:,1).*sqweights   X(:,2).*sqweights ...   X(:,end).*sqweights]
-                    Ytric = bsxfun(@times, Ytric, sqweights);
-                    
+                    if verLess2016b ==true
+                        Ytric = bsxfun(@times, Ytric, sqweights);
+                    else
+                        Ytric = Ytric.*sqweights;
+                    end
                     sigmaini(:,:,j) = (Ytric' * Ytric) / niini(j);
                     
                     % Eigenvalue eigenvector decomposition for group j
@@ -1304,7 +1324,15 @@ for i=1:nselected
                     % comment the DfM line below and uncomment the bsxfun
                     % instruction above. In contexts where this is called
                     % many times, this solution is much more performant.
-                    DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
+                    if callmex==true
+                        DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
+                    else
+                        if verLess2016b ==false
+                            Ytrij=Ytrij-cini(j,:);
+                        else
+                            Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+                        end
+                    end
                     
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
                     
