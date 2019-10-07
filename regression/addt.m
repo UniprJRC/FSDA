@@ -183,7 +183,13 @@ vvarargin=varargin;
 E = X/R;
 A = -E*E';
 sel=1:n;
-linind=sub2ind(size(A),sel,sel);
+siz = size(A); 
+% Find linear indexes
+% It is better to compute linind directly rather than calling sub2ind
+% linind=sub2ind(siz,sel,sel);
+linind = sel + (sel - 1).*siz(1); 
+
+
 A(linind)=1+A(linind);
 % Notice that:
 % -E*E' = matrix -H = -X*inv(X'X)*X' computed through qr decomposition
@@ -236,6 +242,7 @@ out.b=b;
 out.S2add=Sz_square;
 out.Tadd=Tl;
 out.pval=pval;
+
 
 %% Added variable plot
 
