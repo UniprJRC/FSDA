@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- $Revision: 1.7.4.11 $  $Date: 2009/05/07 18:30:50 $ -->
 <demos>
-	<name>FSDA Toolbox</name>
+	<name>FSDA</name>
 	<type>toolbox</type>
 	<icon>HelpIcon.DEMOS</icon>
 	<description isCdata="no">
@@ -29,53 +29,22 @@
 			
 		</p>
 	</description>
-	<website><a href="http://www.riani.it/MATLAB">http://www.riani.it/MATLAB</a></website>
+	<website><a href="http://rosa.unipr.it/FSDA.html">http://rosa.unipr.it/FSDA.html</a></website>
 	<demosection>
 		
-	<label>Regression</label>		
+	<label>LINK TO HTML FORMATTED PAGE</label>		
 		<demoitem>
-            	<label>Hawkins data (4 min, 0 sec)</label>
+            	<label>LINK TO LOCAL VERSION OF EXAMPLE FILES</label>
             	<type>M-file</type>
-            	<source>hawkins</source>
+            	<source>examplesLOCAL</source>
         	</demoitem>
 		<demoitem>
-			<label>Multiple regression data (6 min, 17 sec)</label>
+			<label>LINK TO WEB VERSION OF THE EXAMPLE FILES</label>
 			<type>M-file</type>
-			<source>AR</source>
+			<source>examplesWEB</source>
 		</demoitem>
-		<demoitem>
-			<label>Fishery data (5 min, 52 sec)</label>
-			<type>M-file</type>
-			<source>fishery</source>
-			<!--  <callback>playbackdemoFS('fishery');</callback> -->
-		</demoitem>
+		
 
 	</demosection>
-	<demosection>
-		<label>Multivariate Analysis</label>
-		<demoitem>
-			<label>To be implemented in future releases of the product</label>
-			<type>---</type>
-		</demoitem>
-	</demosection>
-	<demosection>
-		<label>Transformations in linear regression</label>
-		<demoitem>
-			<label>Loyalty cards data (6 min, 7 sec)</label>
-			<type>M-file</type>
-			<source>loyalty</source>
-		</demoitem>
-		<demoitem>
-			<label>Hospital data: analysis of the homogeneity of the sample</label>
-			<type>M-file</type>
-			<source>hospital</source>
-		</demoitem>
-		<!--  
-		<demoitem>
-		      <label>Simulating Dependent Random Variables Using Copulas</label>
-      		<type>video</type>
-      		<callback>playbackdemoFS('copulademo');</callback> 
-   		</demoitem>
- 		-->
-	</demosection>
+	
 </demos>
