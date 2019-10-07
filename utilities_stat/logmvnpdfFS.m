@@ -8,7 +8,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 % uses matlab function bsxfun to compute
 % the deviations form the means and no mex function.
 % If this function is called with the four optional input
-% arguments X0, eyed, n and d a mex function based on C code is directly used. 
+% arguments X0, eyed, n and d a mex function based on C code is directly used.
 % Additional details follow: in order to compute the kernel of the quadratic form
 % at the exponent logmvnpdfFS creates an identity of size length(Mu) and
 % similarly needs to compute length(Mu). These two quantites can be
@@ -21,14 +21,14 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %  Required input arguments:
 %
 %
-% X :           Input data. Scalar, Vector or matrix. 
+% X :           Input data. Scalar, Vector or matrix.
 %               n x d data matrix; n observations and d variables. Rows of
 %               Y represent observations, and columns represent variables or coordinates.
 %               The (log of the) probability density of the multivariate
 %               normal distribution will be evaluated at each row of the
 %               n-by-d matrix Y
 %               Data Types - single|double
-% Mu:           mean mu of the multivariate normal distribution. 1-by-d vector. 
+% Mu:           mean mu of the multivariate normal distribution. 1-by-d vector.
 %               Data Types - single|double
 % Sigma  :      covariance matrix of the multivariate normal distribution.
 %               d-by-d matrix.
@@ -36,7 +36,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %
 %  Optional input arguments:
 %
-%   X0  :       matrix of the same size of X which passes to C function a container. 
+%   X0  :       matrix of the same size of X which passes to C function a container.
 %               Note that options X0, eyed, n, and d must be supplied
 %               together.
 %                 Example - 'X0',X
@@ -59,7 +59,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen. If msg==1 (default) messages are displayed
-%               on the screen when cholesky of Sigma is impossibile 
+%               on the screen when cholesky of Sigma is impossibile
 %               else no message is displayed on the screen. When Clolesky
 %               of Sigma is impossible -Inf output is returned.
 %                 Example - 'msg',1
@@ -70,7 +70,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %   y    :   log-density of the multivariate normal. Vector. Vector with length
 %               equal to n which returns the log-density of the multivariate normal
 %               distribution with mean Mu and covariance Sigma, evaluated at each row
-%               of X.  
+%               of X.
 %
 % See also mvnpdf
 %
@@ -101,17 +101,17 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
      % 2.842e-14
 %}
 
-%{ 
+%{
    % Remark: Options X0, eyed, n, and d must be used together.
 %}
 
-%{ 
+%{
 %}
 
-%{ 
+%{
 %}
 
-%{ 
+%{
 %}
 
 %{
@@ -326,23 +326,39 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 
 
 %% Beginning  of code.
+% callmex is a Boolean which is equal to true if the mex file exists
+callmex=existFS('DfM.mexw64');
+% verLess2016b is a boolean which is true if current version is less then
+% 2016b
+verLess2016b=verLessThanFS(9.1);
 
 %   Note that X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 
 if nargin==3
-    % Deviations from Mu using Matlab function bsxfun.
-    X0 = bsxfun(@minus,X,Mu);
+    if verLess2016b ==true
+        % Deviations from Mu using Matlab function bsxfun.
+        X0 = bsxfun(@minus,X,Mu);
+    else
+        X0=X-Mu;
+    end
     d=size(X0,2);
     % Create an identity matrix of size d
     eyed=eye(d);
     
 else
-    
-    % Deviations from Mu using a mex function based on C code contained in file DfM.c
-    % n = scalar, number of observations (input parameter of function DfM)
-    % d = number of variables (input parameter of function DfM)
-    DfM(X,Mu,X0,n,d);
-    
+    if callmex==true
+        % Deviations from Mu using a mex function based on C code contained in file DfM.c
+        % n = scalar, number of observations (input parameter of function DfM)
+        % d = number of variables (input parameter of function DfM)
+        DfM(X,Mu,X0,n,d);
+    else
+        if verLess2016b ==false
+            X0=X-Mu;
+        else
+            % Deviations from Mu using Matlab function bsxfun.
+            X0 = bsxfun(@minus,X,Mu);
+        end
+    end
 end
 
 % Take Choleski of Sigma
