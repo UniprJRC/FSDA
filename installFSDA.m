@@ -1,9 +1,14 @@
-%% This file performs the tasks to run
-% More specifically
-% 1) It copies all the .html files inside (docroot/FSDA)
-% 2) Run file addFSDA2path.m
-% 3) Launch buildocsearchdb
-% 4) Install the apps
+%% This file performs the necessary tasks to properly run FSDA toolbox
+% More specifically, this file
+% 1) copies all the .html files inside (docroot/FSDA). In order to
+% succesfully perform this operation it is necessary to run MATLAB as
+% administrator;
+% 2) runs file addFSDA2path.m. This files adds to the MATLAB path all the
+% required FSDA folders.
+% 3) launches buildocsearchdb in subfolder (main FSDA folder)/helpfiles/pointersHTML. 
+% 4) Install the apps. 3 apps brushRES, brushFAN and brushROB which help
+% the user to familiarize with the dynamic interactive routines of FSDA.
+
 
 %% Preliminary step: make sure that the user is inside main FSDA folder
 FileName='addFSDA2path';
