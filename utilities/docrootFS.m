@@ -16,12 +16,12 @@ if str2double(a.Version)>7.14
         FileName='addFSDA2path';
         FullPath=which(FileName);
         FSDAroot=FullPath(1:end-length(FileName)-3);
-        FSDAhelproot=[FSDAroot filesep '_tmp_helpfiles' filesep 'FSDA'];
+        FSDAhelproot=[FSDAroot filesep 'helpfiles' filesep 'FSDA'];
         
         sprintf('----------------------------------------------------------')
         fprintf('%s\n\n',['FSDA HTML help files must be copied inside path "' destinationpathFSDAdoc '"']);
         msg1=['The FSDA help files have not been copied under the MATLAB help folder: "' docroot '".'];
-        msg2='  Please check the user right permissions and possibly move manually the folder "';
+        msg2='  Please check the user right permissions and possibly copy manually the folder "';
         msg3='"  in the MATLAB help folder. For additional details please see file: ';
         msg4=[FSDAroot filesep 'InstallationNotes.pdf'];
         
@@ -36,7 +36,9 @@ if str2double(a.Version)>7.14
         % make sure the component is opaque
         r.setOpaque(true);
         % add the component
+        warning('off')
         javacomponent(r, [120 49 150 30], h);
+        warning('on')
         %[left, bottom, width, height]
         
         error('FSDA:docrootFS:wrongSetUp','Please read warning above and take appropriate action!')
