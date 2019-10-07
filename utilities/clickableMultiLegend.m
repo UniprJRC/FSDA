@@ -131,9 +131,11 @@ varargout = varargout(1:nargout);
 
 % Set the callbacks
 for i = 1:length(plothan)
+    if ~isempty(objhan)
     set(objhan(i), 'HitTest', 'on', 'ButtonDownFcn',...
         @(varargin)togglevisibility(objhan(i),plothan(i)),...
         'UserData', true);
+    end
 end
 end
 
