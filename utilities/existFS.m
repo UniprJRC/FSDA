@@ -61,9 +61,11 @@ persistent cachedexistFS;
 if ~isempty(cachedexistFS)
     result=cachedexistFS;
 else
-    result=exist(FileName,'file')==3;
-    cachedexistFS = result;
-end
-
+    exFile=exist(FileName,'file');
+    if exFile==3 || exFile==2
+        result =true;
+        cachedexistFS = result;
+    end
+    
 end
 %FScategory:UTIGEN
