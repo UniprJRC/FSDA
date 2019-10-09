@@ -4,6 +4,16 @@
 % Note that to properly copy these file it is necessary to have
 % administrator privileges (or to run MATLAB with adminitrator privileges)
 
+% First navigate to FSDA main folder
+FileName='addFSDA2path';
+FullPath=which(FileName);
+if isempty(FullPath)
+    error('FSDA:setup:WrongLocation','In order to properly run this file please navigate to the main folder of FSDA')
+else
+    %Navigate to the main folder of FSDA
+    FSDAroot=fileparts(FullPath);
+    cd(FSDAroot)
+end
 
 %% Copy all FSDA .html files inside docroot/FSDA
 fsep=filesep;
@@ -16,16 +26,6 @@ if exist([docroot filesep 'FSDA'],'dir')~=7
         if status ==1
             disp('HTML FSDA documentation files correctly copied')
             % Launch buildocsearchdb
-            % FIrst navigate to FSDA main folder
-            FileName='addFSDA2path';
-            FullPath=which(FileName);
-            if isempty(FullPath)
-                error('FSDA:setup:WrongLocation','In order to properly run this file please navigate to the main folder of FSDA')
-            else
-                %Navigate to the main folder of FSDA
-                FSDAroot=fileparts(FullPath);
-                cd(FSDAroot)
-            end
             % run builddocsearchdb in subfolder pointersHTML
             folderwithSearchableDatabase=[pwd filesep 'helpfiles' filesep 'pointersHTML'];
             try
