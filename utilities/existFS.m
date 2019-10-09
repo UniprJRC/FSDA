@@ -1,5 +1,9 @@
 function result = existFS(FileName)
-%Check if file exist and put answer in a cached persistent variable
+%Check if file exists and puts answer in a cached persistent variable
+%
+%
+%<a href="matlab: docsearchFS('existFS')">Link to the help function</a>
+%
 %
 % The answer (true/number) is cached for better
 % performance. In order words, the first time existFS is called the
@@ -19,10 +23,11 @@ function result = existFS(FileName)
 %
 % Output:
 %
-%    result : True or false. Boolean. result is true if file exists in the MATLAB path.
+%    result : True or false. Boolean. result is true if file exists in the
+%               MATLAB path.
 %
 %
-%  See also verLessThan.m
+%  See also verLessThan.m, verLessThanFS.m
 %
 % References:
 %
