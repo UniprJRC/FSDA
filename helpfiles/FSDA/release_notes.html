@@ -113,6 +113,9 @@ document.write(divsbefore);</script>
 			<p class="p5">New function <a href="tBothSides.html">tBothSides</a>&nbsp; 
 			which enables to transform both sides of a (nonlinear) regression 
 			model.</p>
+			<p class="p5">New function <a href="boxcoxR.html">boxcoxR</a> which 
+			finds MLE of lambda in linear regression (and confidence interval) 
+			using Box Cox or Yeo and Johnson family.</p>
 			<p class="p5">ROBUST TIME SERIES ANALYSIS</p>
 			<p class="p5">New functions&nbsp; <a href="LTStsVarSel.m.html">
 			LTStsVarSel.m</a> which enables to perform variable selection in the 
@@ -133,10 +136,14 @@ document.write(divsbefore);</script>
 			support old 
 			releases up to 2014b. Now functions tclust.m and logmvnpdfFS.m do 
 			not need anymore the presence of MEX files. This modification has 
-			been made necessary at present Mathworks toolbox packaging does not 
-			support mex files.<br></td>
+			been made necessary because at present Mathworks toolbox packaging 
+			does not support mex files.<br></td>
 			<td class="auto-style1" style="vertical-align: top;">Fixed a bug in 
-			<a href="tclustICplot.html">tclutICplot</a><br><br></td>
+			<a href="tclustICplot.html">tclutICplot</a><br>New function 
+			startup.m has been added to the main folder of FSDA which copies all 
+			HTML documentation files in subfolder (FSDA root)/helpfiles/FSDA 
+			into (MATLAB docroot/help). The files can be copied in Windows 
+			system just if the user has administrator privileges. <br><br></td>
 			<td style="vertical-align: top;">October &nbsp;2019</td>
 		</tr>
 		<tr>

@@ -83,7 +83,7 @@ format short
 
 % If it is necessary to call publishFSallFiles without execution of the
 % examples
-% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false');
+% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
 
 if ~isempty(FilesWithProblems)
     % Check correctness of HTML link inside each .m file

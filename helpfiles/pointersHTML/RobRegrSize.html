@@ -1,2 +1,46 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RobRegrSize</title> <meta content="refpage" name="chunktype"><meta content="function:RobRegrSize " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RobRegrSize Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
-//--></script></head> <a href="matlab:web([docrootFS '/FSDA/RobRegrSize.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RobRegrSize.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RobRegrSize</em></p><h1 itemprop="title">RobRegrSize</h1><h1 class="reftitle">RobRegrSize Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size</h1><h2>Description</h2><P></P><h2>More About</h2><P>               We assume that the two input MAT files               Ind_ThreshSm.mat and Sim_ThreshSm.mat are in the same               folder or in the MATLAB path.               Ind_ThreshSm.mat contains a 3D array with the thresholds in               case an individual size is requested               Sim_ThreshSm.mat contains a               3D array with the thresholds in case a simultaneous size               is requested               The two 3D arrays have dimension 12-by-9-by-24               The 12 rows are referred to the 12 sample sizes which have               been considered namely n=50, 60, 70, 80, 90, 100, 150, 200,               250, 300, 400, 500.               The 9 colums are referred to the number of variables which               have been considered namely p=2, 3, ..., 10.               The third dimension is associated with the 24 estimators               which have been used. The order of the estimators is:                 ' 1'    'LTSbdp050' ;                 ' 2'    'LTSbdp025' ;                 ' 3'    'LTSrbdp050';                 ' 4'    'LTSrbdp025';                 ' 5'    'Sbdp025TB' ;                 ' 6'    'Sbdp050TB' ;                 ' 7'    'MMeff085TB';                 ' 8'    'MMeff090TB';                 ' 9'    'MMeff095TB';                 '10'    'Sbdp025OP' ;                 '11'    'Sbdp050OP' ;                 '12'    'MMeff085OP';                 '13'    'MMeff090OP';                 '14'    'MMeff095OP';                 '15'    'Sbdp025HY' ;                 '16'    'Sbdp050HY' ;                 '17'    'MMeff085HY';                 '18'    'MMeff090HY';                 '19'    'MMeff095HY';                 '20'    'Sbdp025HA' ;                 '21'    'Sbdp050HA' ;                 '22'    'MMeff085HA';                 '23'    'MMeff090HA';                 '24'    'MMeff095HA'.</P><h2>References</h2><P>Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust   Regression Diagnostics, "International Statistical Review", Vol. 84,   pp. 99-127.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RobRegrSize</title> <meta content="refpage" name="chunktype"><meta content="function:RobRegrSize " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RobRegrSize Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/RobRegrSize.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RobRegrSize.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RobRegrSize</em></p><h1 itemprop="title">RobRegrSize</h1><h1 class="reftitle">RobRegrSize Provides proper threshold for robust estimators to obtain an empirical size close to 1 per cent nominal size</h1><h2>Description</h2><P></P><h2>More About</h2><P>
+               We assume that the two input MAT files
+               Ind_ThreshSm.mat and Sim_ThreshSm.mat are in the same
+               folder or in the MATLAB path.
+               Ind_ThreshSm.mat contains a 3D array with the thresholds in
+               case an individual size is requested
+               Sim_ThreshSm.mat contains a
+               3D array with the thresholds in case a simultaneous size
+               is requested
+               The two 3D arrays have dimension 12-by-9-by-24
+               The 12 rows are referred to the 12 sample sizes which have
+               been considered namely n=50, 60, 70, 80, 90, 100, 150, 200,
+               250, 300, 400, 500.
+               The 9 colums are referred to the number of variables which
+               have been considered namely p=2, 3, ..., 10.
+               The third dimension is associated with the 24 estimators
+               which have been used. The order of the estimators is:
+                 ' 1'    'LTSbdp050' ;
+                 ' 2'    'LTSbdp025' ;
+                 ' 3'    'LTSrbdp050';
+                 ' 4'    'LTSrbdp025';
+                 ' 5'    'Sbdp025TB' ;
+                 ' 6'    'Sbdp050TB' ;
+                 ' 7'    'MMeff085TB';
+                 ' 8'    'MMeff090TB';
+                 ' 9'    'MMeff095TB';
+                 '10'    'Sbdp025OP' ;
+                 '11'    'Sbdp050OP' ;
+                 '12'    'MMeff085OP';
+                 '13'    'MMeff090OP';
+                 '14'    'MMeff095OP';
+                 '15'    'Sbdp025HY' ;
+                 '16'    'Sbdp050HY' ;
+                 '17'    'MMeff085HY';
+                 '18'    'MMeff090HY';
+                 '19'    'MMeff095HY';
+                 '20'    'Sbdp025HA' ;
+                 '21'    'Sbdp050HA' ;
+                 '22'    'MMeff085HA';
+                 '23'    'MMeff090HA';
+                 '24'    'MMeff095HA'.
+
+
+</P><h2>References</h2><P>Salini S., Cerioli A., Laurini F. and Riani M. (2014), Reliable Robust
+   Regression Diagnostics, "International Statistical Review", Vol. 84,
+   pp. 99-127.</P></html>

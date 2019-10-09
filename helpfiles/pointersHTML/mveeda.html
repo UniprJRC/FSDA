@@ -1,2 +1,35 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>mveeda</title> <meta content="refpage" name="chunktype"><meta content="function:mveeda " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mveeda Monitors Minimum volume ellipsoid for a series of values of bdp" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
-//--></script></head> <a href="matlab:web([docrootFS '/FSDA/mveeda.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/mveeda.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: mveeda</em></p><h1 itemprop="title">mveeda</h1><h1 class="reftitle">mveeda Monitors Minimum volume ellipsoid for a series of values of bdp</h1><h2>Description</h2><P></P><h2>More About</h2><P> For each subset $J$ of $v+1$ observations $\mu_J$ and $C_J$ are the centroid and the covariance matrix based on subset $J$. Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7, p. 259) write the objective function for subset $J$ as \[ RL_J=\left( med_{i=1, ..., n} \sqrt{ (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) } \right)^v \sqrt|C_J| \] Maronna Martin and Yohai (MMY), eq. (6.57), define $\Sigma_J = C_j / |C_j|^{1/v}$ and write the objective function for subset $J$ as \[ MMY_J =  \hat \sigma \left( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}       =  \hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v} \] where $\hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) = med_{i=1, ..., n}(y_i -\mu_J)' C_J^{-1} (y_i -\mu_J)$. Note that $MMY_J= (RL)^{2/v}$.   To RAW.cov a consistency factor has been applied which is based on   chi2inv(1-bdp,v). On the other hand to REW.cov the usual asymptotic   consistency factor is applied. In this case we have used the empirical   percentage of trimming that is the ratio hemp/n where hemp is the   number of units which had a MD smaller than the cutoff level determined   by thresh=chi2inv(conflev,v); MD are computed using RAW.loc and   RAW.cov. The mve method is intended for continuous variables, and assumes that the number of observations n is at least 5 times the number of variables v.</P><h2>References</h2><P>Rousseeuw, P.J. (1984), Least Median of Squares Regression,   "Journal of the American Statistical Association", Vol. 79, pp. 871-881.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>mveeda</title> <meta content="refpage" name="chunktype"><meta content="function:mveeda " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mveeda Monitors Minimum volume ellipsoid for a series of values of bdp" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/mveeda.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/mveeda.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: mveeda</em></p><h1 itemprop="title">mveeda</h1><h1 class="reftitle">mveeda Monitors Minimum volume ellipsoid for a series of values of bdp</h1><h2>Description</h2><P></P><h2>More About</h2><P>
+ For each subset $J$ of $v+1$ observations
+ $\mu_J$ and $C_J$ are the centroid and the covariance matrix based on
+ subset $J$.
+
+
+ Rousseeuw and Leroy (RL) (eq. 1.25 chapter 7, p. 259) write the objective
+ function for subset $J$ as
+ \[
+ RL_J=\left( med_{i=1, ..., n} \sqrt{ (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) } \right)^v \sqrt|C_J|
+ \]
+
+ Maronna Martin and Yohai (MMY), eq. (6.57), define $\Sigma_J = C_j /
+ |C_j|^{1/v}$ and write the objective function for subset $J$ as
+ \[
+ MMY_J =  \hat \sigma \left( (y_i -\mu_J)' \Sigma_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
+       =  \hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) |C_J|^{1/v}
+ \]
+ where $\hat \sigma \left( (y_i -\mu_J)' C_J^{-1} (y_i -\mu_J) \right) = med_{i=1, ..., n}(y_i -\mu_J)' C_J^{-1} (y_i -\mu_J)$.
+ Note that $MMY_J= (RL)^{2/v}$.
+
+   To RAW.cov a consistency factor has been applied which is based on
+   chi2inv(1-bdp,v). On the other hand to REW.cov the usual asymptotic
+   consistency factor is applied. In this case we have used the empirical
+   percentage of trimming that is the ratio hemp/n where hemp is the
+   number of units which had a MD smaller than the cutoff level determined
+   by thresh=chi2inv(conflev,v); MD are computed using RAW.loc and
+   RAW.cov.
+
+
+ The mve method is intended for continuous variables, and assumes that
+ the number of observations n is at least 5 times the number of variables v.
+
+</P><h2>References</h2><P>Rousseeuw, P.J. (1984), Least Median of Squares Regression,
+   "Journal of the American Statistical Association", Vol. 79, pp. 871-881.</P></html>

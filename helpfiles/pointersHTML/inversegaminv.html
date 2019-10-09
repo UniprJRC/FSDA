@@ -1,2 +1,34 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>inversegaminv</title> <meta content="refpage" name="chunktype"><meta content="function:inversegaminv " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="inversegaminv Inversegampdf Inverse-gamma cumulative distribution function" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
-//--></script></head> <a href="matlab:web([docrootFS '/FSDA/inversegaminv.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/inversegaminv.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: inversegaminv</em></p><h1 itemprop="title">inversegaminv</h1><h1 class="reftitle">inversegaminv Inversegampdf Inverse-gamma cumulative distribution function</h1><h2>Description</h2><P></P><h2>More About</h2><P> The cdf of the inverse gamma distribution defined over the support $x&gt;0$ with shape parameter $a$ and scale parameter $b$ is  \[  F_{IG}(x, a, b)  =\int_0^x t^{-a -1} \exp (-b/t)  \frac{b^a}{\Gamma(a)} dt  \] inversegaminv computes the inverse of the inverse-gamma cdf with shape parameters in a and scale parameters in b for the corresponding probabilities in p. p, a, and b can be vectors, matrices, or multidimensional arrays that all have the same size. A scalar input is expanded to a constant array with the same dimensions as the other inputs. The parameters in a and b must all be positive, and the values in x must lie on the interval $[0,  \infty)$. Note that $F_{IG}(x,a,b)=\frac{\Gamma(a,b/x)}{\Gamma(\alpha)}$ therefore Therefore, the CDF for an inverse Gamma distribution can be computed using the incomplete gamma function (also called regularized gamma function, i.e. MATLAB function gammainc) of course  keeping into account that we need the upper tail. The chief use of the inverse gamma distribution is in Bayesian statistics, where the distribution arises as the marginal posterior distribution for the unknown variance of a normal distribution if an uninformative prior is used; and as an analytically tractable conjugate prior if an informative prior is required. Relation with the Gamma distribution. If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with paramters $a$ and $1/b$.</P><h2>References</h2><P></P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>inversegaminv</title> <meta content="refpage" name="chunktype"><meta content="function:inversegaminv " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="inversegaminv Inversegampdf Inverse-gamma cumulative distribution function" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/inversegaminv.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/inversegaminv.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: inversegaminv</em></p><h1 itemprop="title">inversegaminv</h1><h1 class="reftitle">inversegaminv Inversegampdf Inverse-gamma cumulative distribution function</h1><h2>Description</h2><P></P><h2>More About</h2><P>
+
+ The cdf of the inverse gamma distribution defined over the support
+ $x&gt;0$ with shape parameter $a$ and scale parameter $b$ is
+  \[
+  F_{IG}(x, a, b)  =\int_0^x t^{-a -1} \exp (-b/t)
+  \frac{b^a}{\Gamma(a)} dt
+  \]
+
+ inversegaminv computes the inverse of the inverse-gamma cdf with shape
+ parameters in a and scale parameters in b for the corresponding
+ probabilities in p. p, a, and b can be vectors, matrices, or
+ multidimensional arrays that all have the same size. A scalar input is
+ expanded to a constant array with the same dimensions as the other
+ inputs. The parameters in a and b must all be positive, and the values in
+ x must lie on the interval $[0,  \infty)$.
+
+ Note that $F_{IG}(x,a,b)=\frac{\Gamma(a,b/x)}{\Gamma(\alpha)}$ therefore
+ Therefore, the CDF for an inverse Gamma distribution can be computed
+ using the incomplete gamma function (also called regularized gamma
+ function, i.e. MATLAB function gammainc) of course  keeping into account
+ that we need the upper tail.
+
+
+ The chief use of the inverse gamma distribution is in Bayesian
+ statistics, where the distribution arises as the marginal posterior
+ distribution for the unknown variance of a normal distribution if an
+ uninformative prior is used; and as an analytically tractable conjugate
+ prior if an informative prior is required.
+ Relation with the Gamma distribution.
+ If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution
+ with paramters $a$ and $1/b$.
+
+</P><h2>References</h2><P></P></html>

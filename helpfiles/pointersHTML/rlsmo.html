@@ -1,2 +1,46 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>rlsmo</title> <meta content="refpage" name="chunktype"><meta content="function:rlsmo " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="rlsmo Computes a running-lines smoother with global cross-validation" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 100);
-//--></script></head> <a href="matlab:web([docrootFS '/FSDA/rlsmo.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/rlsmo.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: rlsmo</em></p><h1 itemprop="title">rlsmo</h1><h1 class="reftitle">rlsmo Computes a running-lines smoother with global cross-validation</h1><h2>Description</h2><P>This function is called in each step of the avas function but it   can be called directly when it is necessary to smooth a set of values   using local regressions. Note that the x values must be non decreasing.</P><h2>More About</h2><P> This function makes use of subroutine smth. The sintax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and $w$ are 3 vectors of length $n$ containing respectively the $x$ coordinates, the $y$ coordinates and the weights. Input paramter $span$ is a scalar in the interval (0 1] which defines the length of the elements in the local regressions. More precisely, if $span$ is in (0 1), the length of elements in the local regressions is $m*2+1$, where $m$ is defined as the $\max([(n \times span)/2],1)$ to ensure that minimum length of the local regression is 3. Symbol $[ \cdot ]$ denotes the integer part.  Parameter $cross$ is a Boolean scalar. If it is set to true it specifies that, to compute the local regression centered on unit $i$, unit $i$ must be deleted. Therefore for example,  [1] if $m$ is 3 and $cross$ is true, the smoothed value for observation $i$ uses a local regression with $x$ coordinates $(x(i-1), x(i+1))$, $y$ coordinates $(y(i-1), y(i+1))$ and $w$ coordinates  $(w(i-1), w(i+1))$, $i=2, \ldots, n-1$. The smoothed values for observation 1 is $y(2)$ and the smoothed value for observation $n$ is $y(n-1)$.  [2] If $m$ is 3 and $cross$ is false, the smoothed value for observations $i$ is based on a local regression with $x$ coordinates $(x(i-1), x(i), x(i+1))$, $y$ coordinates $(y(i-1), y(i), y(i+1))$ and $w$ coordinates  $(w(i-1), w(1), w(i+1))$, $i=2, \ldots, n-1$. The smoothed values for observation 1 uses a local regression based on $(x(1), x(2))$, $(y(1), y(2))$, and  $(w(1), w(2))$ while the smoothed value for observation $n$ uses a local regression based on $(x(n-1), x(n))$, $(y(n-1), y(n))$, and  $(w(n-1), w(n))$.  [3] If $m=5$ and $cross$ is true, the smoothed value for observations $i$ uses a local regression based on observations $(i-2), (i-1), (i+1), (i+2)$, for $i=3, \ldots, n-2$.  The smoothed values for observation 1 uses observations 2 and 3, the smoothed value for observations 2 uses observations 1, 3 and 4 ...  [4] If $m$ is 5 and $cross$ is false, the smoothed value for observations $i$ uses a local regression based on observations $(i-2), (i-1), i, (i+1), (i+2)$, for $i=3, \ldots, n-2$. The smoothed values for observation 1 uses observations 1, 2 and 3, the smoothed value for observations 2 uses observations 1, 2, 3 and 4 ...</P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression, "Journal of the American Statistical Association", Vol. 83, 394-405.</P></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>rlsmo</title> <meta content="refpage" name="chunktype"><meta content="function:rlsmo " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="rlsmo Computes a running-lines smoother with global cross-validation" itemprop="description" name="description" /><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/rlsmo.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/rlsmo.html'</a> <p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: rlsmo</em></p><h1 itemprop="title">rlsmo</h1><h1 class="reftitle">rlsmo Computes a running-lines smoother with global cross-validation</h1><h2>Description</h2><P>This function is called in each step of the avas function but it
+   can be called directly when it is necessary to smooth a set of values
+   using local regressions. Note that the x values must be non decreasing.</P><h2>More About</h2><P>
+ This function makes use of subroutine smth.
+ The sintax of $smth$ is $[smo] = smth(x,y,w,span,cross)$. $x$, $y$ and
+ $w$ are 3 vectors of length $n$ containing respectively the $x$
+ coordinates, the $y$ coordinates and the weights. Input paramter $span$ is
+ a scalar in the interval (0 1] which defines the length of the elements
+ in the local regressions.
+ More precisely, if $span$ is in (0 1), the length of elements in the
+ local regressions is $m*2+1$, where $m$ is defined as the $\max([(n
+ \times span)/2],1)$ to ensure that minimum length of the local
+ regression is 3. Symbol $[ \cdot ]$ denotes the integer part.
+ 
+ Parameter $cross$ is a Boolean scalar. If it is set to true it specifies
+ that, to compute the local regression centered on unit $i$, unit $i$ must
+ be deleted. Therefore for example, 
+ [1] if $m$ is 3 and $cross$ is true, the
+ smoothed value for observation $i$ uses a local regression with $x$
+ coordinates $(x(i-1), x(i+1))$, $y$ coordinates $(y(i-1), y(i+1))$ and
+ $w$ coordinates  $(w(i-1), w(i+1))$, $i=2, \ldots, n-1$. The smoothed
+ values for observation 1 is $y(2)$ and the smoothed value for observation
+ $n$ is $y(n-1)$. 
+ [2] If $m$ is 3 and $cross$ is false, the smoothed value for
+ observations $i$ is based on a local regression with $x$ coordinates
+ $(x(i-1), x(i), x(i+1))$, $y$ coordinates $(y(i-1), y(i), y(i+1))$ and
+ $w$ coordinates  $(w(i-1), w(1), w(i+1))$, $i=2, \ldots, n-1$. The
+ smoothed values for observation 1 uses a local regression based on
+ $(x(1), x(2))$, $(y(1), y(2))$, and  $(w(1), w(2))$ while the smoothed
+ value for observation $n$ uses a local regression based on $(x(n-1),
+ x(n))$, $(y(n-1), y(n))$, and  $(w(n-1), w(n))$.
+ 
+ [3] If $m=5$ and $cross$ is true, the smoothed value for observations $i$
+ uses a local regression based on observations $(i-2), (i-1), (i+1),
+ (i+2)$, for $i=3, \ldots, n-2$.  The smoothed values for observation 1
+ uses observations 2 and 3, the smoothed value for observations 2 uses
+ observations 1, 3 and 4 ... 
+ [4] If $m$ is 5 and $cross$ is false, the
+ smoothed value for observations $i$ uses a local regression based on
+ observations $(i-2), (i-1), i, (i+1), (i+2)$, for $i=3, \ldots, n-2$.
+ The smoothed values for observation 1 uses observations 1, 2 and 3, the
+ smoothed value for observations 2 uses observations 1, 2, 3 and 4 ...
+
+
+</P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression,
+ "Journal of the American Statistical Association", Vol. 83, 394-405.</P></html>
