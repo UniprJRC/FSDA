@@ -228,8 +228,6 @@ function [out] = tBothSides(y, X, varargin)
 
 %{
     % Example of tBothSides with non linear link between X and beta.
-    % REMARK: note that to run this example, it must be copied in a new
-    % file
     % Load spawners data (table 4.1 p. 141 Book CR)
     % year spawner (S) recruiter (R)
     % Model is R = \beta_1 S exp ( - \beta_2 S) = f_RK(S, \beta)
@@ -269,14 +267,16 @@ function [out] = tBothSides(y, X, varargin)
 
     % Call of tBothSides non linear link between X and beta.
     % In this case modelfun (function which specifies the link between X and beta) and
-    % the vector of initial regression coefficients is specified
+    % the vector of initial regression coefficients is specified.
+    % This is the spawner recruiter model. See CR for more details.
+    modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 
     % Initial value of beta coefficients
     bini=[3; 0.0009];
 
     % The link between X and beta is specified inside modelfun given at the end
     % of the example
-    out=tBothSides(y, X,'modelfun',@modelfun,'beta0',bini,'family','BoxCox','dispresults',true);
+    out=tBothSides(y, X,'modelfun',modelfun,'beta0',bini,'family','BoxCox','dispresults',true);
 
     % Plot the original values together with estimated median regression lines
     % and 90 per cent confidence interval for fitted response.
@@ -295,54 +295,40 @@ function [out] = tBothSides(y, X, varargin)
     plot(Xsor,lowConfInt(indXsor),'r--')
     ylabel('Recruiters')
     xlabel('Spawners')
-
-    % modelfun is the function which specifies the link between X and beta
-    % This is the spawner recruiter model
-    function [yhat]=modelfun(beta, X)
-    yhat=X*beta(1).*exp(-beta(2)*X);
-    end
-
 %}
 
 
 %{
-    % Now just estimate the beta coefficents and use initial values for beta.
-    % REMARK: note that to run this example, it must be copied in a new
-    % file
+    % Example where only beta coefficents are estimated and initial values for beta are provided.
     % Initial value of beta coefficients
     bini=[3; 0.0009];
     % lambda is fixed
     la=-0.2;
-    out=tBothSides(y, X,'modelfun',@modelfun,'beta0',bini,'la',la);
     % modelfun is the function which specifies the link between X and beta
-    % This is the spawner recruiter model
-    function [yhat]=modelfun(beta, X)
-    yhat=X*beta(1).*exp(-beta(2)*X);
-    end
+    % This is the spawner recruiter model. See CR for more details.
+    modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
+    out=tBothSides(y, X,'modelfun',modelfun,'beta0',bini,'la',la);
 %}
 
 %{
     % Example of the use of option dispresults.
-    % REMARK: note that to run this example, it must be copied in a new
-    % file
-    out=tBothSides(y, X,'modelfun',@modelfun,'dispresults',true);
     % modelfun is the function which specifies the link between X and beta
-    % This is the spawner recruiter model
-    function [yhat]=modelfun(beta, X)
-    yhat=X*beta(1).*exp(-beta(2)*X);
-    end
+    % This is the spawner recruiter model. See CR for more details.
+    modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
+    out=tBothSides(y, X,'modelfun',modelfun,'dispresults',true,'beta0',bini);
+    % modelfun is the function which specifies the link between X and beta
+    %     % This is the spawner recruiter model
+    %     function [yhat]=modelfun(beta, X)
+    %     yhat=X*beta(1).*exp(-beta(2)*X);
+    %     end
 %}
 
 %{
     % Example of the use of option prolik.
-    % REMARK: note that to run this example, it must be copied in a new
-    % file
-    out=tBothSides(y, X,'modelfun',@modelfun,'prolik',true);
+    % This is the spawner recruiter model. See CR for more details.
     % modelfun is the function which specifies the link between X and beta
-    % This is the spawner recruiter model
-    function [yhat]=modelfun(beta, X)
-    yhat=X*beta(1).*exp(-beta(2)*X);
-    end
+    modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
+    out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);
 %}
 
 
