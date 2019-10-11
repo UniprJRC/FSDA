@@ -100,7 +100,7 @@ Y=head.data;
 <p>No outlier is declared using the Bonferroni threshold using raw or 
 reweuighted mcd.</p>
 <p>
-<img alt="" src="images_help/img17.jpg">
+<img alt="" src="images_help/mult_mcd01.jpg">
 </p>
 <p>
 <h3>Example 2</h3>
@@ -114,14 +114,14 @@ Y=mussels.data;
 [RAW,REW]=mcd(Y,'plots',1,'conflev',1-0.01/size(Y,1));
 </pre>
 <p>
-<img alt="" src="images_help/img1A.jpg"></p>
+<img alt="" src="images_help/mult_mcd02.jpg"></p>
 <p>&nbsp;
 </p>
 <p>
 The associated scatter plot matrices with the outliers highlighted, which are 
 produced atuomatically are shown below.</p>
 <p>
-<img alt="" src="images_help/img1C.jpg"></p>
+<img alt="" src="images_help/mult_mcd03.jpg"></p>
 &nbsp;<p>&nbsp;
 </p>
 
@@ -136,7 +136,7 @@ Y=normBoxCox(Y,1:v,la);
 [RAW,REW]=mcd(Y,'plots',1,'conflev&#39;,1-0.01/size(Y,1))</pre>
 
 <br><br>
-<img alt="" src="images_help/img20.jpg"><p>&nbsp;
+<img alt="" src="images_help/mult_mcd04.jpg"><p>&nbsp;
 </p>
 <p>The raw MCD seems to declare 6 outliers while the reweighted MCD finds just 4.</p>
 You can compare this output with that which 

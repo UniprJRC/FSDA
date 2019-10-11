@@ -69,7 +69,7 @@ fground.flabstep='';
 resfwdplot(out,'fground',fground);
 </pre>
 
-<img alt="" src="plots/loy1.jpg">
+<img alt="" src="plots/regression_fsreda01.jpg">
 <p>The monitoring residuals plot shows that there is a group of trajectories which 
 have a very large negative residual throughout all the central
 part of the search and that at the end their trajectories are completely confused
@@ -90,7 +90,7 @@ mdrplot(out);
 </pre>
 
 <p>
-<img alt="" src="plots/loy2.jpg"></p>
+<img alt="" src="plots/regression_fsreda02.jpg"></p>
 <p>&nbsp;</p>
 <p>
 <p>In order to understand the effect the last units 
@@ -108,7 +108,7 @@ enter the subset, a big sudden increase.
 </p>
 
 <p>
-<img alt="" src="plots/loy3.jpg"></p>
+<img alt="" src="plots/regression_fsreda03.jpg"></p>
 <p></p>
 <p>In order to understand what are the components of the estimated parameter vector&nbsp; 
 which are affected mostly by the introduction of the last units we can monitor in 
@@ -126,7 +126,7 @@ for j=2:size(out.Bols,2);
 end
 </pre>
 
-<p><img alt="" src="plots/loy4.jpg"></p>
+<p><img alt="" src="plots/regression_fsreda04.jpg"></p>
 <p>This plot shows that the effect of the outliers is mainly to decrease the estimated 
 coefficient&nbsp; linked to the &quot;number of visits&quot; to the supermarket.</p>
 <p>The monitoring residuals plot showed that the last observations which enter the search 
@@ -153,7 +153,7 @@ title('Normality test');
 xlabel('Subset size m');
 </pre>
 
-<p><img alt="" src="plots/loy5.jpg"></p>
+<p><img alt="" src="plots/regression_fsreda05.jpg"></p>
 
 
 <p></p>
