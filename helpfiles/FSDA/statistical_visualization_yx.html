@@ -69,12 +69,12 @@ Union (variable Destination) from a third country (variable Origin). </p>
 <p>and we plot, with all the default options, the value of the import flows against 
 the corresponding quantities: </p>
 <p><tt>yXplot(out);</tt></p>
-<p><img alt="" height="420" src="plots/yxplot1.jpg" width="561"></p>
+<p><img alt="" height="420" src="plots/statistical_visualization_yx01.jpg" width="561"></p>
 The labeled units are clearly non homogeneous with respect to the bulk of the data.
 We can specify which relevant units should be labeled with the code: <br>
 
 <p><tt>yXplot(out,&#39;selunit&#39;,[200 212 56 284 260 44 272]); </tt></p>
-<p><img alt="" height="420" src="plots/yxplot2.jpg" width="561"> </p>
+<p><img alt="" height="420" src="plots/statistical_visualization_yx02.jpg" width="561"> </p>
 <p>To get more insights on the anomalous units we use the <tt>databrush</tt> 
 option with the <tt>persist</tt> modality. </p>
 <p><tt>yXplot(out,&#39;selunit&#39;,[200 212 56 284 260 44 272],&#39;databrush&#39;,{&#39;persist&#39;,&#39;on&#39;,&#39;selectionmode&#39; 
@@ -82,11 +82,11 @@ option with the <tt>persist</tt> modality. </p>
 
 <p>We persist brushing the plot until we select the three groups 
 in the figure: </p>
-<p><img alt="" height="420" src="plots/yxplot3.jpg" width="561"> </p>
+<p><img alt="" height="420" src="plots/statistical_visualization_yx03.jpg" width="561"> </p>
 <p>Each brushing action updates the <a href="resfwdplot.html">resfwdplot</a>, which monitors the residuals 
 of the units selected in the yXplot during the forward search. The <tt>resfwdplot</tt> is 
 created automatically after the first selection.</p>
-<p><img alt="" height="420" src="plots/yxplot4.jpg" width="561"></p>
+<p><img alt="" height="420" src="plots/statistical_visualization_yx04.jpg" width="561"></p>
 <p>As one might expect, the brushed units 200 and 212 have the most deviating absolute 
 residuals. Besides, also the units 284, 260, 44, 56 and 272 have scaled residuals 
 that jump to high values at the end of the search. </p>
@@ -138,7 +138,7 @@ colfmt = {&#39;char&#39; &#39;char&#39; &#39;char&#39; &#39;char&#39; &#39;numer
 hfigtable = figure(&#39;Position&#39;, [50, 50, 600, 460],&#39;Name&#39;, &#39;Fishery data table&#39;, &#39;NumberTitle&#39;, &#39;off&#39;, &#39;MenuBar&#39;, &#39;none&#39;);
 uitable(hfigtable, &#39;Units&#39;, &#39;normalized&#39;,&#39;Position&#39;, [0.02 0.02 0.9 0.9],&#39;Data&#39;,  fisheryC,&#39;ColumnName&#39;, colnames,&#39;ColumnFormat&#39;, colfmt)
 </pre>
-<p><img alt="" height="739" src="plots/yxplot5.jpg" width="683"></p>
+<p><img alt="" height="739" src="plots/statistical_visualization_yx05.jpg" width="683"></p>
 <p>The table shows that the brushed units, which correspond to lines from 181 to 216, refer 
 all to 
 the same country of destination. This confirms that this 

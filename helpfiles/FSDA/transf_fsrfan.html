@@ -86,7 +86,7 @@ X=poison(:,1:6);
 	in this curve, just an increase in evidence against $\lambda = 1$ as each observation 
 	is introduced into the subset. The relative smoothness of the curves reflects 
 	the lack of outliers and exceptionally influential cases.</p>
-	<p><img alt="" src="plots/poison.jpg"></p>
+	<p><img alt="" src="plots/transf_fsrfan01.jpg"></p>
 	<p>Now, let us examine the order in which the units enter the subset for the different values
 	of the transformation parameter &lambda;. To this purpose the following code can be used.
 	<pre class="programlisting">
@@ -114,7 +114,7 @@ transformation has been found, small and large observations should both
 enter the search throughout, including at the end. They do so here for
 $\lambda=-0.5$. It is however surprising that these results for a random sample
 still hold when we fit a linear model to the data.	</p>
-	<p><img alt="" height="288" src="plots/imgE2.gif" width="565"></p>
+	<p><img alt="" height="288" src="plots/transf_fsrfan02.gif" width="565"></p>
 	<h3>Example 2 singly modified poison data</h3>
 	<p>For the introduction of a single outlier into the poison data we follow Andrews
 (1971) and change observation 8, one of the readings for Poison II,
@@ -150,7 +150,7 @@ Inclusion of the outlier has the largest effect on the inverse transformation.
 It is clear from the figure how this one observation is causing an appreciable
 change in the evidence for a transformation.
 	<p>
-	<img alt="" src="plots/poisonM1.jpg">&nbsp;</p>
+	<img alt="" src="plots/transf_fsrfan03.jpg">&nbsp;</p>
 	<h3>Example 3: doubly modified poison data</h3>
 	<p>The simplest example of masking is when one outlier hides the effect of
 another, so that neither is evident, even when single deletion diagnostics
@@ -186,12 +186,12 @@ effect is most clearly seen when $\lambda=1$; the outliers come in at $m = 40$ a
 For the remaining value of 0.5 one of the outliers is the last value to be
 included.</p>
 	<p>
-	<img alt="" src="plots/poisonM2.jpg">&nbsp;</p>
+	<img alt="" src="plots/transf_fsrfan04.jpg">&nbsp;</p>
 	<p>&nbsp;</p>
 	<h3>Example 4: multiply modified poison data</h3>
 	<p>We now create four artificial outliers as shown in table below.
 	<p>
-	<img src="plots/poisonM4.gif"></p>
+	<img src="plots/transf_fsrfan05.gif"></p>
 	<p>
 	
 	
@@ -209,7 +209,7 @@ y(11)=0.06;
 	is, indeed, more complicated than the plots for the singly
 modified data and for the doubly modified data,
 	<p>
-	<img alt="" src="plots/poisonM4.jpg"><p>
+	<img alt="" src="plots/transf_fsrfan06.jpg"><p>
 	Some curves are within the bounds for most subsets and then increase
 rapidly at the end: others go outside the 1% boundary, only to return at
 the end. Both forms of behaviour are associated with influential outliers.
@@ -249,21 +249,21 @@ resfwdplot(out,'selunit','2');
 beautifully indicates the structure of the data. On this scale there are the
 four outliers, observations 6, 9, 10 and 11, which enter in the last four steps
 of the forward search.<br>
-<img src="plots/poisonM4res.jpg"></p><br>
+<img src="plots/transf_fsrfan07.jpg"></p><br>
 Similarly, if we run the automatic outlier detection procedure using the following code:
 <pre class="programlisting">
 [out]=FSR(y1,X,'intercept',0);
 </pre><br>
 we can clearly spot the 4 outliers.<br>
-<img src="plots/poisonM4FSR.jpg" height="538" width="1000">
+<img src="plots/transf_fsrfan08.jpg" height="538" width="1000">
 	&nbsp;
 	
 	<p>
-	<img alt="" height="504" src="plots/poisonM4FSR1.jpg" width="1000">&nbsp;</p>
+	<img alt="" height="504" src="plots/transf_fsrfan09.jpg" width="1000">&nbsp;</p>
 	
-	<p><img src="plots/poisonM4FSR2.jpg"></p>
+	<p><img src="plots/transf_fsrfan10.jpg"></p>
 	The detailed output which appears in the command window is shown below.
-	<p><img src="plots/wpwhtimm.gif"></p>
+	<p><img src="plots/transf_fsrfan11.gif"></p>
 
 	<!-- -->
 	<!-- -->
