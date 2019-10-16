@@ -113,9 +113,9 @@ The resulting plot of the four forward t-statistics is in Figure below.
 </p>
 
 <pre class="programlisting">
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 % Compute forward added T tests
 [out]=FSRaddt(y1,X,'plots',1,'quant',[0.025 0.975]);
 </pre>
