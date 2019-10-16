@@ -915,16 +915,16 @@ if isstruct(noisevars) || ~isempty(noisevars)
         
         if strcmp(distributioni(1),'T') || strcmp(distributioni(1),'t')
             nu=str2double(distributioni(2:end));
-            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(trnd(nu, n + noiseunits,  number(ii)));
+            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescaleFS(trnd(nu, n + noiseunits,  number(ii)));
         elseif strcmp(distributioni,'norm') || strcmp(distributioni,'normal')
             % data generated from the normal distribution rescaled in the
             % interval [0 1]
-            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(randn(n + noiseunits,  number(ii)));
+            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescaleFS(randn(n + noiseunits,  number(ii)));
         elseif strcmp(distributioni,'uniform')
             rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rand(n + noiseunits,  number(ii));
         elseif strcmp(distributioni(1:9),'Chisquare')
             nu=str2double(distributioni(10:end));
-            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescale(chi2rnd(nu, n + noiseunits,  number(ii)));
+            rrr(:,sum(number(1:ii-1))+1:sum(number(1:ii))) = rescaleFS(chi2rnd(nu, n + noiseunits,  number(ii)));
         else
             error('FSDA:simdatasetreg:WrongDistrib','Variable distribution type not supported')
         end
@@ -1004,16 +1004,16 @@ end
         % generate y values rrally
         if strcmp(typeout(1),'T') || strcmp(typeout(1),'t')
             nuT=str2double(typeout(2:end));
-            rrally = rescale(trnd(nuT, maxiter1, 1));
+            rrally = rescaleFS(trnd(nuT, maxiter1, 1));
         elseif strcmp(typeout(1:4),'norm')
-            rrally = rescale(randn(maxiter1,1));
+            rrally = rescaleFS(randn(maxiter1,1));
         elseif strcmp(typeout(1:4),'unif')
             rrally = rand(maxiter1,1);
         elseif   strcmp(typeout,'by_comp')
             %rrally = rand(maxiter1,1);
         elseif strcmp(typeout(1:9),'Chisquare')
             nuC=str2double(typeout(10:end));
-            rrally = rescale(chi2rnd(nuC,maxiter1,1));
+            rrally = rescaleFS(chi2rnd(nuC,maxiter1,1));
         elseif   strcmp(typeout,'pointmass')
             rrally=rand(maxiter1,1);
         elseif   strcmp(typeout,'componentwise')

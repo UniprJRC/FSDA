@@ -1062,7 +1062,7 @@ if ~isempty(options.bground)
             % Set to degrading faint blue the color of the 'unimportant
             % trajectories'. Note that stdColor above is 'b', i.e. [0 0 1],
             % and that cyan is [0 1 1].
-            Z = rescale(nanmean(abs(statistic),2),1,0);
+            Z = rescaleFS(nanmean(abs(statistic),2),1,0);
             colormapstat = num2cell(colormap([zeros(n,1) Z ones(n,1)]),2);
             set(plot1(backunits),{'Color'},colormapstat(backunits,:));
         case 'hide'
