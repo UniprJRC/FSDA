@@ -15,7 +15,7 @@ y=wool(:,4);
 X=wool(:,1:3);
 % The line below shows the plot of mdr
 [out]=FSR(y,X,'nsamp',0,'plots',1);
-MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.29 seconds 
+MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.18 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 -------------------------
@@ -64,9 +64,9 @@ text(v(1)*ones(length(quantplo),1),ninv',strcat(num2str(100*quantplo'),'%'));
 title(['Resuperimposed envelope n=' num2str(jn0)]);
 end</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with Hospital Data.</li></span></a></span></h3><div class="collapse"><p>
      Comparison of resuperimposing envelopes using mdr coordinates and normal
-     coordinates at particular steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hospital.txt');
-y=hospital(:,5);
-X=hospital(:,1:4);
+     coordinates at particular steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hospitalFS.txt');
+y=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 % exploratory analysis through the yXplot
 out=FSR(y,X,'nsamp',20000,'plots',2,'lms',0);
 n0=[54 58 62 63];

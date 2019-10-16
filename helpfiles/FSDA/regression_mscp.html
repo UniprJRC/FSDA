@@ -100,9 +100,9 @@ Robust Forward Variable Selection using Added t tests. We add other four noise v
 perform model selection.</p>
 
 <pre class="programlisting">
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 % Compute forward added T tests
 out=FSRms(y1,[X rand(size(X))],'plots',1)
 </pre>

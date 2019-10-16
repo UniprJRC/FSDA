@@ -139,9 +139,9 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
     % Example with Hospital Data.
     % Comparison of resuperimposing envelopes using mdr coordinates and normal
     % coordinates at particular steps.
-    load('hospital.txt');
-    y=hospital(:,5);
-    X=hospital(:,1:4);
+    load('hospitalFS.txt');
+    y=hospitalFS(:,5);
+    X=hospitalFS(:,1:4);
     % exploratory analysis through the yXplot
     out=FSR(y,X,'nsamp',20000,'plots',2,'lms',0);
 

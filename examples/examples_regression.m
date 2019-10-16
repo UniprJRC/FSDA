@@ -703,17 +703,17 @@ FSRaddt(log(y),X,'plots',1,'quant',[0.025 0.975],'titl','Log scale');
 %% SP (Hospital data): fan plot
 % Load logged hospital data
 clearvars;close all;
-load('hospital.txt');
-y=exp(hospital(:,5));
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y=exp(hospitalFS(:,5));
+X=hospitalFS(:,1:4);
 % Fan plot
 [outs]=FSRfan(y,X,'nsamp',10000,'plots',1);
 
 %% SP: yX plot for the 2 hospitals
 clearvars;close all;
-load('hospital.txt');
-y=exp(hospital(:,5));
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y=exp(hospitalFS(:,5));
+X=hospitalFS(:,1:4);
 
 y1=log(y);
 n=length(y);
@@ -736,9 +736,9 @@ set(H(:,:,2),'DisplayName','Second hospital');
 
 %% SP: Fwd search with EDA purposes
 clearvars;close all;
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 [out]=LXS(y1,X,'nsamp',10000,'lms',0);
 [out1]=FSReda(y1,X,out.bs);
 % The plot of minimum deletion residual shows a peak out of the envelope in
@@ -748,9 +748,9 @@ mdrplot(out1,'quant',[0.01 0.5 0.99 0.9999 0.99999],'ylimy',[1 5],'lwdenv',2,'xl
 %% SP: persistent brushing starting from the plot of minimum deletion residual
 % Interactive_example
 clearvars;close all;
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 [out]=LXS(y1,X,'nsamp',10000,'lms',0);
 [out1]=FSReda(y1,X,out.bs);
 
@@ -763,9 +763,9 @@ mdrplot(out1,'databrush',databrush);
 
 %% SP: automatic outlier detection procedure based on FS
 clearvars;close all;
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 [out]=LXS(y1,X,'nsamp',10000,'lms',0); 
 fieldnames(out)
 % [out1]=FSReda(y1,X,out.bs);
@@ -774,9 +774,9 @@ fieldnames(outFS)
 
 %% SP: analysis using LMS and LTS
 clearvars;close all;
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 
 % Define nominal confidence level
 conflev=[0.99 1-0.01/length(y1)];
@@ -814,9 +814,9 @@ resindexplot(outLTSr.residuals,'h',h4,'title',titl,'laby',laby,'numlab','','conf
 
 %% SD: analysis using S estimators with 2 values of breakdown point 
 clearvars;close all;
-load('hospital.txt');
-y=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 % Simulataneous confidence level
 conflev = 1- 0.01/length(y);
 
@@ -838,9 +838,9 @@ ylabel(['Breakdown point =' num2str(bdp)])
 
 %% SP: analysis using MM estimators 
 clearvars;close all;
-load('hospital.txt');
-y=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 [out]=MMreg(y,X,'eff',0.85);
 % Simulataneous confidence level
 conflev = 1- 0.01/length(y);
@@ -849,9 +849,9 @@ resindexplot(out,'conflev',conflev);
 
 %% SP: variable selection using added t-tests
 clearvars;close all;
-load('hospital.txt');
-y1=hospital(:,5);
-X=hospital(:,1:4);
+load('hospitalFS.txt');
+y1=hospitalFS(:,5);
+X=hospitalFS(:,1:4);
 
 [outFS]=FSRaddt(y1,X,'init',20,'lms',0,'plots',1);
 fieldnames(outFS)
