@@ -1,5 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<jenkins.model.JenkinsLocationConfiguration>
-  <adminAddress>FSDA Server Admin &lt;toolboxfs@unipr.it&gt;</adminAddress>
-  <jenkinsUrl>http://160.78.46.112:8080/jenkins/</jenkinsUrl>
-</jenkins.model.JenkinsLocationConfiguration>
