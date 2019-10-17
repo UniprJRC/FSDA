@@ -1,36 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>vervaatsim</title> <meta content="refpage" name="chunktype"><meta content="function:vervaatsim " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="vervaatsim Returns a Vervaat perpetuity" itemprop="description" name="description" /><h1 itemprop="title">vervaatsim</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/vervaatsim.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/vervaatsim.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/vervaatsim.html">http://rosa.unipr.it/FSDA/vervaatsim.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: vervaatsim</em></p><h1 itemprop="title">vervaatsim</h1><P>Returns a Vervaat perpetuity</P><h2>Description</h2><P>This function allows to simulate exactly from a Vervaat perpetuity
- distribution with parameter $\beta \in (0,+\infty)$. The simulation
- method, by K. Cloud, M. Huber (2018), is accurate and very efficient: it
- is $\mathcal{O}(\beta \log(\beta))$, in the sense that it uses $T$
- uniform random variates, where $\mathbf{E}[T] \le \mathcal{O}(\beta
- \log(\beta))$. Therefore the algorithm is good even for $\beta \gg 1$.
- Remark: this function is recursive and cannot be easily extended to
- the generation of several vervaat numbers.
-
- The FSDA code has been translated from the R version of the authors.
- Below we give briefly some definitions, background and motivations. In
- the references, we also include several key works on the distribution.</P><h2>More About</h2><P>
- A perpetuity is a random variable of the form:
- \[ Y = W_1 + W_1 \cdot W_2 + W_1 \cdot W_2 \cdot W_3 + \ldots \]
- where the $W_i$ are an independent, identically distributed (iid)
- sequence of random variables. If each $W_i$ has the same distribution,
- say $W_i \sim W$, then $Y \sim W(1 + Y)$ for $Y$ and $W$ independent.
-
- We are interested in this distribution because the running time of the
- Quickselect algorithm of Hoare, for finding the order statistics in a
- numerical array, approaches asymptotically a particular perpetuity,
- called Dickman distribution, with $W \sim Unif([0,1])$. Unfortunately
- such distribution has no closed form.
-
- The Dickman distribution can be also seen as a special case of Vervaat
- perpetuity, which is such that $W_i \sim U^{1/\beta}$ for some $\beta
- \in (0,\infty)$ for $U \sim Unif([0,1])$. In other words, the Dickman
- distributon is a Vervaat perpetutiy with $\beta = 1$.
-
- A generalization of the perpetuity takes the form \[ Y =
- \sum_{n=0}^{\infty}A_n \prod_{i}^{n} W_i\] with $A_n$ not necessarily
- equal to $1$, which is known as Takacs distribution. 
-
-
-</P><h2>References</h2><P>Cloud, K. and Huber, M. (2018), Fast Perfect Simulation of Vervaat
- Perpetuities, "Journal of Complexity", Vol. 42, pp. 19-30.</P></html>

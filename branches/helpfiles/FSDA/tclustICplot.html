@@ -1,183 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustICplot</title><meta content="refpage" name="chunktype"><meta content="function:tclustICplot" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustICplot plots information criterion as a function of c and k." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustICplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Plot BIC, ICL and CLA for for Geyser data with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of option datatooltip (all default options).</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of the use of option datatooltip (personalized options).</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</a></li><li><a class="intrnllnk" href="#ExtraExample_3"><i>Interactive example 1.</i>
-     databrushing from the ICplot.</a></li><li><a class="intrnllnk" href="#ExtraExample_4"><i>Interactive example 2.</i>
-     Repeated databrushing from the ICplot.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_IC">IC</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameY">nameY</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustICplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustICplot plots information criterion as a function of c and k</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">tclustICplot(IC)</code><span class="syntax_example"><a class="intrnllnk" href="tclustICplot.html#Example_1">example</a></span></li><li><code class="synopsis">tclustICplot(IC,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustICplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustICplot takes as input the output of function tclustIC (that is a
-   series of matrices which contain the values of the information criteria
-   BIC/ICL/CLA for different values of k and c) and plots them as function
-   of c or of k. The plot enables interaction in the sense that, if option
-   databrush has been activated, it is possible to click on a point in the
-   plot and to see the associated classification in the scatter plot
-   matrix.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code>tclustICplot(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>)</code></span>Plot BIC, ICL and CLA for for Geyser data with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>tclustICplot(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of option datatooltip (all default options).</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot BIC, ICL and CLA for for Geyser data with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
-% Make sure (whenever possible) that units 15, 30 and 69 are inside
-% groups which have labels respectively equal to 1, 2 and 3.
-UnitsSameGroup=[15 30 69];
-out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out)</pre></div></div><pre class="codeoutput">k=1
-k=2
-k=3
-k=4
-k=5
-</pre><img vspace="5" hspace="5" src="images\tclustICplot_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICplot_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
-       Gives the user the possibility of clicking on the different points
-       and have information about
-       1) value of k which has been selected
-       2) value of c which has been selected
-       3) values of the information criterion
-       4) frequency distribution of the associated classification<div class="programlisting"><div class="codeinput"><pre class="matlab-code">tclustICplot(out,'datatooltip',1);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip (personalized options).</li></span></a></span></h3><div class="collapse"><p>
-     Gives the user the possibility of clicking on the different points
-     and have information about the selected, the step of entry
-     into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">datatooltip = struct;
-% In this example the style of the datatooltip is 'datatip'. Click on a
-% point when the ICplot is displayed.
-%
-datatooltip.DisplayStyle = 'datatip';
-tclustICplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">tclustICplot(out,'whichIC','ALL')</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-     databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Use all default options for databrush (brush just once)
-tclustICplot(out,'databrush',1)</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-     Repeated databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% enable repeated brushing and show boxplots of groups inside diag of spm
-databrush=struct;
-% Set the shape of the brush
-databrush.selectionmode='Rect';
-% Enable repeated brushing
-databrush.persist='on';
-% Include x and y coordinates of brushed solutions inside ICplot
-databrush.Label='on';
-% Remove x and y coordinated just after btushing
-databrush.RemoveLabels='on';
-% show boxplots of the groups instead of histograms on the main
-% diagonal of the spm
-databrush.dispopt='box';
-tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
-        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>matrix of size length(kk)-times
-                   length(cc) containinig the values of the penalized
-                   classification likelihood (CLA).</p> <p>
-                   This field is linked with
-                   out.IDXCLA.</p></p></td></tr><tr valign="top"><td><code>IDXCLA</code></td><td><p><p>cell of size length(kk)-times
-                   length(cc). Each element of the cell is a vector of
-                   length n containinig the assignment of each unit using
-                   the classification model.</p> <p>
-                Remark: fields CLACLA and IDXCLA are linked together.</p><p>
-                   CLACLA and IDXCLA are compulsory just if optional input
-                   argument 'whichIC' is 'CLACLA' or 'ALL'</p></p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p>matrix of size length(kk)-times
-                   length(cc) containinig the value of the penalized
-                   mixture likelihood (BIC). This field is linked with
-                   out.IDXMIX.</p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>matrix of size length(kk)-times
-                   length(cc) containinig the value of the ICL. This field
-                   is linked with out.IDXMIX.</p></td></tr><tr valign="top"><td><code>IDXMIX</code></td><td><p><p>cell of size length(kk)-times
-                   length(cc). Each element of the cell is a vector of
-                   length n containinig the assignment of each unit using
-                   the mixture model.</p> <p>
-                Remark 1: fields MIXMIX and IDXMIX are linked together.</p> <p>
-                   MIXMIX and IDXMIX are compulsory just if optional input
-                   argument 'whichIC' is 'CLACLA' or 'ALL'.</p> <p>
-                Remark 2: fields MIXCLA and IDXMIX are linked together.</p><p>
-                   MIXCLA and IDXMIX are compulsory just if optional input
-                   argument 'whichIC' is 'MIXCLA' or 'ALL'.</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
-                   components) which have been considered.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the
-                   restriction factor) which have been considered.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>original n-times-v data matrix on which the IC
-                   (Information criterion) has
-                    been computed</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell of length(size(Y,2)) containing the names
-                   of the variables of original matrix Y</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'whichIC','ALL'
-</code>,<code> 'tag','myplot'
-</code>,<code> 'datatooltip',''
-</code>,<code> 'databrush',1
-</code>,<code> 'nameY',{'myY1', 'myY2'}
-</code></code></span></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;character which specifies the information criterion to use
-               in the plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values for whichIC are:</p> <p>
-               'CLACLA' = in this case best solutions are referred to
-                   the classification likelihood.</p> <p>
-               'MIXMIX'  = in this case in this case best solutions are
-                   referred to the mixture likelihood (BIC).</p> <p>
-               'MIXCLA'  = in this case in this case best solutions are
-                   referred to ICL.</p> <p>
-               'ALL'  = in this case best solutions both three solutions using
-                     classification and mixture likelihood are produced.</p> <p>
-                   In output structure out all the three matrices
-                   out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.</p><p>
-               The default value of 'whichIC' is 'ALL'
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'whichIC','ALL'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Personalized tag.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the
-                   handle of the plot which is about to be created. The
-                   default is to use tag 'pl_IC'.</p> <p>
-                   Note that if the program finds a plot which has a tag
-                   equal to the one specified by the user, then the output
-                   of the new plot overwrites the existing one in the same
-                   window else a new window is created.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','myplot'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=''.</p> <p>
-                   If datatooltip = 1, the user can select with the
-                   mouse a solution in order to
-                   have the following information:</p><p>
-                   1) value of k which has been selected
-                   2) value of c which has been selected
-                   3) values of the information criterion
-                   4) frequency distribution of the associated
-                   classification
-                   If datatooltip is a structure it may contain the
-                   following the fields
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>DisplayStyle</code></td><td><p><p>Determines how the data
-                       cursor displays. datatip | window.</p> <p>
-                       - datatip displays data cursor
-                       information in a small yellow text box attached to a
-                       black square marker at a data point you interactively
-                       select.</p><p>
-                       - window displays data cursor information for the
-                       data point you interactively select in a floating
-                       window within the figure.</p></p></td></tr><tr valign="top"><td><code>SnapToDataVertex</code></td><td><p><p>Specifies whether the
-                       data cursor snaps to the nearest data value or is
-                       located at the actual pointer position.  on | off.</p> <p>
-                       - on data cursor snaps to the nearest data value
-                       - off data cursor is located at the actual pointer
-                       position.</p><p>
-                   (see the MATLAB function datacursormode or the examples
-                   below). Default values are datatooltip.DisplayStyle =
-                   'Window' and datatooltip.SnapToDataVertex = 'on'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
-                   is done.</p> <p>
-                   The activation of this option (databrush is a scalar or
-                   a structure) enables the user  to select a set of
-                   values of IC in the current plot and to see the
-                   corresponding classification highlighted in the scatter
-                   plot matrix (spm).</p> <p>
-                   If spm does not exist it is automatically created.</p> <p>
-                   Please, note that the window style of the other figures is set
-                   equal to that which contains the IC
-                   plot. In other words, if the IC plot
-                   is docked all the other figures will be docked too.</p> <p>
-                   DATABRUSH IS A SCALAR.</p> <p>
-                   If databrush is a scalar the default selection tool is
-                   a rectangular brush and it is possible to brush only
-                   once (that is persist='').</p> <p>
-                   DATABRUSH IS A STRUCTURE.</p> <p>
-                   If databrush is a structure, it is possible to use all
-                   optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following optional arguments:</p> <p>
-                   - databrush.persist = repeated brushing enabled. Persist is an empty value or a scalar
-                     containing the strings 'on' or 'off'.</p> <p>
-                     The default value of persist is '', that is brushing
-                     is allowed only once.</p> <p>
-                     If persist is 'on' or 'off' brushing can be done as
-                     many time as the user requires.</p> <p>
-                     If persist='on' then the unit(s) currently brushed
-                     are added to those previously brushed. it is
-                     possible, every time a new brushing is done, to use a
-                     different color for the brushed solutions.</p> <p>
-                     If persist='off' every time a new brush is performed
-                     units previously brushed are removed.</p> <p>
-                   - databrush.Label = add labels (i.e. x=value of k and
-                      y=values of IC) of brushed solutions in the ICplot.</p> <p>
-                     Character. [] (default) | '1'.</p> <p>
-                   - dispopt = string which controls how to fill the
-                      diagonals in the scatterplot matrix of the brushed
-                      solutions. Set dispopt to 'hist' (default) to plot
-                      histograms, or 'box' to plot boxplots.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array.</span></span></h3><div class="collapse">	<p><p>Cell array of strings
-                   containing the labels of the
-                   variables. As default value, the labels which are added
-                   are Y1, ..., Yv.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'myY1', 'myY2'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
- Finding the Number of Groups in Model-Based Clustering via Constrained
- Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
- <a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
- Classification", Vol. 2, pp. 193-218.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

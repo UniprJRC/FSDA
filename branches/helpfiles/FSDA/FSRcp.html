@@ -1,310 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRcp</title><meta content="refpage" name="chunktype"><meta content="function:FSRcp" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRcp monitors Cp and AIC for all models of interest of size smallp." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRcp</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRcp with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRcp with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Use labels defined by the user.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Extract and show the trajectories of all models of size 4 of Cp.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Extract the best models of size 5 and plot monitoring of Cp.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Extract the best models of size 6 and 5 and plot monitoring of Cp.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Customizing the graphical options.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_smallp">smallp</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nomes">nomes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_aic">aic</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labels">labels</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_fin_step">fin_step</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_first_k">first_k</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Excl">Excl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ExclThresh">ExclThresh</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labout">labout</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_quant">quant</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_steps">steps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_titl">titl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labx">labx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_laby">laby</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlimx">xlimx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylimy">ylimy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwd">lwd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwdenv">lwdenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_FontSize">FontSize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SizeAxesNum">SizeAxesNum</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selunitcolor">selunitcolor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_selunittype">selunittype</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_outCp">outCp</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRcp</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRcp monitors Cp and AIC for all models of interest of size smallp</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">outCp=FSRcp(y,X,smallp)</code><span class="syntax_example"><a class="intrnllnk" href="FSRcp.html#Example_1">example</a></span></li><li><code class="synopsis">outCp=FSRcp(y,X,smallp,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRcp.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRcp.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_outCp"><code>outCp</code></a>=FSRcp(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_smallp"><code>smallp</code></a>)</code></span>FSRcp with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRcp.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_outCp"><code>outCp</code></a>=FSRcp(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_smallp"><code>smallp</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRcp with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRcp with all default options.</li></span></a></span></h3><div class="collapse"><p>
-     Extract the best models of size 4.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Common part to all examples: load Ozone dataset.
-X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=4;
-[Cpmon]=FSRcp(y,X,smallp);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRcp with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-     Extract the best models of size 4, and show the plot
-     of forward Cp.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=4;
-[outCp]=FSRcp(y,X,smallp,'plots',1);</pre></div></div><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRcp_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRcp_03.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Use labels defined by the user.</li></span></a></span></h3><div class="collapse"><p>
-     Extract the best models of size 4 and show the plot of Cp. All the
-     default options are used, apart from labels, therefore the plot of Cp
-     and the output matrix Cpmon.MAL only contains the searches associated
-     with the smallest 3 values of Cp in the last 16 steps of the search.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=4;
-labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extract and show the trajectories of all models of size 4 of Cp.</li></span></a></span></h3><div class="collapse"><p>
-     Notice that in this last case the forward plot becomes
-     unreadable.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=4;
-[Cpmon]=FSRcp(y,X,smallp,'plots',1,'fin_step','');</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extract the best models of size 5 and plot monitoring of Cp.</li></span></a></span></h3><div class="collapse"><p>
-     Extract 1000 subsets to initialize the search and use labels defined
-     by the user.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=5;
-labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpmon]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Extract the best models of size 6 and 5 and plot monitoring of Cp.</li></span></a></span></h3><div class="collapse"><p>
-     Extract 1000 subsets to initialize the search andse labels defined by
-     the user. Exclude the searches of the models which were unacceptable
-     for smallp=5.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-smallp=6;
-labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);
-smallp=5;
-[Cpmon5]=FSRcp(y,X,smallp,'nsamp',1000,'Excl',Cpmon6.Ajout,'plots',1,'labels',labels);</pre></div></div><img vspace="5" hspace="5" src="images\FSRcp_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRcp_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRcp_03.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Customizing the graphical options.</li></span></a></span></h3><div class="collapse"><p>
-     In the following example we play with the graphical options<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
-% Transform the response using logs
-X(:,end)=log(X(:,end));
-% Add a time trend
-X=[(-40:39)' X];
-% Define y
-y=X(:,end);
-% Define X
-X=X(:,1:end-1);
-labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
-               Missing values (NaN's) and infinite values (Inf's) are
-               allowed, since observations (rows) with missing or infinite
-               values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory variables (also called
-               'regressors') of dimension (n x (bigP-1)).</p> <p>
-               The intercept will be added in automatic way, so that the
-               dimension of the full model is bigP
-               Rows of X represent observations, and columns represent
-               variables. Missing values (NaN's) and infinite values
-               (Inf's) are allowed, since observations (rows) with missing
-               or infinite values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_smallp" class="clearfix"> </div> <h3 id="input_argument_smallp" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>smallp</code> &#8212; number of variables in the reduced models. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Scalar
-               which specifies the number of variables in the
-               reduced models which will be considered. For example if
-               smallp=3, all possible subsets containing 2 columns of
-               matrix X will be considered. Notice that the dimension of
-               each submodel is 3 because to each submodel the column of
-               ones is added automatically.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
-</code>,<code> 'nocheck',1
-</code>,<code> 'h',3
-</code>,<code> 'lms',1
-</code>,<code> 'lms',1
-</code>,<code> 'nsamp',1000
-</code>,<code> 'init',100 starts monitoring from step m=100
-</code>,<code> 'aic',1
-</code>,<code> 'labels',{'Time','1','2','3','4','5','6','7','8'}
-</code>,<code> 'fin_step',1
-</code>,<code> 'first_k',5
-</code>,<code> 'Excl',[23; 24]
-</code>,<code> 'ExclThresh',0.6
-</code>,<code> 'plots',1
-</code>,<code> 'labout',1
-</code>,<code> 'quant',0.1
-</code>,<code> 'steps',[4 8]
-</code>,<code> 'titl','my title'
-</code>,<code> 'labx','my label'
-</code>,<code> 'laby','my label'
-</code>,<code> 'xlimx',[0 1]
-</code>,<code> 'ylimx',[0 1]
-</code>,<code> 'linewidth',6
-</code>,<code> 'lwdenv',6
-</code>,<code> 'FontSize',20
-</code>,<code> 'SizeAxesNum',30
-</code>,<code> 'selunitcolor',{'b';'g';'r'}
-</code>,<code> 'selunittype',{'-';'--';':';'-.'}
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-                       else no constant term will be included.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
-                       matrix y and matrix X. Note that y and X are left
-                       unchanged. In other words the additioanl column of ones
-                       for the intercept is not added. As default nocheck=1.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;number of observations that have determined the least
-                       trimmed squares estimator.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p>h is an integer greater than
-                       smallp+1 but smaller then n. The default value of h is
-                       [(n+smallp+1)/2]
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',3
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal  subset to
-                       initialize the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
-                       computed, else Least Trimmed of Squares is computed.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nomes" class="clearfix"></div><h3 id="input_argument_namevalue_nomes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nomes</code> &#8212;Displaying time message.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nomes is equal to 1 (default) no message about
-                       estimated time to compute LMS (LTS) for each considered
-                       model is displayed, else a message about estimated time
-                       is displayed.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
-                       robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted.</p> <p>
-                       They will be (n choose smallp).</p> <p>
-                                              Remark: if the number of all possible subset is &lt;1000 the
-                       default is to extract all subsets otherwise just 1000.</p><p>
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
-                       monitoring the required quantities, if init is not
-                       specified it will be set equal to
-                       smallp+1, if the sample size is smaller than 40;</p> <p>
-                       min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.</p><p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_aic" class="clearfix"></div><h3 id="input_argument_namevalue_aic" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>aic</code> &#8212;Akaike's information criterion.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If aic=1 the value of AIC is also stored in each
-                       step of the search else (default) only Mallows Cp is stored
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'aic',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_labels" class="clearfix"></div><h3 id="input_argument_namevalue_labels" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labels</code> &#8212;names of the explanatory variables.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>Cell array of strings of length bigP-1 containing the  names of the explanatory variables.</p> <p>
-                       If labels is a missing  value the following sequence of strings will be
-                       automatically created for X
-                      (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labels',{'Time','1','2','3','4','5','6','7','8'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_fin_step" class="clearfix"></div><h3 id="input_argument_namevalue_fin_step" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fin_step</code> &#8212;portion of the search which has to be
-                 monitored to choose the best models.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If fin_step is an integer greater
-                 or equal 1, it refers to the number of steps.</p> <p>
-                 For example if fin_step=10 the program considers the last
-                 10 steps to choose the best models.</p> <p>
-                 If fin_step is a real number alpha (0&lt;alpha&lt;0.5) in the
-                 interval (0 0.5] than the program considers the last
-                 round(n*alpha) steps. As default fin_step=round(n*0.2)
-                 that is the last 20% of the steps are considered.</p> <p>
-                                        Remark1: the number of best models to consider is
-                 controlled by scalar first_k (see below).</p> <p>
-                 Remark2: if fin_step is an empty value, no selection is
-                 done and all trajectories of Cp are displayed (in this
-                 case the value of first_k below is ignored, all models are
-                 considered of interest and output matrix outCp.Ajout is
-                 equal to an empty value).</p><p>
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fin_step',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_first_k" class="clearfix"></div><h3 id="input_argument_namevalue_first_k" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>first_k</code> &#8212;number of best models to
-                      consider in each of the last fin_step.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>For example if first_k=5 in each of the last fin_step, the models which had
-                       the 5 smallest values of Cp are considered. As default
-                       first_k=3
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'first_k',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Excl" class="clearfix"></div><h3 id="input_argument_namevalue_Excl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Excl</code> &#8212;Matrix which contains the models which surely do not have
-                 to be considered.</span></a><span class="example_desc">matrix.</span></span></h3><div class="collapse">	<p>As default Excl=''
-                   For example if smallp=3, bigP=6 and
-                   Excl = [23; 24; 27]; the three models 23, 24, and 27 are skipped
-                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Excl',[23; 24]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ExclThresh" class="clearfix"></div><h3 id="input_argument_namevalue_ExclThresh" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ExclThresh</code> &#8212;Exclusion threshold.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Exclusion threshold associated to the upper
-                 percentage point of the F distribution of Cp which
-                 defines the threshold for declaring models as unuseful.</p> <p>
-                 The default value of ExclThresh is 0.99999 that is the
-                 models whose minimum value of Cp in the part of the
-                 search defined by fin_step is above ExclThresh are stored
-                 in output matrix outCp.Ajout. Notice that ExclThresh must
-                 be smaller than 1
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ExclThresh',0.6
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If plots==1 a plot is created on the screen which
-                 contains the trajectories of Cp monitored along the
-                 search with confidence bands
-                 If plots==2 two plots are generated. The first contains
-                 the trajectories of Cp monitored along the search with
-                 confidence bands. The second contains the trajectories of
-                 AIC monitored along the search
-                 else (default) no plot is shown on the screen
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_labout" class="clearfix"></div><h3 id="input_argument_namevalue_labout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labout</code> &#8212;If labout=1 the output LABOUT contains the list of models
-                 whose Cp values are inacceptable.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default: no
-                 model is created.</p> <p>
-                                  Remark: the options below only work if plots is equal 1.</p><p>
-
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labout',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_quant" class="clearfix"></div><h3 id="input_argument_namevalue_quant" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>quant</code> &#8212;It specifies the quantiles which are used to
-                 produce Cp envelopes.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The elements of quant are numbers
-                 between 0 and 1. The default value of quant is
-                 quant=[0.025 0.5 0.975];</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'quant',0.1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_steps" class="clearfix"></div><h3 id="input_argument_namevalue_steps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>steps</code> &#8212;Steps to add labels.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies in which steps of the plot which
-                 monitors Cp it is necessary to include the labels of the
-                 models which have been previously chosen.</p> <p> 
-                 The default is to write the labels of the models in steps
-                 round([n*0.6  n*0.8  n]);</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'steps',[4 8]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;a label for the title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default is ['Forward Cp' p= num2str(smallp)]
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','my title'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labx" class="clearfix"></div><h3 id="input_argument_namevalue_labx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labx</code> &#8212;a label for the x-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default: 'Subset size m'
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labx','my label'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_laby" class="clearfix"></div><h3 id="input_argument_namevalue_laby" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>laby</code> &#8212;a label for the y-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default:''
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laby','my label'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;minimum and maximum on the x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimx',[0 1]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;minimum and maximum on the y axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is '' (automatic scale)
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimx',[0 1]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwd" class="clearfix"></div><h3 id="input_argument_namevalue_lwd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwd</code> &#8212;linewidth of the curves which contain the score test.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default line width=2
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'linewidth',6
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwdenv" class="clearfix"></div><h3 id="input_argument_namevalue_lwdenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwdenv</code> &#8212;width of the lines associated
-                 with the envelopes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default is lwdenv=1
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdenv',6
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;font size of the labels of
-                 the axes and of the labels inside the plot.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default value is 12
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',20
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;size of the numbers of the axes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Default value is 10
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',30
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_selunitcolor" class="clearfix"></div><h3 id="input_argument_namevalue_selunitcolor" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>selunitcolor</code> &#8212;colors to be used for the Cp trajectories.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>If selunittype is not specified or if
-                 it is an empty value default Matlab colors are used.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'selunitcolor',{'b';'g';'r'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_selunittype" class="clearfix"></div><h3 id="input_argument_namevalue_selunittype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>selunittype</code> &#8212;line types of the Cp trajectories.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>If selunittype is not specified or if
-                 it is an empty value all possible line styles are used.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'selunittype',{'-';'--';':';'-.'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outCp" class="clearfix"></div><h3 id="output_argument_outCp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outCp</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
-
- </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MAL</code></td><td><p><p>(n-init+1) x (k+1) matrix.</p> <p>
-                 Mallows Cp monitored along the search:</p> <p>
-                   1st col is fwd search index;</p> <p>
-                   2nd col is associated with first selected model;</p> <p>
-                   3rd col is associated with second selected model;</p> <p>
-                   ...;</p> <p>
-                   (k+1)th col is associated with k-th selected model.</p><p>
-                   Notice that k&lt;=(n choose smallp) and that all
-                   models contain the constant.</p></p></td></tr><tr valign="top"><td><code>AIC</code></td><td><p><p>(n-init+1) x (k+1) matrix.</p> <p>
-                AIC monitored along the search:</p> <p>
-                   1st col is fwd search index;</p> <p>
-                   2nd col is associated with first selected model;</p> <p>
-                   3rd col is associated with second selected model;</p> <p>
-                   ...;</p> <p>
-                   (k+1)th col is associated with k-th selected model.</p> <p>
-                   Remark 1: k&lt;=(n choose smallp).</p> <p>
-                   Remark 2: all models contain the constant.</p><p>
-                   Remark 3: matrix AIC is produced only if input option
-                   aic=1.</p></p></td></tr><tr valign="top"><td><code>UnAll</code></td><td><p><p>cell of dimension k. Each element of the cell is a
-                   (n-init) x 11 matrix containing the unit(s) included
-                   in the subset at each step of the search.</p> <p>
-                   REMARK: in every step the new subset is compared with the old
-                   subset. Un contains the unit(s) present in the new
-                   subset but not in the old one.</p></p></td></tr><tr valign="top"><td><code>LAB</code></td><td><p>cell array of strings of length k containing the labels of the
-                   models which have been extracted. First element of LAB
-                   is associated with second column of matrix MAL...</p></td></tr><tr valign="top"><td><code>Ajout</code></td><td><p><p>numeric matrix which contains the list of the models whose Cp
-                   values are inacceptable.</p> <p>
-                   The number of columns of matrix Ajout is equal to
-                   smallp-1
-                   This information is useful because in this way it is
-                   possible to skip the computation of the submodels of
-                   the rows of matrix Ajout.</p><p>
-                   For example if smallp=3, bigP=6 and
-                   Ajout = [ 23; 24; 27 ]
-                   the three models 23, 24, and 27 always have Cp values
-                   much greater than the threshold (that is variables
-                   2,3,4,7 are considered unimportant).</p></p></td></tr><tr valign="top"><td><code>LABout</code></td><td><p><p>cell array of strings which contains as
-                   strings the list of models which are unacceptable.</p> <p>
-                   LABout is created only if input option labout=1.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2008), A robust and diagnostic information
- criterion for selecting regression models, "Journal of the Japan
- Statistical Society", Vol. 38, pp. 3-14.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span> | <span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

@@ -1,175 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRr</title><meta content="refpage" name="chunktype"><meta content="function:FSRr" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Forward search in linear regression reweighted." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRr</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of outlier detection in a case of almost perfect fit: all default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of outlier detection in a case of almost perfect fit.</a></li><li><a class="intrnllnk" href="#Example_3">Use of FSRr in a real dataset from international trade.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Comparing LTS, FSR and FSRr on the international trade dataset.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_R2th">R2th</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_fullreweight">fullreweight</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plotsPI">plotsPI</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRr</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">Forward search in linear regression reweighted</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out =FSRr(y, X)</code><span class="syntax_example"><a class="intrnllnk" href="FSRr.html#Example_1">example</a></span></li><li><code class="synopsis">out =FSRr(y, X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRr.html#Example_2">example</a></span></li><li><code class="synopsis">[out , varargout]=FSRr(___)</code><span class="syntax_example"><a class="intrnllnk" href="FSRr.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>FSRr uses the units not declared by outliers by  FSR to produce a robust fit.</p> <p>
-   The units whose residuals exceeds the threshold determined by option
-   alpha are declared as outliers. Moreover, it is possible in option
-   R2th to modify the estimate of sigma2 which is used to declare
-   the outliers. This is useful when there is almost a perfect fit in the
-   data, the estimate of the error variance is very small and therefore
-   there is the risk of declaring as outliers very small deviations from
-   the robust fit. In this case the estimate of sigma2 is corrected in
-   order to achieve a value of R2 equal to R2th.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRr.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRr(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code> X</code></a>)</code></span>Example of outlier detection in a case of almost perfect fit: all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRr.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRr(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of outlier detection in a case of almost perfect fit.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRr.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=FSRr(___)</code></span>Use of FSRr in a real dataset from international trade.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of outlier detection in a case of almost perfect fit: all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200; p=1;
-X = rand(n,p);
-y = X + 0.01*randn(n,1);
-% contaminated data points
-ycont = y;
-ycont(1:8) = ycont(1:8)+0.05;
-[out1 , xnew1 , ypred1, yci1] = ...
-FSRr(ycont,X,'plotsPI',1,'plots',1);
-disp(['Outliers without R2 adjustment = ' num2str(out1.outliers)]);
-disp(['Outliers with    R2 adjustment = ' num2str(out1.outliersr)]);</pre></div></div><pre class="codeoutput">Outliers without R2 adjustment = 1  2  3  4  5  6  7  8
-Outliers with    R2 adjustment = 1    2    3    4    5    6    7    8   12   22   44   56   67   94  106  108  145  147  177
-</pre><img vspace="5" hspace="5" src="images/FSRr_01.png" alt=""> <img vspace="5" hspace="5" src="images/FSRr_02.png" alt=""> <img vspace="5" hspace="5" src="images/FSRr_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of outlier detection in a case of almost perfect fit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200; p=1;
-X = rand(n,p);
-y = X + 0.01*randn(n,1);
-% contaminated data points
-ycont = y;
-ycont(1:8) = ycont(1:8)+0.05;
-[out1 , xnew1 , ypred1, yci1] = ...
-FSRr(ycont,X,'alpha',0.01,...
-'fullreweight',true ,'plotsPI',1,'plots',0);
-h1 = allchild(gca); a1 = gca; f1 = gcf;
-[out2 , xnew2 , ypred2, yci2] = ...
-FSRr(ycont,X,'alpha',0.01,'R2th',0.95,...
-'fullreweight',true ,'plotsPI',1,'plots',0);
-h2 = allchild(gca); a2 = gca; f2 = gcf;
-% move the figure above into a single one with two panels
-figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);
-copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
-copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
-close(f1); close(f2);
-disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);
-disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of FSRr in a real dataset from international trade.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all; clear all;
-load fishery;
-X = fishery.data(:,1);
-y = fishery.data(:,2);
-n = length(y);
-% Bonferronized confidence level
-cl = 0.005/n;
-% FSRr, with scale rescaled so that R2 is forced to be 0.85 
-outFSr = FSRr(y,X,'alpha',cl,'R2th',0.85,'fullreweight',true,'plotsPI',1,'plots',0);
-h3 = allchild(gca); a3 = gca; f3 = gcf; set(f3,'visible','off');
-% Scatter of outliers detected with R2th=0.85 
-FSroutliersr = ones(n,1); FSroutliersr(outFSr.outliersr) = 0;
-plo.clr = 'rb'; plo.sym = 'xo'; plo.labeladd = 1;
-yXplot(y,X,'group',FSroutliersr,'plo',plo,'tag','FSrfit');
-olsline(1)
-price_FSr = X(logical(FSroutliersr))\y(logical(FSroutliersr));
-h4 = allchild(gca); a4 = gca; f4 = gcf; set(f4,'visible','off');
-% move the figures above into a single one with two panels
-figure; ax3 = subplot(2,1,1); ax4 = subplot(2,1,2);
-copyobj(h3,ax3); copyobj(h4,ax4); 
-xlabel('Quantity-Ton','Fontsize',14); 
-ylabel(ax3,'Value-1000euro','Fontsize',14);
-ylabel(ax4,'Value-1000euro','Fontsize',14);
-title(ax3,{'"fishery" dataset: FSRr fit with R2th=0.85','Prediction interval and outliers detected'},'Fontsize',20,'Interpreter','LaTex');
-close(f3); close(f4);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparing LTS, FSR and FSRr on the international trade dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
-clear all;
-load fishery
-data = fishery.data;
-X = data(:,1);
-y = data(:,2);
-n = length(y);
-% Bonferronized confidence level
-cl = 0.01/n;
-% LTS with 60% observations for the LS fit
-h = floor(n*0.6);
-outLTS = LXS(y,X,'plots',0,'conflev',1-cl,'h',h);
-plo.clr = 'rb'; plo.sym = 'xo'; plo.labeladd = 1;
-yXplot(y,X,outLTS.weights,plo,'tag','LTSfit');
-olsline(1)
-price_LTS = X(logical(outLTS.weights))\y(logical(outLTS.weights));
-title({'LTS fit using 60% of the data' , [num2str(price_LTS) ' euro/Kg']},'Fontsize',13);
-xlabel('Quantity-Ton','Fontsize',14); ylabel('Value-1000euro','Fontsize',14);
-h1 = allchild(gca); a1 = gca; f1 = gcf;
-% Standard FSR, with Bonferronized band
-outFS = FSR(y,X,'plots',0,'bonflev',cl,'h',h);
-FSoutliers = ones(n,1); FSoutliers(outFS.outliers) = 0;
-yXplot(y,X,'group',FSoutliers,'plo',plo,'tag','FSfit');
-olsline(1)
-price_FS = X(logical(FSoutliers))\y(logical(FSoutliers));
-title({'Standard FS fit' , [num2str(price_FS) ' euro/Kg']},'Fontsize',13);
-xlabel('Quantity-Ton','Fontsize',14); ylabel('Value-1000euro','Fontsize',14);
-h2 = allchild(gca); a2 = gca; f2 = gcf;
-% FSRr, with scale rescaled so that R2 is forced to be 0.9 
-outFSr = FSRr(y,X,'alpha',cl,'R2th',0.90,'fullreweight',true,'plotsPI',1,'plots',0);
-title({'Prediction interval for FSRr fit' , 'with R2th=0.90.'},'Fontsize',13);
-xlabel('Quantity-Ton','Fontsize',14); ylabel('Value-1000euro','Fontsize',14);
-h3 = allchild(gca); a3 = gca; f3 = gcf;
-FSroutliersr = ones(n,1); FSroutliersr(outFSr.outliersr) = 0;
-yXplot(y,X,'group',FSroutliersr,'plo',plo,'tag','FSrfit');
-olsline(1)
-price_FSr = X(logical(FSroutliersr))\y(logical(FSroutliersr));
-title({'FSRr fit, with R2th=0.90' , [num2str(price_FSr) ' euro/Kg']},'Fontsize',13);
-xlabel('Quantity-Ton','Fontsize',14); ylabel('Value-1000euro','Fontsize',14);
-h4 = allchild(gca); a4 = gca; f4 = gcf;
-% move the figure above into a single one with two panels
-figure; ax1 = subplot(2,2,1); ax2 = subplot(2,2,2);
-ax3 = subplot(2,2,3); ax4 = subplot(2,2,4);
-copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));
-copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));
-copyobj(h3,ax3); title(ax3,get(get(a3,'title'),'string'));
-copyobj(h4,ax4); title(ax4,get(get(a4,'title'),'string'));
-close(f1); close(f2); close(f3); close(f4);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
-               a vector of length n, where n is the number of
-               observations. Each entry in y is the response for the
-               corresponding row of X.</p> <p>
-               Missing values (NaN's) and infinite values (Inf's) are
-               allowed, since observations (rows) with missing or infinite
-               values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory
-               variables (also called 'regressors') of dimension n x (p-1)
-               where p denotes the number of explanatory variables
-               including the intercept.</p> <p>
-               Rows of X represent observations, and columns represent
-               variables. By default, there is a constant term in the
-               model, unless you explicitly remove it using input option
-               intercept, so do not include a column of 1s in X. Missing
-               values (NaN's) and infinite values (Inf's) are allowed,
-               since observations (rows) with missing or infinite values
-               will automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'alpha',0.01
-</code>,<code> 'R2th',0.99
-</code>,<code> 'fullreweight',true
-</code>,<code> 'plotsPI',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;test size.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number between 0 and 1 which
-              defines test size to declare the outliers. The default value
-              is 0.01.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha',0.01
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_R2th" class="clearfix"></div><h3 id="input_argument_namevalue_R2th" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>R2th</code> &#8212;R2 threshold.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which defines the value R2 does
-              have to exceed. For example if R2 based on good observations
-              is 0.92 and R2th is 0.90 the estimate of the variance of the
-              residuals which is used to declare the outliers is adjusted
-              in order to have a value of R2 which is equal to 0.90. A
-              similar correction is applied to compute the prediction
-              intervals. The default value of R2th is 1 which means that
-              there is no correction.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'R2th',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_fullreweight" class="clearfix"></div><h3 id="input_argument_namevalue_fullreweight" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fullreweight</code> &#8212;Option to declare outliers.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If fullreweight is true
-              (default option), the list of outliers refers to all the
-              units whose residuals is above the threshold else if it is
-              false the outliers are the observaions which by procedure
-              FSR had been declared outliers and have a residual greater
-              than threshold
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fullreweight',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plotsPI" class="clearfix"></div><h3 id="input_argument_namevalue_plotsPI" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotsPI</code> &#8212;Plot of prediction intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If plotsPI =1 and
-               the number of regressors (excluding the constant term) is
-               equal 1, it is possible to see on the screen the yX scatter
-               with superimposed the prediction intervals using a
-               confidence level 1-alpha, else no plot is shown on the
-               screen
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plotsPI',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared
-                  outliers by procedure FSR or NaN if the sample is
-                  homogeneous</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression parameter
-                  by procedure FSR</p></td></tr><tr valign="top"><td><code>outliersr</code></td><td><p>k1-by-1 vector containing the list of the units declared
-                  outliers after the reweighting step or NaN if the sample is
-                  homogeneous</p></td></tr><tr valign="top"><td><code>betar</code></td><td><p>p-by-1 vector containing the estimated regression parameter
-                  after the reweighting step</p></td></tr><tr valign="top"><td><code>rstud</code></td><td><p><p>n-by-2 matrix.</p> <p>
-                   First column = studentized residuals
-                   Second column = p-values (computed using as reference
-                   distribution the Student t)</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRr'.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;xnew = vector with a number of new points where to evaluate the
-                  prediction interval.</span></a><span class="example_desc"><code> -by-new is a </code>vector</span></span></h3><div class="collapse"><p>
-          ypred = values predicted by the fitted model on xnew. Vector of
-                  length(xnew)
-           yci  = Confidence intervals. A two-column matrix with each row providing
-                  one interval.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
- number of multivariate outliers, "Journal of the Royal Statistical
- Society Series B", Vol. 71, pp. 201-221.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

@@ -1,28 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HAwei</title> <meta content="refpage" name="chunktype"><meta content="function:HAwei " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HAwei Computes weight function psi(u)/u using Hampel proposal" itemprop="description" name="description" /><h1 itemprop="title">HAwei</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/HAwei.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HAwei.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HAwei.html">http://rosa.unipr.it/FSDA/HAwei.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HAwei</em></p><h1 itemprop="title">HAwei</h1><P>Computes weight function psi(u)/u using Hampel proposal</P><h2>More About</h2><P>
- Function HAwei transforms vector u as follows
-
-
-  \[
-  HAwei(u)  = \left\{   
-  \begin{array}{cc}
-    1 & |u| &lt;= a                                       \\
-    \frac{a}{|u|}   & a \leq |u| &lt; b                    \\
-    \frac{a}{|u|} \times  \frac{c-|u|}{c-b},  & b &lt;= |u| &lt;  c \\
-    0 & |u| &gt;= c 
-  \end{array} \right.
- \]
-
-           
-             where ctun=ctuning(1).
-                   $a$= ctun *ctuning(2).
-                   $b$= ctun *ctuning(3).
-                   $c$= ctun *ctuning(4).
-
-             The default is
-                   $a$= 2*ctun. 
-                   $b$= 4*ctun. 
-                   $c$= 8*ctun. 
-
-
-</P><h2>References</h2><P>Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
- Exploratory Data Analysis", Wiley, New York.</P></html>

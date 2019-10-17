@@ -1,607 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRfan</title><meta content="refpage" name="chunktype"><meta content="function:FSRfan" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRfan monitors the values of the score test statistic for each lambda." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRfan</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRfan with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRfan with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example specifying $\lambda$.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example specifying the confidence level and the initial
-     starting point for monitoring.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Example with starting point based on LTS.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Fan plot using fidelity cards data.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Compare BoxCox with Yeo and Johnson transformation.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example of monitoring of score test for positive and negative obseravations.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_la">la</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_family">family</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_titl">titl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labx">labx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_laby">laby</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlimx">xlimx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylimy">ylimy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwd">lwd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwdenv">lwdenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_FontSize">FontSize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SizeAxesNum">SizeAxesNum</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRfan</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRfan monitors the values of the score test statistic for each lambda</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSRfan(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="FSRfan.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSRfan(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRfan.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRfan.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRfan(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>FSRfan with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRfan.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRfan(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRfan with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRfan with all default options.</li></span></a></span></h3><div class="collapse"><p>
-     Store values of the score test statistic
-     for the five most common values of $\lambda$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Produce also a fan plot and display it on the screen.
-% Common part to all examples: load wool dataset.
-XX=load('wool.txt');
-y=XX(:,end);
-X=XX(:,1:end-1);
-% Function FSRfan stores the score test statistic.
-% In this case we use the five most common values of lambda are considered
-[out]=FSRfan(y,X);
-fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.08 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-
-namey =
-
-    'Sales'
-
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.04 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Maximum difference in absolute value
-    0.7564
-
-Fit in the true scale
-R2 of the model in the true scale
-    0.8993
-
-Fit in the transformed scale
-R2 of the model in the wrong (inverse) scale
-    0.0471
-
-</pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-     Produce a personalized fan plot with required font sizes
-     for labels and axes.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">[out]=FSRfan(y,X,'plots',1,'FontSize',16,'SizeAxesNum',16);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example specifying $\lambda$.</li></span></a></span></h3><div class="collapse"><p>
-     Produce a fan plot for each value of $\lambda$ inside vector la.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Extract in matrix Un the units which entered the search in each step
-la=[-1 -0.5 0 0.5];
-[out]=FSRfan(y,X,'la',la,'plots',1);
-Unsel=cell2mat(out.Un);
-lla=length(la);
-nr=size(Unsel,1)/lla;
-Un=[Unsel(1:nr,1) reshape(Unsel(:,2),nr,lla)];</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example specifying the confidence level and the initial
-     starting point for monitoring.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Construct fan plot specifying the confidence level and the initial
-% starting point for monitoring.
-[out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'conflev',0.95,'plots',1);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with starting point based on LTS.</li></span></a></span></h3><div class="collapse"><p>
-     Extraction of all subsamples, construct
-     fan plot specifying the confidence level and the initial starting
-     point for monitoring based on p+2 observations strong line width for
-     lines associated with the confidence bands.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">[out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'lms',0,'lwdenv',3,'plots',1);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Fan plot using fidelity cards data.</li></span></a></span></h3><div class="collapse"><p>
-     In the example, la is the vector contanining the most common values
-     of the transformation parameter.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Store the score test statistics for the specified values of lambda
-% and automatically produce the fan plot
-XX=load('loyalty.txt');
-namey='Sales'
-y=XX(:,end);
-nameX={'Number of visits', 'Age', 'Number of persons in the family'};
-X=XX(:,1:end-1);
-% la = vector contanining the most common values of the transformation
-% parameter
-la=[0 1/3 0.4 0.5];
-% Store the score test statistics for the specified values of lambda
-% and automatically produce the fan plot
-[out]=FSRfan(y,X,'la',la,'init',size(X,2)+2,'plots',1,'lwd',3);
-% The fan plot shows the even if the third root is the best value of the
-% transformation parameter at the end of the search in earlier steps it
-% lies very close to the upper rejection region. The best value of the
-% transformation parameter seems to be the one associated with l=0.4
-% which is always the confidence bands but at the end of search, due to
-% the presence of particular observations it goes below the lower
-% rejection line.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.08 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-
-namey =
-
-    'Sales'
-
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.04 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Maximum difference in absolute value
-    0.7564
-
-Fit in the true scale
-R2 of the model in the true scale
-    0.8993
-
-Fit in the transformed scale
-R2 of the model in the wrong (inverse) scale
-    0.0471
-
-</pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
-     Store values of the score test statistic
-     for the five most common values of $\lambda$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Produce also a fan plot and display it on the screen.
-% Common part to all examples: load wool dataset.
-XX=load('wool.txt');
-y=XX(:,end);
-X=XX(:,1:end-1);
-% Store the score test statistic using Box Cox transformation.
-[outBC]=FSRfan(y,X,'nsamp',0);
-% Store the score test statistic using Yeo and Johnson transformation.
-[outYJ]=FSRfan(y,X,'family','YJ','nsamp',0);
-fanplot(outBC,'titl','Box Cox');
-fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
-disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.08 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-
-namey =
-
-    'Sales'
-
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.04 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Maximum difference in absolute value
-    0.7564
-
-Fit in the true scale
-R2 of the model in the true scale
-    0.8993
-
-Fit in the transformed scale
-R2 of the model in the wrong (inverse) scale
-    0.0471
-
-</pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring of score test for positive and negative obseravations.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
-rng(10)
-close all
-n=200;
-X=randn(n,3);
-beta=[ 1; 1; 1];
-sig=0.5;
-y=X*beta+sig*randn(n,1);
-disp('Fit in the true scale')
-disp('R2 of the model in the true scale')
-if verLessThanFS(8.1)
-out=regstats(y,X,'linear',{'rsquare'});
-disp(out.rsquare)
-else
-outlmori=fitlm(X,y);
-disp(outlmori.Rsquared.Ordinary)
-end
-[~,~,BigAx]=yXplot(y,X,'tag','ori');
-title(BigAx,'Data in the original scale')
-% Find the data to transform
-la=-0.25;
-ytra=normYJ(y,[],la,'inverse',true);
-if any(isnan(ytra))
-disp('response with missing values')
-end
-disp('Fit in the transformed scale')
-disp('R2 of the model in the wrong (inverse) scale')
-if verLessThanFS(8.1)
-out=regstats(ytra,X,'linear',{'rsquare'});
-disp(out.rsquare)
-else
-outlmtra=fitlm(X,ytra);
-disp(outlmtra.Rsquared.Ordinary)
-end
-[~,~,BigAx]=yXplot(ytra,X,'tag','tra','namey','Data to transform (zoom of y [0 500])','ylimy',[0 500]);
-title(BigAx,'Data in the inverse scale')
-la=[ -0.5 -0.25 0];
-out=FSRfan(ytra,X,'la',la,'family','YJpn','plots',1,'init',round(n/2),'msg',0);
-title('Extended fan plot')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.08 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.01 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
-
-namey =
-
-    'Sales'
-
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.04 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.13 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.12 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Maximum difference in absolute value
-    0.7564
-
-Fit in the true scale
-R2 of the model in the true scale
-    0.8993
-
-Fit in the transformed scale
-R2 of the model in the wrong (inverse) scale
-    0.0471
-
-</pre><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_03.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
-               contains the response
-               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
-               variables (also called 'regressors')
-               of dimension (n x p-1). Rows of X represent observations, and
-               columns represent variables.</p> <p>
-               Missing values (NaN's) and infinite values
-               (Inf's) are allowed, since observations (rows) with missing or
-               infinite values will automatically be excluded from the
-               computations. NOTICE THAT THE INTERCEPT MUST ALWAYS BE INCLUDED.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
-</code>,<code> 'nocheck',1
-</code>,<code> 'la',[-1 -0.5]
-</code>,<code> 'h',5
-</code>,<code> 'nsamp',1000
-</code>,<code> 'lms',1
-</code>,<code> 'family','YJ'
-</code>,<code> 'init',100 starts monitoring from step m=100
-</code>,<code> 'plots',1
-</code>,<code> 'conflev',0.95
-</code>,<code> 'titl','my title'
-</code>,<code> 'labx','my labx'
-</code>,<code> 'laby','my laby'
-</code>,<code> 'xlimx',[0 1]
-</code>,<code> 'ylimx',[0 1]
-</code>,<code> 'lwd',5
-</code>,<code> 'lwdenv',5
-</code>,<code> 'FontSize',20
-</code>,<code> 'SizeAxesNum',12
-</code>,<code> 'msg',1
-</code>,<code> 'tag','mytag'
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted
-                   (default), else no constant term will be included.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed
-                   on matrix y and matrix X. Notice that y and X are left
-                   unchanged. In other words the additional column of ones
-                   for the intercept is not added. As default nocheck=0.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_la" class="clearfix"></div><h3 id="input_argument_namevalue_la" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la</code> &#8212;values of the transformation parameter for which it is
-                   necessary to compute the score test.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
-                   is the five most common values of lambda
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',[-1 -0.5]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the
-                   least trimmed (median of) squares estimator.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p>Generally h is an integer greater or equal than
-                   [(n+size(X,2)+1)/2] but smaller then n
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find
-                   the robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be
-                   extracted. They will be (n choose p). Remark: if the
-                   number of all possible subset is &lt;1000 the default is
-                   to extract all subsets otherwise just 1000.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
-                 subset to initialize the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
-                   computed, else Least trimmed of Squares is computed.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_family" class="clearfix"></div><h3 id="input_argument_namevalue_family" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>family</code> &#8212;string which identifies the family of transformations which
-                   must be used.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values are 'BoxCox'
-                   (default), 'YJ' or 'YJpn'.</p> <p>
-                   The Box-Cox family of power transformations equals
-                   $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
-                   and $\log(y)$ if $\lambda = 0$.</p> <p>
-                   The Yeo-Johnson (YJ) transformation is the Box-Cox
-                   transformation of $y+1$ for nonnegative values, and of
-                   $|y|+1$ with parameter $2-\lambda$ for $y$ negative.</p> <p>
-                   Remember that BoxCox can be used just
-                   if input y is positive. Yeo-Johnson family of
-                   transformations does not have this limitation.</p> <p>
-                   If family is 'YJpn' Yeo-Johnson family is applied but in
-                   this case it is also possible to monitor (in the output
-                   arguments out.Scorep and out.Scoren) the score test
-                   respectively for positive and negative observations.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'family','YJ'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial subset size to start
-                   monitoring the value of the score test, if init is not
-                   specified it will be set equal to:</p> <p>
-                    p+1, if the sample size is smaller than 40;</p> <p>
-                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
-                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 the fan plot is produced
-                   else (default) no plot is produced.</p> <p>
-                                      REMARK: all the following options work only if plots=1
-
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence level for the bands.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>default is 0.99 that is
-                   we plot two horizontal lines in correspondence of value
-                   -2.58 and 2.58
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.95
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;a label for the title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default: 'Fan plot'
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','my title'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labx" class="clearfix"></div><h3 id="input_argument_namevalue_labx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labx</code> &#8212;a label for the x-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default: 'Subset size m'
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labx','my labx'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_laby" class="clearfix"></div><h3 id="input_argument_namevalue_laby" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>laby</code> &#8212;a label for the y-axis.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>default:'Score test statistic'
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laby','my laby'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;Minimum and maximum of the x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Default value is [init n]
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimx',[0 1]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;Minimum and maximum of the y axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Default value for ylimy(1)=max(min(score_test),-20).</p> <p>
-                   Default value for ylimy(2)=min(max(score_test),20).</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimx',[0 1]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwd" class="clearfix"></div><h3 id="input_argument_namevalue_lwd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwd</code> &#8212;linewidth of the curves which
-                   contain the score test.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default line width=2.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwd',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwdenv" class="clearfix"></div><h3 id="input_argument_namevalue_lwdenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwdenv</code> &#8212;width of the lines associated
-                   with the envelopes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default is lwdenv=1.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdenv',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;font size of the labels of  the axes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default value is 12.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',20
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;Scalar which controls the size of the numbers of the
-                   axes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default value is 10.</p> <p>
-                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',12
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which controls whether to display or not
-                   messages on the screen. Scalar.</p> <p>
-                   If msg==1 (default) messages are
-                   displayed on the screen about estimated time to compute
-                   the LMS (LTS) for each value of lamabda else no message
-                   is displayed on the screen
-                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;handle of the plot which is about to be created.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>The default is to use tag 'pl_fan'. Notice that if the program finds a plot which
-                   has a tag equal to the one specified by the user, then
-                   the output of the new plot overwrites the existing one
-                   in the same window else a new window is created
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','mytag'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix containing the values of the
-               score test for each value of the transformation parameter:</p> <p>
-               1st col = fwd search index;</p> <p>
-               2nd col = value of the score test in each step of the
-               fwd search for la(1);</p> <p>
-               ...........</p><p>
-               end col = value of the score test in each step of the fwd
-               search for la(end).</p></p></td></tr><tr valign="top"><td><code>Scorep</code></td><td><p><p>(n-init) x length(la)+1 matrix containing the values of the
-               score test for positive observations for each value of the
-               transformation parameter.</p> <p>
-               1st col = fwd search index;</p> <p>
-               2nd col = value of the (positive) score test in each step
-               of the fwd search for la(1);</p> <p>
-               ...........</p> <p>
-               end col = value of the (positive) score test in each step
-               of the fwd search for la(end).</p><p>
-               Note that this output is present only if input option
-               family is 'YJpn'</p></p></td></tr><tr valign="top"><td><code>Scoren</code></td><td><p><p>(n-init) x length(la)+1 matrix containing the values of the
-               score test for positive observations for each value of the
-               transformation parameter:</p> <p>
-               1st col = fwd search index;</p> <p>
-               2nd col = value of the (negative) score test in each step
-               of the fwd search for la(1);</p> <p>
-               ...........</p> <p>
-               end col = value of the (negative) score test in each step
-               of the fwd search for la(end).</p><p>
-               Note that this output is present only if input option
-               family is 'YJpn'</p></p></td></tr><tr valign="top"><td><code>la</code></td><td><p>vector containing the values of lambda for which fan plot
-               is constructed</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>matrix of size p x length(la) containing the units forming
-               the initial subset for each value of lambda</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>cell of size length(la).</p> <p>
-               out.Un{i} is a n-init) x 11 matrix which contains the
-               unit(s) included in the subset at each step in the search
-               associated with la(i).</p><p>
-               REMARK: in every step the new subset is compared with the old subset. Un
-               contains the unit(s) present in the new subset but not in
-               the old one Un(1,:) for example contains the unit included
-               in step init+1 ... Un(end,2) contains the units included in the
-               final step of the search</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
-               variable which has been used</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
-               which has been used (it also contains the column of ones if
-               input option intercept was missing or equal to 1)</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
- Analysis", Springer Verlag, New York.</p></div><div><p>Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
- diagnostic transformations in regression, "Chemometrics and Intelligent
- Laboratory Systems", Vol. 60, pp. 87-100.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

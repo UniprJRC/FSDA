@@ -1,311 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>RobCov</title><meta content="refpage" name="chunktype"><meta content="function:RobCov" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="robCov computes covariance matrix of robust regression coefficients." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">RobCov</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Compare the 5 estimates of cov matrix.</a></li><li><a class="intrnllnk" href="#Example_2">Compare t stat from S and MM estimator.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">An example of the need of using covrobc.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_scaledres">scaledres</a></li><li><a class="intrnllnk" href="#input_argument_scaleest">scaleest</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_eff">eff</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bdp">bdp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_rhofunc">rhofunc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_rhofuncparam">rhofuncparam</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">RobCov</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">robCov computes covariance matrix of robust regression coefficients</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=RobCov(X,scaledres,scaleest)</code><span class="syntax_example"><a class="intrnllnk" href="RobCov.html#Example_1">example</a></span></li><li><code class="synopsis">out=RobCov(X,scaledres,scaleest,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="RobCov.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>Under some regularity conditions, robust (S and MM) estimates are
- asymptotically normal, thereby allowing for Wald-type tests and
- confidence intervals. The covariance matrix of the estimated parameters
- \[
-   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
- \]<p>
- consists of four parts:</p> <p>
-1) $q$ a correction factor for the scale estimate;</p> <p>
- 2) $\sigma$ the scale parameter.</p> <p>
- 3) $v$ a correction factor depending on the $\psi$ function which is
- used;</p> <p>
- 4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
- regression we give a weight to each observation, the matrix $X'X$ should
- be replaced by something like $X'WX$, where $W$ is a diagonal matrix
- containing the weights assigned to each observation.</p><p>
- The purpose of this function is to provide the user with different
- options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
- vector of regression coefficients obtained using S or MM estimation and a
- particular $\rho$ function.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="RobCov.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=RobCov(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_scaledres"><code>scaledres</code></a>,<a class="intrnllnk" href="#inputarg_scaleest"><code>scaleest</code></a>)</code></span>Compare the 5 estimates of cov matrix.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="RobCov.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=RobCov(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_scaledres"><code>scaledres</code></a>,<a class="intrnllnk" href="#inputarg_scaleest"><code>scaleest</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Compare t stat from S and MM estimator.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare the 5 estimates of cov matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-state1=123456;
-randn('state', state1);
-X=randn(n,p);
-y=randn(n,1);
-kk=10;
-ycont = y;
-ycont(1:kk)=ycont(1:kk)+7;
-[outS]=Sreg(ycont,X);
-rhofunc='optimal';
-bdp=0.5;
-out=RobCov(X,outS.residuals,outS.scale);
-disp('Compare 5 estimates of cov(\hat beta)')
-disp(out.covrob)
-disp('--------')
-disp(out.covrob1)
-disp('--------')
-disp(out.covrob2)
-disp('--------')
-disp(out.covrob3)
-disp('--------')
-disp(out.covrob4)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare t stat from S and MM estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rhofunc='optimal';
-bdp=0.5;
-out=RobCov(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);
-covrobS=out.covrob;
-covrobS1=out.covrob1;
-covrobS2=out.covrob2;
-covrobS3=out.covrob3;
-covrobS4=out.covrob4;
-% Compute robust S t-statistics
-tstatS=outS.beta./sqrt(diag(covrobS));
-tstatS1=outS.beta./sqrt(diag(covrobS1));
-tstatS2=outS.beta./sqrt(diag(covrobS2));
-tstatS3=outS.beta./sqrt(diag(covrobS3));
-tstatS4=outS.beta./sqrt(diag(covrobS4));
-eff=0.95;
-outMM=MMregcore(ycont,X,outS.beta,outS.scale);
-out=RobCov(X,outMM.residuals,outS.scale,'rhofunc',rhofunc,'eff',eff);
-covrobMM=out.covrob;
-covrobMM1=out.covrob1;
-covrobMM2=out.covrob2;
-covrobMM3=out.covrob3;
-covrobMM4=out.covrob4;
-tstatMM=outMM.beta./sqrt(diag(covrobMM));
-tstatMM1=outMM.beta./sqrt(diag(covrobMM1));
-tstatMM2=outMM.beta./sqrt(diag(covrobMM2));
-tstatMM3=outMM.beta./sqrt(diag(covrobMM3));
-tstatMM4=outMM.beta./sqrt(diag(covrobMM4));
-disp('tstat from S')
-disp([tstatS tstatS1 tstatS2 tstatS3 tstatS4])
-disp('--------')
-disp('tstat from MM')
-disp([tstatMM tstatMM1 tstatMM2 tstatMM3 tstatMM4])
-qhat=out.q;
-disp('tstat from MM after correction for sigma')
-disp([tstatMM/qhat tstatMM1/qhat tstatMM2/qhat tstatMM3/qhat tstatMM4/qhat])</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> An example of the need of using covrobc.</li></span></a></span></h3><div class="collapse"><p>
-     XX is a 50-by-2 matrix generated by standard random normal.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Estimate beta using Sreg and compare the four estimators of 
-% cov (\hat \beta).
-XX=[0.8115    1.3104
--0.4477    0.8110
-0.9438    1.9121
--0.2346    0.7058
-1.8364    3.1318
-0.2911    0.7837
-0.3669    1.7571
-0.4560    1.0876
--1.0831    0.0679
-0.7018    1.0923
-1.6976    2.7744
--0.0624    1.2015
-0.2016    0.7747
--0.1542    1.3095
--0.9416   -0.5251
-0.4873    0.8116
--0.3561    0.9261
-0.5185    2.1219
--0.7674   -0.0514
-0.3360    1.8620
--0.2083    1.3796
--0.1700    0.9053
-1.9152    2.4369
--0.9912   -0.6885
-0.5939    2.0449
--1.1842   -0.8506
-1.1375    1.6184
--0.2482    1.2104
-0.7936    2.2313
--0.2744    1.5259
-1.1455    2.2739
--0.0637    1.2618
--0.5054    0.0536
-0.7282    1.9411
--0.0703    0.8090
--1.8186   -0.8725
--2.0621   -0.5299
--1.7750   -0.7765
--0.8553   -0.3311
-1.8966    2.9885
--0.1076    0.5106
-0.9055    1.1283
-0.3086    1.5491
--0.0487    0.4964
--1.6901   -0.7348
--0.7253    0.9436
-0.2124    0.6549
--0.2748   -0.2009
--1.2804   -0.7036
-0.3627    1.3027];
-% Define X and y;
-y=XX(:,2);
-X=XX(:,1);
-outS=Sreg(y,X,'rhofunc','bisquare','bdp',0.5);
-outRC=RobCov(X,outS.residuals,1,'rhofunc','bisquare','bdp',0.5);
-disp('covrob')
-disp(outRC.covrob)
-disp('covrob1')
-disp(outRC.covrob1)
-disp('covrob2')
-disp(outRC.covrob2)
-disp('covrob3')
-disp(outRC.covrob3)
-disp('covrob4')
-disp(outRC.covrob4)
-disp('covrobc')
-disp(outRC.covrobc)
-% plot X and y and add LS and robust regression line
-plot(X,y,'o')
-xlabel('X')
-ylabel('y')
-hLS=lsline;
-hLS.Color='r';
-hLS.LineStyle = ':';
-hLS.LineWidth = 2;
-hROB=refline([outS.beta(2) outS.beta(1)]);
-hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.81 seconds 
-covrob
-    0.6428   -0.0036
-   -0.0036    0.7251
-
-covrob1
-   29.6408   -0.4576
-   -0.4576   29.4429
-
-covrob2
-   29.6345   -0.1655
-   -0.1655   33.4256
-
-covrob3
-    0.2392   -0.0037
-   -0.0037    0.2376
-
-covrob4
-   1.0e-03 *
-
-    0.2844   -0.0069
-   -0.0069    0.2488
-
-covrobc
-    0.6428   -0.0036
-   -0.0036    0.7251
-
-</pre><img vspace="5" hspace="5" src="images\RobCov_01.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
-            of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
-            columns represent variables.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaledres" class="clearfix"> </div> <h3 id="input_argument_scaledres" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaledres</code> &#8212; Scaled residuals.Vector. </span>  </a><span class="example_desc">n-times-1 vector containing scaled
-             residuals $r_i/\hat \sigma$.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaleest" class="clearfix"> </div> <h3 id="input_argument_scaleest" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaleest</code> &#8212; robust estimate of the scale. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Robust estimate of
-             sigma ($\hat \sigma$).</p> <p>
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
-</code>,<code> 'eff',0.99
-</code>,<code> 'intercept',1
-</code>,<code> 'bdp',0.4
-</code>,<code> 'rhofunc','optimal'
-</code>,<code> 'rhofuncparam',5
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
-               constant term will be fitted (default), else no constant
-               term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_eff" class="clearfix"></div><h3 id="input_argument_namevalue_eff" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>eff</code> &#8212;nominal efficiency.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining nominal efficiency (i.e. a number between
-                 0.5 and 0.99). The default value is 0.95
-                 Asymptotic nominal efficiency is:</p> <p>
-                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'eff',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
-               constant term will be fitted (default), else no constant
-               term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
-               the algorithm should resist. In this case any value greater
-               than 0 but smaller or equal than 0.5 will do fine.</p> <p>
-               Note that given bdp nominal
-               efficiency is automatically determined.</p> <p>
-                                REMARK: just one between bdp and eff must be specified. If
-               both of them are specified an error is produced. If both of
-               them are not specified the defulat is tu use the tuning
-               constant associated to a nominal efficiency of 0.95.</p><p>
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which specifies the rho function which must be used to
-               weight the residuals. Possible values are
-               'bisquare'
-               'optimal'
-               'hyperbolic'
-               'hampel'.</p> <p>
-               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="TBrho.html">TBrho</a> and <a href="TBpsi.html">TBpsi</a>.</p> <p>
-               'optimal' uses optimal $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="OPTrho.html">OPTrho</a> and <a href="OPTpsi.html">OPTpsi</a>.</p> <p>
-               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="HYPrho.html">HYPrho</a> and <a href="HYPpsi.html">HYPpsi</a>.</p> <p>
-               'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p><p>
-               The default is bisquare
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
-               value of k = sup CVC (the default value of k is 4.5).</p> <p>
-               For Hampel rho function it is possible to define parameters
-               a, b and c (the default values are a=2, b=4, c=8)
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
-               equation (4.49) of p. 101 of Maronna et al. (2006)
-               namely:</p> <p>
-                </p>\[
-                \mbox{covrob} = cov( \hat \beta) = \hat \sigma^2 \hat v (X'X)^{-1}
-                \]
-                where
-                \[
-                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}
-                \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing asymptotic variance covariance
-               matrix of regression coefficients. covrob1 implements
-               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
-               with $(X'X)^{-1}$ replaced by $(X' W X)^{-1}$
-               namely:</p> <p>
-                </p>\[
-                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
-                \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma)) \right]^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing asymptotic variance covariance
-               matrix of regression coefficients. covrob1 implements
-               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
-               with $X'X$ and $K^2$
-               namely:</p> <p>
-                </p>\[
-                 \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
-                \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma))^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
-               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
-               namely:</p><p>
-                </p>\[
-                \mbox{covrob3} =  K  \hat v  (X' W X)^{-1};
-                \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma))^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing asymptotic variance covariance
-               matrix of regression coefficients. covrob implements
-               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
-               namely:</p><p>
-                </p>\[
-                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2  (X' W X)^{-1} X'X (X' W X)^{-1};
-                \]</p></td></tr><tr valign="top"><td><code>covrobc</code></td><td><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
-               containing best variance covariance matrix of regression
-               coefficients. covrobc checks the coefficient of variation
-               of the derivative of function $\psi(r_i/\hat \sigma)$. If 
-               it is greater than the threshold proposed in Salini, et
-                al. (2019), it uses covrob2 else covrob.</p></td></tr><tr valign="top"><td><code>q</code></td><td><p>scalar. Correction for scale estimate (see Maronna and Yohai
-               CSDA 2010). It is defined as
-               \[
-               q=1+\frac{p}{2n} \frac{a}{b \times c}
-               \]
-               where
-               \[
-               a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2
-               \]
-               \[
-               b = \frac{1}{n} \sum_{i=1}^n (\psi'(r_i/\hat \sigma))^2
-               \]
-               \[
-               c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)
-               \]</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
- and Methods", Wiley, New York.</p></div><div><p>Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
- Wiley.</p></div><div><p>Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data
- sets, "Computational Statistics and Data Analysis", Vol. 54, pp. 3168-3173.</p></div><div><p>Koller, M. and W. A. Stahel (2011), Sharpening wald-type inference in
- robust regression for small samples, "Computational Statistics & Data
- Analysis", Vol. 55, pp. 2504-2515.</p></div><div><p>Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
- for robust estimators. Technical report, Dept. of Applied Economics, KU
- Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2019),
- Covariance matrices of robust estimators in regression, submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span> | <span itemprop="seealso"><a href="Taureg.html" itemprop="url"><span itemprop="name"><code>Taureg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

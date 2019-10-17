@@ -1,23 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTpsi</title> <meta content="refpage" name="chunktype"><meta content="function:OPTpsi " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTpsi Computes psi function (derivative of rho function) for optimal weight function" itemprop="description" name="description" /><h1 itemprop="title">OPTpsi</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/OPTpsi.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTpsi.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/OPTpsi.html">http://rosa.unipr.it/FSDA/OPTpsi.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTpsi</em></p><h1 itemprop="title">OPTpsi</h1><P>Computes psi function (derivative of rho function) for optimal weight function</P><h2>More About</h2><P>
- function OPTpsi transforms vector u as follows
-
-
- \[
-   OPTpsi(u,c) = \left\{
-    \begin{array}{cc}
-                  \frac{u}{3.25*c^2}          &                                               |u| \leq 2c   \\
-                
-     =   (1/3.25) \left( -1.944  \frac{u}{c^2} + 1.728  \frac{u^3}{c^4} - 0.312 \frac{u^5}{c^6} + 0.016 \frac{u^7}{c^8}   \right)  &  \qquad 2c \leq |u| \leq 3c \\
-                
-                   0                                    &                                  |u|&gt;3c \\
- \end{array}
-    \right.
-  \]
- 
- Remark: Optimal psi-function is almost linear around u = 0 in accordance with
- Winsor's principle that all distributions are normal in the middle.
- This means that  $\psi(u)/u$ is approximately constant over the linear region of $\psi$,
- so the points in that region tend to get equal weight.
-
-</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
- and Methods", Wiley, New York.</P></html>

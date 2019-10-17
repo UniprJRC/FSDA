@@ -1,44 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>boxtest</title> <meta content="refpage" name="chunktype"><meta content="function:boxtest " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="boxtest Performs Box test of equality of covariance matrices" itemprop="description" name="description" /><h1 itemprop="title">boxtest</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/boxtest.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/boxtest.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/boxtest.html">http://rosa.unipr.it/FSDA/boxtest.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: boxtest</em></p><h1 itemprop="title">boxtest</h1><P>Performs Box test of equality of covariance matrices</P><h2>Description</h2><P>Box test is used to determine whether two or more covariance matrices
- are equal. Note that Box test is sensitive to departures from
- normality. If the samples come from non-normal distributions, then Box
- test may simply be testing for non-normality.</P><h2>More About</h2><P>
- We assume independent samples of size $n_1$, $n_2$, $\ldots$,
- $n_g$ from a $v$-multivariate normal distribution. The hypothesis of
- equality of covariances is:
- 
- \[
- H_0= \Sigma_1 = \Sigma_2 = \ldots = \Sigma_g
- \]
-
- To make the test we calculate:
- 
- \[
- M=\frac{ |S_1|^{n_1-1} |S_2|^{n_2-1} \ldots |S_g|^{n_g-1} }{|S_{pl}|^{\sum_{i=1}^g n_i-1} }
- \]
-
- where $S_i$ is the covariance matrix of group $i$ and $S_{pl}$ is the
- pooled sample covariance matrix. It is clear that we must have $n_i-1&gt;v$
- otherwise $|S_i|=0$ for some $i$ and $M$ would be zero. The statistic $M$
- is a modification of the likelihood ratio test and varies between 0 and 1
- with values near 1 favouring $H_0$ and values near 0 leading to the
- rejection of $H_0$ (see Rencher (2002) p. 256 for further details). The
- quantity $-2 \ln M$ is approximately distributed as a $\chi^2$
- distribution and is given in $\mbox{out.LR}$.  The quantity $-2(1-c_1) \ln  M$
- (where $c_1$ is a small sample correction factor) is usually called
- correct Box test and is approximately distributed as a $\chi^2$ with $0.5
- (g-1) v(v+1)$ degrees of freedom. We reject $H_0$ if 
- $$-2(1-c_1) \ln M  &gt;\chi^2_{1-\alpha}$$ where $\chi^2_{1-\alpha}$ is the 
- $1-\alpha$ quantile. The value of this test is contained in
- $\mbox{out.LRchi2approx}$  and the corresponding p-value of this test is
- given in $\mbox{out.LRchi2approx_pval}$.
- Box also derived and F approximation to the test. This test is computed
- just if input option Fapprox is true. The value of this last test and the
- corresponding p-values are given in $\mbox{out.LRFapprox}$ and
- $\mbox{LRFapprox_pval}$.
- WARNING: if the absolute value of the determinant of the
- covariance matrix of any group is less than 1e-40,
- a missing value for LR test is reported.
-
-
-</P><h2>References</h2><P>Mardia, K.V., J.T. Kent, and J.M. Bibby (1979), "Multivariate Analysis,"
- Academic Press, London, pp. 140. [MKB].</P></html>

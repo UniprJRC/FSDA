@@ -1,414 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>corrOrdinal</title><meta content="refpage" name="chunktype"><meta content="function:corrOrdinal" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="corrOrdinal measures strength of association between two ordered categorical variables.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">corrOrdinal</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">corrOrdinal with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Compare calculation of tau-b with that which comes from
-     Matlab function corr.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">corrOrdinal with option conflev.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">corrOrdinal with with option NoStandardErrors.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Income and job satisfaction.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Input is the contingency table in matrix format, labels for rows and
-     columns are supplied.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_NoStandardErrors">NoStandardErrors</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lr">Lr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lc">Lc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datamatrix">datamatrix</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">corrOrdinal</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">corrOrdinal measures strength of association between two ordered categorical variables.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=corrOrdinal(N)</code><span class="syntax_example"><a class="intrnllnk" href="corrOrdinal.html#Example_1">example</a></span></li><li><code class="synopsis">out=corrOrdinal(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="corrOrdinal.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>corrOrdinal computes Goodman-Kruskal's $\gamma$, $\tau_a$,
- $\tau_b$, $\tau_c$ of Kendall and $d_{y|x}$ of Somers.</p> <p>
- All these indexes measure the correlation among two ordered qualitative
- variables and go between -1 and 1. The sign of the coefficient indicates
- the direction of the relationship, and its absolute value indicates the
- strength, with larger absolute values indicating stronger
- relationships. Values close to an absolute value of 1 indicate a strong
- relationship between the two variables. Values close to 0 indicate little
- or no relationship. More in detail:</p> <p>
- $\gamma$ is a symmetric measure of association.</p> <p>
- Kendall's $\tau_a$ is a symmetric measure of association that does not
- take ties into account. Ties happen when both members of the data pair
- have the same value.</p> <p>
- Kendall's $\tau_b$ is a symmetric measure of association which takes ties
- into account. Even if $\tau_b$ ranges from -1 to 1, a value of -1 or
- +1 can be obtained only from square tables.</p> <p>
- $\tau_c$ (also called Stuart-Kendall $\tau_c$) is a symmetric measure of
- association which makes an adjustment for table size in addition to a
- correction for ties. Even if $\tau_c$ ranges from -1 to 1, a value of -1
- or +1 can be obtained only from square tables.</p> <p>
- Somers' $d$ is an asymmetric extension of $\tau_b$ in that it uses a
- correction only for pairs that are tied on the independent variable
- (which in this implementation it is assumed to be on the rows of the
- contingency table).</p><p>
- Additional details about these indexes can be found in the "More About"
- section of this document.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="corrOrdinal.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=corrOrdinal(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>)</code></span>corrOrdinal with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="corrOrdinal.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=corrOrdinal(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Compare calculation of tau-b with that which comes from
-     Matlab function corr.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> corrOrdinal with all the default options.</li></span></a></span></h3><div class="collapse"><p>
-     Rows of N indicate the results of a written test with levels:
-     'Sufficient' 'Good' Very good'
-     Columns of N indicate the results of an oral test with levels:
-     'Sufficient' 'Good' Very good'<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[20    40    20;
-10    45    45;
-0     5    15];
-out=corrOrdinal(N);
-% Because the asymptotic 95 per cent confidence limits do not contain
-% zero, this indicates a strong positive association between the
-% written and the oral examination.</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
-The standard errors are computed under H_0
-              Coeff        se       zscore       pval   
-             _______    ________    ______    __________
-
-    gamma        0.5    0.098239    5.0896     3.588e-07
-    taua     0.18342    0.047553    3.8571    0.00011474
-    taub     0.30557    0.060038    5.0896     3.588e-07
-    tauc     0.27375    0.053786    5.0896     3.588e-07
-    dyx      0.31466    0.061823    5.0896     3.588e-07
-
------------------------------------------
-Indexes and 95% confidence limits
-The standard error are computed under H_1
-              Value     StandardError    ConflimL    ConflimU
-             _______    _____________    ________    ________
-
-    gamma        0.5        0.0876       0.32831     0.67169 
-    taua     0.18342      0.011904       0.16009     0.20675 
-    taub     0.30557       0.05852       0.19087     0.42027 
-    tauc     0.27375      0.053786       0.16833     0.37917 
-    dyx      0.31466      0.059899       0.19726     0.43205 
-
-tau-b from MATLAB routine corr=0.0083449
-tau-b from FSDA routine corrOrdinal=0.0083449
-pvalue of H0:taub=0 from MATLAB routine corr=0.89952
-pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare calculation of tau-b with that which comes from
-     Matlab function corr.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Starting from a contingency table, create the original data matrix to
-% te able to call corr.
-N=[20    23    20;
-21    25    22;
-18     18    19];
-n11=N(1,1); n12=N(1,2); n13=N(1,3);
-n21=N(2,1); n22=N(2,2); n23=N(2,3);
-n31=N(3,1); n32=N(3,2); n33=N(3,3);
-x11=[1*ones(n11,1) 1*ones(n11,1)];
-x12=[1*ones(n12,1) 2*ones(n12,1)];
-x13=[1*ones(n13,1) 3*ones(n13,1)];
-x21=[2*ones(n21,1) 1*ones(n21,1)];
-x22=[2*ones(n22,1) 2*ones(n22,1)];
-x23=[2*ones(n23,1) 3*ones(n23,1)];
-x31=[3*ones(n31,1) 1*ones(n31,1)];
-x32=[3*ones(n32,1) 2*ones(n32,1)];
-x33=[3*ones(n33,1) 3*ones(n33,1)];
-% X original data matrix
-X=[x11; x12; x13; x21; x22; x23; x31; x32; x33];
-% Find taub and pvalue of taub using MATLAB routine corr
-[RHO,pval]=corr(X,'type','Kendall');
-% Compute tau-b using FSDA corrOrdinal routine.
-out=corrOrdinal(X,'datamatrix',true,'dispresults',false);
-disp(['tau-b from MATLAB routine corr=' num2str(RHO(1,2))])
-disp(['tau-b from FSDA routine corrOrdinal=' num2str(out.taub(1))])
-% Remark the p-values are slightly different
-disp(['pvalue of H0:taub=0 from MATLAB routine corr=' num2str(pval(1,2))])
-disp(['pvalue of H0:taub=0 from FSDA routine corrOrdinal=' num2str(out.taub(4))])</pre></div></div><pre class="codeoutput">Test of H_0: independence between rows and columns
-The standard errors are computed under H_0
-              Coeff        se       zscore       pval   
-             _______    ________    ______    __________
-
-    gamma        0.5    0.098239    5.0896     3.588e-07
-    taua     0.18342    0.047553    3.8571    0.00011474
-    taub     0.30557    0.060038    5.0896     3.588e-07
-    tauc     0.27375    0.053786    5.0896     3.588e-07
-    dyx      0.31466    0.061823    5.0896     3.588e-07
-
------------------------------------------
-Indexes and 95% confidence limits
-The standard error are computed under H_1
-              Value     StandardError    ConflimL    ConflimU
-             _______    _____________    ________    ________
-
-    gamma        0.5        0.0876       0.32831     0.67169 
-    taua     0.18342      0.011904       0.16009     0.20675 
-    taub     0.30557       0.05852       0.19087     0.42027 
-    tauc     0.27375      0.053786       0.16833     0.37917 
-    dyx      0.31466      0.059899       0.19726     0.43205 
-
-tau-b from MATLAB routine corr=0.0083449
-tau-b from FSDA routine corrOrdinal=0.0083449
-pvalue of H0:taub=0 from MATLAB routine corr=0.89952
-pvalue of H0:taub=0 from FSDA routine corrOrdinal=0.89914
-</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with option conflev.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[26 26 23 18  9;
-6  7  9 14 23];
-out=corrOrdinal(N,'conflev',0.999);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>corrOrdinal with with option NoStandardErrors.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[26 26 23 18  9;
-6  7  9 14 23];
-out=corrOrdinal(N,'NoStandardErrors',true);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Income and job satisfaction.</li></span></a></span></h3><div class="collapse"><p>
-     Relationship between the income (with levels '&lt; 5000' '5000-25000' and
-     '&gt;25000') and  job satisfaction (with levels 'Dissatisfied' 'Moderately satisfied'
-     and 'Very satisfied') for a sample of 300 persons
-     Input data is matlab table Ntable:<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N = [24 23 30;19 43 57;13 33 58];
-rownam={'Less_than_5000',  'Between_5000_and_25000' 'Greater_than_25000'};
-colnam= {'Dissatisfied' 'Moderately_satisfied' 'Very_satisfied'};
-if verLessThan('matlab','8.2.0') ==0
-Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(rownam),'VariableNames',matlab.lang.makeValidName(colnam));
-%  Check relationship
-out=corrOrdinal(Ntable);
-else
-out=corrOrdinal(N);
-end</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input is the contingency table in matrix format, labels for rows and
-     columns are supplied.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[20    40    20;
-10    45    45;
-0     5    15];
-% labels for rows and columns
-labels_rows= {'Sufficient' 'Good' 'Very_good'};
-labels_columns= {'Sufficient' 'Good' 'Very_good'};
-out=corrOrdinal(N,'Lr',labels_rows,'Lc',labels_columns,'dispresults',false);
-if verLessThan('matlab','8.2.0') ==0
-% out.Ntable uses labels for rows and columns which are supplied
-disp(out.Ntable)
-end</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
-                 table (say of size I-by-J) or the original data matrix.</p> <p>
-                 In this last case N=crosstab(N(:,1),N(:,2)). As default
-                 procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'NoStandardErrors',true
-</code>,<code> 'dispresults',false
-</code>,<code> 'Lr',{'a' 'b' 'c'}
-</code>,<code> 'Lc',{'c1' c2' 'c3' 'c4'}
-</code>,<code> 'datamatrix',true
-</code>,<code> 'conflev',0.99
-</code></code></span></div><div class="expandableContent"><div id="inputarg_NoStandardErrors" class="clearfix"></div><h3 id="input_argument_namevalue_NoStandardErrors" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NoStandardErrors</code> &#8212;Just indexes without standard errors and p-values.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if NoStandardErrors is true just the indexes are computed
-               without standard errors and p-values. That is no
-               inferential measure is given. The default value of
-               NoStandardErrors is false.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NoStandardErrors',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on the
-               screen all the summary results of the analysis.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;Vector of row labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the rows of the input
-               contingency matrix N. This option is unnecessary if N is a
-               table. because in this case  Lr=N.Properties.RowNames;</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lr',{'a' 'b' 'c'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_Lc" class="clearfix"></div><h3 id="input_argument_namevalue_Lc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lc</code> &#8212;Vector of column labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the columns of the input
-               contingency matrix N. This option is unnecessary if N is a
-               table because in this case Lc=N.Properties.VariableNames;</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lc',{'c1' c2' 'c3' 'c4'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;Data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If datamatrix is true the first input argument N is forced
-               to be interpreted as a data matrix, else if the input
-               argument is false N is treated as a contingency table. The
-               default value of datamatrix is false, that is the procedure
-               automatically considers N as a contingency table
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence levels to be used to
-               compute confidence intervals.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is 0.95, that
-               is 95 per cent confidence intervals
-               are computed for all the indexes (note that this option is
-               ignored if NoStandardErrors=true).</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>N</code></td><td><p><p>$I$-by-$J$-array containing contingency table
-                   referred to active rows (i.e. referred to the rows which
-                   participated to the fit).</p> <p>
-                   The $(i,j)$-th element is equal to $n_{ij}$,
-                   $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
-                   sum of the elements of out.N is $n$ (the grand
-                   total).</p></p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p><p>Same as out.N but in table format (with row and
-                   column names).</p> <p>
-                   This output is present just if your MATLAB
-                   version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>gam</code></td><td><p>1 x 4 vector which contains Goodman and Kruskall gamma index,
-                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taua</code></td><td><p>1 x 4 vector which contains index $\tau_a$,
-                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>taub</code></td><td><p>1 x 4 vector which contains index $\tau_b$,
-                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>tauc</code></td><td><p>1 x 4 vector which contains index $\tau_c$,
-                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>som</code></td><td><p>1 x 4 vector which contains Somers index $d_{y|x}$,
-                   standard error, test and p-value.</p></td></tr><tr valign="top"><td><code>TestInd</code></td><td><p>5-by-4 matrix containing index values (first column),
-                   standard errors (second column), zscores (third column),
-                   p-values (fourth column). Note that the
-                   standard errors in this matrix are computed assuming
-                   the null hypothesis of independence.</p></td></tr><tr valign="top"><td><code>TestIndtable</code></td><td><p>5-by-4 table containing index values (first column),
-                   standard errors (second column), zscores (third column),
-                   p-values (fourth column). Note that the
-                   standard errors in this table are computed assuming
-                   the null hypothesis of independence.</p></td></tr><tr valign="top"><td><code>ConfLim</code></td><td><p><p>5-by-4 matrix containing index values (first column),
-                   standard errors (second column), lower confidence limit
-                   (third column), upper confidence limit (fourth column).</p> <p>
-                   Note that the standard errors in this matrix are computed not
-                   assuming the null hypothesis of independence.</p></p></td></tr><tr valign="top"><td><code>ConfLimtable</code></td><td><p><p>5-by-4 table containing index values (first column),
-                   standard errors (second column), lower confidence limit
-                   (third column), upper confidence limit (fourth column).</p> <p>
-                   Note that the standard errors in this table are computed not
-                   assuming the null hypothesis of independence.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-
- All these indexes are based on concordant and discordant pairs.</p> <p>
- A pair of observations is concordant if the subject who is higher on one
- variable also is higher on the other variable, and a pair of observations
- is discordant if the subject who is higher on one variable is lower on
- the other variable.</p> <p>
- Let $C$ be the total number of concordant pairs (concordances) and $D$
- the total number of discordant pairs (discordances) . If $C &gt; D$ the
- variables have a positive association, but if $C &lt; D$ then the variables
- have a negative association.</p><p>
-
- In symbols, given an $I \times J$ contingency table the concordant pairs
- with cell $i,j$ are
- </p>\[
- a_{ij} = \sum_{k&lt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&gt;i} \sum_{l&gt;j}   n_{kl}
- \]
-
- the number of discordant pairs is
-
- \[
- b_{ij} = \sum_{k&gt;i} \sum_{l&lt;j} n_{kl} + \sum_{k&lt;i} \sum_{l&gt;j} n_{kl}
- \]<p>
-
-
- Twice the number of concordances, $C$ is given by:</p> <p>
- </p>\[
- 2 \times C = \sum_{i=1}^I \sum_{j=1}^J n_{ij} a_{ij}
- \]<p>
- Twice the number of discordances, $D$ is given by:</p> <p>
- </p>\[
- 2 \times D = \sum_{i=1}^I \sum_{j=1}^J n_{ij} b_{ij}
- \]<p>
-
- Goodman-Kruskal's $\gamma$ statistic is equal to the ratio:</p> <p>
-
- </p>\[
- \gamma= \frac{C-D}{C+D}
- \]<p>
-
-
- $\tau_a$ is equal to concordant minus discordant pairs, divided by a
- factor which takes into account the total number of pairs.</p> <p>
-
- </p>\[
-  \tau_a= \frac{C-D}{0.5 n(n-1)}
- \]<p>
-
- $\tau_b$ is equal to concordant minus discordant
- pairs divided by a term representing the geometric mean between the
- number of pairs not tied on x and the number not tied on y.</p> <p>
- More precisely:</p><p>
- </p>\[
-  \tau_b= \frac{C-D}{\sqrt{ (0.5 n(n-1)-T_x)(0.5 n(n-1)-T_y)}}
- \]<p>
- where $T_x= \sum_{i=1}^I 0.5 n_{i.}(n_{i.}-1)$ and
- $T_y=\sum_{j=1}^J 0.5 n_{.j}(n_{.j}-1)$
- Note that $\tau_b \leq \gamma$.</p> <p>
-
- $\tau_c$ is equal to concordant minus discordant pairs multiplied by a factor that adjusts
- for table size.</p><p>
- </p>\[
-  \tau_c= \frac{C-D}{ n^2(m-1)/(2m)}
- \]<p>
- where $m= min(I,J)$;</p> <p>
-
- Somers' $d_{y|x}$ is an
- asymmetric extension of $\gamma$ that differs only in the inclusion of the
- number of pairs not tied on the independent variable. More precisely
-
- </p>\[
-  d_{y|x} = \frac{C-D}{0.5 n(n-1)-T_x}
- \]<p>
-
- Null hypothesis:</p> <p>
- corresponding index = 0. Alternative hypothesis (one-sided) index &lt; 0 or
- index &gt; 0.</p> <p>
-
-
-
- In order to compute confidence intervals and test hypotheses, this
- routine computes the standard error of the various indexes.</p> <p>
- Note that the expression of the standard errors which is used to compute
- the confidence intervals is different from the expression which is used
- to test the null hypothesis of no association (no relationship or independence)
- between the two variables.</p> <p>
-
-As concerns the Goodman-Kruskal's $\gamma$ index we have that:</p><p>
- </p>\[
-  var(\gamma) =   \frac{4}{(C + D)^4}  \sum_{i=1}^I \sum_{j=1}^J
-  n_{ij} (D a_{ij} - C b_{ij} )^2
- \]
- where
- \[
- d_{ij}=a_{ij}- b_{ij}
- \]<p>
-
- The variance of $\gamma$  assuming the independence hypothesis is:</p> <p>
- </p>\[
- var_0(\gamma) =\frac{1}{(C + D)^2} \left( \sum_{i=1}^I \sum_{j=1}^J
-  n_{ij} d_{ij}^2  -4(C-D)^2/n  \right)
- \]<p>
-
- As concerns $\tau_a$ we have that:</p> <p>
- </p>\[
- var(\tau_a)= \frac{2}{n(n-1)} \left\{ \frac{2(n-2)}{n(n-1)^2}  \sum_{i=1}^I \sum_{j=1}^J (d_{ij} - \overline d)^2 + 1 - \tau_a^2 \right\}
- \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
- \]
- where
-
- \[
- \overline d = \sum_{i=1}^I \sum_{j=1}^J d_{ij} /n  \qquad \mbox{with $i,j$ such that $N(i,j)&gt;0$}
- \]<p>
-
- The variance of $\tau_a$  assuming the independence hypothesis is:</p> <p>
- </p>\[
- var_0(\tau_a) =\frac{2 (2n+5)}{9n(n-1) }
- \]<p>
-
-
- As concerns $\tau_b$ we have that:</p> <p>
- </p>\[
- var(\tau_b)= \frac{n}{w^4} \left\{ n \sum_{i=1}^I \sum_{j=1}^J n_{ij} \tau_{ij}^2 - \left( \sum_{i=1}^I \sum_{j=1}^J  n_{ij}\tau_{ij}\right)^2  \right\}
- \]
- where
-
- \[
-  \tau_{ij} = 2n d_{ij} +2(C-D) n_{.j} w /n^3+2(C-D) (n_{i.}/n) \sqrt{
-  w_c/w_r} \qquad \mbox{and} \qquad w= \sqrt{w_rw_c}
- \]<p>
-
- The variance of $\tau_b$  assuming the independence hypothesis is:</p> <p>
- </p>\[
- var_0(\tau_b) =\frac{4}{w_r w_c}  \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]<p>
-
-
- As concerns Stuart's $\tau_c$ we have that:</p> <p>
- </p>\[
- var(\tau_c)= \frac{4m^2}{(m-1)^2 n^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]<p>
-
-
-
- The variance of $\tau_c$  assuming the independence hypothesis is:</p> <p>
- </p>\[
- var_0(\tau_c) =var(\tau_c)
- \]<p>
-
-
- As concerns $d_{y|x}$ we have that:</p> <p>
- </p>\[
- var( d_{y|x})= \frac{4}{w_r^4} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij}
- (w_r d_{ij} -2(C-D) (n-n_{i.}) \right\}^2
- \]
- where
- \[
- w_r= n^2- \sum_{i=1}^I n_{i.}^2
- \]<p>
-
- The variance of $d_{y|x}$  assuming the independence hypothesis is:</p> <p>
- </p>\[
- var_0(d_{y|x}) = \frac{4}{w_r^2} \left\{ \sum_{i=1}^I \sum_{j=1}^J n_{ij} d_{ij} ^2 -4(C-D)^2/n \right\}
- \]<p>
-
- From the theoretical point of view, Simon (1978) showed that all sample
- measures having the same numerator $(C-D)$ have the same efficacy and hence
- the same local power, for testing independence.</p> <p>
-
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.</p> <p>
- 57-59]</p></p></div><div><p>Agresti, A. (2010), "Analysis of Ordinal Categorical Data", Second Edition,
- Wiley, New York, pp. 194-195.</p></div><div><p>Hollander, M, Wolfe, D.A., Chicken, E. (2014), "Nonparametric Statistical
- Methods", Third edition, Wiley,</p></div><div><p><p>Goktas, A. and Oznur, I. (2011), A comparision of the most commonly used
- measures of association for doubly ordered square contingency tables via
- simulation, "Metodoloski zvezki", Vol. 8, pp. 17-37, [available at:</p> <p>
- www.stat-d.si/mz/mz8.1/goktas.pdf]</p></p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1954), Measures of association for
- cross classifications, "Journal of the American Statistical
- Association", Vol. 49, pp. 732-764.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1959), Measures of association for
- cross classifications II: Further Discussion and References,
- "Journal of the American Statistical Association", Vol. 54, pp. 123-163.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1963), Measures of association for
- cross classifications III: Approximate Sampling Theory,
- "Journal of the American Statistical Association", Vol. 58, pp. 310-364.</p></div><div><p>Goodman, L.A. and Kruskal, W.H. (1972), Measures of association for
- cross classifications IV: Simplification of Asymptotic
- Variances, "Journal of the American Statistical Association", Vol. 67,
- pp. 415-421.</p></div><div><p>Liebetrau, A.M. (1983), "Measures of Association", Sage University Papers
- Series on Quantitative Applications in the Social Sciences, 07-004,
- Newbury Park, CA: Sage. [pp. 49-56]</p></div><div><p>SAS documentation (2009), See
- <a href="http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf">http://support.sas.com/documentation/cdl/en/statugfreq/63124/PDF/default/statugfreq.pdf</a>,
- pp. 1738-1740.</p></div><div><p>Morton, B.B. and Benedetti, J.K. (1977), Sampling Behavior of Tests for
- Correlation in Two-Way Contingency Tables, "Journal of the American
- Statistical Association", Vol. 72, pp. 309-315.</p></div><div><p>Simon, G. (1978), Alternative analysis for the singly ordered contingency
- table, "Journal of the American Statistical Association", Vol. 69, pp.
- 971-976.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
-
- This file was inspired by Trujillo-Ortiz, A. and R. Hernandez-Walls.</p> <p>
- gkgammatst: Goodman-Kruskal's gamma test. URL address
- <a href="http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst">http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst</a>
-
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/corr.html'))" itemprop="url"><span itemprop="name"><code>corr</code></span></a></span> | <span itemprop="seealso"><a href="corrNominal.html" itemprop="url"><span itemprop="name"><code>corrNominal</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
