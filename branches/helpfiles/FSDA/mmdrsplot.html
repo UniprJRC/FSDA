@@ -1,209 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mmdrsplot</title><meta content="refpage" name="chunktype"><meta content="function:mmdrsplot" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mmdrsplot plots the trajectories of minimum Mahalanobis distances from different starting points." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mmdrsplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of mmdrsplot with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of function mmdrsplot with personalized envelopes.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1"><i>Interactive example 1.</i>
-     mmdrsplot with option dataooltip.</a></li><li><a class="intrnllnk" href="#ExtraExample_2"><i>Interactive example 2.</i>
-     mmdrsplot with option dataooltip passed as structure.</a></li><li><a class="intrnllnk" href="#ExtraExample_3"><i>Interactive example 3.</i>
-    Example of the use of option databrush.</a></li><li><a class="intrnllnk" href="#ExtraExample_4"><i>Interactive example 4.</i>
-     Example of the use of option databrush.</a></li><li><a class="intrnllnk" href="#ExtraExample_5"><i>Interactive example 5.</i>
-     Two groups with approximately the same number of units.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_quant">quant</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_envm">envm</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlimx">xlimx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylimy">ylimy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwdenv">lwdenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_label">label</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_FontSize">FontSize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SizeAxesNum">SizeAxesNum</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameY">nameY</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwd">lwd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_titl">titl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labx">labx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_laby">laby</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labenv">labenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_scaled">scaled</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mmdrsplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mmdrsplot plots the trajectories of minimum Mahalanobis distances from different starting points</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">mmdrsplot(out)</code><span class="syntax_example"><a class="intrnllnk" href="mmdrsplot.html#Example_1">example</a></span></li><li><code class="synopsis">mmdrsplot(out,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mmdrsplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mmdrsplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code>mmdrsplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>)</code></span>Example of mmdrsplot with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mmdrsplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>mmdrsplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of function mmdrsplot with personalized envelopes.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of mmdrsplot with all the default options.</li></span></a></span></h3><div class="collapse"><p>
-    Steps common to all the examples<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
-[fre]=unibiv(Y);
-%create an initial subset with the 4 observations, which fell the smallest
-%number of times outside the robust bivariate ellipses, and with the
-%lowest Mahalanobis Distance.
-fre=sortrows(fre,[3 4]);
-m0=20;
-bs=fre(1:m0,1);
-[outeda]=FSMeda(Y,bs);
-[out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
-mmdrsplot(out)</pre></div></div><img vspace="5" hspace="5" src="images\mmdrsplot_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmdrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">mmdrsplot(out,'quant',[0.99;0.9999]);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
-     mmdrsplot with option dataooltip.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%Example of the use of function mmdrsplot with datatooltip passed as
-%scalar (that is using default options for datacursor (i.e.
-%DisplayStyle =window)
-mmdrsplot(out,'datatooltip',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
-     mmdrsplot with option dataooltip passed as structure.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%Example of the use of function mmdrsplot with datatooltip passed as
-%structure
-clear tooltip
-tooltip.SnapToDataVertex='on'
-tooltip.DisplayStyle='datatip'
-mmdrsplot(out,'datatooltip',tooltip);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
-    Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">mmdrsplot(out,'databrush',1);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
-     Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p> 
-     Selected units are also highlighted in the malfwdplot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
-out=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
-outEDA=FSMeda(Y,1:10,'init',20,'scaled',1);
-malfwdplot(outEDA)
-databrush=struct;
-databrush.persist='on';
-mmdrsplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
-     Two groups with approximately the same number of units.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
-rng('default')
-rng(10);
-n1=100;
-n2=100;
-v=3;
-Y1=rand(n1,v);
-Y2=rand(n2,v)+1;
-Y=[Y1;Y2];
-group=[ones(n1,1);2*ones(n2,1)];
-spmplot(Y,group);
-title('Two simulated groups')
-Y=[Y1;Y2];
-close all
-% parfor of Parallel Computing Toolbox is used (if present in current computer)
-% and pool is not cleaned after the execution of the random starts
-% The number of workers which is used is the one specified
-% in the local/current profile
-[out]=FSMmmdrs(Y,'nsimul',100,'init',10,'plots',1,'cleanpool',0);
-ylim([2 5])
-disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
-disp('clearly show the presence of two groups.')
-disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
-mmdrsplot(out,'databrush',1)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing the following fields. </span>  </a><span class="example_desc">out.mmdrs = a matrix of size (n-ninit)-by-(nsimul+1)containing the
-               monitoring of minimum Mahalanobis distance
-               in each step of the forward search for each of the nsimul random starts.</span></span></h3> <div class="collapse"> <p><p>The first column of mmdrs must contain the fwd search
-               index.</p> <p>
-               This matrix can be created using function FSMmmdrs
- out.BBrs   =  3D array of size n-by-n-(init)-by-nsimul containing units
-               forming subset for rach random start.</p> <p>
-               This field is necessary if datatooltip is true or databrush
-               is not empty.</p><p>
-     out.Y   =   n-by-v matrix containing the original datamatrix
-               This field is necessary if datatooltip is true or databrush
-               is not empty.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'quant',[0.01 0.99]
-</code>,<code> 'envm',n
-</code>,<code> 'xlimx',[20 100]
-</code>,<code> 'ylimy',[2 6]
-</code>,<code> 'lwdenv',2
-</code>,<code> 'tag','mymmdrs'
-</code>,<code> 'datatooltip',1
-</code>,<code> 'label',{'Smith','Johnson','Robert','Stallone'}
-</code>,<code> 'databrush',1
-</code>,<code> 'FontSize',14
-</code>,<code> 'SizeAxesNum',14
-</code>,<code> 'nameY',{'Age','Income','Married','Profession'}
-</code>,<code> 'lwd',3
-</code>,<code> 'namey','Plot title'
-</code>,<code> 'labx','Subset size m'
-</code>,<code> 'laby','mmd'
-</code>,<code> 'labenv',false
-</code>,<code> 'scaled',0
-</code></code></span></div><div class="expandableContent"><div id="inputarg_quant" class="clearfix"></div><h3 id="input_argument_namevalue_quant" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>quant</code> &#8212;quantiles for which envelopes have
-               to be computed.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>1 x k vector containing quantiles for which envelopes have
-               to be computed. The default is to produce 1%, 50% and 99%
-               envelopes.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'quant',[0.01 0.99]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_envm" class="clearfix"></div><h3 id="input_argument_namevalue_envm" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>envm</code> &#8212;sample size to use.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar which specifies the size of the sample which is
-                   used to superimpose the envelope. The default is to add
-                   an envelope based on all the observations (size n
-                   envelope)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'envm',n
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlimx" class="clearfix"></div><h3 id="input_argument_namevalue_xlimx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlimx</code> &#8212;min and max for x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and
-                   maximum on the x axis. Default value is mmd(1,1)-3 and
-                   mmd(end,1)*1.3
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlimx',[20 100]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_ylimy" class="clearfix"></div><h3 id="input_argument_namevalue_ylimy" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylimy</code> &#8212;min and max for x axis.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector with two elements controlling minimum and
-                   maximum on the y axis. Default value is min(mmd(:,2))
-                   and max(mmd(:,2));</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylimy',[2 6]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lwdenv" class="clearfix"></div><h3 id="input_argument_namevalue_lwdenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwdenv</code> &#8212;Line width.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar which controls the width of the lines associated
-                   with the envelopes. Default is lwdenv=1
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwdenv',2
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;plot handle.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>String which identifies the handle
-                   of the plot which is about to be created. The default
-                   is to use tag 'pl_mmdrs'. Notice that if the program
-                   finds a plot which has a tag equal to the one specified
-                   by the user, then the output of the new plot overwrites
-                   the existing one in the same window else a new window
-                   is created
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','mymmdrs'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;interactive clicking.</span></a><span class="example_desc">empty value (default) |                   structure.</span></span></h3><div class="collapse">	<p><p>If datatooltip is not empty the user can use the mouse
-                   in order to have information about the unit selected,
-                   the step in which the unit enters the search and the
-                   associated label. If datatooltip is a structure, it is
-                   possible to control the aspect of the data cursor (see
-                   function datacursormode for more details or the
-                   examples below). The default options of the structure
-                   are DisplayStyle='Window' and SnapToDataVertex='on'.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, numeric or structure</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;rwo labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p>Cell containing the labels of the
-                   units (optional argument used when datatooltip=1. If
-                   this field is not present labels row1, ..., rown will
-                   be automatically created and included in the pop up
-                   datatooltip window)
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value (default),                   scalar | structure.</span></span></h3><div class="collapse">	<p><p>DATABRUSH IS AN EMPTY VALUE .</p> <p>
-                   If databrush is an empty
-                   value (default), no brushing is done. The activation of
-                   this option (databrush is a scalar or a structure) enables
-                   the user  to select a set of trajectories in the
-                   current plot and to see them highlighted in the spm
-                   (notice that if the spm does not exist it is
-                   automatically created). In addition, units forming
-                   subset in the selected steps selected trajectories can
-                   be highlighted in the monitoring MD plot
-                   Note that the window style of the
-                   other figures is set equal to that which contains the
-                   monitoring residual plot. In other words, if the
-                   monitoring residual plot is docked all the other
-                   figures will be docked too.</p> <p>
-                  DATABRUSH IS A SCALAR.</p> <p>
-                   If databrush is a scalar the default selection tool is a
-                   rectangular brush and it is possible to brush only once
-                   (that is persist='').</p> <p>
-                  DATABRUSH IS A STRUCTURE.</p> <p>
-                   If databrush is a structure, it is
-                   possible to use all optional arguments
-                   of function <a href="selectdataFS.html">selectdataFS</a> and the following optional
-                   argument:</p> <p>
-                  persist. Persist is an empty value or a scalar
-                   containing the strings 'on' or 'off' If persist = 'on'
-                   or 'off' brusing can be done as many time as the user
-                   requires. If persist='on' then the unit(s) currently
-                   brushed are added to those previously brushed. If
-                   persist='off' every time a new brush is performed units
-                   previously brushed are removed. The default value of
-                   persist is '' that is brushing is allowed only once. If
-                   persist is 'on' it is possible, every time a new
-                   brushing is done, to use a different color for the
-                   brushed units
-                  labeladd. If this option is '1', we label the units
-                     of the last selected group with the unit row index in
-                     matrices X and y. The default value is labeladd='',
-                     i.e. no label is added.</p> <p>
-                                      Remark: if databrush is a struct, it is possible to
-                   specify all optional arguments of function selectdataFS
-                   inside the curly brackets of option databrush.</p><p>
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;Size of axes labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar which controls the
-                   fontsize of the labels of the axes. Default value is 12
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',14
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;Size of axes numbers.</span></a><span class="example_desc">scalar which controls the fontsize of the numbers of                   the axes.</span></span></h3><div class="collapse">	<p>Default value is 10
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',14
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;Regressors names.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell array of
-                   strings of length v containing the labels
-                   of the varibales of the original data matrix. If it is empty
-                 	(default) the sequence Y1, ..., Yp will be created
-                   automatically
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'Age','Income','Married','Profession'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_lwd" class="clearfix"></div><h3 id="input_argument_namevalue_lwd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lwd</code> &#8212;Curves line width.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls linewidth of the curve which
-                   contains the monitoring of minimum Mahalanobis distance.</p> <p>
-                   Default line width=2
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lwd',3
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;main title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>A label for the title (default: '')
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','Plot title'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labx" class="clearfix"></div><h3 id="input_argument_namevalue_labx" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labx</code> &#8212;x axis title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>A label for the x-axis (default: 'Subset size m')
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labx','Subset size m'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_laby" class="clearfix"></div><h3 id="input_argument_namevalue_laby" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>laby</code> &#8212;y axis title.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>A label for the y-axis (default: 'Minimum Mahalnobis distance')
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laby','mmd'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labenv" class="clearfix"></div><h3 id="input_argument_namevalue_labenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labenv</code> &#8212;label the envelopes.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If labenv is true (default) labels of the confidence
-                   envelopes which are used are added on the y axis.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labenv',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_scaled" class="clearfix"></div><h3 id="input_argument_namevalue_scaled" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scaled</code> &#8212;scaled or unscaled envelopes.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>Use reference envelopes scaled or unscaled).</p> <p>
-                   If scaled=1 the envelopes are produced for
-                   scaled Mahalanobis distances (no consistency factor is
-                   applied) else the traditional consistency factor is applied
-                   Default is to use unscaled envelopes
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scaled',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
- data with the forward search", Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMmmdrs.html" itemprop="url"><span itemprop="name"><code>FSMmmdrs</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

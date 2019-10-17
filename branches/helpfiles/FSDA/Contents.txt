@@ -1,1 +1,0 @@
-This folder contains the documentation files. Depending on the MATLAB release, copy of this folder should be located under the help folder of the MATLAB installation. 

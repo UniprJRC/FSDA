@@ -1,127 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>rthin</title><meta content="refpage" name="chunktype"><meta content="function:rthin" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="rthin applies independent random thinning to a point pattern.." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">rthin</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Random thinning on a mixture of normal distribution.</a></li><li><a class="intrnllnk" href="#Example_2">Random thinning on the fishery dataset.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_P">P</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_Y">Y</a></li><li><a class="intrnllnk" href="#output_argument_retain">retain</a></li></ul></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">rthin</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">rthin applies independent random thinning to a point pattern.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">Y =rthin(X, P)</code><span class="syntax_example"><a class="intrnllnk" href="rthin.html#Example_1">example</a></span></li><li><code class="synopsis">[Y , retain]=rthin(___)</code><span class="syntax_example"><a class="intrnllnk" href="rthin.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p><p>This function was ported to matlab from the R spatstat package, developed
- by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au), Rolf Turner
- (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk) for the
- statistical analysis of spatial point patterns. The algorithm for random
- thinning was changed in spatstat version 1.42-3. Our matlab porting is
- based on a earlier version. See the rthin documentation in spatstat for
- more details.</p> <p>
-
- In a random thinning operation, each point of X is randomly either
- deleted or retained (i.e. not deleted). The result is a point pattern,
- consisting of those points of X that were retained. Independent random
- thinning means that the retention/deletion of each point is independent
- of other points.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Y"><code>Y</code></a>=rthin(<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_P"><code> P</code></a>)</code></span>Random thinning on a mixture of normal distribution.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="rthin.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Y"><code>Y </code></a>,<a class="intrnllnk" href="#outputarg_retain"><code> retain</code></a>]=rthin(___)</code></span>Random thinning on the fishery dataset.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Random thinning on a mixture of normal distribution.</li></span></a></span></h3><div class="collapse"><p>
-     Data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
-data=[randn(500,2);randn(500,1)+3.5, randn(500,1);];
-x = data(:,1);
-y = data(:,2);
-% Data density
-[density,xout,bandwidth]   = kdebiv(data,'pdfmethod','fsda');
-xx = xout(:,1);
-yy = xout(:,2);
-zz = density;
-% plot of data and density
-figure;
-[xq,yq] = meshgrid(xx,yy);
-density = griddata(xx,yy,density,xq,yq);
-contour3(xq,yq,density,50), hold on
-plot(x,y,'r.','MarkerSize',5)
-title(['Original data (' num2str(numel(y)) ' units) with density contour'],'FontSize',16);
-%Interpolate the density and apply thinning using retention probabilities (1 - pdfe/max(pdfe))
-F = TriScatteredInterp(xx(:),yy(:),zz(:));
-pdfe = F(x,y);
-pretain = 1 - pdfe/max(pdfe);
-[Xt , Xti]= rthin([x y],pretain);
-% rthin retention probabilities
-[psorted ii] = sort(pretain);
-figure;
-plot(x,y,'r.','MarkerSize',5);
-hold on;
-plot(x(ii(1:100)),y(ii(1:100)),'bx','MarkerSize',5);
-title('The 100 units with smaller retention probabilities','FontSize',16);
-% now estimate the density on the retained units
-%[tdensity,txout,tbandwidth] = ksdensity(Xt);
-[tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');
-txx = txout(:,1);
-tyy = txout(:,2);
-tzz = tdensity;
-% and plot the retained units with their density superimposed
-figure;
-[txq,tyq] = meshgrid(txx,tyy);
-tdensity = griddata(txx,tyy,tdensity,txq,tyq);
-contour3(txq,tyq,tdensity,50), hold on
-plot(x(Xti),y(Xti),'b.','MarkerSize',5);
-title(['Retained data (' num2str(numel(y(Xti))) ' units) with new density contour'],'FontSize',16);
-cascade;</pre></div></div><img vspace="5" hspace="5" src="images\rthin_01.png" alt=""> <img vspace="5" hspace="5" src="images\rthin_02.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Random thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p>
-     load data and add some jittering, because duplicated units are not treated<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
-load('fishery.txt');
-fishery = fishery + 10^(-8) * abs(randn(677,2));
-x = fishery(:,1);
-y = fishery(:,2);
-% Data density
-[density,xout,bandwidth]   = kdebiv(fishery,'pdfmethod','fsda');
-xx = xout(:,1);
-yy = xout(:,2);
-zz = density;
-% plot of data and density
-figure;
-[xq,yq] = meshgrid(xx,yy);
-density = griddata(xx,yy,density,xq,yq);
-contour3(xq,yq,density,50), hold on
-plot(x,y,'r.','MarkerSize',8)
-xlim([0 300]); ylim([0 2000]);
-set(gca,'CameraPosition',[-216 -12425 0.0135]);
-title({['Zoom on fishery data (' num2str(numel(y)) ' units) with density contour'] , 'Probability mass concentrated close to the origin'},'FontSize',16);
-%Interpolate the density and apply thinning using retention
-%probabilities equal to 1 - pdfe/max(pdfe)
-F = TriScatteredInterp(xx(:),yy(:),zz(:));
-pdfe = F(x,y);
-pretain = 1 - pdfe/max(pdfe);
-[Xt , Xti]= rthin([x y],pretain);
-% now estimate the density on the retained units
-[tdensity,txout,tbandwidth]  = kdebiv(Xt,'pdfmethod','fsda');
-txx = txout(:,1);
-tyy = txout(:,2);
-tzz = tdensity;
-% and plot the retained units with their density superimposed
-figure;
-[txq,tyq] = meshgrid(txx,tyy);
-tdensity = griddata(txx,tyy,tdensity,txq,tyq);
-contour3(txq,tyq,tdensity,50), hold on
-plot(x(Xti),y(Xti),'b.','MarkerSize',8);
-xlim([0 300]); ylim([0 2000]);
-set(gca,'CameraPosition',[-216 -12425 0.0002558 ]);
-title({['Zoom on retained on the fishery data (' num2str(numel(y(Xti))) ' units) with density contour'] , 'Probabiity mass is smoother'},'FontSize',16);
-cascade;</pre></div></div><img vspace="5" hspace="5" src="images\rthin_01.png" alt=""> <img vspace="5" hspace="5" src="images\rthin_02.png" alt=""> </p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Vector with the data to be thinned. </span>  </a><span class="example_desc">Data can represent a
-             point pattern.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_P" class="clearfix"> </div> <h3 id="input_argument_P" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>P</code> &#8212; Vector giving the retention probabilities, i.e. </span>  </a><span class="example_desc">the probability
-             that each point in X will be retained.</span></span></h3> <div class="collapse"> <p><p>It can be:</p> <p>
-             -  a single number, so that each point will be retained with
-                the same probability P;</p> <p>
-             -  a vector of numbers, so that the ith point of X will be
-                retained with probability P(i);</p> <p>
-             -  a function P(x,y), so that a point at a location (x,y)
-                will be retained with probability P(x,y);</p> <p>
-             -  a pixel image, containing values of the retention
-                probability for all locations in a region encompassing the
-                point pattern.</p><p>
-
-             If P is a function, it should be vectorised, that is, it
-             should accept vector arguments x,y and should yield a numeric
-             vector of the same length. The function may have extra
-             arguments which are passed through the argument.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Y" class="clearfix"></div><h3 id="output_argument_Y" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Y</code> &#8212;the retained data units.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p> In practice, Y = X(retain,:).</p></div></div><div class="expandableContent"><div id="outputarg_retain" class="clearfix"></div><h3 id="output_argument_retain" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>retain</code> &#8212;the indices of the retained points in the original data X.</span></a><span class="example_desc"><code>
-            </code>Vector</span></span></h3><div class="collapse"><p><p> The ith point of X is retained with probability P(i).</p> <p>
-
-
-  Optional Output:</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
- Techniques for Data Analysis", Oxford University Press.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p> 
-
- This function was ported to matlab from the R spatstat
- package, developed by Adrian Baddeley (Adrian.Baddeley@curtin.edu.au),
- Rolf Turner (r.turner@auckland.ac.nz) and Ege Rubak (rubak@math.aau.dk)
- for the statistical analysis of spatial point patterns. The algorithm for
- random thinning was changed in spatstat version 1.42-3. Our matlab
- porting is based on a previous version. See the rthin documentation in
- spatstat for more details.</p> <p>
-
-
- </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/ksdensity.html'))" itemprop="url"><span itemprop="name"><code>ksdensity</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

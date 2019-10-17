@@ -1,328 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>LXS</title><meta content="refpage" name="chunktype"><meta content="function:LXS" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="LXS computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">LXS</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">LXS with default input and output.</a></li><li><a class="intrnllnk" href="#Example_2">LXS with optional arguments.</a></li><li><a class="intrnllnk" href="#Example_3">LXS with optional output.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Reweighted LTS estimator.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Specifying the number of subsamples.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Specifying a confidence level.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Using fast options.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">We compare the output of different procedures:  only the reweighted
-     LTS seems to detect half of the outlier with a Bonferroni
-    significance level.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example of the use of option bonflevoutX.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bdp">bdp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lms">lms</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_rew">rew</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nomes">nomes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflevoutX">bonflevoutX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_yxsave">yxsave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">LXS</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">LXS computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out =LXS(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="LXS.html#Example_1">example</a></span></li><li><code class="synopsis">out =LXS(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="LXS.html#Example_2">example</a></span></li><li><code class="synopsis">[out , varargout]=LXS(___)</code><span class="syntax_example"><a class="intrnllnk" href="LXS.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LXS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LXS(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>LXS with default input and output.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LXS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LXS(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>LXS with optional arguments.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LXS.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=LXS(___)</code></span>LXS with optional output.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>LXS with default input and output.</li></span></a></span></h3><div class="collapse"><p>
-     Compute LMS estimator without reweighting, add intercept to matrix X
-     and do not produce plots.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>LXS with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-     Compute LMS estimator, reweight and plot the residuals.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X,'rew',1,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>LXS with optional output.</li></span></a></span></h3><div class="collapse"><p>
-     Generating the C matrix containing the indices of the subsamples
-     extracted for computing the estimate (the so called elemental sets).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out,C]=LXS(y,X);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Reweighted LTS estimator.</li></span></a></span></h3><div class="collapse"><p>
-     Compute reweighted LTS estimator and produce the plot of
-     residuals.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X,'rew',1,'lms',0,'plots',1);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Specifying the number of subsamples.</li></span></a></span></h3><div class="collapse"><p>
-     Compute LMS estimator, without plots using 20000 subsamples.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X,'nsamp',20000);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Specifying a confidence level.</li></span></a></span></h3><div class="collapse"><p>
-     Compute reweighted LMS and use a confidence level for outlier
-     detection equal to 0.999.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X,'rew',1,'conflev',0.999);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Using fast options.</li></span></a></span></h3><div class="collapse"><p>
-     Compute LTS using fast options
-     detection equal to 0.999.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">lms=struct;
-% Do 5 refining steps for each elemental subset
-lms.refsteps=5;
-% Store the best 10 subsets
-lms.bestr=10;
-n=200;
-p=3;
-randn('state', 123456);
-X=randn(n,p);
-y=randn(n,1);
-y(1:5)=y(1:5)+6;
-[out]=LXS(y,X,'lms',lms,'plots',1);</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> We compare the output of different procedures:  only the reweighted
-     LTS seems to detect half of the outlier with a Bonferroni
-    significance level.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
-state=100;
-randn('state', state);
-n=100;
-X=randn(n,3);
-bet=[3;4;5];
-y=3*randn(n,1)+X*bet;
-y(1:20)=y(1:20)+13;
-% Define nominal confidence level
-conflev=[0.99,1-0.01/length(y)];
-% Define number of subsets
-nsamp=3000;
-% Define the main title of the plots
-titl='';
-% LMS with no reweighting
-[outLMS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1));
-h=subplot(2,2,1)
-laby='Scaled LMS residuals';
-resindexplot(outLMS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)
-% LTS with no reweighting
-h=subplot(2,2,2);
-[outLTS]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'lms',0);
-laby='Scaled LTS residuals';
-resindexplot(outLTS.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);
-% LMS with reweighting
-[outLMSr]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'rew',1);
-h=subplot(2,2,3);
-laby='Scaled reweighted LMS residuals';
-resindexplot(outLMSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev)
-% LTS with reweighting
-[outLTSr]=LXS(y,X,'nsamp',nsamp,'conflev',conflev(1),'rew',1,'lms',0);
-h=subplot(2,2,4);
-laby='Scaled reweighted LTS residuals';
-resindexplot(outLTSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);
-% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
-
-h = 
-
-  Axes with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1300 0.5838 0.3347 0.3412]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-Total estimated time to complete LTS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LTS:  0.03 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.27 seconds 
-------------------------------
-Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to 17.1333%
-</pre><img vspace="5" hspace="5" src="images\LXS_01.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option bonflevoutX.</li></span></a></span></h3><div class="collapse"><p>
-     In this example a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that while best LMS using all
-% default options contains some of the remote units. In order to make sure
-% that the remote units are excluded from the best LMS subset it is
-% necessary to use option bonflevoutX.
-rng('default')
-rng(10000)
-n=100;
-p=1;
-X=randn(n,p);
-epsil=10;
-beta=ones(p,1);
-y=X*beta+randn(n,1)*epsil;
-% Add 10 very remote points
-add=10;
-Xadd=X(1:add,:)+5000;
-yadd=y(1:add)+200;
-Xall=[X;Xadd];
-yall=[y;yadd];
-out=LXS(yall,Xall);
-subplot(2,1,1)
-plot(Xall,yall,'o')
-xylim=axis;
-line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
-title('Fit using best subset with option bonflevoutX empty')
-subplot(2,1,2)
-plot(Xall,yall,'o')
-out=LXS(yall,Xall,'bonflevoutX',0.99);
-line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
-ylim(xylim(3:4));
-title('Fit using best subset with option bonflevoutX  not empty')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
-
-h = 
-
-  Axes with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1300 0.5838 0.3347 0.3412]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-Total estimated time to complete LTS:  0.03 seconds 
-Total estimated time to complete LMS:  0.03 seconds 
-Total estimated time to complete LTS:  0.03 seconds 
-Total estimated time to complete LMS:  0.02 seconds 
-Total estimated time to complete LMS:  0.27 seconds 
-------------------------------
-Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to 17.1333%
-</pre><img vspace="5" hspace="5" src="images\LXS_01.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
-               contains the response
-               variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
-               variables (also called 'regressors')
-               of dimension (n x p-1). Rows of X represent observations, and
-               columns represent variables.</p> <p>
-
-               Missing values (NaN's) and infinite values (Inf's) are
-               allowed, since observations (rows) with missing or infinite
-               values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
-</code>,<code> 'h',round(n*0,75)
-</code>,<code> 'bdp',0.4
-</code>,<code> 'nsamp',0
-</code>,<code> 'lms',1
-</code>,<code> 'rew',1
-</code>,<code> 'conflev',0.99
-</code>,<code> 'plots',1
-</code>,<code> 'msg',1
-</code>,<code> 'nocheck',1
-</code>,<code> 'nomes',1
-</code>,<code> 'bonflevoutX',0.95
-</code>,<code> 'yxsave',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-               else no constant term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that have determined the least
-                 trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The number of observations that have determined the least
-               trimmed squares estimator. h is an integer greater than p
-               (number of columns of matrix X including the intercept but
-               smaller then n. If the purpose is outlier detection than h
-               does not have to be smaller than [0.5*(n+p+1)] (default
-               value). On the other hand if the purpose is to find
-               subgroups of homogeneous observations h can be smaller than
-               [0.5*(n+p+1)]. If h &lt;p+1 an error will be given.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'h',round(n*0,75)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bdp" class="clearfix"></div><h3 id="input_argument_namevalue_bdp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bdp</code> &#8212;breakdown point.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It measures the fraction of outliers
-               the algorithm should
-               resist. In this case any value greater than 0 but smaller
-               or equal than 0.5 will do fine. If on the other hand the
-               purpose is subgroups detection then bdp can be greater than
-               0.5. In any case however n*(1-bdp) must be greater than
-               p. If this condition is not fulfilled an error will be
-               given. Please specify h or bdp not both.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bdp',0.4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples which will be extracted to find the
-               robust estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nsamp=0 all subsets will be extracted. They will be (n choose p).</p> <p>
-                                Remark: if the number of all possible subset is &lt;1000 the
-               default is to extract all subsets, otherwise just 1000 if
-               fastLTS is used (lms=2 or lms is a structure) or 3000 for
-               standard LTS or LMS.</p><p>
-</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
-                 subset to initialize the search.</span></a><span class="example_desc">scalar, vector | structure.</span></span></h3><div class="collapse">	<p><p>If lms is a scalar = 1 (default) Least Median of Squares is
-                       computed,
-               else if lms is a scalar = 2 fast lts with the all default options is used
-               else if lms is a scalar different from 1 and 2 standard lts
-                       is used (without concentration steps)
-               else if lms is a struct fast lts (with concentration steps) is used.</p> <p>
-                  In this case the user can control the following options:</p> <p>
-                  lms.refsteps : scalar defining number of refining iterations in each
-                               subsample (default = 3). refsteps = 0 means
-                               "raw-subsampling" without iterations.</p> <p>
-                   lms.reftol  : scalar. Default value of tolerance for the refining steps
-                               The default value is 1e-6.</p> <p>
-                   lms.bestr   : scalar defining number of "best betas" to remember from the
-                               subsamples. These will be later iterated until convergence
-                               (default=5).</p> <p>
-             lms.refstepsbestr : scalar defining number of refining iterations for each
-                               best subset (default = 50).</p> <p>
-              lms.reftolbestr  : scalar. Default value of tolerance for the refining steps
-                               for each of the best subsets
-                               The default value is 1e-8.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rew" class="clearfix"></div><h3 id="input_argument_namevalue_rew" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rew</code> &#8212;LXS reweighted.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If rew=1 the reweighted version of LTS (LMS) is
-               used and the output quantities refer to the reweighted
-               version
-               else no reweighting is performed (default).</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rew',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level which is
-               used to declare units as outliers.</span></a><span class="example_desc">scalar               Usually conflev=0.</span></span></h3><div class="collapse">	<p><p>95, 0.975 0.99 (individual alpha)
-               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p> <p>
-               Default value is 0.975
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot which shows the
-               robust residuals against index number is shown on the
-               screen. The confidence level which is used to draw the
-               horizontal lines associated with the bands for the
-               residuals is as specified in input option conflev. If
-               conflev is missing a nominal 0.975 confidence interval will
-               be used.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;It controls whether to display or not messages on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If msg==1 (default) messages are displayed
-               on the screen about estimated time to compute the estimator
-               and the warnings about
-               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-               'MATLAB:nearlySingularMatrix' are set to off
-               else no message is displayed on the screen
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
-               matrix y and matrix X. Notice that y and X are left
-               unchanged. In other words the additioanl column of ones for
-               the intercept is not added. As default nocheck=0. The
-               controls on h, bdp and nsamp still remain.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nomes" class="clearfix"></div><h3 id="input_argument_namevalue_nomes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nomes</code> &#8212;It controls whether to display or not on the screen
-               messages about estimated  time to compute LMS (LTS) .</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nomes is equal to 1 no message about estimated
-               time to compute LMS (LTS) is displayed, else if nomes is
-               equal to 0 (default), a message about estimated time is
-               displayed.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nomes',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflevoutX" class="clearfix"></div><h3 id="input_argument_namevalue_bonflevoutX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflevoutX</code> &#8212;remote units in the X space.</span></a><span class="example_desc">scalar | empty (default).</span></span></h3><div class="collapse">	<p><p>If the design matrix X contains several high leverage units
-               (that is units which are very far from the bulk of the
-               data), it may happen that the best subset may include some
-               of these units.</p> <p>
-               If boflevoutX is not empty, outlier detection procedure FSM
-               is applied to the design matrix X,  using name/pair option
-               'bonflev',bonflevoutX. The extracted subsets which contain
-               at least one unit declared as outlier in the X space by FSM
-               are removed (more precisely they are treated as singular
-               subsets) from the list of candidate subsets to find the LXS
-               solution. The default value of bonflevoutX is empty, that
-               is FSM is not invoked.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflevoutX',0.95
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;the response vector y and data matrix X are saved into the output
-                structure out.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default is 0, i.e. no saving is done.</p> <p>
-                      </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields
-
-    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>rew</code></td><td><p>Scalar if out.rew=1 all subsequent output refers to
-                       reweighted else no reweighting is done.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p><p>Vector of beta LTS (LMS) coefficient estimates,
-                       including the intercept when options.intercept=1.</p> <p>
-                       out.beta=[intercept slopes].</p></p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>p x 1 vector containing the units forming subset
-                       associated with bLMS (bLTS).</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>Vector containing the standardized residuals from
-                       the regression.</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>Scale estimate of the residuals.</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p><p>Vector like y containing weights. The elements of
-                       this vector are 0 or 1.</p> <p>
-                       These weights identify the h observations which are
-                       used to compute the final LTS (LMS) estimate.</p><p>
-                       sum(out.weights)=h if there is not a perfect fit
-                       otherwise sum(out.weights) can be greater than h</p></p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
-                       LTS (LMS) estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>vector containing the list of the units declared
-                       as outliers using confidence level specified in
-                       input scalar conflev</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p><p>confidence level which is used to declare outliers.</p> <p>
-                       Remark: scalar out.conflev will be used
-                       to draw the horizontal lines (confidence bands) in the plots</p></p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets wihtout full rank. Notice that if
-                       this number is greater than 0.1*(number of
-                       subsamples) a warning is produced on the screen</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'LTS' or 'LMS'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector Y. The field is present if option
-                       yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present if option
-                       yxsave is set to 1.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C        : Indexes of the extracted subsamples.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
-                       Matrix containing the indexes of the subsamples
-                       extracted for computing the estimate (the so called
-                       elemental sets). For example, if C(3,:)=[2 5 20],
-                       implies that the third extracted subsample is
-                       formed by units 2, 5 and 20.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw P.J., Leroy A.M. (1987), "Robust regression and outlier
-   detection", Wiley.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSReda.html" itemprop="url"><span itemprop="name"><code>FSReda</code></span></a></span> | <span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

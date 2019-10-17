@@ -1,1252 +1,0 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>simdatasetreg</title><meta content="refpage" name="chunktype"><meta content="function:simdatasetreg" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="simdatasetReg simulates a regression dataset given the parameters of a mixture regression model." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">simdatasetreg</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Generate mixture of regression.</a></li><li><a class="intrnllnk" href="#Example_2">Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</a></li><li><a class="intrnllnk" href="#Example_3">Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</a></li><li><a class="intrnllnk" href="#Example_4">Add outliers generated from Chi2 with 5 degrees of freedom.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Add outliers generated from Chi2 with 40 degrees of freedom.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Add outliers generated from normal distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Add outliers generated from Student T with 5 degrees of freedom.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Add componentwise contamination.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Add outliers generated from Chisquare and T distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Add outliers from Chisquare and T distribution and use a personalized value of alpha.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Add outliers from Chi2 and point mass contamination and add one noise variable.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example of the use of personalized interval to generate outliers.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Example of the use of personalized interval to generate outliers (1).</a></li><li><a class="intrnllnk" href="#ExtraExample_10">Example with user defined explanatory variables values (1).</a></li><li><a class="intrnllnk" href="#ExtraExample_11">Example with user defined explanatory variables values (2).</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_n">n</a></li><li><a class="intrnllnk" href="#input_argument_Pi">Pi</a></li><li><a class="intrnllnk" href="#input_argument_Beta">Beta</a></li><li><a class="intrnllnk" href="#input_argument_S">S</a></li><li><a class="intrnllnk" href="#input_argument_Xdistrib">Xdistrib</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_noiseunits">noiseunits</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_noisevars">noisevars</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lambda">lambda</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_y">y</a></li><li><a class="intrnllnk" href="#output_argument_X">X</a></li><li><a class="intrnllnk" href="#output_argument_id">id</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">simdatasetreg</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">simdatasetReg simulates a regression dataset given the parameters of a mixture regression model</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">y=simdatasetreg(n, Pi, Beta, S, Xdistrib)</code><span class="syntax_example"><a class="intrnllnk" href="simdatasetreg.html#Example_1">example</a></span></li><li><code class="synopsis">y=simdatasetreg(n, Pi, Beta, S, Xdistrib,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="simdatasetreg.html#Example_2">example</a></span></li><li><code class="synopsis">[y,X]=simdatasetreg(___)</code><span class="syntax_example"><a class="intrnllnk" href="simdatasetreg.html#Example_3">example</a></span></li><li><code class="synopsis">[y,X,id]=simdatasetreg(___)</code><span class="syntax_example"><a class="intrnllnk" href="simdatasetreg.html#Example_4">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>[y,X,id]=simdatasetreg(n, Pi, Beta, S) generates a regression dataset
-   of size n from a mixture model with parameters 'Pi' (mixing
-   proportions), 'Beta' (matrix of regression coefficients), and 'S'
-   (vector of variances of the distributions of the points around each
-   regression hyperplane). Component sample sizes are produced as a
-   realization from a multinomial distribution with probabilities given by
-   mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25,
-   0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer
-   numbers (whose sum is n-k) from the multinominal distribution with
-   parameters n-k and Pi. The size of the groups is given by Nk1+1. The
-   first Nk1(1)+1  observations are generated using vector of regression
-   coefficients Beta(:,1) and variance S(1), ..., and the X simulated as
-   specified in structure Xdistrib, the last Nk1(k)+1 observations are
-   generated using using vector of regression coefficients Beta(:,k),
-   variance S(k) and the X simulated as specified in structure Xdistrib</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdatasetreg.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_y"><code>y</code></a>=simdatasetreg(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Beta"><code>Beta</code></a>,<a class="intrnllnk" href="#inputarg_S"><code>S</code></a>,<a class="intrnllnk" href="#inputarg_Xdistrib"><code> Xdistrib</code></a>)</code></span>Generate mixture of regression.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdatasetreg.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_y"><code>y</code></a>=simdatasetreg(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_Pi"><code>Pi</code></a>,<a class="intrnllnk" href="#inputarg_Beta"><code>Beta</code></a>,<a class="intrnllnk" href="#inputarg_S"><code>S</code></a>,<a class="intrnllnk" href="#inputarg_Xdistrib"><code>Xdistrib</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdatasetreg.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#outputarg_X"><code>X</code></a>]=simdatasetreg(___)</code></span>Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simdatasetreg.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#outputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#outputarg_id"><code>id</code></a>]=simdatasetreg(___)</code></span>Add outliers generated from Chi2 with 5 degrees of freedom.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate mixture of regression.</li></span></a></span></h3><div class="collapse"><p> Use an average overlapping at
-     centroids =0.01 and  all default options:
-     1) Beta is generated according to random normal for each group with
-     mu=0 and sigma=1;
-     2) X in each dimension and each group is generated according to U(0, 1);
-     3) regression hyperplanes contain intercepts.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The value of p includes the intercept
-p=5;  
-k=3;
-Q=MixSimreg(k,p,'BarOmega',0.01);
-n=200;
-% Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
-% 1.0000    1.0000    1.0000
-% 0.5000    0.5000    0.5000
-% 0.5000    0.5000    0.5000
-% 0.5000    0.5000    0.5000
-% 0.5000    0.5000    0.5000
-% Probabilities of overlapping are evaluated at
-% Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
-[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-% spmplot([y X(:,2:end)],id)
-yXplot(y,X,'group',id);</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
-rng(100)
-p=4; % p includes the intercept
-k=2;
-out=MixSimreg(k,p,'BarOmega',0.01);
-n=300;
-noisevars=0;
-noiseunits=300;
-[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-yXplot(y,X,'group',id);
-suplabel('2 regression lines with outliers from uniform','t')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all
-close all
-rng('default')
-rng(10000)
-p=2;  % p includes the intercept
-k=4;
-out=MixSimreg(k,p,'BarOmega',0.01);
-n=300;
-noisevars=0;
-noiseunits=3000;
-[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-yXplot(y,X,'group',id);
-suplabel('2 regression lines with outliers from uniform','t')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=3000;
-% Add asymmetric very concentrated noise
-noiseunits.typeout={'Chisquare5'};
-[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=3000;
-% Add asymmetric concentrated noise
-noiseunits.typeout={'Chisquare40'};
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=3000;
-% Add normal noise
-noiseunits.typeout={'normal'};
-[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=3000;
-% Add outliers from T5
-noiseunits.typeout={'T5'};
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars='';
-noiseunits=struct;
-noiseunits.number=3000;
-% Add asymmetric concentrated noise
-noiseunits.typeout={'componentwise'};
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-yXplot(y,X,'group',id);
-suplabel('4 groups with component wise outliers','t')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=5000*ones(2,1);
-noiseunits.typeout={'Chisquare3','T20'};
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=0;
-noiseunits=struct;
-noiseunits.number=5000*ones(2,1);
-noiseunits.typeout={'Chisquare3','T20'};
-noiseunits.alpha=0.002;
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noisevars=struct;
-noisevars.number=1;
-noiseunits=struct;
-noiseunits.number=[100 100];
-noiseunits.typeout={'pointmass' 'Chisquare5'};
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
-noiseunits=struct;
-noiseunits.number=1000;
-noiseunits.typeout={'uniform'};
-% Generate outliers in the interval [-1 1] for the first variable and
-% interval [1 2] for the second variable
-noiseunits.interval=[-1 1;
-1 2];
-% Finally add a noise variable
-noisevars=struct;
-noisevars.number=1;
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-[H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
-     Generate 1000 outliers from uniform in the interval [-2 3] and
-     1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">noiseunits=struct;
-noiseunits.number=[1000 1000];
-noiseunits.typeout={'uniform' 'componentwise'};
-noiseunits.interval=[-2; 3];
-[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-yXplot(y,X,'group',id);
-suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')</pre></div></div></p></div></div><div id="ExtraExample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with user defined explanatory variables values (1).</li></span></a></span></h3><div class="collapse"><p>
-     Here the X distribution is the same for each component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all
-close all
-rng(1234,'twister');
-% mixture parameters
-intercept = 0; % 1/0 = intercept yes/no
-p=1+intercept;
-k=2;
-n=200;
-% beta distributed as halfnormal
-betadistrib=struct;
-betadistrib.type='HalfNormal';
-betadistrib.sigma=3;
-% explanatory variables distribution chosen by the User from a beta
-XdistribB=struct;
-XdistribB.intercept=intercept;
-XdistribB.type='User';
-X1=random('beta',1,5,n,1);             % data generation: user distribution is a beta
-XdistribB.BarX = ones(1,k)*mean(X1);   % mean of the generated data: one per group
-% overlap level baromega: chosen at random here, in a given range
-mino = 0.01; maxo = 0.1;
-baromega = mino + (maxo-mino).*rand(1,1);
-% estimated mixsim parameters
-Q=MixSimreg(k,p,'BarOmega',baromega,'Xdistrib',XdistribB,'betadistrib',betadistrib);
-% Simulate the data from the mixim parameters and the user values for X
-if intercept
-Q.Xdistrib.X = [ones(n,1) X1];
-else
-Q.Xdistrib.X = X1;
-end
-[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-yXplot(y,X,'group',id,'tag','X_beta');
-set(gcf,'Name','X Beta distributed');
-title('User-defined distribution for X');</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div><div id="ExtraExample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with user defined explanatory variables values (2).</li></span></a></span></h3><div class="collapse"><p>
-     Here the X distribution is specific for each component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all
-close all
-rng(12345,'twister');
-% mixture parameters
-intercept = 0;      % 1/0 = intercept yes/no
-n=200;
-p=1+intercept;
-k=2;                %do not change k: it would not work (see below to generalise)
-% beta distributed as halfnormal
-betadistrib=struct;
-betadistrib.type='HalfNormal';
-betadistrib.sigma=3;
-% explanatory variables distribution chosen by the User from a beta
-XdistribB=struct;
-XdistribB.intercept=intercept;
-XdistribB.type='User';
-%for i=1:10
-% X beta distributed
-X2=random('beta',0.5,1,n,1);
-muBeta2 = mean(X2);
-X1=random('beta',1,0.5,n,1);
-muBeta1 = mean(X1);
-% data generation: user distribution is a beta
-XdistribB.BarX = [muBeta1 muBeta2]; % mean of the generated data: one per group
-% overlap level baromega: chosen at random here, in a given range
-mino = 0.01; maxo = 0.05;
-maxomega = mino + (maxo-mino).*rand(1,1);
-% estimated mixsim parameters
-Q=MixSimreg(k,p,'hom',true,'MaxOmega',maxomega,'Xdistrib',XdistribB,'betadistrib',betadistrib);
-% Simulate the data from the mixim parameters and the user values for X
-if intercept
-Q.Xdistrib.X = [ones(k*n,1) , [X1 ; X2]];
-else
-Q.Xdistrib.X = [X1 ; X2];
-end
-[y,X,id]=simdatasetreg(k*n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
-yXplot(y,X,'group',id,'tag','X_beta');
-set(gcf,'Name','X Beta distributed');
-title('User-defined distribution for X');</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.0952 0.0863 0.8498 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-
-ans = 
-
-  Axes (suplabel) with properties:
-
-             XLim: [0 1]
-             YLim: [0 1]
-           XScale: 'linear'
-           YScale: 'linear'
-    GridLineStyle: '-'
-         Position: [0.1055 0.0863 0.8395 0.8787]
-            Units: 'normalized'
-
-  Use GET to show all properties
-
-</pre><img vspace="5" hspace="5" src="images\simdatasetreg_01.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
-               coefficients for the k groups. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
-               regression hyperplanes. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate
-               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>The following options are admitted for Xdistrib
-           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p><p>scalar equal to 1 if intercept is
-                       present. The default value of Xdistrib.intercept is 1.</p> <p>
-               The other fields of Xdistrib depend on the distribution
-               which is chosen.</p><p>
-               NORMAL DISTRIBUTION N(mu, sigma)</p></p></td></tr><tr valign="top"><td><code>type</code></td><td><p>'normal';</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters mu
-                       for each explanatory variable and each group. The
-                       default value of Xdistrib.mu is zeros(p-1, k).</p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters
-                       sigma for each explanatory variable and each group.</p> <p>
-                       The default value of Xdistrib.sigma is ones(p-1, k)
-               UNIFORM DISTRIBUTION U(a, b)
-                   Xdistrib.type='uniform';</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters a
-                       for each explanatory variable and each group. The
-                       default value of Xdistrib.a is zeros(p-1, k).</p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
-                       (Xdistrib.intercept=1) or p-by-k if
-                       (Xdistrib.intercept=0) containing the parameters b
-                       for each explanatory variable and each group. The
-                       default value of Xdistrib.b is ones(p-1, k).</p> <p>
-               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-                   Xdistrib.type='halfnormal';</p> <p>
-                   Xdistrib.sigma = matrix of size (p-1)-by-k if
-                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
-                   containing the parameters sigma for each explanatory variable
-                   and each group. The default value of Xdistrib.sigma is
-                   ones(p-1, k).</p><p>
-TODO:simdatasetReg:OTHER_DISTRIB
-                   Xdistrib.type='user'.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix with at least n rows and p-1 (if
-                   intercept is present) or p (if intercept is not
-                   present) columns containing the values of the
-                   explanatory variables for the k groups.</p></td></tr><tr valign="top"><td><code>id</code></td><td><p>identifier vector which labes the rows of
-                   matrix Xdistrib.X</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'noiseunits', 10
-</code>,<code> 'noisevars', 5
-</code>,<code> 'lambda',2;
-</code></code></span></div><div class="expandableContent"><div id="inputarg_noiseunits" class="clearfix"></div><h3 id="input_argument_namevalue_noiseunits" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noiseunits</code> &#8212;number of type of outlying observations.</span></a><span class="example_desc">scalar |                structure.</span></span></h3><div class="collapse">	<p><p>Missing value, scalar or structure.</p> <p>
-                This input parameter specifies the number
-                and type of outlying observations. The default value of
-                noiseunits is 0.</p> <p>
-                - If noiseunits is a scalar t different from 0, then t
-                  units from the uniform distribution in the interval
-                  min([X y]) max([X y]) are generated in such a way that their
-                  squared distance from the fitted value (squared residual) of each
-                  existing group is larger then the quantile 1-0.999 of
-                  the Chi^2 distribution with 1 degree of freedom. In
-                  order to generate these units the maximum number
-                  of attempts is equal to 10000.</p> <p>
-                - If noiseunits is a structure it may contain the following
-                  fields:</p> <p>
-                  number = scalar, or vector of length f. The sum of the
-                       elements of vector 'number' is equal to the total
-                       number of outliers which are simulated.</p> <p>
-                  alpha = scalar or vector of legth f containing the
-                       level(s) of simulated outliers. The default value
-                       of alpha is 0.001.</p> <p>
-                  maxiter = maximum number of trials to simulate outliers.</p> <p>
-                       The default value of maxiter is 10000.</p> <p>
-                  interval= missing value or vector of length 2, or matrix
-                         of size 2-by-2 or matrix of size 2-by-(p+1) which
-                         controls the min and max of the generated
-                         outliers for each dimension.</p> <p>
-                         * If interval is a vector of length 2 each outlier
-                         has a value for each column of X and y which lies
-                         inside interval(1) and interval(2).</p> <p>
-                         * If interval is a matrix of size 2-by-2 each
-                         outlier has a value for each column of X which
-                         lies inside interval(1,1) and interval(2,1) and a
-                         value of y which lies inside interval(1,2) and
-                         interval(2,2).</p> <p>
-                         * If interval is a 2-by-(p+1) matrix outliers are
-                         simulated in:</p> <p>
-                         interval(1,1) interval (2,1) for expl variable 1
-                         ...</p> <p>
-                         interval(1,p) interval (2,p) for expl variable p
-                         interval(1,p+1) interval (2,p+1) for response y.</p> <p>
-                         If interval is empty (default), the outliers are
-                         simulated in the interval min(X) max(X) and
-                         min(y) max (y).</p> <p>
-                  typeout = list of length f containing the type of
-                       outliers which must be simulated. Possible values
-                       for typeout are:</p> <p>
-                       * unif (or uniform), if the outliers must be
-                         generated using the uniform distribution;</p> <p>
-                       * norm (or normal), if the outliers must be
-                         generated using the normal distribution;</p> <p>
-                       * Chisquarez, if the outliers must be generated
-                         using the Chi2 distribution with z degrees of
-                         freedom;</p> <p>
-                       * Tz or tz, if the outliers must be generated using
-                         the Student T distribution with z degrees of
-                         freedom;</p> <p>
-                       * pointmass, if the outliers are concentrated on a
-                         particular point;</p> <p>
-                       * by_comp, if the outliers are distributed along a
-                         linear component. The option was introduced to add
-                         dense area in one linear component.</p> <p>
-                       * componentwise, if the outliers must have the same
-                         coordinates of the existing rows of matrix X apart
-                         from the single coordinate of y (which will be the
-                         min or max of y or to the
-                         min or max specified in interval).</p> <p>
-                For example, the code:</p> <p>
-                   noiseunits=struct;</p><p>
-           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>[100 100];</p></td></tr><tr valign="top"><td><code>typeout</code></td><td><p>{'uniform' 'componentwise'};</p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>[-2 2];</p> <p>
-                adds 200 outliers, the first 100 generated using
-                a uniform distribution and the last 100 using
-                componentwise scheme. Outliers are generated in the
-                interval [-2 2] for each variable.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noiseunits', 10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_noisevars" class="clearfix"></div><h3 id="input_argument_namevalue_noisevars" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noisevars</code> &#8212;Type of noise explanatory variables.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>Empty value, scalar or structure.</p> <p>
-                - If noisevars is not specified or is an empty value
-                  (default) no noise variable is added to the matrix of
-                  simulated data.</p> <p>
-                - If noisevars is a scalar equal to r, then r new noise
-                  explnatory variables are added to the matrix of
-                  simulated data using the uniform distribution in the
-                  range [min(X) max(X)].</p> <p>
-                - If noisevars is a structure it may contain the following
-                  fields:</p><p>
-          </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>number</code></td><td><p>a scalar or a vector of length f. The sum of
-                       elements of vector 'number' is equal to the total
-                       number of noise variables to be addded.</p></td></tr><tr valign="top"><td><code>distribution</code></td><td><p><p>string or cell array of strings of length
-                       f which specifies the distribution to be used to
-                       simulate the noise variables.</p> <p>
-                       If field distribution is not present then the
-                       uniform distribution is used to simulate the noise
-                       variables.</p> <p>
-                       String 'distribution' can be one of the following
-                       values:</p> <p>
-                       * uniform = uniform distribution
-                       * normal  = normal distribution
-                       * t or T followed by a number which controls the
-                         degrees of freedom. For example, t6 specifies to
-                         generate the data according to a Student T with 6
-                         degrees of freedom.</p><p>
-                       * chisquare followed by a number which controls the
-                         degreess of freedom. For example, chisquare8
-                         specifies to generate the data according to a Chi
-                         square distribution with 8 degrees of freedom.</p></p></td></tr><tr valign="top"><td><code>interval</code></td><td><p><p>string or vector of length 2 or matrix of size
-                         2-by-f (where f is the number of noise variables)
-                         which controls for each element of vector
-                         'number' or each element of cell 'distribution',
-                         the min and max of the noise variables. For
-                         example, interval(1,3) and interval(2,3) are
-                         respectively the minimum and maximum values of
-                         simulated the data for the third noise variable
-                         If interval is empty (default), the noise
-                         variables are simulated uniformly between the
-                         smallest and the largest coordinates of the
-                         simulated data matrix X.</p> <p>
-                For example, the code:</p> <p>
-                   noisevars=struct;</p> <p>
-                   noisevars.number=[3 2];</p> <p>
-                   noisevars.distribution={'Chisquare5' 'T3'};</p><p>
-                adds 5 noise explaantory variables, the first 3 generated using
-                the Chi2 with 5 degrees of freedom and the last two
-                using the Student t with 3 degrees of freedom. Noise
-                variables are generated in the interval min(X) max(X).</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'noisevars', 5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lambda" class="clearfix"></div><h3 id="input_argument_namevalue_lambda" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lambda</code> &#8212;Transformation coefficient.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar containing
-                inverse Box-Cox transformation coefficient to apply to y.</p> <p>
-                The value false (default) implies that no transformation
-                is applied to response variable.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lambda',2;
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_y" class="clearfix"></div><h3 id="output_argument_y" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>y</code> &#8212;Response variable.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
-               Vector of dimension (n+nout)-by-1  containing the values of the
-                responses for the k groups.</p></div></div><div class="expandableContent"><div id="outputarg_X" class="clearfix"></div><h3 id="output_argument_X" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>X</code> &#8212;Explanatory variables.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p> Matrix of size (n + nout)-by-(p + nnoise) containinng the
-                values of the explanatory variables for the k groups.</p> <p>
-                Noise coordinates are provided in the last nnoise columns.</p></p></div></div><div class="expandableContent"><div id="outputarg_id" class="clearfix"></div><h3 id="output_argument_id" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>id</code> &#8212;classification vector.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Classification vector of length n + nout; 0 represents an
-                outlier.</p> <p>
-
-            REMARK: If nout outliers could not be generated a warning is
-                produced. In this case matrix X and vector id will have
-                just n rows.</p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
- To make a dataset more challenging for clustering, a user might want to
- simulate noise variables or outliers. Parameter 'nnoise' specifies the
- desired number of noise variables. If an interval 'int' is specified,
- noise will be simulated from a Uniform distribution on the interval given
- by 'int'. Otherwise, noise will be simulated uniformly between the
- smallest and largest coordinates of mean vectors. 'nout' specifies the
- number of observations outside (1 - 'alpha') ellipsoidal contours for the
- weighted component distributions. Outliers are simulated on a hypercube
- specified by the interval 'int'. A user can apply an inverse Box-Cox
- transformation of y providing a coefficient 'lambda'. The value 1
- implies that no transformation is needed for the response.</p> <p>
-
-
-
-</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
- of finite mixture modeling and clustering algorithms, "The Journal of
- Computational and Graphical Statistics", Vol. 19, pp. 354-376. [to refer to
- this publication we will use "MM2010 JCGS"]</p></div><div><p>Melnykov, V., Chen, W.-C. and Maitra, R. (2012), MixSim: An R Package
- for Simulating Data to Study Performance of Clustering Algorithms,
- "Journal of Statistical Software", Vol. 51, pp. 1-25.</p></div><div><p>Davies, R. (1980), The distribution of a linear combination of
- chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="simdataset.html" itemprop="url"><span itemprop="name"><code>simdataset</code></span></a></span> | <span itemprop="seealso"><a href="MixSimreg.html" itemprop="url"><span itemprop="name"><code>MixSimreg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
