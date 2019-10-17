@@ -1,0 +1,38 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>MixSim</title> <meta content="refpage" name="chunktype"><meta content="function:MixSim " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="MixSim Generates k clusters in v dimensions with given overlap" itemprop="description" name="description" /><h1 itemprop="title">MixSim</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/MixSim.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/MixSim.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/MixSim.html">http://rosa.unipr.it/FSDA/MixSim.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: MixSim</em></p><h1 itemprop="title">MixSim</h1><P>Generates k clusters in v dimensions with given overlap</P><h2>More About</h2><P>
+  MixSim(k,v) generates k groups in v dimensions. It is possible to
+  control the average and maximum or standard deviation of overlapping.
+
+  Given two generic clusters $i$ and $j$ with $i \ne j =1, ..., k$,
+  indexed by $\phi(x; \mu_i,\Sigma_i)$ and $\phi(x; \mu_j,\Sigma_j)$ with
+  probabilities of occurrence $\pi_i$ and $\pi_j$, the misclassification
+  probability with respect to cluster $i$ (that is conditionally on $x$
+  belonging to cluster $i$,  which is called  $w_{j|i}$) is defined as
+  $Pr[ \pi_i \phi(x;\mu_i,\Sigma_i) &lt; \pi_j \phi(x;\mu_j,\Sigma_j)]$.
+  The matrix containing the misclassification probabilities $w_{j|i}$ is
+  called OmegaMap
+  The probability of overlapping between groups $i$ and $j$ is given by:
+  \[
+            w_{j|i} + w_{i|j}    \qquad      i,j=1,2, ..., k
+  \]
+  The diagonal elements of OmegaMap are equal to 1.
+  The average overlap (which in the code is called below BarOmega) is
+  defined as the sum of the off diagonal elements of OmegaMap (matrix of
+  misclassification probabilities) divided by 0.5*k*(k-1)
+  The maximum overlap (which in the code is called MaxOmega) is defined as
+  $\max(w_{j|i} + w_{i|j}$),  $i \ne j=1,2, ..., k$.
+  The probability of misclassification $w_{j|i}$ is nothing but the cdf of a linear
+  combination of non central $\chi^2$ distributions with 1 degree of freedom
+  + a linear combination of $N(0,1)$ evaluated in a
+  point c.  The coefficients of the linear combinations of non central
+  $\chi^2$ and $N(0,1)$ depend on the eigenvalues and eigenvectors of matrix
+  $\Sigma_{j|i} = \Sigma^{0.5}_i \Sigma^{-1}_j \Sigma^{0.5}_i$.
+  Point $c$ depends on the same eigenvalues and eigenvectors
+  of matrix $\Sigma_{j|i}$, the mixing proportions $\pi_i$ and $\pi_j$ and the
+  determinants $|\Sigma_i|$ and $|\Sigma_j|$.
+  This probability is computed using routine ncx2mixtcdf.m
+
+
+</P><h2>References</h2><P>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance
+ of finite mixture modeling and clustering algorithms, "The Journal of
+ Computational and Graphical Statistics", Vol. 19, pp. 354-376. [to refer to
+ this publication we will use "MM2010 JCGS"]</P></html>

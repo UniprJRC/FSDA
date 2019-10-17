@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRr</Title>
+   <Purpose><!--This is the second line of the .m file-->Forward search in linear regression reweighted
+</Purpose>
+   <Description><!--Description section-->FSRr uses the units not declared by outliers by FSR to produce a robust fit.
+The units whose residuals exceeds the threshold determined by option alpha are declared as outliers. Moreover, it is possible in option R2th to modify the estimate of sigma2 which is used to declare the outliers. This is useful when there is almost a perfect fit in the data, the estimate of the error variance is very small and therefore there is the risk of declaring as outliers very small deviations from the robust fit. In this case the estimate of sigma2 is corrected in order to achieve a value of R2 equal to R2th.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>alpha</Name>
+         <ShortDesc>test size.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number between 0 and 1 which defines test size to declare the outliers. The default value is 0.01.</LongDesc>
+         <Example>'alpha',0.01</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>R2th</Name>
+         <ShortDesc>R2 threshold.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which defines the value R2 does have to exceed. For example if R2 based on good observations is 0.92 and R2th is 0.90 the estimate of the variance of the residuals which is used to declare the outliers is adjusted in order to have a value of R2 which is equal to 0.90. A similar correction is applied to compute the prediction intervals. The default value of R2th is 1 which means that there is no correction.</LongDesc>
+         <Example>'R2th',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>fullreweight</Name>
+         <ShortDesc>Option to declare outliers.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If fullreweight is true (default option), the list of outliers refers to all the units whose residuals is above the threshold else if it is false the outliers are the observaions which by procedure FSR had been declared outliers and have a residual greater than threshold</LongDesc>
+         <Example>'fullreweight',true</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plotsPI</Name>
+         <ShortDesc>Plot of prediction intervals.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plotsPI =1 and the number of regressors (excluding the constant term) is equal 1, it is possible to see on the screen the yX scatter with superimposed the prediction intervals using a confidence level 1-alpha, else no plot is shown on the screen</LongDesc>
+         <Example>'plotsPI',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>k x 1 vector containing the list of the units declared outliers by procedure FSR or NaN if the sample is homogeneous</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>beta</Value>
+               <Description>p-by-1 vector containing the estimated regression parameter by procedure FSR</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliersr</Value>
+               <Description>k1-by-1 vector containing the list of the units declared outliers after the reweighting step or NaN if the sample is homogeneous</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>betar</Value>
+               <Description>p-by-1 vector containing the estimated regression parameter after the reweighting step</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>rstud</Value>
+               <Description>n-by-2 matrix.
+First column = studentized residuals Second column = p-values (computed using as reference distribution the Student t)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSRr'.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>xnew is a vector</ShortDesc>
+         <TypeInd>xnew = vector with a number of new points where to evaluate the prediction interval.</TypeInd>
+         <LongDesc>ypred = values predicted by the fitted model on xnew. Vector of length(xnew) yci = Confidence intervals. A two-column matrix with each row providing one interval.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown number of multivariate outliers. Journal of the Royal Statistical Society Series B, Vol. 71, pp. 201-221.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSR</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of outlier detection in a case of almost perfect fit.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    randn('state', 123456);</ItemCell>
+            <ItemCell>    n=200; p=1;</ItemCell>
+            <ItemCell>    X = rand(n,p);</ItemCell>
+            <ItemCell>    y = X + 0.01*randn(n,1);</ItemCell>
+            <ItemCell>    % contaminated data points</ItemCell>
+            <ItemCell>    ycont = y;</ItemCell>
+            <ItemCell>    ycont(1:5) = ycont(1:5)+0.07;</ItemCell>
+            <ItemCell/>
+            <ItemCell>    [out1 , xnew1 , ypred1, yci1] = ...</ItemCell>
+            <ItemCell>            FSRr(ycont,X,'alpha',0.01,...</ItemCell>
+            <ItemCell>                'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h1 = allchild(gca); a1 = gca; f1 = gcf;</ItemCell>
+            <ItemCell/>
+            <ItemCell>    [out2 , xnew2 , ypred2, yci2] = ...</ItemCell>
+            <ItemCell>            FSRr(ycont,X,'alpha',0.01,'R2th',0.9,...</ItemCell>
+            <ItemCell>                'fullreweight',true ,'plotsPI',1,'plots',0);</ItemCell>
+            <ItemCell>    h2 = allchild(gca); a2 = gca; f2 = gcf;</ItemCell>
+            <ItemCell>    % move the figure above into a single one with two panels</ItemCell>
+            <ItemCell>    figure; ax1 = subplot(2,1,1); ax2 = subplot(2,1,2);</ItemCell>
+            <ItemCell>    copyobj(h1,ax1); title(ax1,get(get(a1,'title'),'string'));</ItemCell>
+            <ItemCell>    copyobj(h2,ax2); title(ax2,get(get(a2,'title'),'string'));</ItemCell>
+            <ItemCell>    close(f1); close(f2);</ItemCell>
+            <ItemCell>    disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);</ItemCell>
+            <ItemCell>    disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);</ItemCell>
+            <ItemCell/>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

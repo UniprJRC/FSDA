@@ -1,0 +1,858 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>CorAna</title><meta content="refpage" name="chunktype"><meta content="function:CorAna" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="CorAna performs correspondence analysis." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">CorAna</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">CorAna with all the default options.</a></li><li><a class="intrnllnk" href="#Example_2">CorAna with name pairs.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">CorAna with original data matrix as input.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">CorAna with supplementary rows and supplementary columns.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_N">N</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_k">k</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lr">Lr</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Lc">Lc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Sup">Sup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datamatrix">datamatrix</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_d1">d1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_d2">d2</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#Acknowledgements">Acknowledgements</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">CorAna</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">CorAna performs correspondence analysis</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=CorAna(N)</code><span class="syntax_example"><a class="intrnllnk" href="CorAna.html#Example_1">example</a></span></li><li><code class="synopsis">out=CorAna(N,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="CorAna.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="CorAna.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=CorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>)</code></span>CorAna with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="CorAna.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=CorAna(<a class="intrnllnk" href="#inputarg_N"><code>N</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>CorAna with name pairs.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>CorAna with all the default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load smoke
+[N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
+[I,J]=size(N);
+if verLessThan('matlab','8.2.0')==0
+% Contingency table is supplied to CorAna in table format
+Ntable=array2table(N,'RowNames',labels(1:I,1),'VariableNames',labels(1:J,2))
+out=CorAna(Ntable);
+else
+out=CorAna(N);
+end</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with name pairs.</li></span></a></span></h3><div class="collapse"><p>
+     Input is the contingency table, labels for rows and columns are
+     supplied.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Data are read from the txt file
+load('smoke.txt')
+labels_rows= {'Senior-Managers' 'Junior-Managers' 'Senior-Employees' 'Junior-Employees' 'Secretaries'};
+labels_columns= {'None' 'Light' 'Medium' 'Heavy'};
+N=crosstab(smoke(:,1),smoke(:,2));
+out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia      Accounted_for    Cumulative
+             ______________    __________    _____________    __________
+
+    dim_1        0.27342         0.074759        0.87756       0.87756  
+    dim_2        0.10009         0.010017        0.11759       0.99515  
+    dim_3       0.020337       0.00041357      0.0048547             1  
+
+ROW POINTS
+Results for dimension: 1
+                         Scores      CntrbPnt2In    CntrbDim2In
+                        _________    ___________    ___________
+
+    Senior_Managers     -0.065768     0.0032977      0.092232  
+    Junior_Managers       0.25896      0.083659        0.5264  
+    Senior_Employees     -0.38059       0.51201       0.99903  
+    Junior_Employees      0.23295       0.33097       0.94193  
+    Secretaries          -0.20109      0.070064       0.86535  
+
+Results for dimension: 2
+                         Scores     CntrbPnt2In    CntrbDim2In
+                        ________    ___________    ___________
+
+    Senior_Managers     -0.19374       0.21356        0.80034 
+    Junior_Managers      -0.2433       0.55115        0.46468 
+    Senior_Employees    -0.01066     0.0029976     0.00078372 
+    Junior_Employees    0.057744       0.15177       0.057876 
+    Secretaries         0.078911      0.080522        0.13326 
+
+COLUMN POINTS
+Results for dimension: 1
+               Scores     CntrbPnt2In    CntrbDim2In
+              ________    ___________    ___________
+
+    None      -0.39331        0.654        0.99402  
+    Light     0.099456      0.03085        0.32673  
+    Medium     0.19632      0.16562        0.98185  
+    Heavy      0.29378      0.14954         0.6844  
+
+Results for dimension: 2
+               Scores      CntrbPnt2In    CntrbDim2In
+              _________    ___________    ___________
+
+    None      -0.030492      0.029336      0.0059745 
+    Light       0.14106       0.46317        0.65729 
+    Medium    0.0073591     0.0017368      0.0013796 
+    Heavy      -0.19777       0.50575        0.31015 
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                          Mass       Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                        ________    _________    ________    _________    _____________    _____________    _____________    _____________
+
+    Senior_Managers     0.056995    -0.065768    -0.19374    0.0026729      0.0032977          0.21356        0.092232           0.80034  
+    Junior_Managers     0.093264      0.25896     -0.2433     0.011881       0.083659          0.55115          0.5264           0.46468  
+    Senior_Employees     0.26425     -0.38059    -0.01066     0.038314        0.51201        0.0029976         0.99903        0.00078372  
+    Junior_Employees     0.45596      0.23295    0.057744     0.026269        0.33097          0.15177         0.94193          0.057876  
+    Secretaries          0.12953     -0.20109    0.078911     0.006053       0.070064         0.080522         0.86535           0.13326  
+
+Overview COLUMN POINTS
+               Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+              _______    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    None      0.31606    -0.39331    -0.030492     0.049186         0.654          0.029336         0.99402         0.0059745  
+    Light     0.23316    0.099456      0.14106    0.0070588       0.03085           0.46317         0.32673           0.65729  
+    Medium    0.32124     0.19632    0.0073591      0.01261       0.16562         0.0017368         0.98185         0.0013796  
+    Heavy     0.12953     0.29378     -0.19777     0.016335       0.14954           0.50575          0.6844           0.31015  
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+Summary
+             Singular_value     Inertia     Accounted_for    Cumulative
+             ______________    _________    _____________    __________
+
+    dim_1        0.18815        0.035402       0.57043        0.57043  
+    dim_2        0.11452        0.013115       0.21132        0.78175  
+    dim_3       0.085447       0.0073011       0.11764        0.89939  
+    dim_4       0.079018       0.0062439       0.10061              1  
+
+ROW POINTS
+Results for dimension: 1
+                      Scores      CntrbPnt2In    CntrbDim2In
+                     _________    ___________    ___________
+
+    money             -0.11527      0.045499        0.42845 
+    future             0.17645       0.17567        0.71562 
+    unemployment      -0.21223       0.22616        0.87492 
+    circumstances      0.40092      0.062745        0.58397 
+    hard              -0.24998      0.029938        0.88369 
+    economic           0.35396       0.12005        0.48362 
+    egoism            0.059889     0.0068096       0.073339 
+    employment        -0.13675      0.026215         0.1643 
+    finances            -0.237      0.027904        0.27623 
+    war                0.21682      0.021688        0.74907 
+    housing          -0.006681    4.1183e-05     0.00072894 
+    fear               0.20335       0.11666        0.90069 
+    health             0.11165      0.020571        0.79911 
+    work              -0.21168       0.12005        0.75402 
+
+Results for dimension: 2
+                       Scores      CntrbPnt2In    CntrbDim2In
+                     __________    ___________    ___________
+
+    money             -0.020046     0.0037146       0.012958 
+    future             0.097863       0.14587        0.22013 
+    unemployment       0.070718      0.067786       0.097145 
+    circumstances      -0.33099       0.11544          0.398 
+    hard               -0.06765     0.0059184       0.064717 
+    economic           -0.32072       0.26604        0.39705 
+    egoism             0.025667     0.0033763       0.013471 
+    employment         -0.21539       0.17555         0.4076 
+    finances            0.20598      0.056902        0.20867 
+    war                0.074663     0.0069419       0.088821 
+    housing            -0.12824       0.04096        0.26858 
+    fear               0.058068      0.025678       0.073446 
+    health           -0.0042912    8.2025e-05      0.0011804 
+    work               -0.10888      0.085745        0.19951 
+
+COLUMN POINTS
+Results for dimension: 1
+                            Scores     CntrbPnt2In    CntrbDim2In
+                           ________    ___________    ___________
+
+    unqualified            -0.20932       0.2511        0.67619  
+    cep                    -0.13858      0.18297        0.64492  
+    bepc                    0.10876     0.067579         0.3119  
+    high_school_diploma     0.27404      0.37976        0.75817  
+    university              0.23123      0.11859        0.31171  
+
+Results for dimension: 2
+                            Scores      CntrbPnt2In    CntrbDim2In
+                           _________    ___________    ___________
+
+    unqualified             0.080727      0.10082        0.10058  
+    cep                    -0.056047     0.080794        0.10549  
+    bepc                    0.028483     0.012512       0.021393  
+    high_school_diploma      0.12134      0.20099        0.14865  
+    university              -0.31786      0.60488          0.589  
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                       Mass       Score_1      Score_2       Inertia      CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                     ________    _________    __________    __________    _____________    _____________    _____________    _____________
+
+    money             0.12123     -0.11527     -0.020046     0.0037595       0.045499        0.0037146          0.42845         0.012958  
+    future            0.19975      0.17645      0.097863     0.0086904        0.17567          0.14587          0.71562          0.22013  
+    unemployment      0.17776     -0.21223      0.070718     0.0091512        0.22616         0.067786          0.87492         0.097145  
+    circumstances    0.013819      0.40092      -0.33099     0.0038038       0.062745          0.11544          0.58397            0.398  
+    hard              0.01696     -0.24998      -0.06765     0.0011994       0.029938        0.0059184          0.88369         0.064717  
+    economic          0.03392      0.35396      -0.32072     0.0087874        0.12005          0.26604          0.48362          0.39705  
+    egoism           0.067211     0.059889      0.025667     0.0032871      0.0068096        0.0033763         0.073339         0.013471  
+    employment       0.049623     -0.13675      -0.21539     0.0056484       0.026215          0.17555           0.1643           0.4076  
+    finances         0.017588       -0.237       0.20598     0.0035763       0.027904         0.056902          0.27623          0.20867  
+    war              0.016332      0.21682      0.074663      0.001025       0.021688        0.0069419          0.74907         0.088821  
+    housing          0.032663    -0.006681      -0.12824     0.0020001     4.1183e-05          0.04096       0.00072894          0.26858  
+    fear             0.099874      0.20335      0.058068     0.0045852        0.11666         0.025678          0.90069         0.073446  
+    health           0.058417      0.11165    -0.0042912    0.00091131       0.020571       8.2025e-05          0.79911        0.0011804  
+    work             0.094849     -0.21168      -0.10888     0.0056364        0.12005         0.085745          0.75402          0.19951  
+
+Overview COLUMN POINTS
+                             Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                           ________    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    unqualified             0.20289    -0.20932     0.080727     0.013146        0.2511          0.10082          0.67619          0.10058   
+    cep                     0.33731    -0.13858    -0.056047     0.010044       0.18297         0.080794          0.64492          0.10549   
+    bepc                    0.20226     0.10876     0.028483    0.0076704      0.067579         0.012512           0.3119         0.021393   
+    high_school_diploma     0.17902     0.27404      0.12134     0.017732       0.37976          0.20099          0.75817          0.14865   
+    university             0.078518     0.23123     -0.31786     0.013468       0.11859          0.60488          0.31171            0.589   
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><img vspace="5" hspace="5" src="images\CorAna_01.png" alt=""> <img vspace="5" hspace="5" src="images\CorAna_02.png" alt=""> </p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAna with original data matrix as input.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load smoke
+out=CorAna(smoke.data,'datamatrix',true);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> CorAna with supplementary rows and supplementary columns.</li></span></a></span></h3><div class="collapse"><p>
+     Children data
+     Active rows = 1:15
+     Active columns = 1:5<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[51	64	32	29	17	59	66	70;
+53	90	78	75	22	115	117	86;
+71	111	50	40	11	79	88	177;
+1	7	5	5	4	9	8	5;
+7	11	4	3	2	2	17	18;
+7	13	12	11	11	18	19	17;
+21	37	14	26	9	14	34	61;
+12	35	19	6	7	21	30	28;
+10	7	7	3	1	8	12	8;
+4	7	7	6	2	7	6	13;
+8	22	7	10	5	10	27	17;
+25	45	38	38	13	48	59	52;
+18	27	20	19	9	13	29	53;
+35	61	29	14	12	30	63	58;
+2	4	3	1	4	nan  nan	nan	  ;
+2	8	2	5	2	nan  nan	nan;
+1	5	4	6	3	nan  nan	nan;
+3	3	1	3	4	nan  nan	nan];
+% rowslab = cell containing row labels
+rowslab={'money','future','unemployment','circumstances',...
+'hard','economic','egoism','employment','finances',...
+'war','housing','fear','health','work','comfort','disagreement',...
+'world','to_live'};
+% colslab = cell containing column labels
+colslab={'unqualified','cep','bepc','high_school_diploma','university',...
+'thirty','fifty','more_fifty'};
+tableN=array2table(N,'VariableNames',colslab,'RowNames',rowslab);
+% Extract just active rows and active columns
+Nactive=tableN(1:14,1:5);
+% Define tables containing supplementary rows and supplementary cols
+Nsupr=tableN(15:18,1:5);
+Nsupc=tableN(1:14,6:8);
+Sup=struct;
+Sup.r=Nsupr;
+Sup.c=Nsupc;
+out=CorAna(Nactive,'Sup',Sup);</pre></div></div><pre class="codeoutput">Summary
+             Singular_value     Inertia      Accounted_for    Cumulative
+             ______________    __________    _____________    __________
+
+    dim_1        0.27342         0.074759        0.87756       0.87756  
+    dim_2        0.10009         0.010017        0.11759       0.99515  
+    dim_3       0.020337       0.00041357      0.0048547             1  
+
+ROW POINTS
+Results for dimension: 1
+                         Scores      CntrbPnt2In    CntrbDim2In
+                        _________    ___________    ___________
+
+    Senior_Managers     -0.065768     0.0032977      0.092232  
+    Junior_Managers       0.25896      0.083659        0.5264  
+    Senior_Employees     -0.38059       0.51201       0.99903  
+    Junior_Employees      0.23295       0.33097       0.94193  
+    Secretaries          -0.20109      0.070064       0.86535  
+
+Results for dimension: 2
+                         Scores     CntrbPnt2In    CntrbDim2In
+                        ________    ___________    ___________
+
+    Senior_Managers     -0.19374       0.21356        0.80034 
+    Junior_Managers      -0.2433       0.55115        0.46468 
+    Senior_Employees    -0.01066     0.0029976     0.00078372 
+    Junior_Employees    0.057744       0.15177       0.057876 
+    Secretaries         0.078911      0.080522        0.13326 
+
+COLUMN POINTS
+Results for dimension: 1
+               Scores     CntrbPnt2In    CntrbDim2In
+              ________    ___________    ___________
+
+    None      -0.39331        0.654        0.99402  
+    Light     0.099456      0.03085        0.32673  
+    Medium     0.19632      0.16562        0.98185  
+    Heavy      0.29378      0.14954         0.6844  
+
+Results for dimension: 2
+               Scores      CntrbPnt2In    CntrbDim2In
+              _________    ___________    ___________
+
+    None      -0.030492      0.029336      0.0059745 
+    Light       0.14106       0.46317        0.65729 
+    Medium    0.0073591     0.0017368      0.0013796 
+    Heavy      -0.19777       0.50575        0.31015 
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                          Mass       Score_1     Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                        ________    _________    ________    _________    _____________    _____________    _____________    _____________
+
+    Senior_Managers     0.056995    -0.065768    -0.19374    0.0026729      0.0032977          0.21356        0.092232           0.80034  
+    Junior_Managers     0.093264      0.25896     -0.2433     0.011881       0.083659          0.55115          0.5264           0.46468  
+    Senior_Employees     0.26425     -0.38059    -0.01066     0.038314        0.51201        0.0029976         0.99903        0.00078372  
+    Junior_Employees     0.45596      0.23295    0.057744     0.026269        0.33097          0.15177         0.94193          0.057876  
+    Secretaries          0.12953     -0.20109    0.078911     0.006053       0.070064         0.080522         0.86535           0.13326  
+
+Overview COLUMN POINTS
+               Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+              _______    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    None      0.31606    -0.39331    -0.030492     0.049186         0.654          0.029336         0.99402         0.0059745  
+    Light     0.23316    0.099456      0.14106    0.0070588       0.03085           0.46317         0.32673           0.65729  
+    Medium    0.32124     0.19632    0.0073591      0.01261       0.16562         0.0017368         0.98185         0.0013796  
+    Heavy     0.12953     0.29378     -0.19777     0.016335       0.14954           0.50575          0.6844           0.31015  
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+Summary
+             Singular_value     Inertia     Accounted_for    Cumulative
+             ______________    _________    _____________    __________
+
+    dim_1        0.18815        0.035402       0.57043        0.57043  
+    dim_2        0.11452        0.013115       0.21132        0.78175  
+    dim_3       0.085447       0.0073011       0.11764        0.89939  
+    dim_4       0.079018       0.0062439       0.10061              1  
+
+ROW POINTS
+Results for dimension: 1
+                      Scores      CntrbPnt2In    CntrbDim2In
+                     _________    ___________    ___________
+
+    money             -0.11527      0.045499        0.42845 
+    future             0.17645       0.17567        0.71562 
+    unemployment      -0.21223       0.22616        0.87492 
+    circumstances      0.40092      0.062745        0.58397 
+    hard              -0.24998      0.029938        0.88369 
+    economic           0.35396       0.12005        0.48362 
+    egoism            0.059889     0.0068096       0.073339 
+    employment        -0.13675      0.026215         0.1643 
+    finances            -0.237      0.027904        0.27623 
+    war                0.21682      0.021688        0.74907 
+    housing          -0.006681    4.1183e-05     0.00072894 
+    fear               0.20335       0.11666        0.90069 
+    health             0.11165      0.020571        0.79911 
+    work              -0.21168       0.12005        0.75402 
+
+Results for dimension: 2
+                       Scores      CntrbPnt2In    CntrbDim2In
+                     __________    ___________    ___________
+
+    money             -0.020046     0.0037146       0.012958 
+    future             0.097863       0.14587        0.22013 
+    unemployment       0.070718      0.067786       0.097145 
+    circumstances      -0.33099       0.11544          0.398 
+    hard               -0.06765     0.0059184       0.064717 
+    economic           -0.32072       0.26604        0.39705 
+    egoism             0.025667     0.0033763       0.013471 
+    employment         -0.21539       0.17555         0.4076 
+    finances            0.20598      0.056902        0.20867 
+    war                0.074663     0.0069419       0.088821 
+    housing            -0.12824       0.04096        0.26858 
+    fear               0.058068      0.025678       0.073446 
+    health           -0.0042912    8.2025e-05      0.0011804 
+    work               -0.10888      0.085745        0.19951 
+
+COLUMN POINTS
+Results for dimension: 1
+                            Scores     CntrbPnt2In    CntrbDim2In
+                           ________    ___________    ___________
+
+    unqualified            -0.20932       0.2511        0.67619  
+    cep                    -0.13858      0.18297        0.64492  
+    bepc                    0.10876     0.067579         0.3119  
+    high_school_diploma     0.27404      0.37976        0.75817  
+    university              0.23123      0.11859        0.31171  
+
+Results for dimension: 2
+                            Scores      CntrbPnt2In    CntrbDim2In
+                           _________    ___________    ___________
+
+    unqualified             0.080727      0.10082        0.10058  
+    cep                    -0.056047     0.080794        0.10549  
+    bepc                    0.028483     0.012512       0.021393  
+    high_school_diploma      0.12134      0.20099        0.14865  
+    university              -0.31786      0.60488          0.589  
+
+-----------------------------------------------------------
+Overview ROW POINTS
+                       Mass       Score_1      Score_2       Inertia      CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                     ________    _________    __________    __________    _____________    _____________    _____________    _____________
+
+    money             0.12123     -0.11527     -0.020046     0.0037595       0.045499        0.0037146          0.42845         0.012958  
+    future            0.19975      0.17645      0.097863     0.0086904        0.17567          0.14587          0.71562          0.22013  
+    unemployment      0.17776     -0.21223      0.070718     0.0091512        0.22616         0.067786          0.87492         0.097145  
+    circumstances    0.013819      0.40092      -0.33099     0.0038038       0.062745          0.11544          0.58397            0.398  
+    hard              0.01696     -0.24998      -0.06765     0.0011994       0.029938        0.0059184          0.88369         0.064717  
+    economic          0.03392      0.35396      -0.32072     0.0087874        0.12005          0.26604          0.48362          0.39705  
+    egoism           0.067211     0.059889      0.025667     0.0032871      0.0068096        0.0033763         0.073339         0.013471  
+    employment       0.049623     -0.13675      -0.21539     0.0056484       0.026215          0.17555           0.1643           0.4076  
+    finances         0.017588       -0.237       0.20598     0.0035763       0.027904         0.056902          0.27623          0.20867  
+    war              0.016332      0.21682      0.074663      0.001025       0.021688        0.0069419          0.74907         0.088821  
+    housing          0.032663    -0.006681      -0.12824     0.0020001     4.1183e-05          0.04096       0.00072894          0.26858  
+    fear             0.099874      0.20335      0.058068     0.0045852        0.11666         0.025678          0.90069         0.073446  
+    health           0.058417      0.11165    -0.0042912    0.00091131       0.020571       8.2025e-05          0.79911        0.0011804  
+    work             0.094849     -0.21168      -0.10888     0.0056364        0.12005         0.085745          0.75402          0.19951  
+
+Overview COLUMN POINTS
+                             Mass      Score_1      Score_2      Inertia     CntrbPnt2In_1    CntrbPnt2In_2    CntrbDim2In_1    CntrbDim2In_2
+                           ________    ________    _________    _________    _____________    _____________    _____________    _____________
+
+    unqualified             0.20289    -0.20932     0.080727     0.013146        0.2511          0.10082          0.67619          0.10058   
+    cep                     0.33731    -0.13858    -0.056047     0.010044       0.18297         0.080794          0.64492          0.10549   
+    bepc                    0.20226     0.10876     0.028483    0.0076704      0.067579         0.012512           0.3119         0.021393   
+    high_school_diploma     0.17902     0.27404      0.12134     0.017732       0.37976          0.20099          0.75817          0.14865   
+    university             0.078518     0.23123     -0.31786     0.013468       0.11859          0.60488          0.31171            0.589   
+
+-----------------------------------------------------------
+Legend
+Row scores in principal coordinates
+Column scores in principal coordinates
+CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension
+              The sum of the numbers in a column is equal to 1
+CntrbDim2In = relative contribution of latent dimension to explain total Inertia of a point
+              CntrbDim2In_1+CntrbDim2In_2+...+CntrbDim2In_K=1
+</pre><img vspace="5" hspace="5" src="images\CorAna_01.png" alt=""> <img vspace="5" hspace="5" src="images\CorAna_02.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input contingency
+                 table (say of size I-by-J) or the original data matrix.</p> <p>
+                 In this last case N=crosstab(N(:,1),N(:,2)). As default
+                 procedure assumes that the input is a contingency table.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'k',3
+</code>,<code> 'Lr',{'a' 'b' 'c'}
+</code>,<code> 'Lc',{'c1' c2' 'c3' 'c4'}
+</code>,<code> 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
+</code>,<code> 'datamatrix',true
+</code>,<code> 'plots',1
+</code>,<code> 'dispresults',false
+</code>,<code> 'd1',2
+</code>,<code> 'd2',3
+</code></code></span></div><div class="expandableContent"><div id="inputarg_k" class="clearfix"></div><h3 id="input_argument_namevalue_k" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>k</code> &#8212;Number of dimensions to retain.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which contains the number of dimensions to retain.</p> <p>
+               The default value of k is 2.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'k',3
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Lr" class="clearfix"></div><h3 id="input_argument_namevalue_Lr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lr</code> &#8212;Vector of row labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the rows of the input
+               contingency matrix N. This option is unnecessary if N is a
+               table, because in this case  Lr=N.Properties.RowNames;</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lr',{'a' 'b' 'c'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_Lc" class="clearfix"></div><h3 id="input_argument_namevalue_Lc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lc</code> &#8212;Vector of column labels.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the columns of the input
+               contingency matrix N. This option is unnecessary if N is a
+               table, because in this case Lc=N.Properties.VariableNames;</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lc',{'c1' c2' 'c3' 'c4'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell array of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_Sup" class="clearfix"></div><h3 id="input_argument_namevalue_Sup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Sup</code> &#8212;Structure containing indexes or names of supplementary rows
+               or columns.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure with the following fields.</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>r</code></td><td><p><p>vector containing row indexes or vector of cell
+                       array of strings or table or 2D numeric array,
+                       containing supplementary rows.</p> <p>
+                       If indexes or cell array of strings are supplied in
+                       a vector, we assume that supplementary rows belong
+                       to contingency table N. For example:</p> <p>
+                       - if Sup.r=[2 5] (that is Sup.r is a numeric vector
+                         which contains row indexes) we use rows 2 and 5
+                         of the input contingency table as supplementary
+                         rows.</p> <p>
+                       - if Sup.r={'Junior-Managers' 'Senior-Employees'}
+                         (that is Sup.r is a cell array of strings) we use
+                         rows named 'Junior-Managers' and
+                         'Senior-Employees' of the input contingency table
+                         as supplementary rows. Of course the length of
+                         Sup.r must be smaller than the number of rows of
+                         the contigencey matrix divided by 2.</p><p>
+                      - if Sup.r is a table, or a 2D array
+                         supplementary rows do not belong to N. Note that
+                         if Sup.r is a table, the labels of the rows are
+                         taken directly from the table. If on the other
+                         hand Sup.r is a matrix the names of the rows
+                         of the supplementary units can be given using
+                         Sup.Lr as a cell array of strings.</p></p></td></tr><tr valign="top"><td><code>Lr</code></td><td><p>cell array of strings containing the labels of the
+                       supplementary units if Sup.r is a 2D numeric array.</p></td></tr><tr valign="top"><td><code>c</code></td><td><p><p>vector containing column indexes or vector of cell
+                       array of strings or table or 2D numeric array
+                       use as supplementary columns, or table or 2D
+                       numeric array containing supplementary rows.</p> <p>
+                       If indexes or cell array of strings are supplied in
+                       a vector, we assume that supplementary columns belong
+                       to contingency table N. For example:</p> <p>
+                       - if Sup.c=[2 3] (that is Sup.c is a
+                       numeric vector which contains column indexes) we use
+                       columns 2 and 3 of the input contingency table as
+                       supplementary columns.</p> <p>
+                       - if Sup.c={'Smokers' 'NonSmokers'}
+                        (that is Sup.c is a cell array of strings) we use
+                        columns of the contingency table labelled
+                        'Smokers' and 'NonSmokers' of the input
+                        contingency table N as supplementary columns.</p> <p>
+                        Of course the length of Sup.c must be smaller than
+                        the number of columns of the contigencey matrix
+                        divided by 2.</p><p>
+                       - If Sup.c is a table, or a 2D array
+                         supplementary columns do not belong to N. Note that
+                         if Sup.c is a table, the labels of the columns are
+                         taken directly from the table. If on the other
+                         hand Sup.c is a matrix the names of the columns
+                         of the supplementary units can be given using
+                         Sup.Lc as a cell array of strings.</p></p></td></tr><tr valign="top"><td><code>Lc</code></td><td><p><p>cell array of strings containing the labels of the
+                       supplementary units if Sup.r is a 2D numeric array.</p> <p>
+                                              REMARK: The default value of Sup is a missing value
+                       that is we assume that there are no supplementary
+                       rows or columns.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Sup',Sup=struct; Sup.c={'c2' 'c4'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_datamatrix" class="clearfix"></div><h3 id="input_argument_namevalue_datamatrix" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datamatrix</code> &#8212;Data matrix or contingency table.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If
+               datamatrix is true the first input argument N is forced to
+               be interpreted as a data matrix, else if the input argument
+               is false N is treated as a contingency table. The default
+               value of datamatrix is false, that is the procedure
+               automatically considers N as a contingency table
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datamatrix',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar | structure.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot which shows the Principal
+               coordinates of rows and columns is shown on the screen. If
+               plots is a structure it may contain the following fields:</p> <p>
+       </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>alpha</code></td><td><p><p>type of plot, scalar in the interval [0 1] or
+               a string identifying the type of coordinates to use in the
+               plot.</p> <p>
+               If $plots.alpha='rowprincipal'$ the row points are in
+                   principal coordinates and the column coordinates are
+                   standard coordinates. Distances between row points are
+                   (approximated) chi-squared distances
+                   (row-metric-preserving). The position of the row points
+                   are at the weighted average of the column points.</p> <p>
+                   Note that 'rowprincipal' can also be specified setting
+                   plots.alpha=1.</p> <p>
+               If $plots.alpha='colprincipal'$, the column
+                   coordinates are referred to as principal coordinates
+                   and the row coordinates as standard coordinates.</p> <p>
+                   Distances between column points are (approximated)
+                   chi-squared distances (column-metric-preserving). The
+                   position of the column points are at the weighted
+                   average of the row points.</p> <p>
+                   Note that 'colwprincipal' can also be
+                   specified setting plots.alpha=0.</p> <p>
+               If $plots.alpha='symbiplot'$, the row and column coordinates
+                   are scaled similarly. The sum of weighted squared
+                   coordinates for each dimension is equal to the
+                   corresponding singular values. These coordinates are often
+                   called symmetrical coordinates. This representation is
+                   particularly useful if one is primarily interested in
+                   the relationships between categories of row and column
+                   variables rather than in the distances among rows or
+                   among columns. 'symbiplot' can also be specified
+                   setting plots.alpha=0.5;</p><p>
+               If $plots.alpha='bothprincipal'$, both the rows and columns
+                   are depicted in principal coordinates. Such a plot is
+                   often referred to as a symmetrical plot or French
+                   symemtrical model. Note that such a symmetrical plot
+                   does not provide a feasible solution in the sense that
+                   it does not approximate matrix
+                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$.</p></p></td></tr><tr valign="top"><td><code>FontSize</code></td><td><p>scalar which specifies the font size of row
+                   (column) labels. The default value is 10.</p></td></tr><tr valign="top"><td><code>MarkerSize</code></td><td><p>scalar which specifies the marker size
+                   of symbols associated with rows or columns. The default
+                   value is 10.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;Display results on the screen.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If dispresults is true (default) it is possible to see on the
+                 screen all the summary results of the analysis.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_d1" class="clearfix"></div><h3 id="input_argument_namevalue_d1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>d1</code> &#8212;Dimension to show on the horizontal axis.</span></a><span class="example_desc">positive                 integer.</span></span></h3><div class="collapse">	<p><p>Positive integer in the range 1, 2, .., K which
+                 indicates the dimension to show on the x axis. The
+                 default value of d1 is 1.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd1',2
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_d2" class="clearfix"></div><h3 id="input_argument_namevalue_d2" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>d2</code> &#8212;Dimension to show on the vertical axis.</span></a><span class="example_desc">positive                 integer.</span></span></h3><div class="collapse">	<p><p>Positive integer in the range 1, 2, .., K which
+                 indicates the dimension to show on the y axis. The
+                 default value of d2 is 2.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd2',3
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Lr</code></td><td><p>cell of length $I$ containing the labels of
+                         active rows (i.e. the rows which participated to
+                         the fit).</p></td></tr><tr valign="top"><td><code>Lc</code></td><td><p>cell of length $J$ containing the labels of
+                         active columns (i.e. the columns which participated to
+                         the fit).</p></td></tr><tr valign="top"><td><code>N</code></td><td><p>$I$-by-$J$-array containing contingency table
+                         referred to active rows and active columns (i.e.
+                         referred to the rows/columns which participated
+                         to the fit). The $(i,j)$-th element is equal to
+                         $n_{ij}$,
+                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+                         sum of the elements of out.P is $n$ (the grand
+                         total).</p></td></tr><tr valign="top"><td><code>Ntable</code></td><td><p><p>Same as out.N but in table format (with row and
+                         column names).</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>I</code></td><td><p>Number of active rows of contingency table.</p></td></tr><tr valign="top"><td><code>J</code></td><td><p>Number of active columns of contingency table.</p></td></tr><tr valign="top"><td><code>n</code></td><td><p><p>Grand total. out.n is equal to sum(sum(out.N)).</p> <p>
+                         This is the number of observations.</p></p></td></tr><tr valign="top"><td><code>Nhat</code></td><td><p><p>$I$-by-$J$-array containing contingency table
+                         referred to active rows (i.e. referred to the rows which
+                         participated to the fit) under the independence hypothesis.</p> <p>
+                         The $(i,j)$-th element is equal to $n_{i.}n_{.j}/n$,
+                         $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The
+                         sum of the elements of out.Nhat is $n$ (the grand
+                         total).</p></p></td></tr><tr valign="top"><td><code>Nhattable</code></td><td><p>Same as out.Nhat but in table format (with row and
+                         column names).</p></td></tr><tr valign="top"><td><code>P</code></td><td><p>$I$-by-$J$-array containing correspondence matrix
+                         (proportions). The $(i,j)$-th element is equal to
+                         $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
+                         \ldots, J$.  The sum of the elements of out.P is
+                         1.</p></td></tr><tr valign="top"><td><code>Ptable</code></td><td><p><p>Same as out.P but in table format (with row and
+                         column names).</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>r</code></td><td><p><p>Vector of length $I$ containing row masses.</p> <p>
+                         </p>\[
+                           r=(f_{1.},	f_{2.}, \ldots, f_{I.})'
+                         \]
+                         $r$ is also the centroid of column profiles.</p></td></tr><tr valign="top"><td><code>Dr</code></td><td><p><p>Square matrix of size $I$ containing on the
+                         diagonal the row masses.  This is matrix $D_r$.</p> <p>
+                         </p>\[
+                           D_r=diag(r)
+                         \]</p></td></tr><tr valign="top"><td><code>c</code></td><td><p><p>Vector of length $J$ containing column masses.</p> <p>
+                         </p>\[
+                           c=(f_{.1},	f_{.2}, \ldots, f_{.J})'
+                         \]
+                         $c$ is also the centroid of row profiles.</p></td></tr><tr valign="top"><td><code>Dc</code></td><td><p><p>Square matrix of size $J$ containing on the
+                         diagonal the column masses. This is matrix $D_c$.</p> <p>
+                         </p>\[
+                           D_c=diag(c)
+                         \]</p></td></tr><tr valign="top"><td><code>ProfilesRows</code></td><td><p><p>$I$-by-$J$-matrix containing row profiles.</p> <p>
+                         The $i,j$-th element of this matrix is given by
+                         $f_{ij}/f_{i.}=n_{ij}/n_{i.}$.</p> <p>
+                         Written in matrix form:</p><p>
+                         </p>\[
+                         ProfilesRows = D_r^{-1} \times P
+                         \]</p></td></tr><tr valign="top"><td><code>ProfilesCols</code></td><td><p><p>$I$-by-$J$-matrix containing column profiles.</p> <p>
+                         The $i,j$-th element of this matrix is given by
+                         $f_{ij}/f_{.j}=n_{ij}/n_{.j}$.</p> <p>
+                         Written in matrix form:</p><p>
+                         </p>\[
+                         ProfilesCols = P \times D_c^{-1}
+                         \]</p></td></tr><tr valign="top"><td><code>K</code></td><td><p>Scalar integer containing the maximum number of
+                         dimensions. $K = \min(I-1,J-1)$.</p></td></tr><tr valign="top"><td><code>k</code></td><td><p>Scalar integer containing the number of retained
+                         dimensions.</p></td></tr><tr valign="top"><td><code>Residuals</code></td><td><p><p>$I$-by-$J$-matrix containing standardized residuals.</p> <p>
+                         </p>\[
+                         Residuals = D_r^{1/2}  (D_r^{-1}  P - r  c')  D_c^{-1/2} =
+                         D_r^{-1/2}  (P - r  c')  D_c^{-1/2}
+                         \]<p>
+                         With the singular value decomposition (SVD) we
+                         obtain that:</p> <p>
+                         </p>\[
+                         Residuals = U \Gamma V'
+                         \]</p></td></tr><tr valign="top"><td><code>TotalInertia</code></td><td><p>Scalar containing total inertia. Total inertia
+                         is equal (for example) to the sum of the
+                         squares of the elements of matrix
+                         out.Residuals.</p></td></tr><tr valign="top"><td><code>Chi2stat</code></td><td><p>Scalar containing Chi-square statistic for the
+                         contingency table. $Chi2stat= TotalInertia \times n$.</p></td></tr><tr valign="top"><td><code>CramerV</code></td><td><p><p>Scalar containing Cramer's $V$ index.</p> <p>
+                         </p>\[
+                         V=\sqrt{Chi2stat/(n (\min(I,J)-1))}
+                         \]
+                         Cramer's index goes between 0 and 1.</p></td></tr><tr valign="top"><td><code>InertiaExplained</code></td><td><p><p>matrix with 4 columnn.</p> <p>
+                         - First column contains the singular values (the
+                           sum of the squared singular values is the total
+                           inertia).</p> <p>
+                         - Second column contains the eigenvalues (the sum
+                           of the eigenvalues is the total inertia).</p> <p>
+                         - Third column contains the variance explained by
+                           each latent dimension.</p><p>
+                         - Fourth column contains the cumulative variance
+                           explained by each dimension.</p></p></td></tr><tr valign="top"><td><code>RowsPri</code></td><td><p><p>$I$-by-$K$ matrix containing principal coordinates
+                         of rows.</p> <p>
+                         </p>\[
+                         RowsPri = D_r^{-1/2} \times U \times \Gamma;
+                         \]</p></td></tr><tr valign="top"><td><code>ColsPri</code></td><td><p><p>$J$-by-$K$ matrix containing Principal coordinates
+                         of columns.</p> <p>
+                         </p>\[
+                         ColsPri = D_c^{-1/2} \times V \times \Gamma;
+                         \]</p></td></tr><tr valign="top"><td><code>RowsSta</code></td><td><p><p>$I$-by-$K$ matrix containing standard coordinates
+                         of rows.</p> <p>
+                         </p>\[
+                         RowsSta = RowsPri \times \Gamma^{-1} = D_r^{-1/2} U
+                         \Gamma \Gamma^{-1}= D_r^{-1/2}  U
+                         \]</p></td></tr><tr valign="top"><td><code>ColsSta</code></td><td><p><p>$J$-by-$K$ matrix containing standard coordinates
+                         of columns.</p> <p>
+                         </p>\[
+                         ColsSta = ColsPri \times \Gamma^{-1} = D_c^{-1/2} V
+                         \Gamma \Gamma^{-1}= D_c^{-1/2}  V
+                         \]</p></td></tr><tr valign="top"><td><code>RowsSym</code></td><td><p><p>$I$-by-$K$ matrix containing symmetrical coordinates
+                         of rows.</p> <p>
+                         </p>\[
+                         RowsSym = D_r^{-1/2} \times U \times \Gamma^{1/2}
+                         \]</p></td></tr><tr valign="top"><td><code>ColsSym</code></td><td><p><p>$J$-by-$K$ matrix containing symmetrical coordinates
+                         of columns.</p> <p>
+                         </p>\[
+                         ColsSym = D_c^{-1/2} \times V \times \Gamma^{1/2}
+                         \]<p>
+                         Symmetric plot represents the row and column
+                         profiles simultaneously in a common space
+                         (Bendixen, 2003). In this case, only the distance
+                         between row points or the distance between column
+                         points can be really interpreted.</p> <p>
+                         The distance between any row and column items is
+                         not meaningful! You can only make a general
+                         statements about the observed pattern. In order to
+                         interpret the distance between column and row
+                         points, the column profiles must be presented in
+                         row space or vice-versa. This type of map is called
+                         asymmetric biplot.</p></p></td></tr><tr valign="top"><td><code>InertiaRows</code></td><td><p><p>$I$-by-$2$ matrix containing absolute and relative
+                         contribution of each row to total inertia.</p> <p>
+                         The inertia of a point is the squared distance
+                         of point $d_i^2$ to the centroid. The absolute
+                         contribution of a point to total inertia is the
+                         inertia of the point multiplied by the point
+                         mass.</p> <p>
+                         1st column = absolute contribution of each row
+                         to TotalInertia. The sum of values of the first
+                         column is equal to TotalInertia;</p><p>
+                         2nd column = relative contribution of each row
+                         to TotalInertia. The sum of the values of the
+                         second column is equal to 1.</p></p></td></tr><tr valign="top"><td><code>InertiaCols</code></td><td><p><p>$J$-by-$2$ matrix containing absolute and relative
+                         contribution of each column to total inertia.</p> <p>
+                         The inertia of a point is the squared distance
+                         of point $d_i^2$ to the centroid. The absolute
+                         contribution of a point to total inertia is the
+                         inertia of the point multiplied by the point
+                         mass.</p> <p>
+                         1st column = absolute contribution of each
+                         column to TotalInertia. The sum of values of the
+                         first column is equal to TotalInertia;</p><p>
+                         2nd column = relative contribution of each
+                         column to TotalInertia. The sum of values of the
+                         second column is equal to 1.</p></p></td></tr><tr valign="top"><td><code>Point2InertiaRows</code></td><td><p><p>$I$-by-$K$ matrix containing relative
+                         contributions of rows to inertia of the
+                         dimension. The inertia of first latent dimension
+                         is given by $\lambda_1=\gamma_{11}^2$. The
+                         inertia of second latent dimension is given by
+                         $\lambda_2=\gamma_{22}^2$ .... The sum of each
+                         column of matrix Point2InertiaRows is equal to 1.</p> <p>
+                           Remark: the points with the larger value of
+                           Point2Inertia are those which contribute the
+                           most to the definition of the dimension. If the
+                           row contributions were uniform, the expected
+                           value would be 1/size(contingeny_table,1) For a
+                           given dimension, any row with a contribution
+                           larger than this threshold could be considered
+                           as important in contributing to that dimension.</p></p></td></tr><tr valign="top"><td><code>Point2InertiaCols</code></td><td><p>$J$-by-$K$ matrix containing relative
+                         contributions of columns to inertia of the
+                         dimension. The sum of each column of matrix
+                         Point2InertiaCols is equal to 1.</p></td></tr><tr valign="top"><td><code>Dim2InertiaRows</code></td><td><p>$I$-by-$K$ matrix containing relative
+                         contributions of latent dimensions to inertia of
+                         the row points. These numbers can be
+                         interpreted as squared correlations and measures
+                         the degree of association between row points
+                         and a particular axis. The sum of
+                         each row of matrix Dim2InertiaRows is equal to 1.</p></td></tr><tr valign="top"><td><code>Dim2InertiaCols</code></td><td><p>$J$-by-$K$ matrix containing relative
+                         contributions of latent dimensions to inertia of
+                         the column points. These numbers can be
+                         interpreted as squared correlations and measure
+                         the degree of association between columns points
+                         and a particular axis. The sum of each row of
+                         matrix Dim2InertiaCols is equal to 1.</p></td></tr><tr valign="top"><td><code>cumsumDim2InertiaRows</code></td><td><p><p>$I$-by-$K$ matrix containing cumulative
+                         sum of the contributions of latent dimensions to
+                         inertia of the row points. These cumulative sums
+                         are equivalent to the communalities in PCA.</p> <p>
+                         The last column of matrix cumsumDim2InertiaRows
+                         is equal to 1.</p></p></td></tr><tr valign="top"><td><code>cumsumDim2InertiaCols</code></td><td><p><p>$J$-by-$K$ matrix containing cumulative
+                          sum of the contributions of latent dimensions to
+                          inertia of the column points. These cumulative sums
+                          are equivalent to the communalities in PCA.</p> <p>
+                          The last column of matrix cumsumDim2InertiaCols
+                          is equal to 1.</p></p></td></tr><tr valign="top"><td><code>sqrtDim2InertiaRows</code></td><td><p>$I$-by-$K$ matrix containing correlation of
+                          rows points with latent dimension axes. Similar
+                          to component loadings in PCA</p></td></tr><tr valign="top"><td><code>sqrtDim2InertiaCols</code></td><td><p>$I$-by-$K$ matrix containing correlation of
+                          column points with latent dimension axes. Similar
+                          to component loadings in PCA.</p></td></tr><tr valign="top"><td><code>Summary</code></td><td><p><p>$K$-times-4 table containing summary results
+                         for correpondence analysis.</p> <p>
+                         First column contains the singular values (the
+                         sum of the squared singular values is the total
+                         inertia).</p> <p>
+                         Second column contains the eigenvalues (the
+                         sum of the eigenvalues is the total inertia).</p> <p>
+                         Third column contains the variance explained by
+                         each latent dimension. Fourth column contains
+                         the cumulative variance explained by each
+                         dimension.</p><p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>OverviewRows</code></td><td><p><p>$I$-times-(k*3+2) table containing an overview
+                         of row points. More precisely, if we suppose that
+                         $k=2$,
+                         First column contains the row masses (vector
+                         $r$).</p> <p>
+                         Second column contains the scores of first dimension.</p> <p>
+                         Third column contains the scores of second dimension.</p> <p>
+                         Fourth column contains the inertia of each
+                         point, where inertia of point is the squared
+                         distance of point $d_i^2$ to the centroid.</p> <p>
+                         Fifth column contains the relative contribution
+                         of each point to the explanation of the inertia
+                         of the first dimension. The sum of the elements
+                         of this column is equal to 1.</p> <p>
+                         Sixth column contains the relative contribution
+                         of each point to the explanation of the inertia
+                         of the second dimension. The sum of the elements
+                         of this column is equal to 1.</p> <p>
+                         Seventh column contains the relative
+                         contribution of the first dimension to the
+                         explanation of the inertia of the point.</p><p>
+                         Eight column contains the relative
+                         contribution of the second dimension to the
+                         explanation of the inertia of the point.</p></p></td></tr><tr valign="top"><td><code>OverviewCols</code></td><td><p><p>$J$-times-(k*3+2) table containing an overview
+                         of row points. More precisely if we suppose that $k=2$
+                         First column contains the column masses (vector
+                         $c$).</p> <p>
+                         Second column contains the scores of first dimension.</p> <p>
+                         Third column contains the scores of second dimension.</p> <p>
+                         Fourth column contains the inertia of each
+                         point, where inertia of point is the squared
+                         distance of point $d_i^2$ to the centroid.</p> <p>
+                         Fifth column contains the relative contribution
+                         of each point to the explanation of the inertia
+                         of the first dimension. The sum of the elements
+                         of this column is equal to 1.</p> <p>
+                         Sixth column contains the relative contribution
+                         of each point to the explanation of the inertia
+                         of the second dimension. The sum of the elements
+                         of this column is equal to 1.</p> <p>
+                         Seventh column contains the relative
+                         contribution of the first dimension to the
+                         explanation of the inertia of the point.</p> <p>
+                         Eight column contains the relative
+                         contribution of the second dimension to the
+                         explanation of the inertia of the point.</p><p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>LrSup</code></td><td><p>cell containing the labels of the
+                         supplementary rows (i.e. the rows whicg did not
+                         participate to the fit).</p></td></tr><tr valign="top"><td><code>LcSup</code></td><td><p>cell containing the labels of
+                         supplementary columns (i.e. the columns which did
+                         not participate to the fit).</p></td></tr><tr valign="top"><td><code>SupRowsN</code></td><td><p>matrix of size length(LrSup)-by-c
+                         referred to supplementary rows. If there are no
+                         supplementary rows this field is not present.</p></td></tr><tr valign="top"><td><code>SupRowsNtable</code></td><td><p><p>Same as out.SupRowsN but in table format (with row and
+                         column names). This is the contingency table referred
+                         to supplementary rows. If there are no
+                         supplementary rows this field is not present.</p> <p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>SupColsN</code></td><td><p><p>matlab of size r-by-length(LcSup) referred to
+                         supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>SupColsNtable</code></td><td><p><p>Same as out.SupColsN but in table format (with row and
+                         column names). This is the contingency table referred
+                         to supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p><p>
+                         This output is present just if your MATLAB
+                         version is not&lt;2013b.</p></p></td></tr><tr valign="top"><td><code>RowsPriSup</code></td><td><p><p>Principal coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>RowsStaSup</code></td><td><p><p>Standard coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>RowsSymSup</code></td><td><p><p>Symmetrical coordinates of supplementary rows.</p> <p>
+                         If there are no supplementary rows this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsPriSup</code></td><td><p><p>Principal coordinates of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsStaSup</code></td><td><p><p>Standard coordinates of of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr><tr valign="top"><td><code>ColsSymSup</code></td><td><p><p>Symmetrical coordinates of supplementary columns.</p> <p>
+                         If there are no supplementary columns this field
+                         is not present.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,
+ Dekker.</p></div><div><p>Benzecri, J.-P. (1980), "L'analyse des donnees tome 2: l'analyse des
+ correspondances", Paris, Bordas.</p></div><div><p>Greenacre, M.J. (1993), "Correspondence Analysis in Practice", London,
+ Academic Press.</p></div><div><p>Gabriel, K.R. and Odoroff, C. (1990), Biplots in biomedical research,
+ "Statistics in Medicine", Vol. 9, pp. 469-485.</p></div><div><p>Greenacre, M.J. (1993), Biplots in correspondence Analysis, "Journal of
+ Applied Statistics", Vol. 20, pp. 251-269.</p></div><div><p>Urbano, L.-S., van de Velden, M. and Kiers, H.A.L. (2009),
+ CAR: A MATLAB Package to Compute Correspondence Analysis with Rotations,
+ "Journal of Statistical Software", Vol. 31.</p></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="Acknowledgements">Acknowledgements</h2> <div><p><p>
+
+ This function has been inspired by the code developed by:</p> <p>
+ Urbano Lorenzo-Seva (Rovira i Virgili University, Tarragona, Spain),
+ Michel van de Velden (Erasmus University, Rotterdam, The Netherlands),
+ and Henk A.L. Kiers (University of Groningen, Groningen, The Netherlands)
+ (See References).</p><p>
+
+ </p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/crosstab.html'))" itemprop="url"><span itemprop="name"><code>crosstab</code></span></a></span> | <span itemprop="seealso"><a href="rcontFS.html" itemprop="url"><span itemprop="name"><code>rcontFS</code></span></a></span> | <span itemprop="seealso"><a href="CressieRead.html" itemprop="url"><span itemprop="name"><code>CressieRead</code></span></a></span> | <span itemprop="seealso"><a href="CorAnaplot.html" itemprop="url"><span itemprop="name"><code>CorAnaplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

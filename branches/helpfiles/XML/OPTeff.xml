@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->OPTeff</Title>
+   <Purpose><!--This is the second line of the .m file-->OPTeff finds the constant c which is associated to the requested efficiency
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc>required efficienty.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which contains the required efficiency (of location or scale estimator).
+Generally eff=0.85, 0.9 or 0.95</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>Number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>e.g. in regression p=1</LongDesc>
+         <Example> </Example>
+         <DataType>single|double|int32|int64</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>ceff</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Requested tuning constant.</TypeInd>
+         <LongDesc>Tuning constatnt of optimal rho function associated to requested value of efficiency</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->$\rho$ ($\psi$) function which is considered is standardized using intervals 0---(2/3)c , (2/3)c---c, &amp;gt;c.
+$\rho$ function is
+\[
+TBrho(u)= \left\{ \begin{array}{lr} 1.3846 \left(\frac{u}{c}\right)^2 &amp; |\frac{u}{c}| \leq \frac{2}{3} \\
+0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8 &amp; \qquad \frac{2}{3} \leq |\frac{u}{c}|\leq 1 \\
+1 &amp; |\frac{u}{c}|&amp;gt;1 \\
+\end{array} \right.
+\]
+|t/c|&amp;gt;1 Therefore, to obtain the value of c for the (rho) psi function defined in the interval 0---2c, 2c---3c, &amp;gt;3c it is necessary to divide the output of function OPTeff by 3.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>TBeff</Item>
+      <Item>HYPeff</Item>
+      <Item>HAeff</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Find c given a value of efficiency.</Title>
+         <Desc>
+            <ItemCell>The constant c associated to a nominal location efficiency of 95% in regression is c = 3.180662196584308</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>c=OPTeff(0.95,1)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Find the value of c for efficiency which goes to 1.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>ef=0.75:0.01:0.99;</ItemCell>
+            <ItemCell>CC=[ef' zeros(length(ef),1)];</ItemCell>
+            <ItemCell>jk=0;</ItemCell>
+            <ItemCell>for j=ef</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
+            <ItemCell>    CC(jk,2)=OPTeff(j,1)</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

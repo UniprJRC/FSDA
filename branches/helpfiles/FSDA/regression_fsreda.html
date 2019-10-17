@@ -1,0 +1,179 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<h2 id="bqvsgfl-1" class="title">Forward search in linear regression with exploratory data analysis 
+(EDA) purposes</h2>
+<p class="purpose">The Forward search in linear regression, used for exploratory data 
+analysis (EDA) purposes, 
+ monitors the evolution of residuals, parameters 
+estimates and inferences as the subset size increases. In other words, the results are 
+presented as as “forward plots” which show 
+the evolution of the quantities of interest as a function of the subset size. Therefore, 
+unlike other robust approaches, the forward search is a dynamic process that produces 
+a sequence of estimates and related plots. 
+In this page, in order to compare the output of the forward plots with that based from the 
+application of traditional robust estimators we concentrate our attention on the same 
+dataset (loyalty cards) which had already been analyzed in page &quot;Least trimmed squares (LTS) and Least median of squares (LMS)&quot;.</p>
+<pre class="programlisting">
+% Load the data
+load('loyalty.txt');
+nameX={'Intercept' 'Number of visits', 'Age', 'Number of persons in the family'};
+% define y and X
+y=loyalty(:,4);
+X=loyalty(:,1:3);
+% transform y
+y1=y.^(0.4);
+[out]=LXS(y1,X);
+% Use function FSReda (Forward search in linear regression with EDA purposes) in order to store the relevant quantities.
+[out]=FSReda(y1,X,out.bs);
+</pre>
+<p>
+In this page in order to illustrate the power of the forward plots to reveal the real structure of the data we give a series of forward plots
+</p>
+
+<p>Monitoring residuals plot without labeling any trajectory can be obtained 
+from the following code.</p>
+
+<pre class="programlisting">
+fground=struct;
+fground.flabstep='';
+resfwdplot(out,'fground',fground);
+</pre>
+
+<img alt="" src="plots/regression_fsreda01.jpg">
+<p>The monitoring residuals plot shows that there is a group of trajectories which 
+have a very large negative residual throughout all the central
+part of the search and that at the end their trajectories are completely confused
+with those of the rest of the data. </p>
+<p>Remark: it is interesting to notice the similarity of these trajectories 
+during all steps the search: they tend to respond in the same way to the 
+inclusion of units into the subset.</p>
+<p>&nbsp;</p>
+<p>Another plot which helps to reveal the presence of atypical 
+observations is the Monitoring of minimum deletion residual among observations not belonging to 
+the subset. This plot clearly reveals that in the final part of the search there 
+is a set 
+of observations whose minimum deletion residual lies well above the 99% simulation envelope. 
+It is interesting to notice that the final value of the statistic when $m = n -1$
+lies inside the envelope, so that the outliers are masked.</p>
+<pre class="programlisting">
+mdrplot(out);
+</pre>
+
+<p>
+<img alt="" src="plots/regression_fsreda02.jpg"></p>
+<p>&nbsp;</p>
+<p>
+<p>In order to understand the effect the last units 
+which enter the search exert on the fitted model
+we also plot the Monitoring of modified Cook distance</p>
+
+<pre class="programlisting">
+plot(out.coo(:,1),out.coo(:,3))
+ylabel('Modified Cook distance');
+xlabel('Subset size m');
+xlim([20 510])
+</pre>
+<p>This plot shows in the final part of the search, when the outliers 
+enter the subset, a big sudden increase.
+</p>
+
+<p>
+<img alt="" src="plots/regression_fsreda03.jpg"></p>
+<p></p>
+<p>In order to understand what are the components of the estimated parameter vector&nbsp; 
+which are affected mostly by the introduction of the last units we can monitor in 
+separate panels the estimates of the elements of the vector of beta. This plot 
+can be produced efficiently using the loop which follows:</p>
+
+<pre class="programlisting">
+figure;
+for j=2:size(out.Bols,2);
+    subplot(2,2,j-1)
+    plot(out.Bols(:,1),out.Bols(:,j))
+    xlim([10 510])
+    xlabel('Subset size m');
+    ylabel(nameX(j-1));
+end
+</pre>
+
+<p><img alt="" src="plots/regression_fsreda04.jpg"></p>
+<p>This plot shows that the effect of the outliers is mainly to decrease the estimated 
+coefficient&nbsp; linked to the &quot;number of visits&quot; to the supermarket.</p>
+<p>The monitoring residuals plot showed that the last observations which enter the search 
+are characterized by negative residuals. The monitoring of the normality 
+test, especially in the part associated to asymmetry, shows that 
+the effect of the units which enter the final part of the search is to produce a distribution with a long left tail and to 
+increase considerably the value of the normality test.</p>
+<pre class="programlisting">
+xlimx=[100 510];
+subplot(2,2,1);
+plot(out.nor(:,1),out.nor(:,2));
+title('Asimmetry test');
+xlim(xlimx);
+
+subplot(2,2,2)
+plot(out.nor(:,1),out.nor(:,3))
+title('Kurtosis test');
+xlim(xlimx);
+
+subplot(2,2,3:4)
+plot(out.nor(:,1),out.nor(:,4))
+xlim(xlimx);
+title('Normality test');
+xlabel('Subset size m');
+</pre>
+
+<p><img alt="" src="plots/regression_fsreda05.jpg"></p>
+
+
+<p></p>
+
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

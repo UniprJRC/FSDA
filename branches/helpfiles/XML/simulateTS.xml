@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->simulateTS</Title>
+   <Purpose><!--This is the second line of the .m file-->Simulate a time series with trend, time varying seasonal, level shift and irregular component
+</Purpose>
+   <Description><!--Description section-->simulateTS simulates a time series with trend (up to third order), seasonality (constant or of varying amplitude) with a different number of harmonics and a level shift. Moreover, it is possible to add to the series the effect of explanatory variables.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>T</Name>
+         <ShortDesc>time series length.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>T is a positive integer which defines the length of the simulated time series.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>model</Name>
+         <ShortDesc>model type.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>A structure which specifies the model used to simulate the time series. The structure contains the following fields:
+model.trend = scalar (order of the trend component).
+trend = 1 implies linear trend with intercept, trend = 2 implies quadratic trend, etc.
+If this field is empty the simulated time series will not contain a trend. The default value of model.trend is 1.
+model.trendb = vector of doubles containining the beta coefficients for the trend. For example model.trend=1 and model.trendb=[3.2 2] generate a linear trend of the kind 3.2+2*t.
+If this field is an empty double the simulated time series will not contain a trend. The default value of model.trendb is [0 1] that is a slope equal to 1 and intercept equal to 0.
+model.s = scalar greater than zero which specifies the length of the seasonal period. For monthly data (default) s=12, for quartely data s=4, ...
+The default value of model.s is 12 (that is monthly data are assumed) model.seasonal = scalar (integer specifying number of frequencies, i.e. harmonics, in the seasonal component. Possible values for seasonal are $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+For example:
+if seasonal = 1 (default) we have:
+$\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
+if seasonal = 2 we have:
+$\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s) + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
+Note that when $s$ is even the sine term disappears for $j=s/2$ and so the maximum number of trigonometric parameters is $s-1$.
+If seasonal is a number greater than 100 then it is possible to specify how the seasonal component grows over time.
+For example, seasonal = 101 implies a seasonal component which just uses one frequency which grows linearly over time as follows:
+$(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+For example, seasonal = 201 implies a seasonal component which just uses one frequency which grows in a quadratic way over time as follows:
+$(1+\beta_3 t + \beta_4 t^2)\times( \beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+If this field is an empty double (default) the simulated time series will not contain a seasonal component.
+model.seasonalb = vector of doubles containing the beta coefficients for the seasonal component.
+For example model.seasonal = 201 and model model.trendb = [1.2 2.3 3.4 4.5] generates a seasonal component of the kind:
+$(1+ 3.4 t + 4.5 t^2)\times( 1.2 \cos( 2 \pi t/s) + 2.3 \sin ( 2 \pi t/s))$.
+If this field is an empty double (default) the simulated time series will not contain a seasonal component.
+model.X = scalar or matrix of size T-by-nexpl. If model.X is a matrix of size T-by-nexpl, it contains the values of nexpl extra covariates which affect y. If model.X is a scalar equal to k, where k=1, 2, ... k explanatory variables using random numbers from the normal distribution are generated.
+If this field is an empty double (default) the simulated time series will not be affected by explanatory variables.
+model.Xb = vector of doubles containing the beta coefficients for the explanatory variables.
+For example model.X = 2 and model.Xb = [4,5] generate two additional explanatory variables of the kind: $ 4*randn(T,1) + 5*randn(T,1) $.
+If this field is an empty double (default) the simulated time series will not contain explanatory variables.
+model.lshift = scalar greater than 0 which specifies the position where to include a level shift component.
+If this field is an empty double (default) the simulated time series will not contain a level shift.
+model.lshiftb = scalar double which specifies the magnitude of the level shift component.
+For example model.lshift = 26 and model.lshiftb = 3 generates the following explanatory variable $ [zeros(25,1) + 3*ones(T-25+1,1)] $.
+If this field is an empty double (default) the simulated time series will not contain a level shift.
+Remark: the default model is for monthly data with a linear trend with slope 1 and intercept 0, no seasonal and no level shift, that is model=struct;
+model.s=[];
+model.trend=1;
+model.trendb=[0 1] model.X=[];
+model.lshift=[];</LongDesc>
+         <Example>'model', model</Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>trend</Value>
+               <Description>scalar (order of the trend component).&#xD;
+                       trend = 1 implies linear trend with intercept,&#xD;
+                       trend = 2 implies quadratic trend, etc.&#xD;
+                       If this field is empty the simulated time series&#xD;
+                       will not contain a trend. The default value&#xD;
+                       of model.trend is 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>trendb</Value>
+               <Description>vector of doubles containining the beta&#xD;
+                       coefficients for the trend. For example model.trend=1&#xD;
+                       and model.trendb=[3.2 2] generate a linear trend&#xD;
+                       of the kind 3.2+2*t.&#xD;
+                       If this field is an empty double the simulated time&#xD;
+                       series will not contain a trend. The default value&#xD;
+                       of model.trendb is [0 1] that is a slope equal to 1&#xD;
+                       and intercept equal to 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>s</Value>
+               <Description>scalar greater than zero which specifies the&#xD;
+                       length of the seasonal period. For monthly&#xD;
+                       data (default) s=12, for quartely data s=4, ...&#xD;
+                       The default value of model.s is 12 (that is monthly&#xD;
+                       data are assumed)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>seasonal</Value>
+               <Description>scalar (integer specifying number of&#xD;
+                        frequencies, i.e. harmonics, in the seasonal&#xD;
+                        component. Possible values for seasonal are&#xD;
+                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.&#xD;
+                        For example:&#xD;
+                        if seasonal = 1 (default) we have:&#xD;
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;&#xD;
+                        if seasonal = 2 we have:&#xD;
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)&#xD;
+                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.&#xD;
+                        Note that when $s$ is even the sine term disappears&#xD;
+                        for $j=s/2$ and so the maximum number of&#xD;
+                        trigonometric parameters is $s-1$.&#xD;
+                        If seasonal is a number greater than 100 then it&#xD;
+                        is possible to specify how the seasonal component&#xD;
+                        grows over time.&#xD;
+                        For example, seasonal = 101 implies a seasonal&#xD;
+                        component which just uses one frequency&#xD;
+                        which grows linearly over time as follows:&#xD;
+                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +&#xD;
+                        \beta_2 \sin ( 2 \pi t/s))$.&#xD;
+                        For example, seasonal = 201 implies a seasonal&#xD;
+                        component which just uses one frequency&#xD;
+                        which grows in a quadratic way over time as&#xD;
+                        follows:&#xD;
+                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(&#xD;
+                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain a seasonal&#xD;
+                       component.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>seasonalb</Value>
+               <Description>vector of doubles containing the beta&#xD;
+                       coefficients for the seasonal component.&#xD;
+                       For example model.seasonal = 201 and model&#xD;
+                       model.trendb = [1.2 2.3 3.4 4.5] generates a&#xD;
+                       seasonal component of the kind:&#xD;
+                        $(1+ 3.4 t + 4.5  t^2)\times( 1.2 \cos(&#xD;
+                        2 \pi t/s) + 2.3 \sin ( 2 \pi t/s))$.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain a seasonal&#xD;
+                       component.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>scalar or matrix of size T-by-nexpl. If model.X&#xD;
+                       is a matrix of size T-by-nexpl, it contains the&#xD;
+                       values of nexpl extra covariates which&#xD;
+                       affect y. If model.X is a scalar equal to k,&#xD;
+                       where k=1, 2, ... k explanatory variables using&#xD;
+                       random numbers from the normal distribution are&#xD;
+                       generated.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not be affected by&#xD;
+                       explanatory variables.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Xb</Value>
+               <Description>vector of doubles containing the beta&#xD;
+                       coefficients for the explanatory variables.&#xD;
+                       For example model.X = 2 and model.Xb = [4,5]&#xD;
+                       generate two additional explanatory variables&#xD;
+                       of the kind: $ 4*randn(T,1) + 5*randn(T,1) $.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain explanatory&#xD;
+                       variables.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>lshift</Value>
+               <Description>scalar greater than 0 which specifies the&#xD;
+                       position where to include a level shift component.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain a level shift.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>lshiftb</Value>
+               <Description>scalar double which specifies the magnitude&#xD;
+                       of the level shift component.&#xD;
+                       For example model.lshift = 26 and model.lshiftb = 3&#xD;
+                       generates the following explanatory variable&#xD;
+                        $ [zeros(25,1) + 3*ones(T-25+1,1)] $.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain a level&#xD;
+                       shift.&#xD;
+                                Remark: the default model is for monthly data with a linear&#xD;
+               trend with slope 1 and intercept 0, no seasonal and no&#xD;
+               level shift, that is&#xD;
+                               model=struct;&#xD;
+                               model.s=[];&#xD;
+                               model.trend=1;&#xD;
+                               model.trendb=[0 1]&#xD;
+                               model.X=[];&#xD;
+                               model.lshift=[];</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plots on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots == 1 a six panel plot appears on the screen.
+Top left panel contains the simulated time series y.
+y=TR+SE+X+LS+I.
+Top central panel contains the signal component (that is trend + seasonal + explanatory variables + level shift = TR + SE + LS + X).
+Top right panel contains the trend component (TR).
+Bottom left panel contains the (time varying) seasonal component (SE).
+Bottom central panel contains the level shift component (LS).
+Bottom right panel contains the explanatory variable component (X) if it is present, otherwise, it contains the irregular (I) component.
+The default value of plot is 0, that is no plot is shown on the screen.</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>StartDate</Name>
+         <ShortDesc>The time of the first observation.</ShortDesc>
+         <TypeInd>Numeric vector of length 2.</TypeInd>
+         <LongDesc>Vector with two integers, which specify a natural time unit and a (1-based) number of samples into the time unit. For example, if model.s=12 (that is the data are monthly) and the first observation starts in March 2016, then StartDate=[2016,3]; Similarly, if models.s=4 (that is the data are quarterly) and the first observation starts in the second quarter or year 2014, then StartData=[2014,2]. The information in option StartDate will be used to create in the output the dates inside the time series object.</LongDesc>
+         <Example>'StartDate',[2016,3]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If nocheck is true no check is performed on supplied input. Otherwise (default) every input of the structure model is checked.</LongDesc>
+         <Example>'nocheck',false</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FileNameOutput</Name>
+         <ShortDesc>save simulated time series to txt file.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>If FileNameOutput is empty (default) nothing is saved on the disk, else FileNameOutput will contain the path where to save the file on the disk.</LongDesc>
+         <Example>'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']</Example>
+         <DataType>Character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>samescale</Name>
+         <ShortDesc>same ylim in the output plot.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true (default), all underlying components of the time series are shown in the plot with the same scale.</LongDesc>
+         <Example>'samescale',false</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>y</Value>
+               <Description>the simulated time series.
+Column vector of length T, which is sum of trend + (time varying) seasonal + explanatory variables + level shift + irregular = TR+SE+X+LS+I.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>signal</Value>
+               <Description>signal (TR+SE+X+LS).
+Column vector of length T, which is sum of trend + (time varying) seasonal + explanatory variables + level shift. Signal = out.y - out.irregular.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>trend</Value>
+               <Description>trend (TR).
+Column vector of length T which contains the trend component.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>seasonal</Value>
+               <Description>(time varying) seasonal (SE).
+Column vector of length T which contains the seasonal component. If there is no seasonal component outyhatseaso=0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>explanatory variables (X).
+Column vector of length T which contains the component associated to the explanatory variables.
+If there is no explanatory variable, out.X=0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>lshift</Value>
+               <Description>level shift (LS).
+Column vector of length T which contains the level shift component.
+If there is no level shift component out.lshift=0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>irregular</Value>
+               <Description>irregular component (I).
+Column vector of length T which contains the irregular component.
+When the signal to noise ratio tends to infinity the irregular component tends to 0.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust Monitoring of Many Time Series with Application to Fraud Detection, forthcoming in Econometris and Statistics. [Referred below as RPRH]</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>LTSts</Item>
+      <Item>wedgeplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Simulated time series with linear trend.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains a linear trend (with slope 1 and intercept 0), no seasonal component, no explanatory variables and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>out=simulateTS(100,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Same as above, but without homogenizing the y-scale.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close;</ItemCell>
+            <ItemCell>out=simulateTS(100,'plots',1,'samescale',false);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Simulated time series with a linear time varying seasonal component.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains no trend, a linear time varying seasonal component with three harmonics, no explanatory variables and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=[];</ItemCell>
+            <ItemCell>model.trendb=[];</ItemCell>
+            <ItemCell>model.seasonal=103;</ItemCell>
+            <ItemCell>model.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];</ItemCell>
+            <ItemCell>model.signal2noiseratio=20;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated time series with a quadratic time varying seasonal component.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains no trend, a quadratic time varying seasonal component with one harmonic, no explanatory variables and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=[];</ItemCell>
+            <ItemCell>model.trendb=[];</ItemCell>
+            <ItemCell>model.seasonal=201;</ItemCell>
+            <ItemCell>model.seasonalb=40*[0.1 -0.5 10.222 -10];</ItemCell>
+            <ItemCell>model.signal2noiseratio=20;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated time series with quadratic trend, fixed seasonal and level shift.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains a quadratic trend, a seasonal component with two harmonics no explanatory variables and a level shift in position 30 with size 5000 and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.trendb=[5,10,-3];</ItemCell>
+            <ItemCell>model.seasonal=2;</ItemCell>
+            <ItemCell>model.seasonalb=100*[2 4 0.1 8];</ItemCell>
+            <ItemCell>model.signal2noiseratio=20;</ItemCell>
+            <ItemCell>model.lshift=30;</ItemCell>
+            <ItemCell>model.lshiftb=5000;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated time series with quadratic trend, fixed seasonal and LS.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains a quadratic trend, a linear time varying seasonal component with two harmonics no explanatory variables and a level shift in position 30 with size -10000 and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.trendb=[5,10,-3];</ItemCell>
+            <ItemCell>model.seasonal=102;</ItemCell>
+            <ItemCell>model.seasonalb=100*[2 4 0.1 8 0.001];</ItemCell>
+            <ItemCell>model.signal2noiseratio=20;</ItemCell>
+            <ItemCell>model.lshift=30;</ItemCell>
+            <ItemCell>model.lshiftb=-10000;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated time series with quadratic trend, fixed seasonal, LS and two explanatory variables.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains a quadratic trend, a linear time varying seasonal component with two harmonics, two explanatory variables and a level shift in position 30 with size -40000 and a signal to noise ratio egual to 10</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.trendb=[5,10,-3];</ItemCell>
+            <ItemCell>model.seasonal=102;</ItemCell>
+            <ItemCell>model.seasonalb=100*[2 4 0.1 8 0.001];</ItemCell>
+            <ItemCell>model.signal2noiseratio=10;</ItemCell>
+            <ItemCell>model.lshift=30;</ItemCell>
+            <ItemCell>model.lshiftb=-40000;</ItemCell>
+            <ItemCell>model.X=2;</ItemCell>
+            <ItemCell>model.Xb=[10000 20000];</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option FileNameOutput.</Title>
+         <Desc>
+            <ItemCell>In this example the simulated time series is saved into a file named ysimout.txt in the current folder</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>FileNameOutput=[pwd filesep 'ysimout.txt'];</ItemCell>
+            <ItemCell>out=simulateTS(T,'FileNameOutput',FileNameOutput);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option StartDate.</Title>
+         <Desc>
+            <ItemCell>Suppose that the inital observation refers to February 2016.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>StartDate=[2016 2];</ItemCell>
+            <ItemCell>% The x axis of the plots contains the dates using format mmm-yyyy</ItemCell>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option samescale.</Title>
+         <Desc>
+            <ItemCell>Use a different scale for each panel in the output plot.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>out=simulateTS(T,'model',model,'plots',1,'samescale',false);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

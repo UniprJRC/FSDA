@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->clickableMultiLegend</Title>
+   <Purpose><!--This is the second line of the .m file-->clickableMultiLegend hides/shows symbols inside all gplotmatrix subplots (or similar multi-plots) clicking on the legend.
+</Purpose>
+   <Description><!--Description section-->It is typically applied to gplotmatrix figures. By clicking on a text label in the legend, the graphics (line or patch) objects associated to that label in all subplots are turned on and off (hide/show).
+The extention to multiple plots is realised by looking for graphics objects with the same DisplayName property of the one associated to the legend label. Therefore, the function should work also through plots in different figures.
+clickableMultiLegend accepts the same parameters of the legend function and can be used in the same way.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION--></InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>Graphics handle</ShortDesc>
+         <TypeInd>HLEG : handle to legend.</TypeInd>
+         <LongDesc>This is the handle to legend on the current axes or empty if none exists.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Deoras Ameya (2008).
+http://www.mathworks.com/matlabcentral/fileexchange/21799-clickablelegend-interactive-highlighting-of-data-in-figures/content/clickableLegend.m</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>legend</Item>
+      <Item>yXplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>clickableMultiLegend applied to a single plot.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell> z = peaks(100);</ItemCell>
+            <ItemCell> plot(z(:,26:5:50))</ItemCell>
+            <ItemCell> grid on;</ItemCell>
+            <ItemCell> clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
+            <ItemCell> axis manual;</ItemCell>
+            <ItemCell> figure;</ItemCell>
+            <ItemCell> z = peaks(100);</ItemCell>
+            <ItemCell> plot(z(:,26:5:50))</ItemCell>
+            <ItemCell> grid on;</ItemCell>
+            <ItemCell> hlegend=clickableMultiLegend({'Line1','Line2','Line3','Line4','Line5'}, 'Location', 'NorthWest');</ItemCell>
+            <ItemCell> axis manual;</ItemCell>
+            <ItemCell> % legend(hlegend,'off');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>clickableMultiLegend applied to multiple subplots.</Title>
+         <Desc>
+            <ItemCell>For example let us start with a gplotmatrix.</ItemCell>
+            <ItemCell>Simulate X</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X = rand(100,4);</ItemCell>
+            <ItemCell>% Simulate y with 3 groups</ItemCell>
+            <ItemCell>y = [rand(10,1); rand(20,1)+1; rand(70,1)+2];</ItemCell>
+            <ItemCell>group= [2*ones(10,1); ones(20,1); zeros(70,1)];</ItemCell>
+            <ItemCell>% Generate the scatter matrix</ItemCell>
+            <ItemCell>[H,AX,bigax] = gplotmatrix(X,y,group);</ItemCell>
+            <ItemCell>% Set the DisplayName property (i.e. the texts of the legend) in all panels.</ItemCell>
+            <ItemCell>% Note that in the gplotmatrix only one legend is visible.</ItemCell>
+            <ItemCell>set(H(:,:,1),'DisplayName','group 1');</ItemCell>
+            <ItemCell>set(H(:,:,2),'DisplayName','group 2');</ItemCell>
+            <ItemCell>set(H(:,:,3),'DisplayName','group 3');</ItemCell>
+            <ItemCell>% Get the new legend texts directly from the plot</ItemCell>
+            <ItemCell>% To take account a change in property names of the legend object in 2016b</ItemCell>
+            <ItemCell>if verLessThan('matlab','9.1')</ItemCell>
+            <ItemCell>    legstring='LegendPeerHandle';</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    legstring='LayoutPeers';</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>legnew = get(getappdata(AX(1,end),legstring),'String');</ItemCell>
+            <ItemCell>% Get the handles of the legend to update</ItemCell>
+            <ItemCell>hLines  = findobj(AX(1,end), 'type', 'line');</ItemCell>
+            <ItemCell>% Update the legend and make them clickable</ItemCell>
+            <ItemCell>clickableMultiLegend(sort(hLines), legnew{:});</ItemCell>
+            <ItemCell>% Now, it is possible to click with the mouse on the different entries</ItemCell>
+            <ItemCell>% to hide/show a particular group of units. For example, clicking on the</ItemCell>
+            <ItemCell>% entry "group 2" in the legend we hide group 2.</ItemCell>
+            <ItemCell>% Function gplotmatrix generates the legend texts automatically, based on</ItemCell>
+            <ItemCell>% the values in the vector defined by option 'group'. In the example above we</ItemCell>
+            <ItemCell>% have re-defined manually the legend texts set by option 'group' (which are</ItemCell>
+            <ItemCell>% '1', '2' and '3') as "group 1", "group 2" and "group 3". More conveniently,</ItemCell>
+            <ItemCell>% especially when the number of groups is not known in advance, one may</ItemCell>
+            <ItemCell>% re-define the legend texts in a more general way as follows:</ItemCell>
+            <ItemCell>% it is convenient to reshape the gplotmatrix handles array to make it</ItemCell>
+            <ItemCell>% more manageable: while H is a 3-dimensional array with the third</ItemCell>
+            <ItemCell>% dimension associated to the groups, newH is 2-dimensional with lines</ItemCell>
+            <ItemCell>% associated to the subplots of the scatterplot and columns associated</ItemCell>
+            <ItemCell>% to the groups.</ItemCell>
+            <ItemCell>nleg = numel(hLines);</ItemCell>
+            <ItemCell>newH = reshape(H,numel(H)/nleg,nleg);</ItemCell>
+            <ItemCell>% redefine the legend texts</ItemCell>
+            <ItemCell>for i = 1 : nleg</ItemCell>
+            <ItemCell>    set(newH(:,i),'DisplayName',['Redefined group n. ' num2str(i)]);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% If the legend texts were clickable before the re-definition, they</ItemCell>
+            <ItemCell>% will remain clickable.</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

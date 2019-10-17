@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->verLessThanFS</Title>
+   <Purpose><!--This is the second line of the .m file-->verLessThanFS compares version of MATLAB to specified version number
+</Purpose>
+   <Description><!--Description section-->function verLessThanFS is much faster than verLessThan because it just checks the version of MATLAB and calls directly the relevant built in functions. The number containing the MATLAB version is cached for better performance. In order words, the first time verLessThanFS is called the number associated to the MATLAB version is stored in persistent variable named cachedMatlabVerFS
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>vernumber</Name>
+         <ShortDesc>version of MATLAB to test.</ShortDesc>
+         <TypeInd>double.</TypeInd>
+         <LongDesc>Number containing the version of MATLAB to test again current version.
+Example - 8.3</LongDesc>
+         <Example> </Example>
+         <DataType>double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>result</Name>
+         <ShortDesc>Boolean</ShortDesc>
+         <TypeInd>True or false.</TypeInd>
+         <LongDesc>result is true if the current version of version of MATLAB is older than the version specified by vernumber, and false otherwise.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>verLessThan</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Test whether the current version is older than MATLAB version 8.4.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>numbertotest = 8.4;</ItemCell>
+            <ItemCell>out=verLessThanFS(numbertotest);</ItemCell>
+            <ItemCell>if out == true</ItemCell>
+            <ItemCell>    disp(['current version is older than ' num2str(numbertotest)]);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    disp(['current version is not older than ' num2str(numbertotest)]);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

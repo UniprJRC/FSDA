@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->upperfracpos</Title>
+   <Purpose><!--This is the second line of the .m file-->upperfracpos positions two figures on the upper part of the screen.
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>hfigl</Name>
+         <ShortDesc>handle for figure.</ShortDesc>
+         <TypeInd>matlab.ui.Figure.</TypeInd>
+         <LongDesc>Graphics handle of the figure which will be put on the upper left part of the screen</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>hfigr</Name>
+         <ShortDesc>handle for figure.</ShortDesc>
+         <TypeInd>matlab.ui.Figure.</TypeInd>
+         <LongDesc>Graphics handle of the figure which will be put on the upper right part of the screen</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>fraction</Name>
+         <ShortDesc>fraction to occupy.</ShortDesc>
+         <TypeInd>Scalar between 0 and 1.</TypeInd>
+         <LongDesc>Fraction of the screen which will be occupied.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>spmplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of use of upperfracpos.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all;</ItemCell>
+            <ItemCell>% create two figures, rescale and position them</ItemCell>
+            <ItemCell>hfigl = figure; plot(sin(rand(10,1)),'r'); title('goes on left');</ItemCell>
+            <ItemCell>hfigr = figure; plot(cos(rand(10,1)),'b'); title('goes on right');</ItemCell>
+            <ItemCell>upperfracpos(hfigl , hfigr , 0.5);</ItemCell>
+            <ItemCell>% now rescale the figures to a smaller proportion</ItemCell>
+            <ItemCell>upperfracpos(hfigl , hfigr , 0.2);</ItemCell>
+            <ItemCell>% this is just to bring the rescaled figures in the screen foreground</ItemCell>
+            <ItemCell>figure(hfigl); figure(hfigr);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

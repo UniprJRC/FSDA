@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->rlga</Title>
+   <Purpose><!--This is the second line of the .m file-->rlga performs robust linear grouping analysis
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>input data matrix.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Input data as matrix of size n-by-p</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>number of clusters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the number of clusters.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>alpha</Name>
+         <ShortDesc>a numeric value between 0 and 0.5.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>For the robust estimate of RLGA, specifying the percentage of points to be trimmed.
+alpha must be a number in the interval [0 0.5].</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>biter</Name>
+         <ShortDesc>number of different starting hyperplanes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>An integer for the number of different starting hyperplanes to try.</LongDesc>
+         <Example>'biter',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>niter</Name>
+         <ShortDesc>Number of iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>An integer for the number of iterations to attempt for convergence.</LongDesc>
+         <Example>'niter',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>showall</Name>
+         <ShortDesc>Level of display.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true then display all the outcomes, not just the best one.</LongDesc>
+         <Example>'showall','true'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>stand</Name>
+         <ShortDesc>Data standardization.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If true the X matrix is standardized using the standard deviation before fitting. Logical.</LongDesc>
+         <Example>'stand','true'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>silent</Name>
+         <ShortDesc>Text output.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If true, produces no text output during processing. The default value is false.</LongDesc>
+         <Example>'silent','true'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 a plot is showed on the screen with the final allocation (and if size(X,2)==2 with the lines associated to the groups).</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>cluster</Value>
+               <Description>vector containing the cluster memberships.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ROSS</Value>
+               <Description>the Residual Orthogonal Sum of Squares for the solution.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>converged</Value>
+               <Description>logical. True if at least one solution has converged.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>nconverg</Value>
+               <Description>the number of converged solutions (out of biter starts).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>hpcoeff</Value>
+               <Description>best hyerplane</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>the (scaled if selected) dataset.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>scaled</Value>
+               <Description>logical. Is the data set scaled?</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>k</Value>
+               <Description>the number of clusters to be found.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>biter</Value>
+               <Description>the biter setting used.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>niter</Value>
+               <Description>the niter setting used.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'rlga'.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Zamar, R. (2009), Robust linear clustering. Journal of the Royal Statistical Society: Series B (Statistical Methodology), 71: 301?318.
+doi: 10.1111/j.1467-9868.2008.00682.x</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>lga</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>rlga with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('X.txt');</ItemCell>
+            <ItemCell>out=rlga(X,3,0.05);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>rlga with niter = 500 and biter = 1000.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('X.txt');</ItemCell>
+            <ItemCell>out=rlga(X,4,0.05,'niter',500,'biter',1000);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Generate mixture of regression using MixSimReg, with an average overlapping at centroids = 0.</Title>
+         <Desc>
+            <ItemCell>01. Use all default options.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(372,'twister');</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.001);</ItemCell>
+            <ItemCell>n=500;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% run rlga</ItemCell>
+            <ItemCell>out=rlga([y,X(:,2:end)],k,0.01);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

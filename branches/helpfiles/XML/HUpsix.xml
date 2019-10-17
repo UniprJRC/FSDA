@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HUpsix</Title>
+   <Purpose><!--This is the second line of the .m file-->HUpsix computes psi function (derivative of rho function) times x for Huber 
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>u</Name>
+         <ShortDesc>scaled residuals or Mahalanobis distances.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>n x 1 vector containing residuals or Mahalanobis distances for the n units of the sample</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator (beta in regression or mu in the location case ...)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>psix</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>psi(u) function multiplied by u.</TypeInd>
+         <LongDesc>n-by-1 vector which contains the values of HU psi(u)*u function associated to the residuals or Mahalanobis distances for the n units of the sample.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HUpsix transforms vector u as follows
+\[
+HUpsix(u)= \left\{ \begin{array}{cc} u^2 &amp; \mbox{if } |u/c| \leq 1 \\
+c \times \mbox{sign}(u) u &amp; |u/c|&amp;gt;1 \\
+\end{array} \right.
+\]
+See equation (2.38) p. 29 of Maronna et al. (2006) Remark: Tukey's biweight psi-function is almost linear around u = 0 in accordance with Winsor's principle that all distributions are normal in the middle.
+This means that \psi (u)/u is approximately constant over the linear region of \psi, so the points in that region tend to get equal weight.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maronna, R.A., Martin D. and Yohai V.J. (2006), Robust Statistics, Theory and Methods, Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HApsix</Item>
+      <Item>HYPpsix</Item>
+      <Item>OPTpsix</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Plot of psi(x) function multiplied by x.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>% Plot of psi(x) function multiplied  by x.</ItemCell>
+            <ItemCell>x=-6:0.01:6;</ItemCell>
+            <ItemCell>psixHU=HUpsix(x,2);</ItemCell>
+            <ItemCell>plot(x,psixHU)</ItemCell>
+            <ItemCell>xlabel('x','Interpreter','Latex')</ItemCell>
+            <ItemCell>ylabel('$\psi (x)$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

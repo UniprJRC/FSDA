@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->normYJ</Title>
+   <Purpose><!--This is the second line of the .m file-->normYJ computes (normalized) Yeo-Johnson transformation
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ColtoTra</Name>
+         <ShortDesc>Variable to transform.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>k x 1 integer vector specifying the variables which must be transformed. If it is missing and length(la)=v all variables are transformed</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la</Name>
+         <ShortDesc>transformation parameters.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>k x 1 vector containing set of transformation parameters for the k ColtoTra.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Jacobian</Name>
+         <ShortDesc>Requested Jacobian of transformed values.</ShortDesc>
+         <TypeInd>true (default) or false.</TypeInd>
+         <LongDesc>If true (default) the transformation is normalized to have Jacobian equal to 1</LongDesc>
+         <Example>'Jacobian',true</Example>
+         <DataType>Logical</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>inverse</Name>
+         <ShortDesc>Inverse transformation.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>If inverse is true, the inverse transformation is returned. The default value of inverse is false.</LongDesc>
+         <Example>'inverse',true</Example>
+         <DataType>Logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Ytra</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>transformed data matrix.</TypeInd>
+         <LongDesc>n x v data matrix containing transformed observations The Yeo-Johnson transformation is the Box-Cox transformation of y+1 for nonnegative values, and of |y|+1 with parameter 2-lambda for y negative.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Yeo, In-Kwon and Johnson, Richard (2000). A new family of power transformations to improve normality or symmetry. Biometrika, 87, 954-959.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>normBoxCox</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>y=(-3:3)';</ItemCell>
+            <ItemCell>lambda=0</ItemCell>
+            <ItemCell>y1=normYJ(y,1,lambda)</ItemCell>
+            <ItemCell>plot(y,y1)</ItemCell>
+            <ItemCell>xlabel('Original values')</ItemCell>
+            <ItemCell>ylabel('Transformed values')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>y=(-2:0.1:2)';</ItemCell>
+            <ItemCell>n=length(y);</ItemCell>
+            <ItemCell>la=-1:1:3;</ItemCell>
+            <ItemCell>nla=length(la);</ItemCell>
+            <ItemCell>YtraYJ=zeros(n,nla);</ItemCell>
+            <ItemCell>YtraBC=nan(n,nla);</ItemCell>
+            <ItemCell>posy=y&amp;gt;0;</ItemCell>
+            <ItemCell>for j=1:nla</ItemCell>
+            <ItemCell>  YtraYJ(:,j)=normYJ(y,1,la(j),'Jacobian',false);</ItemCell>
+            <ItemCell>  YtraBC(posy,j)=normBoxCox(y(posy),1,la(j),'Jacobian',false);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>subplot(1,2,1)</ItemCell>
+            <ItemCell>plot(y,YtraYJ)</ItemCell>
+            <ItemCell>for j=1:nla</ItemCell>
+            <ItemCell>    text(y(1), YtraYJ(1,j),['\lambda=' num2str(la(j))])</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>xlabel('Original values')</ItemCell>
+            <ItemCell>ylabel('Transformed values')</ItemCell>
+            <ItemCell>title('Yeo-Johnson transformation')</ItemCell>
+            <ItemCell>subplot(1,2,2)</ItemCell>
+            <ItemCell>plot(y,YtraBC)</ItemCell>
+            <ItemCell>xlim([y(1) y(end)])</ItemCell>
+            <ItemCell>for j=1:nla</ItemCell>
+            <ItemCell>    text(y(16), YtraBC(22,j),['\lambda=' num2str(la(j))])</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>xlabel('Original values')</ItemCell>
+            <ItemCell>ylabel('Transformed values')</ItemCell>
+            <ItemCell>title('Box-Cox transformation')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Simulated data check inverse transformation.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=100;p=5;</ItemCell>
+            <ItemCell>Y=randn(n,p);</ItemCell>
+            <ItemCell>Y(3,1:3)=0;</ItemCell>
+            <ItemCell>la=[0.5 0 -0.5 2 0];</ItemCell>
+            <ItemCell>% Transform all columns of matrix Y according to the values of la</ItemCell>
+            <ItemCell>Ytra=normYJ(Y,[],la,'Jacobian',false);</ItemCell>
+            <ItemCell>Ychk=normYJ(Ytra,[],la,'Jacobian',false,'inverse',true);</ItemCell>
+            <ItemCell>disp(max(max(abs(Y-Ychk))))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

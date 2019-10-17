@@ -1,0 +1,519 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>mreadFS</title><meta content="refpage" name="chunktype"><meta content="function:mreadFS" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">mreadFS</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Create output structure out starting from file FSRmdr.</a></li><li><a class="intrnllnk" href="#Example_2">Create output structure out starting from file FSRmdr and
+   display detailed information about the Input, Output and Optional
+   arguments.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_file">file</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_Display">Display</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mreadFS</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=mreadFS(file)</code><span class="syntax_example"><a class="intrnllnk" href="mreadFS.html#Example_1">example</a></span></li><li><code class="synopsis">out=mreadFS(file,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mreadFS.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>mreadFS creates a structure from .m fucntion file. To understand the
+   characteristics the .m file must have, please see the "More About" section</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mreadFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mreadFS(<a class="intrnllnk" href="#inputarg_file"><code>file</code></a>)</code></span>Create output structure out starting from file FSRmdr.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mreadFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=mreadFS(<a class="intrnllnk" href="#inputarg_file"><code>file</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Create output structure out starting from file FSRmdr and
+   display detailed information about the Input, Output and Optional
+   arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Create output structure out starting from file FSRmdr.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=mreadFS('FSRmdr')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Create output structure out starting from file FSRmdr and
+   display detailed information about the Input, Output and Optional
+   arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=publishFS('FSRmdr','Display','iter-detailed')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_file" class="clearfix"> </div> <h3 id="input_argument_file" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>file</code> &#8212; MATLAB File. </span>  </a><span class="example_desc">String.</span></span></h3> <div class="collapse"> <p><p>Full or partial
+                  path of the MATLAB file for which a structure containing
+                  all thre relevant help elements has to be created.</p> <p>
+                  Example-'myfile.m'</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'Display','none'
+</code></code></span></div><div class="expandableContent"><div id="inputarg_Display" class="clearfix"></div><h3 id="input_argument_namevalue_Display" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Display</code> &#8212;Level of display.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>'off' or 'none' displays no output.</p> <p>
+             'iter' displays a series of messages on the screen about
+             the execution of the different section of the input .m file
+             'iter-detailed' displays a series of messages on the screen not only about
+             the execution of the different section of the input .m file,
+             but also about cells containing information about the required input arguments,
+             optional input arguments, and output arguments
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Display','none'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>title</code></td><td><p><p>title of HTML file. String.</p> <p>
+                   String to be included in HTML tag title</p></p></td></tr><tr valign="top"><td><code>purpose</code></td><td><p><p>purpose of the routine. String.</p> <p>
+                 String extracting what is in the second row of the
+                 original input file.</p></p></td></tr><tr valign="top"><td><code>description</code></td><td><p>short description of the file. String
+                 If this field is not empty it is included in the HTML file
+                 at the beginning of the section "Description"</p></td></tr><tr valign="top"><td><code>InpArgs</code></td><td><p><p>Required and Optional input arguments. Cell.</p> <p>
+                 Cell of size k-by-7 containing information about required
+                 and optional input argument.</p> <p>
+                 1st column = name
+                 2nd column = short description
+                 3rd column = type indication (Scalar, matrix, ...)
+                 4th column = string containing long description. If the
+                 input argument is a struct, columns 2 and 3 will be empty and all
+                 information about the fields of the structure will be
+                 included in the 4th column.</p><p>
+                 5th column = example (if present)
+                 6th column = Data type
+                 7th column = string contaning '1' if the argument is
+                 required and '0' if it is optional
+                 8th column = this column is empty unless 3rd column
+                 contains the word structure. If this is the case the 8th
+                 column will contain a cell with two columns containing
+                 the Values/Description of the associated structure.</p></p></td></tr><tr valign="top"><td><code>OptArgs</code></td><td><p><p>Optional input arguments specified as name/values pairs. Cell.</p> <p>
+                 Cell of size r-by-7 containing information about
+                 and optional input argument specified as name/values pairs.</p> <p>
+                 1st column = name.</p> <p>
+                 2nd column = short description.</p> <p>
+                 3rd column = type indication (Scalar, matrix, strucutre, ...).</p> <p>
+                 4th column = string containing long description.</p> <p>
+                 5th column = example (if present).</p> <p>
+                 6th column = Data type (ex. Single |Double).</p><p>
+                 7th column = this column is empty unless 3rd column
+                 contains the word structure. If this is the case the 7th
+                 column will contain a cell with two columns containing
+                 the Values/Description of the associated structure.</p></p></td></tr><tr valign="top"><td><code>OutArgs</code></td><td><p><p>Required and Optional (varaargout) output arguments. Cell.</p> <p>
+                 Cell of size k-by-5 containing information about output
+                 and varargout output argument.</p> <p>
+                 1st column = name.</p> <p>
+                 2nd column = short description.</p> <p>
+                 3rd column = type indication (Scalar, matrix, strucutre, ...).</p> <p>
+                 4th column = string containing long description.</p><p>
+                 5th column =  this column is empty unless output argument
+                 is a structure. If an output argument is a struct,
+                 columns 2, 3 and 4 will be empty and all information
+                 about the fields of the structure will be included in the
+                 5th column.</p></p></td></tr><tr valign="top"><td><code>MoreAbout</code></td><td><p>More About. String. String containing what in the HTML
+                 file will appear under the section "More About".</p></td></tr><tr valign="top"><td><code>Acknowledgements</code></td><td><p>Acknowledgements. String. String containing what in the HTML
+                 file will appear under the section "Acknowledgements".</p></td></tr><tr valign="top"><td><code>References</code></td><td><p>References. cell. Cell of length r containing the
+                 references.</p></td></tr><tr valign="top"><td><code>SeeAlso</code></td><td><p>References. cell. Cell of length s containing the
+                 references to linked files.</p></td></tr><tr valign="top"><td><code>Ex</code></td><td><p><p>Examples. cell. Cell of length t containing the
+                 examples.</p> <p>
+                 First column= title of the example;</p> <p>
+                 Second column = detailed description;</p> <p>
+                 Third column = MATLAB code;</p><p>
+                 Fourth column = dummy variable which indicates whether
+                 the example must be executed or not) If 1 example is executed</p></p></td></tr><tr valign="top"><td><code>ExtraEx</code></td><td><p><p>Extra Examples. cell. Cell of length u containing the u
+                 extra examples.</p> <p>
+                 First column= title of the example;</p> <p>
+                 Second column = detailed description;</p> <p>
+                 Third column = MATLAB code;</p><p>
+                 Fourth column = dummy variable which indicates whether
+                 the example must be executed or not) If 1 example is executed</p></p></td></tr><tr valign="top"><td><code>laste</code></td><td><p>object of class MException which provides information
+                 about last error in executing the examples. If all
+                 examples run without errors laste is an empty value;</p></td></tr><tr valign="top"><td><code>InpArgsMisMatch</code></td><td><p><p>cell of size k-by-3 which in presence of name/pairs
+                 optional arguments enables to understand which are the
+                 optional arguments which are described but are not used
+                 inside the file and vice versa. More precisely, the first
+                 column contains the list of the options for which there
+                 is a mismatch. The second column contains 1 if the option
+                 was described. The third column contains 1 if the option
+                 was effectively used. Of course, the sum of columns two
+                 and three is always 1.</p> <p>
+                 For example if InpArgsMisMatch is equal to
+                         []    'Options described'    'Options used'
+                 'nomes'       [                0]    [           1]
+                 'refsteps'    [                0]    [           1]
+                 'reftol'      [                0]    [           1]
+                 it means that options 'nomes', 'refstesps' and 'reftol'
+                 have not been described, but are used inside the .m file</p></p></td></tr><tr valign="top"><td><code>OutArgsStructMisMatch</code></td><td><p>cell of size r-by-3 which in presence of output
+                 arguments which are structures enables to highlight
+                 the fields of the structures which are described but
+                 are not used inside the file and vice versa. More precisely,
+                 the first column contains the list of the fields for
+                 which there is a mismatch. The second column contains 1 if
+                 the field was described. The third column contains 1 is
+                 the field was effectively used. Of course the sum of
+                 columns two and three is always 1. For example if
+                 OutArgsStructMisMatch is
+                   []    'Fields described'    'Fields used'
+                   'out'                    []               []
+                   'Y'      [               1]    [          0]
+                it means that field Y of output structure out has been
+                described but has not been produced by the output of the
+                .m file
+                 It is important to remark that this output is
+                 present only if option evalCode is 1 because publishFS
+                 takes the output of the examples which are run to check
+                 if the output structure contains all fields
+                 which are described. If the output of the function is
+                 called out, then publishFS tries to find if the examples
+                 which were run have produced a structure which contains
+                 the name out. Therefore, if an example produced a
+                 structure named outMM or Myout then publishFS checks the
+                 fields present in outMM or Myout to detect eventual
+                 mismatches.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+         The .m file (which must be located on the MATLAB path or on the currect
+         folder) must satisfy the following characteristics to be correctly
+         processed.</p> <p>
+
+       <hr>[<b>1</b>] The row below the row which starts with 'function ....' must contain the
+         description of the purpose of the .m file.</p> <p>
+         Remark: generally the row which starts with 'function ....' is the first
+         row of an .m file.</p> <p>
+       <hr>[<b>2</b>] String 'Required input arguments:' must be present. The lines below
+         this string must contain the description of the compulsory input
+         arguments. Each argument must have the name (a series of spaces from 0
+         to 10) symbol ':' and then the description. The format of the description
+         is as follows:</p> <p>
+         The first sentence after symbol ':' is the title of the input argument
+         and in the HTML file it will appear in bold face in the same line of the
+         input argument (this is the short description of the required input
+         argument).</p> <p>
+         The second sentence after symbol ':' describes the objects
+         (for example, scalar, vector, 3D array) and in the HTML file will appear
+         in the second row.</p> <p>
+         These first two rows will always be visible.</p> <p>
+         What starts with the third sentence after symbol ':' is the detailed
+         description of that particular input argument and in the HTML file it
+         will be visible just if the user clicks on any point in the first two
+         lines or the user clicks on the option expand all.</p> <p>
+         The last line may start with the words "Data Types:" and contains the
+         specification of a particular input argument (e.g. Data Types: single |
+         double). For example, suppose that the .m routine which has to be
+         processed has two required input arguments which are respectively called
+         y and X, then the accepted format is as follows.</p> <p>
+
+                       Required input arguments:</p> <p>
+
+                        y:         Response variable. Vector. Response variable,
+                                   specified as a vector of length n, where n is
+                                   the number of observations. Each entry in y is
+                                   the response for the corresponding row of X.</p> <p>
+                                   Data Types: single | double.</p> <p>
+                      X :          Predictor variables. Matrix of explanatory
+                                   variables (also called 'regressors') of
+                                   dimension n x (p-1) where p denotes the number
+                                   of explanatory variables including the
+                                   intercept. Rows of X represent observations,
+                                   and columns represent variables. By default,
+                                   there is a constant term in the model, unless
+                                   you explicitly remove it using input option
+                                   intercept, so do not include a column of 1s in
+                                   X.</p> <p>
+                                   Data Types: single | double.</p> <p>
+
+         IMPORTANT NOTICE: if an input argument is a structure (publishFS
+         automatically checks if the input argument contains the word "structure"
+         then the fields of the structure will be automatically included into a
+         HTML table). In this case the fields of the structure are identified as
+         the lines which contain "a series of spaces" "a_word" "a series
+         of spaces followed by symbol '='". For example suppose the an input
+         option is called bayes and object bayes is a structure with field names
+         beta0, R, tau0 and n0, the accepted format is as follows.</p> <p>
+
+            bayes      : prior information. Structure.</p> <p>
+                               It contains the following fields.</p> <p>
+                   out.beta0=  p-times-1 vector containing prior mean of \beta.</p> <p>
+                   out.R    =  p-times-p positive definite matrix which can be
+                               interpreted as X0'X0 where X0 is a n0 x p matrix
+                               coming from previous experiments (assuming that the
+                               intercept is included in the model.</p> <p>
+                     out.tau0 = scalar. Prior estimate of tau.</p> <p>
+                     out.n0   = scalar. Sometimes it helps to think of the prior
+                              information as coming from n0 previous experiments.</p> <p>
+
+
+
+       <hr>[<b>3</b>] If the input .m file between the row which starts with
+          &lt;a href="matlab: docsearchFS(.....</p> <p>
+          and the row with the string
+          "Required input arguments:"
+          contains a series of sentences, they will be automatically included in
+          the HTML output just below the description.</p> <p>
+
+          An example is given below:</p> <p>
+                 'function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin);</p> <p>
+                 tclust computes trimmed clustering with restricitons on
+                 the eigenvalues.</p> <p>
+
+                 &lt;a href="matlab: docsearchFS('tclust')"&gt;Link to the help function&lt;/a&gt;;</p> <p>
+
+                   tclust partitions the points in the n-by-v data matrix Y into k
+                   clusters.  This partition minimizes the trimmed sum, over all
+                   clusters, of the within-cluster sums of
+                   point-to-cluster-centroid distances....</p> <p>
+
+                  Required input arguments:'.</p> <p>
+
+       <hr>[<b>4</b>] String 'Optional input arguments:' must be present even if there are
+         no optional arguments.</p> <p>
+         publishFS, in order to understand what are the names of the optional
+         input arguments scans the rows below the string "Optional input
+         arguments:" and identifies the lines which contain the optional arguments
+         as those which contain "a series of spaces" "a_word" "a series of spaces
+         followed by symbol ':'".</p> <p>
+         The first sentence after symbol ':' is the title of the optional input
+         argument and in the HTML file it will appear in the same row of the name
+         of the optional input argument (this is the short description of the
+         optional input argument).</p> <p>
+         The second sentence after symbol ':' describes the objects (for example,
+         scalar, vector, 3D array) and in the HTML file will appear in the second
+         row. These first two rows will always be visible.</p> <p>
+         What starts with the third sentence after symbol ':' is the detailed
+         description of that particular optional input argument and in the HTML
+         file it will be visible just if the user clicks on any point in the first
+         two lines or the user clicks on the option expand all.</p> <p>
+         The last two lines of each optional input argument MUST start with the
+         words 'Example -' and 'Data Types -' followed by a string without spaces
+         which specifies a possible use of the option and the type of data. For
+         example, suppose that the first two optional arguments are called
+         respecively 'intercept' and 'h', then the
+         accepted format is as follows:</p> <p>
+
+
+                       Optional input arguments:</p> <p>
+
+                       intercept :  Indicator for constant term. Scalar.</p> <p>
+                                   If 1, a model with constant term will be fitted
+                                   (default),
+                                   else no constant term will be included.</p> <p>
+                                   Example - 'intercept',1.</p> <p>
+                                   Data Types - double.</p> <p>
+                               h : The number of observations that have determined the least
+                                     trimmed squares estimator. Scalar.</p> <p>
+                                     Example - 'h',round(n*0,75).</p> <p>
+                                     Data Types - double.</p> <p>
+
+
+
+
+          IMPORTANT NOTICE: given that options are identified as those which have
+          symbol "%" followed by "a series of spaces" then "a word" then "a series
+          of spaces" then symbol ":", each line inside the description does not
+          have to start as follows "%   ANYWORD   :" because the parser will
+          wrongly identify "ANYWORD" as an additional optional input argument. The
+          only once exception to this rule is the word "%  REMARK :". However, if
+          there is a remark, it must be put at the very end of the description of
+          the optional input argument. At the very end means after the rows
+           Example and Data Types.</p> <p>
+
+       <hr>[<b>5</b>] String 'Output:' must be present.</p> <p>
+         The lines after string 'Output:'
+         must contain the list of the output arguments using the same rules
+         described above for the optional arguments. In this case, however, the
+         identification of the ouptut arguments is easier because they are
+         extracted directly from the first line of the file (e.g. if the first
+         line is as follows
+         function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin) then the 5
+         output arguments are immediately known to the parser).</p> <p>
+         In the case of output argument publishFS checks if the first 50
+         characters contain the words "which contains" or "containing" e.g.:</p> <p>
+
+                      mdr:         n -init x 2
+                                   matrix containing the
+                                   monitoring of minimum deletion residual.</p> <p>
+                                   1st col = fwd search
+                                   ........</p> <p>
+                        Un:        (n-init) x 11 Matrix
+                                   which contains the unit(s) included in the
+                                   subset at each step of the search.</p> <p>
+                                   ...........</p> <p>
+
+         In this case what is after the strings "which contains" or "containing"
+         will appear in bold face as the title of the output argument. What is
+         before the strings "which contains" or "containing" will appear in the
+         second row.</p> <p>
+
+         For example, the above lines will be processed as follows:</p> <p>
+
+              mdr   -  Monitoring of minimum deletion residual;</p> <p>
+              n -init x 2 matrix.</p> <p>
+
+              Un    - unit(s) included in the subset at each step of the search.</p> <p>
+              (n-init) x 11 Matrix which contains the unit(s) included in the
+              subset at each step of the search.</p> <p>
+
+         If in the HTML file the user clicks on them the expdanded description
+         (that is what starts after the second full stop will appear).</p> <p>
+
+         Alternatively, if the first 50 characters of each output argument do not
+         contain the strings "which contains" or "containing" the following
+         convention is used. The first sentence after symbol ":" is assumed
+         to be the title of the output argument and in the HTML file it will
+         appear in bold face in the same line of the name of output
+         argument. The second sentence (words between first and second full stop)
+         will appear in the second row. The third sentence is the full description
+         of the output argument. For example, suppose that the output of a
+         procedure contains the objects mdr and Un, the accepted format
+         is as follows.</p> <p>
+               Output:</p> <p>
+
+                      mdr:         Minimum deletion residual. Matrix.  n -init x 2
+                                   matrix which contains the
+                                   monitoring of minimum deletion residual.</p> <p>
+                                   1st col = ...</p> <p>
+                      Un:          Units included. Matrix. (n-init) x 11 Matrix
+                                   which contains the unit(s) included in the
+                                   subset at each step of the search.</p> <p>
+                                   REMARK: in every step ....</p> <p>
+
+         The above lines will be processed as follows:</p> <p>
+
+              mdr   -  Minimum deletion residual. Matrix.</p> <p>
+                       n -init x 2 matrix which contains the
+                       monitoring of minimum deletion residual.</p> <p>
+                       1st col = ...</p> <p>
+
+              Un    - Units included. Matrix.</p> <p>
+                       (n-init) x 11 Matrix which contains the unit(s)
+                       included in the subset at each step of the search.</p> <p>
+                       REMARK: in every step ....</p> <p>
+
+         If in the HTML file the user clicks on them the expdanded description
+         (that is what starts after the second full stop will appear).</p> <p>
+
+         IMPORTANT NOTICE: Similarly to what happend for each input argument, if
+         an output argument is a structure, publishFS automatically checks if it
+         contains the words "structure" and "field". In this case, the fields of
+         the structure will be automatically included into a HTML table. The
+         fields of the structure are identified as the lines which contain "a
+         series of spaces" "name_of_output_structure.a_word" "a series of spaces
+         followed by symbol '='". For example suppose that the output of a
+         procedure is an object called out which is a structure with two fields
+         out.rew and out.beta, an accepted format is as follows:</p> <p>
+
+                                    Output:</p> <p>
+
+                                  out :     A structure containing the following fields:</p> <p>
+                                            out.rew  = Scalar if out.rew=1 all
+                                                       subsequent output refers to
+                                                       reweighted else no
+                                                       reweighting is done.</p> <p>
+                                            out.beta = Vector of beta LTS (LMS)
+                                                       coefficient estimates,
+                                                       including the intercept
+                                                       when options.intercept=1.</p> <p>
+                                                       out.beta=[intercept
+                                                       slopes].</p> <p>
+
+
+         PLEASE REMEMBER THAT THE FIELDS of an output instance HAVE TO CONTAIN THE
+         "=" SIGN AND NOT THE ":" SIGN.</p> <p>
+
+         REMARK: If there is the string REMARK after the description of the last
+         field of the structure, all the words after REMARK are put outside and
+         below the HTML table.</p> <p>
+
+         If the description of a particular output has the string "which contains"
+         or "containing",  as follows
+
+                      mdr:          n -init x 2 matrix which contains the
+                                   monitoring of minimum deletion residual at each
+                                   step of the forward search.</p> <p>
+                                   1st col = fwd search index (from init to n-1).</p> <p>
+                                   2nd col = minimum deletion residual.</p> <p>
+
+         publishFS will try to put what comes before the string "which
+         contains" or "containing" inside the subtitle (second row) of the each
+         ouptut argument in the HTML file. For example, the example above in the
+         HTML file will be processed as follows:</p> <p>
+                        mdr -Monitoring of minimum deletion residual at each step of the forward search.</p> <p>
+                        n -init -by- 2 matrix.</p> <p>
+         If, in the HTML file, the user clicks on the first line:</p> <p>
+                       "mdr -Monitoring...";</p> <p>
+         the expanded description will automatically appear.</p> <p>
+
+       <hr>[<b>6</b>] A line which starts with string "See also:" must be present.</p> <p>
+         Linked m files must be separated by symbol ",". For example, suppose that
+         files <a href="FSRBmdr.html">FSRBmdr</a> and <a href="FSR.html">FSR</a> have connections with the current file, then an
+         accepted format is         See also: <a href="FSRBmdr.html">FSRBmdr</a>, <a href="FSR.html">FSR</a>.</p> <p>
+
+       <hr>[<b>7</b>] A line which starts with string "References:" must be present.</p> <p>
+         The year of each reference must be enclosed in round parenthesis.</p> <p>
+         PublishFS decides that a new reference starts if a new line contains
+         symbol "(" + "a sequence of 4 or 5 characthers identifying the year
+         because the reference can be for example 2003 or 2003a" + symbol ")"
+         For example, an acceptable format for the two references below is:</p> <p>
+
+
+                         Chaloner and Brant (1988). A Bayesian Approach to Outlier
+                         Detection and Residual Analysis, Biometrika, Vol 75
+                         pp. 651-659.</p> <p>
+                         Riani M., Corbellini A., Atkinson A.C. (2015), Very
+                         Robust Bayesian Regression for Fraud Detection,
+                         submitted.</p> <p>
+
+       <hr>[<b>8</b>] All the examples associated with the file which has to be processed
+         must be enclosed inside Percent-braces (comments blocks, i.e.
+         symbols "%{" and "%}" ).</p> <p>
+         The first sentence identifies the title of the comment which
+         will appear in the HTML file.</p> <p>
+         IMPORTANT NOTICE: if the comment has to be executed, the first line
+         associated with the title must start with two "%%" symbols instead of just
+         one "%" symbol. The examples in the first positions will appear in
+         the HTML file under the caption "Examples" while the latest will appear
+         under the caption "Related Examples". More precisely, if the output of a
+         procedure contains k outputs and some optional input arguments the first
+         k+1 comment blocks will appear in the HTML file under "Examples".</p> <p>
+         First comment block is associated with the call of the procedure with
+         just one output and all default input arguments.</p> <p>
+         Second comment block is associated with the call of the procedure with
+         just one output and with some optional input arguments.</p> <p>
+         Third comment block is associated with the call of the procedure with
+         two output arguments.</p> <p>
+         ...</p> <p>
+         k+1 comment block is associated with the call of the procedure with
+         k output arguments.</p> <p>
+         k+2 comment block is the first which in the HTML file will appear under
+         the heading "Related Examples".</p> <p>
+         For example, suppose that the first example of procedure FSRmdr has to be
+         executed and its output must be included into the HTML file, then the accepted
+         format is as follows ("please notice the two symbols "%%" in the
+         first row").</p> <p>
+
+
+                         "%{".</p> <p>
+                             "%% FSRmdr with all default options".</p> <p>
+                             "% Compute minimum deletion residual".</p> <p>
+                             "% Monitor minimum deletion residual in each step of the forward search".</p> <p>
+                             "% Common part to all examples: load fishery dataset".</p> <p>
+                              load('fishery');</p> <p>
+                              y=fishery.data(:,2);</p> <p>
+                              X=fishery.data(:,1);</p> <p>
+                              "% Find starting subset"
+                              [out]=LXS(y,X,'nsamp',10000);</p> <p>
+                              [mdr] = FSRmdr(y,X,out.bs);</p> <p>
+                              plot(mdr(:,1),mdr(:,2))
+                              title('Monitoring of minimum deletion residual')
+                         "%}".</p> <p>
+
+                         "%{".</p> <p>
+                             "% FSRmdr with optional arguments".</p> <p>
+                             "% Choose step to start monitoring".</p> <p>
+                             "% Compute minimum deletion residual and
+                              start monitoring it from step 60".</p> <p>
+                             [mdr] = FSRmdr(y,X,out.bs,'init',60).</p> <p>
+                         "%}".</p> <p>
+
+          In order to understand where the example finish and the MATLAB code
+          starts publishFS checks if one of the following strings
+         is present
+         "Input parameters checking",
+         "Beginning of code",
+         "nargin".</p> <p>
+         If this is the case the search of "comments blocks signs"
+         (i.e. symbols  "%{" and "%}") is limited to the first character prior
+         to the detection of one of the previous strings. This
+         modification has been added in order to make sure that there are
+         no additional block signs within matlab code.</p> <p>
+
+       <hr>[<b>9</b>] If a procedure contains varargout, then the string:</p> <p>
+                       "Optional Output:"
+         must be present. For example suppose there is a function called mcd which
+         has the following sintax:</p> <p>
+
+                         function [RAW,REW,varargout] = mcd(Y,varargin).</p> <p>
+
+         Then at the end of the output argument the format must be as follows:</p> <p>
+
+                               Optional Output:</p> <p>
+
+                                         C     : matrix of the indices of the
+                                                 subsamples extracted for
+                                                 computing the estimate.</p> <p>
+
+
+--------------------------------------------------------------------------
+
+         GENERAL REMARKS:</p> <p>
+
+         -----------------------------------------------------------------------:.</p> <p>
+         REMARK1: if symbol "%" is wanted and it is not a simple comment delimiter, it
+         must be replaced by words "per cent". For example, string "50 envelope"
+         must become "50 per cent" envelope.</p> <p>
+         -----------------------------------------------------------------------:.</p> <p>
+         REMARK2: If there is just one output argument it can be without square
+         brackets. Among the input elements of a procedure the number of spaces
+         between them is not important. For example
+         "y,X,varargin" or "y, X   ,  varargin"   are both fine.</p> <p>
+         -----------------------------------------------------------------------:.</p> <p>
+         REMARK 4: publishFS uses MathJax javascript in order to interpret the
+         equations inside the .m file written in Latex style. For in line
+         equations both symbols dollar dollar  and backslash(  backslash) are accepted.</p> <p>
+         For single line equations symbols backslash[ backslash] must be used.</p> <p>
+         -----------------------------------------------------------------------:.</p> <p>
+         REMARK 5: if there are not enough examples in the .m file the procedure
+         still runs but a warning will be automatically produced.</p> <p>
+         -----------------------------------------------------------------------:.</p><p>
+
+</p><hr></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="publishFS.html" itemprop="url"><span itemprop="name"><code>publishFS</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

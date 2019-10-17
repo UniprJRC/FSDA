@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->corrNominal</Title>
+   <Purpose><!--This is the second line of the .m file-->corrNominal measures strength of association between two unordered (nominal) categorical variables.
+</Purpose>
+   <Description><!--Description section-->corrNominal computes $\chi2$, $\Phi$, Cramer's $V$, Goodman-Kruskal's $\lambda_{y|x}$, Goodman-Kruskal's $\tau_{y|x}$, and Theil's $H_{y|x}$ (uncertainty coefficient).
+All these indexes measure the association among two unordered qualitative variables.
+Additional details about these indexes can be found in the "More About" section or in the "Output section" of this document.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>N</Name>
+         <ShortDesc>Contingency table (default) or n-by-2 input dataset.</ShortDesc>
+         <TypeInd>Matrix or Table.</TypeInd>
+         <LongDesc>Matrix or table which contains the input contingency table (say of size I-by-J) or the original data matrix.
+In this last case N=crosstab(N(:,1),N(:,2)). As default procedure assumes that the input is a contingency table.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>NoStandardErrors</Name>
+         <ShortDesc>Just indexes without standard errors and p-values.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>if NoStandardErrors is true just the indexes are computed without standard errors and p-values. That is no inferential measure is given. The default value of NoStandardErrors is false.</LongDesc>
+         <Example>'NoStandardErrors',true</Example>
+         <DataType>Boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dispresults</Name>
+         <ShortDesc>Display results on the screen.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If dispresults is true (default) it is possible to see on the screen all the summary results of the analysis.</LongDesc>
+         <Example>'dispresults',false</Example>
+         <DataType>Boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Lr</Name>
+         <ShortDesc>Vector of row labels.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell containing the labels of the rows of the input contingency matrix N. This option is unnecessary if N is a table, because in this case Lr=N.Properties.RowNames;</LongDesc>
+         <Example>'Lr',{'a' 'b' 'c'}</Example>
+         <DataType>cell array of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Lc</Name>
+         <ShortDesc>Vector of column labels.</ShortDesc>
+         <TypeInd>Cell.</TypeInd>
+         <LongDesc>Cell containing the labels of the columns of the input contingency matrix N. This option is unnecessary if N is a table, because in this case Lc=N.Properties.VariableNames;</LongDesc>
+         <Example>'Lc',{'c1' c2' 'c3' 'c4'}</Example>
+         <DataType>cell array of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datamatrix</Name>
+         <ShortDesc>Data matrix or contingency table.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If datamatrix is true the first input argument N is forced to be interpreted as a data matrix, else if the input argument is false N is treated as a contingency table. The default value of datamatrix is false, that is the procedure automatically considers N as a contingency table</LongDesc>
+         <Example>'datamatrix',true</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>Confidence levels to be used to compute confidence intervals.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The default value of conflev is 0.95, that is 95 per cent confidence intervals are computed for all the indexes (note that this option is ignored if NoStandardErrors=true).</LongDesc>
+         <Example>'conflev',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>N</Value>
+               <Description>$I$-by-$J$-array containing contingency table referred to active rows (i.e. referred to the rows which participated to the fit).
+The $(i,j)$-th element is equal to $n_{ij}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The sum of the elements of out.N is $n$ (the grand total).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Ntable</Value>
+               <Description>same as out.N but in table format (with row and column names).
+This output is present just if your MATLAB version is not&amp;lt;2013b.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Chi2</Value>
+               <Description>1-by-2 vector which contains $\chi^2$ index, and p-value.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Phi</Value>
+               <Description>1-by-2 vector which contains index $\Phi$ index, and p-value. Phi is a chi-square-based measure of association that involves dividing the chi-square statistic by the sample size and taking the square root of the result. More precisely
+\[
+\Phi= \sqrt{ \frac{\chi^2}{n} }
+\]
+This index lies in the interval $[0 , \sqrt{\min[(I-1),(J-1)]}$.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>CramerV</Value>
+               <Description>1 x 4 vector which contains Cramer's V index, standard error, z test, and p-value. Cramer'V index is index $\Phi$ divided by its maximum. More precisely
+\[
+V= \sqrt{\frac{\Phi}{\min[(I-1),(J-1)]}}=\sqrt{\frac{\chi^2}{n \min[(I-1),(J-1)]}}
+\]
+The range of Cramer index is [0, 1]. A Cramer's V in the range of [0, 0.3] is considered as weak, [0.3,0.7] as medium and &amp;gt; 0.7 as strong.
+In order to compute the confidence interval for this index we first find a confidence interval for the non centrality parameter $\Delta$ of the $\chi^2$ distribution with $df=(I-1)(J-1)$ degrees of freedom. (see Smithson (2003); pp. 39-41) $[\Delta_L \Delta_U]$. A confidence interval for $\Delta$ is transformed into one for $V$ by the following transformation
+\[
+V_L=\sqrt{\frac{\Delta_L+ df }{n \min[(I-1),(J-1)]}}
+\]
+and
+\[
+V_U=\sqrt{\frac{\Delta_U+ df }{n \min[(I-1),(J-1)]}}
+\]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>GKlambdayx</Value>
+               <Description>1 x 4 vector which contains index $\lambda_{y|x}$ of Goodman and Kruskal standard error, z test, and p-value.
+\[
+\lambda_{y|x} = \sum_{i=1}^I \frac{r_i- r}{n-r}
+\]
+\[
+r_i =\max(n_{ij})
+\]
+\[
+r =\max(n_{.j})
+\]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>tauyx</Value>
+               <Description>1 x 4 vector which contains tau index $\tau_{y|x}$, standard error, ztest and p-value.
+\[
+\tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
+\]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Hyx</Value>
+               <Description>1 x 4 vector which contains the uncertainty coefficient index (proposed by Theil) $H_{y|x}$, standard error, ztest and p-value.
+\[
+H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log f_{.j} }
+\]</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>TestInd</Value>
+               <Description>4-by-4 array containing index values (first column), standard errors (second column), zscores (third column), p-values (fourth column).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>TestIndtable</Value>
+               <Description>4-by-4 table containing index values (first column), standard errors (second column), zscores (third column), p-values (fourth column).
+This output is present just if your MATLAB version is not&amp;lt;2013b.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ConfLim</Value>
+               <Description>4-by-4 array containing index values (first column), standard errors (second column), lower confidence limit (third column), upper confidence limit (fourth column).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ConfLimtable</Value>
+               <Description>4-by-4 table containing index values (first column), standard errors (second column), lower confidence limit (third column), upper confidence limit (fourth column).
+This output is present just if your MATLAB version is not&amp;lt;2013b.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->$\lambda_{y|x}$ is a measure of association that reflects the proportional reduction in error when values of the independent variable (variable in the rows of the contingency table) are used to predict values of the dependent variable (variable in the columns of the contingency table). The range of $\lambda_{y|x}$ is [0, 1]. A value of 1 means that the independent variable perfectly predicts the dependent variable. On the other hand, a value of 0 means that the independent variable does not help in predicting the dependent variable.
+More generally, let $V(y)$ a measure of variation for the marginal distribution $(f_{.1}=n_{.1}/n, ..., f_{.J}=n_{.J}/n)$ of the response $y$ and let $V(y|i)$ denote the same measure computed for the conditional distribution $(f_{1|i}=n_{1|i}/n, ..., f_{J|i}=n_{J|i}/n)$ of $y$ at the $i$-th setting of the the explanatory variable $x$. A proportional reduction in variation measure has the form.
+\[
+\frac{V(y) - E[V(y|x)]}{V(y|x)}
+\]
+where $E[V(y|x)]$ is the expectation of the conditional variation taken with respect to the distribution of $x$. When $x$ is a categorical variable having marginal distribution, $(f_{1.}, \ldots, f_{I.})$,
+\[
+E[V(y|x)]= \sum_{i=1}^I (n_{i.}/n) V(y|i) = \sum_{i=1}^I f_{i.} V(y|i)
+\]
+If we take as measure of variation $V(y)$ the Gini coefficient
+\[
+V(y)=1 -\sum_{j=1}^J f_{.j} \qquad V(y|i)=1 -\sum_{j=1}^J f_{j|i}
+\]
+we obtain the index of proportional reduction in variation $\tau_{y|x}$ of Goodman and Kruskal.
+\[
+\tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
+\]
+If, on the other hand, we take as measure of variation $V(y)$ the entropy index
+\[
+V(y)=-\sum_{j=1}^J f_{.j} \log f_{.j} \qquad V(y|i) -\sum_{j=1}^J f_{j|i} \log f_{j|i}
+\]
+we obtain the index $H_{y|x}$, (uncertainty coefficient of Theil).
+\[
+H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log f_{.j} }
+\]
+The range of $\tau_{y|x}$ and $H_{y|x}$ is [0 1].
+A large value of of the index represents a strong association, in the sense that we can guess $y$ much better when we know x than when we do not.
+In other words, $\tau_{y|x}=H_{y|x} =1$ is equivalent to no conditional variation in the sense that for each $i$, $n_{j|i}=1$. For example, a value of:
+$\tau_{y|x}=0.85$ indicates that knowledge of x reduces error in predicting values of y by 85 per cent (when the variation measure which is used is the Gini's index).
+$H_{y|x}=0.85$ indicates that knowledge of x reduces error in predicting values of y by 85 per cent (when variation measure which is used is the entropy index)
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ In order to find the confidence interval for the non centrality parameter&#xD;
+ of the Chi-squared distribution we use routine ncpci from the Effect Size Toolbox&#xD;
+ Code by Harald Hentschke (University of T&amp;uuml;bingen) and&#xD;
+ Maik St&amp;uuml;ttgen (University of Bochum)&#xD;
+&#xD;
+ 
+</Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Agresti, A. (2002). Categorical Data Analysis. John Wiley &amp; Sons, pp. 23-26.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1959). Measures of association for cross classifications II: Further Discussion and References, Journal of the American Statistical Association, 54, pp. 123-163.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1963). Measures of association for cross classifications III: Approximate Sampling Theory, Journal of the American Statistical Association, 58, pp. 310-364.</Item>
+      <Item>Goodman, L. A. and Kruskal, W. H. (1972). Measures of association for cross classifications IV: Simplification of Asymptotic Variances. Journal of the American Statistical Association, 67, pp.
+415-421.</Item>
+      <Item>Liebetrau, A. M. (1983). Measures of Association, Sage University Papers Series on Quantitative Applications in the Social Sciences, 07-004, Newbury Park, CA: Sage, pp. 49-56.</Item>
+      <Item>Smithson, M.J. (2003), Confidence Intervals, Quantitative Applications in the Social Sciences Series, No. 140. Thousand Oaks, CA: Sage. pp. 39-41.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>crosstab</Item>
+      <Item>rcontFS</Item>
+      <Item>CressieRead</Item>
+      <Item>corr</Item>
+      <Item>corrOrdinal</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>corrNominal with all the default options.</Title>
+         <Desc>
+            <ItemCell>Rows of N indicate type of Bachelor degree:</ItemCell>
+            <ItemCell>'Economics' 'Law' 'Literature' Columns of N indicate employment type:</ItemCell>
+            <ItemCell>'Private_firm' 'Public_firm' 'Freelance' 'Unemployed'</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[150	80	20	50</ItemCell>
+            <ItemCell>    80	250	30	140</ItemCell>
+            <ItemCell>    30	50	0	120];</ItemCell>
+            <ItemCell>out=corrNominal(N);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of option conflev.</Title>
+         <Desc>
+            <ItemCell>Use data from Goodman Kruskal (1954).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[1768   807    189 47</ItemCell>
+            <ItemCell>   946   1387    746 53</ItemCell>
+            <ItemCell>   115    438    288 16];</ItemCell>
+            <ItemCell>out=corrNominal(N,'conflev',0.99);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>corrNominal with option dispresults.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[ 6 14 17 9;</ItemCell>
+            <ItemCell>   30 32 17 3];</ItemCell>
+            <ItemCell>out=corrNominal(N,'dispresults',false);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example which starts from the original data matrix.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[26 26 23 18 9;</ItemCell>
+            <ItemCell>    6  7  9 14 23];</ItemCell>
+            <ItemCell>% From the contingency table reconstruct the original data matrix.</ItemCell>
+            <ItemCell>n11=N(1,1); n12=N(1,2); n13=N(1,3); n14=N(1,4); n15=N(1,5);</ItemCell>
+            <ItemCell>n21=N(2,1); n22=N(2,2); n23=N(2,3); n24=N(2,4); n25=N(2,5);</ItemCell>
+            <ItemCell>x11=[1*ones(n11,1) 1*ones(n11,1)];</ItemCell>
+            <ItemCell>x12=[1*ones(n12,1) 2*ones(n12,1)];</ItemCell>
+            <ItemCell>x13=[1*ones(n13,1) 3*ones(n13,1)];</ItemCell>
+            <ItemCell>x14=[1*ones(n14,1) 4*ones(n14,1)];</ItemCell>
+            <ItemCell>x15=[1*ones(n15,1) 5*ones(n15,1)];</ItemCell>
+            <ItemCell>x21=[2*ones(n21,1) 1*ones(n21,1)];</ItemCell>
+            <ItemCell>x22=[2*ones(n22,1) 2*ones(n22,1)];</ItemCell>
+            <ItemCell>x23=[2*ones(n23,1) 3*ones(n23,1)];</ItemCell>
+            <ItemCell>x24=[2*ones(n24,1) 4*ones(n24,1)];</ItemCell>
+            <ItemCell>x25=[2*ones(n25,1) 5*ones(n25,1)];</ItemCell>
+            <ItemCell>% X original data matrix</ItemCell>
+            <ItemCell>X=[x11; x12; x13; x14; x15; x21; x22; x23; x24; x25];</ItemCell>
+            <ItemCell>out=corrNominal(X,'datamatrix',true)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

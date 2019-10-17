@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FowlkesMallowsIndex</Title>
+   <Purpose><!--This is the second line of the .m file-->FowlkesMallowsIndex computes the Fowlkes and Mallows index.
+</Purpose>
+   <Description><!--Description section-->Fowlkes-Mallows index (see references) is an external evaluation method that is used to determine the similarity between two clusterings (clusters obtained after a clustering algorithm). This measure of similarity could be either between two hierarchical clusterings or a clustering and a benchmark classification. A higher the value for the Fowlkes-Mallows index indicates a greater similarity between the clusters and the benchmark classifications.
+This index can be used to compare either two cluster label sets or a cluster label set with a true label set. The formula of the adjusted Fowlkes-Mallows index (ABk) is given below
+\[
+ABk= \frac{\mbox{Bk- Expected value of Bk}}{\mbox{Max Index - Expected value of Bk}}
+\]
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c1</Name>
+         <ShortDesc>labels of first partition or contingency table.</ShortDesc>
+         <TypeInd>Numeric or character vector.</TypeInd>
+         <LongDesc>A numeric or character vector containining the class labels of the first partition or a 2-dimensional numeric matrix which contains the cross-tabulation of cluster assignments.
+Data Types: single | double | char | logical</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c2</Name>
+         <ShortDesc>labels of second partition.</ShortDesc>
+         <TypeInd>Numeric or character vector.</TypeInd>
+         <LongDesc>A numeric or character vector containining the class labels of the second partition. The length of vector c2 must be equal to the length of vector c1. This second input is required just if c1 is not a 2-dimensional numeric matrix.
+Data Types: single | double | char | logical</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>ABk</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Adjusted Fowlkes and Mallows index.</TypeInd>
+         <LongDesc>A number between -1 and 1.
+The adjusted Fowlkes and Mallows index is the corrected-for-chance version of the Fowlkes and Mallows index.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Bk</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Value of the Fowlkes and Mallows index.</TypeInd>
+         <LongDesc>A number between 0 and 1.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>EBk</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Expectation of the Fowlkes and Mallows index.</TypeInd>
+         <LongDesc>Expected value of the index computed under the null hypothesis of no-relation.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>VarBk</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Variance of the Fowlkes and Mallows index.</TypeInd>
+         <LongDesc>Variance of the index computed under the null hypothesis of no-relation.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Fowlkes E.B. and C.L. Mallows. (1983), A Method for Comparing Two Hierarchical Clusterings Author(s): Source: Journal of the American Statistical Association, Vol. 78, No. 383, pp. 553-569 http://en.wikipedia.org/wiki/Fowlkes-Mallows_index</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>RandIndexFS</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FowlkesMallowsIndex (adjusted) with the two vectors as input.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>% FowlkesMallowsIndex (adjusted) with the two vectors as input.</ItemCell>
+            <ItemCell> c=[1 1;</ItemCell>
+            <ItemCell>    1 2</ItemCell>
+            <ItemCell>    2 1;</ItemCell>
+            <ItemCell>    2 2 ;</ItemCell>
+            <ItemCell>    2 2;</ItemCell>
+            <ItemCell>    2 3;</ItemCell>
+            <ItemCell>    3 3;</ItemCell>
+            <ItemCell>    3 3;</ItemCell>
+            <ItemCell>    3 3;</ItemCell>
+            <ItemCell>    3 3];</ItemCell>
+            <ItemCell>% c1= numeric vector containing the labels of the first partition</ItemCell>
+            <ItemCell>c1=c(:,1);</ItemCell>
+            <ItemCell>% c1= numeric vector containing the labels of the second partition</ItemCell>
+            <ItemCell>c2=c(:,2);</ItemCell>
+            <ItemCell>FM=FowlkesMallowsIndex(c1,c2);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FM index (adjusted) with the contingency table as input.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>T=[1 1 0;</ItemCell>
+            <ItemCell>1 2 1;</ItemCell>
+            <ItemCell>0 0 4];</ItemCell>
+            <ItemCell>FM=FowlkesMallowsIndex(T);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Compare FM (unadjusted) for iris data (true classification against tclust classification).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    load fisheriris</ItemCell>
+            <ItemCell>    % first partition c1 is the true partition</ItemCell>
+            <ItemCell>    c1=species;</ItemCell>
+            <ItemCell>    % second partition c2 is the output of tclust clustering procedure</ItemCell>
+            <ItemCell>    out=tclust(meas,3,0,100,'msg',0);</ItemCell>
+            <ItemCell>    c2=out.idx;</ItemCell>
+            <ItemCell>    [~,FM,EFM,VARFM]=FowlkesMallowsIndex(c1,c2);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Compare FM index (unadjusted) for iris data (exclude unassigned units from tclust).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    load fisheriris</ItemCell>
+            <ItemCell>    % first partition c1 is the true partition</ItemCell>
+            <ItemCell>    c1=species;</ItemCell>
+            <ItemCell>    % second partition c2 is the output of tclust clustering procedure</ItemCell>
+            <ItemCell>    out=tclust(meas,3,0.1,100,'msg',0);</ItemCell>
+            <ItemCell>    c2=out.idx;</ItemCell>
+            <ItemCell>    % Units inside c2 which contain number 0 are referred to trimmed observations</ItemCell>
+            <ItemCell>    noisecluster=0;</ItemCell>
+            <ItemCell>    [~,FM,EFM,VARFM]=RandIndexFS(c1,c2,noisecluster);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>FM index (unadjusted) for iris data with 3 groups coming from single linkage.</Title>
+         <Desc>
+            <ItemCell>FM index between true and empirical classification</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load fisheriris</ItemCell>
+            <ItemCell>d = pdist(meas);</ItemCell>
+            <ItemCell>Z = linkage(d);</ItemCell>
+            <ItemCell>C = cluster(Z,'maxclust',3);</ItemCell>
+            <ItemCell>[AFM,FM,FMexp,FMvar]=FowlkesMallowsIndex(C,species);</ItemCell>
+            <ItemCell>disp('FM index is equal to')</ItemCell>
+            <ItemCell>disp(FM)</ItemCell>
+            <ItemCell>disp('Expectation of FM index is')</ItemCell>
+            <ItemCell>disp(FMexp)</ItemCell>
+            <ItemCell>disp('Variance of FM index is')</ItemCell>
+            <ItemCell>disp(FMvar)</ItemCell>
+            <ItemCell>disp('Adjsuted FM index is equal to')</ItemCell>
+            <ItemCell>disp(AFM)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring of (adjusted) FM index for iris data using true classification as benchmark.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load fisheriris</ItemCell>
+            <ItemCell>d = pdist(meas);</ItemCell>
+            <ItemCell>Z = linkage(d);</ItemCell>
+            <ItemCell>kk=1:15;</ItemCell>
+            <ItemCell>% Produce agglomerative hierarchical cluster tree</ItemCell>
+            <ItemCell>C = cluster(Z,'maxclust',kk);</ItemCell>
+            <ItemCell>FM =zeros(length(kk)-1,1);</ItemCell>
+            <ItemCell>for j=kk</ItemCell>
+            <ItemCell>    FM(j)=FowlkesMallowsIndex(C(:,j),species);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>plot(kk,FM)</ItemCell>
+            <ItemCell>xlabel('Number of groups')</ItemCell>
+            <ItemCell>ylabel('Fowlkes and Mallows Index')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

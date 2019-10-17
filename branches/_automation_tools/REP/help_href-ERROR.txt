@@ -1,0 +1,11 @@
+ERRORE in ./eigs_sigma.html : href= eigs.html  --- IL FILE NON ESISTE
+ERRORE in ./ginputfs.html : href= ginput.html  --- IL FILE NON ESISTE
+ERRORE in ./logmvnpdffs.html : href= mvnpdf.html  --- IL FILE NON ESISTE
+ERRORE in ./position.html : href= ginput.html  --- IL FILE NON ESISTE
+ERRORE in ./regressh.html : href= regress.html  --- IL FILE NON ESISTE
+ERRORE in ./regressh1.html : href= regress.html  --- IL FILE NON ESISTE
+ERRORE in ./suplabel.html : href= text.html  --- IL FILE NON ESISTE
+ERRORE in ./triu2vec.html : href= ginput.html  --- IL FILE NON ESISTE
+ERRORE in ./upperfracpos.html : href= ginput.html  --- IL FILE NON ESISTE
+ERRORE in ./waitforbuttonpressfs.html : href= ginput.html  --- IL FILE NON ESISTE
+ERRORE in ./zscoresfs.html : href= ginput.html  --- IL FILE NON ESISTE

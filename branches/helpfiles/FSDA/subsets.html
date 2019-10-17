@@ -1,0 +1,670 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>subsets</title><meta content="refpage" name="chunktype"><meta content="function:subsets" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">subsets</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Create a matrix with the indexes of 5 subsets when n=100, p=3.</a></li><li><a class="intrnllnk" href="#Example_2">Create a matrix with the indexes of 5 subsets when n=100, p=3.</a></li><li><a class="intrnllnk" href="#Example_3">Create a matrix with the indexes of 5 subsets when n=100, p=3.</a></li><li><a class="intrnllnk" href="#Example_4">Create a matrix with the indexes of 5 subsets when n=100, p=3.</a></li><li><a class="intrnllnk" href="#Example_5">Extract 80000 subsets and check they are unique.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Sampling without replacement and the hypergeometric distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Weighted sampling without replacement, with negative weights.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Function subset used in clustering or mixture modeling simulations.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_n">n</a></li><li><a class="intrnllnk" href="#input_argument_p">p</a></li><li><a class="intrnllnk" href="#input_argument_ncomb">ncomb</a></li><li><a class="intrnllnk" href="#input_argument_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_method">method</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_C">C</a></li><li><a class="intrnllnk" href="#output_argument_nselected">nselected</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">subsets</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">subsets creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">C=subsets(nsamp, n, p)</code><span class="syntax_example"><a class="intrnllnk" href="subsets.html#Example_1">example</a></span></li><li><code class="synopsis">C=subsets(nsamp, n, p, ncomb)</code><span class="syntax_example"><a class="intrnllnk" href="subsets.html#Example_2">example</a></span></li><li><code class="synopsis">C=subsets(nsamp, n, p, ncomb, msg)</code><span class="syntax_example"><a class="intrnllnk" href="subsets.html#Example_3">example</a></span></li><li><code class="synopsis">C=subsets(nsamp, n, p, ncomb, msg, method)</code><span class="syntax_example"><a class="intrnllnk" href="subsets.html#Example_4">example</a></span></li><li><code class="synopsis">[C,nselected]=subsets(___)</code><span class="syntax_example"><a class="intrnllnk" href="subsets.html#Example_5">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="subsets.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_C"><code>C</code></a>=subsets(<a class="intrnllnk" href="#inputarg_nsamp"><code>nsamp</code></a>,<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_p"><code> p</code></a>)</code></span>Create a matrix with the indexes of 5 subsets when n=100, p=3.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="subsets.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_C"><code>C</code></a>=subsets(<a class="intrnllnk" href="#inputarg_nsamp"><code>nsamp</code></a>,<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_p"><code>p</code></a>,<a class="intrnllnk" href="#inputarg_ncomb"><code> ncomb</code></a>)</code></span>Create a matrix with the indexes of 5 subsets when n=100, p=3.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="subsets.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_C"><code>C</code></a>=subsets(<a class="intrnllnk" href="#inputarg_nsamp"><code>nsamp</code></a>,<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_p"><code>p</code></a>,<a class="intrnllnk" href="#inputarg_ncomb"><code>ncomb</code></a>,<a class="intrnllnk" href="#inputarg_msg"><code> msg</code></a>)</code></span>Create a matrix with the indexes of 5 subsets when n=100, p=3.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="subsets.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_C"><code>C</code></a>=subsets(<a class="intrnllnk" href="#inputarg_nsamp"><code>nsamp</code></a>,<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#inputarg_p"><code>p</code></a>,<a class="intrnllnk" href="#inputarg_ncomb"><code>ncomb</code></a>,<a class="intrnllnk" href="#inputarg_msg"><code>msg</code></a>,<a class="intrnllnk" href="#inputarg_method"><code> method</code></a>)</code></span>Create a matrix with the indexes of 5 subsets when n=100, p=3.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="subsets.html#Example_5">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_C"><code>C</code></a>,<a class="intrnllnk" href="#outputarg_nselected"><code>nselected</code></a>]=subsets(___)</code></span>Extract 80000 subsets and check they are unique.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
+        Only default arguments used.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">C = subsets(5,100,3)</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
+        Use information on the number of combinations to speed up generation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(100,3);
+C = subsets(5,100,3,ncomb)</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
+        Also inform about the time taken for the operation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(1000,5);
+C = subsets(500000,1000,5,ncomb,1);</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
+        As the previous example, but in addition returns in nselected the
+        number of combinations.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(1000,5);
+[C , nselected] = subsets(500000,1000,5,ncomb,1);</pre></div></div></p></div></div><div id="example_5" class="example_module expandableContent"><div id="Example_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Extract 80000 subsets and check they are unique.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">C=subsets(80000,100,5);
+size(unique(C,'rows'))</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Sampling without replacement and the hypergeometric distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+% parameters
+n      = 100;
+p      = 3;
+nsamp  = 1000000;
+ncomb  = bc(n,p);
+msg    = 0;
+% Sampling without repetition nsamp p-subsets from a dataset of n units.
+C = subsets(nsamp, n, p, ncomb, msg);
+if verLessThan('matlab','8.4')
+hist(double(C(:))); xlim([1 n]);
+else
+histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers'); xlim([1 n]);
+% this superimposes a line with the unit counts
+frC = tabulateFS(double(C(:)));
+hold on; plot(1:n,frC(:,3)/100,'r-','LineWidth',3);
+end
+% The hypergeometric distribution hygepdf(X,M,K,N) computes the probability
+% of drawing exactly X of a possible K items in N drawings without
+% replacement from a group of M objects. For drawings with replacement,
+% the distribution would be binomial.
+hpdf = hygepdf(0:p,n,n/2,p);
+% Say that the n/2 target items (which determine the success of a draw) are
+% in the subset formed by units 1,2,...n/2. Let's then count how many times
+% we get units from this group.
+c   = C&lt;=n/2;
+sc  = sum(c,2);
+tab = tabulateFS(sc);
+tab = (tab(:,2)/sum(tab(:,2)))';
+disp('Probability of getting 0 to p successes in p drawns (hypergeometric pdf):');
+disp(hpdf);
+disp('Frequencies of the 0 to p successes in the p drawns (subsets output):');
+disp(tab);</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Weighted sampling without replacement and the non-central Wallenius hypergeometric distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+% parameters
+n      = 500;
+p      = 3;
+nsamp  = 50000;
+ncomb  = bc(n,p);
+msg    = 0;
+% Sampling probability of the first n/2 units is 10 times larger than the others n/2.
+method = [10*ones(n/2,1); ones(n/2,1)];
+% no need to normalize weights: method = method(:)' / sum(method);
+C = subsets(nsamp, n, p, ncomb, msg, method);
+if verLessThan('matlab','8.4')
+hist(double(C(:))); xlim([1 n]);
+else
+histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+end
+% Here we address the case when the sampling (without replacement) is biased,
+% in the sense that the probabilities to select the units in the sample are
+% proportional to weights provided using option 'method'. In this case, the
+% extraction probabilities follow Wallenius' noncentral hypergeometric
+% distribution. The sampling scheme is the same of that of the hypergeometric
+% distribution but, in addition, the success and failure are associated with
+% weights w1 and w2 and we will say that the odds ratio is W = w1 / w2. The
+% function is then called as: wpdf = WNChygepdf(x,N,K,M,W).
+for i = 0:p
+wpdf(i+1) = WNChygepdf(i,p,n/2,n,10);
+end
+% counts of the actual samples
+c   = C&lt;=n/2;
+sc  = sum(c,2);
+tab = tabulateFS(sc);
+tab = (tab(:,2)/sum(tab(:,2)))';
+disp('Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):');
+disp(wpdf);
+disp('Frequencies of the 0 to p successes in the p weighted drawns (subsets output):');
+disp(tab);
+% The non-central hypergeometric is also available in the R package
+% BiasedUrn. In the example above, where there are just two groups and one
+% weight defining the ratio between the units in the two groups, the function
+% to use is dWNCHypergeo (for Wallenius' distribution):
+%
+% dWNCHypergeo(c(0,1,2,3), 50, 50, 3, 10)
+% [1] 0.0007107089 0.0225823308 0.2296133830 0.7470935773
+%
+% The general syntax of the function is:
+% dWNCHypergeo(x, m1, m2, n, odds)
+% x  = Number of red balls sampled.
+% m1 = Initial number of red balls in the urn.
+% m2 = Initial number of white balls in the urn.
+% n  = Total number of balls sampled.
+% N  = Total number of balls in urn before sampling.
+% odds = Probability ratio of red over white balls.
+% p = Cumulative probability.
+% nran = Number of random variates to generate.
+% mu = Mean x.
+% precision = Desired precision of calculation.</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighted sampling without replacement, with negative weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+n = 200;
+p = 3;
+nsamp = 10000;
+ncomb = bc(n,p);
+msg = 0;
+method = [-4*ones(n/4,1); -2*ones(n/4,1) ; -1*ones(n/4,1); -4*ones(n/4,1)];
+C = subsets(nsamp, n, p, ncomb, msg, method);
+if verLessThan('matlab','8.4')
+hist(double(C(:))); xlim([1 n]);
+else
+histogram(double(C(:)),'Normalization','pdf','BinMethod','Integers');
+end</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Function subset used in clustering or mixture modeling simulations.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
+% parameters
+n      = 100;       %number of units
+p      = 2;         %number of variables
+k      = 3;         %number of groups
+nsamp  = 500;       %number of samples
+ncomb  = bc(n,p);
+msg    = 0;
+% A dataset simulated using MixSim
+rng(372,'twister');
+Q=MixSimreg(k,p,'BarOmega',0.001);
+[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+% Some user-defined weights for weighted sampling, provided as a vector of "method" option.
+method = [1*ones(n/2,1); ones(n/2,1)];
+% C must be a nsamp-by-k*p matrix, to contain the extraction of nsamp p-combinations k times.
+% This can be easily done as follows:
+for i=1:k
+Ck(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);
+end
+% Ck is then provided, e.g., to tclustreg as follows:
+out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',Ck);</pre></div></div><pre class="codeoutput">
+C =
+
+  5&times;3 int8 matrix
+
+     5    30    67
+    39    55    89
+    62    84    98
+    32    37    99
+    19    90   100
+
+
+C =
+
+  5&times;3 int8 matrix
+
+    35    67    80
+    18    19    95
+    22    44   100
+    60    80    98
+    40    54    99
+
+Warning: you have specified to extract more than 100000 subsets
+To iterate so many times may be lengthy
+Warning: number of subsets which have been chosen (1000000) are greater than possibile number (161700)
+All subsets are extracted
+Probability of getting 0 to p successes in p drawns (hypergeometric pdf):
+    0.1212    0.3788    0.3788    0.1212
+
+Frequencies of the 0 to p successes in the p drawns (subsets output):
+    0.1212    0.3788    0.3788    0.1212
+
+Probability of getting 0 to p successes in p weighted drawns (non-central hypergeometric pdf):
+    0.0007    0.0225    0.2262    0.7505
+
+Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
+    0.0007    0.0231    0.2257    0.7505
+
+Warning: columns 1  2 are constant and just col 1 has been kept!
+ClaLik with untrimmed units selected using crisp criterion
+sample = 1, concentration step = 1
+sample = 1, concentration step = 2
+sample = 1, concentration step = 3
+sample = 1, concentration step = 4
+sample = 1, concentration step = 5
+sample = 1, concentration step = 6
+sample = 1, concentration step = 7
+sample = 1, concentration step = 8
+sample = 1, concentration step = 9
+sample = 1, concentration step = 10
+sample = 1, concentration step = 11
+sample = 42, concentration step = 9
+sample = 42, concentration step = 10
+sample = 42, concentration step = 11
+Total estimated time to complete tclustreg: 13.25 seconds 
+sample = 58, concentration step = 7
+sample = 58, concentration step = 8
+sample = 58, concentration step = 9
+sample = 58, concentration step = 10
+sample = 58, concentration step = 11
+sample = 134, concentration step = 5
+sample = 134, concentration step = 6
+sample = 134, concentration step = 7
+sample = 134, concentration step = 8
+sample = 134, concentration step = 9
+sample = 134, concentration step = 10
+sample = 134, concentration step = 11
+sample = 157, concentration step = 4
+sample = 157, concentration step = 5
+sample = 157, concentration step = 6
+sample = 157, concentration step = 7
+sample = 157, concentration step = 8
+sample = 157, concentration step = 9
+sample = 157, concentration step = 10
+sample = 157, concentration step = 11
+sample = 190, concentration step = 10
+sample = 190, concentration step = 11
+sample = 256, concentration step = 3
+sample = 256, concentration step = 4
+sample = 256, concentration step = 5
+sample = 256, concentration step = 6
+sample = 256, concentration step = 7
+sample = 256, concentration step = 8
+sample = 256, concentration step = 9
+sample = 256, concentration step = 10
+sample = 256, concentration step = 11
+</pre><img vspace="5" hspace="5" src="images\subsets_01.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_nsamp" class="clearfix"> </div> <h3 id="input_argument_nsamp" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>nsamp</code> &#8212; Number of subsamples which have to be extracted. </span>  </a><span class="example_desc">Scalar;
+               if nsamp=0 all subsets will be extracted; they will be (n
+               choose p).</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; Number of observations of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_p" class="clearfix"> </div> <h3 id="input_argument_p" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>p</code> &#8212; Size of the subsets. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>In regression with p
+               explanatory variable the size of the elmental subsets is p;</p> <p>
+               in multivariate analysis, in presence of v variables,
+               the size of the elemental subsets is v+1.</p><p>
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_ncomb" class="clearfix"> </div> <h3 id="input_argument_ncomb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>ncomb</code> &#8212; scalar (n choose p). </span>  </a><span class="example_desc">If the user has already computed this
+               value it can supply it directly, otherwise the program will
+               calculate it automatically.</span></span></h3> <div class="collapse"> <p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>C=subsets(20,10,3,120)
+</code></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_msg" class="clearfix"> </div> <h3 id="input_argument_msg" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>msg</code> &#8212; scalar which controls whether to display or not messages
+               on the screen. </span>  </a><span class="example_desc">If msg=1 (default), messages are displayed
+               on the screen about estimated time.</span></span></h3> <div class="collapse"> <p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>C=subsets(20,10,3,120,0)
+</code></p> <p class="datatypelist"><strong> Data Types: </strong><code>boolean</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_method" class="clearfix"> </div> <h3 id="input_argument_method" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>method</code> &#8212; Sampling methods. </span>  </a><span class="example_desc">Scalar or vector.</span></span></h3> <div class="collapse"> <p><p>Methods used to extract the subsets. See section 'More About'
+            of function <a href="randsampleFS.html">randsampleFS</a> for details about the sampling
+            methods. Default is method = 1.</p> <p>
+            - Scalar, from 0 to 3 determining the (random sample without
+            replacement) method to be used.</p> <p>
+            - Vector of weights: in such a case, Weighted Sampling Without
+              Replacement is applied using that vector of weights.</p><p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>randsampleFS(100,10,2)
+</code></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_C" class="clearfix"></div><h3 id="output_argument_C" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>C</code> &#8212;The indices of the subsets which need to be extracted.</span></a><span class="example_desc"><code>
+               </code>Matrix with nselected rows and p columns (stored in int16 format)</span></span></h3><div class="collapse"><p>
+               Data Types - single|double</p></div></div><div class="expandableContent"><div id="outputarg_nselected" class="clearfix"></div><h3 id="output_argument_nselected" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nselected</code> &#8212;Number of rows of matrix C.</span></a><span class="example_desc">Scalar</span></span></h3><div class="collapse"><p>
+               Data Types - single|double</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Wong, C.K. and M.C. Easton (1980) "An Efficient Method for Weighted
+       Sampling Without Replacement", SIAM Journal of Computing,
+       9(1):111-113.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="randsampleFS.html" itemprop="url"><span itemprop="name"><code>randsampleFS</code></span></a></span> | <span itemprop="seealso"><a href="lexunrank.html" itemprop="url"><span itemprop="name"><code>lexunrank</code></span></a></span> | <span itemprop="seealso"><a href="bc.html" itemprop="url"><span itemprop="name"><code>bc</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

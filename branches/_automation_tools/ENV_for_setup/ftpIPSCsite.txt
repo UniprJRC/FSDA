@@ -1,0 +1,10 @@
+open idirpc140.jrc.it
+anonymous
+
+cd uploads
+bin
+put FSDAtoolbox_for_MATLAB-setup.exe 
+put FSDA.tar.gz
+dir
+close
+quit

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->inversegaminv</Title>
+   <Purpose><!--This is the second line of the .m file-->inversegampdf Inverse-gamma cumulative distribution function.
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>Probability at which the inverse of the cdf must be evaluated $0 \leq p \leq 1$.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and b.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+See the section called "More About:" for more details about the inverse gamma distribution.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>a</Name>
+         <ShortDesc>shape parameter of the inverse-gamma distribution.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and b.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+See the section called "More About:" for more details about the inverse gamma distribution.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>b</Name>
+         <ShortDesc>scale parameter b of the inverse-gamma distribution.</ShortDesc>
+         <TypeInd>Scalar, vector or matrix 3D array of the same size of x and a.</TypeInd>
+         <LongDesc>A scalar input functions as a constant matrix of the same size as the other input.
+Unlike the Gamma distribution, which contains a somewhat similar exponential term, $b$ is a scale parameter as the distribution function satisfies:
+\[
+f_{IG}(x,a,b)=\frac{f(x/b,a,1)}{b}
+\]
+See the section called "More About:" for more details about the inverse gamma distribution.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed and input and the inverse cdf is evaluated directly through MATLAB buit in function gammaincinv else we use MATLAB function gaminv.</LongDesc>
+         <Example>&lt;code&gt;'nocheck',1&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>Scalar, vector or matrix or 3D array of the same size of input arguments p, a and b</ShortDesc>
+         <TypeInd>inverse CDF value.</TypeInd>
+         <LongDesc>$p=\int_0^x f_{IG}(t | a,b) dt$ is the inverse of the inverse-gamma cdf with shape parameters in a and scale parameters in b for the corresponding probabilities in p.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->The cdf of the inverse gamma distribution defined over the support $x&amp;gt;0$ with shape parameter $a$ and scale parameter $b$ is
+\[
+F_{IG}(x, a, b) =\int_0^x t^{-a -1} \exp (-b/t) \frac{b^a}{\Gamma(a)} dt
+\]
+inversegaminv computes the inverse of the inverse-gamma cdf with shape parameters in a and scale parameters in b for the corresponding probabilities in p. p, a, and b can be vectors, matrices, or multidimensional arrays that all have the same size. A scalar input is expanded to a constant array with the same dimensions as the other inputs. The parameters in a and b must all be positive, and the values in x must lie on the interval $[0, \infty)$.
+Note that $F_{IG}(x,a,b)=\frac{\Gamma(a,b/x)}{\Gamma(\alpha)}$ therefore Therefore, the CDF for an inverse Gamma distribution can be computed using the incomplete gamma function (also called regularized gamma function, i.e. MATLAB function gammainc) of course keeping into account that we need the upper tail.
+The chief use of the inverse gamma distribution is in Bayesian statistics, where the distribution arises as the marginal posterior distribution for the unknown variance of a normal distribution if an uninformative prior is used; and as an analytically tractable conjugate prior if an informative prior is required.
+Relation with the Gamma distribution.
+If $X \sim Gamma(a,b)$ then $\frac{1}{X} \sim$ inverse-gamma distribution with paramters $a$ and $1/b$.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>gampdf</Item>
+      <Item>inversegampdf</Item>
+      <Item>inversegamcdf</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Compare the results using option nocheck=1.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>x=(0:0.0001:0.9999)';</ItemCell>
+            <ItemCell>a=[1,2,3,50,100,10000];</ItemCell>
+            <ItemCell>b=[1,10,100,0.05,10,800];</ItemCell>
+            <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
+            <ItemCell>Ychk=Y;</ItemCell>
+            <ItemCell>for i=1:length(x)</ItemCell>
+            <ItemCell>    Y(i,:)=inversegaminv(x(i),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)=inversegaminv(x(i),a,b,1);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp('Maximum absolute difference is:');</ItemCell>
+            <ItemCell>disp(max(max(abs(Y-Ychk))));</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Check accuracy of results monitoring $|p-F_{IG} (F_{IG}^{-1}(p))|$.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>a=[1,2,3,50,100,10000];</ItemCell>
+            <ItemCell>b=[1,10,100,0.05,10,800];</ItemCell>
+            <ItemCell>x=(0:0.0001:0.9999)';</ItemCell>
+            <ItemCell>Y=zeros(length(x),length(a));</ItemCell>
+            <ItemCell>Ychk=Y;</ItemCell>
+            <ItemCell>for i=1:length(x)</ItemCell>
+            <ItemCell>    Y(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b),a,b);</ItemCell>
+            <ItemCell>    Ychk(i,:)=x(i)-inversegamcdf(inversegaminv(x(i),a,b,1),a,b,1);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp('Maximum deviation from 0 passing through routine gaminv:');</ItemCell>
+            <ItemCell>disp(max(max(abs(Y))));</ItemCell>
+            <ItemCell>disp('Maximum deviation from 0 using fast routine:');</ItemCell>
+            <ItemCell>disp(max(max(abs(Ychk))));</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Compare results with R (library actuar).</Title>
+         <Desc>
+            <ItemCell>The example below assumes that the Connection with R has already been setup For more information on how to connect R and Matlab see file Connect_Matlab_with_R_HELP in folder disp(which('Connect_Matlab_with_R_HELP'))</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>chkMatlab_With_R_connection=exist('openR','file');</ItemCell>
+            <ItemCell>if chkMatlab_With_R_connection==0</ItemCell>
+            <ItemCell>    disp('Connection with R has not been setup yet')</ItemCell>
+            <ItemCell>    examp=which('Connect_Matlab_with_R_HELP.m');</ItemCell>
+            <ItemCell>    examp1=strrep(examp,'\','\\');</ItemCell>
+            <ItemCell>    stri=['See file &amp;lt;a href="matlab: opentoline(' examp1 ',27)"&amp;gt;Connect_Matlab_with_R_HELP.m&amp;lt;/a&amp;gt;  for more information'];</ItemCell>
+            <ItemCell>    disp(stri);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    openR</ItemCell>
+            <ItemCell>    evalR('library(actuar)');</ItemCell>
+            <ItemCell>    evalR('x=seq(0,0.9999,0.0001)');</ItemCell>
+            <ItemCell>    evalR('a=2');</ItemCell>
+            <ItemCell>    evalR('b=3');</ItemCell>
+            <ItemCell>    yfromR=evalR('qinvgamma(x,a,scale=b)');</ItemCell>
+            <ItemCell>    x=(0:0.0001:0.9999);</ItemCell>
+            <ItemCell>    yfromMatlab=inversegaminv(x,2,3);</ItemCell>
+            <ItemCell>    disp(max(abs(yfromR-yfromMatlab)));</ItemCell>
+            <ItemCell>    closeR;</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

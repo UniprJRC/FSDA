@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->publishFunctionAlpha</Title>
+   <Purpose><!--This is the second line of the .m file-->publishFunctionAlpha enables to create web page which contains the alphabetical list of functions</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>InputCell</Name>
+         <ShortDesc>Cell created by function makecontentsfileFS.m</ShortDesc>
+         <TypeInd>Cell</TypeInd>
+         <LongDesc>Cell&#xD;
+              containing information about all files which have to be&#xD;
+              included inside the alphabetical HTML file.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>CreateTxtFile</Name>
+         <ShortDesc>create txt file</ShortDesc>
+         <TypeInd>Boolean</TypeInd>
+         <LongDesc>If CreateTxtFile is false&#xD;
+                     (default) no txt file is created, else, a txt file named&#xD;
+                     function-alpha.txt is created which contains, the&#xD;
+                     names of the files (separated by commas), inside&#xD;
+                     folder (main root of FSDA)\helpfiles\FSDA. Every&#xD;
+                     function which will be automatically created by&#xD;
+                     publishFS looks into this file and (through a&#xD;
+                     Javascript) adds the link on top and at the bottom of&#xD;
+                     the page to the two file which come before and after&#xD;
+                     current file in alphabetical order.&#xD;
+                 </LongDesc>
+         <Example> 'CreateTxtFile',false&#xD;
+                 </Example>
+         <DataType>boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>fstring</Name>
+         <ShortDesc>string </ShortDesc>
+         <TypeInd>List of files in alphabetical order.</TypeInd>
+         <LongDesc>&#xD;
+                String. This string contains the full HTML files which all&#xD;
+                hypertextual links to all HTML files for each alphabetical&#xD;
+                letter. The HTML file function-alpha.html also produced inside&#xD;
+                folder (main root of FSDA)\helpfiles\FSDA</LongDesc>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>publishFunctionCate</Item>
+      <Item>publishFS</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Creation of file containing alphabetical list of functions.</Title>
+         <Desc>&#xD;
+     Create contents file for each .m file&#xD;
+     findDir with optional arguments 'InclDir' and 'ExclDir'.&#xD;</Desc>
+         <MATLABcode>
+    FileName='addFSDA2path';&#xD;
+    FullPath=which(FileName);&#xD;
+    FSDAroot=FullPath(1:end-length(FileName)-3);&#xD;
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...&#xD;
+    'examples' 'utilities' 'utilities_stat'};&#xD;
+    ExclDir={'privateFS'  'datasets'};&#xD;
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)&#xD;
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);&#xD;
+    cd(fileparts(which('docsearchFS.m')))&#xD;
+    % Create HTML file containing alphabetical list of functions&#xD;
+    fstring=publishFunctionAlpha(out);&#xD;
+    % open outfile file in web browser&#xD;
+    FileWithFullPath=which('docsearchFS.m');&#xD;
+    [pathFSDAstr]=fileparts(FileWithFullPath);&#xD;
+    fsep=filesep;&#xD;
+    outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.html'];&#xD;
+    web(outputOFHtmlHelpFile,'-browser');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Creation of txt file.</Title>
+         <Desc>&#xD;
+     File function-alpha.txt is created which contains, the&#xD;
+     names of the files (separated by commas), inside&#xD;
+     folder (main root of FSDA)\helpfiles\FSDA.&#xD;
+     Create contents file for each .m file&#xD;
+     findDir with optional arguments 'InclDir' and 'ExclDir'.&#xD;</Desc>
+         <MATLABcode>
+    FileName='addFSDA2path';&#xD;
+    FullPath=which(FileName);&#xD;
+    FSDAroot=FullPath(1:end-length(FileName)-3);&#xD;
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...&#xD;
+    'examples' 'utilities' 'utilities_stat'};&#xD;
+    ExclDir={'privateFS'  'datasets'};&#xD;
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)&#xD;
+    out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);&#xD;
+    cd(fileparts(which('docsearchFS.m')))&#xD;
+    % Create HTML file containing alphabetical list of functions&#xD;
+    fstring=publishFunctionAlpha(out,'CreateTxtFile',true);&#xD;
+    % open outfile txt in web browser&#xD;
+    FileWithFullPath=which('docsearchFS.m');&#xD;
+    [pathFSDAstr]=fileparts(FileWithFullPath);&#xD;
+    fsep=filesep;&#xD;
+    outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.txt'];&#xD;
+    web(outputOFHtmlHelpFile,'-browser');&#xD;</MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

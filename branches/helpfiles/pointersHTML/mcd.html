@@ -1,0 +1,41 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>mcd</title> <meta content="refpage" name="chunktype"><meta content="function:mcd " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="mcd Computes Minimum Covariance Determinant" itemprop="description" name="description" /><h1 itemprop="title">mcd</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/mcd.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/mcd.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/mcd.html">http://rosa.unipr.it/FSDA/mcd.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: mcd</em></p><h1 itemprop="title">mcd</h1><P>Computes Minimum Covariance Determinant</P><h2>More About</h2><P>
+ MCD computes the MCD estimator of a multivariate data set.  This
+ estimator is given by the subset of h observations with smallest
+ covariance determinant.  The MCD location estimate is then the mean of
+ those h points, and the MCD scatter estimate is their covariance matrix.
+ The default value of h is roughly 0.5n (where n is the total number of
+ observations), but the user may choose each value between n/2 and n.
+
+ The MCD method is intended for continuous Gaussian variables, and assumes
+ that the number of observations n is at least 5 times the number of
+ variables p. If p is too large relative to n, it is better to use options
+ betathresh=1 (that is to use a threshold based on beta distribution (for
+ the units which determine the centroid and the covariance matrix) and F
+ distribution (for the units which are excluded from the computation of
+ centroid and covariance matrix)
+
+ The MCD method was introduced in:
+
+   Rousseeuw, P.J. (1984), Least Median of Squares Regression,
+   "Journal of the American Statistical Association", Vol. 79, pp. 871-881.
+
+   The program below uses the technique of concentration steps described in
+
+   Rousseeuw, P.J. and Van Driessen, K. (1999), "A Fast Algorithm for the
+   Minimum Covariance Determinant Estimator," Technometrics, 41, pp. 212-223.
+
+ The MCD is a robust method in the sense that the estimates are not unduly
+ influenced by outliers in the data, even if there are many outliers.
+ Due to the MCD's robustness, we can detect outliers by their large
+ robust distances. The latter are defined like the usual Mahalanobis
+ distance, but based on the MCD location estimate and scatter matrix
+ (instead of the nonrobust sample mean and covariance matrix).
+
+
+ Remark: when more than h observations lie on a (hyper)plane, (perfect fit
+ case) the program still yields the MCD location and scatter matrix, the
+ latter being singular (as it should be), as well as the equation of the
+ hyperplane.
+
+</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</P></html>

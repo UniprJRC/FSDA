@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->kdebiv</Title>
+   <Purpose><!--This is the second line of the .m file-->kdebiv computes (and optionally plots) a kernel smoothing estimate for bivariate data.
+</Purpose>
+   <Description><!--Description section-->This function is introduced in FSDA to support MATLAB releases older than R2016a, when function ksdensity was only addressing one-dimensional data.
+For R2016a and subsequent releases, kdebiv uses ksdensity. Otherwise, the function computes a nonparametric estimate of the probability density function based on a normal kernel and using a bandwidth estimated as a function of the number of points in X.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Input matrix.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Two-column matrix with the bivariate data sample on which a probability density estimate is computed. The density is estimated on a grid of points covering the range of the data, created using MATLAB function meshgrid.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double.</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>XI</Name>
+         <ShortDesc>Evaluation points of the estimated density.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>In this case the density is estimated using X and evaluated on XI.</LongDesc>
+         <Example>'XI',X</Example>
+         <DataType>single | double.</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Xlim</Name>
+         <ShortDesc>Limits of the estimated density.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Two-columns matrix with the bivariate data sample on which the limits of the probability density estimate is computed. The default value is [] (i.e. automatic scale).</LongDesc>
+         <Example>'Xlim', [Xlim, Ylim]</Example>
+         <DataType>single | double.</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>contourtype</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>Takes one of these strings:
+- contourtype = 'contour' generates a contour plot.
+- contourtype = 'contourf' generates a filled contour plot.
+- contourtype = 'surf' generates a surf plot.
+- contourtype = 'mesh' generates a mesh plot.
+Unless specified otherwise, the colormap of the plots is based on grey levels.</LongDesc>
+         <Example>'contourtype','contourf'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>cmap</Name>
+         <ShortDesc>Three-column matrix with colormap values in the range [0,1].</ShortDesc>
+         <TypeInd>Matrix or character.</TypeInd>
+         <LongDesc>A personalized colormap is used to plot the contour. Each row of 'plots' is an RGB triplet that defines one color or a string which identifies the color (i.e. 'gray').</LongDesc>
+         <Example>'cmap',[0, 0, 0.3 ; 0, 0, 0.4 ; 0, 0, 0.5 ]</Example>
+         <DataType>single | double | char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>pdfmethod</Name>
+         <ShortDesc>Density estimation method.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Supported options are 'matlab' and 'fsda'.
+- 'matlab' (default) uses the default approach implemented in the MATLAB ksdensity function, using a normal kernel.
+- 'fsda' computes a nonparametric estimate of the probability density function based on a normal kernel and using a bandwidth estimated as a function of the number of points in X.
+Independently from the choice of the user, the function switches automatically to 'fsda' in case the user is using releases older than R2016a, when function ksdensity was only addressing one-dimensional data.</LongDesc>
+         <Example>'pdfmethod','fsda'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>F</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>Density values.</TypeInd>
+         <LongDesc>The estimate of F is based on the normal kernel function, using the window parameter (bandwidth) that is a function of the number of points and dimension in X.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Xi</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Grid of evaluation points.</TypeInd>
+         <LongDesc>2d matrix of equally-spaced points where the normal kernel function has been evaluated.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>bw</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>Bandwidth value.</TypeInd>
+         <LongDesc>The bandwidth used for the density estimation.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>A.W. Bowman and A. Azzalini (1997), "Applied Smoothing Techniques for Data Analysis," Oxford University Press.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>ksdensity</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Density plots for a mixture of two normal distributions.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>  X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];</ItemCell>
+            <ItemCell>  X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];</ItemCell>
+            <ItemCell>  X = [X1 ; X2];</ItemCell>
+            <ItemCell>  % A filled contour plot obtained using colormap 'cmap' = 'summer'.</ItemCell>
+            <ItemCell>  [F1,Xi,bw] = kdebiv(X,'contourtype','contourf','cmap','summer');</ItemCell>
+            <ItemCell>  title('A filled contour plot obtained using colormap ''summer''');</ItemCell>
+            <ItemCell>  hold on</ItemCell>
+            <ItemCell>  plot(X(:,1),X(:,2),'rx')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>An example using colormap.</Title>
+         <Desc>
+            <ItemCell>A standard (not filled) contour plot obtained using colormap 'cmap' = 'hot'.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  F2 = kdebiv(X,'cmap','hot');</ItemCell>
+            <ItemCell>  title('A standard (not filled) contour plot obtained using colormap ''hot''');</ItemCell>
+            <ItemCell>  % A filled contour plot with personalized colormap: note the last</ItemCell>
+            <ItemCell>  % line of cmap (1 1 1), which is added to obtain a white background</ItemCell>
+            <ItemCell>  % in the low densit areas.</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  % Data points, with associated clickable legends.</ItemCell>
+            <ItemCell>  plot(X1(:,1),X1(:,2),'xr' , X2(:,1),X2(:,2),'oc');</ItemCell>
+            <ItemCell>  clickableMultiLegend('group 1','group 2');</ItemCell>
+            <ItemCell>  % superimpose the contour plot</ItemCell>
+            <ItemCell>  hold on;</ItemCell>
+            <ItemCell>  cmap =   [0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ; 0, 0, 0.6 ;  0, 0, 0.8 ; 0, 0, 1.0 ; 1, 1, 1 ];</ItemCell>
+            <ItemCell>  F3 = kdebiv(X,'cmap',cmap);</ItemCell>
+            <ItemCell>  title('A filled contour plot with personalized colormap and data point superimposed');</ItemCell>
+            <ItemCell>  % just to position the figures in "cascade".</ItemCell>
+            <ItemCell>  cascade;</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Surf and mesh plots.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>  close all;</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  F4 = kdebiv(X,'contourtype','surf');</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  F5 = kdebiv(X,'cmap',summer,'contourtype','surf');</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  F6 = kdebiv(X,'contourtype','mesh');</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  F7 = kdebiv(X,'cmap',summer,'contourtype','mesh');</ItemCell>
+            <ItemCell>  cascade;</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Test option 'method'.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>  [F,Xi,bw]      = kdebiv(X,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>  disp(['fsda: estimated bandwidth over x axis is ' num2str(bw(1))]);</ItemCell>
+            <ItemCell>  disp(['fsda: estimated bandwidth over y axis is ' num2str(bw(2))]);</ItemCell>
+            <ItemCell>  if ~verLessThan('matlab','9.0')</ItemCell>
+            <ItemCell>    [F2,Xi2,bw2] = kdebiv(X,'pdfmethod','matlab');</ItemCell>
+            <ItemCell>    disp(['matlab (ksdensity): estimated bandwidth over x axis is ' num2str(bw2(1))]);</ItemCell>
+            <ItemCell>    disp(['matlab (ksdensity): estimated bandwidth over y axis is ' num2str(bw2(2))]);</ItemCell>
+            <ItemCell>  end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>test option 'method', with plots.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all;</ItemCell>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>[F2,Xi2,bw2] = kdebiv(X,'cmap','gray','pdfmethod','fsda');</ItemCell>
+            <ItemCell>hold on</ItemCell>
+            <ItemCell>plot(X(:,1),X(:,2),'rx');</ItemCell>
+            <ItemCell>title('pdfmethod = fsda');</ItemCell>
+            <ItemCell>if ~verLessThan('matlab','9.0')</ItemCell>
+            <ItemCell>    figure</ItemCell>
+            <ItemCell>    [F3,Xi3,bw3] = kdebiv(X,'cmap','gray','pdfmethod','matlab');</ItemCell>
+            <ItemCell>    hold on</ItemCell>
+            <ItemCell>    plot(X(:,1),X(:,2),'rx')</ItemCell>
+            <ItemCell>    title('pdfmethod = matalb');</ItemCell>
+            <ItemCell>    figure</ItemCell>
+            <ItemCell>    [F4,Xi4,bw4] = kdebiv(X,'cmap','gray','pdfmethod','histsmooth');</ItemCell>
+            <ItemCell>    hold on</ItemCell>
+            <ItemCell>    plot(X(:,1),X(:,2),'rx')</ItemCell>
+            <ItemCell>    title('pdfmethod = histogram smoothing (remark: to be fixed)');</ItemCell>
+            <ItemCell>    figure</ItemCell>
+            <ItemCell>    [F5,Xi5,bw5] = kdebiv(X,'cmap','gray','pdfmethod','independence');</ItemCell>
+            <ItemCell>    hold on</ItemCell>
+            <ItemCell>    plot(X(:,1),X(:,2),'rx')</ItemCell>
+            <ItemCell>    title('pdfmethod = independence');</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    disp('For this MATLAB release, only ''fsda'' option can be used' );</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cascade;</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Speed test.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell> if ~verLessThan('matlab','9.0')</ItemCell>
+            <ItemCell>    tt = 0; tt2=0;</ItemCell>
+            <ItemCell>    for i = 1 : 100</ItemCell>
+            <ItemCell>          X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];</ItemCell>
+            <ItemCell>          X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];</ItemCell>
+            <ItemCell>          X = [X1 ; X2];</ItemCell>
+            <ItemCell>          t = tic;</ItemCell>
+            <ItemCell>          [F,Xi,bw] = kdebiv(X,'pdfmethod','fsda');</ItemCell>
+            <ItemCell>          tt = tt+toc(t);</ItemCell>
+            <ItemCell>          t2 = tic;</ItemCell>
+            <ItemCell>          [F,Xi,bw] = ksdensity(X);</ItemCell>
+            <ItemCell>          tt2 = tt2+toc(t2);</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>    disp(['kdebiv    time = ' num2str(tt)] );</ItemCell>
+            <ItemCell>    disp(['ksdensity time = ' num2str(tt2)] );</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

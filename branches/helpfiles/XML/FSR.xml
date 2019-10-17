@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSR</Title>
+   <Purpose><!--This is the second line of the .m file-->FSR gives an automatic outlier detection procedure in linear regression
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>h</Name>
+         <ShortDesc>The number of observations that have determined the least trimmed squares estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>h is an integer greater or equal than p but smaller then n. Generally if the purpose is outlier detection h=[0.5*(n+p+1)] (default value). h can be smaller than this threshold if the purpose is to find subgroups of homogeneous observations.
+In this function the LTS/LMS estimator is used just to initialize the search.</LongDesc>
+         <Example>'h',round(n*0,75)</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the robust estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.
+They will be (n choose p).
+If the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+         <Example>'nsamp',1000</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lms</Name>
+         <ShortDesc>Criterion to use to find the initial subset to initialize the search.</ShortDesc>
+         <TypeInd>Scalar, vector or structure.</TypeInd>
+         <LongDesc>lms specifies the criterion to use to find the initial subset to initialize the search (LMS, LTS with concentration steps, LTS without concentration steps or subset supplied directly by the user).
+The default value is 1 (Least Median of Squares is computed to initialize the search). On the other hand, if the user wants to initialze the search with LTS with all the default options for concentration steps then lms=2. If the user wants to use LTS without concentration steps, lms can be a scalar different from 1 or 2. If lms is a struct it is possible to control a series of options for concentration steps (for more details see option lms inside LXS.m) LXS.m.
+If, on the other hand, the user wants to initialize the search with a prespecified set of units there are two possibilities:
+1) lms can be a vector with length greater than 1 which contains the list of units forming the initial subset. For example, if the user wants to initialize the search with units 4, 6 and 10 then lms=[4 6 10];
+2) lms is a struct which contains a field named bsb which contains the list of units to initialize the search. For example, in the case of simple regression through the origin with just one explanatory variable, if the user wants to initialize the search with unit 3 then lms=struct; lms.bsb=3;</LongDesc>
+         <Example>'lms',1</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>bsb</Value>
+               <Description>3;</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 (default) the plot of minimum deletion residual with envelopes based on n observations and the scatterplot matrix with the outliers highlighted is produced.
+If plots=2 the user can also monitor the intermediate plots based on envelope superimposition.
+Else no plot is produced.</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the initial subset size to start monitoring exceedances of minimum deletion residual, if init is not specified it set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bivarfit</Name>
+         <ShortDesc>Superimpose bivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least squares lines, based on SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
+bivarfit = '' is the default: no line is fitted.
+bivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X.
+bivarfit = '2' fits two ols lines: one to all points and another to the group of the genuine observations. The group of the potential outliers is not fitted.
+bivarfit = '0' fits one ols line to each group. This is useful for the purpose of fitting mixtures of regression lines.
+bivarfit = 'i1' or 'i2' or 'i3' etc. fits an ols line to a specific group, the one with index 'i' equal to 1, 2, 3 etc. Again, useful in case of mixtures.</LongDesc>
+         <Example>'bivarfit','2'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>multivarfit</Name>
+         <ShortDesc>Superimpose multivariate least square lines.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>This option adds one or more least square lines, based on MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
+multivarfit = '' is the default: no line is fitted.
+multivarfit = '1' fits a single ols line to all points of each bivariate plot in the scatter matrix y|X. The line added to the scatter plot y|Xi is avconst + Ci*Xi, where Ci is the coefficient of Xi in the multivariate regression and avconst is the effect of all the other explanatory variables different from Xi evaluated at their centroid (that is overline{y}'C)) multivarfit = '2' equal to multivarfit ='1' but this time we also add the line based on the group of unselected observations (i.e. the normal units).</LongDesc>
+         <Example>'multivarfit','1'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labeladd</Name>
+         <ShortDesc>Add outlier labels in plot.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>If this option is '1', we label the outliers with the unit row index in matrices X and y. The default value is labeladd='', i.e. no label is added.</LongDesc>
+         <Example>'labeladd','1'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nameX</Name>
+         <ShortDesc>Add variable labels in plot.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>Cell array of strings of length p containing the labels of the variables of the regression dataset. If it is empty (default) the sequence X1, ..., Xp will be created automatically</LongDesc>
+         <Example>'nameX',{'NameVar1','NameVar2'}</Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>namey</Name>
+         <ShortDesc>Add response label.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>String containing the label of the response</LongDesc>
+         <Example>'namey','NameOfResponse'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylim</Name>
+         <ShortDesc>Control y scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector with two elements controlling minimum and maximum on the y axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylim',[0,10] sets the minimum value to 0 and the max to 10 on the y axis</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlim</Name>
+         <ShortDesc>Control x scale in plot.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector with two elements minimum and maximum on the x axis. Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlim',[0,10] sets the minimum value to 0 and the max to 10 on the x axis</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bonflev</Name>
+         <ShortDesc>Signal to use to identify outliers.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Option to be used if the distribution of the data is strongly non normal and, thus, the general signal detection rule based on consecutive exceedances cannot be used. In this case bonflev can be:
+- a scalar smaller than 1 which specifies the confidence level for a signal and a stopping rule based on the comparison of the minimum MD with a Bonferroni bound. For example if bonflev=0.99 the procedure stops when the trajectory exceeds for the first time the 99% bonferroni bound.
+- A scalar value greater than 1. In this case the procedure stops when the residual trajectory exceeds for the first time this value.
+Default value is '', which means to rely on general rules based on consecutive exceedances.</LongDesc>
+         <Example>'bonflev',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages on the screen If msg==1 (default) messages are displayed on the screen about step in which signal took place else no message is displayed on the screen.</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbmfullrank</Name>
+         <ShortDesc>Dealing with singluar X matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>This option tells how to behave in case subset at step m (say bsbm) produces a singular X. In other words, this options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables. If bsbmfullrank =1 (default) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
+         <Example>'bsbmfullrank',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>ListOut</Value>
+               <Description>k x 1 vector containing the list of the units declared as outliers or NaN if the sample is homogeneous</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>outliers</Value>
+               <Description>out.ListOut. This field is added for homogeneity with the other robust estimators.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>beta</Value>
+               <Description>p-by-1 vector containing the estimated regression parameters (in step n-k).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>scale</Value>
+               <Description>scalar containing the estimate of the scale (sigma).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>residuals</Value>
+               <Description>n x 1 vector containing the estimates of the robust scaled residuals.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>fittedvalues</Value>
+               <Description>n x 1 vector containing the fitted values.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mdr</Value>
+               <Description>(n-init) x 2 matrix 1st col = fwd search index 2nd col = value of minimum deletion residual in each step of the fwd search</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>(n-init) x 11 matrix which contains the unit(s) included in the subset at each step of the fwd search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>nout</Value>
+               <Description>2 x 5 matrix containing the number of times mdr went out of particular quantiles.
+First row contains quantiles 1 99 99.9 99.99 99.999.
+Second row contains the frequency distribution.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>constr</Value>
+               <Description>This output is produced only if the search found at a certain step X is a singular matrix. In this case the search runs in a constrained mode, that is including the units which produced a non singular matrix in the last n-constr steps. out.constr is a vector which contains the list of units which produced a singular X matrix</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSR'.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani, M., Atkinson A.C., Cerioli A. (2009). Finding an unknown number of multivariate outliers. Journal of the Royal Statistical Society Series B, Vol. 71, pp. 201-221.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSReda</Item>
+      <Item>LXS</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSR with all default options.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>% Uncontaminated data</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>% Contaminated data</ItemCell>
+            <ItemCell>ycont=y;</ItemCell>
+            <ItemCell>ycont(1:5)=ycont(1:5)+6;</ItemCell>
+            <ItemCell>[out]=FSR(ycont,X,'plots',2);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSR with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>state=100;</ItemCell>
+            <ItemCell>randn('state', state);</ItemCell>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>X=randn(n,3);</ItemCell>
+            <ItemCell>bet=[3;4;5];</ItemCell>
+            <ItemCell>y=3*randn(n,1)+X*bet;</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+13;</ItemCell>
+            <ItemCell>[outFS]=FSR(y,X,'plots',2);</ItemCell>
+            <ItemCell>% The envelopes based on all the observations show that in the central</ItemCell>
+            <ItemCell>% part of the search the observed curve is well beyond the extreme</ItemCell>
+            <ItemCell>% thresholds. More precisely, the message inside the graph informs that</ItemCell>
+            <ItemCell>% the signal took place in step 81 because the value of minimum deletion</ItemCell>
+            <ItemCell>% residual in this step was greater than 99.999% threshold.</ItemCell>
+            <ItemCell>% Once a signal takes place the envelopes are resuperimposed until a</ItemCell>
+            <ItemCell>% stopping rule is fulfilled.</ItemCell>
+            <ItemCell>% The procedure of resuperimposing envelopes in this case stops when</ItemCell>
+            <ItemCell>% n = 85, the first time in which we have a value of rmin(m) for</ItemCell>
+            <ItemCell>% $n&amp;gt;=m^\dagger-1$ greater than the 99% threshold. The group can</ItemCell>
+            <ItemCell>% therefore be considered as homogeneous up to when we include 84 units.</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>FSR with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Monitor the exceedances from m=60 without showing plots.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=rand(n,p);</ItemCell>
+            <ItemCell>y=rand(n,1);</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'init',60,'plots',0);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Initialize the search with the subsample which produces the smallest [h/n] quantile of squared residuals.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'h',120);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Extract all possible subsamples in order to find susbet to initialize the search.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'nsamp',0);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example for various combinations of the labeladd, bivarfit and multivarfit options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>[out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of options xlim and ylim (Hawkins data).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('hawkins.txt','hawkins');</ItemCell>
+            <ItemCell>y=hawkins(:,9);</ItemCell>
+            <ItemCell>X=hawkins(:,1:8);</ItemCell>
+            <ItemCell>% Use of FSR starting with 1000 subsamples</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'nsamp',1000);</ItemCell>
+            <ItemCell>% Use of FSR starting with 1000 subsamples</ItemCell>
+            <ItemCell>% focusing in the output plots to the interval 1-6 on the y axis and</ItemCell>
+            <ItemCell>% to steps 30-90.</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'nsamp',1000,'ylim',[1 6],'xlim',[30 90]);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of options nameX and nameY with contaminated data.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>state1=123498;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=33;</ItemCell>
+            <ItemCell>% shift contamination of the first 6 units of the response</ItemCell>
+            <ItemCell>y(1:kk)=y(1:kk)+6;</ItemCell>
+            <ItemCell>nameX={'age', 'salary', 'position'};</ItemCell>
+            <ItemCell>namey='salary';</ItemCell>
+            <ItemCell>[out]=FSR(y,X,'nameX',nameX,'namey',namey);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of point mass contamination.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=130;</ItemCell>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>state1=123498;</ItemCell>
+            <ItemCell>randn('state', state1);</ItemCell>
+            <ItemCell>X=randn(n,p);</ItemCell>
+            <ItemCell>y=randn(n,1);</ItemCell>
+            <ItemCell>kk=30;</ItemCell>
+            <ItemCell>% point mass contamination of the first kk units</ItemCell>
+            <ItemCell>X(1:kk,:)=1;</ItemCell>
+            <ItemCell>y(1:kk)=3;</ItemCell>
+            <ItemCell>[out]=FSR(y,X);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

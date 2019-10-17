@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HYPk</Title>
+   <Purpose><!--This is the second line of the .m file-->HYPk computes breakdown point and efficiency for hyp. tan. estimator
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>supremum of the change of variance curve.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>$supCVC(psi,x) x \in R$.
+Default value is k=4.5</LongDesc>
+         <Example> </Example>
+         <DataType>double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables of the dataset (for regression p=1) UP TO NOW p=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE ANALYSIS</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning constant c.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator Default value is c=4</LongDesc>
+         <Example>'c',3</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>shapeeff</Name>
+         <ShortDesc>location or shape efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, the efficiency is referred to the shape else (default) is referred to the location. TODO:Hac:shapeeff</LongDesc>
+         <Example>'shapeeff',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>bdp.</TypeInd>
+         <LongDesc>Breakdown point associated to the supplied value of c</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>eff.</TypeInd>
+         <LongDesc>Efficiency associated to the supplied value of c</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>A</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>parameter A of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>B</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>parameter B of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>d</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>parameter d of hyperbolic tangent estimator.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->\[
+HYPpsi(u) = \left\{ \begin{array}{cc} u &amp; |u| \leq d \\
+\sqrt{A (k - 1)} \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &amp; d \leq |u| &amp;lt; c, \\
+0 &amp; |u| \geq c.
+\end{array} \right.
+\]
+It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \times normpdf(c) &amp;lt;1$
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648 (HRR)</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPck</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>HYPk with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    [bdp]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('Break down point')</ItemCell>
+            <ItemCell>    disp(bdp)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>HYPk with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    [bdp,eff]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('efficiency')</ItemCell>
+            <ItemCell>    disp(eff)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>HYPk with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(4.5,1);</ItemCell>
+            <ItemCell>    disp('Constants A, B and d')</ItemCell>
+            <ItemCell>    disp(A)</ItemCell>
+            <ItemCell>    disp(B)</ItemCell>
+            <ItemCell>    disp(d)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use optional argument c.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(4.5,1,'c',3);</ItemCell>
+            <ItemCell>    disp('Constants A, B and d')</ItemCell>
+            <ItemCell>    disp(A)</ItemCell>
+            <ItemCell>    disp(B)</ItemCell>
+            <ItemCell>    disp(d)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Breakwodn point and efficiency.</Title>
+         <Desc>
+            <ItemCell>Analysis of breakdown point and asymptotic efficiency at the normal distribution as a function of k (supCVC) in regression.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>kk=2:0.1:6;</ItemCell>
+            <ItemCell>% BDPEFF = matrix which will contain</ItemCell>
+            <ItemCell>% 1st column = value of k</ItemCell>
+            <ItemCell>% 2nd column = breakdown point (bdp)</ItemCell>
+            <ItemCell>% 3rd column = asympotic nominal efficiency (eff)</ItemCell>
+            <ItemCell>% 4th column = value of parameter A</ItemCell>
+            <ItemCell>% 5th column = value of parameter B</ItemCell>
+            <ItemCell>% 6th column = value of parameter d</ItemCell>
+            <ItemCell>BDPEFF=[kk' zeros(length(kk),5)];</ItemCell>
+            <ItemCell/>
+            <ItemCell>% Fixed value of c which must be used</ItemCell>
+            <ItemCell>cdef=2.2;</ItemCell>
+            <ItemCell/>
+            <ItemCell>jk=1;</ItemCell>
+            <ItemCell>for k=kk</ItemCell>
+            <ItemCell>    [bdp,eff,A,B,d]=HYPk(k,1,'c',cdef);</ItemCell>
+            <ItemCell>    BDPEFF(jk,2:end)=[bdp, eff, A, B, d];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>nr=2;</ItemCell>
+            <ItemCell>nc=2;</ItemCell>
+            <ItemCell>subplot(nr,nc,1)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,2))</ItemCell>
+            <ItemCell>xlabel('k=sup CVC','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Breakdown point','Interpreter','none')</ItemCell>
+            <ItemCell>subplot(nr,nc,2)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,3))</ItemCell>
+            <ItemCell>xlabel('k=sup CVC','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Asymptotic efficiency','Interpreter','none')</ItemCell>
+            <ItemCell>subplot(nr,nc,3)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,4:5))</ItemCell>
+            <ItemCell>xlabel('k=sup CVC','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('A and B','Interpreter','none')</ItemCell>
+            <ItemCell>subplot(nr,nc,4)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,6))</ItemCell>
+            <ItemCell>xlabel('k=sup CVC','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('d','Interpreter','none')</ItemCell>
+            <ItemCell/>
+            <ItemCell>suplabel(['Constant c=' num2str(cdef)],'t');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

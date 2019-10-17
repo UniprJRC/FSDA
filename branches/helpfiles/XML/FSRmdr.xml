@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRmdr</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRmdr computes minimum deletion residual and other basic linear regression quantities in each step of the search
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>list of units forming the initial subset.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>If bsb=0 (default) then the procedure starts with p units randomly chosen else if bsb is not 0 the search will start with m0=length(bsb)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the point where to initialize the search and start monitoring required diagnostics. If it is not specified it is set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If equal to one a plot of minimum deletion residual appears on the screen with 1%, 50% and 99% confidence bands else (default) no plot is shown.
+Remark: the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot.</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additioanl column of ones for the intercept is not added. As default nocheck=0. The controls on h, alpha and nsamp still remain</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages about great interchange on the screen If msg==1 (default) messages are displayed on the screen else no message is displayed on the screen</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>constr</Name>
+         <ShortDesc>Constrained search.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>r x 1 vector which contains the list of units which are forced to join the search in the last r steps. The default is constr=''. No constraint is imposed</LongDesc>
+         <Example>'constr',[1:10] forces the first 10 units to join the subset in the last 10 steps</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbmfullrank</Name>
+         <ShortDesc>What to do in case subset at step m (say bsbm) produces a non singular X.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>This options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables.
+If bsbmfullrank = 1 (default is 1) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
+         <Example>'bsbmfullrank',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbsteps</Name>
+         <ShortDesc>Save the units forming subsets.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subsets. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=5000, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=753 and init=6, units forming subset are stored for m=init, 100, 200, 300, 400, 500 and 600.</LongDesc>
+         <Example>'bsbsteps',[100 200] stores the unis forming subset in steps 100 and 200.</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mdr</Name>
+         <ShortDesc>n -init x 2 matrix</ShortDesc>
+         <TypeInd>Monitoring of minimum deletion residual at each step of the forward search.</TypeInd>
+         <LongDesc>1st col = fwd search index (from init to n-1).
+2nd col = minimum deletion residual.
+REMARK: if in a certain step of the search matrix is singular, this procedure checks ohw many observations produce a singular matrix. In this case mdr is a column vector which contains the list of units for which matrix X is non singular.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Un</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units included in each step.</TypeInd>
+         <LongDesc>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>BB</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units belonging to subset in each step.</TypeInd>
+         <LongDesc>n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input option bsbsteps) which contains information about the units belonging to the subset at each step of the forward search.
+BB has the following structure 1-st row has number 1 in correspondence of the steps in which unit 1 is included inside subset and a missing value for the other steps ......
+(n-1)-th row has number n-1 in correspondence of the steps in which unit n-1 is included inside subset and a missing value for the other steps n-th row has number n in correspondence of the steps in which unit n is included inside subset and a missing value for the other steps The size of matrix BB is n x (n-init+1) if option input bsbsteps is 0 else the size is n-by-length(bsbsteps).</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Bols</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>OLS coefficents.</TypeInd>
+         <LongDesc>(n-init+1) x (p+1) matrix containing the monitoring of estimated beta coefficients in each step of the forward search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>S2</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>S2 and R2.</TypeInd>
+         <LongDesc>(n-init+1) x 3 matrix containing the monitoring of S2 (2nd column)and R2 (third column) in each step of the forward search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis, Springer Verlag, New York.</Item>
+      <Item>Atkinson, A.C. and Riani, M. (2006). Distribution theory and simulations for tests of outliers in regression. Journal of Computational and Graphical Statistics, Vol. 15, pp. 460-476</Item>
+      <Item>Riani, M. and Atkinson, A.C. (2007). Fast calibrations of the forward search for testing multiple outliers in regression, Advances in Data Analysis and Classification, Vol. 1, pp. 123-141.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSR</Item>
+      <Item>FSReda</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRmdr with all default options.</Title>
+         <Desc>
+            <ItemCell>Compute minimum deletion residual.</ItemCell>
+            <ItemCell>Monitor minimum deletion residual in each step of the forward search.</ItemCell>
+            <ItemCell>Common part to all examples: load fishery dataset.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell> [mdr] = FSRmdr(y,X,out.bs);</ItemCell>
+            <ItemCell> plot(mdr(:,1),mdr(:,2))</ItemCell>
+            <ItemCell> title('Monitoring of minimum deletion residual')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSRmdr with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Choose step to start monitoring.</ItemCell>
+            <ItemCell>Compute minimum deletion residual and start monitoring it from step 60.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr] = FSRmdr(y,X,out.bs,'init',60);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Analyze units entering the search in the final steps.</Title>
+         <Desc>
+            <ItemCell>Compute minimum deletion residual and analyze the units entering subset in each step of the fwd search (matrix Un). As is well known, the FS provides an ordering of the data from those most in agreement with a suggested model (which enter the first steps) to those least in agreement with it (which are included in the final steps).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un] = FSRmdr(y,X,out.bs);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Units forming subset in each step.</Title>
+         <Desc>
+            <ItemCell>Obtain detailed information about the units forming subset in each step of the forward search (matrix BB).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB] = FSRmdr(y,X,out.bs);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitor \( \hat \beta \).</Title>
+         <Desc>
+            <ItemCell>Monitor how the estimates of beta coefficients changes as the subset size increases (matrix Bols).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitor $s^2$.</Title>
+         <Desc>
+            <ItemCell>Monitor the estimate of $\sigma^2$ in each step of the fwd search (matrix S2).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);</ItemCell>
+            <ItemCell>plot(S2(:,1),S2(:,2))</ItemCell>
+            <ItemCell>title('Monitoring of s2')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Specify a regression model without intercept.</Title>
+         <Desc>
+            <ItemCell>FSRmdr using a regression model without intercept.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of option nocheck.</Title>
+         <Desc>
+            <ItemCell>FSRmdr applied without doing any checks on y and X variables.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> load('fishery');</ItemCell>
+            <ItemCell> y=fishery.data(:,2);</ItemCell>
+            <ItemCell> X=fishery.data(:,1);</ItemCell>
+            <ItemCell> % Find starting subset</ItemCell>
+            <ItemCell> [out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring of s2, and the evolution of beta coefficients for the Hawkins dataset load('hawkins.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('hawkins.txt');</ItemCell>
+            <ItemCell>y=hawkins(:,9);</ItemCell>
+            <ItemCell>X=hawkins(:,1:8);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[~,~,~,Bols,S2] = FSRmdr(y,X,out.bs);</ItemCell>
+            <ItemCell>if isnan(S2)</ItemCell>
+            <ItemCell>    disp('NoFullRank in initial subset, please rerun FSRmdr')</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    %The forward plot of s2 shows that initially the estimate is virtually</ItemCell>
+            <ItemCell>    %zero. The four line segments comprising the plot correspond to the four</ItemCell>
+            <ItemCell>    %groups of observations</ItemCell>
+            <ItemCell>    % Plot of the monitoring of S2 and R2</ItemCell>
+            <ItemCell>    figure;</ItemCell>
+            <ItemCell>    subplot(1,2,1)</ItemCell>
+            <ItemCell>    plot(S2(:,1),S2(:,2))</ItemCell>
+            <ItemCell>    xlabel('Subset size m');</ItemCell>
+            <ItemCell>    ylabel('S2');</ItemCell>
+            <ItemCell>    subplot(1,2,2)</ItemCell>
+            <ItemCell>    plot(S2(:,1),S2(:,3))</ItemCell>
+            <ItemCell>    xlabel('Subset size m');</ItemCell>
+            <ItemCell>    ylabel('R2');</ItemCell>
+            <ItemCell>    %The forward plots of the estimates of the beta coefficients show that they are virtually constant until m = 86, after which they start fluctuating in different directions.</ItemCell>
+            <ItemCell>    % Plots of the monitoring of "Estimates of beta coefficients"</ItemCell>
+            <ItemCell>    figure;</ItemCell>
+            <ItemCell>    for j=3:size(Bols,2)</ItemCell>
+            <ItemCell>        subplot(2,4,j-2)</ItemCell>
+            <ItemCell>        plot(Bols(:,1),Bols(:,j))</ItemCell>
+            <ItemCell>        xlabel('Subset size m');</ItemCell>
+            <ItemCell>        ylabel(['b' num2str(j-2)]);</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Store units forming subsets in selected steps.</Title>
+         <Desc>
+            <ItemCell>In this example the units forming subset are stored just for selected steps.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('hawkins.txt');</ItemCell>
+            <ItemCell>y=hawkins(:,9);</ItemCell>
+            <ItemCell>X=hawkins(:,1:8);</ItemCell>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(100)</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'bsbsteps',[30 60]);</ItemCell>
+            <ItemCell>if isnan(S2)</ItemCell>
+            <ItemCell>    disp('NoFullRank in initial subset, please rerun FSRmdr')</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    % BB has just two columns</ItemCell>
+            <ItemCell>    % First column contains information about units forming subset at step m=30</ItemCell>
+            <ItemCell>    % sum(~isnan(BB(:,1))) is 30</ItemCell>
+            <ItemCell>    % Second column contains information about units forming subset at step m=60</ItemCell>
+            <ItemCell>    % sum(~isnan(BB(:,2))) is 60</ItemCell>
+            <ItemCell>    disp(sum(~isnan(BB(:,1))))</ItemCell>
+            <ItemCell>    disp(sum(~isnan(BB(:,2))))</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

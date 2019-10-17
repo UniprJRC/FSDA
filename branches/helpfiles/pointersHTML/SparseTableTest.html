@@ -1,0 +1,38 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>SparseTableTest</title> <meta content="refpage" name="chunktype"><meta content="function:SparseTableTest " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="SparseTableTest Computes independence test for large and sparse contingency tables" itemprop="description" name="description" /><h1 itemprop="title">SparseTableTest</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/SparseTableTest.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/SparseTableTest.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/SparseTableTest.html">http://rosa.unipr.it/FSDA/SparseTableTest.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: SparseTableTest</em></p><h1 itemprop="title">SparseTableTest</h1><P>Computes independence test for large and sparse contingency tables</P><h2>Description</h2><P>This function implements a new test of indipendence between row variables
+ distribution ('outcomes') and columns ('treatments') which is expecially
+ suited for the analysis of large and sparse $I$-by-$J$ contingency
+ tables. The procedure is based on the collapsing of the original table
+ into a set of 2-by-2 tables for each cell of the original table which has
+ no less than a small number of counts (set in the optional input
+ parameter 'threshold') and testing each of the resulting collapsed tables
+ for independence by any test (Fisher exact test (default), Barnard test
+ or those belonging to the power divergence family of Cressie and Read).
+ Because of the Bonferroni inequality, a sufficient condition for
+ attaining a significance level $\alpha$ for this test (i.e., the
+ probability of detecting a positive association between two levels of the
+ response variables when in fact there is no such association) is that
+ each test done for each cell of the $I$-by-$J$ table rejects with
+ significance level equal to $\alpha$ divided by the number of comparisons
+ done. An additional bonus of the procedures is that it enables to
+ highlight the most important contribution to the association of each
+ single entry of the original I-by-J-table two way table. The original
+ idea of this test is due to Spyros Arsenis (Joint Research Centre of the
+ European Commission) and has been successfully applied to the analysis of
+ contingency table coming from international trade data.</P><h2>More About</h2><P>
+  $N$ = $I$-by-$J$-contingency table. The $(i,j)$-th element is equal to
+  $n_{ij}$,  $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$. The sum of the
+  elements of N is $n$ (the grand total). The sum of the elements of the
+  $i$-th row of the contingency table is denoted with $n_{i.}$ (n_idot in
+  the code). The sum of the elements of the $j$-th column of the
+  contingency table is denoted with $n_{.j}$ (n_dotj in the code).
+  $P$=$I$-by-$J$-table containing correspondence matrix
+  (proportions). The $(i,j)$-th element is equal to
+  $n_{ij}/n$, $i=1, 2, \ldots, I$ and $j=1, 2,
+  \ldots, J$.  The sum of the elements of $P$ is 1.
+  $P^*$=$I$-by-$J$-table containing correspondence matrix (proportions)
+  under the hypothesis of independence. The $(i,j)$-th element is equal to
+  $p_{ij}^*=p_{i.}p_{.j}$, $i=1, 2, \ldots, I$ and $j=1, 2, \ldots, J$.  
+  The sum of the elements of $P^*$ is 1.
+
+</P><h2>References</h2><P>Arsenis, S. and Riani, M. (2019), Data mining large contingency tables
+ standard approaches and a new method, in preparation.</P></html>

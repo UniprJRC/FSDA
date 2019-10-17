@@ -1,0 +1,25 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OPTwei</title> <meta content="refpage" name="chunktype"><meta content="function:OPTwei " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OPTwei Computes weight function psi(u)/u for optimal weight function" itemprop="description" name="description" /><h1 itemprop="title">OPTwei</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/OPTwei.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OPTwei.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/OPTwei.html">http://rosa.unipr.it/FSDA/OPTwei.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OPTwei</em></p><h1 itemprop="title">OPTwei</h1><P>Computes weight function psi(u)/u for optimal weight function</P><h2>More About</h2><P>
+ Function OPTwei transforms vector u as follows
+
+  \[
+   OPTwei(u,c) = \left\{
+    \begin{array}{cc}
+                  1/(3.25*c^2)                      &           |u| \leq  2 \\
+                
+    (1/3.25) \left( -1.944 * 1 / c^2 + 1.728  \frac{u^2}{c^4} - 0.312\frac{u^2}{c^6} + 0.016 \frac{u.^6}{c^8} \right) &  \qquad  2c\leq  |u|\leq 3c \\
+                
+                   0
+ \end{array}
+    \right.
+  \]
+
+  Remark: Yohai and Zamar (1997)  showed that the optimal $\rho$ function 
+  is optimal in the following highly desirable sense: the final M estimate
+  has a breakdown point of one-half and minimizes the maximum bias under
+  contamination distributions (locally for small fraction of
+  contamination), subject to achieving a desidered nominal asymptotic
+  efficiency when the data are Gaussian.
+
+</P><h2>References</h2><P>Yohai V.J., Zamar R.H. (1997) Optimal locally robust M-estimates of
+ regression. "Journal of Planning and Statistical Inference", Vol. 64, pp.
+ 309-323.</P></html>

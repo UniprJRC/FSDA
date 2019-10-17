@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>-1</daysToKeep>
+    <numToKeep>10</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>rm -fR ./EXAMPLES_test
+rm -fR ./EXAMPLES_classes
+rm -fR ./FSDA
+rm -f execution_log.txt
+
+mkdir ./EXAMPLES_classes</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>/cygdrive/c/cygwin64/bin/svn co --trust-server-cert --non-interactive --username emmanuele --password sordini https://fsda/svn/fsda.code.000/FSDA/trunk ./FSDA</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>wksp=`cygpath -u ${WORKSPACE}`
+${WORKSPACE}/FSDA/_automation_tools/estrai_examp.sh ${WORKSPACE}/FSDA ${WORKSPACE}</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>wksp=`cygpath -u ${WORKSPACE}`
+$wksp/FSDA/_automation_tools/run_tests.sh
+
+
+#pths=`cygpath -a ${WORKSPACE}/EXAMPLES_test`
+#pth_fsda=`cygpath -w ${WORKSPACE}/FSDA`
+#
+#/usr/bin/find $pths -name &quot;*.m&quot; &gt;flist
+#
+# cat flist 
+
+#rm -f pippo.txt
+#cat flist | while read func_file
+#do 
+
+#    x=`cygpath -w $func_file`
+
+#    y=&quot;addpath(genpath(&apos;$pth_fsda&apos;)); try; run(&apos;$x&apos;); diary(&apos;execution_log.txt&apos;); disp(&apos;Execution of $x completed successfully&apos;); diary(&apos;off&apos;); exit(0); catch error; diary(&apos;execution_log.txt&apos;); disp([&apos;Execution of $x FAILED: &apos; error.message]); diary(&apos;off&apos;); exit(0); end;&quot; 
+
+#    cat $y &gt;&gt;pippo.txt
+#done
+
+
+#cat flist | while read func_file
+#do
+#    x=`cygpath -w $func_file`
+#    &apos;/cygdrive/c/Program Files/MATLAB/R2013b/bin/matlab&apos; -nodisplay -nosplash -noFigureWindows -minimize -wait -r &quot;addpath(genpath(&apos;$pth_fsda&apos;)); try; run(&apos;$x&apos;); diary(&apos;execution_log.txt&apos;); disp(&apos;Execution of $x completed successfully&apos;); diary(&apos;off&apos;); exit(0); catch error; diary(&apos;execution_log.txt&apos;); disp([&apos;Execution of $x FAILED: &apos; error.message]); diary(&apos;off&apos;); exit(0); end;&quot; 
+
+#done</command>
+    </hudson.tasks.Shell>
+    <hudson.tasks.Shell>
+      <command>failed=`grep FAILED execution_log.txt | wc -l`
+successful=`grep &quot;completed successfully&quot; execution_log.txt | wc -l`
+total=`wc -l execution_log.txt`
+
+echo -e &quot;***** SUMMARY OF TEST RESULTS *****\n\n&quot; &gt;results.txt
+echo -e &quot;Total test count: $total\n&quot; &gt;&gt;results.txt
+echo -e &quot;SUCCESSFUL test count: $successful\n&quot; &gt;&gt;results.txt
+echo -e &quot;FAILED test count: $failed\n&quot; &gt;&gt;results.txt
+</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.ArtifactArchiver>
+      <artifacts>results.txt, execution_log.txt</artifacts>
+      <latestOnly>false</latestOnly>
+      <allowEmptyArchive>false</allowEmptyArchive>
+    </hudson.tasks.ArtifactArchiver>
+  </publishers>
+  <buildWrappers/>
+</project>

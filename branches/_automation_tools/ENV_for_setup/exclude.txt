@@ -1,0 +1,15 @@
+.asv
+(old
+development
+_development
+_istat
+_slides_demos
+_vti_cnf
+_vti_pvt
+(ORI
+OBSOLETE
+desktop.ini
+.svn
+_automation_tools
+_TODO
+InstallationNotes.docx

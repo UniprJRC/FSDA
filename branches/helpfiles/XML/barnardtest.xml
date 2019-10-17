@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->barnardtest</Title>
+   <Purpose><!--This is the second line of the .m file--> Barnard's unconditional test.
+</Purpose>
+   <Description><!--Description section-->This function computes the Barnard's unconditional test.
+The Barnard test is a powerful alternative of Fisher's exact test for 2x2 contingency tables.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>N</Name>
+         <ShortDesc>Contingency table (default) or n-by-2 input dataset.</ShortDesc>
+         <TypeInd>Matrix or Table.</TypeInd>
+         <LongDesc>Matrix or table which contains the input contingency table (say of size I-by-J) or the original data matrix.
+In this last case N=crosstab(N(:,1),N(:,2)). As default procedure assumes that the input is a contingency table.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>resolution</Name>
+         <ShortDesc>The resolution of the search space for the nuisance parameter.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Small number which defines the resolution. See the More About section for more details.
+The default value of the resolution is 0.001.</LongDesc>
+         <Example>'resolution',0.01</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>datamatrix</Name>
+         <ShortDesc>Data matrix or contingency table.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If datamatrix is true the first input argument N is forced to be interpreted as a data matrix, else if the input argument is false N is treated as a contingency table. The default value of datamatrix is false, that is the procedure automatically considers N as a contingency table.</LongDesc>
+         <Example>'datamatrix',true</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>pval</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>p-value of the test.</TypeInd>
+         <LongDesc>pval is the p-value, i.e. the probability of observing the given result, or one more extreme, by chance if the null hypothesis of independence between rows and columns is true. Small values of pval cast doubt on the validity of the null hypothesis.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->For a 2x2 contingency table, such as $N=[n_{11},n_{12};n_{21},n_{22}]$, the normalized difference in proportions between the two categories, given in each column, can be written with pooled variance (Score statistic) as
+\[
+T(X)=\frac{\hat{p}_2-\hat{p}_1}{\sqrt{\hat{p}(1-\hat{p})(\frac{1}{c_1}+\frac{1}{c_2})}},
+\]
+where $\hat{p}=(n_{11}+n_{21})/n$ , $\hat{p}_2=n_{12}/(n_{12}+n_{22})$, $\hat{p}_1=n_{11}/(n_{11}+n_{21})$, $c_1=n_{11}+n_{21}$ and $c_2=n_{12}+n_{22}$.
+The probability of observing $N$ (the input contingency table) is
+\[
+P(N)=\frac{c_1!c_2!}{n_{11}!n_{12}!n_{21}!n_{22}!} p^{n_{11}+n_{12}}(1-p)^{n_{21}+n_{22}},
+\]
+where $p$ is the unknown nuisance parameter.
+Barnard's test considers all tables with category sizes $c_1$ and $c_2$ for a given $p$. The p-value is the sum of probabilities of the tables having a score in the rejection region, e.g. having significantly large difference in proportions for a two-sided test. The p-value of the test is the maximum p-value calculated over all $p$ between 0 and 1. The input resolution parameter controls the resolution to search for.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION-->&#xD;
+&#xD;
+ This file was inspired by Trujillo-Ortiz, A., R. Hernandez-Walls, A. Castro-Perez, L.&#xD;
+ Rodriguez-Cardozo N.A. Ramos-Delgado and R. Garcia-Sanchez. (2004).&#xD;
+ Barnardextest:Barnard's Exact Probability Test.&#xD;
+ https://www.mathworks.com/matlabcentral/fileexchange/6198-barnardextest .&#xD;
+ and  by Cardillo G. (2009) MyBarnard: a very compact routine for Barnard's exact&#xD;
+ test on 2x2 matrix.&#xD;
+ http://www.mathworks.com/matlabcentral/fileexchange/25760 .&#xD;
+ A comparison with the the current implementation is given in the last&#xD;
+ example.&#xD;
+ The FSDA team wishes to thank Dr. Ivano Azzini for the current implementation&#xD;
+ of the Barnard test.&#xD;
+&#xD;
+ 
+</Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Barnard, G.A. (1945), A new test for 2x2 tables. Nature, pp. 156-177.</Item>
+      <Item>Barnard, G.A. (1947), Significance tests for 2x2 tables, Biometrika, 34, pp. 123-138.</Item>
+      <Item>Suissa, S. and Shuster, J. J. (1985), Exact Unconditional Sample Sizes for the 2x2 Binomial Trial, Journal of the Royal Statistical Society, Ser. A, 148, pp. 317-327.</Item>
+      <Item>Lin C.Y., Yang M.C. (2009), Improved p-value tests for comparing two independent binomial proportions. Communications in Statistics-Simulation and Computation, 38(1):78-91.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>crosstab</Item>
+      <Item>fishertest</Item>
+      <Item>CressieRead</Item>
+      <Item>corrNominal</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Barnard test with all the default options.</Title>
+         <Desc>
+            <ItemCell>N= 2x2 Input contingency table</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[8,14; 1,3];</ItemCell>
+            <ItemCell>pval=barnardtest(N);</ItemCell>
+            <ItemCell>disp(['The p-value of the test is: ' num2str(pval)])</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Resolution option.</Title>
+         <Desc>
+            <ItemCell>N= 2x2 Input contingency table</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[20,14; 10,13];</ItemCell>
+            <ItemCell>% pvalue with the default resolution (0.001)</ItemCell>
+            <ItemCell>pval001=barnardtest(N);</ItemCell>
+            <ItemCell>% p value with a resolution of 0.01</ItemCell>
+            <ItemCell>pval01=barnardtest(N,'resolution',0.01);</ItemCell>
+            <ItemCell>disp(['The p-value with a resolution 0.01 is: ' num2str(pval01)])</ItemCell>
+            <ItemCell>disp(['The p-value a resolution 0.001 is: ' num2str(pval001)])</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>An example when the input is a MATLAB table.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>rownam={'OutcomeI', 'OutcomeII'};</ItemCell>
+            <ItemCell>colnam={'TreatmentI' 'TreatmentII'};</ItemCell>
+            <ItemCell>N=[40,14;10,30];</ItemCell>
+            <ItemCell>if verLessThan('matlab','8.2.0') ==0</ItemCell>
+            <ItemCell>    Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    Ntable=N;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>pval=barnardtest(Ntable);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>An example when the input is a datamatrix.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>N=[40,14;10,30];</ItemCell>
+            <ItemCell>% Recreate the orginal data matrix</ItemCell>
+            <ItemCell>X=crosstab2datamatrix(N);</ItemCell>
+            <ItemCell>% barnardtest when input is a datamatrix</ItemCell>
+            <ItemCell>pval=barnardtest(X,'datamatrix',true);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Comparison with other existing implementations.</Title>
+         <Desc>
+            <ItemCell>Using the example below</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>N=[16 40; 1 2];</ItemCell>
+            <ItemCell>pval=barnardtest(N);</ItemCell>
+            <ItemCell>% our p-value is 0.456054</ItemCell>
+            <ItemCell>% This value coincides with the R implementation (package barnard)</ItemCell>
+            <ItemCell>% based on a C routine. On the other hand the vectorized implementation</ItemCell>
+            <ItemCell>% of Barnard test http://www.mathworks.com/matlabcentral/fileexchange/25760</ItemCell>
+            <ItemCell>% called using mybarnard(N,1000) gives a p-value of   0.456051</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>
