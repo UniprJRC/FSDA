@@ -172,7 +172,7 @@ function out=corrNominal(N, varargin)
 %                       $V(y|i)$ denote the same measure computed for the
 %                       conditional distribution  $(f_{1|i}=n_{1|i}/n, ...,
 %                       f_{J|i}=n_{J|i}/n)$ of $y$ at the $i$-th setting of
-%                       the the explanatory variable $x$. A proportional
+%                       the explanatory variable $x$. A proportional
 %                       reduction in variation measure has the form.
 %                       \[
 %                       \frac{V(y) - E[V(y|x)]}{V(y|x)}
