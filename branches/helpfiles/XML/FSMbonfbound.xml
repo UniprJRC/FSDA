@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSMbonfbound</Title>
+   <Purpose><!--This is the second line of the .m file-->FSMbonfbound computes Bonferroni bounds for each step of the  search (in mult analysis)
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>number of observations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of observations on which the envelopes are based.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>p</Name>
+         <ShortDesc>number of variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables on which the envelopes are based.</LongDesc>
+         <Example> </Example>
+         <DataType>single | double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Point where to start monitoring required diagnostics.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Note that if bsb is supplied, init&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(0.5*(n+p+1))+1.</LongDesc>
+         <Example>'init',50</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>prob</Name>
+         <ShortDesc>quantiles for which envelopes have to be computed.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector containing 1 x k elements .
+The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</LongDesc>
+         <Example>'prob',[0.05 0.95]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>distrib</Name>
+         <ShortDesc>Reference distribution to use.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>The statistical distribution used to compute the approximated Bonferroni bounds. Distributions implemented are 'chi2' and 'F' (default).</LongDesc>
+         <Example>'distrib','chi2'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Bbound</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Bonferroni forward envelopes of mmd.</TypeInd>
+         <LongDesc>Matrix with n-m0+1 rows and length(prob)+1 columns:
+1st col = fwd search index from m0 to n-1, 2nd col = bound for quantile prob[1], 3rd col = bound for quantile prob[2], ..., (k+1) col = bound for quantile prob[k].</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMenvmmd</Item>
+      <Item>FSRbonfbound</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example using default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=1000;</ItemCell>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>init=floor(0.5*(n+p+1))+1;</ItemCell>
+            <ItemCell>MMDenv = FSMenvmmd(n,p,'init',init);</ItemCell>
+            <ItemCell>Bbound = FSMbonfbound(n,p,'init',init);</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Options init and prob.</Title>
+         <Desc>
+            <ItemCell>Example using option, init=10 and prob=[0.01 0.05 0.99 0.999]</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=2000;</ItemCell>
+            <ItemCell>p=15;</ItemCell>
+            <ItemCell>init=100;</ItemCell>
+            <ItemCell>prob=[0.95 0.99 0.999];</ItemCell>
+            <ItemCell>MMDenv = FSMenvmmd(n,p,'init',init,'prob',prob);</ItemCell>
+            <ItemCell>Bbound = FSMbonfbound(n,p,'init',init,'prob',prob);</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>plot(MMDenv(:,1),MMDenv(:,2:end),'r',Bbound(:,1),Bbound(:,2:end),'b');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Comparison between chi2 and F distributions.</Title>
+         <Desc>
+            <ItemCell>Example plotting distrib=chi2 and F, init=100 and prob=[0.999].</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>  n=2000;</ItemCell>
+            <ItemCell>  p=10;</ItemCell>
+            <ItemCell>  init=100;</ItemCell>
+            <ItemCell>  prob=[0.99];</ItemCell>
+            <ItemCell>  MMDenv = FSMenvmmd(n,p,'init',init,'prob',prob);</ItemCell>
+            <ItemCell>  distrib='chi2';</ItemCell>
+            <ItemCell>  BboundC = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
+            <ItemCell>  distrib='F';</ItemCell>
+            <ItemCell>  BboundF = FSMbonfbound(n,p,'init',init,'prob',prob,'distrib',distrib);</ItemCell>
+            <ItemCell>  figure;</ItemCell>
+            <ItemCell>  plot(MMDenv(:,1),MMDenv(:,2:end),BboundC(:,1),BboundC(:,2:end),BboundF(:,1),BboundF(:,2:end));</ItemCell>
+            <ItemCell>  legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

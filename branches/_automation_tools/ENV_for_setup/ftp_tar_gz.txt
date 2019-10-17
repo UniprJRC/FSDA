@@ -1,0 +1,9 @@
+open 160.78.66.206
+administrator
+ezechiele1
+cd wwwroot5\MATLAB
+bin
+put FSDA.tar.gz 
+dir
+close
+quit

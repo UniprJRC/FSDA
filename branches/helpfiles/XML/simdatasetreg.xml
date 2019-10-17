@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->simdatasetreg</Title>
+   <Purpose><!--This is the second line of the .m file-->simdatasetReg simulates a regression dataset given the parameters of a mixture regression model
+</Purpose>
+   <Description><!--Description section-->[y,X,id]=simdatasetreg(n, Pi, Beta, S) generates a regression dataset of size n from a mixture model with parameters 'Pi' (mixing proportions), 'Beta' (matrix of regression coefficients), and 'S' (vector of variances of the distributions of the points around each regression hyperplane). Component sample sizes are produced as a realization from a multinomial distribution with probabilities given by mixing proportions. For example, if n=200, k=4 and Pi=(0.25, 0.25, 0.25, 0.25) function Nk1=mnrnd( n-k, Pi) is used to generate k integer numbers (whose sum is n-k) from the multinominal distribution with parameters n-k and Pi. The size of the groups is given by Nk1+1. The first Nk1(1)+1 observations are generated using vector of regression coefficients Beta(:,1) and variance S(1), ..., and the X simulated as specified in structure Xdistrib, the last Nk1(k)+1 observations are generated using using vector of regression coefficients Beta(:,k), variance S(k) and the X simulated as specified in structure Xdistrib
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>sample size of the dataset.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Pi</Name>
+         <ShortDesc>vector of length k defining mixing proportions.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>$\sum_{j=1}^k \pi=1$.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Beta</Name>
+         <ShortDesc>p-by-k matrix containing (in the columns) regression coefficients for the k groups.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>S</Name>
+         <ShortDesc>vector of length k containing the variances of the k regression hyperplanes.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Xdistrib</Name>
+         <ShortDesc>information about how to generate each explanatory variable inside each group.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>The following options are admitted for Xdistrib Xdistrib.intercept = scalar equal to 1 if intercept is present. The default value of Xdistrib.intercept is 1.
+The other fields of Xdistrib depend on the distribution which is chosen.
+NORMAL DISTRIBUTION N(mu, sigma) Xdistrib.type='normal';
+Xdistrib.mu = matrix of size (p-1)-by-k if (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0) containing the parameters mu for each explanatory variable and each group. The default value of Xdistrib.mu is zeros(p-1, k).
+Xdistrib.sigma = matrix of size (p-1)-by-k if (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0) containing the parameters sigma for each explanatory variable and each group.
+The default value of Xdistrib.sigma is ones(p-1, k) UNIFORM DISTRIBUTION U(a, b) Xdistrib.type='uniform';
+Xdistrib.a = matrix of size (p-1)-by-k if (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0) containing the parameters a for each explanatory variable and each group. The default value of Xdistrib.a is zeros(p-1, k).
+Xdistrib.b = matrix of size (p-1)-by-k if (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0) containing the parameters b for each explanatory variable and each group. The default value of Xdistrib.b is ones(p-1, k).
+HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)| Xdistrib.type='halfnormal';
+Xdistrib.sigma = matrix of size (p-1)-by-k if (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0) containing the parameters sigma for each explanatory variable and each group. The default value of Xdistrib.sigma is ones(p-1, k).
+TODO:simdatasetReg:OTHER_DISTRIB Xdistrib.type='user'.
+Xdistrib.X = matrix with at least n rows and p-1 (if intercept is present) or p (if intercept is not present) columns containing the values of the explanatory variables for the k groups.
+Xdistrib.id =identifier vector which labes the rows of matrix Xdistrib.X</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>intercept</Value>
+               <Description>scalar equal to 1 if intercept is&#xD;
+                       present. The default value of Xdistrib.intercept is 1.&#xD;
+               The other fields of Xdistrib depend on the distribution&#xD;
+               which is chosen.&#xD;
+               NORMAL DISTRIBUTION N(mu, sigma)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>type</Value>
+               <Description>'normal';</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>mu</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters mu&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.mu is zeros(p-1, k).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters&#xD;
+                       sigma for each explanatory variable and each group.&#xD;
+                       The default value of Xdistrib.sigma is ones(p-1, k)&#xD;
+               UNIFORM DISTRIBUTION U(a, b)&#xD;
+                   Xdistrib.type='uniform';</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>a</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters a&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.a is zeros(p-1, k).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>b</Value>
+               <Description>matrix of size (p-1)-by-k if&#xD;
+                       (Xdistrib.intercept=1) or p-by-k if&#xD;
+                       (Xdistrib.intercept=0) containing the parameters b&#xD;
+                       for each explanatory variable and each group. The&#xD;
+                       default value of Xdistrib.b is ones(p-1, k).&#xD;
+               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|&#xD;
+                   Xdistrib.type='halfnormal';&#xD;
+                   Xdistrib.sigma = matrix of size (p-1)-by-k if&#xD;
+                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)&#xD;
+                   containing the parameters sigma for each explanatory variable&#xD;
+                   and each group. The default value of Xdistrib.sigma is&#xD;
+                   ones(p-1, k).&#xD;
+TODO:simdatasetReg:OTHER_DISTRIB&#xD;
+                   Xdistrib.type='user'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>matrix with at least n rows and p-1 (if&#xD;
+                   intercept is present) or p (if intercept is not&#xD;
+                   present) columns containing the values of the&#xD;
+                   explanatory variables for the k groups.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>id</Value>
+               <Description>identifier vector which labes the rows of&#xD;
+                   matrix Xdistrib.X</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>noiseunits</Name>
+         <ShortDesc>number of type of outlying observations.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>Missing value, scalar or structure.
+This input parameter specifies the number and type of outlying observations. The default value of noiseunits is 0.
+- If noiseunits is a scalar t different from 0, then t units from the uniform distribution in the interval min([X y]) max([X y]) are generated in such a way that their squared distance from the fitted value (squared residual) of each existing group is larger then the quantile 1-0.999 of the Chi^2 distribution with 1 degree of freedom. In order to generate these units the maximum number of attempts is equal to 10000.
+- If noiseunits is a structure it may contain the following fields:
+number = scalar, or vector of length f. The sum of the elements of vector 'number' is equal to the total number of outliers which are simulated.
+alpha = scalar or vector of legth f containing the level(s) of simulated outliers. The default value of alpha is 0.001.
+maxiter = maximum number of trials to simulate outliers.
+The default value of maxiter is 10000.
+interval= missing value or vector of length 2, or matrix of size 2-by-2 or matrix of size 2-by-(p+1) which controls the min and max of the generated outliers for each dimension.
+* If interval is a vector of length 2 each outlier has a value for each column of X and y which lies inside interval(1) and interval(2).
+* If interval is a matrix of size 2-by-2 each outlier has a value for each column of X which lies inside interval(1,1) and interval(2,1) and a value of y which lies inside interval(1,2) and interval(2,2).
+* If interval is a 2-by-(p+1) matrix outliers are simulated in:
+interval(1,1) interval (2,1) for expl variable 1 ...
+interval(1,p) interval (2,p) for expl variable p interval(1,p+1) interval (2,p+1) for response y.
+If interval is empty (default), the outliers are simulated in the interval min(X) max(X) and min(y) max (y).
+typeout = list of length f containing the type of outliers which must be simulated. Possible values for typeout are:
+* unif (or uniform), if the outliers must be generated using the uniform distribution;
+* norm (or normal), if the outliers must be generated using the normal distribution;
+* Chisquarez, if the outliers must be generated using the Chi2 distribution with z degrees of freedom;
+* Tz or tz, if the outliers must be generated using the Student T distribution with z degrees of freedom;
+* pointmass, if the outliers are concentrated on a particular point;
+* by_comp, if the outliers are distributed along a linear component. The option was introduced to add dense area in one linear component.
+* componentwise, if the outliers must have the same coordinates of the existing rows of matrix X apart from the single coordinate of y (which will be the min or max of y or to the min or max specified in interval).
+For example, the code:
+noiseunits=struct;
+noiseunits.number=[100 100];
+noiseunits.typeout={'uniform' 'componentwise'};
+noiseunits.interval=[-2 2];
+adds 200 outliers, the first 100 generated using a uniform distribution and the last 100 using componentwise scheme. Outliers are generated in the interval [-2 2] for each variable.</LongDesc>
+         <Example>'noiseunits', 10</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>number</Value>
+               <Description>[100 100];</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>typeout</Value>
+               <Description>{'uniform' 'componentwise'};</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>interval</Value>
+               <Description>[-2 2];&#xD;
+                adds 200 outliers, the first 100 generated using&#xD;
+                a uniform distribution and the last 100 using&#xD;
+                componentwise scheme. Outliers are generated in the&#xD;
+                interval [-2 2] for each variable.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>noisevars</Name>
+         <ShortDesc>Type of noise explanatory variables.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>Empty value, scalar or structure.
+- If noisevars is not specified or is an empty value (default) no noise variable is added to the matrix of simulated data.
+- If noisevars is a scalar equal to r, then r new noise explnatory variables are added to the matrix of simulated data using the uniform distribution in the range [min(X) max(X)].
+- If noisevars is a structure it may contain the following fields:
+noisevars.number= a scalar or a vector of length f. The sum of elements of vector 'number' is equal to the total number of noise variables to be addded.
+noisevars.distribution= string or cell array of strings of length f which specifies the distribution to be used to simulate the noise variables.
+If field distribution is not present then the uniform distribution is used to simulate the noise variables.
+String 'distribution' can be one of the following values:
+* uniform = uniform distribution * normal = normal distribution * t or T followed by a number which controls the degrees of freedom. For example, t6 specifies to generate the data according to a Student T with 6 degrees of freedom.
+* chisquare followed by a number which controls the degreess of freedom. For example, chisquare8 specifies to generate the data according to a Chi square distribution with 8 degrees of freedom.
+noisevars.interval= string or vector of length 2 or matrix of size 2-by-f (where f is the number of noise variables) which controls for each element of vector 'number' or each element of cell 'distribution', the min and max of the noise variables. For example, interval(1,3) and interval(2,3) are respectively the minimum and maximum values of simulated the data for the third noise variable If interval is empty (default), the noise variables are simulated uniformly between the smallest and the largest coordinates of the simulated data matrix X.
+For example, the code:
+noisevars=struct;
+noisevars.number=[3 2];
+noisevars.distribution={'Chisquare5' 'T3'};
+adds 5 noise explaantory variables, the first 3 generated using the Chi2 with 5 degrees of freedom and the last two using the Student t with 3 degrees of freedom. Noise variables are generated in the interval min(X) max(X).</LongDesc>
+         <Example>'noisevars', 5</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>number</Value>
+               <Description>a scalar or a vector of length f. The sum of&#xD;
+                       elements of vector 'number' is equal to the total&#xD;
+                       number of noise variables to be addded.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>distribution</Value>
+               <Description>string or cell array of strings of length&#xD;
+                       f which specifies the distribution to be used to&#xD;
+                       simulate the noise variables.&#xD;
+                       If field distribution is not present then the&#xD;
+                       uniform distribution is used to simulate the noise&#xD;
+                       variables.&#xD;
+                       String 'distribution' can be one of the following&#xD;
+                       values:&#xD;
+                       * uniform = uniform distribution&#xD;
+                       * normal  = normal distribution&#xD;
+                       * t or T followed by a number which controls the&#xD;
+                         degrees of freedom. For example, t6 specifies to&#xD;
+                         generate the data according to a Student T with 6&#xD;
+                         degrees of freedom.&#xD;
+                       * chisquare followed by a number which controls the&#xD;
+                         degreess of freedom. For example, chisquare8&#xD;
+                         specifies to generate the data according to a Chi&#xD;
+                         square distribution with 8 degrees of freedom.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>interval</Value>
+               <Description>string or vector of length 2 or matrix of size&#xD;
+                         2-by-f (where f is the number of noise variables)&#xD;
+                         which controls for each element of vector&#xD;
+                         'number' or each element of cell 'distribution',&#xD;
+                         the min and max of the noise variables. For&#xD;
+                         example, interval(1,3) and interval(2,3) are&#xD;
+                         respectively the minimum and maximum values of&#xD;
+                         simulated the data for the third noise variable&#xD;
+                         If interval is empty (default), the noise&#xD;
+                         variables are simulated uniformly between the&#xD;
+                         smallest and the largest coordinates of the&#xD;
+                         simulated data matrix X.&#xD;
+                For example, the code:&#xD;
+                   noisevars=struct;&#xD;
+                   noisevars.number=[3 2];&#xD;
+                   noisevars.distribution={'Chisquare5' 'T3'};&#xD;
+                adds 5 noise explaantory variables, the first 3 generated using&#xD;
+                the Chi2 with 5 degrees of freedom and the last two&#xD;
+                using the Student t with 3 degrees of freedom. Noise&#xD;
+                variables are generated in the interval min(X) max(X).</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>lambda</Name>
+         <ShortDesc>Transformation coefficient.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar containing inverse Box-Cox transformation coefficient to apply to y.
+The value false (default) implies that no transformation is applied to response variable.</LongDesc>
+         <Example>'lambda',2;</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>Response variable.</TypeInd>
+         <LongDesc>Vector of dimension (n+nout)-by-1 containing the values of the responses for the k groups.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Explanatory variables.</TypeInd>
+         <LongDesc>Matrix of size (n + nout)-by-(p + nnoise) containinng the values of the explanatory variables for the k groups.
+Noise coordinates are provided in the last nnoise columns.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>id</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>classification vector.</TypeInd>
+         <LongDesc>Classification vector of length n + nout; 0 represents an outlier.
+REMARK: If nout outliers could not be generated a warning is produced. In this case matrix X and vector id will have just n rows.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->To make a dataset more challenging for clustering, a user might want to simulate noise variables or outliers. Parameter 'nnoise' specifies the desired number of noise variables. If an interval 'int' is specified, noise will be simulated from a Uniform distribution on the interval given by 'int'. Otherwise, noise will be simulated uniformly between the smallest and largest coordinates of mean vectors. 'nout' specifies the number of observations outside (1 - 'alpha') ellipsoidal contours for the weighted component distributions. Outliers are simulated on a hypercube specified by the interval 'int'. A user can apply an inverse Box-Cox transformation of y providing a coefficient 'lambda'. The value 1 implies that no transformation is needed for the response.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS")</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980) The distribution of a linear combination of chi-square random variables, Applied Statistics, 29, 323-333.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>simdataset</Item>
+      <Item>MixSimreg</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Generate mixture of regression.</Title>
+         <Desc>
+            <ItemCell>Use an average overlapping at centroids =0.01 and all default options:</ItemCell>
+            <ItemCell>1) Beta is generated according to random normal for each group with mu=0 and sigma=1;</ItemCell>
+            <ItemCell>2) X in each dimension and each group is generated according to U(0, 1);</ItemCell>
+            <ItemCell>3) regression hyperplanes contain intercepts.</ItemCell>
+            <ItemCell>The value of p includes the intercept</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>k=3;</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.01);</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>% Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to</ItemCell>
+            <ItemCell>% 1.0000    1.0000    1.0000</ItemCell>
+            <ItemCell>% 0.5000    0.5000    0.5000</ItemCell>
+            <ItemCell>% 0.5000    0.5000    0.5000</ItemCell>
+            <ItemCell>% 0.5000    0.5000    0.5000</ItemCell>
+            <ItemCell>% 0.5000    0.5000    0.5000</ItemCell>
+            <ItemCell>% Probabilities of overlapping are evaluated at</ItemCell>
+            <ItemCell>% Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% spmplot([y X(:,2:end)],id)</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Generate 2 groups in 4 dimensions and add outliers from uniform distribution.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(100)</ItemCell>
+            <ItemCell>p=4; % p includes the intercept</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>out=MixSimreg(k,p,'BarOmega',0.01);</ItemCell>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=300;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>suplabel('2 regression lines with outliers from uniform','t')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Generate 4 groups in 4 dimensions and add outliers from uniform distribution.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(10000)</ItemCell>
+            <ItemCell>p=2;  % p includes the intercept</ItemCell>
+            <ItemCell>k=4;</ItemCell>
+            <ItemCell>out=MixSimreg(k,p,'BarOmega',0.01);</ItemCell>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=3000;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell> suplabel('2 regression lines with outliers from uniform','t')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Chi2 with 5 degrees of freedom.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=3000;</ItemCell>
+            <ItemCell>% Add asymmetric very concentrated noise</ItemCell>
+            <ItemCell>noiseunits.typeout={'Chisquare5'};</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Add outliers generated from Chi2 with 40 degrees of freedom.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=3000;</ItemCell>
+            <ItemCell>% Add asymmetric concentrated noise</ItemCell>
+            <ItemCell>noiseunits.typeout={'Chisquare40'};</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from normal distribution.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=3000;</ItemCell>
+            <ItemCell>% Add normal noise</ItemCell>
+            <ItemCell>noiseunits.typeout={'normal'};</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Student T with 5 degrees of freedom.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=3000;</ItemCell>
+            <ItemCell>% Add outliers from T5</ItemCell>
+            <ItemCell>noiseunits.typeout={'T5'};</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>suplabel('4 groups with outliers from Student T with 5 degrees if freedom','t')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add componentwise contamination.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars='';</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=3000;</ItemCell>
+            <ItemCell>% Add asymmetric concentrated noise</ItemCell>
+            <ItemCell>noiseunits.typeout={'componentwise'};</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>suplabel('4 groups with component wise outliers','t')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers generated from Chisquare and T distribution.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=5000*ones(2,1);</ItemCell>
+            <ItemCell>noiseunits.typeout={'Chisquare3','T20'};</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers from Chisquare and T distribution and use a personalized value of alpha.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=0;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=5000*ones(2,1);</ItemCell>
+            <ItemCell>noiseunits.typeout={'Chisquare3','T20'};</ItemCell>
+            <ItemCell>noiseunits.alpha=0.002;</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Add outliers from Chi2 and point mass contamination and add one noise variable.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noisevars=struct;</ItemCell>
+            <ItemCell>noisevars.number=1;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=[100 100];</ItemCell>
+            <ItemCell>noiseunits.typeout={'pointmass' 'Chisquare5'};</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of personalized interval to generate outliers.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n=300;</ItemCell>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=1000;</ItemCell>
+            <ItemCell>noiseunits.typeout={'uniform'};</ItemCell>
+            <ItemCell>% Generate outliers in the interval [-1 1] for the first variable and</ItemCell>
+            <ItemCell>% interval [1 2] for the second variable</ItemCell>
+            <ItemCell>noiseunits.interval=[-1 1;</ItemCell>
+            <ItemCell>                     1 2];</ItemCell>
+            <ItemCell>% Finally add a noise variable</ItemCell>
+            <ItemCell>noisevars=struct;</ItemCell>
+            <ItemCell>noisevars.number=1;</ItemCell>
+            <ItemCell>[y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell>[H,AX,BigAx]=yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell>title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of the use of personalized interval to generate outliers (1).</Title>
+         <Desc>
+            <ItemCell>Generate 1000 outliers from uniform in the interval [-2 3] and 1000 units using componentwise contamination in the interval [-2 3]</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>noiseunits=struct;</ItemCell>
+            <ItemCell>noiseunits.number=[1000 1000];</ItemCell>
+            <ItemCell>noiseunits.typeout={'uniform' 'componentwise'};</ItemCell>
+            <ItemCell>noiseunits.interval=[-2; 3];</ItemCell>
+            <ItemCell> [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);</ItemCell>
+            <ItemCell> yXplot(y,X,'group',id);</ItemCell>
+            <ItemCell> suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example with user defined explanatory variables values (1).</Title>
+         <Desc>
+            <ItemCell>Here the X distribution is the same for each component.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>clear all</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(1234,'twister');</ItemCell>
+            <ItemCell>% mixture parameters</ItemCell>
+            <ItemCell>intercept = 0; % 1/0 = intercept yes/no</ItemCell>
+            <ItemCell>p=1+intercept;</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>% beta distributed as halfnormal</ItemCell>
+            <ItemCell>betadistrib=struct;</ItemCell>
+            <ItemCell>betadistrib.type='HalfNormal';</ItemCell>
+            <ItemCell>betadistrib.sigma=3;</ItemCell>
+            <ItemCell>% explanatory variables distribution chosen by the User from a beta</ItemCell>
+            <ItemCell>XdistribB=struct;</ItemCell>
+            <ItemCell>XdistribB.intercept=intercept;</ItemCell>
+            <ItemCell>XdistribB.type='User';</ItemCell>
+            <ItemCell>X1=random('beta',1,5,n,1);             % data generation: user distribution is a beta</ItemCell>
+            <ItemCell>XdistribB.BarX = ones(1,k)*mean(X1);   % mean of the generated data: one per group</ItemCell>
+            <ItemCell>% overlap level baromega: chosen at random here, in a given range</ItemCell>
+            <ItemCell>mino = 0.01; maxo = 0.1;</ItemCell>
+            <ItemCell>baromega = mino + (maxo-mino).*rand(1,1);</ItemCell>
+            <ItemCell>% estimated mixsim parameters</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',baromega,'Xdistrib',XdistribB,'betadistrib',betadistrib);</ItemCell>
+            <ItemCell>% Simulate the data from the mixim parameters and the user values for X</ItemCell>
+            <ItemCell>if intercept</ItemCell>
+            <ItemCell>    Q.Xdistrib.X = [ones(n,1) X1];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    Q.Xdistrib.X = X1;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id,'tag','X_beta');</ItemCell>
+            <ItemCell>set(gcf,'Name','X Beta distributed');</ItemCell>
+            <ItemCell>title('User-defined distribution for X');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example with user defined explanatory variables values (2).</Title>
+         <Desc>
+            <ItemCell>Here the X distribution is specific for each component.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>clear all</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(12345,'twister');</ItemCell>
+            <ItemCell>% mixture parameters</ItemCell>
+            <ItemCell>intercept = 0;      % 1/0 = intercept yes/no</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>p=1+intercept;</ItemCell>
+            <ItemCell>k=2;                %do not change k: it would not work (see below to generalise)</ItemCell>
+            <ItemCell>% beta distributed as halfnormal</ItemCell>
+            <ItemCell>betadistrib=struct;</ItemCell>
+            <ItemCell>betadistrib.type='HalfNormal';</ItemCell>
+            <ItemCell>betadistrib.sigma=3;</ItemCell>
+            <ItemCell>% explanatory variables distribution chosen by the User from a beta</ItemCell>
+            <ItemCell>XdistribB=struct;</ItemCell>
+            <ItemCell>XdistribB.intercept=intercept;</ItemCell>
+            <ItemCell>XdistribB.type='User';</ItemCell>
+            <ItemCell>%for i=1:10</ItemCell>
+            <ItemCell>% X beta distributed</ItemCell>
+            <ItemCell>X2=random('beta',0.5,1,n,1);</ItemCell>
+            <ItemCell>muBeta2 = mean(X2);</ItemCell>
+            <ItemCell>X1=random('beta',1,0.5,n,1);</ItemCell>
+            <ItemCell>muBeta1 = mean(X1);</ItemCell>
+            <ItemCell>% data generation: user distribution is a beta</ItemCell>
+            <ItemCell>XdistribB.BarX = [muBeta1 muBeta2]; % mean of the generated data: one per group</ItemCell>
+            <ItemCell>% overlap level baromega: chosen at random here, in a given range</ItemCell>
+            <ItemCell>mino = 0.01; maxo = 0.05;</ItemCell>
+            <ItemCell>maxomega = mino + (maxo-mino).*rand(1,1);</ItemCell>
+            <ItemCell>% estimated mixsim parameters</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'hom',true,'MaxOmega',maxomega,'Xdistrib',XdistribB,'betadistrib',betadistrib);</ItemCell>
+            <ItemCell>% Simulate the data from the mixim parameters and the user values for X</ItemCell>
+            <ItemCell>if intercept</ItemCell>
+            <ItemCell>    Q.Xdistrib.X = [ones(k*n,1) , [X1 ; X2]];</ItemCell>
+            <ItemCell>else</ItemCell>
+            <ItemCell>    Q.Xdistrib.X = [X1 ; X2];</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(k*n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>yXplot(y,X,'group',id,'tag','X_beta');</ItemCell>
+            <ItemCell>set(gcf,'Name','X Beta distributed');</ItemCell>
+            <ItemCell>title('User-defined distribution for X');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,362 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustIC</title><meta content="refpage" name="chunktype"><meta content="function:tclustIC" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustIC computes tclust for different number of groups k and restriction factors c." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustIC</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Automatic choice of k for geyser data using alpha=0.1.</a></li><li><a class="intrnllnk" href="#Example_2">Automatic choice of k in an example with 3 components and prefixed overlap.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cc">cc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alpha">alpha</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrtype">restrtype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cshape">cshape</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustIC</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustIC computes tclust for different number of groups k and restriction factors c</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustIC(Y)</code><span class="syntax_example"><a class="intrnllnk" href="tclustIC.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustIC(Y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustIC.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustIC (where the last two letters stand for 'Information Criterion')
+   computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA (CLACLA), for
+   different values of k (number of groups) and different values of c
+   (restriction factor), for a prespecified level of trimming. If Parallel
+   Computing toolbox is installed, parfor is used to compute tclust for
+   different values of c. In order to minimize randomness, given k, the
+   same subsets are used for each value of c.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustIC.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustIC(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Automatic choice of k for geyser data using alpha=0.1.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustIC.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustIC(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Automatic choice of k in an example with 3 components and prefixed overlap.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic choice of k for geyser data using alpha=0.1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1);
+% Write out.MIXMIX as MATLAB table
+disp('MIXMIX (BIC)')
+if verLessThan ('matlab','8.2.0');
+VariableNames={'c_1'; 'c_2'; 'c_4'; 'c_8'; 'c_16'; 'c_32'; 'c_64'; 'c_128'};
+disp(VariableNames')
+disp(out.MIXMIX)
+disp('Rows refers to k (number of groups')
+else
+RowNames=cellstr([repmat('k=',length(out.kk),1) num2str(out.kk')]);
+VariableNames=matlab.lang.makeValidName(cellstr([repmat('c=',length(out.cc),1) num2str(out.cc')]));
+disp(array2table(out.MIXMIX,'VariableNames',VariableNames','RowNames',RowNames))
+end
+% Find smallest value inside the table and write the corresponding
+% values of k (number of groups) and c (restriction factor)
+[valmin,indk]=min(out.MIXMIX);
+[minIC,indc]=min(valmin);
+disp(['Smallest value of IC is ' num2str(minIC) ' and takes place for'])
+disp(['k=' num2str(out.kk(indk(indc))) ' and  c=' num2str(out.cc(indc))]);</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+The labels of c in the top part of the plot denote the values of c for which IC is minimum
+MIXMIX (BIC)
+            c_1       c_2       c_4       c_8       c_16      c_32      c_64     c_128 
+           ______    ______    ______    ______    ______    ______    ______    ______
+
+    k=1    1475.7    1406.1    1355.4    1342.4    1342.8      1343      1343    1343.1
+    k=2    1245.5    1131.7    1039.6    981.55    950.67    943.08    943.25    943.38
+    k=3    810.31    788.98    784.84    787.93    789.65    790.51    790.93    791.15
+    k=4    812.15    800.45    804.79    803.63    800.02    799.67    800.16    799.26
+    k=5    815.93    819.29    822.69    823.62    821.51    818.13    818.99    820.41
+
+Smallest value of IC is 784.8427 and takes place for
+k=3 and  c=4
+</pre><img vspace="5" hspace="5" src="images\tclustIC_01.png" alt=""> <img vspace="5" hspace="5" src="images\tclustIC_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustIC_03.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
+rng('default') % Reinitialize the random number generator to its startup configuration
+rng(20000);
+ktrue=3;
+% n = number of observations
+n=150;
+% v= number of dimensions
+v=2;
+% Imposed average overlap
+BarOmega=0.04;
+out=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
+% data generation given centroids and cov matrices
+[Y,id]=simdataset(n, out.Pi, out.Mu, out.S);
+% Automatic choice of k
+out=tclustIC(Y,'cleanpool',false,'plots',1,'nsamp',100);
+% Plot of MIXMIX as function of c given k.
+figure('units','normalized','outerposition',[0 0 1 1])
+% Specify whether to use the same y scale for ALL plots
+samescale=1;
+kk=out.kk;
+cc=out.cc;
+lcc=length(cc);
+IC=out.MIXMIX;
+miny=min(min(IC));
+maxy=max(max(IC));
+seqcc=1:lcc;
+for j=kk
+subplot(1,length(kk),j)
+hold('on')
+plot(1:lcc,IC(j,:),'k')
+[minICj,minICjind]=min(IC(j,:));
+plot(seqcc(minICjind),minICj,'rs','MarkerSize',10)
+xlim([1 length(cc)])
+if samescale==1
+ylim([miny maxy])
+end
+L = get(gca,'XLim');
+set(gca,'XTick',linspace(L(1),L(2),lcc))
+set(gca,'XTickLabel',num2str(cc'))
+xlabel('Restr. fact. $c$','Interpreter','Latex')
+title(['k=' num2str(j)])
+end
+suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containing n observations on v variables
+               Rows of Y represent observations, and columns represent
+               variables. Observations (rows) with missing (NaN) or or
+               infinite (Inf) values will automatically be excluded from
+               the computations.</p> <p>
+                 </p></p> <p class="datatypelist"><strong> Data Types: </strong><code> double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'kk',1:4
+</code>,<code> 'cc',[1 2 4 8 128]
+</code>,<code> 'whichIC','ALL'
+</code>,<code> 'alpha',0
+</code>,<code> 'nsamp',1000
+</code>,<code> 'RandNumbForNini',''
+</code>,<code> 'refsteps',10
+</code>,<code> 'reftol',1e-05
+</code>,<code> 'equalweights',true
+</code>,<code> 'startv1',1
+</code>,<code> 'restrtype','deter'
+</code>,<code> 'plots',1
+</code>,<code> 'numpool',4
+</code>,<code> 'cleanpool',1
+</code>,<code> 'msg',1
+</code>,<code> 'nocheck',10
+</code>,<code> 'Ysave',1
+</code>,<code> 'UnitsSameGroup',[12 20]
+</code>,<code> 'cshape',10
+</code></code></span></div><div class="expandableContent"><div id="inputarg_kk" class="clearfix"></div><h3 id="input_argument_namevalue_kk" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>kk</code> &#8212;number of mixture components.</span></a><span class="example_desc">integer vector.</span></span></h3><div class="collapse">	<p><p>Integer
+               vector specifying the number of mixture components
+               (clusters) for which the BIC is to be calculated.</p> <p>
+               Vector. The default value of kk is 1:5.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'kk',1:4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>int16 | int32 | single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cc" class="clearfix"></div><h3 id="input_argument_namevalue_cc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cc</code> &#8212;values of restriction factor.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>A vector specifying
+               the values of the restriction factor
+               which have to be considered for the covariance matrices.</p> <p> 
+               The default value of cc is [1 2 4 8 16 32 64 128]
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cc',[1 2 4 8 128]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_whichIC" class="clearfix"></div><h3 id="input_argument_namevalue_whichIC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>whichIC</code> &#8212;type of information criterion.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which specifies which information criteria must
+               be computed for each k (number of groups) and each value of
+               the restriction factor (c).</p> <p>
+               Possible values for whichIC are:</p> <p>
+               'MIXMIX'  = a mixture model is fitted and to
+                   compute the information criterion the mixture
+                   likelihood is used. This option corresponds to the use of
+                   the Bayesian Information criterion (BIC). In output
+                   structure out just the matrix out.MIXMIX is given.</p> <p>
+               'MIXCLA'  = a mixture model is fitted but to compute the
+                   information criterion the classification likelihood is
+                   used. This option corresponds to the use of the
+                   Integrated Complete Likelihood (ICL). In output
+                   structure out just the matrix out.MIXCLA is given.</p> <p>
+               'CLACLA' =  everything is based on the classification
+                   likelihood. This information criterion will be called
+                   CLA. In output structure out just the matrix out.CLACLA
+                   is given.</p> <p>
+               'ALL' = both classification and mixture likelihood are used.</p> <p>
+                   In this case all the three information criteria CLA,
+                   ICL and BIC are computed. In output structure out all
+                   the three matrices out.MIXMIX and out.MIXCLA and
+                   out.CLACLA are given.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'whichIC','ALL'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_alpha" class="clearfix"></div><h3 id="input_argument_namevalue_alpha" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>alpha</code> &#8212;global trimming level.</span></a><span class="example_desc">fraction | number of observations               which have to be trimmed.</span></span></h3><div class="collapse">	<p><p>alpha is a scalar between 0 and
+               0.5 or an integer specifying the number of observations to
+               be trimmed. If alpha = 0 all observations are considered.</p> <p>
+               More in detail, if 0 &lt; alpha &lt; 1 clustering is based on
+               h = fix(n*(1-alpha)) observations. Else if alpha is an
+               integer greater than 1 clustering is based on h=n-floor(alpha).</p> <p>
+               The default value of alpha which is used is 0.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alpha',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | matrix.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
+               which will be extracted. If nsamp=0 all subsets will be
+               extracted.</p> <p>
+               Remark - if the number of all possible subset is &lt;300 the
+               default is to extract all subsets, otherwise just 300.</p> <p>
+               - If nsamp is a matrix it contains in the rows the indexes
+                 of the subsets which have to be extracted. nsamp in this
+                 case can be conveniently generated  by function subsets.</p> <p>
+                 nsamp can have k columns or k*(v+1) columns. If nsamp has
+                 k columns the k initial centroids each iteration i are
+                 given by X(nsamp(i,:),:) and the covariance matrices are
+                 equal to the identity.</p> <p>
+               - If nsamp has k*(v+1) columns the initial centroids and
+                 covariance matrices in iteration i are computed as follows
+                 X1=X(nsamp(i,:),:)
+                 mean(X1(1:v+1,:)) contains the initial centroid for group 1
+                 cov(X1(1:v+1,:)) contains the initial cov matrix for group 1               1
+                 mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2
+                 cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2               1
+                 ...</p> <p>
+                 mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k
+                 cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k
+               REMARK - if nsamp is not a scalar option option below
+               startv1 is ignored. More precisely if nsamp has k columns
+               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_RandNumbForNini" class="clearfix"></div><h3 id="input_argument_namevalue_RandNumbForNini" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RandNumbForNini</code> &#8212;Pre-extracted random numbers to initialize proportions.</span></a><span class="example_desc">matrix.</span></span></h3><div class="collapse">	<p><p>Matrix with size k-by-size(nsamp,1) containing the
+                random numbers which are used to initialize the
+                proportions of the groups. This option is effective just
+                if nsamp is a matrix which contains pre-extracted
+                subsamples and k is a scalat. The purpose of this option
+                is to enable the user to replicate the results.</p> <p> 
+                The default value of RandNumbForNini is empty,
+                that is random numbers from uniform are used.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'RandNumbForNini',''
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining
+               iterations in subsample.  Default is 15. refsteps = 0 means
+               "raw-subsampling" without iterations.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;scalar.</span></a><span class="example_desc">default value of tolerance for the refining steps.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14;</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
+               shall be considered in the concentration, assignment steps
+               and computation of the likelihood.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_startv1" class="clearfix"></div><h3 id="input_argument_namevalue_startv1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>startv1</code> &#8212;how to initialize centroids and cov matrices.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If startv1 is 1 then initial
+               centroids and and covariance matrices are based on (v+1)
+               observations randomly chosen, else each centroid is
+               initialized taking a random row of input data matrix and
+               covariance matrices are initialized with identity matrices.</p> <p>
+               Remark 1- in order to start with a routine which is in the
+               required parameter space, eigenvalue restrictions are
+               immediately applied. The default value of startv1 is 1.</p> <p>
+               Remark 2 - option startv1 is used just if nsamp is a scalar
+               (see for more details the help associated with nsamp).</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'startv1',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_restrtype" class="clearfix"></div><h3 id="input_argument_namevalue_restrtype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>restrtype</code> &#8212;type of restriction.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>The type of restriction to
+               be applied on the cluster scatter
+               matrices. Valid values are 'eigen' (default), or 'deter'.</p> <p>
+               eigen implies restriction on the eigenvalues while deter
+               implies restriction on the determinants. If restrtype is
+               'deter' it is possible to control the constraints on the
+               shape matrices using optional input argument cshape.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots = 1, a plot of the
+               BIC (MIXMIX), ICL (MIXCLA)curve and CLACLA is shown on the
+               screen. The plots which are shown depend on the input
+               option 'whichIC'.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
+               the Parallel Computing Toolbox is installed and distributes
+               the random starts over numpool parallel processes. If
+               numpool &lt;= 1, the random starts are run sequentially. By
+               default, numpool is set equal to the number of physical
+               cores available in the CPU (this choice may be inconvenient
+               if other applications are running concurrently). The same
+               happens if the numpool value chosen by the user exceeds the
+               available number of cores. REMARK 1: up to R2013b, there
+               was a limitation on the maximum number of cores that could
+               be addressed by the parallel processing toolbox (8 and,
+               more recently, 12). From R2014a, it is possible to run a
+               local cluster of more than 12 workers.</p> <p>
+               REMARK 2: Unless you adjust the cluster profile, the
+               default maximum number of workers is the same as the
+               number of computational (physical) cores on the machine.</p> <p>
+               REMARK 3: In modern computers the number of logical cores
+               is larger than the number of physical cores. By default,
+               MATLAB is not using all logical cores because, normally,
+               hyper-threading is enabled and some cores are reserved to
+               this feature.</p> <p>
+               REMARK 4: It is because of Remarks 3 that we have chosen as
+               default value for numpool the number of physical cores
+               rather than the number of logical ones. The user can
+               increase the number of parallel pool workers allocated to
+               the multiple start monitoring by:</p> <p>
+               - setting the NumWorkers option in the local cluster profile
+                 settings to the number of logical cores (Remark 2). To do
+                 so go on the menu "Home|Parallel|Manage Cluster Profile"
+                 and set the desired "Number of workers to start on your
+                 local machine".</p> <p>
+               - setting numpool to the desired number of workers;</p> <p>
+               Therefore, *if a parallel pool is not already open*,
+               UserOption numpool (if set) overwrites the number of
+               workers set in the local/current profile. Similarly, the
+               number of workers in the local/current profile overwrites
+               default value of 'numpool' obtained as feature('numCores')
+               (i.e. the number of physical cores).</p> <p>
+              REMARK 5: the parallelization refers to the ...</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;clean pool.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>cleanpool is 1 if the parallel pool has
+               to be cleaned after the execution of the routine. Otherwise
+               it is 0. The default value of cleanpool is 1. Clearly this
+               option has an effect just if previous option numpool is &gt;</p> <p>
+               1.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether
+               to display or not messages about code execution.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
+               no check is performed on matrix Y. As default nocheck=0.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the input matrix Y
+               is saved into the output structure out. Default is 1, that
+               is  matrix Y is saved inside output structure out.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_UnitsSameGroup" class="clearfix"></div><h3 id="input_argument_namevalue_UnitsSameGroup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>UnitsSameGroup</code> &#8212;Units with same labels.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>List of the units which must (whenever possible)
+                   have the same label.  For example if
+                   UnitsSameGroup=[20 26], it means that group which contains
+                   unit 20 is always labelled with number 1. Similarly,
+                   the group which contains unit 26 is always labelled
+                   with number 2, (unless it is found that unit 26 already
+                   belongs to group 1). In general, group which contains
+                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+                   labelled with number r (unless it is found that unit
+                   UnitsSameGroup(r) has already been assigned to groups
+                   1, 2, ..., r-1). The default value of UnitsSameGroup is
+                   '' that is consistent labels are not imposed.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'UnitsSameGroup',[12 20]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is
+                   'deter'.</p> <p> 
+               When restrtype is deter the default value of the "shape" constraint (as
+               defined below) applied to each group is fixed to
+               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
+               affine equivariant. In other words, the decomposition or the
+               $j$-th scatter matrix $\Sigma_j$ is
+               </p>\[
+               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+               \]<p>
+               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+               diagonal matrix with $|\Gamma_j|=1$ and with elements
+               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+               the eigenvalues of the $\Sigma_j$ matrix) and
+               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+               known as "shape" matrices, because they determine the shape of the
+               fitted cluster components. The following $k$
+               constraints are then imposed on the shape matrices:</p> <p>
+               </p>\[
+               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+                   c_{shape}, \text{ for } j=1,...,k,
+               \]<p>
+               In particular, if we are ideally searching for spherical
+               clusters it is necessary to set  $c_{shape}=1$. Models with
+               variable volume and spherical clusters are handled with
+               'restrtype' 'deter', $1&lt;restrfactor&lt;\infty$ and $cshape=1$.</p> <p>
+               The $restrfactor=cshape=1$ case yields a very constrained
+               parametrization because it implies spherical clusters with
+               equal volumes.</p><p>
+                        </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cshape',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
+
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
+                   specififed else it is a matrix of size length(kk)-times
+                   length(cc) containinig the value of the penalized
+                   classification likelihood. This output is present only
+                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>CLACLAtable</code></td><td><p>same output of CLACLA but in MATLAB
+                   table format (this field is present only if your MATLAB
+                   version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>IDXCLA</code></td><td><p>cell of size 5-times-8 if kk and cc are not
+                   specififed else it is a cell of size length(kk)-times
+                   length(cc). Each element of the cell is a vector of
+                   length n containinig the assignment of each unit using
+                   the classification model. This output is present only
+                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
+                   specififed else it is a matrix of size length(kk)-times
+                   length(cc) containinig the value of the penalized
+                   mixture likelihood. This output is present only if
+                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXMIXtable</code></td><td><p>same output of MIXMIX but in MATLAB
+                   table format (this field is present only if your MATLAB
+                   version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p>matrix of size 5-times-8 if kk and cc are not
+                   specififed else it is a matrix of size length(kk)-times
+                   length(cc) containinig the value of the ICL. This
+                   output is present only if 'whichIC' is 'MIXCLA' or
+                   'whichIC' is 'ALL'.</p></td></tr><tr valign="top"><td><code>MIXCLAtable</code></td><td><p>same output of MIXCLA but in MATLAB
+                   table format (this field is present only if your MATLAB
+                   version is not&lt;2013b).</p></td></tr><tr valign="top"><td><code>IDXMIX</code></td><td><p>cell of size 5-times-8 if kk and cc are not
+                   specififed else it is a cell of size length(kk)-times
+                   length(cc). Each element of the cell is a vector of
+                   length n containinig the assignment of each unit using
+                   the mixture model. This output is present only if
+                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+                   components) which have been considered. This  vector
+                   is equal to input optional argument kk if kk had been
+                   specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the
+                   restriction factor) which have been considered. This
+                   vector is equal to input optional argument cc if cc had
+                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
+                   64, 128].</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar containing the trimming level which has
+                   been used.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if
+                   option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
+ Finding the Number of Groups in Model-Based Clustering via Constrained
+ Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+ <a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

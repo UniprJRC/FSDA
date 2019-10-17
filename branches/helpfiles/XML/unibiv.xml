@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->unibiv</Title>
+   <Purpose><!--This is the second line of the .m file-->unibiv has the purpose of detecting univariate and bivariate outliers
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>rf</Name>
+         <ShortDesc>It specifies the confidence level of the robust bivariate ellipses.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>0&amp;lt;rf&amp;lt;1.
+The default value is 0.95 that is the outer contour in presence of normality for each ellipse should leave outside 5% of the values.</LongDesc>
+         <Example>'rf',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>robscale</Name>
+         <ShortDesc>how to compute dispersion.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the statistical indexes to use to compute the dispersion of each variable and the correlation among each pair of variables.
+robscale=1 (default): the program uses the median correlation and the MAD as estimate of the dispersion of each variable;
+robscale=2: the correlation coefficient among ranks is used (Spearman's rho) and the MAD as estimate of the dispersion of each variable;
+robscale=3: the correlation coefficient is based on Kendall's tau b and the MAD as estimate of the dispersion of each variable;
+robscale=4: tetracoric correlation coefficient is used and the MAD as estimate of the dispersion of each variable;
+otherwise the correlation and the dispersion of the variables are computed using the traditional (non robust) formulae around the univariate medians.</LongDesc>
+         <Example>'robscale',2</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies whether it is necessary to produce a plot with univariate standardized boxplots on the main diagonal and bivariate confidence ellipses out of the main diagonal. If plots is equal to 1 a plot which contains univariate standardized boxplots on the main diagonal and bivariate confidence ellipses out of the main diagonal is produced on the screen. If plots is &amp;lt;&amp;gt; 1 no plot is produced. As default no plot is produced.</LongDesc>
+         <Example>'plots',2</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>textlab</Name>
+         <ShortDesc>plot labels.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls the labels in the plots. If textlab=1 and plots=1 the labels associated to the units which are univariate outliers or which are outside the confidence levels of the contours are displayed on the screen.</LongDesc>
+         <Example>'textlab',0</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tag</Name>
+         <ShortDesc>plot tag.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>It identifies the handle of the plot which is about to be created. The default is to use tag 'pl_unibiv'. Notice that if the program finds a plot which has a tag equal to the one specified by the user, then the output of the new plot overwrites the existing one in the same window else a new window is created.</LongDesc>
+         <Example>'tag','new_tag'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>madcoef</Name>
+         <ShortDesc>scaled MAD.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Coefficient which is used to scale MAD coefficient to have a robust estimate of dispersion. The default is 1.4815 so that 1.4815*MAD(N(0,1))=1.
+Remark: if mad =median(y-median(y))=0 then the interquartile range is used. If also the interquartile range is 0 than the MD (mean absolute deviation) is used. In other words MD=mean(abs(y-mean(Y))</LongDesc>
+         <Example>'madcoef',2</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>fre</Name>
+         <ShortDesc>n x 4 matrix</ShortDesc>
+         <TypeInd>Details about the univariate and bivariate outliers.</TypeInd>
+         <LongDesc>1st col = index of the units;
+2nd col = number of times unit has been declared univariate outliers;
+3rd col = number of times unit has been declared bivariate outlier;
+4th col = pseudo MD as sum of bivariate MD.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Riani, M., Zani S. (1997). An iterative method for the detection of multivariate outliers, Metron, vol. LV, pp. 101-117.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMmmd</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>unibiv with all default options.</Title>
+         <Desc>
+            <ItemCell>Run this code to see the output shown in the help file</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=500;</ItemCell>
+            <ItemCell>p=5;</ItemCell>
+            <ItemCell>randn('state', 123456);</ItemCell>
+            <ItemCell>Y=randn(n,p);</ItemCell>
+            <ItemCell>[out]=unibiv(Y);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>unibiv with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Stack loss data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>Y=load('stack_loss.txt');</ItemCell>
+            <ItemCell>% Show robust confidence ellipses</ItemCell>
+            <ItemCell>out=unibiv(Y,'plots',1,'textlab',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

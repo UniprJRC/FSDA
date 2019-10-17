@@ -1,0 +1,211 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tkmeans</title><meta content="refpage" name="chunktype"><meta content="function:tkmeans" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tkmeans computes trimmed k-means." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tkmeans</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Trimmed k-means using geyser data (1).</a></li><li><a class="intrnllnk" href="#Example_2">Trimmed k-means using geyser data (2).</a></li><li><a class="intrnllnk" href="#Example_3">Trimmed k-means using M5data and different plots.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Trimmed k-means using structured noise.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Trimmed k-means using mixture100 data.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_Y">Y</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_alpha">alpha</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_weights">weights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nomes">nomes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tkmeans</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tkmeans computes trimmed k-means</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out =tkmeans(Y,k,alpha)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_1">example</a></span></li><li><code class="synopsis">out =tkmeans(Y,k,alpha,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_2">example</a></span></li><li><code class="synopsis">[out , varargout]=tkmeans(___)</code><span class="syntax_example"><a class="intrnllnk" href="tkmeans.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tkmeans(Y, k, alpha) partitions the points in the n-by-v data matrix Y
+   into k clusters. This partition minimizes the trimmed sum, over all
+   clusters, of the within-cluster sums of point-to-cluster-centroid
+   distances.  Rows of Y correspond to points, columns correspond to
+   variables. tkmeans returns inside structure out an n-by-1 vector IDX
+   containing the cluster indices of each point.  By default, tkmeans uses
+   (squared) Euclidean distances.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>)</code></span>Trimmed k-means using geyser data (1).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Trimmed k-means using geyser data (2).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tkmeans(___)</code></span>Trimmed k-means using M5data and different plots.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Trimmed k-means using geyser data (1).</li></span></a></span></h3><div class="collapse"><p>
+     3 groups and trimming level of 3 percent<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+Y=load('geyser2.txt');
+out=tkmeans(Y,3,0.03,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.76 seconds 
+
+out = 
+
+  struct with fields:
+
+       muopt: [3&times;2 double]
+          bs: [28 85 155]
+         idx: [271&times;1 double]
+         siz: [4&times;3 double]
+     weights: [0.3333 0.3333 0.3333]
+           h: 263
+           D: [271&times;3 double]
+         obj: 0.1157
+    sigmaopt: [2&times;2&times;3 double]
+     BoxTest: [1&times;1 struct]
+         emp: 0
+
+</pre><img vspace="5" hspace="5" src="images\tkmeans_01.png" alt=""> </p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using geyser data (2).</li></span></a></span></h3><div class="collapse"><p>
+     option weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+Y=load('geyser2.txt');
+out=tkmeans(Y,3,0.03,'plots',1,'weights',1)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using M5data and different plots.</li></span></a></span></h3><div class="collapse"><p>
+     Weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('M5data.txt');
+close all
+out=tkmeans(Y(:,1:2),3,0,'plots',1)
+out=tkmeans(Y(:,1:2),3,0.1,'plots','ellipse')
+out=tkmeans(Y(:,1:2),3,0.1,'plots','contour')
+out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf')
+out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb')
+cascade;
+% using a structure for plots
+contOpt = struct;
+contOpt.cmap = summer 
+out=tkmeans(Y(:,1:2),3,0.1,'plots',contOpt)
+cascade</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Trimmed k-means using structured noise.</li></span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+        set.seed (0)
+        v &lt;- runif (100, -2 * pi, 2 * pi)
+        noise &lt;- cbind (100 + 25 * sin (v), 10 + 5 * v)
+    
+    
+        x &lt;- rbind (
+            rmvnorm (360, c (0.0,  0), matrix (c (1,  0,  0, 1), ncol = 2)),
+            rmvnorm (540, c (5.0, 10), matrix (c (6, -2, -2, 6), ncol = 2)),
+            noise)
+    <div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+Y=load('structurednoise.txt');
+out=tkmeans(Y(:,1:2),2,0.1,'plots',1)
+out=tkmeans(Y(:,1:2),5,0.15,'plots',1)
+cascade</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Trimmed k-means using mixture100 data.</li></span></a></span></h3><div class="collapse"><p>
+     The data have been generated using the following R instructions
+         set.seed (100)
+         mixt &lt;- rbind (rmvnorm (360, c (  0,  0), matrix (c (1,  0,  0,  1), ncol = 2)),
+                    rmvnorm (540, c (  5, 10), matrix (c (6, -2, -2,  6), ncol = 2)),
+                    rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
+     <div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+Y=load('mixture100.txt');
+out=tkmeans(Y(:,1:2),3,0,'plots',1)
+out=tkmeans(Y(:,1:2),2,0.05,'plots',1)
+cascade</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containining n observations on 
+           v variables.</p> <p>
+           Rows of Y represent observations, and columns
+           represent variables.</p><p>
+           Missing values (NaN's) and infinite values (Inf's) are allowed,
+           since observations (rows) with missing or infinite values will
+           automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; Global trimming level. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alpha is a scalar between 0 and 0.5.</p> <p> 
+           Il alpha = 0 tkmeans reduces to kmeans.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',0
+</code>,<code> 'refsteps',20
+</code>,<code> 'reftol',0.0001
+</code>,<code> 'weights',1
+</code>,<code> 'plots', 1
+</code>,<code> 'msg',1
+</code>,<code> 'nocheck',1
+</code>,<code> 'nomes',1
+</code>,<code> 'Ysave',1
+</code></code></span></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>Number of subsamples which 
+               will be extracted to find the partition.  If nsamp=0 all
+               subsets will be extracted. They will be (n choose k).</p> <p>
+                                Remark: if the number of all possible subset is &lt;300 the
+               default is to extract all subsets, otherwise just 300.</p><p>
+
+</p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',0
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterations 
+               in each subsample (default = 15).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',20
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Tolerance.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Default value of tolerance for the 
+               refining steps. The default value is 1e-14.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',0.0001
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_weights" class="clearfix"></div><h3 id="input_argument_namevalue_weights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>weights</code> &#8212;Cluster weights.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>A dummy scalar, specifying 
+               whether cluster weights (1) shall be considered in the
+               concentration and assignment steps. If weights=1 in the
+               assignment step to the squared Euclidean distance of unit i
+               to group j log n_j is substracted. The default is no
+               cluster weights.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'weights',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar, character, cell | struct.</span></span></h3><div class="collapse">	<p><p>- If plots=0 (default), plots are not generated.</p> <p> 
+               - If plot=1, a plot with the classification is shown on
+                 the screen (using the spmplot function). The plot can be:</p> <p>
+                   * for v=1, an histogram of the univariate data.</p> <p>
+                   * for v=2, a bivariate scatterplot.</p> <p>
+                   * for v&gt;2, a scatterplot matrix generated by spmplot.</p> <p>
+               When v&gt;=2 plots offers the following additional features
+               (for v=1 the behaviour is forced to be as for plots=1):</p> <p>
+               - plots='contourf' adds in the background of the bivariate
+                 scatterplots a filled contour plot. The colormap of the
+                 filled contour is based on grey levels as default.</p> <p>
+                 This argument may also be inserted in a field named 'type' 
+                 of a structure. In the latter case it is possible to 
+                 specify the additional field 'cmap', which changes the 
+                 default colors of the color map used. The field 'cmap'
+                 may be a three-column matrix of values in the range [0,1] 
+                 where each row is an RGB triplet that defines one color.</p> <p>
+                 Check the colormap function for additional informations.</p> <p>
+               - plots='contour' adds in the background of the bivariate
+                 scatterplots a contour plot. The colormap of the contour 
+                 is based on grey levels as default. This argument may 
+                 also be inserted in a field named 'type' of a structure.</p> <p>
+                 In the latter case it is possible to specify the additional 
+                 field 'cmap', which changes the default colors of the 
+                 color map used. The field 'cmap' may be a three-column 
+                 matrix of values in the range [0,1] where each row is an 
+                 RGB triplet that defines one color.</p> <p>
+                 Check the colormap function for additional informations.</p> <p>
+               - plots='ellipse' superimposes confidence ellipses to
+                 each group in the bivariate scatterplots. The size of the 
+                 ellipse is chi2inv(0.95,2), i.e. the confidence level used 
+                 by default is 95%. This argument may also be inserted in 
+                 a field named 'type' of a structure. In the latter case it
+                 is possible to specify the additional field 'conflev',
+                 which specifies the confidence level to use and it is a 
+                 value between 0 and 1.</p> <p>   
+               - plots='boxplotb' superimposes on the bivariate scatterplots
+                 the bivariate boxplots for each group, using the boxplotb 
+                 function. This argument may also be inserted in a field 
+                 named 'type' of a structure.</p> <p>
+               REMARK - The labels=0 are automatically excluded from the 
+                          overlaying phase, considering them as outliers.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | string</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Message on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls
+               whether to display or not messages
+               on the screen. If msg=1 (default) messages are displayed
+               on the screen about estimated time to compute the estimator
+               else no message is displayed on the screen.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is 
+               performed on matrix Y.</p> <p>
+               As default nocheck=0.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nomes" class="clearfix"></div><h3 id="input_argument_namevalue_nomes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nomes</code> &#8212;Estimated time message.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nomes is equal to 1 no 
+               message about estimated time to compute tkemans is
+               displayed, else if nomes is equal to 0 (default), a message
+               about estimated time is displayed.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nomes',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;Saving Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that 
+               the input matrix Y is saved into the output structure out.</p> <p> 
+               Default is 0, i.e. no saving is done.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+
+    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>idx</code></td><td><p>n-by-1 vector containing assignment of each unit to
+                       each of the k groups. Cluster names are integer
+                       numbers from 1 to k, 0 indicates trimmed
+                       observations.</p></td></tr><tr valign="top"><td><code>muopt</code></td><td><p>k-by-v matrix containing cluster centroids 
+                       locations. Robust estimate of final centroids of 
+                       the groups.</p></td></tr><tr valign="top"><td><code>sigmaopt</code></td><td><p>v-by-v-by-k empirical covariance matrices of the 
+                       groups found by tkmeans.</p></td></tr><tr valign="top"><td><code>BoxTest</code></td><td><p>Structure containing the results of the Box test of
+                       equality of covariance matrices.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>k-by-1 vector containing the units forming initial
+                       subset associated with muopt.</p></td></tr><tr valign="top"><td><code>D</code></td><td><p>n-by-k matrix containing squared Euclidean
+                       distances from each point to every centroid.</p></td></tr><tr valign="top"><td><code>siz</code></td><td><p>Matrix of size k-by-3
+                       1st col = sequence from 0 to k
+                       2nd col = number of observations in each cluster
+                       3rd col = percentage of observations in each cluster
+                       Remark: 0 denotes unassigned units.</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p>Numerical vector of length k, containing the
+                       weights of each cluster. If input option weights=1
+                       out.weights=(1/k, ...., 1/k) else if input option
+                       weights &lt;&gt; 1 out.weights=(n1/n, ..., nk/n).</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>Scalar. Number of observations that have determined the
+                       centroids (number of untrimmed units).</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p>Scalar. Value of the objective function which is minimized 
+                       (value of the best returned solution).</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if option
+                       Ysave is set to 1.</p></td></tr><tr valign="top"><td><code>emp</code></td><td><p><p>"Empirical" statistics computed on final classification.</p> <p> 
+                       Scalar or structure. When convergence is reached,
+                       out.emp=0. When convergence is not obtained, this
+                       field is a structure which contains the statistics
+                       of interest: idxemp (ordered from 0 to k*, k* being 
+                       the number of groups with at least one observation
+                       and 0 representing the possible group of outliers),
+                       muemp, sigmaemp and sizemp, which are the empirical
+                       counterparts of idx, muopt, sigmaopt and siz.</p></p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C       :   Subsamples extracted.</span></a><span class="example_desc">Cell</span></span></h3><div class="collapse"><p> nsamp-by-k initial subsamples extracted.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+ This iterative algorithm initializes k clusters randomly and performs
+ "concentration steps" in order to improve the current cluster assignment.</p> <p>
+ The number of maximum concentration steps to be performed is given by
+ input parameter refsteps. For approximately obtaining the global optimum,
+ the system is initialized nsamp times and concentration steps are
+ performed until convergence or refsteps is reached. When processing more
+ complex data sets higher values of nsamp and refsteps have to be
+ specified (obviously implying extra computation time). However, if more
+ then half of the iterations do not converge, a warning message is issued,
+ indicating that nsamp has to be increased.</p><p>
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Garcia-Escudero, L.A., Gordaliza, A., Matran, C. and Mayo-Iscar, A. (2008), 
+   A General Trimming Approach to Robust Cluster Analysis. Annals
+   of Statistics, Vol. 36, 1324-1345. [Technical Report available at:</p> <p>
+   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]</p></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'stats/kmeans.html'))" itemprop="url"><span itemprop="name"><code>kmeans</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

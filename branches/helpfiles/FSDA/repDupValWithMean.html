@@ -1,0 +1,226 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>repDupValWithMean</title><meta content="refpage" name="chunktype"><meta content="function:repDupValWithMean" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="repDupValWithMean replaces values of y which have non unique elements in vector x with local means." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">repDupValWithMean</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Case 1: x is already ordered.</a></li><li><a class="intrnllnk" href="#Example_2">Case 2: x is non ordered.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Case 3: x is non ordered and third argument consec is true.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">The implementation of this function using loops is given below.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_x">x</a></li><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_consec">consec</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_ysmo">ysmo</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">repDupValWithMean</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">repDupValWithMean replaces values of y which have non unique elements in vector x with local means</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">ysmo=repDupValWithMean(x,y)</code><span class="syntax_example"><a class="intrnllnk" href="repDupValWithMean.html#Example_1">example</a></span></li><li><code class="synopsis">ysmo=repDupValWithMean(x,y,consec)</code><span class="syntax_example"><a class="intrnllnk" href="repDupValWithMean.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="repDupValWithMean.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_ysmo"><code>ysmo</code></a>=repDupValWithMean(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>Case 1: x is already ordered.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="repDupValWithMean.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_ysmo"><code>ysmo</code></a>=repDupValWithMean(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_consec"><code>consec</code></a>)</code></span>Case 2: x is non ordered.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 1: x is already ordered.</li></span></a></span></h3><div class="collapse"><p>
+     Note that in this case x is ordered therefore the average between
+     consecutive values which are equal or the average of equal values is
+     the same.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[ones(5,1); 6; 7; 8.2; 8.2; 10];
+% y is a vector containing any real number.
+y=(1:10)';
+ysmo=repDupValWithMean(x,y);
+disp(['      x   '   '      y   ' '      ysmo  '])
+disp([x y ysmo])
+% The first 5 elements of ysmo are equal to mean(y(1:5)) because the
+% corresponding elements of x share the same value.
+% The elements in position 8 and 9 of ysmo are equal to mean(y([8:9]))
+% because the corresponding elements of x share the same value.
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    1.0000    1.0000    3.0000
+    1.0000    2.0000    3.0000
+    1.0000    3.0000    3.0000
+    1.0000    4.0000    3.0000
+    1.0000    5.0000    3.0000
+    6.0000    6.0000    6.0000
+    7.0000    7.0000    7.0000
+    8.2000    8.0000    8.5000
+    8.2000    9.0000    8.5000
+   10.0000   10.0000   10.0000
+
+      x         y         ysmo  
+    8.2000   11.0000   14.5000
+    1.0000   12.0000   16.2000
+    1.0000   13.0000   16.2000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   16.2000
+    8.2000   18.0000   14.5000
+    1.0000   19.0000   16.2000
+    1.0000   20.0000   16.2000
+
+      x         y         ysmo  
+    8.2000   11.0000   11.0000
+    1.0000   12.0000   12.5000
+    1.0000   13.0000   12.5000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   18.0000
+    1.0000   18.0000   18.0000
+    1.0000   19.0000   18.0000
+    8.2000   20.0000   20.0000
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 2: x is non ordered.</li></span></a></span></h3><div class="collapse"><p>
+     Note that in this case x is not ordered therefore if the function is
+     called with just two arguments it takes the average of the elements of
+     y which correspond to elements of x which are equal<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[8.2; 1.0; 1.0; 6.0; 7.0; 10.0; 1.0; 8.2; 1.0; 1.0];
+% y is a vector containing any real number.
+y=(11:20)';
+ysmo=repDupValWithMean(x,y);
+disp(['      x   '   '      y   ' '      ysmo  '])
+disp([x y ysmo])
+% Elements 1 and 8  share the same value of x therefore
+% ysmo(1)=smo(8) = mean(y([1 8])).
+% Elements 2, 3, 7, 9 and 10 share the same value of x therefore
+% ysmo(2)=ysmo(3)=ysmo(7)=ysmo(9)=ysmo(10)= mean(y([2 3 7 9 10])).
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    1.0000    1.0000    3.0000
+    1.0000    2.0000    3.0000
+    1.0000    3.0000    3.0000
+    1.0000    4.0000    3.0000
+    1.0000    5.0000    3.0000
+    6.0000    6.0000    6.0000
+    7.0000    7.0000    7.0000
+    8.2000    8.0000    8.5000
+    8.2000    9.0000    8.5000
+   10.0000   10.0000   10.0000
+
+      x         y         ysmo  
+    8.2000   11.0000   14.5000
+    1.0000   12.0000   16.2000
+    1.0000   13.0000   16.2000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   16.2000
+    8.2000   18.0000   14.5000
+    1.0000   19.0000   16.2000
+    1.0000   20.0000   16.2000
+
+      x         y         ysmo  
+    8.2000   11.0000   11.0000
+    1.0000   12.0000   12.5000
+    1.0000   13.0000   12.5000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   18.0000
+    1.0000   18.0000   18.0000
+    1.0000   19.0000   18.0000
+    8.2000   20.0000   20.0000
+
+</pre></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 3: x is non ordered and third argument consec is true.</li></span></a></span></h3><div class="collapse"><p>
+     Note that in this case x is not ordered therefore if the function is
+     called with the third argument consec equal to true, this function
+     computes the average of the elements of y which correspond to
+     elements of x which are equal and consecutive.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[8.2; 1.0; 1.0; 6.0; 7.0; 10.0; 1.0; 1.0; 1.0; 8.2];
+% y is a vector containing any real number.
+y=(11:20)';
+ysmo=repDupValWithMean(x,y,true);
+disp(['      x   '   '      y   ' '      ysmo  '])
+disp([x y ysmo])
+% Elements 2 and 3 of x are equal and consecutive therefore
+% ysmo(2)=ysmo(3) = mean(y([2 3])).
+% Elements 7, 8 and 9 of x are equal and consecutive therefore
+% ysmo(7)=ysmo(8)=ysmo(9) = mean(y([7 8 9])).
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    1.0000    1.0000    3.0000
+    1.0000    2.0000    3.0000
+    1.0000    3.0000    3.0000
+    1.0000    4.0000    3.0000
+    1.0000    5.0000    3.0000
+    6.0000    6.0000    6.0000
+    7.0000    7.0000    7.0000
+    8.2000    8.0000    8.5000
+    8.2000    9.0000    8.5000
+   10.0000   10.0000   10.0000
+
+      x         y         ysmo  
+    8.2000   11.0000   14.5000
+    1.0000   12.0000   16.2000
+    1.0000   13.0000   16.2000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   16.2000
+    8.2000   18.0000   14.5000
+    1.0000   19.0000   16.2000
+    1.0000   20.0000   16.2000
+
+      x         y         ysmo  
+    8.2000   11.0000   11.0000
+    1.0000   12.0000   12.5000
+    1.0000   13.0000   12.5000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   18.0000
+    1.0000   18.0000   18.0000
+    1.0000   19.0000   18.0000
+    8.2000   20.0000   20.0000
+
+</pre></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>The implementation of this function using loops is given below.</li></span></a></span></h3><div class="collapse"><p>
+     A simulation study to compare the two implementation is also given.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">function  ysmoC=repDupValWithMeanLoop(x,y)
+n=length(x);
+ysmoC=y;
+j0=1;
+salta=0;
+for j=1:n-1
+if salta==0
+sm=ysmoC(j);
+end
+if x(j+1) &lt;=x(j)
+sm=sm+ysmoC(j+1);
+salta=1;
+if j==n-1
+sm=sm/(j-j0+2);
+ysmoC(j0:j+1)=sm;
+end
+else
+salta=0;
+sm=sm/(j-j0+1);
+ysmoC(j0:j)=sm;
+j0=j+1;
+end
+end
+end
+% Simulation study to compare the two implementations.
+nsimul=10000;
+n=10000;
+imax=20;
+totimeOpt2=0;
+totimeOpt3=0;
+for j=1:nsimul
+x=randi(imax,n,1);
+y=randn(n,1);
+x=sort(x);
+tic
+ysmo2=repDupValWithMean(x,y);
+totimeOpt2=toc+totimeOpt2;
+tic
+ysmo3=repDupValWithMeanLoop(x,y);
+totimeOpt3=toc+totimeOpt3;
+% Check that the two implementations produce the same results.
+if max(abs(ysmo2-ysmo3))&gt;1e-9
+error('The two implementations do not produCe equal results')
+end
+end
+disp('Comparison of times based on 10000 replicates')
+disp('Implementation without loops')
+disp(totimeOpt2)
+disp('Implementation using loops')
+disp(totimeOpt3)</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector with values to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that may contain duplicated
+               values.</p> <p>
+               It can be either a row or a column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Vector on which the computations have to be made. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_consec" class="clearfix"> </div> <h3 id="input_argument_consec" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>consec</code> &#8212; how to compute the local means. </span>  </a><span class="example_desc">Boolean.</span></span></h3> <div class="collapse"> <p><p>If consec is true
+               the unique entries in vector x are defined as those values
+               which are equal and consecutive.</p> <p>
+               The default value of consec is false, therefore the unique
+               entries in vector x are defined as those values which are
+               equal and consecutive. When x is already sorted in order to
+               speed up calculations it is efficient to call the procedure
+               with the third argument consec set to true, because in this
+               case it avoids calling the MATLAB routine issorted to check
+               whether input vector x is sorted.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>false
+</code></p> <p class="datatypelist"><strong> Data Types: </strong><code>Boolean</code></p> </div> </div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_ysmo" class="clearfix"></div><h3 id="output_argument_ysmo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ysmo</code> &#8212;Smoothed vector y with local means for non unique x values.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
+               ysmo is a vector with the same dimension of y containing in
+               correspondence of the values of y which have non unique
+               entries in vector x, the arithmetic means of y for the
+               corresponding elements. The unique entries in vector x can
+               be defined as the values which are equal and consecutive
+               or simply equal but non necessarily consecutive (depending
+               on optional input argument consec).</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+ This function does not use loops and is based just on built in MATLAB
+ functions: diff, cumsum and accumarray. See also function accumulator
+ from John D'Errico in the file exchange.</p> <p>
+
+
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> </div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'finance/diff.html'))" itemprop="url"><span itemprop="name"><code>diff</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'matlab/ref/accumarray.html'))" itemprop="url"><span itemprop="name"><code>accumarray</code></span></a></span> | <span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'matlab/ref/unique.html'))" itemprop="url"><span itemprop="name"><code>unique</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

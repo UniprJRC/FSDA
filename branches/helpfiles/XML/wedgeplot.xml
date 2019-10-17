@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->wedgeplot</Title>
+   <Purpose><!--This is the second line of the .m file-->wedgeplot generates the double wedge plot of a time series
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>RES</Name>
+         <ShortDesc>absolute scaled residuals.</ShortDesc>
+         <TypeInd>Matrix or structure.</TypeInd>
+         <LongDesc>Matrix of size T-by-(T-lshift) containing scaled residuals (in absolute value) for all the T units of the original time series monitored in steps lshift+1, lshift+2, ..., T-lshift, where lshift+1 is the first tentative level shift position, lshift +2 is the second level shift position, and so on. This matrix can be created by funtion LTSts (Least Trimmed Squares in time series). If RES is a structure, it must contain field:
+RES.RES = matrix containing scaled residuals.</LongDesc>
+         <Example> </Example>
+         <DataType>double.</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>RES</Value>
+               <Description>matrix containing scaled residuals.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>transpose</Name>
+         <ShortDesc>option determining the posiiton of the index number or tentative level shift.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If transpose is true (default) the x-axis contains the tentative level shift position and the y-axis the index number else if it is false the axes are interchanged.
+When transpose is true, it is possible with option extradata to add on a separate panel a subplot of the original time series (and possibly the series of fitted values). See extradata option for details.</LongDesc>
+         <Example>'transpose',false</Example>
+         <DataType>Boolean</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>extradata</Name>
+         <ShortDesc>extra data to plot in a separate panel in association to the wedge plot.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of size T-by-1 or T-by-p containing the data which have to be plotted in the separate panel.
+Generally extradata is a matrix of size T-by-2 containing the original time series and the corresponding fitted values in order to link the irregularities shown by the wedgeplot with the original time series.
+- If extradata is empty (default) the double wedge plot will be shown in a single panel.
+- If extradata is not empty a two panel plot will be created:
+one will contain the double wedge plot and extradata will be plot in the other panel. This options makes sense only if transpose is true, that is if the x axis of the double wedge plot contains the index number.
+When option transpose is left by the user unspecified, the default position of the extradata subplot is at the bottom.
+Otherwise, the position of the two panels depends on the order with which the user specifies the two options: if extradata is specified first, the corresponding subplot will be at the top, otherwse it will fall at the bottom.</LongDesc>
+         <Example>'extradata', [y yhat]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>cmapname</Name>
+         <ShortDesc>color map.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character which indicates the type of colormmap to use in the wedge plot. The accepted values are 'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.
+The default is 'hot'.</LongDesc>
+         <Example>'cmapname','summer'</Example>
+         <DataType>Character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labls</Name>
+         <ShortDesc>label of the axis which contains the level shift position.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character containing the label to put on the axis which contains the level shift position. This axis could be either the horizontal or vertical depending on the option transpose. The default label is 'Tentative level shift position'.</LongDesc>
+         <Example>'labls','Position of level shift'</Example>
+         <DataType>Character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labin</Name>
+         <ShortDesc>label of the axis which contains the index number.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Character containing the label to put on the axis which contains the index number of the units of the time series. This axis could be either the horizontal or vertical depending on the option transpose. The default label is 'Index number'.</LongDesc>
+         <Example> </Example>
+         <DataType> </DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>titl</Name>
+         <ShortDesc>Title.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>A label for the title (default: 'Double wedge plot').</LongDesc>
+         <Example>'titl','Plot with two wedges'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FontSize</Name>
+         <ShortDesc>Font size of the labels.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls the font size of the labels of the axes and of the labels inside the plot. Default value is 12.</LongDesc>
+         <Example>'FontSize',12</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>SizeAxesNum</Name>
+         <ShortDesc>Size of the numbers of the axis.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls the size of the numbers of the axes. Default value is 12.</LongDesc>
+         <Example>'SizeAxesNum',10</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>hf</Name>
+         <ShortDesc>Graphics handle</ShortDesc>
+         <TypeInd>handle to the figure.</TypeInd>
+         <LongDesc>Handle to the figure which has just been created.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust Monitoring of Many Time Series with Application to Fraud Detection,</Item>
+      <Item>submitted.(RPRH)</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>plot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Double wedge plot with simulated data with linear trend and level shift.</Title>
+         <Desc>
+            <ItemCell>No seasonal component.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>n=45;</ItemCell>
+            <ItemCell>a=1;</ItemCell>
+            <ItemCell>b=0.8;</ItemCell>
+            <ItemCell>sig=1;</ItemCell>
+            <ItemCell>seq=(1:n)';</ItemCell>
+            <ItemCell>y=a+b*seq+sig*randn(n,1);</ItemCell>
+            <ItemCell>y(round(n/2):end)=y(round(n/2):end)+10;</ItemCell>
+            <ItemCell>% model with a quadratic trend, non seasonal and level shift</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.seasonal=0;</ItemCell>
+            <ItemCell>% Potential level shift position is investigated in positions:</ItemCell>
+            <ItemCell>% t=10, t=11, ..., t=T-10.</ItemCell>
+            <ItemCell>model.lshift=10;</ItemCell>
+            <ItemCell>out=LTSts(y,'model',model);</ItemCell>
+            <ItemCell>wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of double wedge plot in series with level shift.</Title>
+         <Desc>
+            <ItemCell>Analysis of contaminated airline data.</ItemCell>
+            <ItemCell>Load the airline data.</ItemCell>
+            <ItemCell>1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960 y = [112 115 145 171 196 204 242 284 315 340 360 417 Jan 118 126 150 180 196 188 233 277 301 318 342 391 Feb 132 141 178 193 236 235 267 317 356 362 406 419 Mar 129 135 163 181 235 227 269 313 348 348 396 461 Apr 121 125 172 183 229 234 270 318 355 363 420 472 May 135 149 178 218 243 264 315 374 422 435 472 535 Jun 148 170 199 230 264 302 364 413 465 491 548 622 Jul 148 170 199 242 272 293 347 405 467 505 559 606 Aug 136 158 184 209 237 259 312 355 404 404 463 508 Sep 119 133 162 191 211 229 274 306 347 359 407 461 Oct 104 114 146 172 180 203 237 271 305 310 362 390 Nov 118 140 166 194 201 229 278 306 336 337 405 432 ]; Dec Source:</ItemCell>
+            <ItemCell>http://datamarket.com/data/list/?q=provider:tsdl</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>y=(y(:));</ItemCell>
+            <ItemCell>% Add a level shift contamintion plus some outliers.</ItemCell>
+            <ItemCell>y(68:end)=y(68:end)+1300;</ItemCell>
+            <ItemCell>y(67)=y(67)-600;</ItemCell>
+            <ItemCell>y(45)=y(45)-800;</ItemCell>
+            <ItemCell>y(68:69)=y(68:69)+800;</ItemCell>
+            <ItemCell>% Create structure specifying model</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;              % quadratic trend</ItemCell>
+            <ItemCell>model.s=12;                 % monthly time series</ItemCell>
+            <ItemCell>model.seasonal=204;         % number of harmonics</ItemCell>
+            <ItemCell>model.lshift=40;            % position where to start monitoring level shift</ItemCell>
+            <ItemCell>model.X='';</ItemCell>
+            <ItemCell>% Create structure lts specifying lts options</ItemCell>
+            <ItemCell>lts=struct;</ItemCell>
+            <ItemCell>lts.bestr=20; % number of best solutions to bring to full convergence</ItemCell>
+            <ItemCell>% h = dimension of the h subset (75 per cent of the data, bdp=0.25)</ItemCell>
+            <ItemCell>h=round(0.75*length(y));</ItemCell>
+            <ItemCell>[out, varargout]=LTSts(y,'model',model,'nsamp',500,...</ItemCell>
+            <ItemCell>    'lts',lts,'h',h,'plots',0,'msg',0);</ItemCell>
+            <ItemCell>% Create the double wedge plot.</ItemCell>
+            <ItemCell>wedgeplot(out)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of double wedge plot in series with level shift with option transpose.</Title>
+         <Desc>
+            <ItemCell>Analysis of contaminated airline data.</ItemCell>
+            <ItemCell>Load the airline data.</ItemCell>
+            <ItemCell>1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan</ItemCell>
+            <ItemCell>    118  126  150  180  196  188  233  277  301  318  342  391    % Feb</ItemCell>
+            <ItemCell>    132  141  178  193  236  235  267  317  356  362  406  419    % Mar</ItemCell>
+            <ItemCell>    129  135  163  181  235  227  269  313  348  348  396  461    % Apr</ItemCell>
+            <ItemCell>    121  125  172  183  229  234  270  318  355  363  420  472    % May</ItemCell>
+            <ItemCell>    135  149  178  218  243  264  315  374  422  435  472  535    % Jun</ItemCell>
+            <ItemCell>    148  170  199  230  264  302  364  413  465  491  548  622    % Jul</ItemCell>
+            <ItemCell>    148  170  199  242  272  293  347  405  467  505  559  606    % Aug</ItemCell>
+            <ItemCell>    136  158  184  209  237  259  312  355  404  404  463  508    % Sep</ItemCell>
+            <ItemCell>    119  133  162  191  211  229  274  306  347  359  407  461    % Oct</ItemCell>
+            <ItemCell>    104  114  146  172  180  203  237  271  305  310  362  390    % Nov</ItemCell>
+            <ItemCell>    118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec</ItemCell>
+            <ItemCell>% Source:</ItemCell>
+            <ItemCell>% http://datamarket.com/data/list/?q=provider:tsdl</ItemCell>
+            <ItemCell>y=(y(:));</ItemCell>
+            <ItemCell>% Add a level shift contamintion plus some outliers.</ItemCell>
+            <ItemCell>y(50:55)=y(50:55)-300;</ItemCell>
+            <ItemCell>y(68:end)=y(68:end)-700;</ItemCell>
+            <ItemCell>y(70:75)=y(70:75)+300;</ItemCell>
+            <ItemCell>y(90:90)=y(90:90)+300;</ItemCell>
+            <ItemCell>% Create structure specifying model</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;              % quadratic trend</ItemCell>
+            <ItemCell>model.s=12;                 % monthly time series</ItemCell>
+            <ItemCell>model.seasonal=204;         % number of harmonics</ItemCell>
+            <ItemCell>model.lshift=40;            % position where to start monitoring level shift</ItemCell>
+            <ItemCell>model.X='';</ItemCell>
+            <ItemCell>% Create structure lts specifying lts options</ItemCell>
+            <ItemCell>lts=struct;</ItemCell>
+            <ItemCell>lts.bestr=20; % number of best solutions to bring to full convergence</ItemCell>
+            <ItemCell>% h = dimension of the h subset (75 per cent of the data, bdp=0.25)</ItemCell>
+            <ItemCell>[out, varargout]=LTSts(y,'model',model,'nsamp',500,...</ItemCell>
+            <ItemCell>    'lts',lts,'plots',0,'msg',0);</ItemCell>
+            <ItemCell>% Create the double wedge plot.</ItemCell>
+            <ItemCell>% Remember to remove the last column of the matrix of the residuals</ItemCell>
+            <ItemCell>% obtained for each level shift position if you want to avoid the</ItemCell>
+            <ItemCell>% top orange band (just execute RES(:,64)=[] before line 258).</ItemCell>
+            <ItemCell>wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Same double wedge plot as before, but with the time series at the top subplot.</Title>
+         <Desc>
+            <ItemCell>This is obtained simply by specifying extradata before transpose.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->openMatlabFileFromHTML</Title>
+   <Purpose><!--This is the second line of the .m file--> openMatlabFileFromHTML enables to put in HTML an hypertextual link to a specific MATLAB file
+</Purpose>
+   <Description><!--Description section-->Sometimes it is necessary to write HTML pages which contain link to MATLAB scripts or functions which have to be opened on user clik. This function enables to open the MATLAB script or function. For example, if when writing an HTML page, the user wants to add a link to MATLAB file named examples_categorical.m, the code to incorporate inside the HTML file is:
+&amp;lt;a href="matlab:linkToMatlabFileFromHTML('examples_categorical.m',1)"&amp;gt;examples_categorical.m&amp;lt;/a&amp;gt;
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>MatlabFileName</Name>
+         <ShortDesc>Name of Matlab file.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Filename of the MATLAB function or script which has to be opened when the user clicks on the hypertextual link. If it is known whether the file to open is either a .m or a .mlx file, please include the extension in the filename.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>LineToOpen</Name>
+         <ShortDesc>Number of the line of the MATLAB file.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the line where to position the cursor when opening the file.</LongDesc>
+         <Example>&lt;code&gt;&lt;/code&gt;</Example>
+         <DataType> </DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->This function uses the undocumented MATLAB function opentoline. Finally note that the MATLAB file to open must be in MATLAB path because we use function 'which'.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>findDir</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>openMatlabFileFromHTML with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell/>
+            <ItemCell>% openMatlabFileFromHTML with all default options.</ItemCell>
+            <ItemCell>% In this case file examples_regression.m is opened.</ItemCell>
+            <ItemCell>openMatlabFileFromHTML('examples_regression.m')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>openMatlabFileFromHTML in the command window.</Title>
+         <Desc>
+            <ItemCell>If the user clicks on the link file examples_regression is opened on line five.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>disp(['&amp;lt;a href="matlab:openMatlabFileFromHTML(''examples_regression.m'',5)"&amp;gt;examples_regression.m&amp;lt;/a&amp;gt;'])</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

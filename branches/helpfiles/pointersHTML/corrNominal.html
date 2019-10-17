@@ -1,0 +1,75 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>corrNominal</title> <meta content="refpage" name="chunktype"><meta content="function:corrNominal " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="corrNominal Measures strength of association between two unordered (nominal) categorical variables" itemprop="description" name="description" /><h1 itemprop="title">corrNominal</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/corrNominal.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/corrNominal.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/corrNominal.html">http://rosa.unipr.it/FSDA/corrNominal.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: corrNominal</em></p><h1 itemprop="title">corrNominal</h1><P>Measures strength of association between two unordered (nominal) categorical variables</P><h2>Description</h2><P>corrNominal computes $\chi2$, $\Phi$, Cramer's $V$, Goodman-Kruskal's
+ $\lambda_{y|x}$, Goodman-Kruskal's  $\tau_{y|x}$, and Theil's $H_{y|x}$
+ (uncertainty coefficient).
+ All these indexes measure the association among two unordered qualitative
+ variables.
+ Additional details about these indexes can be found in the "More About"
+ section or in the "Output section" of this document.</P><h2>More About</h2><P>
+                       $\lambda_{y|x}$ is a measure of association that
+                       reflects the proportional reduction in error when
+                       values of the independent variable (variable in the
+                       rows of the contingency table) are used to predict
+                       values of the dependent variable (variable in the
+                       columns of the contingency table). The range of
+                       $\lambda_{y|x}$ is [0, 1]. A value of 1
+                       means that the independent variable perfectly
+                       predicts the dependent variable. On the other hand,
+                       a value of 0 means that the independent variable
+                       does not help in predicting the dependent variable.
+                       More generally, let $V(y)$ a measure of variation
+                       for the marginal distribution $(f_{.1}=n_{.1}/n,
+                       ..., f_{.J}=n_{.J}/n)$ of the response $y$ and let
+                       $V(y|i)$ denote the same measure computed for the
+                       conditional distribution  $(f_{1|i}=n_{1|i}/n, ...,
+                       f_{J|i}=n_{J|i}/n)$ of $y$ at the $i$-th setting of
+                       the the explanatory variable $x$. A proportional
+                       reduction in variation measure has the form.
+                       \[
+                       \frac{V(y) - E[V(y|x)]}{V(y|x)}
+                       \]
+                       where  $E[V(y|x)]$ is the expectation of the
+                       conditional variation taken with respect to the
+                       distribution of $x$. When $x$ is a categorical
+                       variable having marginal distribution,
+                       $(f_{1.}, \ldots, f_{I.})$,
+                       \[
+                       E[V(y|x)]= \sum_{i=1}^I (n_{i.}/n) V(y|i) =  \sum_{i=1}^I f_{i.} V(y|i)
+                       \]
+                       If we take as measure of variation $V(y)$ the Gini coefficient
+                       \[
+                       V(y)=1 -\sum_{j=1}^J f_{.j} \qquad V(y|i)=1 -\sum_{j=1}^J f_{j|i}
+                       \]
+                       we obtain the index of proportional reduction in
+                       variation $\tau_{y|x}$ of Goodman and Kruskal.
+                       \[
+                       \tau_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij}^2/f_{i.} -\sum_{j=1}^J f_{.j}^2 }{1-\sum_{j=1}^J f_{.j}^2 }
+                       \]
+                       If, on the other hand, we take as measure of
+                       variation $V(y)$ the entropy index
+                       \[
+                       V(y)=-\sum_{j=1}^J f_{.j} \log f_{.j}  \qquad V(y|i) -\sum_{j=1}^J f_{j|i} \log f_{j|i}
+                       \]
+                       we obtain the index $H_{y|x}$, (uncertainty
+                       coefficient of Theil).
+                       \[
+                       H_{y|x}= \frac{\sum_{i=1}^I \sum_{j=1}^J f_{ij} \log( f_{ij}/ (f_{i.}f_{.j}))}{\sum_{j=1}^J f_{.j} \log  f_{.j} }
+                       \]
+                       The range of $\tau_{y|x}$ and $H_{y|x}$ is [0 1].
+                       A large value of
+                       of the index represents a strong association, in
+                       the sense that we can guess $y$ much better when we
+                       know x than when we do not.
+                       In other words, $\tau_{y|x}=H_{y|x} =1$ is equivalent to no
+                       conditional variation in the sense that for each
+                       $i$, $n_{j|i}=1$. For example, a value of:
+                       $\tau_{y|x}=0.85$ indicates that knowledge of x
+                       reduces error in predicting values of y by 85 per
+                       cent (when the variation measure which is used is
+                       the Gini's index).
+                       $H_{y|x}=0.85$ indicates that
+                       knowledge of x reduces error in predicting values
+                       of y by 85 per cent (when variation measure which
+                       is used is the entropy index)
+
+</P><h2>References</h2><P>Agresti, A. (2002), "Categorical Data Analysis", John Wiley & Sons. [pp.
+ 23-26]</P></html>

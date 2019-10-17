@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->tclustreg</Title>
+   <Purpose><!--This is the second line of the .m file-->tclustreg performs robust linear grouping analysis
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.
+y can be either a row or a column vector.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Explanatory variables (also called 'regressors').</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of dimension $(n \times p-1)$. Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>Number of clusters.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>This is a guess on the number of data groups.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>restrfact</Name>
+         <ShortDesc>restriction factor for regression residuals and covariance matrices of explanatory variables.</ShortDesc>
+         <TypeInd>Scalar or vector with two elements.</TypeInd>
+         <LongDesc>If restrfact is a scalar it controls the differences among group scatters of the residuals. The value 1 is the strongest restriction. If restrfactor is a vector with two elements the first element controls the differences among group scatters of the residuals and the second the differences among covariance matrices of the explanatory variables.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>alphaLik</Name>
+         <ShortDesc>Trimming level.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>alpha1 is a value between 0 and 0.5 or an integer specifying the number of observations which have to be trimmed. If alphaLik=0 there is no trimming. More in detail, if 0&amp;lt;alphaLik&amp;lt;1 clustering is based on h=fix(n*(1-alphaLik)) observations.
+Else if alphaLik is an integer greater than 1 clustering is based on h=n-floor(alphaLik). More in detail, likelihood contributions are sorted and the units associated with the smallest n-h contributions are trimmed.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>alphaX</Name>
+         <ShortDesc>Second-level trimming or constrained weighted model for X.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>alphaX is a value between [0 and 1).
+- If alphaX=0 there is no second-level trimming.
+- If alphaX is in the interval [0 0.5] it indicates the fixed proportion of units subject to second level trimming.
+In this case alphaX is usually smaller than alphaLik.
+For further details see Garcia-Escudero et. al. (2010).
+- If alphaX is in the interval (0.5 1), it indicates a Bonferronized confidence level to be used to identify the units subject to second level trimming. In this case the proportion of units subject to second level trimming is not fixed a priori, but is determined adaptively.
+For further details see Torti et al. (2018).
+- If alphaX=1, constrained weighted model for X is assumed (Gershenfeld, 1997). The CWM estimator is able to take into account different distributions for the explanatory variables across groups, so overcoming an intrinsic limitation of mixtures of regression, because they are implicitly assumed equally distributed.
+For further details about CWM see Garcia-Escudero et al. (2017).</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>mixt</Name>
+         <ShortDesc>mixture modelling or crisp assignment.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Option mixt specifies whether mixture modelling or crisp assignment approach to model based clustering must be used.
+In the case of mixture modelling parameter mixt also controls which is the criterior to find the untrimmed units in each step of the maximization If mixt &amp;gt;=1 mixture modelling is assumed else crisp assignment.
+In mixture modelling the likelihood is given by
+\[
+\prod_{i=1}^n \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
+\]
+while in crisp assignment the likelihood is given by
+\[
+\prod_{j=1}^k \prod _{i\in R_j} \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
+\]
+where $R_j$ contains the indexes of the observations which are assigned to group $j$, Remark - if mixt&amp;gt;=1 previous parameter equalweights is automatically set to 1.
+Parameter mixt also controls the criterion to select the units to trim if mixt == 2 the h units are those which give the largest contribution to the likelihood that is the h largest values of
+\[
+\sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j) \qquad i=1, 2, ..., n
+\]
+elseif mixt==1 the criterion to select the h units is exactly the same as the one which is used in crisp assignment. That is: the n units are allocated to a cluster according to criterion
+\[
+\max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
+\]
+and then these n numbers are ordered and the units associated with the largest h numbers are untrimmed.</LongDesc>
+         <Example>'mixt',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>equalweights</Name>
+         <ShortDesc>cluster weights in the concentration and assignment steps.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>A logical value specifying whether cluster weights shall be considered in the concentration, assignment steps and computation of the likelihood.
+if equalweights = true we are (ideally) assuming equally sized groups by maximizing the likelihood</LongDesc>
+         <Example>'equalweights',true</Example>
+         <DataType>Logical</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>number of subsamples to extract.</ShortDesc>
+         <TypeInd>Scalar or matrix with k*p columns.</TypeInd>
+         <LongDesc>If nsamp is a scalar it contains the number of subsamples which will be extracted.
+If nsamp=0 all subsets will be extracted.
+If the number of all possible subset is &amp;lt;300 the default is to extract all subsets, otherwise just 300.
+If nsamp is a matrix it contains in the rows the indexes of the subsets which have to be extracted. nsamp in this case can be conveniently generated by function subsets.
+nsamp must have k*p columns. The first p columns are used to estimate the regression coefficient of group 1... the last p columns are used to estimate the regression coefficient of group k</LongDesc>
+         <Example>'nsamp',1000</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>refsteps</Name>
+         <ShortDesc>Number of refining iterations.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of refining iterations in each subsample. Default is 10.
+refsteps = 0 means "raw-subsampling" without iterations.</LongDesc>
+         <Example>'refsteps',15</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>A flag to control the generation of the plots.
+If plots=1 a plot is showed on the screen with the final allocation (and if size(X,2)==2 with the lines associated to the groups)</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>wtrim</Name>
+         <ShortDesc>Application of observation weights.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>A flag taking values [0, 1, 2, 3, 4] to control the application of weights on the observations.
+- If \texttt{wtrim}=0 (no weights) and \texttt{mixt}=0, the algorithm reduces to the standard tclustreg algorithm.
+- If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior probability $D\_i$ of equation 7 of Garcia et al. 2010 is computing by maximizing the log-likelihood contributions of the mixture model of each observation.
+- If \texttt{wtrim} = 1, trimming is done by weighting the observations using values specified in vector \texttt{we}.
+In this case, vector \texttt{we} must be supplied by the user. For instance, \texttt{we} = $X$.
+- If \texttt{wtrim} = 2, trimming is again done by weighting the observations using values specified in vector \texttt{we}.
+In this case, vector \texttt{we} is computed from the data as a function of the density estimate $\mbox{pdfe}$.
+Specifically, the weight of each observation is the probability of retaining the observation, computed as \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
+- If \texttt{wtrim} = 3, trimming is again done by weighting the observations using values specified in vector \texttt{we}. In this case, each element $we_i$ of vector \texttt{we} is a Bernoulli random variable with probability of success $\mbox{pdfe}_{ig}$. In the clustering framework this is done under the constraint that no group is empty.
+- If \texttt{wtrim} = 4, trimming is done with the tandem approach of Cerioli and Perrotta (2014).</LongDesc>
+         <Example>'wtrim',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>we</Name>
+         <ShortDesc>Vector of observation weights.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector of size n-by-1 containing the weights to apply to each observation. Default value is a vector of ones.</LongDesc>
+         <Example>'we',[0.2 0.2 0.2 0.2 0.2]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls whether to display or not messages on the screen.
+If msg==0 nothing is displayed on the screen.
+If msg==1 (default) messages are displayed on the screen about estimated time to compute the estimator or the number of subsets in which there was no convergence.
+If msg==2 detailed messages are displayed. For example the information at iteration level.</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>RandNumbForNini</Name>
+         <ShortDesc>Pre-extracted random numbers to initialize proportions.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix with size k-by-size(nsamp,1) containing the random numbers which are used to initialize the proportions of the groups. This option is effective just if nsamp is a matrix which contains pre-extracted subsamples. The purpose of this option is to enable to user to replicate the results in case routine tclust is called using a parfor instruction (as it happens for example in routine IC, where tclust is called through a parfor for different values of the restriction factor).
+The default value of RandNumbForNini is empty that is random numbers from uniform are used.</LongDesc>
+         <Example>'RandNumbForNini',''</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>bopt</Value>
+               <Description>$p \times k$ matrix containing the regression parameters.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma2opt</Value>
+               <Description>$k$ row vector containing the estimated group variances.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma2opt_corr</Value>
+               <Description>$k$ row vector containing the estimated group variances corrected with asymptotic consistency factor.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>muXopt</Value>
+               <Description>k-by-p matrix containing cluster centroid locations. Robust estimate of final centroids of the groups. This output is present just if input option alphaX is 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigmaXopt</Value>
+               <Description>p-by-p-by-k array containing estimated constrained covariance covariance matrices of the explanatory variables for the k groups. This output is present just if input option alphaX is 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>idx</Value>
+               <Description>n-by-1 vector containing assignment of each unit to each of the k groups. Cluster names are integer numbers from -2 to k.
+-1 indicates first level trimmed units.
+-2 indicated second level trimmed units.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>siz</Value>
+               <Description>Matrix of size k-by-3.
+1st col = sequence from -2 to k;
+2nd col = number of observations in each cluster;
+3rd col = percentage of observations in each cluster;
+Remark: 0 denotes thinned units (if the weights are to find thinned units are 0 or 1, -1 indicates first level trimmed units and -2 indicates second level trimmed units).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>idx_before_tr</Value>
+               <Description>n-by-1 vector containing assignment of each unit to each of the k groups before applying first (and second level trimming). Cluster names are integer numbers from 1 to k. Note that while out.idx contains number which go from -2 to k, out.idx_before_tr only contains numbers which go from 1 to k.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>post</Value>
+               <Description>n-by-k matrix containing posterior probabilities out.post(i,j) contains posterior probabilitiy of unit i from component (cluster) j. For the trimmed units posterior probabilities are 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>vopt</Value>
+               <Description>Scalar. The value of the target function.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>weopt</Value>
+               <Description>n-by-1 vector containing the weigths of each observation, i.e. its contribution to the estimates.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>postprobopt</Value>
+               <Description>$n \times k$ matrix containing the final posterior probabilities.
+out.postprobopt(i,j) contains posterior probabilitiy of unit i from component (cluster) j. For the trimmed units posterior probabilities are 0.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+      <Item>
+         <Name>varargout</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>C : Indexes of extracted subsamples.</TypeInd>
+         <LongDesc>Matrix of size nsamp-by-k*p containing (in the rows) the indices of the subsamples extracted for computing the estimate.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S., and Mayo-Iscar A. (2016), The joint role of trimming and constraints in robust estimation for mixtures of gaussian factor analyzers. Computational Statistics &amp; Data Analysis 99, p. 131-147.</Item>
+      <Item>Garcia-Escudero, L.A., Gordaliza A., Greselin F., Ingrassia S. and Mayo-Iscar A. (2017), Robust estimation of mixtures of regressions with random covariates, via trimming and constraints. Statistics and Computing 27, p. 377-402.</Item>
+      <Item>Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R. (2010), Robust clusterwise linear regression through trimming. Computational Statistics and Data Analysis 54, 3057-3069.</Item>
+      <Item>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression Lines with High Density Regions. Advances in Data Analysis and Classification, Volume 8, Issue 1, p. 5-26.</Item>
+      <Item>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust Methodologies for Clustering Linear Regression Data. Submitted.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tclust</Item>
+      <Item>tkmeans</Item>
+      <Item>rlga</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>tclustreg of 'X data'.</Title>
+         <Desc>
+            <ItemCell>The X data have been introduced by Gordaliza, Garcia-Escudero &amp; Mayo-Iscar (2013).</ItemCell>
+            <ItemCell>The dataset presents two parallel components without contamination.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X  = load('X.txt');</ItemCell>
+            <ItemCell>y1 = X(:,end);</ItemCell>
+            <ItemCell>X1 = X(:,1:end-1);</ItemCell>
+            <ItemCell>k = 2 ;</ItemCell>
+            <ItemCell>restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2);</ItemCell>
+            <ItemCell>restrfact = 2; alpha1 = 0.05 ; alpha2 = 0.01;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'mixt',2);</ItemCell>
+            <ItemCell>% Comparison with robust linear grouping</ItemCell>
+            <ItemCell>out = rlga(X,k,alpha2);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>tclustreg of fishery data 1.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>load fishery;</ItemCell>
+            <ItemCell>X = fishery.data;</ItemCell>
+            <ItemCell>% some jittering is necessary because duplicated units are not treated:</ItemCell>
+            <ItemCell>% this needs to be addressed</ItemCell>
+            <ItemCell>X = X + 10^(-8) * abs(randn(677,2));</ItemCell>
+            <ItemCell>%tclustreg on fishery data</ItemCell>
+            <ItemCell>y1 = X(:,end);</ItemCell>
+            <ItemCell>X1 = X(:,1:end-1);</ItemCell>
+            <ItemCell>k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',0);</ItemCell>
+            <ItemCell>%lga and rlga on fishery data</ItemCell>
+            <ItemCell>figure('name','RLGA');</ItemCell>
+            <ItemCell>out=lga(X,3);</ItemCell>
+            <ItemCell>clickableMultiLegend('1','2','3','data1','data2','data3');</ItemCell>
+            <ItemCell>axis manual;</ItemCell>
+            <ItemCell>alpha = 0.95;</ItemCell>
+            <ItemCell>figure('name','LGA');</ItemCell>
+            <ItemCell>out=rlga(X,3,1-alpha);</ItemCell>
+            <ItemCell>clickableMultiLegend('0','1','2','3','data1','data2','data3');</ItemCell>
+            <ItemCell>axis manual;</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>tclustreg of fishery data 2.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>clear all; close all;</ItemCell>
+            <ItemCell>load fishery;</ItemCell>
+            <ItemCell>X=fishery.data;</ItemCell>
+            <ItemCell>% some jittering is necessary because duplicated units are not treated</ItemCell>
+            <ItemCell>% in tclustreg: this needs to be addressed</ItemCell>
+            <ItemCell>X = X + 10^(-8) * abs(randn(677,2));</ItemCell>
+            <ItemCell>y1 = X(:,end);</ItemCell>
+            <ItemCell>X1 = X(:,1:end-1);</ItemCell>
+            <ItemCell/>
+            <ItemCell>% some arbitrary weights for the units</ItemCell>
+            <ItemCell>we = sqrt(X1)/sum(sqrt(X1));</ItemCell>
+            <ItemCell/>
+            <ItemCell>% tclustreg required parameters</ItemCell>
+            <ItemCell>k = 2; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;</ItemCell>
+            <ItemCell>% now tclust is run on each combination of mixt and wtrim options</ItemCell>
+            <ItemCell>disp('mixt = 0; wtrim = 0;');</ItemCell>
+            <ItemCell>disp('standard tclustreg, with classification likelihood and without thinning' );</ItemCell>
+            <ItemCell>mixt = 0; wtrim = 0;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 2; wtrim = 0;');</ItemCell>
+            <ItemCell>disp('mixture likelihood, no thinning' );</ItemCell>
+            <ItemCell>mixt = 2; wtrim = 0;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 0; wtrim = 1;');</ItemCell>
+            <ItemCell>disp('classification likelihood, thinning based on user weights' );</ItemCell>
+            <ItemCell>mixt = 0; wtrim = 1;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 2; wtrim = 1;');</ItemCell>
+            <ItemCell>disp('mixture likelihood, thinning based on user weights' );</ItemCell>
+            <ItemCell>mixt = 2; wtrim = 1;</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'we',we,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 0; wtrim = 2;');</ItemCell>
+            <ItemCell>disp('classification likelihood, thinning based on retention probabilities' );</ItemCell>
+            <ItemCell>mixt = 0; wtrim = 2; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 2; wtrim = 2;');</ItemCell>
+            <ItemCell>disp('mixture likelihood, thinning based on retention probabilities' );</ItemCell>
+            <ItemCell>mixt = 2; wtrim = 2; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 0; wtrim = 3;');</ItemCell>
+            <ItemCell>disp('classification likelihood, thinning based on bernoulli weights' );</ItemCell>
+            <ItemCell>mixt = 0; wtrim = 3; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 2; wtrim = 3;');</ItemCell>
+            <ItemCell>disp('mixture likelihood, thinning based on bernoulli weights' );</ItemCell>
+            <ItemCell>mixt = 2; wtrim = 3; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 0; wtrim = 4;');</ItemCell>
+            <ItemCell>disp('classification likelihood, tandem thinning based on bernoulli weights' );</ItemCell>
+            <ItemCell>mixt = 0; wtrim = 4; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+            <ItemCell>disp('mixt = 2; wtrim = 4;');</ItemCell>
+            <ItemCell>disp('mixture likelihood, tandem thinning based on bernoulli weights' );</ItemCell>
+            <ItemCell>mixt = 2; wtrim = 4; we = [];</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>tclustreg of simulated data 1.</Title>
+         <Desc>
+            <ItemCell>Generate mixture of regression using MixSimReg, with an average overlapping at centroids = 0.01. Use all default options.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(372,'twister');</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.001);</ItemCell>
+            <ItemCell>n=500;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% plot the dataset</ItemCell>
+            <ItemCell>yXplot(y,X);</ItemCell>
+            <ItemCell>% run tclustreg</ItemCell>
+            <ItemCell>out=tclustreg(y,X,k,50,0.01,0.01,'intercept',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>tclustreg of simulated data 2.</Title>
+         <Desc>
+            <ItemCell>Generate mixture of regression using MixSimReg, with an average overlapping at centroids =0.01.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(372,'twister');</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>k=2;</ItemCell>
+            <ItemCell>Q=MixSimreg(k,p,'BarOmega',0.001);</ItemCell>
+            <ItemCell>n=200;</ItemCell>
+            <ItemCell>[y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);</ItemCell>
+            <ItemCell>% plot the dataset</ItemCell>
+            <ItemCell>yXplot(y,X);</ItemCell>
+            <ItemCell>% Generate the elemental subsets used in tclustreg once and for all.</ItemCell>
+            <ItemCell>nsamp  = 100;</ItemCell>
+            <ItemCell>ncomb  = bc(n,p);</ItemCell>
+            <ItemCell>method = [10*ones(n/2,1); ones(n/2,1)]; % weighted sampling using weights in "method"</ItemCell>
+            <ItemCell>msg    = 0;</ItemCell>
+            <ItemCell>for i=1:k</ItemCell>
+            <ItemCell>    C(:,(i-1)*p+1:i*p) = subsets(nsamp, n, p, ncomb, msg, method);</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% tclustreg using samples in C</ItemCell>
+            <ItemCell>out=tclustreg(y,X,k,50,0.01,0.01,'nsamp',C);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of nsamp passed as a matrix.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>X  = load('X.txt');</ItemCell>
+            <ItemCell>y1 = X(:,end);</ItemCell>
+            <ItemCell>X1 = X(:,1:end-1);</ItemCell>
+            <ItemCell>k = 2 ;</ItemCell>
+            <ItemCell>restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;</ItemCell>
+            <ItemCell>nsamp=200;</ItemCell>
+            <ItemCell>Cnsamp=subsets(nsamp,n,(size(X1,2)+1)*k);</ItemCell>
+            <ItemCell>out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'nsamp',Cnsamp);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

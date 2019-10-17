@@ -1,0 +1,20 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>RobCov</title> <meta content="refpage" name="chunktype"><meta content="function:RobCov " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="RobCov Computes covariance matrix of robust regression coefficients" itemprop="description" name="description" /><h1 itemprop="title">RobCov</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/RobCov.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/RobCov.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/RobCov.html">http://rosa.unipr.it/FSDA/RobCov.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: RobCov</em></p><h1 itemprop="title">RobCov</h1><P>Computes covariance matrix of robust regression coefficients</P><h2>Description</h2><P>Under some regularity conditions, robust (S and MM) estimates are
+ asymptotically normal, thereby allowing for Wald-type tests and
+ confidence intervals. The covariance matrix of the estimated parameters
+ \[
+   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
+ \]
+ consists of four parts:
+1) $q$ a correction factor for the scale estimate;
+ 2) $\sigma$ the scale parameter.
+ 3) $v$ a correction factor depending on the $\psi$ function which is
+ used;
+ 4) $V_X$= a matrix part. For OLS $V_X=X'X$. Given that in robust
+ regression we give a weight to each observation, the matrix $X'X$ should
+ be replaced by something like $X'WX$, where $W$ is a diagonal matrix
+ containing the weights assigned to each observation.
+ The purpose of this function is to provide the user with different
+ options for the estimate of $cov(\hat \beta)$ where $\hat \beta$ is  a
+ vector of regression coefficients obtained using S or MM estimation and a
+ particular $\rho$ function.</P><h2>References</h2><P>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
+ and Methods", Wiley, New York.</P></html>

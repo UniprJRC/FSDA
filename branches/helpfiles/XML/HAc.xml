@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HAc</Title>
+   <Purpose><!--This is the second line of the .m file-->HAc computes breakdown point and efficiency associated with constant c 
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>ctun</Name>
+         <ShortDesc>tuning constant c.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>number of response variables.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Number of variables of the dataset (for regression v=1) UP TO NOW v=1 (JUST REGRESSION) TO DO FOR MULTIVARIATE ANALYSIS</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>param</Name>
+         <ShortDesc>tuning parameters.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of length 3 specifying the parameters a, b and c of the weight function of the Hampel estimator.
+param(1)=a param(2)=b param(3)=c If these values are not supplied they will be automatically set to a=2, b=4 c=8</LongDesc>
+         <Example>'param',[1.5,3.5,8]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>shapeeff</Name>
+         <ShortDesc>location or shape efficiency.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, the efficiency is referred to the shape else (default) is referred to the location. TODO:Hac:shapeeff</LongDesc>
+         <Example>'shapeeff',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>bdp</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>bdp.</TypeInd>
+         <LongDesc>Breakdown point associated to the supplied value of c for Hampel rho function</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>eff</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>eff.</TypeInd>
+         <LongDesc>Efficiency associated to the supplied value of c for Hampel rho function</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->Function HApsi transforms vector u as follows.
+\[
+HApsi(u) = \left\{ \begin{array}{cc} u &amp; |u| &amp;lt;= a \\
+a \times sign(u) &amp; a &amp;lt;= |u| &amp;lt; b \\
+a \frac{c-|u|}{c-b} \times sign(u) &amp; b &amp;lt;= |u| &amp;lt; c \\
+0 &amp; |u| &amp;gt;= c \end{array} \right.
+\]
+where $a$= ctun *param(1).
+$b$= ctun *param(2).
+$c$= ctun *param(3).
+The default is $a$= 2*ctun.
+$b$= 4*ctun.
+$c$= 8*ctun.
+It is necessary to have 0 &amp;lt;= a &amp;lt;= b &amp;lt;= c
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>D. C. Hoaglin, F. Mosteller, J. W. Tukey (1982), Understanding Robust and Exploratory Data Analysis Wiley, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPc</Item>
+      <Item>TBc</Item>
+      <Item>OPTc</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>bdp and eff as function of c.</Title>
+         <Desc>
+            <ItemCell>Analysis of breakdown point and asymptotic efficiency at the normal distribution as a function of c in regression.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>cc=0.15:0.05:1.2;</ItemCell>
+            <ItemCell>% BDPEFF = matrix which will contain</ItemCell>
+            <ItemCell>% 1st column = value of c</ItemCell>
+            <ItemCell>% 2nd column = breakdown point (bdp)</ItemCell>
+            <ItemCell>% 3rd column = asympotic nominal efficiency (eff)</ItemCell>
+            <ItemCell>BDPEFF=[cc' zeros(length(cc),2)];</ItemCell>
+            <ItemCell>jk=1;</ItemCell>
+            <ItemCell>for c=cc</ItemCell>
+            <ItemCell>    [bdp,eff]=HAc(c,1);</ItemCell>
+            <ItemCell>    BDPEFF(jk,2:end)=[bdp, eff];</ItemCell>
+            <ItemCell>    jk=jk+1;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>nr=2;</ItemCell>
+            <ItemCell>nc=1;</ItemCell>
+            <ItemCell>subplot(nr,nc,1)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,2))</ItemCell>
+            <ItemCell>xlabel('c','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Breakdown point','Interpreter','none')</ItemCell>
+            <ItemCell>subplot(nr,nc,2)</ItemCell>
+            <ItemCell>plot(BDPEFF(:,1),BDPEFF(:,3))</ItemCell>
+            <ItemCell>xlabel('c','Interpreter','Latex','FontSize',16)</ItemCell>
+            <ItemCell>ylabel('Asymptotic efficiency','Interpreter','none')</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

@@ -1,0 +1,14 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>logmvnpdfFS</title> <meta content="refpage" name="chunktype"><meta content="function:logmvnpdfFS " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="logmvnpdfFS Produces log of Multivariate normal probability density function (pdf)" itemprop="description" name="description" /><h1 itemprop="title">logmvnpdfFS</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/logmvnpdfFS.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/logmvnpdfFS.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/logmvnpdfFS.html">http://rosa.unipr.it/FSDA/logmvnpdfFS.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: logmvnpdfFS</em></p><h1 itemprop="title">logmvnpdfFS</h1><P>Produces log of Multivariate normal probability density function (pdf)</P><h2>Description</h2><P>This function is a much faster version than (log of) Matlab function
+ mvnpdf.  If this function is called without optional arguments than it
+ uses matlab function bsxfun to compute
+ the deviations form the means and no mex function.
+ If this function is called with the four optional input
+ arguments X0, eyed, n and d a mex function based on C code is directly used.
+ Additional details follow: in order to compute the kernel of the quadratic form
+ at the exponent logmvnpdfFS creates an identity of size length(Mu) and
+ similarly needs to compute length(Mu). These two quantites can be
+ precalculated and supplied as input parameters. If logmvnpdfFS has to be
+ called thousands of times (as it happens for example in each iteration
+ of all procedures of cluster analysis based mixtures of multivariate
+ gaussian distributions). The same argument above applies to scalars n
+ and d which are directly passed to the compiled mex function</P></html>

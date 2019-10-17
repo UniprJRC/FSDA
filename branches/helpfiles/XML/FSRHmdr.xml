@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRHmdr</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRHmdr computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n, where n is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables in the regression equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Z</Name>
+         <ShortDesc>Predictor variables in the scedastic equation.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x r matrix or vector of length r.
+If Z is a n x r matrix it contains the r variables which form the scedastic function as follows (if input option art==1)
+\[
+\omega_i = 1 + exp(\gamma_0 + \gamma_1 Z(i,1) + ...+ \gamma_{r} Z(i,r))
+\]
+If Z is a vector of length r it contains the indexes of the columns of matrix X which form the scedastic function as follows
+\[
+\omega_i = 1 + exp(\gamma_0 + \gamma_1 X(i,Z(1)) + ...+ \gamma_{r} X(i,Z(r)))
+\]
+Therefore, if for example the explanatory variables responsible for heteroscedasticity are columns 3 and 5 of matrix X, it is possible to use both the sintax FSRHmdr(y,X,X(:,[3 5]),0) or the sintax FSRHmdr(y,X,[3 5],0)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>list of units forming the initial subset.</ShortDesc>
+         <TypeInd>Vector | 0.</TypeInd>
+         <LongDesc>If bsb=0 then the procedure starts with p units randomly chosen else if bsb is not 0 the search will start with m0=length(bsb)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the point where to start monitoring required diagnostics. If it is not specified it is set equal to:
+p+1, if the sample size is smaller than 40;
+min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+The minimum value of init is 0. In this case in the first step we just use prior information</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>modeltype</Name>
+         <ShortDesc>Parametric function to be used in the skedastic equation.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>If modeltype is 'arc' (default) than the skedastic function is modelled as follows
+\[
+\sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)))
+\]
+on the other hand, if modeltype is 'har' then traditional formulation due to Harvey is used as follows
+\[
+\sigma^2_i = \exp(\gamma_0 + \gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r)) =\sigma^2 (\exp(\gamma_1 Z(i,1) + \cdots + \gamma_{r} Z(i,r))
+\]</LongDesc>
+         <Example>'modeltype','har'</Example>
+         <DataType>string</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If equal to one a plot of Bayesian minimum deletion residual appears on the screen with 1 per cent, 50 per cent and 99 per cent confidence bands else (default) no plot is shown.
+Remark. the plot which is produced is very simple. In order to control a series of options in this plot and in order to connect it dynamically to the other forward plots it is necessary to use function mdrplot</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of output to display.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages about great interchange on the screen If msg==1 (default) messages are displyed on the screen else no message is displayed on the screen</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>gridsearch</Name>
+         <ShortDesc>Algorithm to be used.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If gridsearch ==1 grid search will be used else the scoring algorith will be used.
+REMARK: the grid search has only been implemented when there is just one explantory variable which controls heteroskedasticity</LongDesc>
+         <Example>'gridsearch',0</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>constr</Name>
+         <ShortDesc>units which are forced to join the search in the last r steps.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>r x 1 vector. The default is constr=''. No constraint is imposed</LongDesc>
+         <Example>'constr',[1 6 3]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbmfullrank</Name>
+         <ShortDesc>It tells how to behave in case subset at step m (say bsbm) produces a non singular X.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>In other words, this options controls what to do when rank(X(bsbm,:)) is smaller then number of explanatory variables. If bsbmfullrank = 1 (default is 1) these units (whose number is say mnofullrank) are constrained to enter the search in the final n-mnofullrank steps else the search continues using as estimate of beta at step m the estimate of beta found in the previous step.</LongDesc>
+         <Example>'bsbmfullrank',0</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbsteps</Name>
+         <ShortDesc>Save the units forming subsets (and weights vector) in selected steps.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subset. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=5000, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=7530 and init=6, units forming subset are stored for m=init, 100, 200, ..., 7500.</LongDesc>
+         <Example>'bsbsteps',[100 200] stores the unis forming subset in steps 100 and 200.</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>mdr</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Minimum deletion residual.</TypeInd>
+         <LongDesc>n -init x 2 matrix which contains the monitoring of minimum deletion residual at each step of the forward search.
+1st col = fwd search index (from init to n-1).
+2nd col = minimum deletion residual.
+REMARK: if in a certain step of the search matrix is singular, this procedure checks how many observations produce a singular matrix. In this case mdr is a column vector which contains the list of units for which matrix X is non singular.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Un</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units included in each step.</TypeInd>
+         <LongDesc>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>BB</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units belonging to subset in each step.</TypeInd>
+         <LongDesc>n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input option bsbsteps) which contains information about the units belonging to the subset at each step of the forward search.
+BB has the following structure 1-st row has number 1 in correspondence of the steps in which unit 1 is included inside subset and a missing value for the other steps ......
+(n-1)-th row has number n-1 in correspondence of the steps in which unit n-1 is included inside subset and a missing value for the other steps n-th row has number n in correspondence of the steps in which unit n is included inside subset and a missing value for the other steps The size of matrix BB is n x (n-init+1) if option input bsbsteps is 0 else the size is n-by-length(bsbsteps).</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Bgls</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>GLS beta coefficents.</TypeInd>
+         <LongDesc>(n-init+1) x (p+1) matrix containing the monitoring of estimated beta coefficients in each step of the forward search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>S2</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>S2 and R2.</TypeInd>
+         <LongDesc>(n-init+1) x 3 matrix containing the monitoring of S2 (2nd column)and R2 (third column) in each step of the forward search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Hetero</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Coefficients in the heteroskedastic equation.</TypeInd>
+         <LongDesc>(n-init1+1) x (r+1) matrix containing:
+1st col = fwd search index;
+2nd col = estimate of first coeff in the scedastic equation;
+...
+(r+1)-th col = estimate of last coeff in the scedastic equation.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>WEI</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Weights.</TypeInd>
+         <LongDesc>n x (n-init+1) or n-by-length(bsbsteps) matrix (depending on input option bsbsteps) which contains information about the weights assigned to each unit to make the regression equation skedastic.
+More precisely, if $var (\epsilon)= \sigma^2 Omega=diag(omegahat)$ the weights which are stored are $omegahat.^(-0.5)$;</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson A.C., Riani M. and Torti F. (2016), Robust methods for heteroskedastic regression, Computational Statistics and Data Analysis 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 (ART).</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRmdr</Item>
+      <Item>FSRH</Item>
+      <Item>FSRHeda</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRHmdr with all default options.</Title>
+         <Desc>
+            <ItemCell>Common part to all examples: load tradeH dataset (used in the paper ART).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>mdr=FSRHmdr(y,X,Z,0);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>FSRHmdr with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Specifying the search initialization.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>mdr=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Analyze units entering the search in the final steps.</Title>
+         <Desc>
+            <ItemCell>Compute minimum deletion residual and analyze the units entering subset in each step of the fwd search (matrix Un). As is well known, the FS provides an ordering of the data from those most in agreement with a suggested model (which enter the first steps) to those least in agreement with it (which are included in the final steps).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Units forming subset in each step.</Title>
+         <Desc>
+            <ItemCell>Obtain detailed information about the units forming subset in each step of the forward search (matrix BB).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un,BB]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitor $\hat \beta$.</Title>
+         <Desc>
+            <ItemCell>Monitor how the estimates of beta coefficients changes as the subset size increases (matrix Bols).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitor $s^2$.</Title>
+         <Desc>
+            <ItemCell>Monitor the estimate of sigma^2 in each step of the fwd search (matrix S2).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring the estimates of the scedastic equation.</Title>
+         <Desc>
+            <ItemCell>With plot of the \alpha parameter.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+            <ItemCell>plot(Hetero(:,1),Hetero(:,2))</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring the estimates of the weights.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>XX=load('tradeH.txt');</ItemCell>
+            <ItemCell>y=XX(:,2);</ItemCell>
+            <ItemCell>X=XX(:,1);</ItemCell>
+            <ItemCell>X=X./max(X);</ItemCell>
+            <ItemCell>Z=log(X);</ItemCell>
+            <ItemCell>[mdr,Un,BB,Bols,S2,Hetero,WEI]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));</ItemCell>
+            <ItemCell>plot(S2(:,1),WEI')</ItemCell>
+            <ItemCell>title('Monitoring of the weights')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

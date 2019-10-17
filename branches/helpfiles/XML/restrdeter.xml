@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->restrdeter</Title>
+   <Purpose><!--This is the second line of the .m file-->restrdeter computes determinant restriction 
+</Purpose>
+   <Description><!--Description section-->restrdeter restricts the determinant according to the constraint specified in scalar restr. This function is called in every concentration step of function tclust in case determinant restriction is needed
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>eigenvalues</Name>
+         <ShortDesc>Eigenvalues.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>v x k matrix containing the eigenvalues of the covariance matrices of the k groups.
+v is the number of variables of the dataset which has to be clustered.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>niini</Name>
+         <ShortDesc>Cluster size.</ShortDesc>
+         <TypeInd>Column vector.</TypeInd>
+         <LongDesc>k x 1 vector containing the size of the k clusters</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>restr</Name>
+         <ShortDesc>Restriction factor.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar containing the restr parameter in tclust program.
+More in detail, parameter restr defines the cluster's shape restrictions, which are applied on all clusters during each iteration.
+Setting restr to 1, yields the strongest restriction, forcing all eigenvalues/determinants to be equal and so the method looks for similarly scattered (respectively spherical) clusters.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>tolerance.</ShortDesc>
+         <TypeInd>Scalar defining the tolerance of the procedure.</TypeInd>
+         <LongDesc>The default value is 1e-8</LongDesc>
+         <Example>&lt;code&gt;'tol',[1e-18] &#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>userepmat</Name>
+         <ShortDesc>use builtin repmat.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If userepmat is true function repmat is used instead of bsxfun inside the procedure. Remark: repmat is built in from MATLAB 2013b so it is faster to use repmat if the current version of MATLAB is &amp;gt;2013a</LongDesc>
+         <Example>&lt;code&gt;'userepmat',1 &#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Restricted eigenvalues which satisfy the determinant constraint.</TypeInd>
+         <LongDesc>v-by-k matrix containing restricted eigenvalues.
+The ratio between the determinants (that is the product of the columns of matrix out) is not greater than restr</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Fritz H. Garcia-Escudero, L.A. and Mayo-Iscar, A. (2012), A fast algorithm for robust constrained clustering. Available at http://www.eio.uva.es/infor/personas/tclust_algorithm.pdf</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tclust</Item>
+      <Item>restreigen</Item>
+      <Item>tclustreg</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Example using all default options.</Title>
+         <Desc>
+            <ItemCell>Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4 First column of matrix eigenvalues contains the eigenvalues of the first group Second column of matrix eigenvalues contains the eigenvalues of the second group Thrid column of matrix eigenvalues contains the eigenvalues of the third group Fourth column of matrix eigenvalues contains the eigenvalues of the fourth group</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>ng(10,'twister')</ItemCell>
+            <ItemCell>igenvalues=abs(10*randn(3,4));</ItemCell>
+            <ItemCell> niini is the column vector containing the sizes of the 4 groups</ItemCell>
+            <ItemCell>iini=[30;40;20;10];</ItemCell>
+            <ItemCell>ut=restrdeter(eigenvalues,niini,1.1)</ItemCell>
+            <ItemCell>isp('Input matrix of unrestricted eigenvalues')</ItemCell>
+            <ItemCell>isp(eigenvalues)</ItemCell>
+            <ItemCell>isp('Output matrix of restricted eigenvalues which satisfy determinant constraint')</ItemCell>
+            <ItemCell>isp(out)</ItemCell>
+            <ItemCell>isp('Ratio between largest and smallest determinant')</ItemCell>
+            <ItemCell>isp(max(prod(eigenvalues))/min(prod(eigenvalues)))</ItemCell>
+            <ItemCell>isp('Ratio between largest and smallest restricted determinants')</ItemCell>
+            <ItemCell>isp(max(prod(out))/min(prod(out)))</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Determinant restriction when an eigenvalue is 0.</Title>
+         <Desc>
+            <ItemCell>Suppose 5 variables and six groups</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>av=abs(randn(5,6));</ItemCell>
+            <ItemCell>% The third eigenvalue of the second groups is set to 0</ItemCell>
+            <ItemCell>av(3,2)=0;</ItemCell>
+            <ItemCell>% Maximum ratio among determinants must be equal to 1.6.</ItemCell>
+            <ItemCell>restr=1.6;</ItemCell>
+            <ItemCell>% Group sizes</ItemCell>
+            <ItemCell>niini=[30;40;20;10;50;100];</ItemCell>
+            <ItemCell>disp('Original values of the determinants')</ItemCell>
+            <ItemCell>disp(prod(av))</ItemCell>
+            <ItemCell>% Apply the restriction</ItemCell>
+            <ItemCell>a=restrdeter(av,niini,restr);</ItemCell>
+            <ItemCell>disp('Restricted eigenvalues which satisfy determinant constraint')</ItemCell>
+            <ItemCell>disp(a)</ItemCell>
+            <ItemCell>disp('Values of restricted determinants')</ItemCell>
+            <ItemCell>disp(prod(a))</ItemCell>
+            <ItemCell>disp('Maximum value of ratio among determinants')</ItemCell>
+            <ItemCell>disp(max(prod(a))/min(prod(a)))</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>An example using option arguments tol and repmat.</Title>
+         <Desc>
+            <ItemCell>Suppose 3 variables and six groups</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>av=abs(randn(3,6));</ItemCell>
+            <ItemCell>% Maximum ratio among determinants must be equal to 1.6.</ItemCell>
+            <ItemCell>restr=1.6;</ItemCell>
+            <ItemCell>% Group sizes</ItemCell>
+            <ItemCell>niini=[30;40;20;10;50;100];</ItemCell>
+            <ItemCell>% Apply the restriction using a tolerance of 1e-12 and use MATLAB</ItemCell>
+            <ItemCell>% function repmat for the computations</ItemCell>
+            <ItemCell>tol=1e-12;</ItemCell>
+            <ItemCell>repm=1;</ItemCell>
+            <ItemCell>a=restrdeter(av,niini,restr,tol,repm);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Determinant restriction when all eigenvalues of a group are 0.</Title>
+         <Desc>
+            <ItemCell>Two variables and five groups.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>av=abs(randn(2,5));</ItemCell>
+            <ItemCell>niini=[30;40;20;10;50];</ItemCell>
+            <ItemCell>av(:,2)=0;</ItemCell>
+            <ItemCell>a=restrdeter(av,niini,restr);</ItemCell>
+            <ItemCell>disp('Maximum value of ratio among determinants')</ItemCell>
+            <ItemCell>disp(max(prod(a))/min(prod(a)))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Determinant restriction when all eigenvalues of two groups are 0.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>av=abs(randn(2,5));</ItemCell>
+            <ItemCell>av(:,2:3)=0;</ItemCell>
+            <ItemCell>a=restrdeter(av,niini,restr);</ItemCell>
+            <ItemCell>disp('Maximum value of ratio among determinants')</ItemCell>
+            <ItemCell>disp(max(prod(a))/min(prod(a)))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

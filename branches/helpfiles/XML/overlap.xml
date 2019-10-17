@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->overlap</Title>
+   <Purpose><!--This is the second line of the .m file-->overlap computes the exact overlap given the parameters of the mixture
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>number of components (groups).</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>Scalar associated to the number of groups</LongDesc>
+         <Example> </Example>
+         <DataType>int16|int32|int64|single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>v</Name>
+         <ShortDesc>dimensionality (number of variables).</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>Scalar associated to the number of variables of the data matrix.</LongDesc>
+         <Example> </Example>
+         <DataType>int16|int32|int64|single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Pi</Name>
+         <ShortDesc>Mixing proportions.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector of size k containing mixing proportions. The sum of the elements of Pi is 1.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Mu</Name>
+         <ShortDesc>centroids.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of size k-by-v containing (in the rows) the centroids of the k groups.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>S</Name>
+         <ShortDesc>Covariance matrices.</ShortDesc>
+         <TypeInd>3D array.</TypeInd>
+         <LongDesc>3D array of size v-by-v-by-k containing covariance matrices of the k groups.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tol</Name>
+         <ShortDesc>tolerance.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is 1e-06.
+Optional parameters tol and lim will be used by function ncx2mixtcdf.m which computes the cdf of a linear combination of non central chi2 r.v.. This is the probability of misclassification.</LongDesc>
+         <Example>&lt;code&gt;'tol', 0.0001&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lim</Name>
+         <ShortDesc>maximum number of integration terms.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is 1000000.
+Optional parameters tol and lim will be used by function ncx2mixtcdf.m which computes the cdf of a linear combination of non central chi2 r.v.. This is the probability of misclassification.</LongDesc>
+         <Example>&lt;code&gt;'lim', 1000&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>OmegaMap</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>map of misclassification probabilities.</TypeInd>
+         <LongDesc>k-by-k matrix containing map of misclassification probabilities. More precisely, OmegaMap(i,j) $(i ~= j)=1, 2, ..., k$ $OmegaMap(i,j) = w_{j|i}$ is the probability that X coming from the i-th component (group) is classified to the $j-th$ component.
+The probability of overlapping (called pij) between groups i and j is given by $pij=pji= w_j|i + w_i|j \qquad i,j=1,2, ..., k$.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>BarOmega</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Average overlap.</TypeInd>
+         <LongDesc>Scalar associated with average overlap. BarOmega is computed as sum(sum(OmegaMap))-k)/(0.5*k(k-1).</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>MaxOmega</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Maximum overlap.</TypeInd>
+         <LongDesc>Scalar associated with maximum overlap. MaxOmega is the maximum of OmegaMap(i,j)+OmegaMap(j,i) (i ~= j)=1, 2, ..., k.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>StdOmega</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Std of overlap.</TypeInd>
+         <LongDesc>Scalar assocaited with standard deviation of overlap (that is the standard deviation of the 0.5*k(k-1) pij (probabilities of overlapping)</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>rcMax</Name>
+         <ShortDesc>Vector</ShortDesc>
+         <TypeInd>pair with largest overlap.</TypeInd>
+         <LongDesc>Column vector of length equal to 2 containing the indexes associated with the pair of components producing the highest overlap (largest off diagonal element of matrix OmegaMap)</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Maitra, R. and Melnykov, V. (2010), Simulating data to study performance of finite mixture modeling and clustering algorithms, The Journal of Computational and Graphical Statistics, 2:19, 354-376. (to refer to this publication we will use "MM2010 JCGS").</Item>
+      <Item>Melnykov, V., Chen, W.-C., and Maitra, R. (2012), MixSim: An R Package for Simulating Data to Study Performance of Clustering Algorithms, Journal of Statistical Software, 51:12, 1-25.</Item>
+      <Item>Davies, R. (1980), The distribution of a linear combination of chi-square random variables, Applied Statistics, vol. 29, pp. 323-333.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSReda</Item>
+      <Item>LXS</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Finding exact overlap for the Iris data.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load fisheriris;</ItemCell>
+            <ItemCell>Y=meas;</ItemCell>
+            <ItemCell>Mu=grpstats(Y,species);</ItemCell>
+            <ItemCell>S=zeros(4,4,3);</ItemCell>
+            <ItemCell>S(:,:,1)=cov(Y(1:50,:));</ItemCell>
+            <ItemCell>S(:,:,2)=cov(Y(51:100,:));</ItemCell>
+            <ItemCell>S(:,:,3)=cov(Y(101:150,:));</ItemCell>
+            <ItemCell>pigen=ones(3,1)/3;</ItemCell>
+            <ItemCell>k=3;</ItemCell>
+            <ItemCell>p=4;</ItemCell>
+            <ItemCell>[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)</ItemCell>
+            <ItemCell>disp('OmegaMap= k-by-k matrix which contains misclassification probabilities')</ItemCell>
+            <ItemCell>disp(OmegaMap);</ItemCell>
+            <ItemCell>disp('Average overlap')</ItemCell>
+            <ItemCell>disp(BarOmega)</ItemCell>
+            <ItemCell>disp('Maximum overlap')</ItemCell>
+            <ItemCell>disp(MaxOmega)</ItemCell>
+            <ItemCell>disp('Groups with maximum overlap')</ItemCell>
+            <ItemCell>disp(rcMax)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of option tol.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap]=overlap(k,p,pigen,Mu,S,1e-05)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of option lim.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap]=overlap(k,p,pigen,Mu,S,[],10000)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of use of options lim and tol together.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap]=overlap(k,p,pigen,Mu,S,1e-08,100000)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Display BarOmega and MaxOmega.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap, BarOmega, MaxOmega]=overlap(k,p,pigen,Mu,S)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Display StdOmega.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap, BarOmega, MaxOmega, StdOmega]=overlap(k,p,pigen,Mu,S)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Display rcMax.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>[OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

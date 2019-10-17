@@ -1,0 +1,26 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>HApsix</title> <meta content="refpage" name="chunktype"><meta content="function:HApsix " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="HApsix Computes psi function  using Hampel proposal times x" itemprop="description" name="description" /><h1 itemprop="title">HApsix</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/HApsix.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/HApsix.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/HApsix.html">http://rosa.unipr.it/FSDA/HApsix.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: HApsix</em></p><h1 itemprop="title">HApsix</h1><P>Computes psi function  using Hampel proposal times x</P><h2>More About</h2><P>
+ Function HApsix transforms vector u as follows
+
+  \[
+  HApsi(u)  = \left\{   
+  \begin{array}{cc}
+    u^2 & |u| &lt;= a                                       \\
+    a \times sign(u)u & a &lt;= |u| &lt; b                    \\
+    a \frac{c-|u|}{c-b} \times sign(u)\times u & b &lt;= |u| &lt;  c \\
+    0 & |u| &gt;= c 
+  \end{array} \right.
+ \]
+
+             where $a$= ctuning(2) *ctuning(1).
+                   $b$= ctuning(3) *ctuning(1).
+                   $c$= ctuning(4) *ctuning(1).
+              
+             The default (if input ctuning is a scalar) is  
+                   $a$= 2*ctuning.
+                   $b$= 4*ctuning.
+                   $c$= 8*ctuning.
+
+	It is necessary to have 0 &lt;= $a$ &lt;= $b$ &lt;= $c$
+
+</P><h2>References</h2><P>Hoaglin, D.C., Mosteller, F., Tukey, J.W. (1982), "Understanding Robust and
+ Exploratory Data Analysis", Wiley, New York.</P></html>

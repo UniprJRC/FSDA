@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->tclustICsol</Title>
+   <Purpose><!--This is the second line of the .m file-->tclustICsol extracts a set of best relevant solutions
+</Purpose>
+   <Description><!--Description section-->tclustICsol takes as input the output of function tclustIC (that is a series of matrices which contain the values of the information criteria BIC/ICL/CLA for different values of k and c) and extracts the first best solutions. Two solutions are considered equivalent if the value of the adjusted Rand index (or the adjusted Fowlkes and Mallows index) is above a certain threshold. For each tentative solution the program checks the adjacent values of c for which the solution is stable. A matrix with adjusted Rand indexes is given for the extracted solutions.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>IC</Name>
+         <ShortDesc>Information criterion to use.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>It contains the following fields.
+IC.CLACLA = matrix of size length(kk)-by-length(cc) containinig the values of the penalized classification likelihood (CLA).
+This field is linked with out.IDXCLA.
+IC.IDXCLA = cell of size length(kk)-by-length(cc).
+Each element of the cell is a vector of length n containinig the assignment of each unit using the classification model.
+Remark: fields CLACLA and IDXCLA are linked together.
+CLACLA and IDXCLA are compulsory just if optional input argument 'whichIC' is 'CLACLA' or 'ALL'.
+IC.MIXMIX = matrix of size length(kk)-by-length(cc) containinig the value of the penalized mixture likelihood (BIC). This field is linked with out.IDXMIX.
+IC.MIXCLA = matrix of size length(kk)-times length(cc) containinig the value of the ICL. This field is linked with out.IDXMIX.
+IC.IDXMIX = cell of size length(kk)-times length(cc).
+Each element of the cell is a vector of length n containinig the assignment of each unit using the mixture model.
+Remark 1: fields MIXMIX and IDXMIX are linked together.
+MIXMIX and IDXMIX are compulsory just if optional input argument 'whichIC' is 'CLACLA' or 'ALL'.
+Remark 2: fields MIXCLA and IDXMIX are linked together.
+MIXCLA and IDXMIX are compulsory just if optional input argument 'whichIC' is 'MIXCLA' or 'ALL'.
+IC.kk = vector containing the values of k (number of components) which have been considered.
+IC.cc = vector containing the values of c (values of the restriction factor) which have been considered.
+IC.Y = original n-times-v data matrix on which the IC (Information criterion) has been computed</LongDesc>
+         <Example> </Example>
+         <DataType>struct</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>CLACLA</Value>
+               <Description>matrix of size length(kk)-by-length(cc)&#xD;
+                   containinig the values of the penalized&#xD;
+                   classification likelihood (CLA).&#xD;
+                   This field is linked with out.IDXCLA.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>IDXCLA</Value>
+               <Description>cell of size length(kk)-by-length(cc).&#xD;
+                   Each element of the cell is a vector of length n&#xD;
+                   containinig the assignment of each unit using the&#xD;
+                   classification model.&#xD;
+                Remark: fields CLACLA and IDXCLA are linked together.&#xD;
+                   CLACLA and IDXCLA are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXMIX</Value>
+               <Description>matrix of size length(kk)-by-length(cc)&#xD;
+                   containinig the value of the penalized&#xD;
+                   mixture likelihood (BIC). This field is linked with&#xD;
+                   out.IDXMIX.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXCLA</Value>
+               <Description>matrix of size length(kk)-times length(cc)&#xD;
+                   containinig the value of the ICL. This field is linked&#xD;
+                   with out.IDXMIX.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>IDXMIX</Value>
+               <Description>cell of size length(kk)-times length(cc).&#xD;
+                   Each element of the cell is a vector of length n&#xD;
+                   containinig the assignment of each unit using the&#xD;
+                   mixture model.&#xD;
+                Remark 1: fields MIXMIX and IDXMIX are linked together.&#xD;
+                   MIXMIX and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'CLACLA' or 'ALL'.&#xD;
+                Remark 2: fields MIXCLA and IDXMIX are linked together.&#xD;
+                   MIXCLA and IDXMIX are compulsory just if optional input&#xD;
+                   argument 'whichIC' is 'MIXCLA' or 'ALL'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>kk</Value>
+               <Description>vector containing the values of k (number of&#xD;
+                   components) which have been considered.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cc</Value>
+               <Description>vector containing the values of c (values of the&#xD;
+                   restriction factor) which have been considered.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Y</Value>
+               <Description>original n-times-v data matrix on which the IC&#xD;
+                   (Information criterion) has&#xD;
+                    been computed</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>NumberOfBestSolutions</Name>
+         <ShortDesc>number of solutions to consider.</ShortDesc>
+         <TypeInd>Scalar integer greater than 0.</TypeInd>
+         <LongDesc>Number of best solutions to extract from BIC/ICL matrix. The default value of NumberOfBestSolutions is 5</LongDesc>
+         <Example>'NumberOfBestSolutions',5</Example>
+         <DataType>int16 | int32 | single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ThreshRandIndex</Name>
+         <ShortDesc>threshold to identify spurious solutions.</ShortDesc>
+         <TypeInd>Positive scalar between 0 and 1.</TypeInd>
+         <LongDesc>Scalar which specifies the threshold of the adjusted Rnd index to use to consider two solutions as equivalent. The default value of ThreshRandIndex is 0.7</LongDesc>
+         <Example>'ThreshRandIndex',0.8</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>whichIC</Name>
+         <ShortDesc>character which specifies the information criterion to use to extract best solutions.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>Possible values for whichIC are:
+'CLACLA' = in this case best solutions are referred to the classification likelihood.
+'MIXMIX' = in this case in this case best solutions are referred to the mixture likelihood (BIC).
+'MIXCLA' = in this case in this case best solutions are referred to ICL.
+'ALL' = in this case best solutions both three solutions using classification and mixture likelihood are produced. In output structure out all the three matrices out.MIXMIXbs, out.CLACLAbs and out.MIXCLAbs are given.
+The default value of 'whichIC' is 'ALL'</LongDesc>
+         <Example>'whichIC','ALL'</Example>
+         <DataType>character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>plots of best solutions on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies whether to plot on the screen the best solutions which have been found.</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Message on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which controls whether to display or not messages about code execution.
+The default value of msg is 0, that is no message is displayed on the screen.</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Rand</Name>
+         <ShortDesc>Index to use to compare partitions.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If Rand =1 (default) the adjusted Rand index is used, else the adjusted Fowlkes and Mallows index is used</LongDesc>
+         <Example>'Rand',1</Example>
+         <DataType>single | double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>MIXMIXbs</Value>
+               <Description>cell of size NumberOfBestSolutions-times-5 which contains the details of the best solutions for MIXMIX (BIC).
+Each row refers to a solution. The information which is stored in the columns is as follows.
+1st col = scalar, value of k for which solution takes place;
+2nd col = scalar, value of c for which solution takes place;
+3rd col = row vector of length d which contains the values of c for which the solution is uniformly better.
+4th col = row vector of length d+r which contains the values of c for which the solution is considered stable (i.e. for which the value of the adjusted Rand index (or the adjusted Fowlkes and Mallows index) does not go below the threshold defined in input option ThreshRandIndex).
+5th col = string which contains 'true' or 'spurious'. The solution is labelled spurious if the value of the adjusted Rand index with the previous solutions is greater than ThreshRandIndex.
+Remark: field out.MIXMIXbs is present only if input option 'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXMIXbsari</Value>
+               <Description>matrix of adjusted Rand indexes (or Fowlkes and Mallows indexes) associated with the best solutions for MIXMIX. Matrix of size NumberOfBestSolutions-times-NumberOfBestSolutions whose i,j-th entry contains the adjusted Rand index between classification produced by solution i and solution j, $i,j=1, 2, \ldots, NumberOfBestSolutions$.
+Remark: field out.MIXMIXbsari is present only if 'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ARIMIX</Value>
+               <Description>Matrix of adjusted Rand indexes between two consecutive value of c.
+Matrix of size k-by-length(cc)-1. The first column contains the ARI indexes between with cc(2) and cc(1) given k. The second column contains the the ARI indexes between cc(3) and cc(2) given k.
+This output is also present in table format (see below) Remark: field ARIMIX is present only if 'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ARIMIXtable</Value>
+               <Description>Table with the same meaning of matrix ARIMIX above.
+A Matlab table has also been been given to faciliate the interpretation of the rows and columns. The Rownames of this table correspond to the values of k which are used and the colNames of this table contain in a dynamic way the two values of c which are considered. For example if the first two values of c are c=3 and c=7, the first column name of this table is c3_v_c7 to denote that the entry of this column are the ARI indexes between c=3 and c=7 Remark: field ARIMIXtable is present only if 'whichIC' is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXCLAbs</Value>
+               <Description>this output has the same structure as out.MIXMIXbs but it is referred to MIXCLA.
+Remark: field out.MIXCLAbs is present only if 'whichIC' is 'ALL' or 'whichIC' is 'MIXCLA'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>MIXCLAbsari</Value>
+               <Description>this output has the same structure as out.MIXMIXbs but it is referred to MIXCLA.
+Remark: field out.MIXCLAbsari is present only if 'whichIC' is 'ALL' or 'whichIC' is 'MIXCLA'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>CLACLAbs</Value>
+               <Description>this output has the same structure as out.MIXMIXbs but it is referred to CLACLA.
+Remark: field out.CLACLAbs is present only if 'whichIC' is 'ALL' or 'whichIC' is 'CLACLA'.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>CLACLAbsari</Value>
+               <Description>this output has the same structure as out.MIXMIXbs but it is referred to CLACLA.
+Remark: field out.MIXCLAbsari is present only if 'whichIC' is 'ALL' or 'whichIC' is 'CLACLA'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ARICLA</Value>
+               <Description>Matrix of adjusted Rand indexes between two consecutive value of c.
+Matrix of size k-by-length(cc)-1. The first column contains the ARI indexes between with cc(2) and cc(1) given k. The second column contains the the ARI indexes between cc(3) and cc(2) given k.
+This output is also present in table format (see below) Remark: field ARICLA is present only if 'whichIC' is 'ALL' or 'whichIC' is 'CLACLA'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ARICLAtable</Value>
+               <Description>Table with the same meaning of matrixo CLACLAari above.
+A Matlab table has also been been given to faciliate the interpretation of the rows and columns. The Rownames of this table correspond to the values of k which are used and the colNames of this table contain in a dynamic way the two values of c which are considered. For example if the first two values of c are c=3 and c=7, the first column name of this table is c3_v_c7 to denote that the entry of this column are the ARI indexes between c=3 and c=7 Remark: field ARICLAtable is present only if 'whichIC' is 'ALL' or 'whichIC' is 'CLACLA'</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>kk</Value>
+               <Description>vector containing the values of k (number of components) which have been considered. This vector is equal to input optional argument kk if kk had been specified else it is equal to 1:5.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>cc</Value>
+               <Description>vector containing the values of c (values of the restriction factor) which have been considered. This vector is equal to input optional argument cc if cc had been specified else it is equal to [1, 2, 4, 8, 16, 32, 64, 128].</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>A. Cerioli, L.A. Garcia-Escudero, A. Mayo-Iscar and M. Riani (2017), Finding the Number of Groups in Model-Based Clustering via Constrained Likelihoods, Journal of Computational and Graphical Statistics, https://doi.org/10.1080/10618600.2017.1390469</Item>
+      <Item>L. Hubert and P. Arabie (1985) "Comparing Partitions" Journal of Classification 2:193-218</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>tclustIC</Item>
+      <Item>tclust</Item>
+      <Item>carbikeplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Plot of first two best solutions for Geyser data.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>Y=load('geyser2.txt');</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);</ItemCell>
+            <ItemCell>% Plot first two best solutions using as Information criterion MIXMIX</ItemCell>
+            <ItemCell>disp('Best solutions using MIXMIX')</ItemCell>
+            <ItemCell>[outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);</ItemCell>
+            <ItemCell>disp(outMIXMIX.MIXMIXbs)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</Title>
+         <Desc>
+            <ItemCell>Data generation</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>restrfact=5;</ItemCell>
+            <ItemCell>rng('default') % Reinitialize the random number generator to its startup configuration</ItemCell>
+            <ItemCell>rng(20000);</ItemCell>
+            <ItemCell>ktrue=3;</ItemCell>
+            <ItemCell>% n = number of observations</ItemCell>
+            <ItemCell>n=150;</ItemCell>
+            <ItemCell>% v= number of dimensions</ItemCell>
+            <ItemCell>v=2;</ItemCell>
+            <ItemCell>% Imposed average overlap</ItemCell>
+            <ItemCell>BarOmega=0.04;</ItemCell>
+            <ItemCell/>
+            <ItemCell>out=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);</ItemCell>
+            <ItemCell>% data generation given centroids and cov matrices</ItemCell>
+            <ItemCell>[Y,id]=simdataset(n, out.Pi, out.Mu, out.S);</ItemCell>
+            <ItemCell>% Computation of information criterion</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',200);</ItemCell>
+            <ItemCell>% Plot first 3 best solutions using as Information criterion MIXMIX</ItemCell>
+            <ItemCell>disp('Best 3 solutions using MIXMIX')</ItemCell>
+            <ItemCell>[outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);</ItemCell>
+            <ItemCell>disp(outMIXMIX.MIXMIXbs)</ItemCell>
+            <ItemCell>disp('Best 3 solutions using CLACLA')</ItemCell>
+            <ItemCell>[outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);</ItemCell>
+            <ItemCell>disp(outCLACLA.CLACLAbs)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>An example with input option kk.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>Y=load('geyser2.txt');</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA','kk',[2 3 4 6])</ItemCell>
+            <ItemCell>[outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Comparison between the use of Rand index and FM index.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>Y=load('geyser2.txt');</ItemCell>
+            <ItemCell>out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA')</ItemCell>
+            <ItemCell>[outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'Rand',1);</ItemCell>
+            <ItemCell>disp('Matrix of adjusted Rand indexes among the first 5 best solutions')</ItemCell>
+            <ItemCell>disp(outCLACLCA.CLACLAbsari)</ItemCell>
+            <ItemCell>[outCLACLCA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',5,'Rand',0);</ItemCell>
+            <ItemCell>disp('Matrix of adjusted Fowlkes and Mallows indexes among the first 5 best solutions')</ItemCell>
+            <ItemCell>disp(outCLACLCA.CLACLAbsari)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

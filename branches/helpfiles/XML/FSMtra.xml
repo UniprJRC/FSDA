@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSMtra</Title>
+   <Purpose><!--This is the second line of the .m file-->FSMtra computes MLE of transformation parameters.
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Y</Name>
+         <ShortDesc>Input data.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>n x v data matrix; n observations and v variables. Rows of Y represent observations, and columns represent variables.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values are automatically excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>family</Name>
+         <ShortDesc>parametric transformation to use.</ShortDesc>
+         <TypeInd>String.</TypeInd>
+         <LongDesc>String which identifies the family of transformations which must be used. Character. Possible values are 'BoxCox' (default) or 'YJ'.
+The Box-Cox family of power transformations equals $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero, and $\log(y)$ if $\lambda = 0$.
+The Yeo-Johnson (YJ) transformation is the Box-Cox transformation of $y+1$ for nonnegative values, and of $|y|+1$ with parameter 2-lambda for y negative.
+The basic power transformation returns $y^{\lambda}$ if $\lambda$ is not zero, and $\log(\lambda)$ otherwise.
+Remark. BoxCox and the basic power family can be used just if input y is positive. Yeo-Johnson family of transformations does not have this limitation.</LongDesc>
+         <Example>'family','YJ'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Beginning of monitoring.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which defines where to start monitoring required diagnostics.
+Note that if bsb is suppliedinit&amp;gt;=length(bsb). If init is not specified it will be set equal to floor(n*0.6).</LongDesc>
+         <Example>'init',50</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>Units forming initial subset.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It contains the units forming initial subset. The default value of bsb is '' that is the initial subset is found through the intersection of robust bivariate ellipses This option is useful if a forced start is required.</LongDesc>
+         <Example>'bsb',[4 6 9]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>rf</Name>
+         <ShortDesc>confidence level for bivariate ellipses.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is 0.9. If bsb is not empty this argument is ignored.</LongDesc>
+         <Example>'rf',0.99</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ColToTra</Name>
+         <ShortDesc>Variables to transform.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector which specifies the variables which must be transformed. Vector. It is a k x 1 integer vector.</LongDesc>
+         <Example>'ColToTra',[1 3]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>la0</Name>
+         <ShortDesc>Values of transformation parameters.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Vector which contains set of transformation parameters for the k ColtoTra. It is a k-by-1 vector. The ordering of Mahalanobis distances at each step of the forward search uses variables transformed with la0.
+la0 empty is equivalent to its default value la0=ones(length(ColToTra),1).</LongDesc>
+         <Example>'la0',[-1 0]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>onelambda</Name>
+         <ShortDesc>common value of lambda.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If onelambda=1, a common value lambda is estimated for all variables specified in ColToTra.</LongDesc>
+         <Example>'onelambda',0</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>optmin</Name>
+         <ShortDesc>Optimation options.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>It contains the options dealing with the maximization algorithm. Use optimset to set these options. Notice that the maximization algorithm which is used is fminunc is the optimization toolbox is present else is fminsearch.</LongDesc>
+         <Example>'optmin.Display','off'</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>speed</Name>
+         <ShortDesc>Start with previous values in the maximization procedure.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If speed=1 the initial value at step m of the maximization procedure is the final value at step m-1 else it is la0. Default value 1. The maximization procedure is fminunc or fminsearch.</LongDesc>
+         <Example>'speed',0</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>colnames</Name>
+         <ShortDesc>variable names.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>It contains the names of the variables of the dataset. Cell array of strings of length v. If colnames is empty then the sequence 1:v is created to label the variables.</LongDesc>
+         <Example>'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};</Example>
+         <DataType>cell array of strings</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>prolik</Name>
+         <ShortDesc>Monitor profile log likelihood.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>It specifies whether it is necessary to monitor the profile log likelihood of the transformation parameters at selected steps of the search.
+If prolik is a scalar, the plot of the profile loglikelihoods is produced at step m=n with all default parameters.
+If prolik is a structure it may contain the following fields:
+prolik.steps = vector containing the steps of the fwd search for which profile logliks have to be plotted. The default value of steps is n;
+prolik.clev = scalar between 0 and 1 determining confidence level for each element of lambda based on the asymptotic chi1^2 of twice the loglikelihood ratio.
+The default confidence level is 0.95;
+prolik.xlim = vector with two elements determining minimum and maximum values of lambda in the plots of profile loglikelihoods. The default value of xlim is [-2 2];
+prolik.LineWidth = line width of the vertical lines defining confidence levels of the transformation parameters.</LongDesc>
+         <Example>'prolik',7</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>steps</Value>
+               <Description>vector containing the steps of the fwd&#xD;
+                                  search for which profile logliks have to&#xD;
+                                  be plotted. The default value of steps&#xD;
+                                  is n;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>clev</Value>
+               <Description>scalar between 0 and 1 determining&#xD;
+                                 confidence level for each element of&#xD;
+                                 lambda based on the asymptotic chi1^2 of&#xD;
+                                 twice the loglikelihood ratio.&#xD;
+                                 The default confidence level is 0.95;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>vector with two elements determining&#xD;
+                                 minimum and maximum values of lambda in&#xD;
+                                 the plots of profile loglikelihoods. The&#xD;
+                                 default value of xlim is [-2 2];</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>line width of the vertical lines&#xD;
+                                 defining confidence levels of the&#xD;
+                                 transformation parameters.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>plotsmle</Name>
+         <ShortDesc>plot mle.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>It specifies whether it is necessary to plot the maximum likelihood estimates of the transformation parameters. Three horizontal lines associated respectively with values -1, 0 and 1 are added to the plot.
+If prolik is a scalar, the plot of the monitoring of maximum likelihood estimates of transformation parameters is produced on the screen with all the default options.
+If plotsmle is a structure, it may contain the following fields:
+plotsmle.xlim = minimum and maximum on the x axis;
+plotsmle.ylim = minimum and maximum on the y axis;
+plotsmle.LineWidth = Line width of the trajectories of mle of transformation parameters;
+plotsmle.LineStyle = cell containing Line styles of the trajectories of mle of transformation parameters;
+plotsmle.LineWidthEnv=Line width of the horizontal lines;
+plotsmle.Tag = tag of the plot (default is pl_mle);
+plotsmle.FontSize = font size of the text labels which identify the trajectories.</LongDesc>
+         <Example>'plotsmle',1</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>minimum and maximum on the x axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ylim</Value>
+               <Description>minimum and maximum on the y axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>Line width of the trajectories of&#xD;
+                                      mle of transformation parameters;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineStyle</Value>
+               <Description>cell containing Line styles of&#xD;
+                                      the trajectories of mle of&#xD;
+                                      transformation parameters;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidthEnv</Value>
+               <Description>Line width of the horizontal&#xD;
+                                      lines;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Tag</Value>
+               <Description>tag of the plot (default is pl_mle);</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>FontSize</Value>
+               <Description>font size of the text labels which&#xD;
+                                      identify the trajectories.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>plotslrt</Name>
+         <ShortDesc>plot lrt.</ShortDesc>
+         <TypeInd>Scalar or structure.</TypeInd>
+         <LongDesc>It specifies whether it is necessary to plot the likelihood ratio test.
+If plotslrt is a scalar, the plot of the monitoring of likelihood ratio test is produced on the screen with all default options.
+If plotslrt is a strucure, it may contain the following fields:
+plotslrt.xlim = minimum and maximum on the x axis;
+plotslrt.ylim = minimum and maximum on the y axis;
+plotslrt.LineWidth= Line width of the trajectory of lrt of transformation parameters;
+plotslrt.conflev = vector which defines the confidence levels of the horizontal line for the likelihood ratio test (default is conflev=[0.95 0.99]);
+plotslrt.LineWidthEnv= Line width of the horizontal lines;
+plotslrt.Tag = tag of the plot (default is pl_lrt).</LongDesc>
+         <Example>'plotslrt',1</Example>
+         <DataType>double</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>xlim</Value>
+               <Description>minimum and maximum on the x axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>ylim</Value>
+               <Description>minimum and maximum on the y axis;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidth</Value>
+               <Description>Line width of the trajectory of lrt of&#xD;
+                                       transformation parameters;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>conflev</Value>
+               <Description>vector which defines the confidence&#xD;
+                                       levels of the horizontal line for&#xD;
+                                       the likelihood ratio test (default&#xD;
+                                       is conflev=[0.95 0.99]);</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LineWidthEnv</Value>
+               <Description>Line width of the horizontal lines;</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Tag</Value>
+               <Description>tag of the plot (default is pl_lrt).</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>msg</Name>
+         <ShortDesc>Level of display on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It controls whether to display or not messages about great interchange on the screen.
+If msg==1 (default) messages are displayed on the screen else no message is displayed on the screen.</LongDesc>
+         <Example>'msg',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>MLEtra</Value>
+               <Description>n-init+1 x v matrix which contains the monitoring of MLE of transformation parameters:
+1st col = fwd search index (from init to n);
+2nd col = MLE of variable 1;
+3rd col = MLE of variable 2;
+...;
+(v+1)th col = MLE of variable v.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LIKrat</Value>
+               <Description>n-init+1 x 2 = matrix which contains the monitoring of likelihood ratio for testing H0:\lambda=la0:
+1st col = fwd search index (from init to n);
+2nd col = value of the likelihood ratio.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Exflag</Value>
+               <Description>n-init+1 x 2 = matrix which contains the monitoring of the integer identifying the reason why the maximization algorithm terminated. See help page fminunc of the optimization toolbox for the list of values of exitflag and the corresponding reasons the algorithm terminated:
+1st col = fwd search index (from init to n);
+2nd col = the value that describes the exit condition</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Un</Value>
+               <Description>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the fwd search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one Un(1,2) for example contains the unit included in step init+1 Un(end,2) contains the units included in the final step of the search</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>class</Value>
+               <Description>'FSMtra';</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson A.C. Riani M. and Cerioli A. (2004), Exploring multivariate data with the forward search, Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSMmmd</Item>
+      <Item>FSM</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSMtra with all default options.</Title>
+         <Desc>
+            <ItemCell>Baby food data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('baby.mat');</ItemCell>
+            <ItemCell>Y=baby.data(:,6:end);</ItemCell>
+            <ItemCell>% FS based on untrasnformed data H_0:\lambda=1 for all variables</ItemCell>
+            <ItemCell>% Plot of mle of transformation parameters with all default options</ItemCell>
+            <ItemCell>% Compare the output with Figure 4.7 p. 167 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSMtra with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Plot the maximum likelihood estimates of the transformation parameters.</ItemCell>
+            <ItemCell>Baby food data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('baby.mat');</ItemCell>
+            <ItemCell>Y=baby.data(:,6:end);</ItemCell>
+            <ItemCell>% FS based on untrasnformed data H_0:\lambda=1 for all variables</ItemCell>
+            <ItemCell>% Plot of mle of transformation parameters with all default options</ItemCell>
+            <ItemCell>% Compare the output with Figure 4.7 p. 167 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'plotsmle',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Personalized options for plotsmle.</Title>
+         <Desc>
+            <ItemCell>Baby food data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('baby.mat');</ItemCell>
+            <ItemCell>Y=baby.data(:,6:end);</ItemCell>
+            <ItemCell>% Personalized options for plotsmle</ItemCell>
+            <ItemCell>plotsmle=struct;</ItemCell>
+            <ItemCell>plotsmle.LineWidth=3;</ItemCell>
+            <ItemCell>plotsmle.LineWidthEnv=3;</ItemCell>
+            <ItemCell>plotsmle.FontSize=14;</ItemCell>
+            <ItemCell>plotsmle.ylim=[-0.4 0.4];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'plotsmle',plotsmle);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>FSMtra based on log trasnformed data.</Title>
+         <Desc>
+            <ItemCell>Baby food data.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('baby.mat');</ItemCell>
+            <ItemCell>Y=baby.data(:,6:end);</ItemCell>
+            <ItemCell>% FS based on log trasnformed data H_0:\lambda=0 for all variables</ItemCell>
+            <ItemCell>% Plot of mle of transformation parameters with all default options</ItemCell>
+            <ItemCell>v=size(Y,2);</ItemCell>
+            <ItemCell>plotsmle=struct;</ItemCell>
+            <ItemCell>plotsmle.ylim=[-0.4 1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'plotsmle',plotsmle);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring the profile log likelihood of the transformation parameters.</Title>
+         <Desc>
+            <ItemCell>Baby food data ignoring the regression structure.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('baby.mat');</ItemCell>
+            <ItemCell>Y=baby.data(:,6:end);</ItemCell>
+            <ItemCell>% FS based on log trasnformed data H_0:\lambda=0 for all variables</ItemCell>
+            <ItemCell>% Plot of mle of transformation parameters with all default options</ItemCell>
+            <ItemCell>v=size(Y,2);</ItemCell>
+            <ItemCell>plotsmle=struct;</ItemCell>
+            <ItemCell>plotsmle.ylim=[-0.4 1];</ItemCell>
+            <ItemCell>prolik=struct;</ItemCell>
+            <ItemCell>prolik.steps=26;</ItemCell>
+            <ItemCell>prolik.xlim=[-1 1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'prolik',prolik);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss heads data, Example 1.</Title>
+         <Desc>
+            <ItemCell>FSMtra based on untransformed data $H_0:\lambda=1$ for all variables</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('head.mat');</ItemCell>
+            <ItemCell>Y=head.data;</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'plotsmle',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss heads data, Example 2.</Title>
+         <Desc>
+            <ItemCell>FSMtra based on untransformed data $H_0:\lambda=1$ for all variables</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('head.mat');</ItemCell>
+            <ItemCell>Y=head.data;</ItemCell>
+            <ItemCell>% Analysis of profile loglikelihoods at step m=198</ItemCell>
+            <ItemCell>prolik=struct;</ItemCell>
+            <ItemCell>prolik.steps=198;</ItemCell>
+            <ItemCell>prolik.xlim=[-3 5];</ItemCell>
+            <ItemCell>out]=FSMtra(Y,'prolik',prolik);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss heads data, Example 3.</Title>
+         <Desc>
+            <ItemCell>FSMtra based on untransformed data $H_0:\lambda=1$ for all variables</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('head.mat');</ItemCell>
+            <ItemCell>Y=head.data;</ItemCell>
+            <ItemCell>% Monitoring of likelihood ratio test</ItemCell>
+            <ItemCell>% Compare the output with Figure 4.13 p. 172 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss heads data, Example 4.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('head.mat');</ItemCell>
+            <ItemCell>Y=head.data;</ItemCell>
+            <ItemCell>% FS based on untransformed data H_0:\lambda=1 for variable 4</ItemCell>
+            <ItemCell>% Monitoring of likelihood ratio test</ItemCell>
+            <ItemCell>% Compare the output with Figure 4.14 p. 173 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'ColToTra',4,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Mussels data, Example 1.</Title>
+         <Desc>
+            <ItemCell>FSMtra based on untransformed data $H_0:\lambda=1$ for all variables</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('mussels.mat');</ItemCell>
+            <ItemCell>Y=mussels.data;</ItemCell>
+            <ItemCell>% Compare plot of mle with Figure 4.19 p. 178 of ARC (2004)</ItemCell>
+            <ItemCell>% Compare plot of lrt with Figure 4.18 p. 178 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'plotsmle',1,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Mussels data, Example 2.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('mussels.mat');</ItemCell>
+            <ItemCell>Y=mussels.data;</ItemCell>
+            <ItemCell>% FSMtra based on with H_0:\lambda=[1 0.5 1 0 1/3]</ItemCell>
+            <ItemCell>% Compare plot of mle with Figure 4.21 p. 178 of ARC (2004)</ItemCell>
+            <ItemCell>% Compare plot of lrt with Figure 4.20 p. 178 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'la0',[1 0.5 1 0 1/3],'plotsmle',1,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss bank notes data, Example 1.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('swiss_banknotes')</ItemCell>
+            <ItemCell>Y=swiss_banknotes.data;</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>Y1=repmat(max(Y),n,1);</ItemCell>
+            <ItemCell>Y=Y./Y1;</ItemCell>
+            <ItemCell>% FS using just one value of lambda for all the variables</ItemCell>
+            <ItemCell>% Compare plot of lrt with left panel of Figure 4.69 p. 225 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'init',40,'onelambda',1,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss bank notes data, Example 2.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('swiss_banknotes')</ItemCell>
+            <ItemCell>Y=swiss_banknotes.data;</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>Y1=repmat(max(Y),n,1);</ItemCell>
+            <ItemCell>Y=Y./Y1;</ItemCell>
+            <ItemCell>% FS using just one value of lambda for all the variables</ItemCell>
+            <ItemCell>% Search starts with the first 20 genuine notes</ItemCell>
+            <ItemCell>% Compare plot of lrt with central panel of Figure 4.69 p. 225 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'init',20,'onelambda',1,'bsb',1:20,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss bank notes data, Example 3.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('swiss_banknotes')</ItemCell>
+            <ItemCell>Y=swiss_banknotes.data;</ItemCell>
+            <ItemCell>Y=Y(1:100,:);</ItemCell>
+            <ItemCell>% FS using just one value of lambda for all the variables</ItemCell>
+            <ItemCell>% Monitoring of mle of lambda (Figure 4.66 p. 223 of ARC (2004))</ItemCell>
+            <ItemCell>% Monitoring of lrt (Figure 4.67 p. 223 of ARC (2004))</ItemCell>
+            <ItemCell>plotsmle=struct;</ItemCell>
+            <ItemCell>plotsmle.ylim=[-1.5 2.5];</ItemCell>
+            <ItemCell>% Profile loglikelihoods at steps m=90 and m=100</ItemCell>
+            <ItemCell>% (Figure 4.68 p. 224 of ARC (2004))</ItemCell>
+            <ItemCell>prolik=struct;</ItemCell>
+            <ItemCell>prolik.steps=[90 100];</ItemCell>
+            <ItemCell>prolik.xlim=[-3.2 3.2];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'onelambda',1,'plotsmle',plotsmle,'plotslrt',1,'prolik',prolik);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Swiss bank notes data, Example 4.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('swiss_banknotes')</ItemCell>
+            <ItemCell>Y=swiss_banknotes.data;</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>Y1=repmat(max(Y),n,1);</ItemCell>
+            <ItemCell>Y=Y./Y1;</ItemCell>
+            <ItemCell>% FS using just one value of lambda for all the variables</ItemCell>
+            <ItemCell>% Search starts with the first 20 forged notes</ItemCell>
+            <ItemCell>% Compare plot of lrt with right panel of Figure 4.69 p. 225 of ARC (2004)</ItemCell>
+            <ItemCell>[out]=FSMtra(Y,'init',20,'onelambda',1,'bsb',101:120,'plotslrt',1);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Track records data.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('recordfg');</ItemCell>
+            <ItemCell>Y=recordfg.data;</ItemCell>
+            <ItemCell>n=size(Y,1);</ItemCell>
+            <ItemCell>Y1=repmat(max(Y),n,1);</ItemCell>
+            <ItemCell>Y=Y./Y1;</ItemCell>
+            <ItemCell>la0=[-1 -2 -3 -4];</ItemCell>
+            <ItemCell>tags={'lrt-1' 'lrt-2' 'lrt-3' 'lrt-4'};</ItemCell>
+            <ItemCell>plotslrt=struct;</ItemCell>
+            <ItemCell>plotslrt.ylim=[0 21];</ItemCell>
+            <ItemCell>ii=1;</ItemCell>
+            <ItemCell>for la=la0;</ItemCell>
+            <ItemCell>    plotslrt.Tag=tags{ii};</ItemCell>
+            <ItemCell>    [out]=FSMtra(Y,'plotslrt',plotslrt,'onelambda',1,'la0',la);</ItemCell>
+            <ItemCell>    ii=ii+1;</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+            <ItemCell>mpare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 1.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Extract demographic variables</ItemCell>
+            <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
+            <ItemCell>colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};</ItemCell>
+            <ItemCell>[out]=FSMtra(Y1,'plotsmle',1,'colnames',colnames);</ItemCell>
+            <ItemCell>% Compare the plot with Figure 4.31 p. 188 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 2.</Title>
+         <Desc>
+            <ItemCell>Yeo and Johnson family of transformations is used. In this case there is no need to correct 0 values</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Extract demographic variables</ItemCell>
+            <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
+            <ItemCell>colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};</ItemCell>
+            <ItemCell>plotslrt=struct;</ItemCell>
+            <ItemCell>plotslrt.ylim=[-8.2 8.2];</ItemCell>
+            <ItemCell>ColToComp=[1 3 5 9];</ItemCell>
+            <ItemCell>la0=[0 0.25 0 0.5 0.5 0 0 0.5 0.25];</ItemCell>
+            <ItemCell>[out]=FSMfan(Y1,la0,'ColToComp',ColToComp,'plotslrt',plotslrt,'colnames',colnames,'family','YJ');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 3.</Title>
+         <Desc>
+            <ItemCell>Demographic data</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Extract demographic variables</ItemCell>
+            <ItemCell>Y1=Y(:,[1 2 3 4 5 10 11 12 13]);</ItemCell>
+            <ItemCell>colnames={'1' '2' '3' '4' '5' '10' '11' '12' '13'};</ItemCell>
+            <ItemCell>la0=[0 0.25 0 0.5 0.5 0 0 0.5 0.25];</ItemCell>
+            <ItemCell>prolik=struct;</ItemCell>
+            <ItemCell>prolik.steps=[331];</ItemCell>
+            <ItemCell>prolik.xlim=[-1 1];</ItemCell>
+            <ItemCell>plotslrt=struct;</ItemCell>
+            <ItemCell>plotslrt.ylim=[4 21];</ItemCell>
+            <ItemCell/>
+            <ItemCell>out]=FSMtra(Y1,'plotsmle',1,'plotslrt',plotslrt,'la0',la0,'colnames',colnames,'prolik',prolik);</ItemCell>
+            <ItemCell>% Compare the plots with Figures 4.32, 4.33 and 4.34 p. 189-191 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 4.</Title>
+         <Desc>
+            <ItemCell>Modified wealth variables.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Modify wealth variables</ItemCell>
+            <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
+            <ItemCell>Y(:,23)=100-Y(:,23);</ItemCell>
+            <ItemCell>% Extract wealth variables</ItemCell>
+            <ItemCell>Y1=Y(:,[14:23]);</ItemCell>
+            <ItemCell>colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};</ItemCell>
+            <ItemCell>la0=[0 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y1,'plotslrt',1,'la0',la0,'colnames',colnames);</ItemCell>
+            <ItemCell>% Compare the plot with left panel of Figure 4.38 p. 188 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 5.</Title>
+         <Desc>
+            <ItemCell>Modified wealth variables.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Modify wealth variables</ItemCell>
+            <ItemCell>Y(:,16)=100-Y(:,16);</ItemCell>
+            <ItemCell>Y(:,23)=100-Y(:,23);</ItemCell>
+            <ItemCell>% Extract wealth variables</ItemCell>
+            <ItemCell>Y1=Y(:,[14:23]);</ItemCell>
+            <ItemCell>colnames={'14' '15' '16' '17' '18' '19' '20' '21' '22' '23'};</ItemCell>
+            <ItemCell>la0=[0.5 1 0.25 1 1 0.5 -0.5 0.25 0.25 -1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y1,'plotslrt',1,'la0',la0,'colnames',colnames);</ItemCell>
+            <ItemCell>% Compare the plot with Figure 4.40 p. 196 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 6.</Title>
+         <Desc>
+            <ItemCell>Work variables.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21 25 26];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Extract work variables</ItemCell>
+            <ItemCell>Y1=Y(:,[6:9 24:28]);</ItemCell>
+            <ItemCell>colnames={'6' '7' '8' '9' '24' '25' '26' '27' '28'};</ItemCell>
+            <ItemCell>la0=[0.25,0,2,-1,0,1.5,0.5,1,1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y1,'plotsmle',1,'plotslrt',1,'la0',la0,'colnames',colnames);</ItemCell>
+            <ItemCell>% Compare the plots with Figures 4.41 p. 197 and left panel of Figure</ItemCell>
+            <ItemCell>% 4.42 of ARC (2004)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Emilia Romagna data, Example 7.</Title>
+         <Desc>
+            <ItemCell>Modified work variables.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('emilia2001')</ItemCell>
+            <ItemCell>Y=emilia2001.data;</ItemCell>
+            <ItemCell>% Replace zeros with min values for variables specified in sel</ItemCell>
+            <ItemCell>sel=[6 10 12 13 19 21];</ItemCell>
+            <ItemCell>for i=sel</ItemCell>
+            <ItemCell>    Y(Y(:,i)==0,i)=min(Y(Y(:,i)&amp;gt;0,i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>% Modify variables 25 and 26</ItemCell>
+            <ItemCell>Y(:,25)=100-Y(:,25);</ItemCell>
+            <ItemCell>Y(:,26)=100-Y(:,26);</ItemCell>
+            <ItemCell>% Extract work variables</ItemCell>
+            <ItemCell>Y1=Y(:,[6:9 24:28]);</ItemCell>
+            <ItemCell>colnames={'6' '7' '8' '9' '24' '25' '26' '27' '28'};</ItemCell>
+            <ItemCell>la0=[0.25,0,2,-1,0,0,1.5,1,1];</ItemCell>
+            <ItemCell>[out]=FSMtra(Y1,'plotsmle',1,'plotslrt',1,'la0',la0,'colnames',colnames);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

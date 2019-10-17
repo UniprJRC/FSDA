@@ -1,0 +1,183 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>wedgeplot</title><meta content="refpage" name="chunktype"><meta content="function:wedgeplot" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="wedgeplot generates the double wedge plot of a time series." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">wedgeplot</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Double wedge plot with simulated data with linear trend and level shift.</a></li><li><a class="intrnllnk" href="#Example_2">Example of double wedge plot in series with level shift.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of double wedge plot in series with level shift with option transpose.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Same double wedge plot as before, but with the time series at the top
+     subplot.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_RES">RES</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_transpose">transpose</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_extradata">extradata</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cmapname">cmapname</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labls">labls</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labin">labin</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_titl">titl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_FontSize">FontSize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SizeAxesNum">SizeAxesNum</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_hf">hf</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">wedgeplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">wedgeplot generates the double wedge plot of a time series</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">hf=wedgeplot(RES)</code><span class="syntax_example"><a class="intrnllnk" href="wedgeplot.html#Example_1">example</a></span></li><li><code class="synopsis">hf=wedgeplot(RES,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="wedgeplot.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="wedgeplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_hf"><code>hf</code></a>=wedgeplot(<a class="intrnllnk" href="#inputarg_RES"><code>RES</code></a>)</code></span>Double wedge plot with simulated data with linear trend and level shift.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="wedgeplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_hf"><code>hf</code></a>=wedgeplot(<a class="intrnllnk" href="#inputarg_RES"><code>RES</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of double wedge plot in series with level shift.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Double wedge plot with simulated data with linear trend and level shift.</li></span></a></span></h3><div class="collapse"><p>
+     No seasonal component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=45;
+a=1;
+b=0.8;
+sig=1;
+seq=(1:n)';
+y=a+b*seq+sig*randn(n,1);
+y(round(n/2):end)=y(round(n/2):end)+10;
+% model with a quadratic trend, non seasonal and level shift
+model=struct;
+model.trend=2;
+model.seasonal=0;
+% Potential level shift position is investigated in positions:
+% t=10, t=11, ..., t=T-10.
+model.lshift=10;
+out=LTSts(y,'model',model);
+wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of double wedge plot in series with level shift.</li></span></a></span></h3><div class="collapse"><p>
+     Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+% Add a level shift contamintion plus some outliers.
+y(68:end)=y(68:end)+1300;
+y(67)=y(67)-600;
+y(45)=y(45)-800;
+y(68:69)=y(68:69)+800;
+% Create structure specifying model
+model=struct;
+model.trend=2;              % quadratic trend
+model.s=12;                 % monthly time series
+model.seasonal=204;         % number of harmonics
+model.lshift=40;            % position where to start monitoring level shift
+model.X='';
+% Create structure lts specifying lts options
+lts=struct;
+lts.bestr=20; % number of best solutions to bring to full convergence
+% h = dimension of the h subset (75 per cent of the data, bdp=0.25)
+h=round(0.75*length(y));
+[out, varargout]=LTSts(y,'model',model,'nsamp',500,...
+'lts',lts,'h',h,'plots',0,'msg',0);
+% Create the double wedge plot.
+wedgeplot(out)</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of double wedge plot in series with level shift with option transpose.</li></span></a></span></h3><div class="collapse"><p>
+     Analysis of contaminated airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+% Add a level shift contamintion plus some outliers.
+y(50:55)=y(50:55)-300;
+y(68:end)=y(68:end)-700;
+y(70:75)=y(70:75)+300;
+y(90:90)=y(90:90)+300;
+% Create structure specifying model
+model=struct;
+model.trend=2;              % quadratic trend
+model.s=12;                 % monthly time series
+model.seasonal=204;         % number of harmonics
+model.lshift=40;            % position where to start monitoring level shift
+model.X='';
+% Create structure lts specifying lts options
+lts=struct;
+lts.bestr=20; % number of best solutions to bring to full convergence
+% h = dimension of the h subset (75 per cent of the data, bdp=0.25)
+[out, varargout]=LTSts(y,'model',model,'nsamp',500,...
+'lts',lts,'plots',0,'msg',0);
+% Create the double wedge plot.
+% Remember to remove the last column of the matrix of the residuals
+% obtained for each level shift position if you want to avoid the
+% top orange band (just execute RES(:,64)=[] before line 258).
+wedgeplot(out,'transpose',true,'extradata',[y out.yhat])</pre></div></div><pre class="codeoutput">
+ans = 
+
+  Figure (1) with properties:
+
+      Number: 1
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [488 342 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><img vspace="5" hspace="5" src="images\wedgeplot_01.png" alt=""> </p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
+     subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RES" class="clearfix"> </div> <h3 id="input_argument_RES" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RES</code> &#8212; absolute scaled residuals. </span>  </a><span class="example_desc">Matrix or structure.</span></span></h3> <div class="collapse"> <p><p>Matrix of size T-by-(T-lshift) containing scaled residuals
+                (in absolute value) for all the T units of the original time
+                series monitored in steps lshift+1, lshift+2, ..., T-lshift,
+                where lshift+1 is the first tentative level shift position,
+                lshift +2 is the second level shift position, and so on. This
+                matrix can be created by funtion LTSts (Least Trimmed Squares
+                in time series). If RES is a structure, it must contain field:</p> <p>
+        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>RES</code></td><td><p>matrix containing scaled residuals.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>double.</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'transpose',false
+</code>,<code> 'extradata', [y yhat]
+</code>,<code> 'cmapname','summer'
+</code>,<code> 'labls','Position of level shift'
+</code>,<code></code>,<code> 'titl','Plot with two wedges'
+</code>,<code> 'FontSize',12
+</code>,<code> 'SizeAxesNum',10
+</code></code></span></div><div class="expandableContent"><div id="inputarg_transpose" class="clearfix"></div><h3 id="input_argument_namevalue_transpose" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>transpose</code> &#8212;option determining the posiiton of the index number or tentative
+                level shift.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If transpose is true (default) the x-axis
+                contains the tentative level shift position and the y-axis the
+                index number else if it is false the axes are interchanged.</p> <p>
+                When transpose is true, it is possible with option extradata to
+                add on a separate panel a subplot of the original time series
+                (and possibly the series of fitted values). See extradata
+                option for details.</p><p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'transpose',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_extradata" class="clearfix"></div><h3 id="input_argument_namevalue_extradata" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>extradata</code> &#8212;extra data to plot in a separate panel in association to the
+                wedge plot.</span></a><span class="example_desc">matrix.</span></span></h3><div class="collapse">	<p><p>Matrix of size T-by-1 or T-by-p containing
+                the data which have to be plotted in the separate panel.</p> <p>
+                Generally extradata is a matrix of size T-by-2 containing the
+                original time series and the corresponding fitted values in
+                order to link the irregularities shown by the wedgeplot with
+                the original time series.</p> <p>
+                - If extradata is empty (default) the double wedge plot will be
+                  shown in a single panel.</p> <p>
+                - If extradata is not empty a two panel plot will be created:</p> <p>
+                  one will contain the double wedge plot and extradata will be
+                  plot in the other panel. This options makes sense only if
+                  transpose is true, that is if the x axis of the double wedge
+                  plot contains the index number.</p> <p>
+                When option transpose is left by the user unspecified, the
+                default position of the extradata subplot is at the bottom.</p> <p>
+                Otherwise, the position of the two panels depends on the order
+                with which the user specifies the two options: if extradata is
+                specified first, the corresponding subplot will be at the top,
+                otherwse it will fall at the bottom.</p><p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'extradata', [y yhat]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cmapname" class="clearfix"></div><h3 id="input_argument_namevalue_cmapname" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cmapname</code> &#8212;color map.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character which indicates the type of
+                colormmap to use in the wedge plot. The accepted values are
+                'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.</p> <p>
+                The default is 'hot'.</p><p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cmapname','summer'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Character</code></p></div></div><div class="expandableContent"><div id="inputarg_labls" class="clearfix"></div><h3 id="input_argument_namevalue_labls" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labls</code> &#8212;label of the axis which contains the level shift position.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character containing the label to put on the axis
+                which contains the level shift position. This axis could be
+                either the horizontal or vertical depending on the option
+                transpose. The default label is 'Tentative level shift
+                position'.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labls','Position of level shift'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Character</code></p></div></div><div class="expandableContent"><div id="inputarg_labin" class="clearfix"></div><h3 id="input_argument_namevalue_labin" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labin</code> &#8212;label of the axis which contains the index number.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character containing the label to put on the axis
+                which contains the index number of the units of the time
+                series. This axis could be either the horizontal or vertical
+                depending on the option transpose. The default label is 'Index
+                number'.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code></code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title (default: 'Double wedge
+                plot').</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','Plot with two wedges'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;Font size of the labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls the font
+                size of the labels of the axes and of the labels inside the
+                plot. Default value is 12.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'FontSize',12
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_SizeAxesNum" class="clearfix"></div><h3 id="input_argument_namevalue_SizeAxesNum" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>SizeAxesNum</code> &#8212;Size of the numbers of the axis.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls
+                the size of the numbers of the axes. Default value is 12.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SizeAxesNum',10
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_hf" class="clearfix"></div><h3 id="output_argument_hf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hf</code> &#8212;handle to the figure.</span></a><span class="example_desc">Graphics handle</span></span></h3><div class="collapse"><p> Handle to the figure
+               which has just been created.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+ Monitoring of Many Time Series with Application to Fraud Detection,
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'antenna/ref/plot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

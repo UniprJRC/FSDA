@@ -1,0 +1,281 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<div>
+		<h2 class="title">Technical introduction to Robust methods in regression</h2>
+		<a name="notation"></a>
+		<h3 class="title">Notation</h3>
+		Consider the usual regression model<p>&nbsp;
+		</p>
+		\[ y_i = x_i^T\beta +u_i \qquad i=1, \ldots, n, \]
+        
+		<p>where $u_i$ are random errors which have common variance 
+		equal to $\sigma^2$ and are independent from the covariates $x_i$.&nbsp;
+		$\beta,$ the location component of the linear model, is the parameter 
+		of interest. $\sigma$ is the so called scale component of the linear model. </p>
+		<p>Given an estimator of $\beta$, say $\hat \beta,$
+		the residuals are defined as</p>
+        $$r_i(\hat \beta)=y_i- x_i^T \hat \beta$$
+        <br>
+        <br>
+		
+		<p>The traditional least squares estimate of $\beta$ is denoted with
+		</p>
+        $$\hat \beta = \hat \beta_{LS}=\hat \beta_{LS}(X,y)=(X'X)^{-1}X'y$$
+		<br>
+        <br>
+		<p>We are concerned with the case where a certain proportion of the observations 
+		may not follow model above. Traditional robust estimators attempt to limit 
+		the influence of outliers by replacing in the estimation of $\beta$ the 
+		square of the residuals with a less rapidly increasing loss function or 
+		by a function ρ of the residuals themselves which is bounded. </p>
+		<p>&nbsp;</p>
+		<a name="rho"></a>
+		<h3 class="title">The $\rho$ function</h3>
+		<p>In the literature of robust statistics the $\rho$ function denotes a function 
+		that</p>
+		<ol>
+			<li>$\rho(x)$ is a non decreasing function of $|x|$</li>
+			<li>$\rho(0)=0$</li>
+			<li>$\rho(x)$ is increasing for $x>0$ such that $\rho(x) < \rho(\infty)$ </li>
+		</ol>
+		<p>&nbsp;</p>
+		<p>Perhaps the most popular choice for the $\rho$ function in is Tukey’s biweight 
+		(bisquare) function&nbsp;</p>
+        
+  
+\[ \rho(x) = \begin{cases} 
+      \frac{x^2}{2}-\frac{x^4}{2c^2}+\frac{x^6}{6c^4} & \mbox{if} \quad |x| \leq c \\
+      \\
+      \frac{c^2}{6} & \mbox{if} \quad |x| > c, \\
+     
+   \end{cases}
+\]
+        
+        
+		
+		where $c>0$ is a tuning constant which is linked to the breakdown point 
+		of the estimator of $\beta$.<p>&nbsp;</p>
+&nbsp;<p>Function $\rho$ for Tukey's biweight is implemented in routine
+		<a href="tbrho.html">TBrho</a>.</p>
+		<p>&nbsp;</p>
+&nbsp; <a name="psi"></a>
+		<h3 class="title">The $\psi$ function</h3>
+		<p>In the literature of robust statistics a $\psi$ (psi) function denotes a function 
+		$\psi$ which is the derivative of a $\rho$ function $\psi = \rho'$
+		 such that</p>
+		<ol>
+			<li>$\psi$ is odd and $\psi(x) \geq 0$  for $x \geq 0$ </li>
+		</ol>
+		<p>Function $\psi$ for Tukey's biweight </p>
+        \[ \psi(x) = \begin{cases} 
+      x- \frac{2x^3}{c^2}+\frac{x^5}{c^4} = x  \Big[ 1- \Big( \frac{x}{c}\Big)^2 \Big]^2  & 
+		\mbox{if} \quad  |x|  \leq c \\
+\\
+      0 & \mbox{if} \quad  |x| > c, \\
+   \end{cases}
+\]
+		<p>is implemented in routine <a href="tbpsi.html">TBpsi</a>.</p>
+		<p>&nbsp;</p>
+		<a name="equivariance"></a>
+		<h3 class="title">Regression, scale and affine equivariance</h3>
+		We say that an estimate $\tilde \beta$ of
+		$\beta$ is regression, scale 
+		and affine equivariant, if it satisfies the following three properties:
+        
+        \begin{array}
+$\tilde \beta (X, y + X \gamma) & = & \tilde \beta(X,y)+ \gamma & \quad \textrm{for all} \quad & \gamma \in R^p \\
+\tilde \beta (X, \lambda y) & = & \lambda \tilde \beta(X,y) & \quad \textrm{for all} \quad & \lambda \in R \\
+\tilde \beta(X A, \lambda y) & = &  A^{-1} \tilde\beta(X,\lambda y) & \quad \textrm{for all} \quad A \quad \textrm{with} \quad  & \det|A| \neq 0 
+\end{array}
+        
+		<p>These are desirable properties because they allow us to know how the 
+		estimate changes under linear transformations of the data.</p>
+		<p>&nbsp;</p>
+		<a name="Mloc"></a>
+		<h3 class="title">The regression M-estimate of location </h3>
+		<p>The regression M-estimate of location (say $\hat \beta_M$) is the 
+		value that minimizes the following objective function (label{eq:rho})</p>
+        $$\sum_{i=1}^{n} \rho \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) = \textrm{min}.$$
+
+		<p>&nbsp;</p>
+		<p>&nbsp;Differentiation of eq. (ref{eq:rho}) gives (label{eq:psi})</p>
+        $$\sum_{i=1}^{n} \psi \Bigg( \frac{ r_i(\hat\beta_M)}{\sigma} \Bigg) x_i = 0$$
+
+		<p>&nbsp;</p>
+		<p>Remark 1: If function $\psi$ is monotone the solution to this equation are 
+		called monotone regression M estimates, while if $\psi$ is redescending the solutions 
+		to ref{eq:psi}) are called redescending regression M-estimates. </p>
+		<p>Remark 2: it is possible to show that the regression M estimates have 
+		the following asymptotic distribution:</p>
+        
+        \[\hat \beta_M \approx N \Bigg( \beta, \sigma^2 \frac{E \psi (u/\sigma)^2}{[E \psi' (u/\sigma)]^2} 	(X'X)^{-1} \Bigg)\]
+        
+<br><br>
+		<p>Thus the approximate covariance matrix of an M-estimate differs only 
+		by a constant factor from the LS estimate. Hence, its efficiency for normal 
+		perturbations does not depend on $X$.</p>
+		<p>&nbsp; <a name="Msca"></a></p>
+		<h3 class="title">The regression M-estimate of scale </h3>
+		<p>In equation (ref{eq:rho}) it is assumed that $\sigma$ is known. However, when this condition 
+		is not fulfilled, it is necessary to use an auxiliary robust scale estimate $(\hat \sigma)$
+		 to make $\hat \beta_M$ scale equivariant.
+		</p>
+		<p class="style4">An M-estimator of scale $\hat \sigma_M$
+		is defined as the solution to the 
+		following equation label{eq:rhoscale}</p>
+        $$\frac{1}{n} \sum_{i=1}^n \rho_1 \Bigg( \frac{r_i}{\hat \sigma_M} \Bigg)=K,$$
+
+		<p>where </p>
+        $$r_i = r_i(\hat \beta_M), \hat \sigma_M =  \hat \sigma(r_1(\hat \beta_M), \dots, r_n(\hat \beta_M))$$
+         <br><br>
+        
+         and $K$ is a constant which is linked to the breakdown point of the scale estimator.
+		</p>
+		<p>It is worthwhile to notice that in this equation&nbsp; we have used the 
+		symbol $\rho_1$, because the $\rho$ function which is used to obtain 
+		the scale estimator is not necessarily the same which is used in (label{eq:rho}).</p>
+		<p>It is interesting to notice that if in equation (ref{eq:rhoscale}) we choose $\rho_1=I(|t|>1)$ and $K=1/2$ we obtain as a solution for the M estimator 
+		of scale the median of the absolute values of the residuals. In general 
+		if $\rho_1=I(|t|>1)$, we obtain as a solution the $h$-th order statistic of the $|r|_i$
+ with $h=n-[nK]$.</p>
+		<p>&nbsp;</p>
+		<a name="Sest"></a>
+		<h3 class="title">The regression S-estimates and the LMS estimate</h3>
+		If we take the minimum value of $\hat \sigma_M$ which satisfies equation 
+		(ref{eq:rhoscale}), we obtain the so called S-estimate of scale $(\hat \sigma_S)$
+		 and the associated estimate 
+		of the vector of regression coefficients $(\hat \beta_S)$.
+		<p>The word S estimator comes from the fact that it is derived from a scale 
+		statistic in an implicit way. More formally</p>
+       $$\hat \beta_S = \min \limits_{\beta} \; \hat \sigma_M(r(\beta))$$
+
+		<br><br>
+		where
+       	<br><br>
+
+         $$r_i = r_i(\hat \beta_S), \hat \sigma_S =  \hat \sigma(r_1(\hat \beta_S), \dots, r_n(\hat \beta_S))$$
+		<br><br>
+
+        <p>Because an S estimate is an M-estimate, it follows that the asymptotic 
+		distribution of an S estimate is the same as that of an M estimate. To see 
+		this note that $\hat \beta_S$ satisfies 
+		the following inequality:</p>
+        $$\sum_{i=1}^n \rho \Bigg( \frac{r_i(\hat \beta_S)}{\hat \sigma_S}\Bigg) \leq \sum_{i=1}^n \rho \Bigg( \frac{r_i(\tilde \beta)}{\hat \sigma_S}\Bigg)$$
+
+		<p>for all $\tilde \beta \in R^p$.</p>
+		<p>The regression S estimate of location $(\hat \beta_S)$ and scale $(\hat \sigma_S)$
+		 can be found using routine
+		<a href="sreg.html">Sreg</a>. For each elemental subset which is extracted 
+		(which satisfies certain conditions) we compute the minimum value of the 
+		scale calling routine <a href="Mscale.html">Mscale</a>. For the subsets 
+		with the 5 best (bestr) minimum values of the scale a series of refining 
+		steps (C-steps) are done.</p>
+&nbsp;<p>Remark: if we choose as rho function $\rho(t)=I(|t|>1)$  and in equation 
+		(label{eq:rhoscale}) we put $K=n/2$  we minimize the median of the squares 
+		(absolute values) of the residuals and we therefore obtain the Least Median 
+		of Squares estimator (LMS).&nbsp; </p>
+		<p>In symbols, call </p>
+        $$|r|_{(1)} \leq |r|_{(2)} \leq \dots \leq |r|_{(n)}$$
+
+		<p>the ordered absolute values of the residuals,&nbsp;
+		$\hat \beta_{LMS}$ is defined as</p>
+         \[ \hat \beta_{LMS}= \min \limits_{\beta} \; med |r(\beta)|_i \]
+		<p> $\hat \beta_{LMS}$ can be computed using routine <a href="lxs.html">LXS</a> (option lms=1)</p>
+		<p>More generally, for a general $K$ a solution $\hat \sigma$
+		 to equation (4) is the $h$ order 
+		statistics of $|r|_i$ (that is  $|r|_{(h)}$), 
+		with $h=n-[nK]$.</p>
+		<p>&nbsp;</p>
+		<a name="MMest"></a>
+		<h3 class="title">The regression MM-estimate of location </h3>
+		<p>The MM-regression estimator $\hat \beta_{MM}$ is defined 
+		as any local minimum of the following $f$ function</p>
+$$f(\hat \beta_{MM})=\frac{1}{n} \sum_{i=1}^n \rho_2 \Big(\frac{r_i}{\hat \sigma} \Big)$$      
+		<p>where $\rho_2$ is possibly another $\rho$ function. Function $f$ 
+		is minimized with respect to $\beta$ for fixed $(\hat \sigma)$ Among the possible local 
+		minima which have been found, we choose the one for which this equation 
+		is smallest. In this equation $\hat \sigma$ is any scale estimator 
+		satisfying equation (label{eq:rhoscale}). It is common however to use $\hat \sigma_S$
+		 (the minimum value).</p>
+		<p>The consistency and asymptotic distribution of MM-estimates when the 
+		observed data follow the central model (1) has been studied by Yohai (1987) 
+		for the case of random covariates, and by Salibian-Barrera (2006) for fixed 
+		designs. Consistency and asymptotic distribution of S-estimators has been 
+		studied by Rousseeuw and Yohai (1984), Davies (1990) and Salibian-Barrera 
+		(2006).</p>
+		 $\hat \beta_{MM}$ can be computed using routines
+		<a href="mmreg.html">MMreg</a> and <a href="mmregcore.html">MMregcore</a>. 
+		More precisely, MMregcore assumes that user supplies an estimate of $\sigma$, on 
+		the other hand, function MMreg uses function <a href="sreg.html">Sreg</a> 
+		to preliminary compute an estimate of $\sigma$ and $\beta$.<p></p>
+		<p>&nbsp;</p>
+		<a name="Lest"></a>
+		<h3 class="title">The regression L-estimate of scale and the LTS estimate
+		</h3>
+		<p>An alternative to using an M-scale is to use an L-estimate of scale. 
+		The we can define scale estimates as linear combinations of the $|r|_{(i)}$ 
+		in one of the two following forms: </p>
+        $$\hat \sigma_L = \sum_{i=1}^n a_i |r|_{(i)} \quad \textrm{or} \quad \hat \sigma_L = \Bigg(\sum_{i=1}^n a_i |r|_{(i)}^2 \Bigg)^{1/2}$$
+
+<br><br>
+		<p>A particular version of the second form is the $\alpha$-trimmed squares scale 
+		where $\alpha$ is in interval (0,1) and $n-h=[n \alpha]$ of the largest absolute residuals 
+		are trimmed. If $\alpha=1/2$ the corresponding regression estimate is called the 
+		least trimmed squares (LTS)&nbsp; $\hat \beta_{LTS}$. More formally</p>
+        $$\hat \beta_{LTS} = \min \limits_{\beta} \sum_{i=1}^{[(n+p+1)/2]}    |r(\beta)|_{(i)}$$
+
+&nbsp;<p>Notice that asymptotically $[(n+p+1)/2]$ tends to 1/2.</p>
+		<p>$\hat \beta_{LTS}$ can be computed 
+		using routines <a href="lxs.html">LXS</a> (option lms=0) , while the trimming 
+		proportion is controlled by option alpha</p>
+		<p>&nbsp;</p>
+	</div>
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

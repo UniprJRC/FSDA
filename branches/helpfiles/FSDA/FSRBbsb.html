@@ -1,0 +1,172 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRBbsb</title><meta content="refpage" name="chunktype"><meta content="function:FSRBbsb" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRBbsb returns the units belonging to the subset in each step of the Bayesian forward search." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRBbsb</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRBbsb with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRBbsb with optional arguments.</a></li><li><a class="intrnllnk" href="#Example_3">Compare units belonging to subsets.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_beta0">beta0</a></li><li><a class="intrnllnk" href="#input_argument_R">R</a></li><li><a class="intrnllnk" href="#input_argument_tau0">tau0</a></li><li><a class="intrnllnk" href="#input_argument_n0">n0</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_bsb">bsb</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bsbsteps">bsbsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_Un">Un</a></li><li><a class="intrnllnk" href="#output_argument_BB">BB</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRBbsb</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRBbsb returns the units belonging to the subset in each step of the Bayesian forward search</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">Un=FSRBbsb(y, X, beta0, R, tau0, n0)</code><span class="syntax_example"><a class="intrnllnk" href="FSRBbsb.html#Example_1">example</a></span></li><li><code class="synopsis">Un=FSRBbsb(y, X, beta0, R, tau0, n0,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRBbsb.html#Example_2">example</a></span></li><li><code class="synopsis">[Un,BB]=FSRBbsb(___)</code><span class="syntax_example"><a class="intrnllnk" href="FSRBbsb.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRBbsb.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Un"><code>Un</code></a>=FSRBbsb(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_beta0"><code>beta0</code></a>,<a class="intrnllnk" href="#inputarg_R"><code>R</code></a>,<a class="intrnllnk" href="#inputarg_tau0"><code>tau0</code></a>,<a class="intrnllnk" href="#inputarg_n0"><code> n0</code></a>)</code></span>FSRBbsb with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRBbsb.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_Un"><code>Un</code></a>=FSRBbsb(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_beta0"><code>beta0</code></a>,<a class="intrnllnk" href="#inputarg_R"><code>R</code></a>,<a class="intrnllnk" href="#inputarg_tau0"><code>tau0</code></a>,<a class="intrnllnk" href="#inputarg_n0"><code>n0</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRBbsb with optional arguments.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRBbsb.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_Un"><code>Un</code></a>,<a class="intrnllnk" href="#outputarg_BB"><code>BB</code></a>]=FSRBbsb(___)</code></span>Compare units belonging to subsets.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRBbsb with all default options.</li></span></a></span></h3><div class="collapse"><p>
+     Common part to all examples: load Houses Price Dataset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
+% setup parameters
+n=size(hprice,1);
+y=hprice(:,1);
+X=hprice(:,2:5);
+n0=5;
+% set \beta components
+beta0=0*ones(5,1);
+beta0(2,1)=10;
+beta0(3,1)=5000;
+beta0(4,1)=10000;
+beta0(5,1)=10000;
+% $\tau$
+s02=1/4.0e-8;
+tau0=1/s02;
+% R prior settings
+R=2.4*eye(5);
+R(2,2)=6e-7;
+R(3,3)=.15;
+R(4,4)=.6;
+R(5,5)=.6;
+R=inv(R);
+Unchk=FSRBbsb(y,X,beta0, R, tau0, n0);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRBbsb with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+     Display the monitoring units plot. Suppress all messages about
+     interchange with option msg.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
+% setup parameters
+n=size(hprice,1);
+y=hprice(:,1);
+X=hprice(:,2:5);
+n0=5;
+% set \beta components
+beta0=0*ones(5,1);
+beta0(2,1)=10;
+beta0(3,1)=5000;
+beta0(4,1)=10000;
+beta0(5,1)=10000;
+% $\tau$
+s02=1/4.0e-8;
+tau0=1/s02;
+% R prior settings
+R=2.4*eye(5);
+R(2,2)=6e-7;
+R(3,3)=.15;
+R(4,4)=.6;
+R(5,5)=.6;
+R=inv(R);
+[~,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0);
+[Unchk,BBchk]=FSRBbsb(y,X,beta0,R,tau0,n0,'plots',1,'msg',0);</pre></div></div><img vspace="5" hspace="5" src="images\FSRBbsb_01.png" alt=""> </p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare units belonging to subsets.</li></span></a></span></h3><div class="collapse"><p>
+     Test procedures FSRBmdr and FSRBbsb to find out whether they produce
+     the same results in terms of units belonging to subset<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
+% setup parameters
+n=size(hprice,1);
+y=hprice(:,1);
+X=hprice(:,2:5);
+n0=5;
+% set \beta components
+beta0=0*ones(5,1);
+beta0(2,1)=10;
+beta0(3,1)=5000;
+beta0(4,1)=10000;
+beta0(5,1)=10000;
+% $\tau$
+s02=1/4.0e-8;
+tau0=1/s02;
+% R prior settings
+R=2.4*eye(5);
+R(2,2)=6e-7;
+R(3,3)=.15;
+R(4,4)=.6;
+R(5,5)=.6;
+R=inv(R);
+[~,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0);
+[Unchk,BBchk]=FSRBbsb(y,X,beta0, R, tau0, n0);
+% Test for equality BB and BBchk
+disp(isequaln(BB,BBchk))
+% Test for equality Un and Unchk
+disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+               Missing values (NaN's) and infinite values (Inf's) are
+               allowed, since observations (rows) with missing or infinite
+               values will automatically be excluded from the
+               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory variables (also called
+               'regressors') of dimension (n x p-1).</p> <p>
+               Rows of X represent observations, and columns represent
+               variables. Missing values (NaN's) and infinite values
+               (Inf's) are allowed, since observations (rows) with missing
+               or infinite values will automatically be excluded from the
+               computations.</p> <p>
+
+
+               PRIOR INFORMATION
+               $\beta$ is assumed to have a normal distribution with
+               mean $\beta_0$ and (conditional on $\tau_0$) covariance
+               $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>
+               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_beta0" class="clearfix"> </div> <h3 id="input_argument_beta0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>beta0</code> &#8212; Prior mean of $\beta$. </span>  </a><span class="example_desc">p-times-1 vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_R" class="clearfix"> </div> <h3 id="input_argument_R" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>R</code> &#8212; Matrix associated with covariance matrix of $\beta$. </span>  </a><span class="example_desc">p-times-p
+               positive definite matrix.</span></span></h3> <div class="collapse"> <p>It can be interpreted as $X_0'X_0$ where $X_0$ is a n0 x p
+               matrix coming from previous experiments (assuming that the
+               intercept is included in the model)
+
+               The prior distribution of $\tau_0$ is a gamma distribution with
+               parameters $a_0$ and $b_0$, that is
+               
+                \[     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
+                       \qquad   E(\tau_0)= a_0/b_0               \]</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_tau0" class="clearfix"> </div> <h3 id="input_argument_tau0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>tau0</code> &#8212; Prior estimate of tau. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n0" class="clearfix"> </div> <h3 id="input_argument_n0" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n0</code> &#8212; Number of previous experiments. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Sometimes it helps
+               to think of the prior information as coming from n0
+               previous experiments. Therefore we assume that matrix X0
+               (which defines R), was made up of n0 observations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bsb',[3,6,9]
+</code>,<code> 'init',100 starts monitoring from step m=100
+</code>,<code> 'intercept',1
+</code>,<code> 'plots',1
+</code>,<code> 'bsbsteps',[10,20,30]
+</code>,<code> 'nocheck',1
+</code>,<code> 'msg',1
+</code></code></span></div><div class="expandableContent"><div id="inputarg_bsb" class="clearfix"></div><h3 id="input_argument_namevalue_bsb" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsb</code> &#8212;units forming initial subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>m x 1 vector containing the units forming initial subset. The
+               default value of bsb is '' (empty value), that is we
+               initialize the search just using prior information.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsb',[3,6,9]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to start monitoring
+               required diagnostics. If it is not specified it is set
+               equal to:</p> <p>
+                   p+1, if the sample size is smaller than 40;</p> <p>
+                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
+               The minimum value of init is 0. In this case in the first
+               step we start monitoring at step m=0 (step just based on
+               prior information)
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
+               else no constant term will be included.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 the monitoring units plot is displayed on the
+               screen. The default value of plots is 0 (that is no plot
+               is produced on the screen).</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbsteps" class="clearfix"></div><h3 id="input_argument_namevalue_bsbsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbsteps</code> &#8212;steps of the fwd search where to save the units forming subset.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>If bsbsteps is 0 we store the units forming 
+               subset in all steps. The default is store the units forming
+               subset in all steps if n&lt;5000, else to store the units
+               forming subset at steps init and steps which are multiple
+               of 100. For example, if n=753 and init=6, units forming
+               subset are stored for m=init, 100, 200, 300, 400, 500 and
+               600.</p> <p> 
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbsteps',[10,20,30]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+               matrix y and matrix X. Notice that y and X are left
+               unchanged. In other words the additional column of ones for
+               the intercept is not added. As default nocheck=0.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to display or not messages
+               about great interchange on the screen
+               If msg==1 (default) messages are displayed on the screen
+               else no message is displayed on the screen
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Un" class="clearfix"></div><h3 id="output_argument_Un" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Un</code> &#8212;Units included in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
+               (n-init) x 11 Matrix which contains the unit(s) included
+               in the subset at each step of the search.</p> <p>
+               REMARK: in every step the new subset is compared with the
+               old subset. Un contains the unit(s) present in the new
+               subset but not in the old one.</p> <p>
+               Un(1,2) for example contains the unit included in step
+               init+1.</p><p>
+               Un(end,2) contains the units included in the final step
+               of the search.</p></p></div></div><div class="expandableContent"><div id="outputarg_BB" class="clearfix"></div><h3 id="output_argument_BB" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>BB</code> &#8212;Units belonging to subset in each step.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p>
+               n x (n-init+1) matrix which contains the units belonging to the
+               subset at each step of the forward search.</p> <p>
+               1st col = index forming subset in the initial step
+               ...</p><p>
+               last column = units forming subset in the final step 
+               (i.e. all units).</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
+ Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
+ Regression for Fraud Detection, "International Statistical Review",
+ <a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
+ Regression with the Forward Search: Theory and Data Analysis, "Test",
+ Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRbsb.html" itemprop="url"><span itemprop="name"><code>FSRbsb</code></span></a></span> | <span itemprop="seealso"><a href="FSRHbsb.html" itemprop="url"><span itemprop="name"><code>FSRHbsb</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

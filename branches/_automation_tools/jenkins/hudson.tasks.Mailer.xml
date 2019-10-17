@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson.tasks.Mailer_-DescriptorImpl plugin="mailer@1.11">
+  <defaultSuffix>@unipr.it</defaultSuffix>
+  <hudsonUrl>http://127.0.0.1:8080/jenkins/</hudsonUrl>
+  <smtpAuthUsername>toolbo81</smtpAuthUsername>
+  <smtpAuthPassword>2xK8hYpSUjGoc3+Hq03Iin5iW4xLPJ+xe0KEGv4rISQ=</smtpAuthPassword>
+  <replyToAddress>toolboxfs@unipr.it</replyToAddress>
+  <smtpHost>smtp.unipr.it</smtpHost>
+  <useSsl>false</useSsl>
+  <smtpPort>25</smtpPort>
+  <charset>UTF-8</charset>
+</hudson.tasks.Mailer_-DescriptorImpl>

@@ -1,0 +1,136 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	
+<h2 class="title">Introduction to robust estimators in
+multivariate analysis</h2>
+
+
+<p>The normal distribution, perhaps following data transformation, has a central place in the analysis
+of multivariate data. Mahalanobis distances provide the standard test for outliers in such
+data. However, it is well known that the estimates of the mean and covariance matrix found by
+using all the data are extremely sensitive to the presence of outliers. When there are many outliers
+the parameter estimates may be so distorted that the outliers are ‘masked’ and the Mahalanobis
+distances fail to reveal any outliers, or indicate as outlying observations that are not in fact so.
+</p>
+<p>Accordingly, several researchers have suggested the use of robust parameter estimates in the
+calculation of the distances.
+For example, Rousseeuw and van Zomeren (1990) used minimum volume ellipsoid estimators
+of both parameters in calculation of the Mahalanobis distances. More recent work such as Pison
+et al. (2002) or Hardin and Rocke (2005) uses the minimum covariance determinant (MCD)
+estimator. </p>
+
+<p>
+<em>Remark</em>: There is now evidence that the application of highly robust procedures can produce a proportion of outliers much larger than expected. The implication is that the size of the outlier test may be very much larger than the nominal 5% or 1%. Many of these methods are designed to test whether individual observations are outlying. As do Becker and Gather (1999), we, however, stress the importance of multiple outlier testing and focus on simultaneous tests of outlyingness. 
+Note that in this toolbox we develop methods that are intended, when the samples are multivariate normal, to find outliers in $\alpha \%$ of the data sets.
+</p>
+
+<p>This chapter considers the following procedures. </p>
+<ul>
+	<li>
+	<p><a href="mult_unibiv.html"><tt>unibiv</tt></a> implements robust univariate 
+	and bivariate analysis.
+	Robust bivariate ellipses (together with univariate boxplots) are constructed 
+	for each pair of variables and it is possible 
+	to analyze the units falling outside these robust bivariate contours. </p>
+	</li>
+	<li>
+	<p><a href="smult.html">Smult</a> and <a href="mmmult.html">MMmult</a> 
+	contain the implementation of S and MM estimators in multivariate analysis.</p>
+	</li>
+	<li>
+	<p><a href="mult_fsm.html"><tt>FSM</tt></a> and
+	<a href="mult_fsmeda.html"><tt>FSMeda</tt></a> provide two routines which 
+	implement the forward search in multivariate data analysis. <br>
+	<a href="mult_fsm.html"><tt>FSM</tt></a> implements an automatic outlier 
+	detection procedure which has a simultaneous alpha close to the nominal and 
+	a great power. <br>
+	<a href="mult_fsmeda.html"><tt>FSMeda</tt></a> has exploratory purposes. It 
+	enables to store a series of quantities along the forward search (Mahalanobis 
+	distances (MD), minimum MD outside subset, maximum MD among the units 
+	belonging to subset in each step and other tests). Through the joint 
+	analysis of the plots which monitor the progression of the statistics along 
+	the forward search it is immediately clear to detect the observations that 
+	differ from the bulk of the data. These may be individual observations that 
+	do not belong to the general model, that is outliers. Or there may be a 
+	subset of the data that is systematically different from the majority. The 
+	monitoring of the progression of the statistics along the search not only 
+	enables the identification of such observations, but also let us appraise 
+	the effect that they have on parameter estimates and on inferences about 
+	models and their suitability. </p>
+	</li>
+<li>
+	<p><a href="mcd.html">mcd</a> and <a href="mve.html">mve</a> 
+	contain the implementation of <a href="mult_mcd.html">MCD and MVE</a>.</p>
+	</li>
+</ul>
+
+<p>
+An alternative approach to robust multivariate estimation is based on projecting 
+the sample points onto a set of univariate directions. Peña and Prieto (2001) 
+suggested considering the set of 2v directions that are obtained by maximizing 
+and minimizing the kurtosis coefficient of the projected data. They also 
+proposed an iterative algorithm where each observation is repeatedly tested for 
+outlyingness in these directions, using subsamples of decreasing size with 
+potential outliers removed. Their final robust estimates, $\hat \mu_{PP}$
+ and $\hat \Sigma_{PP}$, are computed by using the observations 
+which are considered not to be outliers at the end of the iterations. A 
+calibration factor $k_{PP}$
+is still required to allow for bias in estimation of $\Sigma$. The resulting (squared) 
+robust Mahalanobis distances</p>
+$$ d_{(PP)i}=k_{PP}(y_i-\hat \mu_{PP})^T \hat \Sigma_{PP}^{-1}(y_i-\hat \mu_{PP}), \quad \quad \quad i=1,\dots,n, $$
+
+<p>are compared with the $\{v(n-1)/(n-v)\}F_{v,n-v} $  distribution.</p>
+<p>A comparison of the above procedures with the forward search in terms of size 
+and power can be found in &nbsp;Riani et al. (2009). In this paper the authors show 
+that procedure implemented in function FSM has superior power as well as good 
+size and so is to be recommended. Similar computations referred to regression 
+can be found in Perrotta and Torti (2010).</p>
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

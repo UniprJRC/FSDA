@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->add2spm</Title>
+   <Purpose><!--This is the second line of the .m file-->add2spm adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>H</Name>
+         <ShortDesc>handles to the lines on the graphs.</ShortDesc>
+         <TypeInd>2D or 3D array.</TypeInd>
+         <LongDesc>H is an array of handles to the lines on the graphs. The array's third dimension corresponds to groups in the grouping variable.
+For more details see the output arguments of gplotmatrix.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>AX</Name>
+         <ShortDesc>handles to the axes of the individual plots.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>AX is a matrix of handles to the axes of the individual plots.
+For more details see the output arguments of gplotmatrix.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>BigAx</Name>
+         <ShortDesc>handle to big (invisible) axes framing the entire plot matrix.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>For more details see the output arguments of gplotmatrix.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>labeladd</Name>
+         <ShortDesc>add labels for a group of units.</ShortDesc>
+         <TypeInd>Char.</TypeInd>
+         <LongDesc>Default is '', i.e. no labels are added to the symbols inside each scatter.
+If set to '1', add labels to the units of the last data group (or the group with the largest value of the grouping variable) in each panel of the scatter matrix. The labels which are added are based on the content of the 'UserData' field of the last group. This can be achieved by means of instruction set(H(:,:,end), 'UserData' , unit_labels), where unit_labels is a column vector of numbers or strings.
+See last example below for a concrete case.</LongDesc>
+         <Example>'labeladd','1'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>userleg</Name>
+         <ShortDesc>user legend.</ShortDesc>
+         <TypeInd>Char.</TypeInd>
+         <LongDesc>It is used to control the legend of the plot.
+- Default is ''. In this case, existing legends are left as they are and simply made clickable; however, if there is no legend, a default one is created using the syntax 'Group 1', 'Group 2', etc.
+- If it is set to '1', the legends are updated depending on the context of use and are made clickable. The context is determined by the occurence of specific words in the Tag of the current figure. The strings/contexts currently addressed are:
+'outlier' (for 'Outliers' and 'Normal units'), 'brush' (for 'Brushed units 1', 'Brushed units 2', etc.), 'group' (for 'Group 1', 'Group 2', etc.), '' i.e. the Tag of the figure is not defined;
+in this case the legend takes the values in the DisplayName property of the scatter matrix. This is determined by the 'group' option of the spmplot or gplotmatrix functions.
+- If it is a cell of strings, e.g. {'FIAT' ; 'BMW' ; 'VOLVO'}, then such strings are used for the legend.</LongDesc>
+         <Example>'userleg','1'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->add2spm is essentially used within FSDA function spmplot.m. However its logic can be also demonstrated with MATLAB function gplotmatrix.m, as in the examples below.
+As default add2spm makes legends in the existing scatter plot matrix clickable or creates a clickable multilegend if the legend does not exist.
+Using varargin it is possible to:
+1. Personalize the legend of groups in the scatterplot matrix. See option 'userleg'.
+2. Add labels of the units belonging to the last data group (or to the group with the largest value in the grouping variable) of each scatter (panel). See option 'labeladd'.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Tufte E.R. (1983), The visual display of quantitative information. Graphics Press, Cheshire</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>spmplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>add2spm with all default options.</Title>
+         <Desc>
+            <ItemCell>load Fisher iris data</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load fisheriris;</ItemCell>
+            <ItemCell>% Create scatter plot matrix with specific legends</ItemCell>
+            <ItemCell>[H,AX,BigAx]=gplotmatrix(meas,[],species);</ItemCell>
+            <ItemCell>% The legens are not clickable</ItemCell>
+            <ItemCell>% [H,AX,BigAx]=gplotmatrix(meas,[],species,[],[],[],[],'grpbars')</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx)</ItemCell>
+            <ItemCell>% Now the legends become clickable</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>add2spm with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Use of userleg variable. Set some multivariate data and some groups.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>y = randn(100,3);</ItemCell>
+            <ItemCell>group = ones(100,1); group(1:10,1) = 444; group(11:20,1) = 777;</ItemCell>
+            <ItemCell>% Make a scatterplot using gplotmatrix defaults.</ItemCell>
+            <ItemCell>% The legends automatically created are '1','444' and '777'.</ItemCell>
+            <ItemCell>[H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');</ItemCell>
+            <ItemCell>% with add2spm with default options, the gplotmatrix legends</ItemCell>
+            <ItemCell>% will become clickable.</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx);</ItemCell>
+            <ItemCell>% by running add2spm with option 'userleg' set to '1', and by setting</ItemCell>
+            <ItemCell>% the figure Tag to a string containing the word 'group', the clickable</ItemCell>
+            <ItemCell>% legends will become 'group 1', 'group 2' and 'group 3'.</ItemCell>
+            <ItemCell>[H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');</ItemCell>
+            <ItemCell>set(gcf, 'Tag', 'this is a string with group')</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx,'userleg','1');</ItemCell>
+            <ItemCell>% by running add2spm with 'userleg', {'my group 1' ; 'my group 4' ; 'my</ItemCell>
+            <ItemCell>% group 7'} the legends change as desired.</ItemCell>
+            <ItemCell>[H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx,'userleg',{'FIAT' ; 'BMW' ; 'VOLVO'});</ItemCell>
+            <ItemCell>% Now create a group on units contaminated by outliers. By running</ItemCell>
+            <ItemCell>% add2spm with option 'userleg' set to '1', and by setting the figure</ItemCell>
+            <ItemCell>% Tag to a string containing the word 'outlier', the clickable legends</ItemCell>
+            <ItemCell>% become 'normal units' and 'outliers'. Remark: the keep the proper</ItemCell>
+            <ItemCell>% order of the legends, it is sufficient to reserve for the outlier id</ItemCell>
+            <ItemCell>% variable the largest id number.</ItemCell>
+            <ItemCell>y = randn(100,2); y(25:35,:) = y(25:35,:) + 10;</ItemCell>
+            <ItemCell>group = ones(100,1);group(25:35,1) = 5;</ItemCell>
+            <ItemCell>figure('Tag','this is a dataset with outliers');</ItemCell>
+            <ItemCell>[H,AX,BigAx] = gplotmatrix(y,[],group,'br','ox');</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx,'userleg','1');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Use of labeladd.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all;</ItemCell>
+            <ItemCell>% 'labeladd' is set to '1' to add labels found in the UserData</ItemCell>
+            <ItemCell>% property of the last group in each panel of the scatter matrix.</ItemCell>
+            <ItemCell>% It can be retrieved from H(1,end,end) (i.e. first row, last column,</ItemCell>
+            <ItemCell>% last group of the scatter matrix handles).</ItemCell>
+            <ItemCell>y = rand(100,3);</ItemCell>
+            <ItemCell>group = ones(100,1); group(1:5,1) = 5; group(10:15,1) = 10;</ItemCell>
+            <ItemCell>[H,AX,BigAx] = gplotmatrix(y,[],group,'brk','.ox');</ItemCell>
+            <ItemCell>% column vector of labels is set to the integers from 1 to size of last</ItemCell>
+            <ItemCell>% data group</ItemCell>
+            <ItemCell>labels = (1:numel(get(H(1,end,end),'YData')))';</ItemCell>
+            <ItemCell>% assign labels to the 'UserData' property of the last data group</ItemCell>
+            <ItemCell>set(H(:,:,1), 'UserData' , labels);</ItemCell>
+            <ItemCell>% try add2spm with 'labeladd' option set to '1'</ItemCell>
+            <ItemCell>add2spm(H,AX,BigAx,'labeladd','1');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,37 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+$ Page Globals
+------------------------------------ */
+
+html body { overflow-y: scroll; }
+/* CODE REVIEW */	
+
+	/* Custom Pull Right Classes */
+.pull_right_lg { float: right; }
+
+/* Custom Center Class */
+.text_center_lg { text-align: center; }

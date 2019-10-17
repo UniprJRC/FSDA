@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->suplabel</Title>
+   <Purpose><!--This is the second line of the .m file-->suplabel places text as a title, xlabel, or ylabel on a group of subplots.
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>text</Name>
+         <ShortDesc>any string.</ShortDesc>
+         <TypeInd>Character or cell array of string.</TypeInd>
+         <LongDesc>If text is a Character it containg the string which has to put as title, xlabel or ylabel on a group of subplots. If text is a cell array of strings each element of the cell is put on a different line. In other words, in this case suplabel will display multiline titles contained in a cell array</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>whichaxis</Name>
+         <ShortDesc>where to put the string.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>String equal to any of 'x', 'y', 'yy', or 't', specifying whether the text is to be the xlabel, ylabel, right side y-label, or title respectively. If whichaxis is not specified it is set to 'x'</LongDesc>
+         <Example>&lt;code&gt;'y'&#xD;
+&lt;/code&gt;</Example>
+         <DataType>character</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>possuperaxes</Name>
+         <ShortDesc>super axes position.</ShortDesc>
+         <TypeInd>double.</TypeInd>
+         <LongDesc>vector of length 4 which specifies the position of the "super" axes surrounding the subplots.
+The default values of possuperaxes is [.08 .08 .84 .84];
+The meaning of the four elements of possuperaxes are [left bottom width height] where left and bottom define the distance from the lower-left corner of the container to the lower-left corner of the rectangle. width and height are the dimensions of the rectangle. The Units property specifies the units for all measurements.</LongDesc>
+         <Example>&lt;code&gt;[.08 .10 .84 .84]&#xD;
+&lt;/code&gt;</Example>
+         <DataType>numeric vector of length 4</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>haxis</Name>
+         <ShortDesc>Graphics handle</ShortDesc>
+         <TypeInd>handle to the axis.</TypeInd>
+         <LongDesc>Graphics handle to the axis.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>hlabel</Name>
+         <ShortDesc>Graphics handle</ShortDesc>
+         <TypeInd>handle to the label.</TypeInd>
+         <LongDesc>Graphics handle to the label.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--> &#xD;
+  This code is based on the code suplabel by Ben Barrowes&#xD;
+ &amp;lt;barrowes@alum.mit.edu&amp;gt;&#xD;
+ https://www.mathworks.com/matlabcentral/fileexchange/7772-suplabel?s_tid=srchtitle&#xD;
+&#xD;
+ &#xD;
+ 
+</Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>subplot</Item>
+      <Item>spmplot</Item>
+      <Item>yXplot</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Add a top, let, right and bottom titles to a gplotmatrix.</Title>
+         <Desc>
+            <ItemCell>Creare a scatter plot matrix with three variables and add gloabal X label on the X axis, global Y label on the left and right, and global title.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>200;</ItemCell>
+            <ItemCell>3;</ItemCell>
+            <ItemCell>ate1=123498;</ItemCell>
+            <ItemCell>ndn('state', state1);</ItemCell>
+            <ItemCell>randn(n,p);</ItemCell>
+            <ItemCell>lotmatrix(X);</ItemCell>
+            <ItemCell>Add a common label on the x axis</ItemCell>
+            <ItemCell>x1,h1]=suplabel('super X label');</ItemCell>
+            <ItemCell>Add a common label on the y axis</ItemCell>
+            <ItemCell>x2,h2]=suplabel('super Y label','y');</ItemCell>
+            <ItemCell>Add a common label on the y axis</ItemCell>
+            <ItemCell>x3,h2]=suplabel('super Y label (right)','yy');</ItemCell>
+            <ItemCell>Add a common label on top of the plot</ItemCell>
+            <ItemCell>x4,h3]=suplabel('super Title'  ,'t');</ItemCell>
+            <ItemCell>set the fontsize of the string on top of the plot</ItemCell>
+            <ItemCell>t(h3,'FontSize',30);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Two panels with a common y label.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>subplot(2,1,1);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(2,1,2);</ItemCell>
+            <ItemCell>plot((1:10).^3)</ItemCell>
+            <ItemCell>suplabel('Population growth','y')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example with 6 panels.</Title>
+         <Desc>
+            <ItemCell>The three panels of the left have a common xlabel, ylabel and right ylabel</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>subplot(3,2,1);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,3);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,5);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>possuperaxes=[0.1 0.1 0.35 0.8];</ItemCell>
+            <ItemCell>suplabel('Population growth','y',possuperaxes)</ItemCell>
+            <ItemCell>suplabel('Right label','yy',possuperaxes)</ItemCell>
+            <ItemCell>suplabel('Years','x',possuperaxes)</ItemCell>
+            <ItemCell/>
+            <ItemCell>% The three panels of the right have a common xlabel, ylabel and</ItemCell>
+            <ItemCell>% right ylabel</ItemCell>
+            <ItemCell>subplot(3,2,2);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,4);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,6);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>possuperaxes=[0.55 0.1 0.3 0.8];</ItemCell>
+            <ItemCell>suplabel('Population growth 2','y',possuperaxes)</ItemCell>
+            <ItemCell>suplabel('Right label','yy',possuperaxes)</ItemCell>
+            <ItemCell>suplabel('Months','x',possuperaxes)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of suplabel with output arguments.</Title>
+         <Desc>
+            <ItemCell>A label is added to the spmplot on the x axis</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load fisheriris;</ItemCell>
+            <ItemCell>plo=struct;</ItemCell>
+            <ItemCell>plo.nameY={'SL','SW','PL','PW'};</ItemCell>
+            <ItemCell>spmplot(meas,species,plo,'hist');</ItemCell>
+            <ItemCell>% insert text 'any string' as x label</ItemCell>
+            <ItemCell>% and return both the handle to the axis (inside haxis) and the handle to the label (inside hlabel).</ItemCell>
+            <ItemCell>[haxis,hlabel]=suplabel('Title added to the x axis')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Call to subplot using as text a cell array of strings.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>figure</ItemCell>
+            <ItemCell>subplot(3,2,1);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,3);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>subplot(3,2,5);</ItemCell>
+            <ItemCell>plot((1:10).^2)</ItemCell>
+            <ItemCell>possuperaxes=[0.1 0.1 0.35 0.8];</ItemCell>
+            <ItemCell>text={'Population growth','3 countries'} ;</ItemCell>
+            <ItemCell>suplabel(text,'y',possuperaxes)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

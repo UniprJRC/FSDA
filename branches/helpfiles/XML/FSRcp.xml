@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRcp</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRcp monitors Cp and AIC for all models of interest of size smallp
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Data matrix of explanatory variables (also called 'regressors') of dimension (n x (bigP-1)).
+The intercept will be added in automatic way, so that the dimension of the full model is bigP Rows of X represent observations, and columns represent variables. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>smallp</Name>
+         <ShortDesc>number of variables in the reduced models.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar which specifies the number of variables in the reduced models which will be considered. For example if smallp=3, all possible subsets containing 2 columns of matrix X will be considered. Notice that the dimension of each submodel is 3 because to each submodel the column of ones is added automatically.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Note that y and X are left unchanged. In other words the additioanl column of ones for the intercept is not added. As default nocheck=1.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>h</Name>
+         <ShortDesc>number of observations that have determined the least trimmed squares estimator.</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>h is an integer greater than smallp+1 but smaller then n. The default value of h is [(n+smallp+1)/2]</LongDesc>
+         <Example>'h',3</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lms</Name>
+         <ShortDesc>Criterion to use to find the initlal subset to initialize the search.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If lms=1 (default) Least Median of Squares is computed, else Least Trimmed of Squares is computed.</LongDesc>
+         <Example>'lms',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nomes</Name>
+         <ShortDesc>Displaying time message.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nomes is equal to 1 (default) no message about estimated time to compute LMS (LTS) for each considered model is displayed, else a message about estimated time is displayed.</LongDesc>
+         <Example>'lms',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nsamp</Name>
+         <ShortDesc>Number of subsamples which will be extracted to find the robust estimator.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nsamp=0 all subsets will be extracted.
+They will be (n choose smallp).
+Remark: if the number of all possible subset is &amp;lt;1000 the default is to extract all subsets otherwise just 1000.</LongDesc>
+         <Example>'nsamp',1000</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the initial subset size to start monitoring the required quantities, if init is not specified it will be set equal to smallp+1, if the sample size is smaller than 40;
+min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.</LongDesc>
+         <Example>'init',100 starts monitoring from step m=100</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>aic</Name>
+         <ShortDesc>Akaike's information criterion.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If aic=1 the value of AIC is also stored in each step of the search else (default) only Mallows Cp is stored</LongDesc>
+         <Example>'aic',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labels</Name>
+         <ShortDesc>names of the explanatory variables.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>Cell array of strings of length bigP-1 containing the names of the explanatory variables.
+If labels is a missing value the following sequence of strings will be automatically created for X (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)</LongDesc>
+         <Example>'labels',{'Time','1','2','3','4','5','6','7','8'}</Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>fin_step</Name>
+         <ShortDesc>portion of the search which has to be monitored to choose the best models.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If fin_step is an integer greater or equal 1, it refers to the number of steps.
+For example if fin_step=10 the program considers the last 10 steps to choose the best models.
+If fin_step is a real number alpha (0&amp;lt;alpha&amp;lt;0.5) in the interval (0 0.5] than the program considers the last round(n*alpha) steps. As default fin_step=round(n*0.2) that is the last 20% of the steps are considered.
+Remark1: the number of best models to consider is controlled by scalar first_k (see below).
+Remark2: if fin_step is an empty value, no selection is done and all trajectories of Cp are displayed (in this case the value of first_k below is ignored, all models are considered of interest and output matrix outCp.Ajout is equal to an empty value).</LongDesc>
+         <Example>'fin_step',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>first_k</Name>
+         <ShortDesc>number of best models to consider in each of the last fin_step.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>For example if first_k=5 in each of the last fin_step, the models which had the 5 smallest values of Cp are considered. As default first_k=3</LongDesc>
+         <Example>'first_k',5</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>Excl</Name>
+         <ShortDesc>Matrix which contains the models which surely do not have to be considered.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>As default Excl='' For example if smallp=3, bigP=6 and Excl = [23; 24; 27]; the three models 23, 24, and 27 are skipped</LongDesc>
+         <Example>'Excl',[23; 24]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ExclThresh</Name>
+         <ShortDesc>Exclusion threshold.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Exclusion threshold associated to the upper percentage point of the F distribution of Cp which defines the threshold for declaring models as unuseful.
+The default value of ExclThresh is 0.99999 that is the models whose minimum value of Cp in the part of the search defined by fin_step is above ExclThresh are stored in output matrix outCp.Ajout. Notice that ExclThresh must be smaller than 1</LongDesc>
+         <Example>'ExclThresh',0.6</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots==1 a plot is created on the screen which contains the trajectories of Cp monitored along the search with confidence bands If plots==2 two plots are generated. The first contains the trajectories of Cp monitored along the search with confidence bands. The second contains the trajectories of AIC monitored along the search else (default) no plot is shown on the screen</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labout</Name>
+         <ShortDesc>If labout=1 the output LABOUT contains the list of models whose Cp values are inacceptable.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default: no model is created.
+Remark: the options below only work if plots is equal 1.</LongDesc>
+         <Example>'labout',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>quant</Name>
+         <ShortDesc>It specifies the quantiles which are used to produce Cp envelopes.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>The elements of quant are numbers between 0 and 1. The default value of quant is quant=[0.025 0.5 0.975];</LongDesc>
+         <Example>'quant',0.1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>steps</Name>
+         <ShortDesc>Steps to add labels.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It specifies in which steps of the plot which monitors Cp it is necessary to include the labels of the models which have been previously chosen.
+The default is to write the labels of the models in steps round([n*0.6 n*0.8 n]);</LongDesc>
+         <Example>'steps',[4 8]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>titl</Name>
+         <ShortDesc>a label for the title.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>default is ['Forward Cp' p= num2str(smallp)]</LongDesc>
+         <Example>'titl','my title'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>labx</Name>
+         <ShortDesc>a label for the x-axis.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>default: 'Subset size m'</LongDesc>
+         <Example>'labx','my label'</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>laby</Name>
+         <ShortDesc>a label for the y-axis.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>default:''</LongDesc>
+         <Example>'laby','my label'</Example>
+         <DataType>char</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>xlimx</Name>
+         <ShortDesc>minimum and maximum on the x axis.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Default value is '' (automatic scale)</LongDesc>
+         <Example>'xlimx',[0 1]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>ylimy</Name>
+         <ShortDesc>minimum and maximum on the y axis.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Default value is '' (automatic scale)</LongDesc>
+         <Example>'ylimx',[0 1]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwd</Name>
+         <ShortDesc>linewidth of the curves which contain the score test.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default line width=2</LongDesc>
+         <Example>'linewidth',6</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>lwdenv</Name>
+         <ShortDesc>width of the lines associated with the envelopes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default is lwdenv=1</LongDesc>
+         <Example>'lwdenv',6</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FontSize</Name>
+         <ShortDesc>font size of the labels of the axes and of the labels inside the plot.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default value is 12</LongDesc>
+         <Example>'FontSize',20</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>SizeAxesNum</Name>
+         <ShortDesc>size of the numbers of the axes.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Default value is 10</LongDesc>
+         <Example>'SizeAxesNum',30</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>selunitcolor</Name>
+         <ShortDesc>colors to be used for the Cp trajectories.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>If selunittype is not specified or if it is an empty value default Matlab colors are used.</LongDesc>
+         <Example>'selunitcolor',{'b';'g';'r'}</Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>selunittype</Name>
+         <ShortDesc>line types of the Cp trajectories.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>If selunittype is not specified or if it is an empty value all possible line styles are used.</LongDesc>
+         <Example>'selunittype',{'-';'--';':';'-.'}</Example>
+         <DataType>cell</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>outCp</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>MAL</Value>
+               <Description>(n-init+1) x (k+1) matrix.
+Mallows Cp monitored along the search:
+1st col is fwd search index;
+2nd col is associated with first selected model;
+3rd col is associated with second selected model;
+...;
+(k+1)th col is associated with k-th selected model.
+Notice that k&amp;lt;=(n choose smallp) and that all models contain the constant.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>AIC</Value>
+               <Description>(n-init+1) x (k+1) matrix.
+AIC monitored along the search:
+1st col is fwd search index;
+2nd col is associated with first selected model;
+3rd col is associated with second selected model;
+...;
+(k+1)th col is associated with k-th selected model.
+Remark 1: k&amp;lt;=(n choose smallp).
+Remark 2: all models contain the constant.
+Remark 3: matrix AIC is produced only if input option aic=1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>UnAll</Value>
+               <Description>cell of dimension k. Each element of the cell is a (n-init) x 11 matrix containing the unit(s) included in the subset at each step of the search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LAB</Value>
+               <Description>cell array of strings of length k containing the labels of the models which have been extracted. First element of LAB is associated with second column of matrix MAL...</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Ajout</Value>
+               <Description>numeric matrix which contains the list of the models whose Cp values are inacceptable.
+The number of columns of matrix Ajout is equal to smallp-1 This information is useful because in this way it is possible to skip the computation of the submodels of the rows of matrix Ajout.
+For example if smallp=3, bigP=6 and Ajout = [ 23; 24; 27 ] the three models 23, 24, and 27 always have Cp values much greater than the threshold (that is variables 2,3,4,7 are considered unimportant).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>LABout</Value>
+               <Description>cell array of strings which contains as strings the list of models which are unacceptable.
+LABout is created only if input option labout=1.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson A.C, and Riani M. (2008), A robust and diagnostic information criterion for selecting regression models. Journal of the Japan Statistical Society. ISSN: 1882-2754. Vol. 38, No. 1, pp. 3-14.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSR</Item>
+      <Item>FSReda</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRcp with all default options.</Title>
+         <Desc>
+            <ItemCell>Extract the best models of size 4.</ItemCell>
+            <ItemCell>Common part to all examples: load Ozone dataset.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=4;</ItemCell>
+            <ItemCell>[Cpmon]=FSRcp(y,X,smallp);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSRcp with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Extract the best models of size 4, and show the plot of forward Cp.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=4;</ItemCell>
+            <ItemCell>[outCp]=FSRcp(y,X,smallp,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Use labels defined by the user.</Title>
+         <Desc>
+            <ItemCell>Extract the best models of size 4 and show the plot of Cp. All the default options are used, apart from labels, therefore the plot of Cp and the output matrix Cpmon.MAL only contains the searches associated with the smallest 3 values of Cp in the last 16 steps of the search.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=4;</ItemCell>
+            <ItemCell>labels={'Time','1','2','3','4','5','6','7','8'};</ItemCell>
+            <ItemCell>[Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Extract and show the trajectories of all models of size 4 of Cp.</Title>
+         <Desc>
+            <ItemCell>Notice that in this last case the forward plot becomes unreadable.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=4;</ItemCell>
+            <ItemCell>[Cpmon]=FSRcp(y,X,smallp,'plots',1,'fin_step','');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Extract the best models of size 5 and plot monitoring of Cp.</Title>
+         <Desc>
+            <ItemCell>Extract 1000 subsets to initialize the search and use labels defined by the user.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=5;</ItemCell>
+            <ItemCell>labels={'Time','1','2','3','4','5','6','7','8'};</ItemCell>
+            <ItemCell>[Cpmon]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Extract the best models of size 6 and 5 and plot monitoring of Cp.</Title>
+         <Desc>
+            <ItemCell>Extract 1000 subsets to initialize the search andse labels defined by the user. Exclude the searches of the models which were unacceptable for smallp=5.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>smallp=6;</ItemCell>
+            <ItemCell>labels={'Time','1','2','3','4','5','6','7','8'};</ItemCell>
+            <ItemCell>[Cpmon6]=FSRcp(y,X,smallp,'nsamp',1000,'plots',1,'labels',labels);</ItemCell>
+            <ItemCell>smallp=5;</ItemCell>
+            <ItemCell>[Cpmon5]=FSRcp(y,X,smallp,'nsamp',1000,'Excl',Cpmon6.Ajout,'plots',1,'labels',labels);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Customizing the graphical options.</Title>
+         <Desc>
+            <ItemCell>In the following example we play with the graphical options</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>X=load('ozone.txt');</ItemCell>
+            <ItemCell>% Transform the response using logs</ItemCell>
+            <ItemCell>X(:,end)=log(X(:,end));</ItemCell>
+            <ItemCell>% Add a time trend</ItemCell>
+            <ItemCell>X=[(-40:39)' X];</ItemCell>
+            <ItemCell>% Define y</ItemCell>
+            <ItemCell>y=X(:,end);</ItemCell>
+            <ItemCell>% Define X</ItemCell>
+            <ItemCell>X=X(:,1:end-1);</ItemCell>
+            <ItemCell>labels={'Time','1','2','3','4','5','6','7','8'};</ItemCell>
+            <ItemCell>Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,108 @@
+﻿<!DOCTYPE HTML>
+<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+
+<script src="includesFS/headJS.js" type="text/javascript"></script>
+<!--headJS loads all required javascripts-->
+<script type="text/javascript">
+document.write(headJS);
+</script>
+<!--Insert title of the page-->
+<title>FSDA main page</title>
+<!--Beginning of body-->
+<body id="responsive_offcanvas">
+
+<div id="doc_header_spacer" class="header">
+</div>
+<!--Include serch engine-->
+<script type="text/javascript">
+document.write(engine);
+</script>
+<!--Include left bar menu-->
+<div class="row-offcanvas row-offcanvas-left">
+	<script type="text/javascript">
+	document.write(lbar);
+	</script>
+	<!--Include divs before FSDA text-->
+	<script type="text/javascript">
+document.write(divsbefore);
+</script>
+	<!--BEGINNING OF FSDA TEXT-->
+	<!-- -->
+	<!-- -->
+	<!-- -->
+<h2 id="bqvsgfl-1" class="title">S and MM estimators in multivariate analysis</h2>
+
+<p class="purpose">S-estimates are obtained minimizing an M-scale estimate (see the guide or 
+page Smult for more details). MM estimates keep the estimate of the scale fixed 
+(coming for example from the S procedure) and reestimate the location and the 
+shape matrix in order to improve the low efficiency of S-estimators.&nbsp; </p>
+<p> </p>
+<h3>Example 1</h3>
+<p>The code below loads the <a href="datasets_mv.html">heads dataset</a> and launch the 
+S outlier detection procedure</p>
+<pre class="programlisting">
+% Load the data
+load('head');
+Y=head.data;
+% Use function FSM (Forward search in multivariate analysis with automatic outlier detection purposes)
+[out]=Smult(Y,'plots',1,'conflev',1-0.01/size(Y,1));
+</pre>
+<p>No outlier is declared using the Bonferroni threshold.</p>
+<p><img alt="" src="images_help/mult_sandmm01.gif"></p>
+<p>
+<img alt="" src="images_help/mult_sandmm02.gif">
+</p>
+<p>
+<h3>Example 2</h3>
+<p>The code below loads the <a href="datasets_mv.html">mussels dataset</a> and 
+performs an automatic outlier detection procedure 
+in the original scale and then in the BoxCox transformed scale.</p>
+Analysis on the original scale
+<pre class="programlisting">
+load('mussels.mat');
+Y=mussels.data;
+[out]=Smult(Y,'plots',1,'conflev',1-0.01/size(Y,1));
+</pre>
+<p>
+<img alt="" src="images_help/mult_sandmm03.gif"></p>
+<p>
+<img alt="" src="images_help/mult_sandmm04.gif"></p>
+&nbsp;<p>
+	&nbsp;</p>
+
+<p>
+Analysis on the transformed scale
+<pre class="programlisting">
+load('mussels.mat');
+Y=mussels.data;
+la=[0.5 0 0.5 0 0];
+v=size(Y,2);
+Y=normBoxCox(Y,1:v,la);
+Smult(Y,'plots',1,'conflev&#39;,1-0.01/size(Y,1))</pre>
+
+<img alt="" src="images_help/mult_sandmm05.gif"><br><br>
+<img alt="" src="images_help/mult_sandmm06.gif"><p>&nbsp;</p>
+The units declared as outliers using 
+multivariate S estimators are exactly the same of the <a href="mult_fsm.html">FSM
+</a>procedure (see 
+reference help page).</p>	
+
+	<!-- -->
+	<!-- -->
+	<!-- -->
+	<!--END OF FSDA TEXT-->
+	<!--Include divs after FSDA text-->
+	<script language="javaScript" type="text/javascript">
+document.write(divsafter);
+</script>
+	<!--Include fixed text at the bottom of the page-->
+	<script language="javaScript" type="text/javascript">
+document.write(barra);
+</script>
+	<!--END.CLASS body_trail_container-->
+	<!--close row-offcanvas--></div>
+<!--close class="row-offcanvas row-offcanvas-left" -->
+
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->shuffling</Title>
+   <Purpose><!--This is the second line of the .m file-->shuffling does a random permutation of the elements of input vector
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>A set of elements.</ShortDesc>
+         <TypeInd>Vector of length t.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>x</Name>
+         <ShortDesc>Vector of length t</ShortDesc>
+         <TypeInd>A permutation of the set of elements in x.</TypeInd>
+         <LongDesc>Data Types - single|double</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->If set $x$ has $t$ elements, the objective is to obtain each of the $t!$ pemutations with equal probability, especially when $t$ is large. To achieve this goal we use backward Knuth's shuffling, which is based on the Fisher-Yates shuffle.
+shuffling has been introduced as an alternative to MATLAB function randperm. Randperm makes a call to sort(rand(1,n)) and, overall, is slower than shuffling (for example, in R2009a shuffling was on average 25 faster). If compiled as mex file, shuffling becomes much more efficient than x(randperm(numel(x))) solution (it is about 60 faster for n=10^6). C code that can be used for this purpose is available at the http://it.mathworks.com/matlabcentral/fileexchange/27076-shuffle website as part of Jan Simon's Shuffle library.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Knuth, Donald E. (1969). The Art of Computer Programming volume 2, Seminumerical algorithms, Reading, MA: Addison-Wesley, pp. 124-125.</Item>
+      <Item>Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological, agricultural and medical research (3rd ed.). London, Oliver &amp; Boyd. pp 26-27.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>randperm</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>shuffling applied to a set of 20 elements.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>shuffling(1:20)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>shuffling applied with parsimonious data type.</Title>
+         <Desc>
+            <ItemCell>shuffling applied to a set of 20 elements, but using a parsimonious data type; this is convenient if the vector is big.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>shuffling(int8(1:20))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>check of the permutation produced by shuffling.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>x = 1:200000;</ItemCell>
+            <ItemCell>numel(unique(shuffling(x)))</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Computation time of shuffling and randperm.</Title>
+         <Desc>
+            <ItemCell>An extensive test for various sample sizes.</ItemCell>
+            <ItemCell>REMARK: shuffling code is interpreted whereas randperm is compiled;</ItemCell>
+            <ItemCell>therefore, the comparison has to be done using tic-toc statements, as in the example below (the MATLAB profiler would over-estimate the shuffling time).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>RefTime = 1;</ItemCell>
+            <ItemCell>for n = [10, 10^2, 10^3, 10^4, 10^5, 10^6, 10^7]</ItemCell>
+            <ItemCell>   X = 1:n;</ItemCell>
+            <ItemCell>   % Estimate the number of profiling loops:</ItemCell>
+            <ItemCell>   iniTime = cputime;</ItemCell>
+            <ItemCell>   countLoop = 0;</ItemCell>
+            <ItemCell>   while cputime - iniTime &amp;lt; RefTime</ItemCell>
+            <ItemCell>      Xp = X(randperm(n));</ItemCell>
+            <ItemCell>      clear('Xp');   % Necessary to suppress JIT acceleration</ItemCell>
+            <ItemCell>      countLoop = countLoop + 1;</ItemCell>
+            <ItemCell>   end</ItemCell>
+            <ItemCell>   nDigit = max(1, floor(log10(max(1, countLoop))) - 1);</ItemCell>
+            <ItemCell>   nLoop  = max(4, round(countLoop / 10 ^ nDigit) * 10 ^ nDigit);</ItemCell>
+            <ItemCell>   % monitor randperm</ItemCell>
+            <ItemCell>   tic;</ItemCell>
+            <ItemCell>   for i = 1:nLoop</ItemCell>
+            <ItemCell>      Xp = X(randperm(n));</ItemCell>
+            <ItemCell>      clear('Xp');</ItemCell>
+            <ItemCell>   end</ItemCell>
+            <ItemCell>   RandPermTime = toc;</ItemCell>
+            <ItemCell>   % monitor shuffling</ItemCell>
+            <ItemCell>   tic;</ItemCell>
+            <ItemCell>   for i = 1:nLoop</ItemCell>
+            <ItemCell>      Xp = shuffling(X);</ItemCell>
+            <ItemCell>      clear('Xp');</ItemCell>
+            <ItemCell>   end</ItemCell>
+            <ItemCell>   ShufflingTime = toc;</ItemCell>
+            <ItemCell>   % results</ItemCell>
+            <ItemCell>   fprintf('\n%d elements shuffled %d times: \n', n, nLoop);</ItemCell>
+            <ItemCell>   disp(['    - shuffling etime (seconds): ' num2str(ShufflingTime)]);</ItemCell>
+            <ItemCell>   disp(['    - randperm  etime (seconds): ' num2str(RandPermTime)]);</ItemCell>
+            <ItemCell>   fprintf('SHUFFLING TIME IS %.1f%% of RANDPERM TIME\n', 100.0 * ShufflingTime / RandPermTime);</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Computation time of shuffling and randperm.</Title>
+         <Desc>
+            <ItemCell>Now the sample size is chosen at random, between 1 and 1000000.</ItemCell>
+            <ItemCell>Note that results can differ between MATLAB releases. See below.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>stoc = 0; rtoc = 0; loops = 100; n = zeros(100,1);</ItemCell>
+            <ItemCell>for i=1:loops</ItemCell>
+            <ItemCell>    n(i) = randi(1000000 , 1);</ItemCell>
+            <ItemCell>    %n(i) = floor(1000000*abs(randn));</ItemCell>
+            <ItemCell>    x = randi(1000000 , n(i) , 1);</ItemCell>
+            <ItemCell>    nn=numel(x);</ItemCell>
+            <ItemCell>    st = tic;</ItemCell>
+            <ItemCell>    xperm1 = shuffling(x);</ItemCell>
+            <ItemCell>    stoc = stoc+toc(st);</ItemCell>
+            <ItemCell>    rt = tic;</ItemCell>
+            <ItemCell>    ix = randperm(nn);</ItemCell>
+            <ItemCell>    xperm2 = x(ix);</ItemCell>
+            <ItemCell>    rtoc = rtoc+toc(rt);</ItemCell>
+            <ItemCell>    clear('xperm1','ix','xperm2'); % Necessary to suppress JIT acceleration, for realistic times</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>disp(['shuffling etime (seconds): ' num2str(stoc)]);</ItemCell>
+            <ItemCell>disp(['randperm  etime (seconds): ' num2str(rtoc)]);</ItemCell>
+            <ItemCell>fprintf('==&amp;gt; SHUFFLING TIME IS %.1f%% of RANDPERM TIME\n', 100.0 * stoc / rtoc);</ItemCell>
+            <ItemCell>% Results on R2016b</ItemCell>
+            <ItemCell>%     shuffling etime (seconds): 4.5303</ItemCell>
+            <ItemCell>%     randperm  etime (seconds): 5.3804</ItemCell>
+            <ItemCell>%     ==&amp;gt; SHUFFLING TIME IS 84.2% of RANDPERM TIME</ItemCell>
+            <ItemCell>% Results on R2012a</ItemCell>
+            <ItemCell>% shuffling etime (seconds): 7.9629</ItemCell>
+            <ItemCell>% randperm  etime (seconds): 4.9526</ItemCell>
+            <ItemCell>% ==&amp;gt; SHUFFLING TIME IS 160.8% of RANDPERM TIME</ItemCell>
+            <ItemCell>% Results on R2009a</ItemCell>
+            <ItemCell>% shuffling etime (seconds): 8.4239</ItemCell>
+            <ItemCell>% randperm  etime (seconds): 9.5947</ItemCell>
+            <ItemCell>% ==&amp;gt; SHUFFLING TIME IS 87.8% of RANDPERM TIME</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

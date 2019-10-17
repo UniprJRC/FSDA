@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->position</Title>
+   <Purpose><!--This is the second line of the .m file-->position controls the position of the open figures
+</Purpose>
+   <Description><!--Description section-->A number of relevant FSDA plots are positioned according to a predefined layout.
+Reminder: the position property format is [left, bottom, width, height]
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>plmain</Name>
+         <ShortDesc>Figure handle.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>The handle of a 'main' figure to be positioned at the top-left side of the screen, which is supposed to be the position attracting first the attention of a user.
+- If plmain not given, or it is empty, it is set to be the smaller handle, which normally is the handle of the first created figure.
+- If plmain is set to zero (0), then function cascade is applied.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION--></OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>cascade</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Three plots, with a recognized tag.</Title>
+         <Desc>
+            <ItemCell>They are organized properly in the screen area.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>Y1=load('geyser2.txt');</ItemCell>
+            <ItemCell>Y2=load('fishery.txt');</ItemCell>
+            <ItemCell>Y3=load('M5data.txt');</ItemCell>
+            <ItemCell>figure('Tag','pl_spm'); spmplot(Y1); hmain=gcf;</ItemCell>
+            <ItemCell>figure('Tag','pl_spm'); spmplot(Y2);</ItemCell>
+            <ItemCell>figure('Tag','pl_spm'); spmplot(Y3);</ItemCell>
+            <ItemCell>position(hmain);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>The three plots have now an unknown tag.</Title>
+         <Desc>
+            <ItemCell>In this case, we assume that the plots are not relevant and are therefore put in a non-interesting screen area (top-right).</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>figure('Tag','aaaaa'); spmplot(Y1); hmain=gcf;</ItemCell>
+            <ItemCell>figure('Tag','bbbbb'); spmplot(Y2);</ItemCell>
+            <ItemCell>figure('Tag',''); spmplot(Y3);</ItemCell>
+            <ItemCell>position(hmain);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->regressB</Title>
+   <Purpose><!--This is the second line of the .m file-->regressB computes Bayesian estimates of regression parameters
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>Response variable, specified as a vector of length n1, where n1 is the number of observations. Each entry in y is the response for the corresponding row of X.
+Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n1 x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations.
+Remark: note that here we use symbol n1 instead of traditional symbol n because we want to better separate sample information coming from n1 values to prior information coming from n0 previous experiments.
+PRIOR INFORMATION.
+$\beta$ is assumed to have a normal distribution with mean $\beta_0$ and (conditional on $\tau_0$) covariance $(1/\tau_0) (X_0'X_0)^{-1}$.
+$\beta \sim N( \beta_0, (1/\tau_0) (X_0'X_0)^{-1} )$</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>beta0</Name>
+         <ShortDesc>Prior mean of $\beta$.</ShortDesc>
+         <TypeInd>p-times-1 vector.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>R</Name>
+         <ShortDesc>Matrix associated with covariance matrix of $\beta$.</ShortDesc>
+         <TypeInd>p-times-p positive definite matrix.</TypeInd>
+         <LongDesc>It can be interpreted as X0'X0 where X0 is a n0 x p matrix coming from previous experiments (assuming that the intercept is included in the model) The prior distribution of $\tau_0$ is a gamma distribution with parameters $a_0$ and $b_0$, that is:
+\[ p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau) \qquad E(\tau_0)= a_0/b_0 \]</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>tau0</Name>
+         <ShortDesc>Prior estimate of tau.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Prior estimate of $\tau=1/ \sigma^2 =a_0/b_0$.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>n0</Name>
+         <ShortDesc>Number of previous experiments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Sometimes it helps to think of the prior information as coming from n0 previous experiments. Therefore we assume that matrix X0 (which defines R), was made up of n0 observations.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>units forming subset.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>m x 1 vector.
+The default value of bsb is 1:n1, that is all n1 units are used to compute beta1 REMARK: if bsb='' (empty value) just prior information is used</LongDesc>
+         <Example>'bsb',[3 5]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>it can be used to control the prior information about beta.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar between 0 (excluded) and 1 (included).
+The covariance matrix of the prior distribution of $\beta$ is
+\[
+(1/\tau_0)(c X_0'X_0)^{-1} = (1/\tau_0)(cR)^{-1}
+\]
+therefore multiplication of $R$ by $c$ (with $c&amp;lt;1$) increases the variance of $\beta$.
+The default value of $c$ is 1. Note also that if we adjust the information for $\beta$ multiplying its covariance matrix by $c$ we need to make a similar adjustment to the variance of $\tau$. Simple mathematical calculations show that the new variance of $\tau$ is equal to the old variance of $\tau$ divided by $c$. So, once again, given that $c &amp;lt; 1$, the new variance of $\tau$ increases.
+The value of $c$ will usually be the default, i,e., 1.
+It was included to clarify the difference from Zellner's procedure and has the effect of changing n0. For we can write n0' = cn0 and use n0' in the calculations. However, it may be useful in scaling X0 if the prior information is chosen according to a design that is not of the appropriate size to represent the amount of prior knowledge.</LongDesc>
+         <Example>'c',1.2</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>stats</Name>
+         <ShortDesc>additional statistics.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If stats =1 the following additional statistics are computed:
+1) Bayesian p-values.
+2) highest posterior density intervals (HPDI) for each value of input option conflev.
+3) posterior odds for $\beta_j=0$.
+4) posterior model probability of the model which excludes variable j</LongDesc>
+         <Example>'stats',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence levels to be used to compute HPDI.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>This input option is used just if input stats=1. The default value of conflev is [0.95 0.99] that is 95 per cent and 99 per cent HPDI confidence intervals are computed</LongDesc>
+         <Example>'conflev',[0.99 0.999]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additional column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>out</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>beta1</Value>
+               <Description>p x 1 vector containing posterior mean (conditional on $\tau_0$) of $\beta$ (regression coefficents) $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>a1</Value>
+               <Description>shape parameter of the posterior gamma distribution of $\tau$ ($\sigma^2$). Scalar.
+$a1 = 0.5 (c*n_0 + n_1)$ The posterior distribution of $\tau$ is a gamma distribution with parameters $a_1$ and $b_1$.
+The posterior distribution of $\sigma^2$ is an inverse-gamma distribution with parameters $a_1$ and $b_1$.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>b1</Value>
+               <Description>scale parameter of the posterior gamma distribution of $\tau$ ($\sigma^2$). Scalar.
+\[
+b1 = 0.5 * ( n_0 / \tau_0 + (y-X*\beta_1)'y +(\beta_0-\beta_1)'*c*R*\beta_0 )
+\]
+The posterior distribution of $\tau$ is a gamma distribution with parameters $a_1$ and $b_1$.
+The posterior distribution of $\sigma^2$ is an inverse-gamma distribution with parameters $a_1$ and $b_1$.
+Remark: note that if bsb is supplied X'X and X'y and n1 are transformed respectively into Xm'Xm and Xm'ym and m where Xm=X(bsb,:), ym=y(bsb) and m=length(bsb), therefore all the previous quantities are estimated just using the units forming subset</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>tau1</Value>
+               <Description>posterior estimate of $\tau$. Scalar.
+$\tau_1$ is obtained as $a_1/b_1$</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>covbeta1</Value>
+               <Description>p x p matrix containing covariance matrix (conditional on $\tau_1$) of $\beta_1$ $covbeta1 = cov(\beta_1)= (1/\tau_1) * (c*R + X'X)^{-1}$ where $\tau_1$ is obtained as $a_1/b_1$ (that is through the gamma parameters of the posterior distribution of $\tau$)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma21</Value>
+               <Description>posterior estimate of $\sigma^2$. Scalar. $\sigma^2_1$ is obtained as $b_1/(a_1-1)$ (that is through the inverse gamma parameters of the posterior distribution of $\sigma^2$).
+Remember that if $X\sim IG(a,b)$, then $E(X)=b/(a-1)$.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>res</Value>
+               <Description>n1-times-2 matrix.
+1st column = raw residuals res(i,1) is computed as y(i) - X(i,:)*beta1 where beta1 is computed using the units forming subset.
+In the Bayesian approach they are the posterior means of the $\epsilon_i$ and can be interpreted as point estimates of the $\epsilon_i$.
+2nd col = deletion residuals (just computed for the units which do not form the subset).
+res(i,2) with i \not \in subset is computed as (y(i)-X(i,:)*beta1) * sqrt ((a1/b1)/(1+hii)) where hii = X(i,:)* (c*R + Xm'*Xm)^{-1} * X(i,:)'.
+The additional output which follows is produced just if input scalar stats is equal 1</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>beta1HPD</Value>
+               <Description>p-by-2*length(conflev) matrix HPDI of \hat \beta.
+(HPDI stands for Highest Posterior Density Interval) 1st column =lower bound of HPDI associated with conflev(1).
+2st column =upper bound of HPDI associated with conflev(1).
+...
+2*length(conflev)-1 column = lower bound of HPDI associated with conflev(end).
+2*length(conflev) column (last column) = upper bound of HPDI associated with conflev(end).</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>tau1HPD</Value>
+               <Description>1-by-2*length(conflev) matrix HPDI of $\hat \tau_1$.
+1st element =lower bound of HPDI associated with conflev(1).
+2st element =upper bound of HPDI associated with conflev(1).
+...
+2*length(conflev)-1 element = lower bound of HPDI associated with conflev(end).
+2*length(conflev) element (last element) = upper bound of HPDI associated with conflev(end).
+Remark: confidence levels are based on the Gamma distribution</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>sigma21HPD</Value>
+               <Description>1-by-2*length(conflev) matrix HPDI of $\hat \sigma^2_1$.
+1st element =lower bound of HPDI associated with conflev(1).
+2st element =upper bound of HPDI associated with conflev(1).
+...
+2*length(conflev)-1 element = lower bound of HPDI associated with conflev(end).
+2*length(conflev) element (last element) = upper bound of HPDI associated with conflev(end).
+Remark: confidence levels are based on the inverse-gamma distribution</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>Bpval</Value>
+               <Description>p-by-1 vector containing Bayesian p-values.
+p-value = P(|t| &amp;gt; | \hat \beta /se(\hat beta) |) = prob. of beta different from 0</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>postodds</Value>
+               <Description>p-by-1 vector which contains posterior odds for betaj=0.
+For example the posterior odd of betaj=0 is p(y| model which contains all expl variables except the one associated with betaj) divided by p(y| model which contains all expl variables).
+Warning: postodds can be computed just if n1&amp;gt;=p</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>modelprob</Value>
+               <Description>p-by-1 vector which contains posterior model probability of the model which excludes variable j.
+For example if modelprob(j)= 0.28, that is if the probability of the model which does not contain variable j is equal to 0.28, it means that there is a 28 per cent chance that $\beta_j=0$ and a 72 per cent chance that it is not.
+Warning: modelprob can be computed just if n1&amp;gt;=p</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->The density of the gamma distribution (which we denote with $G(a,b)$) with parameters $a$ and $b$ is
+\[
+f_G(x,a,b)= \frac{b^a}{\Gamma(a)} x^{a-1} \exp(-b x)
+\]
+With this parametrization $G(a,b)$ has mean $a/b$ and variance $a/b^2$.
+The density of the inverse gamma distribution defined over the support $x&amp;gt;0$ with shape parameter $a$ and scale parameter $b$, which we denote with $IG(a, b)$ is
+\[
+f_{IG}(x, a, b) = \frac{b^a}{\Gamma(a)} (1/x)^{a +1} \exp (-b/x)
+\]
+The mean (for $a&amp;gt;1$) is $b/(a-1)$ and the variance (for $a&amp;gt;2$) is $\frac{b^2}{(a-1)^2(a-2)}$.
+With the above parameterizations if $X\sim G(a,b)$, then $Y=1/X$ has an $IG(a, b)$.
+The posterior distribution of $\beta$ conditional on $\tau$ is $N(\hat \beta_1, (1/\tau) (R+ X^TX)^{-1})$ where \begin{eqnarray*} \hat \beta_1 &amp;=&amp; (R+ X^TX)^{-1} (R \beta_0+X^T y) \\
+&amp;=&amp; (R+ X^TX)^{-1} (R \beta_0 + X^TX \hat \beta) \\
+&amp;=&amp; (I-A) \beta_0 + A \hat \beta, \end{eqnarray*} with $A= (R+ X^TX)^{-1} X^TX$. This last expression shows that the posterior estimate $\hat \beta_1$ is a matrix weighted average of the prior mean $\beta_0$ and the classical OLS estimate $\hat \beta$, with weights $I-A$ and $A$. If prior information is strong elements of $R$ will be large, and $A$ will be small, so that the posterior mean gives most weight to the prior mean. In the classical approach these weights are fixed, while with the forward search technique as the subset size grows, the weight assigned to A becomes stronger and stronger, so we can dynamically see how the estimate changes as the effect of the prior becomes less important.
+The posterior distribution of $\tau$ is $G(a_1, b_1)$ where \begin{equation}\label{a1} a_1=a+\frac{n}{2}= \frac{1}{2} (n_0 + n -p) \end{equation} and \begin{equation}\label{b1} b_1 = 0.5 \left( \frac{n_0-p}{\tau_0} + (y-X \beta_1)'y +(\beta_0-\beta_1)'R\beta_0 \right) \end{equation} and, analogously, the posterior distribution of $\sigma^2$ is $IG(a_1, b_1)$.
+The posterior estimates of $\tau$ and $\sigma^2$ are respectively:
+\[
+\hat \tau_1 = a_1/b_1, \qquad \hat \sigma^2_1 = b_1 /(a_1-1)
+\]
+The posterior marginal distribution of $\beta$ is multivariate $T$ with parameters
+\[
+\hat \beta_1, (1/\tau_1) \{R + X^T X \}^{-1}, n_0 +n - p
+\]
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Chaloner K. and Brant R. (1988). A Bayesian Approach to Outlier Detection and Residual Analysis, Biometrika, Vol 75 pp. 651-659.</Item>
+      <Item>Koop G., Bayesian Econometrics (2003) Chapt. 3, WIley, NJ</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>regress</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>regressB with all default options.</Title>
+         <Desc>
+            <ItemCell>Common part to all examples: definition of the prior information.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(100) % set seed for replicability</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>n0=30;</ItemCell>
+            <ItemCell>X0=[ones(n0,1) randn(n0,p-1)];</ItemCell>
+            <ItemCell>R=X0'*X0;</ItemCell>
+            <ItemCell>beta0=zeros(p,1);</ItemCell>
+            <ItemCell>tau0=1;</ItemCell>
+            <ItemCell>% SAMPLE INFORMATION</ItemCell>
+            <ItemCell>n1=100;</ItemCell>
+            <ItemCell>X=randn(n1,p-1);</ItemCell>
+            <ItemCell>y=randn(n1,1);</ItemCell>
+            <ItemCell>% Run regressB using all n1 data and use the default value of c=1</ItemCell>
+            <ItemCell>out=regressB(y, X, beta0, R, tau0, n0);</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>regressB with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Run regressB and compute new estimate of beta using just the first 20 observations and use a value of c equal to 1.2.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(100) % set seed for replicability</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>n0=30;</ItemCell>
+            <ItemCell>X0=[ones(n0,1) randn(n0,p-1)];</ItemCell>
+            <ItemCell>R=X0'*X0;</ItemCell>
+            <ItemCell>beta0=zeros(p,1);</ItemCell>
+            <ItemCell>tau0=1;</ItemCell>
+            <ItemCell>% SAMPLE INFORMATION</ItemCell>
+            <ItemCell>n1=100;</ItemCell>
+            <ItemCell>X=randn(n1,p-1);</ItemCell>
+            <ItemCell>y=randn(n1,1);</ItemCell>
+            <ItemCell>bsb=1:20;</ItemCell>
+            <ItemCell>c=1.2;</ItemCell>
+            <ItemCell>out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'c',c);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example of the use of input option stats.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>rng('default')</ItemCell>
+            <ItemCell>rng(100) % set seed for replicability</ItemCell>
+            <ItemCell>p=3;</ItemCell>
+            <ItemCell>n0=30;</ItemCell>
+            <ItemCell>X0=[ones(n0,1) randn(n0,p-1)];</ItemCell>
+            <ItemCell>R=X0'*X0;</ItemCell>
+            <ItemCell>beta0=zeros(p,1);</ItemCell>
+            <ItemCell>tau0=1;</ItemCell>
+            <ItemCell>% SAMPLE INFORMATION</ItemCell>
+            <ItemCell>n1=100;</ItemCell>
+            <ItemCell>X=randn(n1,p-1);</ItemCell>
+            <ItemCell>y=randn(n1,1);</ItemCell>
+            <ItemCell>bsb=1:20;</ItemCell>
+            <ItemCell>stats=true;</ItemCell>
+            <ItemCell>out=regressB(y, X, beta0, R, tau0, n0,'bsb',bsb,'stats',stats);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Example of Houses Price.</Title>
+         <Desc>
+            <ItemCell>Compare the output with Table 3.3 of Koop (2004) p. 52.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load hprice.txt;</ItemCell>
+            <ItemCell/>
+            <ItemCell>% setup parameters</ItemCell>
+            <ItemCell>n=size(hprice,1);</ItemCell>
+            <ItemCell>y=hprice(:,1);</ItemCell>
+            <ItemCell>X=hprice(:,2:5);</ItemCell>
+            <ItemCell>n0=5;</ItemCell>
+            <ItemCell>% set \beta components</ItemCell>
+            <ItemCell>beta0=0*ones(5,1);</ItemCell>
+            <ItemCell>beta0(2,1)=10;</ItemCell>
+            <ItemCell>beta0(3,1)=5000;</ItemCell>
+            <ItemCell>beta0(4,1)=10000;</ItemCell>
+            <ItemCell>beta0(5,1)=10000;</ItemCell>
+            <ItemCell>% \tau</ItemCell>
+            <ItemCell>s02=1/4.0e-8;</ItemCell>
+            <ItemCell>tau0=1/s02;</ItemCell>
+            <ItemCell>% R prior settings</ItemCell>
+            <ItemCell>R=2.4*eye(5);</ItemCell>
+            <ItemCell>R(2,2)=6e-7;</ItemCell>
+            <ItemCell>R(3,3)=.15;</ItemCell>
+            <ItemCell>R(4,4)=.6;</ItemCell>
+            <ItemCell>R(5,5)=.6;</ItemCell>
+            <ItemCell>R=inv(R);</ItemCell>
+            <ItemCell>out=regressB(y, X, beta0, R, tau0, n0,'stats',1);</ItemCell>
+            <ItemCell>disp(out)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

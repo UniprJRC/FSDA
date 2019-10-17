@@ -1,0 +1,50 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ctsub</title> <meta content="refpage" name="chunktype"><meta content="function:ctsub " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ctsub Computes numerical integration from x(1) to z(i) of y=f(x)" itemprop="description" name="description" /><h1 itemprop="title">ctsub</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/ctsub.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ctsub.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ctsub.html">http://rosa.unipr.it/FSDA/ctsub.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ctsub</em></p><h1 itemprop="title">ctsub</h1><P>Computes numerical integration from x(1) to z(i) of y=f(x)</P><h2>Description</h2><P>For a function defined $y=f(x)$ with $n$ pairs $(x_1,y_1)$ $\ldots$
+ $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$ this routine
+ computes the (approximate) integral using the trapezoidal rule
+ \[
+ a_i = \int_{x_1}^{z_i} f(x) dx
+ \]   
+ For further details see "more about".</P><h2>More About</h2><P>
+ This function estimates the integral of Y via the trapezoidal method.
+ For a function defined $y=f(x)$ with $n$ pairs  $(x_1,y_1)$ $\ldots$
+ $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$,
+ if $x_i&lt;z_i \leq x_{i+1}$, $i=1, \ldots, n-1$, this routine computes the
+ (approximate) integral  using the trapezoidal rule:
+ \[
+ a_i =
+ \int_{x_1}^{z_i} f(x) dx
+ \]
+ More precisely
+ \begin{equation}\label{ai}
+ a_i= \sum_{j=2}^{i} 0.5 (x_j-x_{j-1})(y_j+y_{j-1})
+ +0.5 (z_i-x_i) \left\{ 2y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} \right\}
+  \end{equation}
+ The last term of the equation is the area of the trapezoid with
+ coordinates $(x_i, y_i)$,$(z_i, f(z_i))$  and 
+ \[
+ f(z_i)=y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} 
+ \]
+ is found by linear interpolation.
+ 
+ If $z_i&gt;x_n$ the function for $x &gt; x_n$ is assumed constant and equal to
+ $y_n$ therefore to the expression of $a_i$ computed as described above we
+ must add $(z_i-x_n) y_n$.
+ On the other hand, if $z_i&lt;x_1$ the function for $x&lt;x_1$ is assumed
+ constant and equal to $y_1$ therefore $a_i$ is computed as:
+ \[
+ a_i = -(x_1-z_i) y_1
+ \]
+ Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
+
+ This routine in called in every step of the outer loop by function avas.m
+ in order to compute a new set of transformed values for the response
+ which have approximately constant variance.
+ Inside avas, the $x$ coordinates are the fitted values ordered, the $y$
+ coordinates are the reciprocal of the smoothed absolute values of
+ residuals sorted using the ordering of fitted values, while the upper
+ values of the range of integration are given by the elements of vector
+ $ty$ sorted using the ordering of fitted values. The output is the new
+ vector $ty$ with the elements ordered using $ordyhat$. 
+
+</P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression,
+ "Journal of the American Statistical Association", Vol. 83, 394-405.</P></html>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->FSRbsb</Title>
+   <Purpose><!--This is the second line of the .m file-->FSRbsb returns the units belonging to the subset in each step of the forward search
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>Response variable.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>A vector with n elements that contains the response variable. y can be either a row or a column vector.</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>X</Name>
+         <ShortDesc>Predictor variables.</ShortDesc>
+         <TypeInd>Matrix.</TypeInd>
+         <LongDesc>Matrix of explanatory variables (also called 'regressors') of dimension n x (p-1) where p denotes the number of explanatory variables including the intercept.
+Rows of X represent observations, and columns represent variables. By default, there is a constant term in the model, unless you explicitly remove it using input option intercept, so do not include a column of 1s in X. Missing values (NaN's) and infinite values (Inf's) are allowed, since observations (rows) with missing or infinite values will automatically be excluded from the computations..</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsb</Name>
+         <ShortDesc>list of units forming the initial subset.</ShortDesc>
+         <TypeInd>Vector | 0.</TypeInd>
+         <LongDesc>If bsb=0 then the procedure starts with p units randomly chosen else if bsb is not 0 the search will start with m0=length(bsb)</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>init</Name>
+         <ShortDesc>Search initialization.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>It specifies the initial subset size to start monitoring units forming subset</LongDesc>
+         <Example>'init',100 starts the search from step m=100</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>intercept</Name>
+         <ShortDesc>Indicator for constant term.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If 1, a model with constant term will be fitted (default), else no constant term will be included.</LongDesc>
+         <Example>'intercept',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>nocheck</Name>
+         <ShortDesc>Check input arguments.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If nocheck is equal to 1 no check is performed on matrix y and matrix X. Notice that y and X are left unchanged. In other words the additioanl column of ones for the intercept is not added. As default nocheck=0.</LongDesc>
+         <Example>'nocheck',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>bsbsteps</Name>
+         <ShortDesc>Save the units forming subsets in selected steps.</ShortDesc>
+         <TypeInd>Vector.</TypeInd>
+         <LongDesc>It specifies for which steps of the fwd search it is necessary to save the units forming subset. If bsbsteps is 0 we store the units forming subset in all steps. The default is store the units forming subset in all steps if n&amp;lt;=5000, else to store the units forming subset at steps init and steps which are multiple of 100. For example, as default, if n=7530 and init=6, units forming subset are stored for m=init, 100, 200, ..., 7500.</LongDesc>
+         <Example>'bsbsteps',[100 200] stores the unis forming subset in steps 100 and 200.</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plot on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots=1 the monitoring units plot is displayed on the screen. The default value of plots is 0 (that is no plot is produced on the screen).</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Un</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units included in each step.</TypeInd>
+         <LongDesc>(n-init) x 11 Matrix which contains the unit(s) included in the subset at each step of the search.
+REMARK: in every step the new subset is compared with the old subset. Un contains the unit(s) present in the new subset but not in the old one.
+Un(1,2) for example contains the unit included in step init+1.
+Un(end,2) contains the units included in the final step of the search.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>BB</Name>
+         <ShortDesc>Matrix</ShortDesc>
+         <TypeInd>Units belonging to subset in each step or selected steps.</TypeInd>
+         <LongDesc>n-by-(n-init+1) or n-by-length(bsbsteps) matrix which contains the units belonging to the subset at each step (or in selected steps as specified by optional vector bsbsteps) of the forward search.
+More precisely:
+BB(:,1) contains the units forming subset in step bsbsteps(1);
+....;
+BB(:,end) contains the units forming subset in step bsbsteps(end);
+Row 1 of matrix BB is referred to unit 1;
+......;
+Row n of matrix BB is referred to unit n;
+Units not belonging to subset are denoted with NaN.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Atkinson and Riani (2000), Robust Diagnostic Regression Analysis, Springer Verlag, New York.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>FSRBbsb</Item>
+      <Item>FSRHbsb</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>FSRbsb with all default options.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('fishery');</ItemCell>
+            <ItemCell>y=fishery.data(:,1);</ItemCell>
+            <ItemCell>X=fishery.data(:,2);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>Un = FSRbsb(y,X,out.bs);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSRbsb with optional arguments.</Title>
+         <Desc>
+            <ItemCell>Monitoring units plot for fishery dataset</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>load('fishery');</ItemCell>
+            <ItemCell>y=fishery.data(:,1);</ItemCell>
+            <ItemCell>X=fishery.data(:,2);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>Un = FSRbsb(y,X,out.bs,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Monitoring the units belonging to subset.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>state=1000;</ItemCell>
+            <ItemCell>randn('state', state);</ItemCell>
+            <ItemCell>n=100;</ItemCell>
+            <ItemCell>X=randn(n,3);</ItemCell>
+            <ItemCell>bet=[3;4;5];</ItemCell>
+            <ItemCell>y=3*randn(n,1)+X*bet;</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+15;</ItemCell>
+            <ItemCell>[outLMS]=LXS(y,X);</ItemCell>
+            <ItemCell>bsb=outLMS.bs;</ItemCell>
+            <ItemCell>% Store in matrix BB the units belonging to subset in each step of the forward search</ItemCell>
+            <ItemCell>[Un,BB] = FSRbsb(y,X,bsb);</ItemCell>
+            <ItemCell>% Create the 'monitoring units plot'</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>seqr=[Un(1,1)-1; Un(:,1)];</ItemCell>
+            <ItemCell>plot(seqr,BB','bx');</ItemCell>
+            <ItemCell>xlabel('Subset size m');</ItemCell>
+            <ItemCell>ylabel('Monitoring units plot');</ItemCell>
+            <ItemCell>% The plot, which monitors the units belonging to subset in each step of</ItemCell>
+            <ItemCell>% the forward search shows that apart from unit 11 which enters the</ItemCell>
+            <ItemCell>% search in step m=78 all the other contaminated units enter the search</ItemCell>
+            <ItemCell>% in the last 19 steps.</ItemCell>
+            <ItemCell>% if we consider the seed state=500, we obtain a plot showing that the</ItemCell>
+            <ItemCell>% 20 contaminated units enter the search in the final 20 steps.</ItemCell>
+            <ItemCell>state=500;</ItemCell>
+            <ItemCell>randn('state', state);</ItemCell>
+            <ItemCell>X=randn(n,3);</ItemCell>
+            <ItemCell>y=3*randn(n,1)+X*bet;</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+15;</ItemCell>
+            <ItemCell>[outLMS]=LXS(y,X);</ItemCell>
+            <ItemCell>bsb=outLMS.bs;</ItemCell>
+            <ItemCell>% Store in matrix BB the units belonging to subset in each step of the forward search</ItemCell>
+            <ItemCell>[Un,BB] = FSRbsb(y,X,bsb);</ItemCell>
+            <ItemCell>% Create the 'monitoring units plot'</ItemCell>
+            <ItemCell>figure;</ItemCell>
+            <ItemCell>seqr=[Un(1,1)-1; Un(:,1)];</ItemCell>
+            <ItemCell>plot(seqr,BB','bx');</ItemCell>
+            <ItemCell>xlabel('Subset size m');</ItemCell>
+            <ItemCell>ylabel('Monitoring units plot');</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Example with monitoring from step 60.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('fishery');</ItemCell>
+            <ItemCell>y=fishery.data(:,1);</ItemCell>
+            <ItemCell>X=fishery.data(:,2);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>Un = FSRbsb(y,X,out.bs,'init',60);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSR using a regression model without intercept.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('fishery');</ItemCell>
+            <ItemCell>y=fishery.data(:,1);</ItemCell>
+            <ItemCell>X=fishery.data(:,2);</ItemCell>
+            <ItemCell>[out]=LXS(y,X);</ItemCell>
+            <ItemCell>bsb=out.bs;</ItemCell>
+            <ItemCell>[Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>FSR applied without doing any checks on y and X variables.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>load('fishery');</ItemCell>
+            <ItemCell>y=fishery.data(:,1);</ItemCell>
+            <ItemCell>X=fishery.data(:,2);</ItemCell>
+            <ItemCell>[out]=LXS(y,X,'nsamp',10000);</ItemCell>
+            <ItemCell>[Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->randsampleFS</Title>
+   <Purpose><!--This is the second line of the .m file-->randsampleFS generates a random sample of k elements from the integers 1 to n (k&amp;lt;=n)
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>n</Name>
+         <ShortDesc>A vector of numbers will be selected from the integers 1 to n.</ShortDesc>
+         <TypeInd>Scalar, a positive integer.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>The number of elements to be selected.</ShortDesc>
+         <TypeInd>Non negative integer.</TypeInd>
+         <LongDesc> </LongDesc>
+         <Example> </Example>
+         <DataType>single|double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>method</Name>
+         <ShortDesc>Sampling methods.</ShortDesc>
+         <TypeInd>Scalar or vector.</TypeInd>
+         <LongDesc>Methods used to extract the subsets. See more about for details.
+Default is method = 0.
+- Scalar from 0 to 3 determining the method used to extract (without replacement) the random sample.
+- Vector of weights: in such a case, a weighted sampling without replacement algorithm is applied using that vector of weights.</LongDesc>
+         <Example>&lt;code&gt;randsampleFS(100,10,2)&#xD;
+&lt;/code&gt;</Example>
+         <DataType>single|double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>after2011b</Name>
+         <ShortDesc>MATLAB version flag.</ShortDesc>
+         <TypeInd>Logical.</TypeInd>
+         <LongDesc>Indicates if the MATLAB version in use is later than R2012a (7.14). Used to speed up computations in function subsets and, more in general, in simulation experiments which use randsampleFS intensively.</LongDesc>
+         <Example>&lt;code&gt;randsampleFS(100,10,2,true) or&#xD;
+&lt;/code&gt;            randsampleFS(100,10,2,~verLessThan('MATLAB','7.14'))</Example>
+         <DataType>logical</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>y</Name>
+         <ShortDesc>For methods 0, 1, 2 and weighted sampling the elements extracted are unique; For method 3 (included for historical reasons) there is no guarantee that the elements extracted are unique</ShortDesc>
+         <TypeInd>A column vector of k values sampled at random from the integers 1:n.</TypeInd>
+         <LongDesc>Data Types - single|double.</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->The method=0 uses MATLAB function randperm. In old MATLAB releases randperm was slower than FSDA function shuffling, which is used in method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least 50 slower).
+If method=1 the approach depends on the population and sample sizes:
+- if $n &amp;lt; 1000$ and $k &amp;lt; n/(10 + 0.007n)$, that is if the population is relatively small and the desired sample is small compared to the population, we repeatedly sample with replacement until there are k unique values;
+- otherwise, we do a random permutation of the population and return the first k elements.
+The threshold $k &amp;lt; n/(10 + 0.007n)$ has been determined by simulation under MATLAB R2016b. Before, the threshold was $n &amp;lt; 4*k$.
+If method=2 systematic sampling is used, where the starting point is random and the step is also random.
+If method=3 random sampling is based on the old but well known Linear Congruential Generator (LCG) method. In this case there is no guarantee to get unique numbers. The method is included for historical reasons.
+If method is a vector of n weights, then Weighted Sampling Without Replacement is applied. Our implementation follows Efraimidis and Spirakis (2006). MATLAB function datasample follows Wong and Easton (1980), which is also quite fast; note however that function datasample may be very slow if applied repetedly, for the large amount of time spent on options checking.
+Remark on computation performances. Method=2 (systematic sampling) is by far the fastest for any practical population size $n$. For example, for $n \approx 10^6$ method=2 is two orders of magniture faster than method=1. With recent MATLAB releases (after R2011b) method = 0 (which uses compiled MATLAB function randperm) has comparable performances, at least for reasonably small $k$. In releases before 2012a, randperm was considerably slow.
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>For Method 1. Fisher, R.A.; Yates, F. (1948) [1938]. Statistical tables for biological, agricultural and medical research (3rd ed.). London, Oliver &amp; Boyd, pp. 26-27.</Item>
+      <Item>For Method 2. Cochran, William G. (1977). Sampling techniques (Third ed.). Wiley.</Item>
+      <Item>For Method 3. D. E. Knuth. (1997). The Art of Computer Programming, Volume 2: Seminumerical Algorithms, Third Edition. Addison-Wesley, Section 3.2.1: The Linear Congruential Method, pp. 10-26.</Item>
+      <Item>For Weighted Sampling Without Replacement: Efraimidis, P.S. and Spirakis, P.G. (2006).
+Weighted random sampling with a reservoir.
+Information Processing Letters, 97, 181-185.</Item>
+      <Item>Wong, C. K. and M. C. Easton, (1980). An Efficient Method for Weighted Sampling Without Replacement.
+SIAM Journal of Computing 9(1), pp. 111-113.</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>randsample</Item>
+      <Item>datasample</Item>
+      <Item>shuffling</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>randsampleFS with default options.</Title>
+         <Desc>
+            <ItemCell>default method (1) is used.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>randsampleFS(1000,10)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>randsampleFS with optional argument set to method (2).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>method = 2;</ItemCell>
+            <ItemCell>randsampleFS(100,10,method)</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>randsampleFS with optional arguments set to method (3).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>method = 3;</ItemCell>
+            <ItemCell>% Here, being nsel so big wrt nsamp, it is likely to obtain repetitions.</ItemCell>
+            <ItemCell>randsampleFS(100,10,method)</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>randsampleFS Weighted Sampling Without Replacement.</Title>
+         <Desc>
+            <ItemCell>Extract k=10 number in [-1000 -900] with gamma distributed weights.</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell> population = -1000:1:-900;</ItemCell>
+            <ItemCell> n = numel(population);</ItemCell>
+            <ItemCell> wgts = sort(random('gamma',0.3,2,n,1),'descend');</ItemCell>
+            <ItemCell> k=10;</ItemCell>
+            <ItemCell> y = randsampleFS(n,k,wgts);</ItemCell>
+            <ItemCell> sample  = population(y);</ItemCell>
+            <ItemCell/>
+            <ItemCell> plot(wgts,'.r')</ItemCell>
+            <ItemCell> hold on;</ItemCell>
+            <ItemCell> text(y,wgts(y),'X');</ItemCell>
+            <ItemCell> title('Weight distribution with the extracted numbers superimposed')</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>

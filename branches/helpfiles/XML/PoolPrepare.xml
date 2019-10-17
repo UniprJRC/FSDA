@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->PoolPrepare</Title>
+   <Purpose><!--This is the second line of the .m file-->PoolPrepare prepares a pool of MATLAB instances for executing code in parallel
+</Purpose>
+   <Description><!--Description section-->PoolPrepare and PoolClose are used respectively to open and close a prespecified number of parallel MATLAB sessions, which need to be distributed over the physical cores where MATLAB is running.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>numpool</Name>
+         <ShortDesc>The number of parallel sessions to open.</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>If numpool is not defined, then it is set equal to the number of physical cores in the computer.</LongDesc>
+         <Example> </Example>
+         <DataType>scalar</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>pariter</Name>
+         <ShortDesc>Number of parfor loops that need to be monitored.</ShortDesc>
+         <TypeInd>Integer.</TypeInd>
+         <LongDesc>If pariter &amp;gt; 0, then the 'pariter' parallel instancies executed in a parfor statement will be monitored with a progress bar. If pariter is 0 or is not defined, then the progression of the parallel execution is not monitored.</LongDesc>
+         <Example> </Example>
+         <DataType>scalar</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>UserOptions</Name>
+         <ShortDesc>Structure containing the user options of the calling function.</ShortDesc>
+         <TypeInd>Cell array of strings.</TypeInd>
+         <LongDesc>It is used, for example, to check if the user has specified numpool or not, and proceed accordingly (i.e. use the number of workers set in the current MATLAB profile, rather then allocate the numpool MATLAB instances requested by the user).</LongDesc>
+         <Example> </Example>
+         <DataType>cell array of strings</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>numpool</Name>
+         <ShortDesc>Integer</ShortDesc>
+         <TypeInd>The number of parallel sessions actually opened.</TypeInd>
+         <LongDesc>They may differ from the request of the user, depending on the computer configuration.
+Data Types - double</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>tstart</Name>
+         <ShortDesc>Double</ShortDesc>
+         <TypeInd>Time stamp to be given as input to PoolClose.</TypeInd>
+         <LongDesc>Records the internal computer time at the end of the execution of the PoolPrepare function, so that to monitor the overall execution time of the statements embedded between PoolPrepare and PoolClose.
+Data Types - double</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>progbar</Name>
+         <ShortDesc>Structure or integer</ShortDesc>
+         <TypeInd>To be given as input to PoolClose.</TypeInd>
+         <LongDesc>Contains the status of the progress bar used to monitor the progression of the parallel execution.
+Data Types - struct | double Optional Output:</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>usePCT</Name>
+         <ShortDesc>Scalar {0,1}</ShortDesc>
+         <TypeInd>Boolean indicating if the parallel computing toolbox is installed.</TypeInd>
+         <LongDesc>Parpool checks for the existence of the parallel computing toolbox. 'usePCT' returns the result of the check to PoolClose, to avoid additional unnecessary checks.
+Data Types - integer | logical</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>usematlabpool</Name>
+         <ShortDesc>Scalar {0,1}</ShortDesc>
+         <TypeInd>Boolean indicating the use of 'usematlabpool' or 'parpool'.</TypeInd>
+         <LongDesc>Boolean indicating if the pool of MATLAB instances is created using 'matlabpool' or 'parpool', depending on the MATLAB version installed. From R2013b 'parpool' is used. Earlier releases use 'usematlabpool'.
+Data Types - integer | logical</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION--></References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>PoolClose</Item>
+      <Item>parfor</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Sequential vs parallel run.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Sequential vs parallel run (show tstart).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>disp(tstart)</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Sequential vs parallel run (show progbar).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>% show progrbar</ItemCell>
+            <ItemCell>disp(progbar)</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Sequential vs parallel run (show usePCT).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>disp(usePCT)</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title>Sequential vs parallel run (show usematlabpool).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>n = 50000;</ItemCell>
+            <ItemCell>x = randn(1,n) ;</ItemCell>
+            <ItemCell>y = zeros(1,n);</ItemCell>
+            <ItemCell>% sequential run</ItemCell>
+            <ItemCell>tic</ItemCell>
+            <ItemCell>for i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>fprintf('\n\n\n  Normal for: %f secs \n \n ',toc);</ItemCell>
+            <ItemCell>% parallel run</ItemCell>
+            <ItemCell>numpool = 4;</ItemCell>
+            <ItemCell>pariter = n;</ItemCell>
+            <ItemCell>UserOptions = {};</ItemCell>
+            <ItemCell>[numpool, tstart, progbar, usePCT, usematlabpool] = ...</ItemCell>
+            <ItemCell>        PoolPrepare(numpool,pariter,UserOptions);</ItemCell>
+            <ItemCell>disp(usematlabpool)</ItemCell>
+            <ItemCell>parfor i = 1 : n</ItemCell>
+            <ItemCell>    y(i) = std(x(1:i));</ItemCell>
+            <ItemCell>end</ItemCell>
+            <ItemCell>cleanpool = 1; % this closes the pool of MATLAB sessions</ItemCell>
+            <ItemCell>tend = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool);</ItemCell>
+            <ItemCell>fprintf('\n\n\n      parFor: %f secs\n\n',tend);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

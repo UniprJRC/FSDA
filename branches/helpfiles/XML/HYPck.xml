@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->HYPck</Title>
+   <Purpose><!--This is the second line of the .m file-->HYPck computes values of the scalars A, B, d for hyperbolic tangent estimator
+</Purpose>
+   <Description><!--Description section--></Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>c</Name>
+         <ShortDesc>tuning constant c.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Scalar greater than 0 which controls the robustness/efficiency of the estimator</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>k</Name>
+         <ShortDesc>sup of change of variance curve (CVC).</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>$k= supCVC(psi,x) x \in R$</LongDesc>
+         <Example> </Example>
+         <DataType>single| double</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>A</Name>
+         <ShortDesc>A parameter.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Starting value for parameter A</LongDesc>
+         <Example>&lt;code&gt;'A',0.85&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>B</Name>
+         <ShortDesc>B parameter.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Starting value for parameter B</LongDesc>
+         <Example>&lt;code&gt;'B',0.9&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>d</Name>
+         <ShortDesc>d parameter.</ShortDesc>
+         <TypeInd>scalar.</TypeInd>
+         <LongDesc>Starting value for parameter d</LongDesc>
+         <Example>&lt;code&gt;'d',1,5&#xD;
+&lt;/code&gt;</Example>
+         <DataType>double</DataType>
+         <ReqArg>0</ReqArg>
+         <Struct> </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION--></OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>Anew</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Value of parameter A.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>Bnew</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Value of parameter B.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+      <Item>
+         <Name>d</Name>
+         <ShortDesc>Scalar</ShortDesc>
+         <TypeInd>Value of parameter d.</TypeInd>
+         <LongDesc>For more details see the methodological details inside "More About" below</LongDesc>
+         <Structure> </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION-->\[
+HYPpsi(u) = \left\{ \begin{array}{cc} u &amp; |u| \leq d \\
+\sqrt{A (k - 1)} \tanh \left( \sqrt{(k - 1) B^2/A} (c -|u|)/2 \right) sign(u) &amp; d \leq |u| &amp;lt; c, \\
+0 &amp; |u| \geq c.
+\end{array} \right.
+\]
+It is necessary to have $0 &amp;lt; A &amp;lt; B &amp;lt; 2 normcdf(c)-1- 2 c \times normpdf(c) &amp;lt;1$
+</MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Hampel,F.R., Rousseeuw P.J. and Ronchetti E.(1981), The Change-of-Variance Curve and Optimal Redescending M-Estimators, Journal of the American Statistical Association , Vol. 76, No. 375, pp. 643-648. (HRR)</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>HYPc</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Reconstuct columns 3:6 of Table 2 of HRR.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>cc=3:6;</ItemCell>
+            <ItemCell>kk=4:0.5:5;</ItemCell>
+            <ItemCell>ABD=zeros(length(cc)*length(kk),4);</ItemCell>
+            <ItemCell>ij=1;</ItemCell>
+            <ItemCell>for c=cc</ItemCell>
+            <ItemCell>    for k=kk</ItemCell>
+            <ItemCell>        [A,B,d]=HYPck(c,k);</ItemCell>
+            <ItemCell>        eff=B^2/A;</ItemCell>
+            <ItemCell>        ABD(ij,:)=[A,B,d,eff];</ItemCell>
+            <ItemCell>        ij=ij+1;</ItemCell>
+            <ItemCell>    end</ItemCell>
+            <ItemCell>end</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+      <Item>
+         <Title> </Title>
+         <Desc> </Desc>
+         <MATLABcode> </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION--></ExtraEx>
+</HelpXML>

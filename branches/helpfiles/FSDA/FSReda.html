@@ -1,0 +1,312 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSReda</title><meta content="refpage" name="chunktype"><meta content="function:FSReda" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSReda enables to monitor several quantities in each step of the forward search." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSReda</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSReda with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSReda with optional argument.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Examples with real data: wool data.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example with artificial dataset.</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Monitoring of 95 per cent and 99 per cent confidence intervals of
+     beta and sigma2.</a></li><li><a class="intrnllnk" href="#ExtraExample_4"><i>Interactive example 1.</i>
+     Reveal masked outliers.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_bsb">bsb</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tstat">tstat</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSReda</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSReda enables to monitor several quantities in each step of the forward search</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSReda(y,X,bsb)</code><span class="syntax_example"><a class="intrnllnk" href="FSReda.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSReda(y,X,bsb,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSReda.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSReda.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSReda(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_bsb"><code>bsb</code></a>)</code></span>FSReda with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSReda.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSReda(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_bsb"><code>bsb</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSReda with optional argument.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSReda with all default options.</li></span></a></span></h3><div class="collapse"><p>
+     Example of use of FSReda based on a starting point coming
+     from LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+p=3;
+randn('state', 123456);
+X=randn(n,p);
+% Uncontaminated data
+y=randn(n,1);
+% Contaminated data
+ycont=y;
+ycont(1:5)=ycont(1:5)+6;
+[out]=LXS(y,X,'nsamp',1000);
+out=FSReda(y,X,out.bs);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSReda with optional argument.</li></span></a></span></h3><div class="collapse"><p>
+     Example of use of function FSReda using a random start and traditional
+     t-stat monitoring.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+p=3;
+randn('state', 123456);
+X=randn(n,p);
+% Uncontaminated data
+y=randn(n,1);
+% Contaminated data
+ycont=y;
+ycont(1:5)=ycont(1:5)+6;
+out=FSReda(y,X,0,'tstat','trad');</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Examples with real data: wool data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">xx=load('wool.txt');
+X=xx(:,1:3);
+y=log(xx(:,4));
+[out]=LXS(y,X,'nsamp',0);
+[out]=FSReda(y,X,out.bs,'tstat','scal');</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with artificial dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=8;
+state=1;
+randn('state', state);
+X=randn(n,p);
+y=randn(n,1);
+y(1:10)=y(1:10)+5;
+% Run the forward search with Exploratory Data Analysis purposes
+% LMS using 10000 subsamples
+[outLXS]=LXS(y,X,'nsamp',10000);
+% Forward Search
+[out]=FSReda(y,X,outLXS.bs);
+%The monitoring residuals plot shows a set of positive residuals which
+%starting from the central part of the search tend to have a residual much
+%larger than that of the other units.
+resfwdplot(out);
+%The minimum deletion residual from m=90 starts going above the 99% threshold.
+mdrplot(out);
+%The curve which monitors the normality test shows a sudden big increase with the outliers are included
+figure;
+lwdenv=2;
+xlimx=[10 100];
+subplot(2,2,1);
+plot(out.nor(:,1),out.nor(:,2));
+title('Asimmetry test');
+xlim(xlimx);
+quant=chi2inv(0.99,1);
+v=axis;
+line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
+subplot(2,2,2)
+plot(out.nor(:,1),out.nor(:,3))
+title('Kurtosis test');
+xlim(xlimx);
+v=axis;
+line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
+subplot(2,2,3:4)
+plot(out.nor(:,1),out.nor(:,4));
+xlim(xlimx);
+quant=chi2inv(0.99,2);
+v=axis;
+line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
+title('Normality test');
+xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.27 seconds 
+Total estimated time to complete LMS:  0.54 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 32.66%
+m=100
+m=200
+m=300
+m=400
+m=500
+The vertical lines are located in the step prior to the inclusion of the first outlier
+</pre><img vspace="5" hspace="5" src="images\FSReda_01.png" alt=""> </p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
+     beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data 
+load hprice.txt;
+n=size(hprice,1);
+y=hprice(:,1);
+X=hprice(:,2:5);
+outFSR=FSR(y,X,'plots',0,'msg',0);
+dout=n-length(outFSR.ListOut);
+% init = point to start monitoring diagnostics along the FS
+init=20;
+[outLXS]=LXS(y,X,'nsamp',10000);
+outEDA=FSReda(y,X,outLXS.bs,'conflev',[0.95 0.99],'init',init);
+p=size(X,2)+1;
+% Set font size, line width and line style
+figure;
+lwd=2.5;
+FontSize=14;
+linst={'-','--',':','-.','--',':'};
+nr=3;
+nc=2;
+xlimL=init; % lower value fo xlim
+xlimU=n+1;  % upper value of xlim
+close all
+for j=1:p
+subplot(nr,nc,j);
+hold('on')
+% plot 95% and 99% HPD  trajectories
+plot(outEDA.Bols(:,1),outEDA.betaINT(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+plot(outEDA.Bols(:,1),outEDA.betaINT(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+% plot estimate of beta1_j
+plot(outEDA.Bols(:,1),outEDA.Bols(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+% Set ylim
+ylimU=max(outEDA.betaINT(:,4,j));
+ylimL=min(outEDA.betaINT(:,3,j));
+ylim([ylimL ylimU])
+% Set xlim
+xlim([xlimL xlimU]);
+% Add vertical line in correspondence of the step prior to the
+% entry of the first outlier
+line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
+set(gca,'FontSize',FontSize);
+if j&gt;(nr-1)*nc
+xlabel('Subset size m','FontSize',FontSize);
+end
+end
+% Subplot associated with the monitoring of sigma^2
+subplot(nr,nc,6);
+hold('on')
+% 99%
+plot(outEDA.sigma2INT(:,1),outEDA.sigma2INT(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+% 95%
+plot(outEDA.sigma2INT(:,1),outEDA.sigma2INT(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+% Plot rescaled S2
+plot(outEDA.S2(:,1),outEDA.S2(:,4),'LineWidth',lwd,'Color','k')
+ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
+set(gca,'FontSize',FontSize);
+% Set ylim
+ylimU=max(outEDA.sigma2INT(:,5));
+ylimL=min(outEDA.sigma2INT(:,4));
+ylim([ylimL ylimU])
+% Set xlim
+xlim([xlimL xlimU]);
+% Add vertical line in correspondence of the step prior to the
+% entry of the first outlier
+line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
+xlabel('Subset size m','FontSize',FontSize);
+% Add multiple title
+suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
+num2str(xlimL) ',' num2str(xlimU) ...
+']'],'t');
+disp(['The vertical lines are located in the' ...
+' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.27 seconds 
+Total estimated time to complete LMS:  0.54 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 32.66%
+m=100
+m=200
+m=300
+m=400
+m=500
+The vertical lines are located in the step prior to the inclusion of the first outlier
+</pre><img vspace="5" hspace="5" src="images\FSReda_01.png" alt=""> </p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+     Reveal masked outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the data
+clearvars;close all;
+load('multiple_regression.txt');
+y=multiple_regression(:,4);
+X=multiple_regression(:,1:3);
+% yX plot
+yXplot(y,X)
+% Robust analysis
+% LMS using 1000 subsamples
+[out]=LXS(y,X,'nsamp',10000);
+% Forward Search
+[out]=FSReda(y,X,out.bs);
+out1=out;
+% Create scaled squared residuals
+out1.RES=out.RES.^2;
+resfwdplot(out1,'databrush',1);</pre></div></div></p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+               a vector of length n, where n is the number of
+               observations. Each entry in y is the response for the
+               corresponding row of X.</p> <p>
+               Missing values (NaN's) and infinite values (Inf's) are
+               allowed, since observations (rows) with missing or infinite
+               values will automatically be excluded from the
+               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
+               of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
+               columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and
+               infinite values (Inf's) are allowed, since observations
+               (rows) with missing or infinite values will automatically
+               be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_bsb" class="clearfix"> </div> <h3 id="input_argument_bsb" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>bsb</code> &#8212; list of units forming the initial
+               subset. </span>  </a><span class="example_desc">Vector or scalar.</span></span></h3> <div class="collapse"> <p>If bsb=0 (default) then the procedure starts with p
+               units randomly chosen else if bsb is not 0 the search will
+               start with m0=length(bsb).</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
+</code>,<code> 'init',100 starts monitoring from step m=100
+</code>,<code> 'nocheck',1
+</code>,<code> 'tstat','trad'
+</code>,<code> 'conflev',[0.90 0.93] 
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
+                     else no constant term will be included.</p> <p>
+                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the point where to initialize the search
+                       and start monitoring required diagnostics. if init is not
+                       specified it will be set equal to :</p> <p>
+                       p+1, if the sample size is smaller than 40;</p> <p>
+                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
+                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If nocheck is equal to 1 no check is performed on
+                       matrix y and matrix X. Notice that y and X are left
+                       unchanged. In other words the additional column of ones for
+                       the intercept is not added. As default nocheck=0. The
+                       controls on h, alpha and nsamp still remain
+                       </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_tstat" class="clearfix"></div><h3 id="input_argument_namevalue_tstat" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tstat</code> &#8212;the kind of t-statistics which have to be monitored.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>tstat = 'trad' implies  monitoring of traditional t
+               statistics (out.Tols). In this case the estimate of $\sigma^2$ at step m
+               is based on $s^2_m$ (notice that $s^2_m&lt;&lt;\sigma^2$ when m/n is
+               small) tstat = 'scal' (default) implies monitoring of
+               rescaled t statistics In this case the estimate of
+               $\sigma^2$ at step m is based on $s^2_m / var_{truncnorm(m/n)}$
+               where $var_{truncnorm(m/n)}$ is the variance of the truncated
+               normal distribution.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tstat','trad'
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence levels to be used to compute confidence interval
+               for the elements of $\beta$ and for $\sigma^2$.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>The default value of conflev is [0.95 0.99] that
+               is 95% and 99% confidence intervals are computed.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.90 0.93] 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>RES</code></td><td><p><p>n x (n-init+1) = matrix containing the monitoring of
+               scaled residuals:</p> <p> 
+               1st row = residual for first unit;</p> <p> 
+               ...;</p><p> 
+               nth row = residual for nth unit.</p></p></td></tr><tr valign="top"><td><code>LEV</code></td><td><p><p>(n+1) x (n-init+1) = matrix containing the monitoring of
+               leverage:</p> <p> 
+               1st row = leverage for first unit:</p> <p> 
+               ...;</p><p> 
+               nth row = leverage for nth unit.</p></p></td></tr><tr valign="top"><td><code>BB</code></td><td><p><p>n x (n-init+1) matrix containing the information about the units belonging
+               to the subset at each step of the forward search:</p> <p> 
+               1st col = indexes of the units forming subset in the
+               initial step;</p> <p> 
+               ...;</p><p> 
+               last column = units forming subset in the final step (all
+               units).</p></p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>n-init x 3 matrix which contains the monitoring of minimum
+               deletion residual or (m+1)ordered residual  at each step of
+               the forward search:</p> <p> 
+               1st col = fwd search index (from init to n-1);</p> <p> 
+               2nd col = minimum deletion residual;</p> <p> 
+               3rd col = (m+1)-ordered residual.</p><p> 
+               Remark: these quantities are stored with sign, that is the
+               min deletion residual is stored with negative sign if
+               it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msr</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
+               maximum studentized residual or m-th ordered residual:</p> <p> 
+               1st col = fwd search index (from init to n);</p> <p> 
+               2nd col = maximum studentized residual;</p><p> 
+               3rd col = (m)-ordered studentized residual.</p></p></td></tr><tr valign="top"><td><code>nor</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of
+               normality test in each step of the forward search:</p> <p> 
+               1st col = fwd search index (from init to n);</p> <p>
+               2nd col = Asymmetry test;</p> <p>
+               3rd col = Kurtosis test;</p><p>
+               4th col = Normality test.</p></p></td></tr><tr valign="top"><td><code>Bols</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of
+               estimated beta coefficients in each step of the forward
+               search.</p></td></tr><tr valign="top"><td><code>S2</code></td><td><p><p>(n-init+1) x 4 matrix containing the monitoring of S2 or R2
+               in each step of the forward search:</p> <p> 
+               1st col = fwd search index (from init to n);</p> <p> 
+               2nd col = monitoring of S2;</p> <p> 
+               3rd col = monitoring of R2;</p> <p> 
+               4th col = monitoring of rescaled S2.</p><p> 
+               In this case the
+               estimated of $\sigma^2$ at step m is divided by the
+               consistency factor (to make the estimate asymptotically
+               unbiased).</p></p></td></tr><tr valign="top"><td><code>coo</code></td><td><p><p>(n-init+1) x 3 matrix containing the monitoring of Cook or
+               modified Cook distance in each step of the forward search:</p> <p> 
+               1st col = fwd search index (from init to n);</p> <p> 
+               2nd col = monitoring of Cook distance;</p><p> 
+               3rd col = monitoring of modified Cook distance.</p></p></td></tr><tr valign="top"><td><code>Tols</code></td><td><p><p>(n-init+1) x (p+1) matrix containing the monitoring of
+               estimated t-statistics (as specified in option input
+               'tstat'.</p> <p>
+               in each step of the forward search</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s)
+               included in the subset at each step of the fwd search.</p> <p> 
+               REMARK: in every step the new subset is compared with the
+               old subset. Un contains the unit(s) present in the new
+               subset but not in the old one Un(1,2) for example contains
+               the unit included in step init+1 Un(end,2) contains the
+               units included in the final step of the search.</p></p></td></tr><tr valign="top"><td><code>betaINT</code></td><td><p><p>Confidence intervals for the elements of $\beta$.</p> <p>
+                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.</p> <p>
+                 Each third dimension refers to an element of beta:</p> <p> 
+                 betaINT(:,:,1) is associated with first element of beta;</p> <p> 
+                 ...;</p> <p> 
+                 betaINT(:,:,p) is associated with last element of beta.</p> <p> 
+                 The first two columns contain the lower
+                 and upper confidence limits associated with conflev(1).</p> <p>
+                 Columns three and four contain the lower
+                 and upper confidence limits associated with conflev(2);</p> <p> 
+                 ...;</p> <p> 
+                 The last two columns contain the lower
+                 and upper confidence limits associated with conflev(end).</p><p>
+                 
+                 For example betaint(:,3:4,5) contain the lower and upper
+                 confidence limits for the fifth element of beta using
+                 confidence level specified in the second element of input
+                 option conflev.</p></p></td></tr><tr valign="top"><td><code>sigma2INT</code></td><td><p><p>confidence interval for $\sigma^2$.</p> <p> 
+                1st col = fwd search index;</p> <p> 
+                2nd col = lower confidence limit based on conflev(1);</p> <p>
+                3rd col = upper confidence limit based on conflev(1);</p> <p>
+                4th col = lower confidence limit based on conflev(2);</p> <p>
+                5th col = upper confidence limit based on conflev(2);</p> <p>
+                ...</p> <p> 
+                penultimate col = lower confidence limit based on conflev(end);</p><p>
+                last col = upper confidence limit based on conflev(end);</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>A vector with n elements that contains the response
+               variable which has been used</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Data matrix of explanatory variables
+               which has been used (it also contains the column of ones if
+               input option intercept was missing or equal to 1)</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSReda'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+ Analysis", Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LXS.html" itemprop="url"><span itemprop="name"><code>LXS</code></span></a></span> | <span itemprop="seealso"><a href="FSRbsb.html" itemprop="url"><span itemprop="name"><code>FSRbsb</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

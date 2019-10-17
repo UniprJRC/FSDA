@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HelpXML>
+   <Title><!--This is simply the filename-->forecastTS</Title>
+   <Purpose><!--This is the second line of the .m file-->Forecast for a time series with trend, time varying seasonal, level shift and irregular component
+</Purpose>
+   <Description><!--Description section-->forecastTS produces forecasts with confidence bands for a time series with trend (up to third order), seasonality (constant or of varying amplitude) with a different number of harmonics, level shift and explanatory variables.
+</Description>
+   <InpArgs><!--REQUIRED INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>outEST</Name>
+         <ShortDesc>A structure containing the output of routine LTSts.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>Structure containing the following fields.
+outEST.B = Matrix containing estimated beta coefficients, (including the intercept when options.intercept=1) standard errors, t-stat and p-values The content of matrix B is as follows:
+1st col = beta coefficients The order of the beta coefficients is as follows:
+1) trend elements (if present). If the trend is of order two there are r+1 coefficients if the intercept is present otherwise there are just r components;
+2) linear part of seasonal component 2, 4, 6, ..., s-2, s-1 coefficients (if present);
+3) coefficients associated with the matrix of explanatory variables which have a potential effect on the time series under study (X);
+4) non linear part of seasonal component, that is varying amplitude. If varying amplitude is of order k there are k coefficients (if present);
+5) level shift component (if present). In this case there are two coefficients, the second (which is also the last element of vector beta) is an integer which specifies the time in which level shift takes place and the first (which is also the penultime element of vector beta) is a real number which identifies the magnitude of the upward (downward) level shift;
+2nd col = standard errors;
+3rd col = t-statistics;
+4th col = p values.
+outEST.posLS = scalar associated with best tentative level shift position. If this field does not exist, forecasts are done assuming no level shift.
+outEST.invXX = $cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.
+If the model is linear out.invXX is equal to $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$ where $A$ is the matrix of partial derivatives. More precisely:
+\[
+a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}
+\]
+where \begin{eqnarray} y_i &amp; = &amp; \eta(x_i,\beta)+ \epsilon_i \\
+&amp; = &amp; \eta_i +\epsilon_i \\
+&amp; = &amp; \eta(x_i,\hat \beta)+ e_i \\
+&amp; = &amp; \hat \eta_i + e_i \end{eqnarray} outEST.yhat = vector of fitted values after final (NLS=non linear least squares) step:
+$ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$ outEST.scale = Final scale estimate of the residuals
+\[
+\hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)
+\]
+where $S_m$ is a set of cardinality $m$ which contains the units not declared as outliers and $p$ is the total number of estimated parameters and cor is a correction factor to make the estimator consistent.
+REMARK: structure outEST can be conveniently created by function LTSts.</LongDesc>
+         <Example> </Example>
+         <DataType>struct</DataType>
+         <ReqArg>1</ReqArg>
+         <Struct>
+            <ItemCell>
+               <Value>B</Value>
+               <Description>Matrix containing estimated beta coefficients,&#xD;
+                       (including the intercept when options.intercept=1)&#xD;
+                       standard errors, t-stat and p-values&#xD;
+                       The content of matrix B is as follows:&#xD;
+                       1st col = beta coefficients&#xD;
+                        The order of the beta coefficients is as follows:&#xD;
+                        1) trend elements (if present). If the trend is&#xD;
+                        of order two there are r+1 coefficients if the&#xD;
+                        intercept is present otherwise there are just r&#xD;
+                        components;&#xD;
+                        2) linear part of seasonal component 2, 4, 6, ...,&#xD;
+                        s-2, s-1 coefficients (if present);&#xD;
+                        3) coefficients associated with the matrix of&#xD;
+                        explanatory variables which have a potential effect&#xD;
+                        on the time series under study (X);&#xD;
+                        4) non linear part of seasonal component, that is&#xD;
+                        varying amplitude. If varying amplitude is of order&#xD;
+                        k there are k coefficients (if present);&#xD;
+                        5) level shift component (if present). In this case&#xD;
+                        there are two coefficients, the second (which is&#xD;
+                        also the last element of vector beta) is an integer&#xD;
+                        which specifies the time in which level shift takes&#xD;
+                        place and the first (which is also the penultime&#xD;
+                        element of vector beta) is a real number which&#xD;
+                        identifies the magnitude of the upward (downward)&#xD;
+                        level shift;&#xD;
+                       2nd col = standard errors;&#xD;
+                       3rd col = t-statistics;&#xD;
+                       4th col = p values.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>posLS</Value>
+               <Description>scalar associated with best tentative level shift&#xD;
+                       position. If this field does not exist, forecasts&#xD;
+                       are done assuming no level shift.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>invXX</Value>
+               <Description>$cov(\beta)/\hat \sigma^2$. p-by-p, square matrix.&#xD;
+                       If the model is linear out.invXX  is equal to&#xD;
+                       $(X'X)^{-1}$, else out.invXX is equal to $(A'A)^{-1}$&#xD;
+                       where $A$ is the matrix of partial derivatives. More&#xD;
+                       precisely:&#xD;
+                       \[&#xD;
+                       a_{i,j}=\frac{\partial \eta_i(\hat \beta)}{\partial \hat \beta_j}&#xD;
+                       \]&#xD;
+                       where&#xD;
+                       \begin{eqnarray}&#xD;
+                       y_i &amp; = &amp; \eta(x_i,\beta)+ \epsilon_i  \\&#xD;
+                           &amp; = &amp; \eta_i +\epsilon_i \\&#xD;
+                           &amp; = &amp; \eta(x_i,\hat \beta)+ e_i  \\&#xD;
+                           &amp; = &amp; \hat \eta_i + e_i&#xD;
+                       \end{eqnarray}</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>yhat</Value>
+               <Description>vector of fitted values after final (NLS=non linear&#xD;
+                       least squares) step:&#xD;
+                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>scale</Value>
+               <Description>Final scale estimate of the residuals&#xD;
+                     \[&#xD;
+                     \hat \sigma = cor \times \sum_{i \in S_m} [y_i- \eta(x_i,\hat \beta)]^2/(m-p)&#xD;
+                     \]&#xD;
+                     where $S_m$ is a set of cardinality $m$ which&#xD;
+                     contains the units not declared as outliers and $p$&#xD;
+                     is the total number of estimated parameters and cor&#xD;
+                     is a correction factor to make the estimator&#xD;
+                     consistent.&#xD;
+                     REMARK: structure outEST can be conveniently created&#xD;
+                     by function LTSts.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+   </InpArgs>
+   <OptArgs><!--OPTIONAL (NAME/PAIRS) INPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>model</Name>
+         <ShortDesc>model type.</ShortDesc>
+         <TypeInd>Structure.</TypeInd>
+         <LongDesc>A structure which specifies the model used to simulate the time series. The structure contains the following fields:
+model.trend = scalar (order of the trend component).
+trend = 1 implies linear trend with intercept, trend = 2 implies quadratic trend, etc.
+If this field is empty the simulated time series will not contain a trend. The default value of model.trend is 1.
+model.s = scalar greater than zero which specifies the length of the seasonal period. For monthly data (default) s=12, for quartely data s=4, ...
+The default value of model.s is 12 (that is monthly data are assumed) model.seasonal = scalar (integer specifying number of frequencies, i.e. harmonics, in the seasonal component. Possible values for seasonal are $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+For example:
+if seasonal = 1 (default) we have:
+$\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
+if seasonal = 2 we have:
+$\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s) + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
+Note that when $s$ is even the sine term disappears for $j=s/2$ and so the maximum number of trigonometric parameters is $s-1$.
+If seasonal is a number greater than 100 then it is possible to specify how the seasonal component grows over time.
+For example, seasonal = 101 implies a seasonal component which just uses one frequency which grows linearly over time as follows:
+$(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+For example, seasonal = 201 implies a seasonal component which just uses one frequency which grows in a quadratic way over time as follows:
+$(1+\beta_3 t + \beta_4 t^2)\times( \beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.
+If this field is an empty double (default) the simulated time series will not contain a seasonal component.
+model.X = explanatory variabels. Matrix of size T-by-nexpl. If model.X is a matrix of size T-by-nexpl, it contains the values of nexpl extra covariates which affect y.
+If this field is an empty double (default) there is no effect of explanatory variables.</LongDesc>
+         <Example>'model', model</Example>
+         <DataType>struct</DataType>
+         <Struct>
+            <ItemCell>
+               <Value>trend</Value>
+               <Description>scalar (order of the trend component).&#xD;
+                       trend = 1 implies linear trend with intercept,&#xD;
+                       trend = 2 implies quadratic trend, etc.&#xD;
+                       If this field is empty the simulated time series&#xD;
+                       will not contain a trend. The default value&#xD;
+                       of model.trend is 1.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>s</Value>
+               <Description>scalar greater than zero which specifies the&#xD;
+                       length of the seasonal period. For monthly&#xD;
+                       data (default) s=12, for quartely data s=4, ...&#xD;
+                       The default value of model.s is 12 (that is monthly&#xD;
+                       data are assumed)</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>seasonal</Value>
+               <Description>scalar (integer specifying number of&#xD;
+                        frequencies, i.e. harmonics, in the seasonal&#xD;
+                        component. Possible values for seasonal are&#xD;
+                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.&#xD;
+                        For example:&#xD;
+                        if seasonal = 1 (default) we have:&#xD;
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;&#xD;
+                        if seasonal = 2 we have:&#xD;
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)&#xD;
+                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.&#xD;
+                        Note that when $s$ is even the sine term disappears&#xD;
+                        for $j=s/2$ and so the maximum number of&#xD;
+                        trigonometric parameters is $s-1$.&#xD;
+                        If seasonal is a number greater than 100 then it&#xD;
+                        is possible to specify how the seasonal component&#xD;
+                        grows over time.&#xD;
+                        For example, seasonal = 101 implies a seasonal&#xD;
+                        component which just uses one frequency&#xD;
+                        which grows linearly over time as follows:&#xD;
+                        $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +&#xD;
+                        \beta_2 \sin ( 2 \pi t/s))$.&#xD;
+                        For example, seasonal = 201 implies a seasonal&#xD;
+                        component which just uses one frequency&#xD;
+                        which grows in a quadratic way over time as&#xD;
+                        follows:&#xD;
+                        $(1+\beta_3 t + \beta_4  t^2)\times( \beta_1 \cos(&#xD;
+                        2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s))$.&#xD;
+                       If this field is an empty double (default) the&#xD;
+                       simulated time series will not contain a seasonal&#xD;
+                       component.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>explanatory variabels. Matrix of size T-by-nexpl. If model.X&#xD;
+                       is a matrix of size T-by-nexpl, it contains the&#xD;
+                       values of nexpl extra covariates which&#xD;
+                       affect y.&#xD;
+                       If this field is an empty double (default) there is&#xD;
+                       no effect of explanatory variables.</Description>
+            </ItemCell>
+         </Struct>
+      </Item>
+      <Item>
+         <Name>nfore</Name>
+         <ShortDesc>number of forecasts.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>Positive integer which defines the number of forecasts. The default value of nfore is 24.</LongDesc>
+         <Example>'nfore',12</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>conflev</Name>
+         <ShortDesc>confidence level for the confidence bands.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>A number between 0 and 1 which defines the confidence level which is used to produce the bands. The default value of conflev is 0.99.</LongDesc>
+         <Example>'conflev',0.999</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>plots</Name>
+         <ShortDesc>Plots on the screen.</ShortDesc>
+         <TypeInd>Scalar.</TypeInd>
+         <LongDesc>If plots == 1 a plot with the real time series with fitted values and forecasts (with confidence bands) will appear on the screen.
+The default value of plot is 0, that is no plot is shown on the screen.</LongDesc>
+         <Example>'plots',1</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>StartDate</Name>
+         <ShortDesc>The time of the first observation.</ShortDesc>
+         <TypeInd>Numeric vector of length 2.</TypeInd>
+         <LongDesc>Vector with two integers, which specify a natural time unit and a (1-based) number of samples into the time unit. For example, if model.s=12 (that is the data are monthly) and the first observation starts in March 2016, then StartDate=[2016,3]; Similarly, if models.s=4 (that is the data are quarterly) and the first observation starts in the second quarter or year 2014, then StartData=[2014,2]. The information in option StartDate will be used to create in the output the dates inside the time series object.</LongDesc>
+         <Example>'StartDate',[2016,3]</Example>
+         <DataType>double</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>FileNameOutput</Name>
+         <ShortDesc>save simulated time series to txt file.</ShortDesc>
+         <TypeInd>Character.</TypeInd>
+         <LongDesc>If FileNameOutput is empty (default) nothing is saved on the disk, else FileNameOutput will contain the path where to save the file on the disk.</LongDesc>
+         <Example>'FileNameOutput',['C:' filesep 'myoutput' fielsep 'savesimdata.txt']</Example>
+         <DataType>Character</DataType>
+         <Struct> </Struct>
+      </Item>
+      <Item>
+         <Name>dispresults</Name>
+         <ShortDesc>Display results of final fit.</ShortDesc>
+         <TypeInd>Boolean.</TypeInd>
+         <LongDesc>If dispresults is true, labels of coefficients, estimated coefficients, standard errors, tstat and p-values are shown on the screen in a fully formatted way. The default value of dispresults is false.</LongDesc>
+         <Example>'dispresults',true</Example>
+         <DataType>logical</DataType>
+         <Struct> </Struct>
+      </Item>
+   </OptArgs>
+   <OutArgs><!--OUTPUT ARGUMENT SECTION-->
+      <Item>
+         <Name>outFORE</Name>
+         <ShortDesc> </ShortDesc>
+         <TypeInd> </TypeInd>
+         <LongDesc> </LongDesc>
+         <Structure>
+            <ItemCell>
+               <Value>signal</Value>
+               <Description>vector of length (length(y)+nfore) containing predictive values in sample and out of sample.
+Predictive values = TR+SE+X+LS.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>trend</Value>
+               <Description>vector of length (length(y)+nfore) containing estimated trend (TR) in sample and out of sample.
+If this component is not present, it is equal to 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>seasonal</Value>
+               <Description>vector of length (length(y)+nfore) containing estimated seasonal component (SE) in sample and out of sample.
+If this component is not present, it is equal to 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>lshift</Value>
+               <Description>vector of length (length(y)+nfore) containing level shift (LS) in sample and out of sample.
+If this component is not present, it is equal to 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>X</Value>
+               <Description>vector of length (length(y)+nfore) containing the effecf of the explanatory variables.
+If this component is not present, it is equal to 0.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>confband</Value>
+               <Description>matrix of size (length(y)+nfore)-by-2 containing lower and upper confidence bands of the forecasts. The confidence level of the bands is splecified is input parameter conflev. Note that the first length(y) rows of this matrix are equal to NaN.</Description>
+            </ItemCell>
+            <ItemCell>
+               <Value>datesnumeric</Value>
+               <Description>vector of length (length(y)+nfore) containing the dates in numeric format.</Description>
+            </ItemCell>
+         </Structure>
+      </Item>
+   </OutArgs>
+   <MoreAbout><!--MORE ABOUT SECTION--></MoreAbout>
+   <Acknowledgements><!--ACKNOWLEDGEMENTS SECTION--></Acknowledgements>
+   <References><!--REFERENCES SECTION-->
+      <Item>Rousseeuw, P.J., Perrotta D., Riani M., Hubert M. (2017), Robust Monitoring of Many Time Series with Application to Fraud Detection, forthcoming in Econometris and Statistics. [Referred below as RPRH]</Item>
+   </References>
+   <SeeAlso><!--SEE ALSO SECTION-->
+      <Item>LTSts</Item>
+      <Item>wedgeplot</Item>
+      <Item>simulateTS</Item>
+   </SeeAlso>
+   <Ex><!--EXAMPLES SECTION-->
+      <Item>
+         <Title>Linear time varying seasonal component.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=1;</ItemCell>
+            <ItemCell>model.seasonal=103;</ItemCell>
+            <ItemCell>modelSIM=model;</ItemCell>
+            <ItemCell>modelSIM.trendb=[0 0];</ItemCell>
+            <ItemCell>modelSIM.seasonalb=40*[0.1 -0.5 0.2 -0.3 0.3 -0.1 0.222];</ItemCell>
+            <ItemCell>modelSIM.signal2noiseratio=20;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>% Simulate</ItemCell>
+            <ItemCell>outSIM=simulateTS(T,'model',modelSIM,'plots',1);</ItemCell>
+            <ItemCell>ySIM=outSIM.y;</ItemCell>
+            <ItemCell>% Estimate</ItemCell>
+            <ItemCell>outEST=LTSts(ySIM,'model',model,'plots',1);</ItemCell>
+            <ItemCell>% Forecast</ItemCell>
+            <ItemCell>outFORE=forecastTS(outEST,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Quadratic trend and constant seasonal.</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.seasonal=3;</ItemCell>
+            <ItemCell>modelSIM=model;</ItemCell>
+            <ItemCell>modelSIM.trendb=[100 10 -0.05];</ItemCell>
+            <ItemCell>modelSIM.seasonalb=400*[0.1 -0.5 0.2 -0.3 0.3 -0.1];</ItemCell>
+            <ItemCell>modelSIM.signal2noiseratio=1;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>% Simulate</ItemCell>
+            <ItemCell>outSIM=simulateTS(T,'model',modelSIM,'plots',1);</ItemCell>
+            <ItemCell>ySIM=outSIM.y;</ItemCell>
+            <ItemCell>% Estimate</ItemCell>
+            <ItemCell>outEST=LTSts(ySIM,'model',model,'plots',1);</ItemCell>
+            <ItemCell>% Forecast</ItemCell>
+            <ItemCell>outFORE=forecastTS(outEST,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+   </Ex>
+   <ExtraEx><!--EXTRA EXAMPLES SECTION-->
+      <Item>
+         <Title>Simulated time series with quadratic trend, fixed seasonal and level shift.</Title>
+         <Desc>
+            <ItemCell>A time series of 100 observations is simulated from a model which contains a quadratic trend, a seasonal component with two harmonics no explanatory variables and a level shift in position 30 with size 5000 and a signal to noise ratio egual to 20</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=2;</ItemCell>
+            <ItemCell>model.seasonal=2;</ItemCell>
+            <ItemCell>model.lshift=30;</ItemCell>
+            <ItemCell>modelSIM=model;</ItemCell>
+            <ItemCell>modelSIM.trendb=[5,10,-3];</ItemCell>
+            <ItemCell>modelSIM.seasonalb=100*[2 4 0.1 8];</ItemCell>
+            <ItemCell>modelSIM.signal2noiseratio=20;</ItemCell>
+            <ItemCell>modelSIM.lshiftb=10000;</ItemCell>
+            <ItemCell>T=100;</ItemCell>
+            <ItemCell>% Simulate</ItemCell>
+            <ItemCell>outSIM=simulateTS(T,'model',modelSIM,'plots',1);</ItemCell>
+            <ItemCell>ySIM=outSIM.y;</ItemCell>
+            <ItemCell>% Estimate</ItemCell>
+            <ItemCell>%  model.lshift=5 implies that LS is investigated from position 5</ItemCell>
+            <ItemCell>model.lshift=5;</ItemCell>
+            <ItemCell>outEST=LTSts(ySIM,'model',model,'plots',1,'msg',0);</ItemCell>
+            <ItemCell>% Forecast</ItemCell>
+            <ItemCell>outFORE=forecastTS(outEST,'model',model,'plots',1);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Contaminated airline data (1).</Title>
+         <Desc>
+            <ItemCell>1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan</ItemCell>
+            <ItemCell>    118  126  150  180  196  188  233  277  301  318  342  391    % Feb</ItemCell>
+            <ItemCell>    132  141  178  193  236  235  267  317  356  362  406  419    % Mar</ItemCell>
+            <ItemCell>    129  135  163  181  235  227  269  313  348  348  396  461    % Apr</ItemCell>
+            <ItemCell>    121  125  172  183  229  234  270  318  355  363  420  472    % May</ItemCell>
+            <ItemCell>    135  149  178  218  243  264  315  374  422  435  472  535    % Jun</ItemCell>
+            <ItemCell>    148  170  199  230  264  302  364  413  465  491  548  622    % Jul</ItemCell>
+            <ItemCell>    148  170  199  242  272  293  347  405  467  505  559  606    % Aug</ItemCell>
+            <ItemCell>    136  158  184  209  237  259  312  355  404  404  463  508    % Sep</ItemCell>
+            <ItemCell>    119  133  162  191  211  229  274  306  347  359  407  461    % Oct</ItemCell>
+            <ItemCell>    104  114  146  172  180  203  237  271  305  310  362  390    % Nov</ItemCell>
+            <ItemCell>    118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec</ItemCell>
+            <ItemCell>y=y(:);</ItemCell>
+            <ItemCell>% Contaminate the first 20 observations</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+200;</ItemCell>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>% Model with linear trend, three harmonics for seasonal component and</ItemCell>
+            <ItemCell>% varying amplitude using a linear trend. Search for a level shift</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=1;              % linear trend</ItemCell>
+            <ItemCell>model.s=12;                 % monthly time series</ItemCell>
+            <ItemCell>model.seasonal=103;         % three harmonics with linear time varying seasonality</ItemCell>
+            <ItemCell>model.lshift=10;            % search for level shift</ItemCell>
+            <ItemCell>out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);</ItemCell>
+            <ItemCell>% 3 years forecasts</ItemCell>
+            <ItemCell>nfore=36;</ItemCell>
+            <ItemCell>StartDate=[1949 1];</ItemCell>
+            <ItemCell>conflev=0.999; % Wide confidence level for the forecast</ItemCell>
+            <ItemCell>outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Contaminated airline data (2).</Title>
+         <Desc> </Desc>
+         <MATLABcode>
+            <ItemCell>close all</ItemCell>
+            <ItemCell>% In this example we estimate a model without the seasonal component</ItemCell>
+            <ItemCell>%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960</ItemCell>
+            <ItemCell>y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan</ItemCell>
+            <ItemCell>    118  126  150  180  196  188  233  277  301  318  342  391    % Feb</ItemCell>
+            <ItemCell>    132  141  178  193  236  235  267  317  356  362  406  419    % Mar</ItemCell>
+            <ItemCell>    129  135  163  181  235  227  269  313  348  348  396  461    % Apr</ItemCell>
+            <ItemCell>    121  125  172  183  229  234  270  318  355  363  420  472    % May</ItemCell>
+            <ItemCell>    135  149  178  218  243  264  315  374  422  435  472  535    % Jun</ItemCell>
+            <ItemCell>    148  170  199  230  264  302  364  413  465  491  548  622    % Jul</ItemCell>
+            <ItemCell>    148  170  199  242  272  293  347  405  467  505  559  606    % Aug</ItemCell>
+            <ItemCell>    136  158  184  209  237  259  312  355  404  404  463  508    % Sep</ItemCell>
+            <ItemCell>    119  133  162  191  211  229  274  306  347  359  407  461    % Oct</ItemCell>
+            <ItemCell>    104  114  146  172  180  203  237  271  305  310  362  390    % Nov</ItemCell>
+            <ItemCell>    118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec</ItemCell>
+            <ItemCell>y=y(:);</ItemCell>
+            <ItemCell>% Contaminate the first 20 observations</ItemCell>
+            <ItemCell>y(1:20)=y(1:20)+200;</ItemCell>
+            <ItemCell>% Model with linear trend and no seasonal component. Search for a level shift</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=1;              % linear trend</ItemCell>
+            <ItemCell>model.s=12;                 % monthly time series</ItemCell>
+            <ItemCell>model.seasonal=[];          % no seasonal component</ItemCell>
+            <ItemCell>model.lshift=10;            % search for level shift</ItemCell>
+            <ItemCell>out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);</ItemCell>
+            <ItemCell>% 3 years forecasts</ItemCell>
+            <ItemCell>nfore=36;</ItemCell>
+            <ItemCell>StartDate=[1949 1];</ItemCell>
+            <ItemCell>conflev=0.999; % Wide confidence level for the forecast</ItemCell>
+            <ItemCell>outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</ItemCell>
+         </MATLABcode>
+         <Exec>1</Exec>
+      </Item>
+      <Item>
+         <Title>Example with simulated data.</Title>
+         <Desc>
+            <ItemCell>Simulate data with linear trend, time varying seasonal component, and level shift</ItemCell>
+         </Desc>
+         <MATLABcode>
+            <ItemCell>rng(1)</ItemCell>
+            <ItemCell>model=struct;</ItemCell>
+            <ItemCell>model.trend=1;</ItemCell>
+            <ItemCell>model.trendb=[1 1];</ItemCell>
+            <ItemCell>model.seasonal=103;</ItemCell>
+            <ItemCell>model.seasonalb=40*[0.5 -0.5 0.3 -0.3 0.1 -0.1 0.222];</ItemCell>
+            <ItemCell>model.lshift=40;</ItemCell>
+            <ItemCell>model.lshiftb=13000;</ItemCell>
+            <ItemCell>model.signal2noiseratio=20;</ItemCell>
+            <ItemCell>T=150;</ItemCell>
+            <ItemCell>FileNameOutput=[pwd filesep 'ysimout.txt'];</ItemCell>
+            <ItemCell>outSIM=simulateTS(T,'model',model,'FileNameOutput',FileNameOutput,...</ItemCell>
+            <ItemCell>    'plots',true,'samescale',true);</ItemCell>
+            <ItemCell>y=outSIM.y;</ItemCell>
+            <ItemCell>% Data contamination</ItemCell>
+            <ItemCell>y(131:140)=y(131:140)-29000;</ItemCell>
+            <ItemCell>% Estimation</ItemCell>
+            <ItemCell>modelEST=struct;</ItemCell>
+            <ItemCell>modelEST.trend=1;</ItemCell>
+            <ItemCell>modelEST.seasonal=103;</ItemCell>
+            <ItemCell>modelEST.lshift=30;</ItemCell>
+            <ItemCell>outEST=LTSts(y,'model',modelEST,'dispresults',true,'plots',0);</ItemCell>
+            <ItemCell>% Forecasting</ItemCell>
+            <ItemCell>% nfore= number of forecasts;</ItemCell>
+            <ItemCell>nfore=36;</ItemCell>
+            <ItemCell>% Forecasts with a 99.9 per cent confidence level</ItemCell>
+            <ItemCell>OUTfore=forecastTS(outEST,'model',modelEST,'nfore',nfore,'conflev',0.999);</ItemCell>
+         </MATLABcode>
+         <Exec>0</Exec>
+      </Item>
+   </ExtraEx>
+</HelpXML>
