@@ -1,4 +1,4 @@
-BEGIN {
+BEGIN { 
     primo=0;
     FS="href=" ;
 }
