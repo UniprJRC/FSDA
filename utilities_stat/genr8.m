@@ -60,9 +60,10 @@ function [out]= genr8(n, distrib, s1, s2)
 % References:
 %
 % L'Ecuyer, P. (1988), Efficient and Portable Combined Random Number Generators,
-%    "Communications of the ACM", Vol. 31, pp. 742-751.
+%    "Communications of the ACM", Vol. 31, pp. 742--751.
+%
 % Wichmann, B. and Hill, D. (1982), An Efficient and Portable Pseudo-random
-%    Number Generator, "Applied Statistics", Vol. 31, pp. 188-190.
+%    Number Generator, "Applied Statistics", Vol. 31, pp. 188--190.
 %
 % Acknowledgements:
 %
