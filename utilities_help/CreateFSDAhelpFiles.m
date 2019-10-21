@@ -82,7 +82,7 @@ format short
 [FilesWithProblems,OUT,FilesIncluded]=publishFSallFiles(FilesIncluded);
 
 % If it is necessary to call publishFSallFiles without execution of the
-% examples
+% examples and without creating HTML files
 % [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
 
 if ~isempty(FilesWithProblems)
