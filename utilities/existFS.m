@@ -60,7 +60,8 @@ if nargin<1
     error('FSDA:existFS:MissingFile','FileName to test must be specified');
 end
 
-% We cache the MATLAB version number (double format) for better performance.
+% We cache the presence of the mex file for better performance. That is we
+% avoid calling function exist for each iteration
 persistent cachedexistFS;
 
 if ~isempty(cachedexistFS)
@@ -70,6 +71,9 @@ else
     if exFile==3 || exFile==2
         result =true;
         cachedexistFS = result;
+    else
+        result = false;
+        cachedexistFS = false;
     end
     
 end
