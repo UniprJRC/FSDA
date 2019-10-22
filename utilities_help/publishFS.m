@@ -1691,7 +1691,7 @@ for j=1:length(sintax)
         %  StringWithoutLTandGT=regexprep(StringWithoutLTandGT,'\r\n','\n');
         
         % Remove white spaces at the beginning of each line
-        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));        
+        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));
         listEx{j,3}=StringWithoutLTandGT;
         
     catch
@@ -1820,7 +1820,7 @@ if length(startIndexEx)>length(sintax)
             stri=regexprep(stri,'\n','\r');
             inicr=regexp(stri,'\r');
         end
-    
+        
         %         for jj=1:length(inicr)-1
         %             strtest=stri(inicr(jj):inicr(jj+1));
         %
@@ -1870,8 +1870,8 @@ if length(startIndexEx)>length(sintax)
         StringWithoutLTandGT=strrep(StringWithLTandGT,'<','&lt;');
         StringWithoutLTandGT=strrep(StringWithoutLTandGT,'>','&gt;');
         % Remove white spaces at the beginning of each line
-        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));        
-
+        StringWithoutLTandGT=strtrim(regexprep(StringWithoutLTandGT,'\x0A\s*','\x0A'));
+        
         % listExtraEx{j,3}=stri(findescriptionEx+1:end);
         listExtraEx{j,3}=StringWithoutLTandGT;
     end
@@ -1985,7 +1985,7 @@ for i=1:nTOTargin
     inipoint=regexp(fstringsel,['%\s*' listargins{i} '\s*:']);
     if isempty(inipoint)
         error('FSDA:missInpDescr',['No description has been found for compulsory input argument '  listargins{i} ])
-    
+        
     else
     end
     
@@ -2000,7 +2000,7 @@ for i=1:nTOTargin
             disp('Please check .m input file')
             disp('Probably the description of input arguments has been inverted')
             disp(['Stop when processing input arguments ' listargins{i} ' and ' listargins{i+1}])
-                        error('FSDA:wrongOrderDescr',['Wrong order description for' ...
+            error('FSDA:wrongOrderDescr',['Wrong order description for' ...
                 ' input argument '''  listargins{i} ''''])
         else
         end
@@ -3294,9 +3294,14 @@ if evalCode==true
     % ExToExec= string which contains the examples which must be executed
     ExToExec='';
     numexToExec=0;
+    ExToExecStr=cell(30,1);
+    ij=1;
     for i=1:size(listEx,1)
         if listEx{i,4}==1
+            ExToExecStr{ij}=['Example_' num2str(i)];
+            ij=ij+1;
             ExToExec=[[ExToExec char(13) '%% Ex' num2str(i)] char(13) listEx{i,3}];
+            
             % ExToExec=[ExToExec '%% Ex' num2str(i) listEx{i,3}];
             numexToExec=numexToExec+1;
         end
@@ -3306,6 +3311,8 @@ if evalCode==true
     if ~isempty(listExtraEx)
         for i=1:size(listExtraEx,1)
             if listExtraEx{i,4}==1
+                ExToExecStr{ij}=['ExtraExample_' num2str(i)];
+                ij=ij+1;
                 ExToExec=[[ExToExec char(13) '%% ExExtra' num2str(i)] char(13) listExtraEx{i,3}];
                 % ExToExec=[ExToExec '%% ExExtra' num2str(i) listExtraEx{i,3}];
                 numextraexToExec=numextraexToExec+1;
@@ -3314,6 +3321,8 @@ if evalCode==true
     end
     
     if numextraexToExec+numexToExec>0
+        ExToExecStr=ExToExecStr(1:numextraexToExec+numexToExec);
+        
         % tmp .file containing all the .m examples will be created. It will be
         % created in subfolder tmp of helpfiles and then automatically removed.
         % This subfolder will be added to put for this session
@@ -3398,9 +3407,9 @@ if evalCode==true
         for j=1:totex
             if j<totex && totex>1 && length(fHTML)>1
                 try
-                fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
+                    fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
                 catch
-                fcand=fstringHTML(fHTML(j):end);
+                    fcand=fstringHTML(fHTML(j):end);
                 end
             else
                 fendHTML=regexp(fstringHTML,'<p class="footer">','once');
@@ -3463,6 +3472,18 @@ if evalCode==true
             inclpoint=finout(1)+18;
             % incl= string which contains the output of the code
             incl=texttoadd{i};
+            PosStrBeforeFirstImage=regexp(incl,'<img');
+            if ~isempty(PosStrBeforeFirstImage)
+                PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
+                PosStrAfterFirstImage=regexp(incl,'alt="">');
+                PosStrAfterFirstImage=PosStrAfterFirstImage(1);
+                Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i} '''>'];
+                Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
+                incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                    incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+            else
+            end
+            % Add to string incl
             outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
         end
         
@@ -3507,6 +3528,19 @@ if evalCode==true
                 inclpoint=finout(1)+18;
                 % incl= string which contains the output of the code
                 incl=texttoadd{i+numexToExec};
+                
+                            PosStrBeforeFirstImage=regexp(incl,'<img');
+            if ~isempty(PosStrBeforeFirstImage)
+                PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
+                PosStrAfterFirstImage=regexp(incl,'alt="">');
+                PosStrAfterFirstImage=PosStrAfterFirstImage(1);
+                Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i+numexToExec} '''>'];
+                Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
+                incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                    incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+            else
+            end
+                
                 outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
             end
         end
@@ -3838,7 +3872,7 @@ if ~isempty(IniRefhttp)
         end
         
         % If namehttp ends with namehttp is . or , or / or ] or a combination of
-        % these characters remove them 
+        % these characters remove them
         extrasp=0;
         
         while strcmp(namehttp(end),'.') || strcmp(namehttp(end),',') || strcmp(namehttp(end),'/') || strcmp(namehttp(end),']')
