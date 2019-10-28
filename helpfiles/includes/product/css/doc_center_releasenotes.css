@@ -1,0 +1,102 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Additive CSS:.............Additive/override CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+*/
+
+
+
+/*-----------------------------------
+   Site Elements
+-------------------------------------*/
+
+/* ----  Expand / Collapse ---- */
+	
+	/* Expand / Collapse */
+	.expand { padding-left: 12px; background: transparent url(../images/nextgen/supporting/apps/doc_center/ico-collapsed.png) no-repeat 0 9px; cursor: pointer; }
+	.expand h2 { border-bottom: 0; }
+
+	.expand.expanded { padding-left: 12px; background: transparent url(../images/nextgen/supporting/apps/doc_center/ico-expanded.png) no-repeat 0 12px; }
+	.expander table.body { margin: 0 0 0 -4px; background: #fff; }
+
+	/* Category Page */
+
+		/* Expand */	
+		.starthere_container h2.expand { background-image: url(../images/nextgen/doc_center/bg_collapsed_nolink.gif); }
+		.starthere_container h2.expanded { background-image: url(../images/nextgen/doc_center/bg_expanded_nolink.gif); }
+
+		/* Collapse */		
+		.starthere_container .collapse { padding-left: 0 !important; border-top: 1px solid #D6D4D4; }
+
+	/* Function Reference Page */
+
+		/* Expand */
+		h3.expand { padding:5px 5px 5px 17px; margin-bottom: 2px; border: none; color: #005fce; background-color: #fafafa; background-position: 5px 10px; clear: both; font-size: 13px; font-weight: normal; line-height: 1.5; }
+		h3.expand span.example_title { width: 100%; display: block; font-weight: normal; }
+		h3.expand span.example_desc { width: 100%; color: #666; display: block; font-weight: normal; }
+
+		h3.expand,
+		h3.expand a,
+		h3.expand a:hover,
+		h3.expand a:visited,
+		h3.expand span.example_title { color:#3c3c3c; }
+
+		h3.expand.expanded { padding: 5px 5px 5px 17px; margin-bottom: 0; background-color: #fafafa; background-position: 5px 12px; }
+
+		.arguments h3.expand { float: none; }
+		.arguments h3.expand span.example_desc { float: none; }
+
+		.arguments .collapse { padding: 0 10px 10px; margin: 0 0 10px 0; float: none; } 
+		
+		.expand a:link,
+		.expand a:visited { text-decoration: none; }
+
+		.expandableContent a.external_link { padding-left: 10px; }
+
+		/* Collapse */
+		#doc_center_content .collapse { padding:10px !important; margin-top: 0; background: #fafafa; }
+		#doc_center_content .collapse *:last-child { margin-bottom: 0; }
+		#expandableExamples .collapse { padding: 0 10px 10px; margin: 0 0 10px 0; }
+
+	/* Release Notes */
+	#product_release_notes .expand { background-image: url(../images/nextgen/global/bg_collapsed_nolink.gif); background-position: 0 20px; overflow:hidden; }
+	#product_release_notes .expand h2 { margin-top: 10px; margin-bottom: 2px; line-height: 1; }
+	#product_release_notes .expand h4 { font-weight: normal; }
+	/*#product_release_notes .expand .doc_topic_desc { padding: 0; margin: 0; display: block; }*/
+	#product_release_notes .doc_topic_desc { margin: 0; padding-top:2px; border-top: 1px solid #ccc; display: block; }
+	#product_release_notes .expanded { background-image: url(../images/nextgen/global/bg_expanded_nolink.gif); }
+
+	#product_release_notes .expanded .doc_topic_desc { /*border-top: 1px solid #CBCBCB;*/ }
+	#product_release_notes .collapse { padding: 10px 0 0; margin: 0 0 0 10px; background: transparent !important; }
+	#product_release_notes .collapse .expand { background-position: 0 5px; }
+	#product_release_notes .collapse .collapse { padding: 5px 0 0; border: none; }
+	#product_release_notes .collapse h3 { margin: 0; padding: 10px 0 5px 0; }
+	#product_release_notes .collapse h4 { margin: 0; padding: 0 0 5px; }
+	#product_release_notes .collapse p,
+	#product_release_notes .collapse ul { margin: 0; padding: 0 0 10px; }
+
+	#product_release_notes .expand { margin-bottom: 0; }
+	#product_release_notes .expand .switch { margin-top: -14px; display: none; }
+	#product_release_notes .expanded .switch { display: block; }
+	#product_release_notes .expand .no_topic_desc + .switch { width: 100%; padding: 0; margin: 0 0 0 -10px; text-align: right; }
+
+	#product_release_notes .expand.no_content { background: none; cursor: default; }
+	#product_release_notes .expand.no_content h2 { margin-bottom: 8px; }
+	#product_release_notes .expand.no_content .doc_topic_desc { margin-top: -5px; }		

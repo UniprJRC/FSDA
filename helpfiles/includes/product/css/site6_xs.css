@@ -1,0 +1,479 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements   
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+$ Bootstrap Overrides
+------------------------------------ */
+/* Fix to stop iOS zooming of form elements */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	.form-control { font-size: 16px; }
+}
+
+
+/* ------------------------------------
+$ Page Globals
+------------------------------------ */
+/* ---- Hierarchy ---- */
+h1 { margin-bottom: 23px; font-size: 25px; }
+h2 { margin-bottom: 15px; font-size: 22px; }
+h3 { margin-bottom: 13px; font-size: 20px; }
+h4 { margin-bottom: 17px; font-size: 17px; }
+h5 { margin-bottom: 10px; font-size: 16px; }
+h6 { margin-bottom: 10px; font-size: 15px; }
+
+	/* Hierarchy: Classes -- [ Additional Styles: LG,MD,SM,XS ] */
+	.h1 { margin-bottom: 23px; font-size: 25px; }
+	.h2 { margin-bottom: 15px; font-size: 22px; }
+	.h3 { margin-bottom: 13px; font-size: 20px; }
+	.h4 { margin-bottom: 17px; font-size: 17px; }
+	.h5 { margin-bottom: 10px; font-size: 16px; }
+	.h6 { margin-bottom: 10px; font-size: 15px; }
+
+	/* Hierarchy: Conditional Spacing */
+	h1 + h2 { margin-top: -16px; margin-bottom: 23px; }
+
+  /* Hierarchy: Styles */
+  h2.tagline { font-size: 16px; }
+
+  h1.hierarchy_large,
+  .h1.hierarchy_large { font-size: 31px; }
+  
+  h2.hierarchy_large,
+  .h2.hierarchy_large { margin-bottom: 23px; font-size: 25px; } 
+
+
+/* ---- Bands ---- */
+.band { padding: 30px 0; }
+
+	/* Bands: Content Alignment */
+	.band.add_display_table { width: 100%; display: table; }
+	.band.add_display_table .add_display_table_cell { display: table-cell; vertical-align: middle; }
+
+	.band[class*="browser_height_match"]:not(.add_display_table) { height: auto !important; min-height: 0 !important; }
+
+
+/* ---- Carousel ---- */
+.carousel-inner > .item { min-height: 1px; padding: 0; }
+.carousel-inner > .item > img { width: 100%; height: auto; }
+
+	/* Carousel: Caption [ Additional Styles: Full Banner ] */
+	.carousel-inner > .item .carousel-caption { padding: 20px 15px 0; background: #2a3a45; bottom: 0; color: #333; left: 0; position: relative; right: 0; top: auto; }
+	.carousel-inner > .item .carousel-caption * { color: #fff !important; }
+
+	.carousel-inner > .item .dropdown *,
+	.carousel-inner > .item .form-control,
+	.carousel-inner > .item .carousel-caption select,
+	.carousel-inner > .item .carousel-caption select *,
+	.carousel-inner > .item .typeahead li:not(.active) * { color: #555 !important; }
+
+		/* Caption: Hierarchy */
+		.carousel-caption h1 { margin-bottom: 29px; font-size: 27px; }
+		.carousel-caption h2 { font-size:25px; }
+
+		.carousel-caption h1 + h2 { font-size: 20px; line-height: 1.15; }
+
+	/* Carousel: Control */
+	.carousel-control.left + .carousel-control.right + .carousel-inner > .item { padding: 0; }
+	.carousel-control.left + .carousel-control.right + .carousel-inner > .item .carousel-caption { left: 0; right: 0; }
+
+	.carousel-control.left,
+	.carousel-control.right { height: 50px; background: none; bottom: auto; filter: none; }
+
+
+/* ---- Carousel Fade ---- */
+
+	/* Carousel Fade: Caption */
+	.carousel_fade_caption { vertical-align: middle; }
+
+
+/* ---- Column Reorder ---- */
+.row.reorder_xs { direction: rtl; transform: rotate(180deg); }
+.row.reorder_xs > [class*="col-"] {  direction: ltr; transform: rotate(-180deg); }
+
+
+/* ---- Content Slider ---- */
+.content_slider .carousel_counter { top: auto; right: 0; bottom: 12px; left: 0; text-align: center; z-index: 9; }
+.content_slider .content_slider_image { width: 100%; }
+.content_slider .content_slider_caption { width: 100%; padding: 15px 15px 57px; }
+.content_slider .carousel-control { height: auto; background-color: rgba(0,0,0,0.20); }
+.content_slider .carousel-control.right { top: auto; bottom: 2px; }
+.content_slider .carousel-control.left { top: auto; right: auto; bottom: 2px; left: 2px; }
+.content_slider .carousel-control [class^="icon-"] { font-size: 40px !important; }
+
+
+/* ---- Go To Top ---- */
+#go-top { display: none !important; }
+
+
+/* ---- Opacity Containers [ Additional Styles: Full Banner ] ---- */ 
+.opacity_container_xs { padding: 10px 15px; margin-left: -20px; margin-right: -20px; background-color: rgba(228, 228, 228, 0.8); }
+.opacity_container_xs.opacity_light { background-color: rgba(255, 255, 255, 0.8); }
+.opacity_container_xs.opacity_dark { background-color: rgba(0, 0, 0, 0.8); }
+
+	/* From Carousel */ 
+	.opacity_container,
+	.opacity_container_xs { margin: 0; padding: 0; background: transparent !important; }	
+
+
+/* ---- Panels ---- */
+
+	/* Panel Types: Ad Image */ 
+	.panel.panel_image_right { background-image:none !important; }
+
+
+/* ---- Slider ---- */ 
+
+	/* Slider: Content */
+	.slider-inner [class*="col-"] { float: none; }
+
+	/* Slider: Controls */
+	.slider_container { margin-left: -15px; margin-right: -15px; }
+	.slider-control span { background-color: #0076a8; color: #fff; font-size: 24px; text-align: center; }	
+
+	.slider-control:hover [class*="icon-"],
+	.slider-control:focus [class*="icon-"] { color: #fff; }	
+
+	/* Slider: Control the Active Slide */
+	.slider-inner > .active.left { left: -100%; }
+	.slider-inner > .active.right { left: 100%; }
+
+	/* Slider: Control the Incoming Slide */
+	.slider-inner > .next { left:  100%; }
+	.slider-inner > .prev { left: -100%; }
+
+	/* Slider: Control Display of all Slides */
+	.slider-inner .item > div { display: none; }
+	.slider-inner .item > div:first-child { display: block; }
+
+
+/* ---- Tables ---- */
+
+	/* Tables: Collapsing Table */
+	.table_collapse tr { border-bottom: 2px solid #848484; }
+	.table_collapse th { left: -9999px; position: absolute; top: -9999px; }
+	.table_collapse td { min-height: 36px; padding-left: 50% !important; display: block; position: relative; text-align: left !important; }
+	.table_collapse td:first-child { padding-top: .5em; }
+	.table_collapse td:last-child { padding-bottom: .5em; }
+	.table_collapse td:before { width: 45%; padding-right: 10px; content: attr(data-label) " ";  display: inline-block; font-weight: bold; left: 7px; overflow: hidden; position: absolute; top: 8px; white-space: nowrap; }
+
+		/* Tables: Collapsing Table -- Agenda */
+		.table_collapse.agenda tr { border: none; border-bottom: 1px solid #ccc; }
+		.table_collapse.agenda thead tr { border: none; position: absolute; top: -9999px; left: -9999px; }
+		.table_collapse.agenda tbody tr { overflow: hidden; }
+		.table_collapse.agenda td { padding-left: 20% !important; border: none; white-space: normal; }
+		.table_collapse.agenda td:before { content: ""; display: none; }
+		.table_collapse.agenda tr:last-child { border-bottom: none; }      
+
+		.agenda .agenda_topic_headers { display: none !important; }
+
+		.agenda td.agenda_time { max-width: calc(20% - 20px); padding: 10px 0 10px 10px !important; float: left; }
+
+		.agenda .agenda_track_indicator { padding-left: 3em; }
+		.agenda .agenda_track_indicator:before { width: 2em; padding: 1px 0; margin: -.05em 0 0 -3em; border-radius: 10px; color: #fff; content: attr(data-number); display: block; float: left; font-size: 14px !important; line-height: 1.25; text-align: center; }
+
+		.agenda .agenda_track_2 .agenda_track_indicator:before { background:#cb6015; }
+		.agenda .agenda_track_3 .agenda_track_indicator:before { background:#004b87; }
+		.agenda .agenda_track_4 .agenda_track_indicator:before { background:#48a23f; }
+		.agenda .agenda_track_5 .agenda_track_indicator:before { background:#f2a900; }
+		.agenda .agenda_track_6 .agenda_track_indicator:before { background:#00a9e0; }
+		.agenda .agenda_track_7 .agenda_track_indicator:before { background:#b7312c; }
+		.agenda .agenda_track_8 .agenda_track_indicator:before { background:#521f77; }
+
+	/* Tables: Resonsive Table */ 	
+	.table-responsive { background-attachment: local, local, scroll, scroll; background-color: #fff; 
+		
+		/* For Testing
+			background-image:
+			linear-gradient(to right, red, red),
+			linear-gradient(to left, orange, orange),
+			linear-gradient(to right, blue, blue),
+			linear-gradient(to left, purple, purple);
+		*/
+			
+		background-image:
+		linear-gradient(to right, #ffffff, rgba(255, 255, 255, 0)),
+		linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0)),
+		linear-gradient(to right, #c3c3c5, rgba(195, 195, 197, 0)),
+		linear-gradient(to left, #c3c3c5, rgba(195, 195, 197, 0));
+
+		background-image:
+		-ms-linear-gradient(left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+		-ms-linear-gradient(right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)),
+		-ms-linear-gradient(right, rgba(195, 195, 197, 0), rgba(195, 195, 197, 1)),
+		-ms-linear-gradient(left, rgba(195, 195, 197, 0), rgba(195, 195, 197, 1));
+
+		background-position: 0 0, 100% 0, 0 0, 100% 0; background-repeat: no-repeat; background-size: 4em 100%, 4em 100%, 1em 100%, 1em 100%; -ms-overflow-style: scrollbar; }
+
+	.table-responsive .table-striped > tbody > tr:nth-of-type(odd) { background-color: rgba(0, 0, 0, .02); }
+
+	.table-responsive > .table > thead > tr > th,
+	.table-responsive > .table > tbody > tr > th,
+	.table-responsive > .table > tfoot > tr > th,
+	.table-responsive > .table > thead > tr > td,
+	.table-responsive > .table > tbody > tr > td,
+	.table-responsive > .table > tfoot > tr > td { white-space: normal; }
+
+
+/* ---- Tabs ---- */
+
+	/* Tab Controls */
+	.nav-tabs li { font-size:12px; line-height:1.00; }	
+	.nav > li > a { padding:10px 10px; }
+
+
+
+
+/* ------------------------------------
+Structure
+------------------------------------ */
+
+/* ---- Header ---- */
+/* [ Additional Styles: SM + XS ] */
+
+
+	/* Header: Mobile Subnav */
+	/* [ Additional Styles: SM + XS ] */
+
+
+/* ---- Section Header ---- */
+/* [ Additional Styles: SM + XS ] */
+.section_header_content .add_font_automate { font-size: 25px !important; }
+
+#section_header_title { width: calc(100% - 64px); float: left; }
+
+	/* Section Header: Mobile Subnav + Integrated Search */
+	#mobile_search_row { position: relative; }
+
+		/* Section Header: Search [ Additional Styles: SM + XS ] */
+
+			/* Search: Collapsed */
+			#search_actuator { float: right; }
+
+			.section_header .btn.icon-search:not(.btn_search_adjacent) { margin-top: 8px; margin-right: 15px; background: transparent; color: #fff; }
+			.section_header .btn.icon-search:not(.btn_search_adjacent):focus,
+			.section_header .btn.icon-search:not(.btn_search_adjacent):hover,
+			.section_header .btn.icon-search:not(.btn_search_adjacent):active { box-shadow: none; outline: none; }
+
+			/* Search: Expanded */ 
+			.section_header form { padding-top: 9px; }
+
+			#mobile_search { min-height: 52px; padding: 0 54px 0 15px; background: #0076a8; left:0; position: absolute; right: 0; top:-9999px; z-index: 15; }
+
+			#mobile_search.collapsing,
+			#mobile_search.collapse.in  { height: auto !important; bottom: 0; top: 0; position: absolute; display: block; overflow: visible; transition: none; -webkit-transition: none; }
+
+			#mobile_search .search_nested_content_container { width: 100%; float: left; }
+
+			#mobile_search .btn.btn_search_adjacent.dropdown-toggle { margin-right: 1px; border-radius: 0; }
+
+			#mobile_search .btn_search_adjacent.icon-search { padding-top: 8px; padding-bottom: 8px; }
+
+			#mobile_search .conjoined_search { height: 34px; padding: 8px 12px; }
+
+			#mobile_search .dropdown-toggle { height: 34px; }
+
+			#mobile_search .dropdown-toggle { padding: 4px 12px 10px; }
+			#mobile_search .dropdown-toggle .caret { margin-right: 0; float: none; }
+
+			#mobile_search .navbar-toggle { height: 34px; }
+
+			#mobile_search .search_scope_label { display: none; }      
+
+			#mobile_search .btn.icon-remove { width: 34px; height: 34px; padding: 0; margin-top: 8px; margin-right: -39px; background: transparent; color: #fff; font-size: 33px; }
+			#mobile_search .btn.icon-remove:focus,
+			#mobile_search .btn.icon-remove:hover,
+			#mobile_search .btn.icon-remove:active { box-shadow: none; outline: none; }
+
+
+		/* Section Header: Filtered Search */		
+		.section_header [class*="filter"] .input-group .form-control { height: 34px; vertical-align: top; }
+
+		.section_header [class*="filter"] .input-group .conjoined_search { height: 30px !important; padding: 3px 0 3px 12px !important; }
+
+		.section_header [class*="filter"] .dropdown-toggle { margin-top: -0.5px; }
+
+		/* Clear Filters Nugget */
+		.section_header .filtered .input-group .nugget { border: 1px solid #d6d4d4; border-radius: 5px; float: left; }
+		.section_header .filtered .input-group .nugget a { height: 28px; padding-top: 3px; padding-bottom: 2px; }
+	
+
+/* ---- Mobile Subnav ---- */
+/* [ Additional Styles: SM + XS ] */
+
+
+/* ---- Full Banner ---- */
+
+	/* Full Banner: Carousels */
+	.full_banner .carousel-inner > .item,
+	.full_banner.small .carousel-inner > .item { min-height: 1px; }
+
+	.full_banner .carousel-inner > .item .carousel-caption { padding-right: 0; padding-left: 0; }
+
+	/* Full Banner: Opactiy Container */
+	.full_banner .opacity_container { margin-left: 0; margin-right: 0; }  	
+
+ 
+/* ---- Footer ---- */
+.footer { padding-bottom: 0; }
+.footer p { margin-bottom: 30px; }
+
+	/* Footer Nav */
+	.countrynav { margin-bottom:0;  display: block; }
+	.countrynav li { display: block; float: left; }
+	.countrynav li.footernav_country { float: none; }
+	.countrynav li.lang_title { padding-left: 4px; }
+
+	.footernav { margin-bottom: 0; margin-left: 0; }
+	.footernav li { margin-bottom: 12px; float: none; }
+	.footernav li + li { border: none; }
+	.footernav a { padding: 0; display: inline-block; }
+
+	.kr_footernav { margin-bottom: 0; }
+	.kr_footernav li { padding: 0; margin-bottom: 5px; }
+
+	/* Social Media */
+	.footer .social_media { margin-bottom: 0; float: left; text-align: left; }
+	.footer .social_media_icons { margin-left: 0; }
+	.footer .social_media_icons li + li { margin-left: 16px; }
+	.footer .social_media_icons [class*="ico_"] { width: 32px; height: 32px; }
+	.footer .social_media_icons .ico_sm { width: 32px; height: 32px; }
+
+		/* Social Media: Icons */
+		.ico_sm.ico_google { background-position: -40px 0; }
+		.ico_sm.ico_facebook { background-position: -40px -32px; }
+		.ico_sm.ico_linkedin { background-position: -40px -64px; }	
+		.ico_sm.ico_rss { background-position: -40px -96px; }
+		.ico_sm.ico_twitter { background-position: -40px -128px; }
+		.ico_sm.ico_weibo { background-position: -40px -160px; }			
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Additive / Reductive CSS ---- */
+
+	/*  Add: Column Borders (Divider) */ 
+	.add_border_left:before,
+	.add_border_right:after { border: none; }
+
+		/* Column Borders (Divider) - XS Only */
+		.add_border_right_xs,
+		.add_border_left_xs { position: relative; }
+
+		.add_border_left_xs:before,
+		.add_border_right_xs:after { width: 0; height: auto; border-right: 1px solid #e6e6e6; bottom: 20px; content: ""; position: absolute; top: 0; }
+
+		.add_border_left_xs:before { left: 0; }
+		.add_border_right_xs:after { right: 0; }
+
+	/* Add: Display Property - XS Only */
+	.add_display_block_xs { display: block !important; }
+	.add_display_inline_xs { display: inline !important; }
+	.add_display_inlineblock_xs { display: inline-block !important; }     
+
+	/* Add: Margin-Bottom | Recalculate values for smaller screen-width */
+	.add_margin_25 { margin-bottom: 20px !important; }
+	.add_margin_30 { margin-bottom: 25px !important; }
+	.add_margin_35 { margin-bottom: 29px !important; }
+	.add_margin_40 { margin-bottom: 33px !important; }
+	.add_margin_45 { margin-bottom: 38px !important; }
+	.add_margin_50 { margin-bottom: 42px !important; }
+	.add_margin_60 { margin-bottom: 50px !important; }
+	.add_margin_70 { margin-bottom: 58px !important; }
+	.add_margin_80 { margin-bottom: 67px !important; }
+	.add_margin_90 { margin-bottom: 75px !important; }
+	.add_margin_100 { margin-bottom: 83px !important; }
+
+	/* Add: Margin-Bottom - XS only */
+	.add_margin_0_xs { margin-bottom: 0 !important; }
+	.add_margin_5_xs { margin-bottom: 5px !important; }
+	.add_margin_10_xs { margin-bottom: 10px !important; }
+	.add_margin_15_xs { margin-bottom: 15px !important; }
+	.add_margin_20_xs { margin-bottom: 20px !important; }
+	.add_margin_25_xs { margin-bottom: 25px !important; }
+	.add_margin_30_xs { margin-bottom: 30px !important; }
+	.add_margin_35_xs { margin-bottom: 35px !important; }
+	.add_margin_40_xs { margin-bottom: 40px !important; }
+	.add_margin_45_xs { margin-bottom: 45px !important; }
+	.add_margin_50_xs { margin-bottom: 50px !important; }
+	.add_margin_60_xs { margin-bottom: 60px !important; }
+	.add_margin_70_xs { margin-bottom: 70px !important; }
+	.add_margin_80_xs { margin-bottom: 80px !important; }
+	.add_margin_90_xs { margin-bottom: 90px !important; }
+	.add_margin_100_xs { margin-bottom: 100px !important; }
+
+
+	/* Remove */
+
+		/* Remove: Background - XS Only */
+		.remove_background_image_xs { background-image: none !important; }
+		.remove_background_image_xs:before { background: transparent !important; }
+
+
+
+/* ---- MathWorks Custom Bootstrap Classes ---- */
+
+	/* Custom Pull Classes */
+	.pull_left_xs { float: left !important; }
+	.pull_right_xs { float: right !important; }
+
+	/* Custom Text Alignment Classes */
+	.text_left_xs { text-align: left; }
+	.text_center_xs { text-align: center; }
+	.text_right_xs { text-align: right; }
+
+
+
+/* ------------------------------------
+$ Downsize
+------------------------------------ */
+.section_downsize h1,
+.section_downsize .h1 { font-size: 25px; }
+.section_downsize h2,
+.section_downsize .h2 { font-size: 22px; }
+
+.section_downsize h1 + h2 { font-size: 22px; }
+
+
+
+
+
+
+
+/* ------------------------------------
+$ To Be Code Reviewed
+------------------------------------ */
+/* 
+ All CSS changes/addtions/edits MUST be code reviewed before they can accepted as part of the site6 standards.
+
+ Please add any working code below, and be sure to add you initials in the comments for your section.
+
+ Once your work is complete, coordinate a code review with Ryan Johnson.  Code reviews should be scheduled before the end of Feature Freeze.
+*/
+
+/* AEM style for centering text (GQ) */
+span.text_center_xs { display: block; }

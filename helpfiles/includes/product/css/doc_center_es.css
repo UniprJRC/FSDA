@@ -1,0 +1,13 @@
+/* Overrides for Spanish Web Doc Center */
+
+/* Off-Canvas Actuator */
+.offcanvas_actuator .offcanvas_actuator_label:before { content: "CONTENTS"; }
+.offcanvas_actuator .offcanvas_actuator_close:before { content: "Close"; }
+
+/* Disambiguation List Overflow */
+.sidebar-offcanvas .nav_disambiguation_overflow_control:before { content:"more..."; }
+.sidebar-offcanvas .collapse.in + .nav_disambiguation_overflow_control:before { content:"less..."; }
+
+/* Expand - Collapse: Reveal */
+.reveal .more_results p:after { content: "more"; }
+.reveal .expanded .more_results p:after { content: "less"; }

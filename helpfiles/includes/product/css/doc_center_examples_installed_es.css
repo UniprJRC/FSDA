@@ -1,0 +1,9 @@
+.icon-addons:after { content: 'Explore Add-Ons'; }
+.icon-documentation:after { content: 'Explore Documentation'; }
+
+.footernav_help a:before { content: 'Terms of Use'; }
+.footernav_patents a:before { content: 'Patents'; }
+.footernav_trademarks a:before { content: 'Trademarks'; }
+.footernav_piracy a:before { content: 'Acknowledgments'; }
+
+.nav_examples__categories #all_products h3:before { content: 'My Products'; }

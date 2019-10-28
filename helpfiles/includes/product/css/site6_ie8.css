@@ -1,0 +1,80 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Fonts:....................Available font-family declarations
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/* ------------------------------------
+$ Bootstrap Overrides
+------------------------------------ */
+
+
+
+/* ------------------------------------
+$ Page Globals
+------------------------------------ */
+
+/* ---- Pictograms ---- */
+
+  /* Pictograms: Sizes */
+  .pictogram_56 { width: 56px !important; height: auto !important;}
+  .pictogram_64 { width: 64px !important; height: auto !important;}
+  .pictogram_72 { width: 72px !important; height: auto !important;}
+  .pictogram_100 { width: 100px !important; height: auto !important;}
+
+
+
+/*-----------------------------------
+   Site Elements
+-----------------------------------*/
+/* ---- Progress Bar ---- */
+.progress.progress-striped .progress-bar { background:transparent url(/images/responsive/global/ie/ani-progress-bar.gif) repeat-x 0px 0px !important; }
+
+
+
+
+/* ------------------------------------
+$ Structure
+------------------------------------ */
+
+/* ---- Section Header ---- */
+
+    /* Affix: Level 3 */
+    #responsive_offcanvas .sticky_header_container.affix { border-bottom: 1px solid #e6e6e6; }
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Icon Font ---- */
+
+	/* Icon Font: In-Line */
+	span[class*="icon-"],
+	button[class*="icon-"] { border: 1px transparent solid; display: inline-block; font-family: 'mathworks'; line-height: 106.5%; font-style: normal; font-variant: normal; font-weight: normal; text-transform: none; speak: none; }
+
+		/* In-Line: Reset for Glyphicons */
+		*.glyphicon:before { margin-left: 0 !important; font-family: inherit !important; font-size: inherit !important; opacity: 1 !important; position: relative !important; }
+		*.glyphicon { padding-left: 0 !important; border: none; display: inline-block !important; font-family: 'Glyphicons Halflings' !important; font-weight: 400; position: relative; top: 1px; }
