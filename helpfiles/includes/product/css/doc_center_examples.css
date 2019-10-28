@@ -1,0 +1,3 @@
+.section_header_content a:before { content: 'Examples'; }
+
+.nav_examples__categories #related_resources h3:before { content: 'Related Resources'; }

@@ -1,0 +1,39 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Windows Phone 8 Fix:......CSS to fix rendering in WP8
+
+Fonts:....................Available font-family declarations
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Template Globals:.........Styles for specific responsive templates
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+Lightbox..................3rd Party Lightbox CSS
+
+Downsize..................Reduce font size for sections
+*/
+
+
+
+/*-----------------------------------
+   Site Elements
+-----------------------------------*/
+/* ---- Progress Bar ---- */
+.progress.progress-striped .progress-bar { background:transparent url(/images/responsive/global/ie/ani-progress-bar.gif) repeat-x 0px 0px !important; }

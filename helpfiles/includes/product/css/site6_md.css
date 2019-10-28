@@ -1,0 +1,218 @@
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Template Globals:.........Styles for specific responsive templates
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+Lightbox..................3rd Party Lightbox CSS
+
+Downsize..................Reduce font size for sections
+
+*/
+
+
+
+/* ------------------------------------
+$ Page Globals
+------------------------------------ */
+/* ---- Hierarchy ---- */
+h1 { margin-bottom: 29px; font-size: 28px; }
+h2 { margin-bottom: 15px; font-size: 25px; }
+h3 { margin-bottom: 13px; font-size: 20px; }
+h4 { margin-bottom: 17px; font-size: 17px; }
+h5 { margin-bottom: 10px; font-size: 16px; }
+h6 { margin-bottom: 10px; font-size: 15px; }
+
+	/* Hierarchy: Classes -- [ Additional Styles: LG,MD,SM,XS ] */
+	.h1 { margin-bottom: 29px; font-size: 28px; }
+	.h2 { margin-bottom: 15px; font-size: 25px; }
+	.h3 { margin-bottom: 13px; font-size: 20px; }
+	.h4 { margin-bottom: 17px; font-size: 17px; }
+	.h5 { margin-bottom: 10px; font-size: 16px; }
+	.h6 { margin-bottom: 10px; font-size: 15px; }
+
+	/* Hierarchy: Conditional Spacing */
+	h1 + h2 { margin-top: -21px; margin-bottom: 28px; }
+
+	/* Hierarchy: Styles */
+	h2.tagline { font-size: 17px; }
+
+  h1.hierarchy_large,
+  .h1.hierarchy_large { font-size: 36px; }
+  
+  h2.hierarchy_large,
+  .h2.hierarchy_large { margin-bottom: 29px; font-size: 28px; }  	
+
+
+/* ---- Slider ---- */
+
+	/* Slider: Control the Active Slide */
+	.slider-inner > .active.left  { left: -50%; }
+	.slider-inner > .active.right { left: 50%; }
+
+	/* Slider: Control the Incoming Slide */
+	.slider-inner > .next { left:  50%; }
+	.slider-inner > .prev { left: -50%; }
+
+	/* Slider: Control Display of all Slides */
+	.slider-inner .item > div { display: none; }
+	.slider-inner .item > div:first-child { display: block; }
+	.slider-inner .item > div:first-child + div { display: block; }
+
+
+/* ---- Tabs ---- */
+
+	/* Tab Controls */
+	.nav-tabs li { font-size: 16px; line-height: 1.00; }
+
+
+
+/* ------------------------------------
+$ Structure
+------------------------------------ */
+
+/* ---- Full Banner ---- */
+
+	/* Full Banner: Carousels */
+	.full_banner .carousel-inner > .item { min-height: 350px; }
+
+
+/* ---- Footer ---- */
+
+	/* Footer: Standard */
+
+		/* Footer Nav  -- [ Additional Styles: XS ] */
+		.kr_footernav { margin-bottom: 0; }
+		.kr_footernav li { padding: 0; margin-bottom: 5px; float: none; }
+		.kr_footernav li + li  { border: none; }
+
+
+
+/* ------------------------------------
+$ Override CSS
+------------------------------------ */
+
+/* ---- Additive / Reductive CSS ---- */
+
+	/*  Add: Column Borders (Divider) - MD Only */ 
+	.add_border_right_md,
+	.add_border_left_md { position: relative; }
+
+	.add_border_left_md:before,
+	.add_border_right_md:after { width: 0; height: auto; border-right: 1px solid #e6e6e6; bottom: 20px; content: ""; position: absolute; top: 0; }
+
+	.add_border_left_md:before { left: 0; }
+	.add_border_right_md:after { right: 0; }
+
+	/* Add: Display Property - MD Only */
+	.add_display_block_md { display: block !important; }
+	.add_display_inline_md { display: inline !important; }
+	.add_display_inlineblock_md { display: inline-block !important; }		
+
+	/* Add: Margin-Bottom - MD only */
+		.add_margin_0_md { margin-bottom: 0 !important; }
+		.add_margin_5_md { margin-bottom: 5px !important; }
+		.add_margin_10_md { margin-bottom: 10px !important; }
+		.add_margin_15_md { margin-bottom: 15px !important; }
+		.add_margin_20_md { margin-bottom: 20px !important; }
+		.add_margin_25_md { margin-bottom: 25px !important; }
+		.add_margin_30_md { margin-bottom: 30px !important; }
+		.add_margin_35_md { margin-bottom: 35px !important; }
+		.add_margin_40_md { margin-bottom: 40px !important; }
+		.add_margin_45_md { margin-bottom: 45px !important; }
+		.add_margin_50_md { margin-bottom: 50px !important; }
+		.add_margin_60_md { margin-bottom: 60px !important; }
+		.add_margin_70_md { margin-bottom: 70px !important; }
+		.add_margin_80_md { margin-bottom: 80px !important; }
+		.add_margin_90_md { margin-bottom: 90px !important; }
+		.add_margin_100_md { margin-bottom: 100px !important; }
+
+
+	/* Remove */
+
+		/* Remove: Background - MD Only */
+		.remove_background_image_md { background-image: none !important; }
+		.remove_background_image_md:before { background: transparent !important; }			
+
+
+/* ---- MathWorks Custom Bootstrap Classes ---- */
+	
+	/* Custom Pull Right Classes */
+	.pull_left_md { float: left !important; }
+	.pull_right_md { float: right !important; }
+
+	/* Custom Text Alignment Classes */
+	.text_left_md { text-align: left; }
+	.text_center_md { text-align: center; }
+	.text_right_md { text-align: right; }
+
+
+
+/* ------------------------------------
+$ Downsize
+------------------------------------ */
+.section_downsize h1,
+.section_downsize .h1 { font-size: 25px; }
+.section_downsize h2,
+.section_downsize .h2 { font-size: 22px; }
+
+.section_downsize h1 + h2 { font-size: 22px; }
+
+
+
+/* ------------------------------------
+$ Upsize
+------------------------------------ */
+.section_upsize h1,
+.section_upsize .h1 { font-size: 37px; }
+.section_upsize h2,
+.section_upsize .h2 { font-size: 28px; }
+.section_upsize h3,
+.section_upsize .h3 { font-size: 22px; }
+.section_upsize h4,
+.section_upsize .h4 { font-size: 19px; }
+.section_upsize h5,
+.section_upsize .h5 { font-size: 18px; }
+.section_upsize h6,
+.section_upsize .h6 { font-size: 15px; }
+
+.section_upsize h1 + h2 { font-size: 28px; }
+
+
+
+
+
+
+
+
+/* ------------------------------------
+$ To Be Code Reviewed
+------------------------------------ */
+/* 
+ All CSS changes/addtions/edits MUST be code reviewed before they can accepted as part of the site6 standards.
+
+ Please add any working code below, and be sure to add you initials in the comments for your section.
+
+ Once your work is complete, coordinate a code review with Ryan Johnson.  Code reviews should be scheduled before the end of Feature Freeze.
+*/
+
+/* AEM style for centering text (GQ) */
+span.text_center_md { display: block; }
+

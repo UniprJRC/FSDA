@@ -1,0 +1,7 @@
+/* Off-Canvas Actuator */
+.offcanvas_actuator .offcanvas_actuator_label:before { content: "CONTENTS"; }
+.offcanvas_actuator .offcanvas_actuator_close:before { content: "Close"; }
+
+.section_header_content a:before { content: 'Examples'; }
+
+.nav_examples__categories #related_resources h3:before { content: 'Related Resources'; }

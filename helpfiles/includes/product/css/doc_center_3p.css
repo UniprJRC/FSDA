@@ -1,0 +1,75 @@
+/* Overrides for Doc Center in the Product */
+
+/*
+-----------------------------------
+TOC
+-----------------------------------
+
+Bootstrap Overrides:......Changes to base-Bootstrap CSS
+
+Page Globals:.............Styling of HTML and BODY
+
+Site Elements:............Re-usable site elements 	
+
+Structure:................Site structural components
+
+Section Specific:.........Styles for Home and all Sub Pages
+
+Page/Element Specific:....Page, element or flow Specific CSS
+
+Responsive:...............Specific styles for Desktop, Tablet and Mobile
+
+Additive CSS:.............Additive/override CSS
+
+*/
+
+
+
+/*-----------------------------------
+   Site Elements
+-------------------------------------*/
+
+/* ---- Content Iframe ---- */
+iframe#doc_center_content { height: 0; width: 100%; border: none; overflow-y: visible; }
+
+/* ---- Example Content ---- */
+#background-container { height: auto !important; }
+
+
+/*-----------------------------------
+   Structure
+-------------------------------------*/
+
+/* ---- Offcanvas ---- */
+.sidebar-offcanvas ul.nav_breadcrumb { border-bottom: none; }
+
+
+/* ---- TOC ---- */
+.toc_container_wrapper { padding-top: 10px; }
+.toc_container_wrapper:focus,
+.toc_container_wrapper:active,
+.toc_container_wrapper *:focus,
+.toc_container_wrapper *:active { outline: none }
+
+.toc_container ul { width:100%; margin:0px; padding:0px; }
+.toc_container li { padding:0px 0px 0px 12px; margin:0px; background:transparent; }
+.toc_container div.hovering { background-color:#dbdbdb; cursor:pointer; }
+.toc_container div.node_element { position:relative; overflow:hidden; }
+.toc_container div.node_element { padding:0px 0px 0px 14px; }
+.toc_container div.node_element div.text_wrapper { width:100%; min-height:17px; padding:3px 0px 0px; word-wrap:break-word; float:left; }
+.toc_container div.node_element div.text_wrapper a { padding:0px 10px 3px 3px; display:block; }
+.toc_container div.node_element div.img_wrapper { width:13px; height:20px; margin:0px 0px 0px -15px; float:left; }
+
+/* Immediate child selector is used since there could be many lists under one list, and we want only the first immediate child to have a collapsed or expanded icon */
+.toc_container li.toc_expanded > div.node_element div.img_wrapper { background:transparent url(../images/nextgen/global/bg_expanded.gif) no-repeat center center; }
+.toc_container li.toc_collapsed > div.node_element div.img_wrapper { background:transparent url(../images/nextgen/global/bg_collapsed.gif) no-repeat center 6px; }
+.toc_container li.toc_expanded > div.node_element div.img_wrapper.hovering { background:#dbdbdb url(../images/nextgen/global/bg_expanded.gif) no-repeat center center; }
+.toc_container li.toc_collapsed > div.node_element div.img_wrapper.hovering { background:#dbdbdb url(../images/nextgen/global/bg_collapsed.gif) no-repeat center 6px; }
+
+/* Used initially, when page loads */
+.toc_container li.toc_collapsed > ul { display:none; }
+.toc_container li.toc_expanded > ul { display:block; }
+.toc_container a:visited { color:#005fce; }
+.toc_container a:hover { text-decoration:none; }
+.toc_container li.current_page > div.node_element div.text_wrapper { background-color:#3f74c1; }
+.toc_container li.current_page > div.node_element div.text_wrapper a { color:#fff; }

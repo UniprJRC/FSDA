@@ -1,0 +1,7 @@
+/* Off-Canvas Actuator */
+.offcanvas_actuator .offcanvas_actuator_label:before { content: "목차"; }
+.offcanvas_actuator .offcanvas_actuator_close:before { content: "닫기"; }
+
+.section_header_content a:before { content: '예제'; }
+
+.nav_examples__categories #related_resources h3:before { content: '관련 리소스';}
