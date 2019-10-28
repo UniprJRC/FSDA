@@ -653,7 +653,7 @@ function [out]=FSRB(y,X,varargin)
     out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
     'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);
 
-    %% Plot the outliers with a different symbol using a 3x3 layout
+    % Plot the outliers with a different symbol using a 3x3 layout.
     selout=out.ListOut;
     selin=setdiff(1:n,selout);
 
