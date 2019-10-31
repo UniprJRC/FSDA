@@ -1027,8 +1027,7 @@ titl=sprintf([beforetitl    name  aftertitle]);
 
 %% Add purpose of the file (extract what is in the second row of .m file)
 beforemetacontent=['<meta content="refpage" name="chunktype">\r' ...
-    '<meta content="function:' name '" itemprop="refentity" name="refentity">\r'...
-    '<link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css">'...
+    '<meta content="function:' name '" itemprop="refentity" name="refentity">\r'...    %ALDO  '<link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css">'...
     '<meta content="text/javascript" http-equiv="Content-Script-Type">\r'...
     '<meta content="fcn" itemprop="pagetype" name="toctype">\r'...
     '<meta content="ref/function" itemprop="infotype" name="infotype" />\r'...
@@ -1132,7 +1131,7 @@ else
         '      $("#divbottom").load("includesFS/bottom.html");\r'...
         '});\r'...
         '</script>\r'...
-                '<link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>\r'...
+        '<link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link>\r'...
         '<link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link>\r'...
         '<link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link>\r'...
         '<link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link>\r'...
@@ -1894,7 +1893,14 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
-    iniRelatedExamples=sprintf('<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r');
+  %  iniRelatedExamples=sprintf(['<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r']);
+    
+    
+   iniRelatedExamples=sprintf(['<div class="examples">\r' ...
+        '<h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2>\r' ...
+        '<div id="expandableExamples" class="expandableContent">\r' ...
+        '<p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p>\r']);
+
     
     for j=1:size(listExtraEx,1)
         
@@ -1904,7 +1910,7 @@ if length(startIndexEx)>length(sintax)
             addimg='';
         end
         
-        RelatedExamples=[RelatedExamples  sprintf(['<div id="ExtraExample_' num2str(j) '" class="example_module expandableContent">\r'...
+        RelatedExamples=[RelatedExamples  sprintf(['<div id="Extraexample_' num2str(j) '" class="example_module expandableContent">\r'...
             '<div id="ExtraExample_' num2str(j) '">\r'...
             '</div>\r'...
             '<h3 class="expand"><span>\r'...
@@ -1922,7 +1928,7 @@ if length(startIndexEx)>length(sintax)
     
 end
 
-closeallex=sprintf(['</div>\r'... % div class="examples"
+closeallex=sprintf(['</div>\r</div>\r'... % close div class="examples" and extraexamples
     '</div>']);	 % close class="ref_sect
 
 examples=[iniexamples exampleshtml closeexamples iniRelatedExamples...
@@ -2978,7 +2984,7 @@ out.ExtraEx=listExtraEx;
 
 if webhelp == true
     
-     aftermetacontent=['." itemprop="description" name="description" />\r'...
+    aftermetacontent=['." itemprop="description" name="description" />\r'...
         '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />\r'...
         '<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />\r'...
         '<script type="text/x-mathjax-config">\r'...
@@ -3462,16 +3468,18 @@ if evalCode==true
             inclpoint=finout(1)+18;
             % incl= string which contains the output of the code
             incl=texttoadd{i};
-            PosStrBeforeFirstImage=regexp(incl,'<img');
-            if ~isempty(PosStrBeforeFirstImage)
-                PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
-                PosStrAfterFirstImage=regexp(incl,'alt="">');
-                PosStrAfterFirstImage=PosStrAfterFirstImage(1);
-                Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i} '''>'];
-                Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
-                incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
-                    incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
-            else
+            if ~isempty(incl)
+                PosStrBeforeFirstImage=regexp(incl,'<img');
+                if ~isempty(PosStrBeforeFirstImage)
+                    PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
+                    PosStrAfterFirstImage=regexp(incl,'alt="">');
+                    PosStrAfterFirstImage=PosStrAfterFirstImage(1);
+                    Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i} '''>'];
+                    Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
+                    incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+                else
+                end
             end
             % Add to string incl
             outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
@@ -3519,17 +3527,17 @@ if evalCode==true
                 % incl= string which contains the output of the code
                 incl=texttoadd{i+numexToExec};
                 
-                            PosStrBeforeFirstImage=regexp(incl,'<img');
-            if ~isempty(PosStrBeforeFirstImage)
-                PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
-                PosStrAfterFirstImage=regexp(incl,'alt="">');
-                PosStrAfterFirstImage=PosStrAfterFirstImage(1);
-                Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i+numexToExec} '''>'];
-                Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
-                incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
-                    incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
-            else
-            end
+                PosStrBeforeFirstImage=regexp(incl,'<img');
+                if ~isempty(PosStrBeforeFirstImage)
+                    PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
+                    PosStrAfterFirstImage=regexp(incl,'alt="">');
+                    PosStrAfterFirstImage=PosStrAfterFirstImage(1);
+                    Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i+numexToExec} '''>'];
+                    Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
+                    incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+                else
+                end
                 
                 outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
             end
