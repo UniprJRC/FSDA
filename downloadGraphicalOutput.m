@@ -16,7 +16,7 @@
 
 %% Beginning of code
 % url from which to download file (including file name)
-url = 'http://rosa.unipr.it/FSDA/outputHTMLfiles.zip';
+url = 'http://rosa.unipr.it/FSDA/images.zip';
 
 % Set the timeout value to Inf so that the connection does not time out.
 options = weboptions('Timeout',Inf);
