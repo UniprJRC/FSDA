@@ -1,6 +1,6 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>LTSts</title><meta content="refpage" name="chunktype"><meta content="function:LTSts" itemprop="refentity" name="refentity"><link href="includesFS/bootstrap.min.css" rel="stylesheet" type="text/css"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="LTSts extends LTS estimator to time series." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><script src="includesFS/jquery-latest.js" type="text/javascript"></script><link href="includesFS/site6.css?201505100807" rel="stylesheet" type="text/css"><link href="includesFS/site6_lg.css?201505100807" media="screen and (min-width: 1200px)" rel="stylesheet"><link href="includesFS/site6_md.css?201505100807" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet"><link href="includesFS/site6_sm+xs.css?201505100807" media="screen and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_sm.css?201505100807" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet"><link href="includesFS/site6_xs.css?201505100807" media="screen and (max-width: 767px)" rel="stylesheet"><link href="includesFS/site6_offcanvas.css?201505100807" rel="stylesheet" type="text/css"><script src="includesFS/l10n.js" type="text/javascript"></script><script src="includesFS/SHAREDdocscripts.js"></script><script src="includesFS/PRODUCTdocscripts.js"></script><script src="includesFS/mw.toc.js" type="text/javascript"></script><script src="includesFS/mw.imagescaling.js" type="text/javascript"></script><script src="includesFS/mw.imageanimation.js" type="text/javascript"></script><script src="includesFS/jquery.highlight.js"></script><script src="includesFS/bootstrap.min.js" type="text/javascript"></script><script src="includesFS/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="includesFS/underscore-min.js"></script><script src="../includes/shared/scripts/F1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><link href="includesFS/reset.css" rel="stylesheet" type="text/css"><link href="includesFS/960.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"><link href="includesFS/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">LTSts</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Simulated data with linear trend and level shift.</a></li><li><a class="intrnllnk" href="#Example_2">Airline data: linear trend + just one harmonic for seasonal component.</a></li><li><a class="intrnllnk" href="#Example_3">Model with linear trend and six harmonics for seasonal component.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Model with linear trend, two harmonics for seasonal component and
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>LTSts</title><meta content="refpage" name="chunktype"><meta content="function:LTSts" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="LTSts extends LTS estimator to time series." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">LTSts</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Simulated data with linear trend and level shift.</a></li><li><a class="intrnllnk" href="#Example_2">Airline data: linear trend + just one harmonic for seasonal component.</a></li><li><a class="intrnllnk" href="#Example_3">Model with linear trend and six harmonics for seasonal component.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Model with linear trend, two harmonics for seasonal component and
      varying amplitude using a linear trend.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Model with linear trend, six harmonics for seasonal component and
-     varying amplitude using a linear trend).</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Contaminated time series with upward level shift.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Contaminated time series with downward level shift.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Model with an explanatory variable using log-transformed series.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example 1 used in the paper RPRH.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Example 2 used in the paper RPRH.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example 3 used in the paper RPRH.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bdp">bdp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lts">lts</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftolALS">reftolALS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refstepsALS">refstepsALS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SmallSampleCor">SmallSampleCor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lshiftlocref">lshiftlocref</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nbestindexes">nbestindexes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_yxsave">yxsave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="includesFS/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">LTSts</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">LTSts extends LTS estimator to time series</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=LTSts(y)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_1">example</a></span></li><li><code class="synopsis">out=LTSts(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_2">example</a></span></li><li><code class="synopsis">[out, varargout]=LTSts(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>It is possible to set a model with a trend (up to third order), a
+     varying amplitude using a linear trend).</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Contaminated time series with upward level shift.</a></li><li><a class="intrnllnk" href="#ExtraExample_4">Contaminated time series with downward level shift.</a></li><li><a class="intrnllnk" href="#ExtraExample_5">Model with an explanatory variable using log-transformed series.</a></li><li><a class="intrnllnk" href="#ExtraExample_6">Example 1 used in the paper RPRH.</a></li><li><a class="intrnllnk" href="#ExtraExample_7">Example 2 used in the paper RPRH.</a></li><li><a class="intrnllnk" href="#ExtraExample_8">Example 3 used in the paper RPRH.</a></li><li><a class="intrnllnk" href="#ExtraExample_9">Examples 4 and 5 used in the paper RPRH: trade data.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_model">model</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_h">h</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bdp">bdp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lts">lts</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftolALS">reftolALS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refstepsALS">refstepsALS</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SmallSampleCor">SmallSampleCor</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lshiftlocref">lshiftlocref</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nbestindexes">nbestindexes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_dispresults">dispresults</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_yxsave">yxsave</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">LTSts</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">LTSts extends LTS estimator to time series</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=LTSts(y)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_1">example</a></span></li><li><code class="synopsis">out=LTSts(y,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_2">example</a></span></li><li><code class="synopsis">[out, varargout]=LTSts(___)</code><span class="syntax_example"><a class="intrnllnk" href="LTSts.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>It is possible to set a model with a trend (up to third order), a
  seasonality (constant or of varying amplitude and with a different number
  of harmonics) and a level shift (in this last case it is possible to
  specify the window in which level shift has to be searched for).</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LTSts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>Simulated data with linear trend and level shift.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=LTSts(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Airline data: linear trend + just one harmonic for seasonal component.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTSts.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=LTSts(___)</code></span>Model with linear trend and six harmonics for seasonal component.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Simulated data with linear trend and level shift.</li></span></a></span></h3><div class="collapse"><p>
@@ -75,7 +75,7 @@ hold('on')
 plot(out.yhat,'red')
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div></div><p> </p><h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3><div id="ExtraExample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, two harmonics for seasonal component and
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, two harmonics for seasonal component and
      varying amplitude using a linear trend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
@@ -89,7 +89,7 @@ hold('on')
 plot(out.yhat,'red')
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="ExtraExample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, six harmonics for seasonal component and
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, six harmonics for seasonal component and
      varying amplitude using a linear trend).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
@@ -104,7 +104,7 @@ hold('on')
 plot(out.yhat,'red')
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="ExtraExample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with upward level shift.</li></span></a></span></h3><div class="collapse"><p>
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with upward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, six harmonics for seasonal component and
      varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yLS=y;
 yLS(55:end)=yLS(55:end)+130;
@@ -123,7 +123,7 @@ legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaT
 % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1&gt;0$.
 str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="ExtraExample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with downward level shift.</li></span></a></span></h3><div class="collapse"><p>
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with downward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, six harmonics for seasonal component and
      varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yLS=y;
 yLS(35:end)=yLS(35:end)-300;
@@ -142,7 +142,7 @@ legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaT
 % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1&gt;0$.
 str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="ExtraExample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with an explanatory variable using log-transformed series.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=log(y);
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with an explanatory variable using log-transformed series.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=log(y);
 % Model with linear trend, six harmonics for seasonal component and
 % varying amplitude using a linear trend).
 model=struct;
@@ -161,7 +161,7 @@ legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaT
 % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1&gt;0$.
 str=strcat('A=1, B=6, G=1, $\delta_1=0$');
 numpar = {'model parameters:' , str};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="ExtraExample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 1 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      Load airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
 118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -203,7 +203,7 @@ numpar = {'model parameters:' , str};
 axeslast=findobj('-regexp','Tag','LTSts:ts');
 title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_01.png" alt=""> </p></div></div><div id="ExtraExample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LTSts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 y1=y(:);
@@ -232,7 +232,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_02.png" alt=""> </p></div></div><div id="ExtraExample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\LTSts_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
      other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=y(:);
 y1(50:55)=y1(50:55)-300;
@@ -261,7 +261,211 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><img vspace="5" hspace="5" src="images\LTSts_03.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </p></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\LTSts_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
+close all; clear all;
+% the datasets
+load('P12119085');
+load('P17049075');
+Y4 = P12119085.data;
+Y5 = P17049075.data;
+% the model
+model           = struct;
+model.trend     = 1;
+model.seasonal  = 102;
+model.s         = 12;
+model.lshift    = 13;
+% LTSts
+out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true);
+out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true);
+% the wedgeplot with the time series and the detected outliers and 
+% level shift
+wedgeplot(out4,'extradata',Y4,'titl','P12119085, imports of plants from KN to UK');
+wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT');
+% Forecasts with a 99.9 per cent confidence level
+nfore=10;
+outfore4 = forecastTS(out4,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P12119085, imports of plants from KN to UK');
+outfore5 = forecastTS(out5,'model',model,'nfore',nfore,'conflev',0.999,'titl','LTSts forecast for P17049075, imports of sugars from UA to LT');
+% Comparing with FS (needs conflev option)
+outLTS4 = LTSts(Y4,'model',model,'plots',1,'conflev',0.99);
+title(findobj(gcf,'Tag','LTSts:ts'),'P12119085, LTS with conflev=0.99');
+outFRS4 = FSRts(Y4,'model',model,'plots',1);
+title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
+outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99);
+title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
+outFRS5 = FSRts(Y5,'model',model,'plots',1);
+title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+         lab           bhat          se         tstat         pval   
+    _____________    _________    _________    ________    __________
+
+    {'b_trend1' }       115.27       4.5051      25.586    2.0728e-26
+    {'b_trend2' }        1.592      0.27465      5.7965    9.1325e-07
+    {'b_cos1'   }      -2.8294       3.9154    -0.72265        0.4741
+    {'b_sin1'   }      -12.419       4.6909     -2.6475      0.011544
+    {'b_cos2'   }      -9.0708       4.6584     -1.9472      0.058559
+    {'b_sin2'   }      -22.604       4.7099     -4.7992    2.2402e-05
+    {'b_varampl'}    -0.015796    0.0042445     -3.7215    0.00060891
+    {'b_lshift' }      -112.62       7.6319     -14.756    8.9212e-18
+
+Level shift position t=27
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+         lab           bhat          se         tstat        pval   
+    _____________    _________    _________    _______    __________
+
+    {'b_trend1' }        55.14       3.8549     14.304    2.5537e-17
+    {'b_trend2' }      0.89673      0.19848     4.5181    5.4202e-05
+    {'b_cos1'   }       15.545       4.1497     3.7461    0.00056646
+    {'b_sin1'   }        3.612       4.2659    0.84671        0.4022
+    {'b_cos2'   }      -32.496       4.2541    -7.6387    2.4573e-09
+    {'b_sin2'   }      -16.057        4.313    -3.7229    0.00060638
+    {'b_varampl'}    -0.022594    0.0018596     -12.15    5.2846e-15
+    {'b_lshift' }      -79.413       5.6981    -13.937    6.0952e-17
+
+Level shift position t=34
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           1           2           0           0           0
+
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           0           5           1           0           0
+
+</pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'intercept',1
 </code>,<code> 'h',round(n*0.75)
@@ -288,8 +492,7 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                        trend = 1 implies linear trend with intercept (default),
                        trend = 2 implies quadratic trend
                        trend = 3 implies cubic trend
-                       Admissible values for trend are, 0, 1, 2 and
-                       3.</p><p>
+                       Admissible values for trend are, 0, 1, 2 and 3.</p><p>
                        In the paper RPRH to denote the order of the trend
                        symbol A is used.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
                         frequencies, i.e. harmonics, in the seasonal
@@ -307,7 +510,7 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                         If seasonal is a number greater than 100 then it
                         is possible to specify how the seasonal component
                         grows over time.</p> <p>
-                        For example, seasonal =101 implies a seasonal
+                        For example, seasonal = 101 implies a seasonal
                         component which just uses one frequency
                         which grows linearly over time as follows:</p> <p>
                         $(1+\beta_3 t)\times ( \beta_1 cos( 2 \pi t/s) +
@@ -339,10 +542,13 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                           is a real number and $\beta_{LS2}$ is an integer
                           which assumes values 14, 14, ..., T-13.</p> <p>
                          In general, the level shift which are considered
-                         are referred to times (lshift+1):(T-lshift).</p> <p>
+                         are referred to times (lshift+1):(T-lshift).</p><p>
                        In the paper RPRH $\beta_{LS1}$ is denoted with
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
-                       with symbol $\delta_2$.</p> <p>
+                       with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>scalar greater or equal than 0 which
+                         specifies the length of the autoregressive
+                         component. The default value of model.ARp is 0,
+                         that is there is no autoregressive component.</p> <p>
                                 Remark: the default model is for monthly data with a linear
                trend (2 parameters) + seasonal component with just one
                harmonic (2 parameters), no additional explanatory
@@ -480,7 +686,7 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                  weights = abs(stdres)&lt;=sqrt(chi2inv(0.99,1));</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'SmallSampleCor',3
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Messages on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar which controls whether to display or not messages
-               on the screen If msg==1 (default) messages are displayed on
+               on the screen. If msg==1 (default) messages are displayed on
                the screen about estimated time to compute the estimator
                and the warnings about 'MATLAB:rankDeficientMatrix',
                'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
@@ -551,7 +757,10 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                         s-2, s-1 coefficients (if present);</p> <p>
                         3) coefficients associated with the matrix of
                         explanatory variables which have a potential effect
-                        on the time series under study (X);</p> <p>
+                        on the time series under study (X or
+                        autoregressive part); If model.ARp&gt;0 the first
+                        model.ARp elements refer to the autoregressive
+                        component.</p> <p>
                         4) non linear part of seasonal component, that is
                         varying amplitude. If varying amplitude is of order
                         k there are k coefficients (if present);</p> <p>
@@ -582,7 +791,7 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                        position.</p> <p>
                        This output is present just if input option
                        model.lshift&gt;0.</p></p></td></tr><tr valign="top"><td><code>numscale2</code></td><td><p>matrix of size lts.bestr-by-(T-2*lshift) containing
-                       (in the columns the values of the lts.bestr smallest
+                       (in the columns) the values of the lts.bestr smallest
                        values of the target function. Target function = truncated
                        residuals sum of squares.</p></td></tr><tr valign="top"><td><code>BestIndexes</code></td><td><p><p>matrix of size nbestindexes-by-(T-2*lshift)
                        containing in each column the indexes
@@ -644,7 +853,8 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
                            & = & \eta_i +\epsilon_i \\
                            & = & \eta(x_i,\hat \beta)+ e_i  \\
                            & = & \hat \eta_i + e_i
-                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X containing trend, seasonal, expl and
+                       \end{eqnarray}</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X containing trend, seasonal, expl
+                       (with autoregressive component) and
                        lshift, if the model is linear or linearized
                        version of $\eta(x_i, \beta)$ if the model is non
                        linear containing in the columns partial
