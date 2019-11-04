@@ -1,570 +1,2 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRB</title><meta content="refpage" name="chunktype"><meta content="function:FSRB" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRB gives an automatic outlier detection procedure in Bayesian linear regression." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRB</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRB with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRB with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example on Fishery dataset (analysis with intercept).</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example on Fishery dataset (analysis without the intercept).</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Outlier detection for Bank-Profit data.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bayes">bayes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bivarfit">bivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_multivarfit">multivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labeladd">labeladd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameX">nameX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_namey">namey</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylim">ylim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlim">xlim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflev">bonflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRB</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRB gives an automatic outlier detection procedure in Bayesian linear regression</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSRB(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="FSRB.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSRB(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRB.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRB.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRB(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>FSRB with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRB.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRB(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRB with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRB with all default options.</li></span></a></span></h3><div class="collapse"><p>
-     Common part to the first examples: load Houses Price Dataset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
-n=size(hprice,1);
-y=hprice(:,1);
-X=hprice(:,2:5);
-out=FSRB(y,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRB with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
-n=size(hprice,1);
-y=hprice(:,1);
-X=hprice(:,2:5);
-% set \beta components
-beta0=0*ones(5,1);
-beta0(2,1)=10;
-beta0(3,1)=5000;
-beta0(4,1)=10000;
-beta0(5,1)=10000;
-% \tau
-s02=1/4.0e-8;
-tau0=1/s02;
-% R prior settings
-R=2.4*eye(5);
-R(2,2)=6e-7;
-R(3,3)=.15;
-R(4,4)=.6;
-R(5,5)=.6;
-R=inv(R);
-% define a Bayes structure with previous data
-n0=5;
-bayes=struct;
-bayes.R=R;
-bayes.n0=n0;
-bayes.beta0=beta0;
-bayes.tau0=tau0;
-intercept=1;
-% function call
-out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">
-out = 
-
-  struct with fields:
-
-     ListOut: [1&times;18 double]
-    outliers: [1&times;18 double]
-         mdr: [273&times;2 double]
-          Un: [273&times;11 double]
-        nout: [2&times;5 double]
-        beta: [5&times;1 double]
-       scale: 1.4951e+04
-       class: 'FSRB'
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#Example_2'><img vspace="5" hspace="5" src="images\FSRB_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MG.To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zipand unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
-     nsamp is the number of subsamples to use in the frequentist analysis of first
-     year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
-nsamp=3000;
-% threshold to be used to increase susbet of good units
-threshold=300;
-bonflev=0.99; % Bonferroni confidence level to be used for first year
-bonflevB=0.99; % Bonferroni confidence level to be used for subsequent years
-% Load 2002 Fishery dataset
-Fishery2002=load('Fishery2002.txt');
-y02=Fishery2002(:,3);
-X02=Fishery2002(:,2);
-n02=length(y02);
-seq02=1:n02;
-% frequentist Forward Search, 1st year
-[out02]=FSR(y02,X02,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);
-% In what follows
-% g stands for good units
-% i stand for intermediate units (i.e. units whose raw residual is smaller
-% than threshold)
-% o stands for outliers
-% gi stands for good +intermediate units
-% u02g = good units
-% n02g = number of good units
-u02g=setdiff(seq02,out02.ListOut);
-n02g=length(u02g);
-X02g=[ones(length(u02g),1) X02(u02g,:)];
-y02g=y02(u02g);
-% b02g = regression coefficients just using g units
-b02g=X02g\y02g;
-% res02 = squared raw residuals for all units using b02g
-res02=(y02-[ones(length(X02),1) X02]*b02g).^2;
-res02o=res02(out02.ListOut);
-% sel= boolean vector which is true for the intermediate units
-% (units whose squared residual is below the threshold)
-sel=res02o&lt;threshold^2;
-% u02i = vector containing intermediate units (that is outliers whose
-% residual is smaller than threshold)
-u02i=out02.ListOut(sel);
-% u02o = vector containing outliers whose residual is out of the threshold
-u02o=out02.ListOut(~sel);
-% u02gi = g + i units
-if ~isempty(u02i)
-u02gi=[u02g u02i];
-else
-u02gi=u02g;
-end
-% n02gi = number of good + intermediate units
-n02gi=length(u02gi);
-% plotting section
-hold('off')
-% good units, plotted as (+)
-plot(X02(u02g)',y02(u02g)','Marker','+','LineStyle','none','Color','b')
-hold('on')
-% intermediate units plotted as (X)
-plot(X02(u02i)',y02(u02i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')
-% outliers, plotted as (O)
-plot(X02(u02o)',y02(u02o)','Marker','o','LineStyle','none','Color','r')
-xlabel('Quantity');
-ylabel('Price');
-title('Frequentist - 2002');
-% S202gi = estimated of sigma^2 using g+i units
-S202gi=sum(res02(u02gi))/(n02gi-2);
-% X02gi = X matrix referred to good + intermediate units
-X02gi=[ones(n02gi,1) X02(u02gi,:)];
-% y02gi = y vector referred to good + intermediate units
-y02gi=y02(u02gi);
-% bayes = structure which contains prior information to be used in year
-% 2003
-bayes=struct;
-bayes.beta0=b02g; % beta prior is beta based on g units
-tau0=1/S202gi; % tau0 is based on g + i units
-bayes.tau0=tau0;
-R=X02g'*X02g; % R is based on g units
-bayes.n0=n02gi; % n0 is based on g + i units
-bayes.R=R;
-% 2003
-% Load 2003 Fishery dataset
-Fishery2003=load('Fishery2003.txt');
-y03=Fishery2003(:,3);
-X03=Fishery2003(:,2);
-n03=length(y03);
-seq03=1:n03;
-% Bayesian Forward Search, 2nd year
-out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflevB);
-u03g=setdiff(seq03,out03.ListOut);
-n03g=length(u03g);
-% compute beta coefficient for year 2003 just using good units
-X03g=[ones(n03g,1) X03(u03g,:)];
-y03g=y03(u03g);
-b03g=X03g\y03g;
-res03=(y03-[ones(length(X03),1) X03]*b03g).^2;
-res03o=res03(out03.ListOut);
-sel=res03o&lt;threshold^2;
-% u03i = units to add to the good units subset (intermediate units)
-u03i=out03.ListOut(sel);
-% u03o =  outliers out of the threshold
-u03o=out03.ListOut(~sel);
-if ~isempty(u03i)
-u03gi=[u03g u03i];
-else
-u03gi=u03g;
-end
-n03gi=length(u03gi);
-X03gi=[ones(n03gi,1) X03(u03gi,:)];
-y03gi=y03(u03gi,:);
-% plotting section
-hold('off')
-% good units, plotted as (+)
-plot(X03(u03g)',y03(u03g)','Marker','+','LineStyle','none','Color','b')
-hold('on')
-% units below the threshold, plotted as (X)
-plot(X03(u03i)',y03(u03i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')
-% outliers, plotted as (O)
-plot(X03(u03o)',y03(u03o)','Marker','o','LineStyle','none','Color','r')
-set(gca,'FontSize',14)
-xlabel('QUANTITY in tons')
-ylabel('VALUE in 1000 euro')
-title('2003');
-% Definition of bayes structure (based on 2002 and 2003)
-bayes=struct;
-X02gX03g=[X02g; X03g];
-y02gy03g=[y02g; y03g];
-n02gn03g=n02g+n03g;
-% b0203g prior estimate of beta for year 2004 is computed using good units
-% for years 2002 and 2003
-b0203g=X02gX03g\y02gy03g;
-bayes.beta0=b0203g;
-% R is just referred to good units for years 2002 and 2003
-R=X02gX03g'*X02gX03g;
-bayes.R=R;
-% n0 is referred to g + i units in 2002 and 2003
-bayes.n0=n02gi+n03gi;
-X02giX03gi=[X02gi; X03gi];
-y02giy03gi=[y02gi; y03gi];
-% n02gin03gi = number of g+i units in 2002 and 2003
-n02gin03gi=n02gi+n03gi;
-% res = residuals for g+i units using b0203g
-res=y02giy03gi-X02giX03gi*b0203g;
-S203gi=sum(res.^2)/(n02gin03gi-2);
-% estimate of tau is based on g + i units
-tau0=1/S203gi;
-bayes.tau0=tau0;
-% Load 2004 Fishery dataset
-Fishery2004=load('Fishery2004.txt');
-y04=Fishery2004(:,3);
-X04=Fishery2004(:,2);
-n04=length(y04);
-seq04=1:n04;
-% Bayesian Forward Search, 3rd year
-out04=FSRB(y04,X04,'bayes',bayes,'msg',0,'plots',1,'init',round(n04/2),'bonflev',bonflevB);
-u04g=setdiff(seq04,out04.ListOut);
-n04g=length(u04g);
-X04g=[ones(n04g,1) X04(u04g,:)];
-y04g=y04(u04g);
-% b04g = beta based on good units for year 2004
-b04g=X04g\y04g;
-res04=(y04-[ones(length(X04),1) X04]*b04g).^2;
-% res04o squared residuals for the tentative outliers
-res04o=res04(out04.ListOut);
-% we keep statistical units below the threshold
-sel=res04o&lt;threshold^2;
-% u04i = units to add to the good units subset (intermediate units)
-u04i=out04.ListOut(sel);
-% u04o = units outliers out of the threshold
-u04o=out04.ListOut(~sel);
-if ~isempty(u04i)
-u04gi=[u04g u04i];
-else
-u04gi=u04g;
-end
-n04gi=length(u04gi);
-% plotting section
-hold('off')
-% good units, plotted as (+)
-plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')
-hold('on')
-% units below the treshold, plotted as (X)
-plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')
-% outliers, plotted as (O)
-plot(X04(u04o)',y04(u04o)','Marker','o','LineStyle','none','Color','r')
-set(gca,'FontSize',14)
-xlabel('QUANTITY in tons')
-ylabel('VALUE in 1000 euro')
-% frequentist Forward Search, 3rd year
-out04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);
-xlabel('QUANTITY in tons')
-ylabel('VALUE in 1000 euro')
-title('Frequentist - 2004');</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRB_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_10.png" alt=""> </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
-% nsamp is the number of subsamples to use in the frequentist analysis of first
-% year, in order to find initial subset using LMS.
-nsamp=3000;
-% threshold to be used to increase susbet of good units
-threshold=300;
-bonflev=0.99; % Bonferroni confidence level
-% Load 2002 Fishery dataset
-Fishery2002=load('Fishery2002.txt');
-y02=Fishery2002(:,3);
-X02=Fishery2002(:,2);
-n02=length(y02);
-seq02=1:n02;
-% frequentist Forward Search, 1st year (regression without intercept)
-[out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);
-% In what follows
-% g stands for good units
-% i stand for intermediate units (i.e. units whose raw residual is smaller
-% than threshold)
-% o stands for outliers
-% gi stands for good +intermediate units
-% u02g = good units
-% n02g = number of good units
-u02g=setdiff(seq02,out02.ListOut);
-X02g=X02(u02g,:);
-y02g=y02(u02g);
-% b02g = regression coefficients just using g units
-% Note that b02g is a scalar because the intercept has not been added
-b02g=X02g\y02g;
-% res02 = squared raw residuals for all units using b02g
-res02=(y02-X02*b02g).^2;
-res02o=res02(out02.ListOut);
-% sel= boolean vector which is true for the intermediate units
-% (units whose squared residual is below the threshold)
-sel=res02o&lt;threshold^2;
-% u02i = vector containing intermediate units (that is outliers whose
-% residual is smaller than threshold)
-u02i=out02.ListOut(sel);
-% u02gi = g + i units
-if ~isempty(u02i)
-u02gi=[u02g u02i];
-else
-u02gi=u02g;
-end
-% n02gi = number of good + intermediate units
-n02gi=length(u02gi);
-% S202gi = estimated of sigma^2 using g+i units
-S202gi=sum(res02(u02gi))/(n02gi-1);
-% bayes = structure which contains prior information to be used in year
-% 2003
-bayes=struct;
-bayes.beta0=b02g; % beta prior is beta based on g units
-tau0=1/S202gi; % tau0 is based on g + i units
-bayes.tau0=tau0;
-R=X02g'*X02g; % R is based on g units
-bayes.n0=n02gi; % n0 is based on g + i units
-bayes.R=R;
-% 2003
-% Load 2003 Fishery dataset
-Fishery2003=load('Fishery2003.txt');
-y03=Fishery2003(:,3);
-X03=Fishery2003(:,2);
-n03=length(y03);
-% Run Bayesian Forward Search for the 2nd year using the prior based on
-% the first year.
-out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRB_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_14.png" alt=""> </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');
-R=load('BankProfitR.txt');
-X=XX(:,1:end-1);
-y=XX(:,end);
-% Load prior information
-beta0=zeros(10,1);
-beta0(1,1)=-0.5;
-beta0(2,1)=9.1;         % Number of products (NUMPRO)
-beta0(3,1)=0.001;       % direct revenues  (DIRREV)
-beta0(4,1)=0.0002;      % indirect revenues   (INDREV)
-beta0(5,1)=0.002;       %  savings accounts   SAVACC
-beta0(6,1)=0.12;        %  number of operations   NUMOPE
-beta0(7,1)=0.0004;      %  total amount of operations  TOTOPE
-beta0(8,1)=-0.0004;     %  Bancomat POS
-beta0(9,1)=1.3;         %  Number of cards   NUMCAR
-beta0(10,1)=0.00004;    %  Amount in cards   TOTCAR
-% \tau
-s02=10000;
-tau0=1/s02;
-% number of obs in which prior was based
-n0=1500;
-bayes=struct;
-bayes.R=R;
-bayes.n0=n0;
-bayes.beta0=beta0;
-bayes.tau0=tau0;
-intercept=1;
-n=length(y);
-out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
-'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);
-% Plot the outliers with a different symbol using a 3x3 layout.
-selout=out.ListOut;
-selin=setdiff(1:n,selout);
-close all
-% just in case user has additional function subtightplot
-% http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplot
-make_it_tight = false;
-if make_it_tight == true && exist('subtightplot','file') ==2
-subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);
-else
-clear subplot;
-end
-% sel = panels in which yticks do not have to be removed
-sel=[1 4 7];
-miny=min(y);
-maxy=max(y);
-for j=1:9
-subplot(3,3,j)
-hold('on')
-plot(X(selin,j),y(selin),'+')
-plot(X(selout,j),y(selout),'ro')
-ylim([miny maxy])
-xlim([min(X(:,j)) max(X(:,j))])
-if isempty(intersect(j,sel))
-set(gca,'YTickLabel','')
-end
-% Add on the plot the variable name
-text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)
-end</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
---------------------------------------------------
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=1830 because
-rmin(1830,1903)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=1829
-Superimposition stopped because r_{min}(1851,1859)&gt;99.9% envelope
-Subsample of 1858 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=45
-Summary of the exceedances
-           1          99         999        9999       99999
-         838          77          76          73          73
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRB_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
-               a vector of length n1, where n1 is the number of
-               observations. Each entry in y is the response for the
-               corresponding row of X.</p> <p>
-               Missing values (NaN's) and infinite values (Inf's) are
-               allowed, since observations (rows) with missing or infinite
-               values will automatically be excluded from the
-               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory variables (also called
-               'regressors') of dimension n1 x (p-1) where p denotes the
-               number of explanatory variables including the intercept.</p> <p>
-               Rows of X represent observations, and columns represent
-               variables. By default, there is a constant term in the
-               model, unless you explicitly remove it using input option
-               intercept, so do not include a column of 1s in X. Missing
-               values (NaN's) and infinite values (Inf's) are allowed,
-               since observations (rows) with missing or infinite values
-               will automatically be excluded from the computations.</p><p>
-               Remark: note that here we use symbol n1 instead of
-               traditional symbol n because we want to better separate
-               sample information coming from n1 values to prior
-               information coming from n0 previous experiments.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
-</code>,<code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
-</code>,<code> 'plots',1
-</code>,<code> 'init',100 starts monitoring from step m=100
-</code>,<code> 'nocheck',1
-</code>,<code> 'bivarfit',2
-</code>,<code> 'multivarfit','1'
-</code>,<code> 'labeladd','1'
-</code>,<code> 'nameX',{'NameVar1','NameVar2'}
-</code>,<code> 'namey','NameOfResponse'
-</code>,<code> 'bonflev',0.99
-</code>,<code> 'msg',1
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted
-                       (default),  else no constant term will be included.</p> <p>
-                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;Prior information.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>It contains the following fields
-       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta0</code></td><td><p>p-times-1 vector containing prior mean of \beta</p></td></tr><tr valign="top"><td><code>R</code></td><td><p><p>p-times-p positive definite matrix which can be
-                       interpreted as X0'X0 where X0 is a n0 x p matrix
-                       coming from previous experiments (assuming that the
-                       intercept is included in the model.</p> <p>
-
-               The prior distribution of $\tau_0$ is a gamma distribution with
-               parameters $a_0$ and $b_0$, that is
-               </p>\[
-                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)
-                       \qquad E(\tau_0) = a_0/b_0
-               \]</p></td></tr><tr valign="top"><td><code>tau0</code></td><td><p>scalar. Prior estimate of
-                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]</p></td></tr><tr valign="top"><td><code>n0</code></td><td><p><p>scalar. Sometimes it helps to think of the prior
-                      information as coming from n0 previous experiments.</p> <p>
-                      Therefore we assume that matrix X0 (which defines
-                      R), was made up of n0 observations.</p> <p>
-              REMARK if structure bayes is not supplied the default
-                      values which are used are.</p> <p>
-                      beta0= zeros(p,1):  Vector of zeros.</p> <p>
-                      R=eye(p):           Identity matrix.</p> <p>
-                      tau0=1/1e+6:        Very large value for the
-                                          prior variance, that is a very
-                                          small value for tau0.</p> <p>
-                      n0=1:               just one prior observation.</p> <p>
-
-               $\beta$ is assumed to have a normal distribution with
-               mean $\beta_0$ and (conditional on $\tau_0$) covariance
-               $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>
-               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion
-                 residual with envelopes based on n observations and the
-                 scatterplot matrix with the outliers highlighted is
-                 produced.</p> <p>
-                 If plots=2 the user can also monitor the intermediate
-                 plots based on envelope superimposition.</p> <p>
-                 Else no plot is produced.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which specifies the initial subset size to start
-                   monitoring exceedances of minimum deletion residual, if
-                   init is not specified it set equal to:</p> <p>
-                   p+1, if the sample size is smaller than 40;</p> <p>
-                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
-                    matrix y and matrix X. Notice that y and X are left
-                    unchanged. In other words the additional column of ones
-                     for the intercept is not added. As default nocheck=0.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
-                   SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>
-                  bivarfit = ''
-                   is the default: no line is fitted.</p> <p>
-                  bivarfit = '1'
-                   fits a single ols line to all points of each bivariate
-                   plot in the scatter matrix y|X.</p> <p>
-                  bivarfit = '2'
-                   fits two ols lines: one to all points and another to
-                   the group of the genuine observations. The group of the
-                   potential outliers is not fitted.</p> <p>
-                  bivarfit = '0'
-                   fits one ols line to each group. This is useful for the
-                   purpose of fitting mixtures of regression lines.</p> <p>
-                  bivarfit = 'i1' or 'i2' or 'i3' etc.</p> <p>
-                   fits an ols line to a specific group, the one with
-                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
-                   of mixtures.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bivarfit',2
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_multivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_multivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>multivarfit</code> &#8212;Superimpose multivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
-                   MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.</p> <p>
-                 multivarfit = ''
-                   is the default: no line is fitted.</p> <p>
-                 multivarfit = '1'
-                   fits a single ols line to all points of each bivariate
-                   plot in the scatter matrix y|X. The line added to the
-                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the
-                   coefficient of Xi in the multivariate regression and
-                   avconst is the effect of all the other explanatory
-                   variables different from Xi evaluated at their centroid
-                   (that is overline{y}'C))
-                 multivarfit = '2'
-                   equal to multivarfit ='1' but this time we also add the
-                   line based on the group of unselected observations
-                   (i.e. the normal units).</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is '1',  we label the outliers with the
-                 unit row index in matrices X and y. The default value is
-                 labeladd='', i.e. no label is added.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>cell array of strings of length p containing the labels of
-                 the variables of the regression dataset. If it is empty
-                 (default) the sequence X1, ..., Xp will be created
-                 automatically
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>character containing the label of the response
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum
-                 on the y axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum
-                 on the x axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the
-</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>option to be used if the distribution of the data is
-                 strongly non normal and, thus, the general signal
-                 detection rule based on consecutive exceedances cannot be
-                 used. In this case bonflev can be:</p> <p>
-                 - a scalar smaller than 1 which specifies the confidence
-                   level for a signal and a stopping rule based on the
-                   comparison of the minimum MD with a
-                   Bonferroni bound. For example if bonflev=0.99 the
-                   procedure stops when the trajectory exceeds for the
-                   first time the 99% bonferroni bound.</p> <p>
-                 - A scalar value greater than 1. In this case the
-                   procedure stops when the residual trajectory exceeds
-                   for the first time this value.</p> <p>
-                 Default value is '', which means to rely on general rules
-                 based on consecutive exceedances.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which controls whether to display or not messages
-                 on the screen
-                 If msg==1 (default) messages are displayed on the screen about
-                   step in which signal took place and ....</p> <p>
-                 else no message is displayed on the screen
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous. This field in
-               future releases will be deleted bacause it will be replaced
-               by out.outliers.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared as
-               outliers or NaN if the sample is homogeneous.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the posterior mean of $\beta$
-               (regression coefficents),
-               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step
-               $n-k$</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar. This is the reciprocal of the square root of the
-               posterior estimate of $\tau$ in step $n-k$</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix:</p> <p>
-               1st col = fwd search index;</p><p>
-               2nd col = value of Bayesian minimum deletion residual in
-               each step of the fwd search.</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s) included
-               in the subset at each step of the fwd search.</p> <p>
-               REMARK: in every step the new subset is compared with the
-               old subset. Un contains the unit(s) present in the new
-               subset but not in the old one.</p> <p>
-               Un(1,2) for example contains the unit included in step
-               init+1.</p><p>
-               Un(end,2) contains the units included in the final step
-               of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out
-               of particular quantiles.</p> <p>
-               First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>
-               Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a
-               certain step a non singular matrix X. In this case the
-               search runs in a constrained mode, that is including the
-               units which produced a singular matrix in the last n-constr
-               steps. out.constr is a vector which contains the list of
-               units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRB'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier
- Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian
- Regression for Fraud Detection, "International Statistical Review",
- <a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian
- Regression with the Forward Search: Theory and Data Analysis, "Test",
- Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>FSRB</title><meta content="refpage" name="chunktype"><meta content="function:FSRB" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="FSRB gives an automatic outlier detection procedure in Bayesian linear regression." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">FSRB</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">FSRB with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">FSRB with optional arguments.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example on Fishery dataset (analysis with intercept).</a></li><li><a class="intrnllnk" href="#ExtraExample_2">Example on Fishery dataset (analysis without the intercept).</a></li><li><a class="intrnllnk" href="#ExtraExample_3">Outlier detection for Bank-Profit data.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bayes">bayes</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bivarfit">bivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_multivarfit">multivarfit</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labeladd">labeladd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameX">nameX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_namey">namey</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylim">ylim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlim">xlim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflev">bonflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">FSRB</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">FSRB gives an automatic outlier detection procedure in Bayesian linear regression</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=FSRB(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="FSRB.html#Example_1">example</a></span></li><li><code class="synopsis">out=FSRB(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="FSRB.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRB.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRB(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>)</code></span>FSRB with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="FSRB.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=FSRB(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>FSRB with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRB with all default options.</li></span></a></span></h3><div class="collapse"><p>     Common part to the first examples: load Houses Price Dataset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;n=size(hprice,1);y=hprice(:,1);X=hprice(:,2:5);out=FSRB(y,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSRB with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;n=size(hprice,1);y=hprice(:,1);X=hprice(:,2:5);% set \beta componentsbeta0=0*ones(5,1);beta0(2,1)=10;beta0(3,1)=5000;beta0(4,1)=10000;beta0(5,1)=10000;% \taus02=1/4.0e-8;tau0=1/s02;% R prior settingsR=2.4*eye(5);R(2,2)=6e-7;R(3,3)=.15;R(4,4)=.6;R(5,5)=.6;R=inv(R);% define a Bayes structure with previous datan0=5;bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;intercept=1;% function callout=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">out =   struct with fields:     ListOut: [1&times;18 double]    outliers: [1&times;18 double]         mdr: [273&times;2 double]          Un: [273&times;11 double]        nout: [2&times;5 double]        beta: [5&times;1 double]       scale: 1.4951e+04       class: 'FSRB'</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#Example_2'><img vspace="5" hspace="5" src="images\FSRB_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip
+ it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>     nsamp is the number of subsamples to use in the frequentist analysis of first     year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close allnsamp=3000;% threshold to be used to increase susbet of good unitsthreshold=300;bonflev=0.99; % Bonferroni confidence level to be used for first yearbonflevB=0.99; % Bonferroni confidence level to be used for subsequent years% Load 2002 Fishery datasetFishery2002=load('Fishery2002.txt');y02=Fishery2002(:,3);X02=Fishery2002(:,2);n02=length(y02);seq02=1:n02;% frequentist Forward Search, 1st year[out02]=FSR(y02,X02,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);% In what follows% g stands for good units% i stand for intermediate units (i.e. units whose raw residual is smaller% than threshold)% o stands for outliers% gi stands for good +intermediate units% u02g = good units% n02g = number of good unitsu02g=setdiff(seq02,out02.ListOut);n02g=length(u02g);X02g=[ones(length(u02g),1) X02(u02g,:)];y02g=y02(u02g);% b02g = regression coefficients just using g unitsb02g=X02g\y02g;% res02 = squared raw residuals for all units using b02gres02=(y02-[ones(length(X02),1) X02]*b02g).^2;res02o=res02(out02.ListOut);% sel= boolean vector which is true for the intermediate units% (units whose squared residual is below the threshold)sel=res02o&lt;threshold^2;% u02i = vector containing intermediate units (that is outliers whose% residual is smaller than threshold)u02i=out02.ListOut(sel);% u02o = vector containing outliers whose residual is out of the thresholdu02o=out02.ListOut(~sel);% u02gi = g + i unitsif ~isempty(u02i)u02gi=[u02g u02i];elseu02gi=u02g;end% n02gi = number of good + intermediate unitsn02gi=length(u02gi);% plotting sectionhold('off')% good units, plotted as (+)plot(X02(u02g)',y02(u02g)','Marker','+','LineStyle','none','Color','b')hold('on')% intermediate units plotted as (X)plot(X02(u02i)',y02(u02i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')% outliers, plotted as (O)plot(X02(u02o)',y02(u02o)','Marker','o','LineStyle','none','Color','r')xlabel('Quantity');ylabel('Price');title('Frequentist - 2002');% S202gi = estimated of sigma^2 using g+i unitsS202gi=sum(res02(u02gi))/(n02gi-2);% X02gi = X matrix referred to good + intermediate unitsX02gi=[ones(n02gi,1) X02(u02gi,:)];% y02gi = y vector referred to good + intermediate unitsy02gi=y02(u02gi);% bayes = structure which contains prior information to be used in year% 2003bayes=struct;bayes.beta0=b02g; % beta prior is beta based on g unitstau0=1/S202gi; % tau0 is based on g + i unitsbayes.tau0=tau0;R=X02g'*X02g; % R is based on g unitsbayes.n0=n02gi; % n0 is based on g + i unitsbayes.R=R;% 2003% Load 2003 Fishery datasetFishery2003=load('Fishery2003.txt');y03=Fishery2003(:,3);X03=Fishery2003(:,2);n03=length(y03);seq03=1:n03;% Bayesian Forward Search, 2nd yearout03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflevB);u03g=setdiff(seq03,out03.ListOut);n03g=length(u03g);% compute beta coefficient for year 2003 just using good unitsX03g=[ones(n03g,1) X03(u03g,:)];y03g=y03(u03g);b03g=X03g\y03g;res03=(y03-[ones(length(X03),1) X03]*b03g).^2;res03o=res03(out03.ListOut);sel=res03o&lt;threshold^2;% u03i = units to add to the good units subset (intermediate units)u03i=out03.ListOut(sel);% u03o =  outliers out of the thresholdu03o=out03.ListOut(~sel);if ~isempty(u03i)u03gi=[u03g u03i];elseu03gi=u03g;endn03gi=length(u03gi);X03gi=[ones(n03gi,1) X03(u03gi,:)];y03gi=y03(u03gi,:);% plotting sectionhold('off')% good units, plotted as (+)plot(X03(u03g)',y03(u03g)','Marker','+','LineStyle','none','Color','b')hold('on')% units below the threshold, plotted as (X)plot(X03(u03i)',y03(u03i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')% outliers, plotted as (O)plot(X03(u03o)',y03(u03o)','Marker','o','LineStyle','none','Color','r')set(gca,'FontSize',14)xlabel('QUANTITY in tons')ylabel('VALUE in 1000 euro')title('2003');% Definition of bayes structure (based on 2002 and 2003)bayes=struct;X02gX03g=[X02g; X03g];y02gy03g=[y02g; y03g];n02gn03g=n02g+n03g;% b0203g prior estimate of beta for year 2004 is computed using good units% for years 2002 and 2003b0203g=X02gX03g\y02gy03g;bayes.beta0=b0203g;% R is just referred to good units for years 2002 and 2003R=X02gX03g'*X02gX03g;bayes.R=R;% n0 is referred to g + i units in 2002 and 2003bayes.n0=n02gi+n03gi;X02giX03gi=[X02gi; X03gi];y02giy03gi=[y02gi; y03gi];% n02gin03gi = number of g+i units in 2002 and 2003n02gin03gi=n02gi+n03gi;% res = residuals for g+i units using b0203gres=y02giy03gi-X02giX03gi*b0203g;S203gi=sum(res.^2)/(n02gin03gi-2);% estimate of tau is based on g + i unitstau0=1/S203gi;bayes.tau0=tau0;% Load 2004 Fishery datasetFishery2004=load('Fishery2004.txt');y04=Fishery2004(:,3);X04=Fishery2004(:,2);n04=length(y04);seq04=1:n04;% Bayesian Forward Search, 3rd yearout04=FSRB(y04,X04,'bayes',bayes,'msg',0,'plots',1,'init',round(n04/2),'bonflev',bonflevB);u04g=setdiff(seq04,out04.ListOut);n04g=length(u04g);X04g=[ones(n04g,1) X04(u04g,:)];y04g=y04(u04g);% b04g = beta based on good units for year 2004b04g=X04g\y04g;res04=(y04-[ones(length(X04),1) X04]*b04g).^2;% res04o squared residuals for the tentative outliersres04o=res04(out04.ListOut);% we keep statistical units below the thresholdsel=res04o&lt;threshold^2;% u04i = units to add to the good units subset (intermediate units)u04i=out04.ListOut(sel);% u04o = units outliers out of the thresholdu04o=out04.ListOut(~sel);if ~isempty(u04i)u04gi=[u04g u04i];elseu04gi=u04g;endn04gi=length(u04gi);% plotting sectionhold('off')% good units, plotted as (+)plot(X04(u04g)',y04(u04g)','Marker','+','LineStyle','none','Color','b')hold('on')% units below the treshold, plotted as (X)plot(X04(u04i)',y04(u04i)','Marker','X','MarkerSize',9,'LineWidth',2,'LineStyle','none','Color','m')% outliers, plotted as (O)plot(X04(u04o)',y04(u04o)','Marker','o','LineStyle','none','Color','r')set(gca,'FontSize',14)xlabel('QUANTITY in tons')ylabel('VALUE in 1000 euro')% frequentist Forward Search, 3rd yearout04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);xlabel('QUANTITY in tons')ylabel('VALUE in 1000 euro')title('Frequentist - 2004');</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRB_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_10.png" alt=""> </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all% nsamp is the number of subsamples to use in the frequentist analysis of first% year, in order to find initial subset using LMS.nsamp=3000;% threshold to be used to increase susbet of good unitsthreshold=300;bonflev=0.99; % Bonferroni confidence level% Load 2002 Fishery datasetFishery2002=load('Fishery2002.txt');y02=Fishery2002(:,3);X02=Fishery2002(:,2);n02=length(y02);seq02=1:n02;% frequentist Forward Search, 1st year (regression without intercept)[out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);% In what follows% g stands for good units% i stand for intermediate units (i.e. units whose raw residual is smaller% than threshold)% o stands for outliers% gi stands for good +intermediate units% u02g = good units% n02g = number of good unitsu02g=setdiff(seq02,out02.ListOut);X02g=X02(u02g,:);y02g=y02(u02g);% b02g = regression coefficients just using g units% Note that b02g is a scalar because the intercept has not been addedb02g=X02g\y02g;% res02 = squared raw residuals for all units using b02gres02=(y02-X02*b02g).^2;res02o=res02(out02.ListOut);% sel= boolean vector which is true for the intermediate units% (units whose squared residual is below the threshold)sel=res02o&lt;threshold^2;% u02i = vector containing intermediate units (that is outliers whose% residual is smaller than threshold)u02i=out02.ListOut(sel);% u02gi = g + i unitsif ~isempty(u02i)u02gi=[u02g u02i];elseu02gi=u02g;end% n02gi = number of good + intermediate unitsn02gi=length(u02gi);% S202gi = estimated of sigma^2 using g+i unitsS202gi=sum(res02(u02gi))/(n02gi-1);% bayes = structure which contains prior information to be used in year% 2003bayes=struct;bayes.beta0=b02g; % beta prior is beta based on g unitstau0=1/S202gi; % tau0 is based on g + i unitsbayes.tau0=tau0;R=X02g'*X02g; % R is based on g unitsbayes.n0=n02gi; % n0 is based on g + i unitsbayes.R=R;% 2003% Load 2003 Fishery datasetFishery2003=load('Fishery2003.txt');y03=Fishery2003(:,3);X03=Fishery2003(:,2);n03=length(y03);% Run Bayesian Forward Search for the 2nd year using the prior based on% the first year.out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRB_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_14.png" alt=""> </p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');R=load('BankProfitR.txt');X=XX(:,1:end-1);y=XX(:,end);% Load prior informationbeta0=zeros(10,1);beta0(1,1)=-0.5;beta0(2,1)=9.1;         % Number of products (NUMPRO)beta0(3,1)=0.001;       % direct revenues  (DIRREV)beta0(4,1)=0.0002;      % indirect revenues   (INDREV)beta0(5,1)=0.002;       %  savings accounts   SAVACCbeta0(6,1)=0.12;        %  number of operations   NUMOPEbeta0(7,1)=0.0004;      %  total amount of operations  TOTOPEbeta0(8,1)=-0.0004;     %  Bancomat POSbeta0(9,1)=1.3;         %  Number of cards   NUMCARbeta0(10,1)=0.00004;    %  Amount in cards   TOTCAR% \taus02=10000;tau0=1/s02;% number of obs in which prior was basedn0=1500;bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;intercept=1;n=length(y);out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...'init',round(n/2),'xlim',[1700 1905],'ylim',[2 4]);% Plot the outliers with a different symbol using a 3x3 layout.selout=out.ListOut;selin=setdiff(1:n,selout);close all% just in case user has additional function subtightplot% http://www.mathworks.com/matlabcentral/fileexchange/39664-subtightplotmake_it_tight = false;if make_it_tight == true && exist('subtightplot','file') ==2subplot = @(m,n,p) subtightplot (m, n, p, [0.05 0.025], [0.1 0.01], [0.1 0.01]);elseclear subplot;end% sel = panels in which yticks do not have to be removedsel=[1 4 7];miny=min(y);maxy=max(y);for j=1:9subplot(3,3,j)hold('on')plot(X(selin,j),y(selin),'+')plot(X(selout,j),y(selout),'ro')ylim([miny maxy])xlim([min(X(:,j)) max(X(:,j))])if isempty(intersect(j,sel))set(gca,'YTickLabel','')end% Add on the plot the variable nametext(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)end</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope---------------------------------------------------------------------------Signal detection loopTentative signal in central part of the search: step m=1830 becausermin(1830,1903)&gt;99.999%-------------------Signal validation exceedance of upper envelopesValidated signal-------------------------------Start resuperimposing envelopes from step m=1829Superimposition stopped because r_{min}(1851,1859)&gt;99.9% envelopeSubsample of 1858 units is homogeneous----------------------------Final outputNumber of units declared as outliers=45Summary of the exceedances           1          99         999        9999       99999         838          77          76          73          73</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRB_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as               a vector of length n1, where n1 is the number of               observations. Each entry in y is the response for the               corresponding row of X.</p> <p>               Missing values (NaN's) and infinite values (Inf's) are               allowed, since observations (rows) with missing or infinite               values will automatically be excluded from the               computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix of explanatory variables (also called               'regressors') of dimension n1 x (p-1) where p denotes the               number of explanatory variables including the intercept.</p> <p>               Rows of X represent observations, and columns represent               variables. By default, there is a constant term in the               model, unless you explicitly remove it using input option               intercept, so do not include a column of 1s in X. Missing               values (NaN's) and infinite values (Inf's) are allowed,               since observations (rows) with missing or infinite values               will automatically be excluded from the computations.</p><p>               Remark: note that here we use symbol n1 instead of               traditional symbol n because we want to better separate               sample information coming from n1 values to prior               information coming from n0 previous experiments.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1</code>,<code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;</code>,<code> 'plots',1</code>,<code> 'init',100 starts monitoring from step m=100</code>,<code> 'nocheck',1</code>,<code> 'bivarfit',2</code>,<code> 'multivarfit','1'</code>,<code> 'labeladd','1'</code>,<code> 'nameX',{'NameVar1','NameVar2'}</code>,<code> 'namey','NameOfResponse'</code>,<code> 'bonflev',0.99</code>,<code> 'msg',1</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted                       (default),  else no constant term will be included.</p> <p>                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;Prior information.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p>It contains the following fields       <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta0</code></td><td><p>p-times-1 vector containing prior mean of \beta</p></td></tr><tr valign="top"><td><code>R</code></td><td><p><p>p-times-p positive definite matrix which can be                       interpreted as X0'X0 where X0 is a n0 x p matrix                       coming from previous experiments (assuming that the                       intercept is included in the model.</p> <p>               The prior distribution of $\tau_0$ is a gamma distribution with               parameters $a_0$ and $b_0$, that is               </p>\[                     p(\tau_0) \propto \tau^{a_0-1} \exp (-b_0 \tau)                       \qquad E(\tau_0) = a_0/b_0               \]</p></td></tr><tr valign="top"><td><code>tau0</code></td><td><p>scalar. Prior estimate of                       \[ \tau=1/ \sigma^2 =a_0/b_0 \]</p></td></tr><tr valign="top"><td><code>n0</code></td><td><p><p>scalar. Sometimes it helps to think of the prior                      information as coming from n0 previous experiments.</p> <p>                      Therefore we assume that matrix X0 (which defines                      R), was made up of n0 observations.</p> <p>              REMARK if structure bayes is not supplied the default                      values which are used are.</p> <p>                      beta0= zeros(p,1):  Vector of zeros.</p> <p>                      R=eye(p):           Identity matrix.</p> <p>                      tau0=1/1e+6:        Very large value for the                                          prior variance, that is a very                                          small value for tau0.</p> <p>                      n0=1:               just one prior observation.</p> <p>               $\beta$ is assumed to have a normal distribution with               mean $\beta_0$ and (conditional on $\tau_0$) covariance               $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If plots=1 (default) the plot of minimum deletion                 residual with envelopes based on n observations and the                 scatterplot matrix with the outliers highlighted is                 produced.</p> <p>                 If plots=2 the user can also monitor the intermediate                 plots based on envelope superimposition.</p> <p>                 Else no plot is produced.</p><p>                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Search initialization.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which specifies the initial subset size to start                   monitoring exceedances of minimum deletion residual, if                   init is not specified it set equal to:</p> <p>                   p+1, if the sample size is smaller than 40;</p> <p>                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.</p><p>                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on                    matrix y and matrix X. Notice that y and X are left                    unchanged. In other words the additional column of ones                     for the intercept is not added. As default nocheck=0.</p> <p>                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on                   SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>                  bivarfit = ''                   is the default: no line is fitted.</p> <p>                  bivarfit = '1'                   fits a single ols line to all points of each bivariate                   plot in the scatter matrix y|X.</p> <p>                  bivarfit = '2'                   fits two ols lines: one to all points and another to                   the group of the genuine observations. The group of the                   potential outliers is not fitted.</p> <p>                  bivarfit = '0'                   fits one ols line to each group. This is useful for the                   purpose of fitting mixtures of regression lines.</p> <p>                  bivarfit = 'i1' or 'i2' or 'i3' etc.</p> <p>                   fits an ols line to a specific group, the one with                   index 'i' equal to 1, 2, 3 etc. Again, useful in case                   of mixtures.</p><p>                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bivarfit',2</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_multivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_multivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>multivarfit</code> &#8212;Superimpose multivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on                   MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.</p> <p>                 multivarfit = ''                   is the default: no line is fitted.</p> <p>                 multivarfit = '1'                   fits a single ols line to all points of each bivariate                   plot in the scatter matrix y|X. The line added to the                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the                   coefficient of Xi in the multivariate regression and                   avconst is the effect of all the other explanatory                   variables different from Xi evaluated at their centroid                   (that is overline{y}'C))                 multivarfit = '2'                   equal to multivarfit ='1' but this time we also add the                   line based on the group of unselected observations                   (i.e. the normal units).</p><p>                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'multivarfit','1'</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_labeladd" class="clearfix"></div><h3 id="input_argument_namevalue_labeladd" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>labeladd</code> &#8212;Add outlier labels in plot.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>If this option is '1',  we label the outliers with the                 unit row index in matrices X and y. The default value is                 labeladd='', i.e. no label is added.</p> <p>                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'labeladd','1'</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;Add variable labels in plot.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>cell array of strings of length p containing the labels of                 the variables of the regression dataset. If it is empty                 (default) the sequence X1, ..., Xp will be created                 automatically                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'NameVar1','NameVar2'}</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>character containing the label of the response               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse'</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum                 on the y axis. Default value is '' (automatic scale)               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim','[0,10]' sets the minim value to 0 and the</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>vector with two elements controlling minimum and maximum                 on the x axis. Default value is '' (automatic scale)               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'xlim','[0,10]' sets the minim value to 0 and the</code>               max to 10 on the x axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>option to be used if the distribution of the data is                 strongly non normal and, thus, the general signal                 detection rule based on consecutive exceedances cannot be                 used. In this case bonflev can be:</p> <p>                 - a scalar smaller than 1 which specifies the confidence                   level for a signal and a stopping rule based on the                   comparison of the minimum MD with a                   Bonferroni bound. For example if bonflev=0.99 the                   procedure stops when the trajectory exceeds for the                   first time the 99% bonferroni bound.</p> <p>                 - A scalar value greater than 1. In this case the                   procedure stops when the residual trajectory exceeds                   for the first time this value.</p> <p>                 Default value is '', which means to rely on general rules                 based on consecutive exceedances.</p><p>               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>scalar which controls whether to display or not messages                 on the screen                 If msg==1 (default) messages are displayed on the screen about                   step in which signal took place and ....</p> <p>                 else no message is displayed on the screen               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as               outliers or NaN if the sample is homogeneous. This field in               future releases will be deleted bacause it will be replaced               by out.outliers.</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>k x 1 vector containing the list of the units declared as               outliers or NaN if the sample is homogeneous.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the posterior mean of $\beta$               (regression coefficents),               $\beta = (c*R + X'X)^{-1} (c*R*\beta_0 + X'y)$ in step               $n-k$</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar. This is the reciprocal of the square root of the               posterior estimate of $\tau$ in step $n-k$</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix:</p> <p>               1st col = fwd search index;</p><p>               2nd col = value of Bayesian minimum deletion residual in               each step of the fwd search.</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>(n-init) x 11 Matrix which contains the unit(s) included               in the subset at each step of the fwd search.</p> <p>               REMARK: in every step the new subset is compared with the               old subset. Un contains the unit(s) present in the new               subset but not in the old one.</p> <p>               Un(1,2) for example contains the unit included in step               init+1.</p><p>               Un(end,2) contains the units included in the final step               of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out               of particular quantiles.</p> <p>               First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>               Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a               certain step a non singular matrix X. In this case the               search runs in a constrained mode, that is including the               units which produced a singular matrix in the last n-constr               steps. out.constr is a vector which contains the list of               units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSRB'.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Chaloner, K. and Brant, R. (1988), A Bayesian Approach to Outlier Detection and Residual Analysis, "Biometrika", Vol. 75, pp. 651-659.</p></div><div><p>Riani, M., Corbellini, A. and Atkinson, A.C. (2018), Very Robust Bayesian Regression for Fraud Detection, "International Statistical Review", <a href="http://dx.doi.org/10.1111/insr.12247">http://dx.doi.org/10.1111/insr.12247</a></p></div><div><p>Atkinson, A.C., Corbellini, A. and Riani, M., (2017), Robust Bayesian Regression with the Forward Search: Theory and Data Analysis, "Test", Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRBmdr.html" itemprop="url"><span itemprop="name"><code>FSRBmdr</code></span></a></span> | <span itemprop="seealso"><a href="FSR.html" itemprop="url"><span itemprop="name"><code>FSR</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
