@@ -58,15 +58,17 @@ else
         FSDAroot=fileparts(FullPath);
         %  cd(FSDAroot)
     end
-    outputfolder=[FSDAroot filesep 'FSDA' filesep 'images'];
+    outputfolder=[FSDAroot filesep 'helpfiles' filesep 'FSDA' filesep 'images'];
     
     try
         % unzip file into outputfolder
         unzip(url,outputfolder)
         disp(['Files correctly extracted into '  outputfolder])
         disp('Now it is necessary to copy manually folder')
-        disp([FSDAroot filesep 'FSDA'])
-        disp([docroot fileseip help 'FSDA'])
+        disp([FSDAroot filesep 'helpfiles' filesep 'FSDA'])
+        disp('in')
+        disp([docroot filesep help 'FSDA'])
+        disp('-----------------------------')
         disp('Alternatively, run routine checkFSDAsetup.m')
         disp('which is located in the main folder of FSDA')
     catch
