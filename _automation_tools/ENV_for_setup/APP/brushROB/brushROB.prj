@@ -1,15 +1,19 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="480475141" file="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushROB\brushROB.prj" location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushROB" name="brushROB" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="3406894731" file="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushROB\brushROB.prj" location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushROB" name="brushROB" target="target.mlapps" target-name="Package App">
     <param.appname>brushROB</param.appname>
     <param.authnamewatermark>FSDA team</param.authnamewatermark>
-    <param.email>toolboxfs@unipr.it</param.email>
+    <param.email>FSDA@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
-    <param.icon>${PROJECT_ROOT}\brushROB_24.png</param.icon>
-    <param.icons />
+    <param.icon>${PROJECT_ROOT}\brushROB_resources\icon_24.png</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}\brushROB_resources\icon_48.png</file>
+      <file>${PROJECT_ROOT}\brushROB_resources\icon_24.png</file>
+      <file>${PROJECT_ROOT}\brushROB_resources\icon_16.png</file>
+    </param.icons>
     <param.summary>The purpose of this GUI is to show how dynamic brushing inside the index plot of residuals works. FSDA toolbox.</param.summary>
     <param.description>&lt;b&gt;brushROB&lt;/b&gt; displays a GUI to brush units from the index plot of residuals and see the corresponding units highlighted in the yXplot. brushROB is part of the FSDA toolbox</param.description>
     <param.screenshot>${PROJECT_ROOT}\brushROB.bmp</param.screenshot>
-    <param.version>1.0</param.version>
+    <param.version>1.1</param.version>
     <param.products.name>
       <item>MATLAB</item>
       <item>Statistics and Machine Learning Toolbox</item>
@@ -19,15 +23,15 @@
       <item>19</item>
     </param.products.id>
     <param.products.version>
-      <item>9.2</item>
-      <item>11.1</item>
+      <item>9.7</item>
+      <item>11.6</item>
     </param.products.version>
     <param.platforms />
     <param.output>D:\MATLAB\FSDA</param.output>
     <param.guid>3d0bd007-19fd-4886-af7b-f501ef1765e8</param.guid>
     <unset>
-      <param.icons />
-      <param.version />
+      <param.authnamewatermark />
+      <param.email />
       <param.platforms />
     </unset>
     <fileset.main>
@@ -41,22 +45,34 @@
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2017a</root>
+      <root>C:\Program Files\MATLAB\R2019b</root>
       <toolboxes>
-        <toolbox name="fixedpoint" />
         <toolbox name="matlabcoder" />
-        <toolbox name="matlabhdlcoder" />
         <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="fixedpoint" />
+        <toolbox name="matlabhdlcoder" />
+        <toolbox name="neuralnetwork" />
       </toolboxes>
-      <toolbox>
-        <fixedpoint>
-          <enabled>true</enabled>
-        </fixedpoint>
-      </toolbox>
       <toolbox>
         <matlabcoder>
           <enabled>true</enabled>
         </matlabcoder>
+      </toolbox>
+      <toolbox>
+        <embeddedcoder>
+          <enabled>true</enabled>
+        </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <fixedpoint>
+          <enabled>true</enabled>
+        </fixedpoint>
       </toolbox>
       <toolbox>
         <matlabhdlcoder>
@@ -64,9 +80,9 @@
         </matlabhdlcoder>
       </toolbox>
       <toolbox>
-        <embeddedcoder>
+        <neuralnetwork>
           <enabled>true</enabled>
-        </embeddedcoder>
+        </neuralnetwork>
       </toolbox>
     </matlab>
     <platform>
@@ -78,7 +94,7 @@
       <vista>false</vista>
       <linux>false</linux>
       <solaris>false</solaris>
-      <osver>6.2</osver>
+      <osver>10.0</osver>
       <os32>false</os32>
       <os64>true</os64>
       <arch>win64</arch>

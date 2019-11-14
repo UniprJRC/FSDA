@@ -1,32 +1,38 @@
 <deployment-project plugin="plugin.apptool" plugin-version="1.0">
-  <configuration build-checksum="1058765027" file="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN\brushFAN.prj" location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN" name="brushFAN" target="target.mlapps" target-name="Package App">
+  <configuration build-checksum="3920054908" file="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN\brushFAN.prj" location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN" name="brushFAN" target="target.mlapps" target-name="Package App">
     <param.appname>brushFAN</param.appname>
     <param.authnamewatermark>FSDA team</param.authnamewatermark>
-    <param.email>toolboxfs@unipr.it</param.email>
+    <param.email>FSDA@unipr.it</param.email>
     <param.company>Univ. of Parma and JRC of EC</param.company>
-    <param.icon>${PROJECT_ROOT}\brushFAN_24.png</param.icon>
-    <param.icons />
+    <param.icon>${PROJECT_ROOT}\brushFAN_resources\icon_24.png</param.icon>
+    <param.icons>
+      <file>${PROJECT_ROOT}\brushFAN_resources\icon_48.png</file>
+      <file>${PROJECT_ROOT}\brushFAN_resources\icon_24.png</file>
+      <file>${PROJECT_ROOT}\brushFAN_resources\icon_16.png</file>
+    </param.icons>
     <param.summary>The purpose of this GUI is to show how dynamic brushing inside FAN plot  works. FSDA toolbox.</param.summary>
     <param.description>&lt;b&gt;brushFAN&lt;/b&gt; displays a GUI where it is possible to brush steps from the fan plot and to see the corresponding units highlighted in other plots brushFAN is part of the FSDA toolbox.</param.description>
     <param.screenshot>${PROJECT_ROOT}\brushFAN.jpg</param.screenshot>
-    <param.version>1.0</param.version>
+    <param.version>1.1</param.version>
     <param.products.name>
       <item>MATLAB</item>
+      <item>Statistics and Machine Learning Toolbox</item>
     </param.products.name>
     <param.products.id>
       <item>1</item>
+      <item>19</item>
     </param.products.id>
     <param.products.version>
       <item>9.7</item>
+      <item>11.6</item>
     </param.products.version>
     <param.platforms />
-    <param.output>${PROJECT_ROOT}</param.output>
+    <param.output>D:\MATLAB\FSDA</param.output>
     <param.guid>d75f2465-d088-453e-95e5-b5cc55c7f99d</param.guid>
     <unset>
-      <param.icons />
-      <param.version />
+      <param.authnamewatermark />
+      <param.email />
       <param.platforms />
-      <param.output />
     </unset>
     <fileset.main>
       <file>D:\MATLAB\FSDA\examples\brushFAN.m</file>
@@ -35,7 +41,7 @@
     <fileset.resources />
     <fileset.package />
     <build-deliverables>
-      <file location="D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP" name="brushFAN" optional="false">D:\MATLAB\FSDA\_automation_tools\ENV_for_setup\APP\brushFAN</file>
+      <file location="D:\MATLAB" name="FSDA" optional="false">D:\MATLAB\FSDA</file>
     </build-deliverables>
     <workflow />
     <matlab>
