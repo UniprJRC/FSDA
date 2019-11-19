@@ -241,7 +241,7 @@ function [out] = overlapmap(D, varargin)
         rng(1)
     end
     out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
-    overl_2 = overlapmap(out_2, 'omegaStar', 0.025, 'plots', 'contourf', 'userColors', summer);
+    overl_2 = overlapmap(out_2, 'omegaStar', 0.0025, 'plots', 'contourf', 'userColors', summer);
 
     cascade;
 %}
@@ -493,7 +493,7 @@ end
 try
     [OmegaMap, ~, ~, ~, ~] = overlap(k, v, Pi, Mu, S);
 catch
-    error('FSDA:overlapmap:wrongInputs','Numerical issues in computing the overlap: try with different parameters.');
+    error('FSDA:overlapmap:wrongInputs','Numerical issues in computing the overlap or empy groups: try with different parameters.');
 end
     
 % Sum of misclassification probailities in order to obtain an overlap matrix
