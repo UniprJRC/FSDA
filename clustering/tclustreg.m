@@ -566,6 +566,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % level trimming
     close all
     % Generate two groups and a set of concentrated outliers
+    rng('default') 
     rng(100)
     p=1;
     n1=90;
