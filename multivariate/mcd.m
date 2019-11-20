@@ -763,7 +763,7 @@ for i = 1:nselected
     if outIRWLS.obj < tolMCD
         
         [center,covar,z,correl,obsinplane,count]=exactfit(Y,NaN,med,madY,NaN,...
-            meanvct,covmat,n);
+            med,Sj,n);
         REW.plane=z;
         weights(obsinplane)=1;
         [RAW.center,RAW.cov,REW.center,REW.cov,RAW.objective,...
