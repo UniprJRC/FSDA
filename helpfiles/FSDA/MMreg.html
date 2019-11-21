@@ -58,8 +58,8 @@ resindexplot(outMM.residuals,'title',titl,'laby',laby,'numlab','','conflev',conf
 % In this example MM estimator seems to detect half of the outlier with a Bonferroni significance level.
 % By simply changing the seed to 543 (state=543), using a Bonferroni size
 %of 1%, no unit is declared as outlier and just half of them using the 99%
-%band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  3.59 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\MMreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
+%band.</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.42 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/MMreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\MMreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparison between direct call to MMreg and call to Sreg and MMregcore.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=30;
 p=3;
 randn('state', 123456);
 X=randn(n,p);

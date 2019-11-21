@@ -3485,7 +3485,7 @@ if evalCode==true
                         'To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip'...
                         ' and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>'];
                         incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
-                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end) '</a>'];
                 else
                 end
             end
@@ -3543,7 +3543,7 @@ if evalCode==true
                     Addbefore=['<a href=''http://rosa.unipr.it/fsda/' name '.html#', ExToExecStr{i+numexToExec} '''>'];
                     Addafter='Click here for the graphical output of this example (link to Ro.S.A. website)';
                     incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
-                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end)];
+                        incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end) '</a>'];
                 else
                 end
                 
