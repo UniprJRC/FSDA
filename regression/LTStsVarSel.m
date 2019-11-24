@@ -39,7 +39,8 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                       trend = 3 implies cubic trend
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %                       In the paper RPRH to denote the order of the trend
-%                       symbol A is used.
+%                       symbol A is used. If this field is not present into
+%                       input structure model, model.trend=2 is used.
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
@@ -100,16 +101,18 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                         that is there is no autoregressive component.
 %                 Example - 'model', model
 %                 Data Types - struct
-%               Remark: the default model is for monthly data with a linear
-%               trend (2 parameters) + seasonal component with just one
+%               Remark: the default overparametrized model is for monthly
+%               data with a quadratic
+%               trend (3 parameters) + seasonal component with just one
 %               harmonic (2 parameters), no additional explanatory
-%               variables and no level shift that is
+%               variables, no level shift and no AR component that is
 %                               model=struct;
 %                               model.s=12;
 %                               model.trend=1;
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.lshift=0;
+%                               model.ARp=0;    
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
 %
@@ -239,7 +242,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     model.signal2noiseratio = 100;  % signal to noise
     
     n = 100;                        % sample size
-    tmp = rand(n,1);                
+    tmp = rand(n,1);
     model.X = tmp.*[1:n]';          % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
     % generate data
@@ -247,7 +250,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
     %run LTStsVarSel with all default options
     rng(1);
-    [out_reduced_0, out_model_0] = LTStsVarSel(out_sim.y);
+    [out_model_0, out_reduced_0] = LTStsVarSel(out_sim.y);
  
     % optional: add a FS step to the LTSts estimator
     % outFS = FSRts(out_sim.y,'model',out_model_0);
@@ -259,7 +262,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
     % complete model to be tested.
     overmodel=struct;
-    overmodel.trend=3;              % quadratic trend
+    overmodel.trend=2;              % quadratic trend
     overmodel.s=12;                 % monthly time series
     overmodel.seasonal=303;         % number of harmonics
     overmodel.lshift=4;             % position where to start monitoring level shift
@@ -268,7 +271,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     % pval threshold
     thPval=0.01;
 
-    [out_reduced_1, out_model_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval,'plots',1);
+    [out_model_1, out_reduced_1] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval,'plots',1);
 
 %}
 
@@ -278,14 +281,14 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     % add three autoregressive components to the complete model.
      
      overmodel.ARp=3;
-    [out_reduced_2, out_model_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
+    [out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
 
 %}
 
 %{
     % run LTStsVarSel with default pptions and return warning messages.
      
-    [out_reduced_3, out_model_3, messages] = LTStsVarSel(out_sim.y);
+    [out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);
 %}
 
 
@@ -302,7 +305,7 @@ end
 
 % Set up defaults for the over-parametrized model
 modeldef          = struct;
-modeldef.trend    = 3;        % cubic trend
+modeldef.trend    = 2;        % quadratic trend
 modeldef.s        = 12;       % monthly time series
 modeldef.seasonal = 303;      % three harmonics growing cubically (B=3, G=3)
 modeldef.X        = [];       % no extra explanatory variable
@@ -389,6 +392,9 @@ end
 % iterative procedure should stop.
 AllPvalSig=0;
 
+% Initialize pvalue of last AR component to be zero.
+LastARPval=0;
+
 % iniloop associated with level shift, which has to be tested only once
 iniloop=1;
 
@@ -465,13 +471,29 @@ while AllPvalSig == 0
     else
         LevelShiftPval=0;
     end
+    %%%%%%%%%%%%%%%%%%%%%%%%%
     
+    posAR=seqp(contains(rownam,'b_AR'));
+    if ~isempty(posAR)
+        
+        % Position of the last element of the trend component
+        posLastAR=max(seqp(contains(rownam,'b_AR')));
+        if posLastAR>1
+            LastARPval=out_LTSts.Btable{posLastAR,'pval'};
+        else
+            LastARPval=0;
+        end
+    end
+    
+    
+    
+    
+    %%%%%%%%%%%%%%%%%%%%
     % Group all p-values into a vector
     Pvalall = [LastTrendPval;...
         LastHarmonicPval;...
-        maxPvalX;...
-        LastVarAmplPval;...
-        LevelShiftPval];
+        maxPvalX; LastVarAmplPval;...
+        LevelShiftPval; LastARPval];
     
     % Start of model reduction (step 2b)
     [maxPvalall,indmaxPvalall]=max(Pvalall);
@@ -523,10 +545,19 @@ while AllPvalSig == 0
                 if msg==1 || plots==1
                     removed ='Remove level shift component';
                 end
+            case 6
+                if msg==1 || plots==1
+                    strAR=num2str(model.ARp);
+                    removed = ['Removing AR component of order ' strAR];
+                end
+                model.ARp=model.ARp-1;
             otherwise
                 %else
         end
         
+         if msg==1 || plots==1
+             disp(removed)
+         end
         % keep the level shift component and transfer it to X part
         if model.lshift>0 && iniloop==1
             Xls=[zeros(posLS-1,1); ones(n-posLS+1,1)];
@@ -564,15 +595,19 @@ while AllPvalSig == 0
     end
     
 end
-% if lshift_present > 0 && ~isempty(model.X)
-%     tmp = find(model.X(:,end)>0);
-%     model.lshift=tmp(1);
-%     model.X(:,end) = [];
-%     out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
-% end
 
-reduced_est   = out_LTSts;
-reduced_model = model;
+% If level shift is present and model.X is not empty, it means that the last
+% column of model.X is the level shift explanatory variable
+if lshift_present > 0 && ~isempty(model.X)
+    tmp = find(model.X(:,end)>0);
+    model.lshift=tmp(1);
+    out_LTSts.posLS=tmp(1);
+    model.X(:,end) = [];
+    out_LTSts.Btable.Properties.RowNames(end)={'b_lshift'};
+end
+
+reduced_est   = model;
+reduced_model = out_LTSts;
 
 if msg==1
     disp('The final select model has these parameters:')
