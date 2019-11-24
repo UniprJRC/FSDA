@@ -831,7 +831,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %}
 
-%{ 
+%{
 
     %% Examples 4 and 5 used in the paper RPRH: trade data.
     
@@ -854,7 +854,7 @@ function [out, varargout] = LTSts(y,varargin)
     out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true);
     out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true);
 
-    % the wedgeplot with the time series and the detected outliers and 
+    % the wedgeplot with the time series and the detected outliers and
     % level shift
     wedgeplot(out4,'extradata',Y4,'titl','P12119085, imports of plants from KN to UK');
     wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT');
@@ -2016,8 +2016,8 @@ dispresults=options.dispresults;
 
 b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
 b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
-           'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
-           'b_cos5'; 'b_sin5'; 'b_cos6'};
+    'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
+    'b_cos5'; 'b_sin5'; 'b_cos6'};
 b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
 b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
 if ARp>0
@@ -2280,7 +2280,15 @@ if seasonal<6
         yf=yin(bsb);
         
         lasind=length(brobfinal);
-        selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+        if seasonal>0
+            selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+        else
+            % if seasonal is zero it is also necessary to remove the non
+            % linear terms of the seasonal components
+            %   selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+            varampl=0;
+            dd=1;
+        end
         
         if lshift>0
             Xlshiftf=Xlshift(bsb);
@@ -2911,11 +2919,11 @@ rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
     % if msg==1
-        disp('Warning: problem in subfunction corfactorRAW')
-        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
-        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
-        disp('This may happen when n is very small and p is large')
-   % end
+    disp('Warning: problem in subfunction corfactorRAW')
+    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
+    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+    disp('This may happen when n is very small and p is large')
+    % end
 end
 end
 
@@ -2960,12 +2968,12 @@ end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
-  %  if msg==1
-        disp('Warning: problem in subfunction corfactorREW');
-        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
-        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
-        disp('This may happen when n is very small and p is large');
-  %  end
+    %  if msg==1
+    disp('Warning: problem in subfunction corfactorREW');
+    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
+    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
+    disp('This may happen when n is very small and p is large');
+    %  end
 end
 end
 %FScategory:REG-Regression
