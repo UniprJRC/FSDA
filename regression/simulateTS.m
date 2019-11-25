@@ -411,7 +411,7 @@ function [out] = simulateTS(T,varargin)
     model.Xb=100;
     out=simulateTS(T,'model',model,'plots',1);
     y=out.y;
-    % Fit a model with linear trend, AR(3) and the true expl. variable  
+    % Fit a model with linear trend, AR(3) and the true expl. variable
     model=struct;
     model.trend=1;
     model.seasonal=0;
@@ -732,11 +732,43 @@ if ~isempty(ARb)
         disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
         ARb=ARb(1:6);
     end
-    % regARIMA generates regression models with ARMA errors
-    Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
-    % arima generates ARIMAX models
-    % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
-    [y,irregular] = simulate(Mdl1,T,'X',signal);
+    
+    if exist('regARIMA','file')>0
+        
+        % regARIMA generates regression models with ARMA errors
+        Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+        % arima generates ARIMAX models
+        % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+        [y,irregular] = simulate(Mdl1,T,'X',signal);
+    else
+        
+        
+        %
+        % Simulate the data y(t) without the Econometrics toolbox.
+        %
+        % For more details see files
+        % \R2019b\toolbox\econ\econ\@regARIMA\simulate.m
+        % R2019b\toolbox\econ\econ\@ARIMA\simulate.m
+        % R2019b\toolbox\econ\econ\+internal\+econ\simulateStandardizedVariates.m
+        LagsAR=1:length(ARb);
+        LagsMA=0;
+        coefficients = [0  ARb  1]';  % ARIMA coefficient vector
+        I  =1;
+        maxPQ=length(ARb);
+        Y  = zeros(1,T+maxPQ);
+        E=Y;
+        Z = randn(1,T);
+        E(:,(maxPQ + 1:end))=Z * sigmaeps;
+        
+        for t = (maxPQ + 1):T+maxPQ
+            data   = [I  Y(:,t - LagsAR)  E(:,t - LagsMA)];
+            Y(:,t) = data * coefficients;
+        end
+        Y = Y(:,(maxPQ + 1):T+maxPQ)';
+        irregular = E(:,(maxPQ + 1):T+maxPQ)';
+        y=signal+Y;
+        
+    end
 else
     % Simulate the irregular component
     irregular=sigmaeps*randn(T,1);
