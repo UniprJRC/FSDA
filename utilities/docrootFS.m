@@ -29,7 +29,7 @@ if str2double(a.Version)>7.14
         msg2bis= ['"' FSDAhelproot '"' char10];
         msg3=['in the MATLAB help folder.' char10];
         msg3bis= ['"' destinationpathFSDAdoc '"' char10];
-        msg3tris=['For additional details please see section "FSDA documentation" of file:' char10];
+        msg3tris=['Alternatively, run routine' char10 char 10 'installHelpFiles.m.' char10 char10 'For additional details please see section "FSDA documentation" of file:' char10];
         msg4=[FSDAroot filesep 'doc' filesep 'GettingStarted.mlx'];
         
         msg=regexprep([msg1 msg1bis msg2 msg2bis msg3 msg3bis msg3tris msg4],'\\','/');
@@ -75,11 +75,11 @@ end
 
 function d=mydialog(msg)
 % Dimensione overall dialogue box
-d = dialog('Position',[300 300 380 400],'Name','FSDA warning message');
+d = dialog('Resize','on','Position',[300 300 580 400],'Name','FSDA warning message');
 
 uicontrol('Parent',d,...
     'Style','text',...
-    'Position',[20 50 330 325],...
+    'Position',[20 50 530 325],...
     'String',msg,'FontSize',11);
 
 % Dimension of the buttom close
