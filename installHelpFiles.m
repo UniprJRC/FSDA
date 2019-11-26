@@ -1,9 +1,9 @@
-% This file
-% 1) makes sure that the HTML files which are in subfolder
+% This file copies the HTML files which are in subfolder
 %       (FSDA path)/helpfiles/FSDA
-% are copied inside
-%       (docroot)/help/FSDA
-% Note that to properly copy these file under windows, it is necessary to have
+% inside
+%       (MATLAB docroot)/help/FSDA
+% 
+% Note that to properly copy these file under windows, it may be necessary to have
 % administrator privileges (or to run MATLAB with administrator privileges)
 %
 
@@ -13,7 +13,7 @@
 % folder
 CurrentFolder=pwd;
 
-% First navigate to FSDA main folder
+% Navigate to FSDA main folder
 FileName='addFSDA2path';
 FullPath=which(FileName);
 if isempty(FullPath)
@@ -24,7 +24,7 @@ else
     cd(FSDAroot)
 end
 
-%% Copy all FSDA .html files inside docroot/FSDA
+%% Copy all FSDA .html files inside (MATLAB docroot)/FSDA
 fsep=filesep;
 
 try
@@ -42,7 +42,7 @@ try
         uac = actxserver('Shell.Application');
         
         
-        % Create temporary file file copy_FSDA_help_files.bat
+        % Create temporary file named copy_FSDA_help_files.bat
         stringToIncludeInBatFile=['robocopy /E "' FSDAroot filesep source '"  "' destination '"'];
         
         file1ID=fopen('copy_FSDA_help_files.bat','w');
@@ -51,15 +51,13 @@ try
         
         % run copy_FSDA_help_files,bat file with admin privileges
         uac.ShellExecute('copy_FSDA_help_files.bat', 'ELEV', '', 'runas', 1);
-        
-%         disp('copying files')
-%         disp('Click to stop')
+       
         pause(5);
         % delete temporary file copy_FSDA_help_files.bat
         delete copy_FSDA_help_files.bat
         
     else
-        
+        % Mac users
         [status,msg]=copyfile(source,destination,'f');
         if status ==1
             disp('HTML FSDA documentation files correctly copied')
