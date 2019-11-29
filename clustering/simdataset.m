@@ -536,7 +536,7 @@ lambda     = options.lambda;
 if isscalar(n)
     [k,v]=size(Mu);
     
-    if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
+    if sum(Pi <= 0)~=0 || sum(Pi > 1) ~= 0
         error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
     end
     
