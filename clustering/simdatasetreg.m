@@ -589,7 +589,7 @@ if strcmp(Xdistrib.type,'User') && size(Xdistrib.X,1) > n
      disp(['         We generate size(Xdistrib.X,1) = ' num2str(n) ' units']);
 end      
         
-if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
+if sum(Pi <= 0)~=0 || sum(Pi > 1) ~= 0
     error('FSDA:simdatasetreg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
 
