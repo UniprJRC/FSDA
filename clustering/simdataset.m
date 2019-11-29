@@ -540,6 +540,10 @@ if isscalar(n)
         error('FSDA:simdataset:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
     end
     
+    if length(Pi) ~= k
+        error('FSDA:simdataset:WrongLengthPi', ['Vector of mixing proportions Pi must have a length equal to ' num2str(k)] )
+    end
+    
     if (n < 1)
         error('FSDA:simdataset:Wrongn','Wrong sample size n...')
     end

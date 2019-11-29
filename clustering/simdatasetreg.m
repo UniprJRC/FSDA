@@ -573,9 +573,13 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 
 %% Beginning of code
 
+
 if (n < 1)
     error('FSDA:simdatasetreg:Wrongn','Wrong sample size n...')
 end
+
+[p,k]=size(Beta);
+
 
 % If the user selects a X distribution with more units than n, than we
 % change the number of units to generate.
@@ -588,6 +592,11 @@ end
 if sum(Pi <= 0)~=0 || sum(Pi >= 1) ~= 0
     error('FSDA:simdatasetreg:WrongPi','Wrong vector of mixing proportions Pi: the values must be in the interval (0 1)')
 end
+
+if length(Pi) ~= k
+    error('FSDA:simdatasetreg:WrongLengthPi', ['Vector of mixing proportions Pi must have a length equal to ' num2str(k)] )
+end
+
 
 noiseunitsdef   = '';
 noisevarsdef    = '';
@@ -626,7 +635,6 @@ lambda=options.lambda;
 noiseunits = options.noiseunits;
 noisevars  = options.noisevars;
 
-[p,k]=size(Beta);
 
 if (n >= k) 
     mrr = mnrnd( n-k, Pi);
