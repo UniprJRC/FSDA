@@ -32,50 +32,44 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %               regression hyperplanes. Vector.
 %    Xdistrib : information about how to generate
 %               each explanatory variable inside each group. Structure.
-%               The following options are admitted for Xdistrib
+%               Structure which contains the following fields:
 %                   Xdistrib.intercept = scalar equal to 1 if intercept is
 %                       present. The default value of Xdistrib.intercept is 1.
-%               The other fields of Xdistrib depend on the distribution
-%               which is chosen.
-%               NORMAL DISTRIBUTION N(mu, sigma)
-%                   Xdistrib.type='normal';
+%                   Xdistrib.type=type of distribution. Possible values for
+%                       are 'normal', 'halfnormal', 'uniform', 'User'.
 %                   Xdistrib.mu = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters mu
 %                       for each explanatory variable and each group. The
-%                       default value of Xdistrib.mu is zeros(p-1, k).
+%                       default value of Xdistrib.mu is zeros(p-1, k). Note
+%                       that  Xdistrib.mu is used just if Xdistrib.type is
 %                   Xdistrib.sigma = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters
 %                       sigma for each explanatory variable and each group.
-%                       The default value of Xdistrib.sigma is ones(p-1, k)
-%               UNIFORM DISTRIBUTION U(a, b)
-%                   Xdistrib.type='uniform';
+%                       The default value of Xdistrib.sigma is ones(p-1,k). 
+%                       Notethat  Xdistrib.sigma is used just if
+%                       Xdistrib.type is 'normal' or 'halfnormal'.
 %                   Xdistrib.a = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters a
 %                       for each explanatory variable and each group. The
 %                       default value of Xdistrib.a is zeros(p-1, k).
+%                       Notethat  Xdistrib.a is used just if Xdistrib.type
+%                       is 'uniform', that is if we have U(a, b).
 %                   Xdistrib.b = matrix of size (p-1)-by-k if
 %                       (Xdistrib.intercept=1) or p-by-k if
 %                       (Xdistrib.intercept=0) containing the parameters b
 %                       for each explanatory variable and each group. The
-%                       default value of Xdistrib.b is ones(p-1, k).
-%               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-%                   Xdistrib.type='halfnormal';
-%                   Xdistrib.sigma = matrix of size (p-1)-by-k if
-%                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
-%                   containing the parameters sigma for each explanatory variable
-%                   and each group. The default value of Xdistrib.sigma is
-%                   ones(p-1, k).
-%TODO:simdatasetReg:OTHER_DISTRIB
-%                   Xdistrib.type='user'.
+%                       default value of Xdistrib.a is zeros(p-1, k).
+%                       Note that  Xdistrib.b is used just if Xdistrib.type
+%                       is 'uniform'; that is we have U(a, b).
 %                   Xdistrib.X = matrix with at least n rows and p-1 (if
-%                   intercept is present) or p (if intercept is not
-%                   present) columns containing the values of the
-%                   explanatory variables for the k groups.
-%                   Xdistrib.id =identifier vector which labes the rows of
-%                   matrix Xdistrib.X
+%                       intercept is present) or p (if intercept is not
+%                       present) columns containing the values of the
+%                       explanatory variables for the k groups.
+%                       Notethat  Xdistrib.X is used just if Xdistrib.type
+%                       is 'User'.
 %               Data Types - struct
 %
 %  Optional input arguments:
@@ -1057,7 +1051,7 @@ end
                 % Rescale the unit in the interval Lout and Uout for X
                 Xout(i,:) = (Uout-Lout).*rrX+Lout;
                 if strcmp(typeout,'by_comp')
-                    yout(i) = Xout(i,:) * Beta(:,current_group) + sqrt(S(:,:,current_group))* rand/max(Xout(i,:),0.5);
+                    yout(i) = Xout(i,:) * Beta(:,current_group) + sqrt(S(current_group))* rand/max(Xout(i,:),0.5);
                 else
                     rry=rrally(rindex);
                     % Rescale the unit in the interval Louty and Uouty for y
@@ -1079,7 +1073,7 @@ end
             if ~strcmp(typeout,'by_comp')
                 for jj=1:k
                     yhatij=Xout(i,:)*Beta(:,jj);
-                    if ((yout(i)-yhatij)^2)/(S(:,:,jj)) <critval
+                    if ((yout(i)-yhatij)^2)/(S(jj)) <critval
                         
                         ij=1;
                         break
