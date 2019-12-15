@@ -493,7 +493,7 @@ while AllPvalSig == 0
     
     % Start of model reduction (step 2b)
     [maxPvalall,indmaxPvalall]=max(Pvalall);
-    
+
     if maxPvalall>thPval
         switch indmaxPvalall
             case 1
