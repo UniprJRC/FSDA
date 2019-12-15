@@ -277,17 +277,14 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from over-parametrized model with autoregressive components.
-
     % add three autoregressive components to the complete model.
      
      overmodel.ARp=3;
     [out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
-
 %}
 
 %{
     % run LTStsVarSel with default pptions and return warning messages.
-     
     [out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);
 %}
 
@@ -471,6 +468,7 @@ while AllPvalSig == 0
     else
         LevelShiftPval=0;
     end
+    
     %%%%%%%%%%%%%%%%%%%%%%%%%
     
     posAR=seqp(contains(rownam,'b_AR'));
@@ -485,10 +483,8 @@ while AllPvalSig == 0
         end
     end
     
-    
-    
-    
     %%%%%%%%%%%%%%%%%%%%
+    
     % Group all p-values into a vector
     Pvalall = [LastTrendPval;...
         LastHarmonicPval;...

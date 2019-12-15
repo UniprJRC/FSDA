@@ -1493,13 +1493,12 @@ for lsh=LSH
                     % stored best numerator of squared scaled
                     [~,ind] = max(bestnumscale2);
                     
-                    bestnumscale2(ind)     = numscale2rw;
-                    bestbetas(ind,:)    = betarw';
-                    bestsubset(ind,:)   = index;
-                    bestyhat(:,ind)=yhat;
-                    % sworst = the best scale among the bestr found up to
-                    % now
-                    sworst              = max(bestnumscale2);
+                    bestnumscale2(ind) = numscale2rw;
+                    bestbetas(ind,:)   = betarw';
+                    bestsubset(ind,:)  = index;
+                    bestyhat(:,ind)    = yhat;
+                    % sworst = best scale among the bestr found up to now
+                    sworst             = max(bestnumscale2);
                 end
             else
                 
@@ -1507,9 +1506,8 @@ for lsh=LSH
                 bestbetas(ij,:) = betarw';
                 bestsubset(ij,:)= index;
                 bestyhat(:,ij)=yhat;
-                % sworst = the best scale among the bestr found up to now
+                % sworst = best scale among the bestr found up to now
                 sworst = max(bestnumscale2);
-                
                 ij = ij+1;
                 brob = 1;
             end
@@ -1562,10 +1560,8 @@ for lsh=LSH
         % 10 best
         WEIibestrdiv2(:,i)=tmp.weights;
         
-        
         allnumscale2(i,1)=tmp.numscale2rw;
         % allscales(i,2)=tmp.betarw(end);
-        
         
         if tmp.numscale2rw < numsuperbestscale2
             % brob = superbestbeta
@@ -2672,7 +2668,9 @@ end
         %   exitflag   : scalar which informs about convergence. exitflag =
         %               0 implies normal convergence
         
-        outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
+        % For performance reasons, the output structure is created only at
+        % the end
+        % outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
         
         % Residuals for the initialbeta
         res = y - yhat;
@@ -2804,11 +2802,10 @@ end
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
             if (any(isnan(newbeta))) || exitfl ~=0
-                newbeta = initialbeta;
+                newbeta   = initialbeta;
                 numscale2 = ininumscale2;
                 break
             end
-            
             
             % update residuals
             res = y - yhat;
@@ -2820,12 +2817,13 @@ end
             
         end
         
-        % Store final estimate of beta
-        outIRWLS.betarw = newbeta;
+        % newbeta = the final estimate of beta to be stored in outIRWLS.betarw
+        %outIRWLS.betarw = newbeta;
         
-        % Store final fitted values for all the observations using final
-        % estimate of beta
-        outIRWLS.yhat=yhat;
+        % yhat = the final fitted values for all the observations using
+        % final estimate of beta, to be stored in outIRWLS.yhat
+        %outIRWLS.yhat=yhat;
+        
         if exitfl==0
             
             if constr==1
@@ -2839,8 +2837,8 @@ end
                 end
             elseif constr ==2
                 
-                % Force both initialbeta(end) and initialbeta(end)-1 to belong to
-                % the subset
+                % Force both initialbeta(end) and initialbeta(end)-1 to
+                % belong to the subset
                 booLS=sum(i_r2s(1:h)==initialbeta(end));
                 booLSprev=sum(i_r2s(1:h)==initialbeta(end)-1);
                 
@@ -2856,22 +2854,28 @@ end
             else
                 bsb=i_r2s(1:h);
             end
-            numscale2=sum(r2(bsb));
+            numscale2 = sum(r2(bsb));
             
-            % store final estimate of trimmed sum of squares of residuals
-            outIRWLS.numscale2rw = numscale2;
+            % numscale2 = the final estimate of trimmed sum of squares of
+            % residuals, to be stored in outIRWLS.numscale2rw
+            %outIRWLS.numscale2rw = numscale2;
         else
-            outIRWLS.numscale2rw=numscale2;
+            %outIRWLS.numscale2rw = numscale2;
         end
-        % store final estimate of the weights for each observation In this
-        % case weights are 0,1. 1 for the units associated with the
-        % units formig subset from  final iteration 0 for the other
-        % units.
+        % weights = the final estimate of the weights for each observation,
+        % to be stored in outIRWLS.weights. In this case weights are 0,1. 1
+        % for the units associated with the units formig subset from  final
+        % iteration 0 for the other units.
         weights=zerT1;
         weights(bsb)=1;
-        outIRWLS.weights=weights;
-        outIRWLS.exiflag=exitfl;
+        %outIRWLS.weights=weights;
         
+        % exitfl = the exit flag to be stored in outIRWLS.exiflag
+        %outIRWLS.exiflag=exitfl;
+        
+        % Store all output variables
+        outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights,'exiflag',exitfl,'numscale2rw',numscale2);
+                
     end
 
 end
