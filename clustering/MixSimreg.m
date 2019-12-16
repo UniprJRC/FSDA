@@ -889,6 +889,9 @@ end
 Q.Xdistrib=Xdistrib;
 % Add details about the distribution of beta which has been used
 Q.betadistrib=betadistrib;
+% Given that the variances are scalars, it is unnecessary to store a
+% 1-by-1-by-k 3D vector
+Q.S=squeeze(Q.S);
 out = Q;
 
 

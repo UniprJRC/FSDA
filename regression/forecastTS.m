@@ -675,7 +675,7 @@ end
 X = model.X;
 
 % Order of the autoregressive component
-ARp = model.ARp; 
+ARp = model.ARp;
 if ARp>6
     disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
     ARp=6;
@@ -828,8 +828,8 @@ if dispresults
     
     b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
     b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
-               'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
-               'b_cos5'; 'b_sin5'; 'b_cos6'};
+        'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
+        'b_cos5'; 'b_sin5'; 'b_cos6'};
     b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
     b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
     if ARp>0
@@ -896,14 +896,14 @@ if plots==1
     plot(datesnumeric(1:n),y,'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
     hold('on')
     % plot the estimated values
-    plot(datesnumeric(1:n),yfore(1:n),'Color',clr(2),'LineStyle',syb{1},'LineWidth',1);
+    plot(datesnumeric(1:n),yfore(1:n),'Color',clr(2),'LineStyle',syb{2},'LineWidth',1.5);
     % plot the forecasts
-    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{1},'LineWidth',1);
+    plot(datesnumeric(n+1:n+nfore),yfore(n+1:end),'Color',clr(3),'LineStyle',syb{2},'LineWidth',2);
     
     % plot the signal (TR+LS+X)
     % plot(datesnumeric,outFORE.trend+outFORE.lshift+outFORE.X,'color','m')
     
-    plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'Color',clr(3),'LineStyle',syb{3},'LineWidth',1);
+    plot(datesnumeric(n+1:n+nfore),confband(n+1:end,:),'Color',clr(3),'LineStyle',syb{3},'LineWidth',2);
     if ~isempty(StartDate)
         datetick('x','mmm-yy');
         if ~verLessThanFS(8.4)
@@ -925,6 +925,7 @@ if plots==1
     
     title(titl,'interpreter','none','FontSize',FontSize+2);
     
+    set(gcf,'Tag','forecastTS');
 end
 
     function [yhat,yhattrend,yhatseaso,yhatX,yhatlshift]=lik(beta0)
