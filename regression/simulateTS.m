@@ -35,17 +35,17 @@ function [out] = simulateTS(T,varargin)
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
 %                       data (default) s=12, for quartely data s=4, ...
-%                       The default value of model.s is 12 (that is monthly
-%                       data are assumed)
-%               model.seasonal = scalar (integer specifying number of
+%                       The default value of model.s is 12, which is for
+%                       monthly data.
+%               model.seasonal = scalar. Integer specifying the number of
 %                        frequencies, i.e. harmonics, in the seasonal
-%                        component. Possible values for seasonal are
-%                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+%                        component. Possible values are $1, 2, ..., [s/2]$,
+%                        where $[s/2]=floor(s/2)$.
 %                        For example:
 %                        if seasonal = 1 (default) we have:
-%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)$;
 %                        if seasonal = 2 we have:
-%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
+%                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)
 %                        + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.
 %                        Note that when $s$ is even the sine term disappears
 %                        for $j=s/2$ and so the maximum number of
@@ -83,10 +83,9 @@ function [out] = simulateTS(T,varargin)
 %                       affect y. If model.X is a scalar equal to k,
 %                       where k=1, 2, ... k explanatory variables using
 %                       random numbers from the normal distribution are
-%                       generated.
-%                       If this field is an empty double (default) the
-%                       simulated time series will not be affected by
-%                       explanatory variables.
+%                       generated. If this field is an empty double
+%                       (default) the simulated time series will not
+%                       contain explanatory variables.
 %               model.Xb = vector of doubles containing the beta
 %                       coefficients for the explanatory variables.
 %                       For example model.X = 2 and model.Xb = [4,5]
@@ -99,7 +98,8 @@ function [out] = simulateTS(T,varargin)
 %                       coefficients for the autoregressive component.
 %                       For example model.ARb = [0.5 -0.2]
 %                       generates an AR(2) time series of the
-%                       kind: $y_t=0.5 y_{t-1} -0.2 y_{t-2}$ + seasonal + lshift + $\epsilon_t$.
+%                       kind: $y_t = 0.5 y_{t-1} - 0.2 y_{t-2}$ + seasonal
+%                       + lshift + $\epsilon_t$.
 %                       If this field is an empty double (default) the
 %                       simulated time series will not have an
 %                       autoregressive component.
@@ -220,6 +220,8 @@ function [out] = simulateTS(T,varargin)
 %                   component.
 %                   When the signal to noise ratio tends to infinity the
 %                   irregular component tends to 0.
+%                out.model = structure. The model used to simulate the time
+%                   series.
 %
 % See also LTSts, wedgeplot
 %
@@ -245,7 +247,7 @@ function [out] = simulateTS(T,varargin)
     % A time series of 100 observations is simulated from a model which
     % contains a linear trend (with slope 1 and intercept 0), no seasonal
     % component, no explanatory variables and a signal to noise ratio egual
-    % to 20
+    % to 1 (the default).
     out=simulateTS(100,'plots',1);
 %}
 
@@ -387,11 +389,14 @@ function [out] = simulateTS(T,varargin)
     T=100;
     out=simulateTS(T,'model',model,'plots',1);
     y=out.y;
+
     % The lines below just work if the econometric toolbox is present
     % The autocorrelation function of y shows just two peaks in
     % correspondence of the first two lags
-    figure
-    parcorr(out.y)
+    if exist('parcorr','file')>0
+        figure
+        parcorr(out.y)
+    end
 %}
 
 %{
@@ -433,28 +438,30 @@ end
 
 % Set up values for default model
 modeldef          = struct;
-modeldef.trend    = 1;
-modeldef.trendb   = [0;1];
+modeldef.trend    = 1;        % linear trend with intercept
+modeldef.trendb   = [0;1];    % coefficients for the trend
 modeldef.s        = 12;       % monthly time series
-modeldef.seasonal = [];
-modeldef.seasonalb= [];
+modeldef.seasonal = [];       % no seasonal component
+modeldef.seasonalb= [];       %
 modeldef.X        = [];       % no explanatory variables
 modeldef.Xb       = [];       %
 modeldef.lshift   = [];       % no level shift
 modeldef.lshiftb  = [];       %
 modeldef.ARb      = [];       % no autoregressive component
-modeldef.signal2noiseratio=1;
+modeldef.signal2noiseratio=1; % same variances of signal and irregular parts
 nocheck           = false;
 plots             = 0;
 FileNameOutput    = '';
 StartDate         = '';
 
-options=struct('model',modeldef,'nocheck',nocheck,'plots',plots,...
+options=struct('model',modeldef,...
+    'nocheck',nocheck,'plots',plots,...
     'FileNameOutput',FileNameOutput,...
     'StartDate',StartDate,'samescale',true);
 
 
 %% User options
+
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
@@ -484,8 +491,7 @@ if ~isempty(UserOptions)
     samescale       = options.samescale;
 end
 
-% Default values for the optional parameters are set inside structure
-% 'options'
+% Default values for the optional parameters are set in structure 'options'
 if ~isequal(options.model,modeldef)
     fld=fieldnames(options.model);
     
@@ -499,9 +505,9 @@ if ~isequal(options.model,modeldef)
     
 end
 
-model = modeldef;
+%% Get model parameters
 
-% Get model parameters
+model    = modeldef;
 trend    = model.trend;       % get kind of  trend
 trendb   = model.trendb;      % coefficients for trend
 s        = model.s;           % get periodicity of time series
@@ -522,6 +528,8 @@ if nocheck == false
         error('FSDA:simulateTS:WrongInput',['s=' num2str(s) 'is the periodicity of the time series (cannot be negative)'])
     end
 end
+
+%% checks on the trend component
 
 if ~isempty(trend)
     if nocheck == false
@@ -555,6 +563,8 @@ else
     trendb=0;
 end
 
+%% checks on the explanatory variables
+
 % Define nexpl = number of explanatory variables
 isemptyX=isempty(X);
 if isemptyX
@@ -586,7 +596,6 @@ if nocheck == false
         error('FSDA:simulateTS:WrongInput','Specify the requested component together with the requested coefficients')
     end
     
-    
     % Controls on level shift component
     if isempty(lshift) && ~isempty(lshiftb)
         disp('Warning: option lshift has not been specified but the beta coefficient for the level shift has been specified')
@@ -604,7 +613,9 @@ if nocheck == false
     
 end
 
-% seasonal component
+
+%% checks on the seasonal component
+
 if ~isempty(seasonal) && seasonal >0
     sstring=num2str(seasonal);
     if seasonal>100
@@ -653,12 +664,11 @@ if nocheck == false
     end
 end
 
+%%  Define the explanatory variable associated to the level shift component
 
-% Define the explanatory variable associated to the level shift component
 if lshift>0
-    % Xlshift = explanatory variable associated with
-    % level shift Xlshift is 0 up to lsh-1 and 1 from
-    % lsh to T
+    % Xlshift = explanatory variable associated with level shift Xlshift is
+    % 0 up to lsh-1 and 1 from lsh to T
     Xlshift= [zeros(lshift-1,1);ones(T-lshift+1,1)];
 end
 
@@ -670,28 +680,29 @@ else
     seasonalb_nonlinpart=[];
 end
 
-% beta0= vector which will contain all the coefficients of the model.
+%% Compute the underlying components of the signal of the time series
+
+% beta0 = vector which will contain all the coefficients of the model.
 % The order of the coefficients is:
-% trend component,
-% linear part of the seasonal component,
-% explanatory variables,
-% non linear part of the seasonal component,
-% level shift
-% beta=[trendb(:); seasonalb_linpart(:); Xb(:); seasonalb_nonlinpart(:); lshiftb(:)];
+% - trend component,
+% - linear part of the seasonal component,
+% - explanatory variables,
+% - non linear part of the seasonal component,
+% - level shift
+% - beta=[trendb(:); seasonalb_linpart(:); Xb(:); seasonalb_nonlinpart(:); lshiftb(:)];
 
-% Now we compute all the underlying components of the time series
-yhattrend=Xtrend*trendb(:);
+yhattrend = Xtrend * trendb(:);
 
-if seasonal >0
-    if seasonal<s/2
-        yhatseaso=Xseaso*seasonalb_linpart(:);
+if seasonal > 0
+    if seasonal < s/2
+        yhatseaso = Xseaso * seasonalb_linpart(:);
     else
-        yhatseaso=Xseaso*seasonalb_linpart(:);
+        yhatseaso = Xseaso * seasonalb_linpart(:);   % ?????
     end
     
-    if varampl>0
-        Xtre=1+Seq(:,2:varampl+1)*seasonalb_nonlinpart(:);
-        yhatseaso=Xtre.*yhatseaso;
+    if varampl > 0
+        Xtre      = 1 + Seq(:,2:varampl+1)*seasonalb_nonlinpart(:);
+        yhatseaso = Xtre .* yhatseaso;
     end
 else
     yhatseaso=0;
@@ -700,64 +711,66 @@ end
 if isemptyX
     yhatX=0;
 else
-    % Note the order of coefficients is trend, linear part of
-    % seasonal component, expl variables, non linear part of
-    % seasonal component, level shift
-    yhatX=X*Xb(:);
+    % Note the order of coefficients is trend, linear part of seasonal
+    % component, expl variables, non linear part of seasonal component,
+    % level shift
+    yhatX = X*Xb(:);
 end
 
 if lshift >0
-    yhatlshift=lshiftb*Xlshift;
+    yhatlshift = lshiftb * Xlshift;
 else
     yhatlshift=0;
 end
 
-% Simulated values containg trend (yhattrend), (time varying) seasonal
-% (yhatseaso), explanatory variables (yhatX) and level shift
-% component (yhatlshift)
-signal=yhattrend+yhatseaso+yhatX+yhatlshift;
+% Simulated values, formed by: trend (yhattrend), (time varying) seasonal
+% (yhatseaso), explanatory variables (yhatX) and level shift (yhatlshift)
+signal = yhattrend + yhatseaso + yhatX + yhatlshift;
 
-% Using the signal2noiseratio define the standard deviation of the
-% irregular component
-varsignal=var(signal);
+
+%% Standard deviation of the irregular component, based on option signal2noiseratio
+
+varsignal = var(signal);
 if varsignal>0
     sigmaeps= sqrt(varsignal/signal2noiseratio);
 else
     sigmaeps= sqrt(1/signal2noiseratio);
 end
 
-% Add autoregressive part to the irregular
+%% Final simulated time series y, with or without autoregressive component
+
 if ~isempty(ARb)
+    % Add autoregressive part to the irregular.
+    
+    % Be reasonable with the number of autoregressive components ...
     if length(ARb)>6
         disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
         ARb=ARb(1:6);
     end
     
+    % Generates regression models with ARMA errors.
+    
     if exist('regARIMA','file')>0
-        
-        % regARIMA generates regression models with ARMA errors
+        % Use the Econometric toolbox if present: regARIMA
         Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
         % arima generates ARIMAX models
         % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
-        [y,irregular] = simulate(Mdl1,T,'X',signal);
+        [y , irregular] = simulate(Mdl1,T,'X',signal);
+        
     else
-        
-        
-        %
         % Simulate the data y(t) without the Econometrics toolbox.
-        %
         % For more details see files
-        % \R2019b\toolbox\econ\econ\@regARIMA\simulate.m
+        % R2019b\toolbox\econ\econ\@regARIMA\simulate.m
         % R2019b\toolbox\econ\econ\@ARIMA\simulate.m
         % R2019b\toolbox\econ\econ\+internal\+econ\simulateStandardizedVariates.m
-        LagsAR=1:length(ARb);
-        LagsMA=0;
+        LagsAR = 1:length(ARb);
+        LagsMA = 0;
         coefficients = [0  ARb  1]';  % ARIMA coefficient vector
-        I  =1;
-        maxPQ=length(ARb);
-        Y  = zeros(1,T+maxPQ);
-        E=Y;
-        Z = randn(1,T);
+        I      = 1;
+        maxPQ  = length(ARb);
+        Y      = zeros(1,T+maxPQ);
+        E      = Y;
+        Z      = randn(1,T);
         E(:,(maxPQ + 1:end))=Z * sigmaeps;
         
         for t = (maxPQ + 1):T+maxPQ
@@ -766,16 +779,22 @@ if ~isempty(ARb)
         end
         Y = Y(:,(maxPQ + 1):T+maxPQ)';
         irregular = E(:,(maxPQ + 1):T+maxPQ)';
-        y=signal+Y;
+        y = signal+Y;
         
     end
+    
 else
+    % No autoregressive part
+    
     % Simulate the irregular component
-    irregular=sigmaeps*randn(T,1);
+    irregular = sigmaeps * randn(T,1);
+    
     % y is the final simulated time series (signal + irregular component)
-    y=signal+irregular;
+    y = signal + irregular;
+    
 end
 
+%% Output structure
 
 out=struct;
 out.y=y;
@@ -785,6 +804,7 @@ out.seasonal=yhatseaso;
 out.X=yhatX;
 out.lshift=yhatlshift;
 out.irregular=irregular;
+out.model = model;
 
 % Write to file the simulated data
 if ~isempty(FileNameOutput)

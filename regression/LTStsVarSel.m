@@ -112,7 +112,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.lshift=0;
-%                               model.ARp=0;    
+%                               model.ARp=0;
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
 %
@@ -277,17 +277,14 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from over-parametrized model with autoregressive components.
-
     % add three autoregressive components to the complete model.
      
      overmodel.ARp=3;
     [out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
-
 %}
 
 %{
-    % run LTStsVarSel with default pptions and return warning messages.
-     
+    % run LTStsVarSel with default options and return warning messages.
     [out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);
 %}
 
@@ -359,7 +356,7 @@ h1  = round(n*0.9);  % default for h (num. obs. for the LTS estimator)
 
 % Estimate the parameters based on initial full model
 out_LTSts = LTSts(y,'model',model,'nsamp',500,'h',h1,...
-    'plots',plots,'msg',msg,'dispresults',dispresults);
+    'plots',plots,'msg',msg,'dispresults',dispresults,'SmallSampleCor',1);
 if plots
     a=gcf;
     if isfield(model,'X')
@@ -392,8 +389,6 @@ end
 % iterative procedure should stop.
 AllPvalSig=0;
 
-% Initialize pvalue of last AR component to be zero.
-LastARPval=0;
 
 % iniloop associated with level shift, which has to be tested only once
 iniloop=1;
@@ -471,24 +466,22 @@ while AllPvalSig == 0
     else
         LevelShiftPval=0;
     end
-    %%%%%%%%%%%%%%%%%%%%%%%%%
     
+    %%%%%%%%%%%%%%%%%%%%%%%%%
+
     posAR=seqp(contains(rownam,'b_AR'));
+    % Initialize pvalue of last AR component to be zero.
+    LastARPval=0;
     if ~isempty(posAR)
-        
-        % Position of the last element of the trend component
+        % Position of the last element of the AR component
         posLastAR=max(seqp(contains(rownam,'b_AR')));
         if posLastAR>1
             LastARPval=out_LTSts.Btable{posLastAR,'pval'};
-        else
-            LastARPval=0;
         end
     end
     
-    
-    
-    
     %%%%%%%%%%%%%%%%%%%%
+    
     % Group all p-values into a vector
     Pvalall = [LastTrendPval;...
         LastHarmonicPval;...
@@ -555,9 +548,9 @@ while AllPvalSig == 0
                 %else
         end
         
-         if msg==1 || plots==1
-             disp(removed)
-         end
+        if msg==1 || plots==1
+            disp(removed)
+        end
         % keep the level shift component and transfer it to X part
         if model.lshift>0 && iniloop==1
             Xls=[zeros(posLS-1,1); ones(n-posLS+1,1)];
@@ -573,7 +566,7 @@ while AllPvalSig == 0
         % Re-run the model but do not re-estimate the position of the
         % level shift
         [out_LTSts]=LTSts(out_LTSts.y,'model',model,'nsamp',100,...
-            'plots',plots,'msg',msg,'dispresults',dispresults,'h',h1);
+            'plots',plots,'msg',msg,'dispresults',dispresults,'h',h1,'SmallSampleCor',1);
         
         if plots==1
             a=gcf;

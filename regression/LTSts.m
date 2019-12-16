@@ -564,9 +564,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(y);
+    plot(y,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
     title(gca,numpar,'interpreter','LaTeX','FontSize',16);
@@ -583,9 +583,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(y);
+    plot(y,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
     title(gca,numpar,'interpreter','LaTeX','FontSize',16);
@@ -604,9 +604,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(y);
+    plot(y,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
@@ -625,9 +625,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(y);
+    plot(y,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
    title(gca,numpar,'interpreter','LaTeX','FontSize',16);
@@ -649,9 +649,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(yLS);
+    plot(yLS,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
@@ -675,9 +675,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(yLS);
+    plot(yLS,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
@@ -700,9 +700,9 @@ function [out, varargout] = LTSts(y,varargin)
 
     close all
     % Plot real and fitted values
-    plot(y1);
+    plot(y1,'Linewidth',1.5);
     hold('on')
-    plot(out.yhat,'red')
+    plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
     % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
     str=strcat('A=1, B=6, G=1, $\delta_1=0$');
@@ -1066,6 +1066,7 @@ end
 X = model.X;
 
 % Order of the autoregressive component
+
 ARp=model.ARp;
 if ARp>6
     disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
@@ -1167,7 +1168,6 @@ if varampl>0
 end
 
 constr=0;
-
 
 if ~isstruct(lts) && isempty(lts)
     refsteps=2;
@@ -1493,13 +1493,12 @@ for lsh=LSH
                     % stored best numerator of squared scaled
                     [~,ind] = max(bestnumscale2);
                     
-                    bestnumscale2(ind)     = numscale2rw;
-                    bestbetas(ind,:)    = betarw';
-                    bestsubset(ind,:)   = index;
-                    bestyhat(:,ind)=yhat;
-                    % sworst = the best scale among the bestr found up to
-                    % now
-                    sworst              = max(bestnumscale2);
+                    bestnumscale2(ind) = numscale2rw;
+                    bestbetas(ind,:)   = betarw';
+                    bestsubset(ind,:)  = index;
+                    bestyhat(:,ind)    = yhat;
+                    % sworst = best scale among the bestr found up to now
+                    sworst             = max(bestnumscale2);
                 end
             else
                 
@@ -1507,9 +1506,8 @@ for lsh=LSH
                 bestbetas(ij,:) = betarw';
                 bestsubset(ij,:)= index;
                 bestyhat(:,ij)=yhat;
-                % sworst = the best scale among the bestr found up to now
+                % sworst = best scale among the bestr found up to now
                 sworst = max(bestnumscale2);
-                
                 ij = ij+1;
                 brob = 1;
             end
@@ -1562,10 +1560,8 @@ for lsh=LSH
         % 10 best
         WEIibestrdiv2(:,i)=tmp.weights;
         
-        
         allnumscale2(i,1)=tmp.numscale2rw;
         % allscales(i,2)=tmp.betarw(end);
-        
         
         if tmp.numscale2rw < numsuperbestscale2
             % brob = superbestbeta
@@ -1790,8 +1786,8 @@ end
 
 
 % else
-%     % There is an approximate perfect fit for the first h observations. We
-%     % consider as outliers all units with residual greater than 1e-7.
+%     % There is an approximate perfect fit for the first h observations. 
+%     % We consider as outliers all units with residual greater than 1e-7.
 %     weights = abs(residuals)<=1e-7;
 %
 %     %     % Store the weights
@@ -1944,21 +1940,23 @@ out.yhat=yhat;
 
 
 %% Store quantities in the out structure
-outliers=abs(stdres)>norminv((conflev+1)/2);
-out.outliers=seq(outliers);
+
+outliers     = abs(stdres)>norminv((conflev+1)/2);
+out.outliers = seq(outliers);
+
 %decomment the following two lines to get outlier pvalues
-%p_all = normcdf(-abs(stdres));
-%out.outliers_pvalues = p_all(outliers);
+p_all = normcdf(-abs(stdres));
+out.outliers_pvalues = p_all(outliers);
 
 % Store robust estimate of s
-out.scale=s0;
+out.scale = s0;
 
 % Store the 20 best estimates of the scale for each tentative level shift
 % which is considered
-out.numscale2=ALLnumscale2;
+out.numscale2 = ALLnumscale2;
 
 % Store indices forming the bestrdiv2 best estimates of the target function
-out.BestIndexes=NumScale2ind;
+out.BestIndexes = NumScale2ind;
 
 % Store scaled residuals
 out.residuals=stdres;
@@ -2106,10 +2104,10 @@ if plots>=1
     else
         set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
     end
-    drawnow;
     xtickval = get(htmp,'XTick');
     xticklab = get(htmp,'XTickLabel');
     set(htmp,'XTickMode','manual');
+    drawnow;
     
     % mark outliers with their severity
     if ~isempty(residuals)
@@ -2136,6 +2134,7 @@ if plots>=1
     laby='Robust lts residuals';
     labx='Index number';
     resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
+    drawnow;
     set(get(gca,'Xlabel'),'interpreter','none');
     set(get(gca,'Ylabel'),'interpreter','none');
     if ~vlt15
@@ -2144,7 +2143,6 @@ if plots>=1
         set(h2,'FontSize',SizeAxesNum,'Box','on');
     end
     set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
-    drawnow;
 end
 
 if plots==2 && lsh>0
@@ -2287,7 +2285,7 @@ if seasonal<6
             % linear terms of the seasonal components
             %   selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
             varampl=0;
-            dd=1;
+            % dd=1;
         end
         
         if lshift>0
@@ -2403,8 +2401,8 @@ end
             % vector which contains non linear part of seasonal component
             % which multiplies each column of matrix Xseaso (linear part of
             % seasonal component)
-            yhatnlseaso=Seqbsb+ Seqbsbvarampl*b0145(indnlseaso);
-            b2378=(yhatnlseaso.*Xseasobsb)\(yinbsb -XtrendbsbXbsbXlshiftbsb*b0145(indnlseasoc));
+            yhatnlseaso = Seqbsb + Seqbsbvarampl * b0145(indnlseaso);
+            b2378 = (yhatnlseaso.*Xseasobsb) \ (yinbsb - XtrendbsbXbsbXlshiftbsb * b0145(indnlseasoc));
             
             % Store new value of beta
             newbeta(indlinsc)=b2378;
@@ -2489,14 +2487,11 @@ end
                 end
             end
             
-            
-            
             newbeta(indlinsc)=b2378;
             
             newbeta(otherind)=b0145;
             
-            % betadiff is linked to the tolerance (specified in scalar
-            % reftol)
+            % betadiff is linked to the tolerance (specified in reftol)
             betadiff = norm(oldbeta - newbeta,1) / norm(newbeta,1);
             
             oldbeta=newbeta;
@@ -2673,7 +2668,9 @@ end
         %   exitflag   : scalar which informs about convergence. exitflag =
         %               0 implies normal convergence
         
-        outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
+        % For performance reasons, the output structure is created only at
+        % the end
+        % outIRWLS = struct('betarw',[],'yhat',[],'weights',[],'exiflag',[],'numscale2rw',[]);
         
         % Residuals for the initialbeta
         res = y - yhat;
@@ -2805,11 +2802,10 @@ end
             % such a case, any intermediate estimate is not reliable and we
             % can just keep the initialbeta and initial scale.
             if (any(isnan(newbeta))) || exitfl ~=0
-                newbeta = initialbeta;
+                newbeta   = initialbeta;
                 numscale2 = ininumscale2;
                 break
             end
-            
             
             % update residuals
             res = y - yhat;
@@ -2821,12 +2817,13 @@ end
             
         end
         
-        % Store final estimate of beta
-        outIRWLS.betarw = newbeta;
+        % newbeta = the final estimate of beta to be stored in outIRWLS.betarw
+        %outIRWLS.betarw = newbeta;
         
-        % Store final fitted values for all the observations using final
-        % estimate of beta
-        outIRWLS.yhat=yhat;
+        % yhat = the final fitted values for all the observations using
+        % final estimate of beta, to be stored in outIRWLS.yhat
+        %outIRWLS.yhat=yhat;
+        
         if exitfl==0
             
             if constr==1
@@ -2840,8 +2837,8 @@ end
                 end
             elseif constr ==2
                 
-                % Force both initialbeta(end) and initialbeta(end)-1 to belong to
-                % the subset
+                % Force both initialbeta(end) and initialbeta(end)-1 to
+                % belong to the subset
                 booLS=sum(i_r2s(1:h)==initialbeta(end));
                 booLSprev=sum(i_r2s(1:h)==initialbeta(end)-1);
                 
@@ -2857,22 +2854,28 @@ end
             else
                 bsb=i_r2s(1:h);
             end
-            numscale2=sum(r2(bsb));
+            numscale2 = sum(r2(bsb));
             
-            % store final estimate of trimmed sum of squares of residuals
-            outIRWLS.numscale2rw = numscale2;
+            % numscale2 = the final estimate of trimmed sum of squares of
+            % residuals, to be stored in outIRWLS.numscale2rw
+            %outIRWLS.numscale2rw = numscale2;
         else
-            outIRWLS.numscale2rw=numscale2;
+            %outIRWLS.numscale2rw = numscale2;
         end
-        % store final estimate of the weights for each observation In this
-        % case weights are 0,1. 1 for the units associated with the
-        % units formig subset from  final iteration 0 for the other
-        % units.
+        % weights = the final estimate of the weights for each observation,
+        % to be stored in outIRWLS.weights. In this case weights are 0,1. 1
+        % for the units associated with the units formig subset from  final
+        % iteration 0 for the other units.
         weights=zerT1;
         weights(bsb)=1;
-        outIRWLS.weights=weights;
-        outIRWLS.exiflag=exitfl;
+        %outIRWLS.weights=weights;
         
+        % exitfl = the exit flag to be stored in outIRWLS.exiflag
+        %outIRWLS.exiflag=exitfl;
+        
+        % Store all output variables
+        outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights,'exiflag',exitfl,'numscale2rw',numscale2);
+                
     end
 
 end

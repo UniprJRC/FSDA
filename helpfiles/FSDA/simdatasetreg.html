@@ -273,43 +273,38 @@ set(gcf,'Name','X Beta distributed');
 title('User-defined distribution for X');</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\simdatasetreg_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size  of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Pi" class="clearfix"> </div> <h3 id="input_argument_Pi" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Pi</code> &#8212; vector of length k defining mixing proportions. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>$\sum_{j=1}^k \pi=1$.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Beta" class="clearfix"> </div> <h3 id="input_argument_Beta" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Beta</code> &#8212; p-by-k matrix containing (in the columns) regression
                coefficients for the k groups. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_S" class="clearfix"> </div> <h3 id="input_argument_S" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>S</code> &#8212; vector of length k containing the variances of the k
                regression hyperplanes. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Xdistrib" class="clearfix"> </div> <h3 id="input_argument_Xdistrib" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Xdistrib</code> &#8212; information about how to generate
-               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>The following options are admitted for Xdistrib
-           <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p><p>scalar equal to 1 if intercept is
-                       present. The default value of Xdistrib.intercept is 1.</p> <p>
-               The other fields of Xdistrib depend on the distribution
-               which is chosen.</p><p>
-               NORMAL DISTRIBUTION N(mu, sigma)</p></p></td></tr><tr valign="top"><td><code>type</code></td><td><p>'normal';</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>matrix of size (p-1)-by-k if
+               each explanatory variable inside each group. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>Structure which contains the following fields:</p> <p>
+           </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>intercept</code></td><td><p>scalar equal to 1 if intercept is
+                       present. The default value of Xdistrib.intercept is 1.</p></td></tr><tr valign="top"><td><code>type</code></td><td><p>type of distribution. Possible values for
+                       are 'normal', 'halfnormal', 'uniform', 'User'.</p></td></tr><tr valign="top"><td><code>mu</code></td><td><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters mu
                        for each explanatory variable and each group. The
-                       default value of Xdistrib.mu is zeros(p-1, k).</p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>matrix of size (p-1)-by-k if
+                       default value of Xdistrib.mu is zeros(p-1, k). Note
+                       that  Xdistrib.mu is used just if Xdistrib.type is</p></td></tr><tr valign="top"><td><code>sigma</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters
                        sigma for each explanatory variable and each group.</p> <p>
-                       The default value of Xdistrib.sigma is ones(p-1, k)
-               UNIFORM DISTRIBUTION U(a, b)
-                   Xdistrib.type='uniform';</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p>matrix of size (p-1)-by-k if
+                       The default value of Xdistrib.sigma is ones(p-1,k).</p><p> 
+                       Notethat  Xdistrib.sigma is used just if
+                       Xdistrib.type is 'normal' or 'halfnormal'.</p></p></td></tr><tr valign="top"><td><code>a</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters a
                        for each explanatory variable and each group. The
-                       default value of Xdistrib.a is zeros(p-1, k).</p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
+                       default value of Xdistrib.a is zeros(p-1, k).</p> <p>
+                       Notethat  Xdistrib.a is used just if Xdistrib.type
+                       is 'uniform', that is if we have U(a, b).</p></p></td></tr><tr valign="top"><td><code>b</code></td><td><p><p>matrix of size (p-1)-by-k if
                        (Xdistrib.intercept=1) or p-by-k if
                        (Xdistrib.intercept=0) containing the parameters b
                        for each explanatory variable and each group. The
-                       default value of Xdistrib.b is ones(p-1, k).</p> <p>
-               HALF NORMAL DISTRIBUTION Half(sigma)= |N(0 sigma)|
-                   Xdistrib.type='halfnormal';</p> <p>
-                   Xdistrib.sigma = matrix of size (p-1)-by-k if
-                   (Xdistrib.intercept=1) or p-by-k if (Xdistrib.intercept=0)
-                   containing the parameters sigma for each explanatory variable
-                   and each group. The default value of Xdistrib.sigma is
-                   ones(p-1, k).</p><p>
-TODO:simdatasetReg:OTHER_DISTRIB
-                   Xdistrib.type='user'.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix with at least n rows and p-1 (if
-                   intercept is present) or p (if intercept is not
-                   present) columns containing the values of the
-                   explanatory variables for the k groups.</p></td></tr><tr valign="top"><td><code>id</code></td><td><p>identifier vector which labes the rows of
-                   matrix Xdistrib.X</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'noiseunits', 10
+                       default value of Xdistrib.a is zeros(p-1, k).</p> <p>
+                       Note that  Xdistrib.b is used just if Xdistrib.type
+                       is 'uniform'; that is we have U(a, b).</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>matrix with at least n rows and p-1 (if
+                       intercept is present) or p (if intercept is not
+                       present) columns containing the values of the
+                       explanatory variables for the k groups.</p> <p>
+                       Notethat  Xdistrib.X is used just if Xdistrib.type
+                       is 'User'.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'noiseunits', 10
 </code>,<code> 'noisevars', 5
 </code>,<code> 'lambda',2;
 </code></code></span></div><div class="expandableContent"><div id="inputarg_noiseunits" class="clearfix"></div><h3 id="input_argument_namevalue_noiseunits" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>noiseunits</code> &#8212;number of type of outlying observations.</span></a><span class="example_desc">scalar |                structure.</span></span></h3><div class="collapse">	<p><p>Missing value, scalar or structure.</p> <p>
