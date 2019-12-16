@@ -3,7 +3,7 @@ function [out]=ace(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('ace')">Link to the help page for this function</a>
 %
-%   This function uses the alternating conditional expectations algorithm
+%   This function uses the alternating conditional expectation algorithm
 %   to find the transformations of y and X that maximise the proportion of
 %   variation in y explained by X. When X is a matrix, it is transformed so
 %   that its columns are equally weighted when predicting y.
