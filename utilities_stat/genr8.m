@@ -5,7 +5,7 @@ function [out]= genr8(n, distrib, s1, s2)
 %
 %
 %    This function generates a sequence of pseudorandom numbers
-%    using the 32-bit rnadom number generator from figure 3 of
+%    using the 32-bit random number generator from figure 3 of
 %    the article by Pierre L'Ecuyer.
 %    The cycle length is claimed to be 2.30584E+18.
 %
