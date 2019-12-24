@@ -3,10 +3,6 @@ function [out] = tBothSides(y, X, varargin)
 %
 %<a href="matlab: docsearchFS('tBothSides')">Link to the help function</a>
 %
-% It is possible to set a model with a trend (up to third order), a
-% seasonality (constant or of varying amplitude and with a different number
-% of harmonics) and a level shift (in this last case it is possible to
-% specify the window in which level shift has to be searched for).
 %
 %  Required input arguments:
 %
@@ -157,6 +153,43 @@ function [out] = tBothSides(y, X, varargin)
 %          out.ytra= n x 1 vector containing the response values in the
 %                       transformed scale. Transformation which is used is
 %                       Box Cox or Yao and Johnson.
+%
+% More About:
+%
+%
+% There is sometimes a strong, often theoretically derived, relationship
+% between the response and the model $\eta(x,\beta)$, combined with
+% variance heterogeneity. Box-Cox transformation of the response to achieve
+% stability of variance can destroy the relationship between E($Y$) and
+% $\eta(x,\beta)$. For example, the kinetic models of chemistry provide
+% deterministic relationships between concentrations of reactants and
+% products and time and temperature. A well-known simple example is the
+% Michaelis-Menten model for enzyme kinetics in which the response goes
+% from zero to an asymptotic value $V_{\mbox{max}}$.  Transforming the
+% response to $y^{\lambda}$ would result in a different range for the
+% transformed response.
+% 
+% Carrol and Ruppert (1988) [Chapter~4] developed a transform both sides
+% model for such problems, motivated by theoretical models for sockeye
+% salmon breeding. The transformation model is
+%  \begin{equation}
+%  \label{BSmodel}
+%  (y^{\lambda} - 1)/\lambda = \{\eta(x,\beta)^{\lambda} - 1\}/\lambda + \epsilon,
+%  \end{equation}
+%  where the independent errors are normally distributed. As with the
+%  Box-Cox transformation, the parameters $\lambda$ and $\beta$ are found
+%  by minimizing the residual sum of squares in the regression model which
+%  includes the Jacobian of the transformation, again $\dot{y}$.
+%  The theoretical procedure is to minimize the residual sum of squares
+%  using $y(\lambda)/\dot{y}^{\lambda -1}$, or equivalently
+%  $y(\lambda)/\dot{y}^{\lambda}$, as the response and the similarly
+%  transformed value of $\eta$ as the model. Carroll and Ruppert comment
+%  that, unless $\lambda$ is fixed, it is not possible to use standard
+%  nonlinear regression routines for this minimization as such  routings
+%  typically do not allow the response to depend upon unknown parameters.
+%  They reformulate the problem in terms of a `pseudo model'. This is what
+%  is implemented in this routine.
+%
 %
 %
 % See also Score, FSRfan
