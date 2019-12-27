@@ -47,7 +47,7 @@ function [out] = tBothSides(y, X, varargin)
 %                from the non linear model y. For example, to specify the
 %                hougen (Hougen-Watson) nonlinear regression function, use
 %                the function handle @hougen.
-%                 Example - 'la',0.5
+%                 Example - 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 %                 Data Types - function_handle or empty value
 %  beta0       :  empty value or vector containing initial values for the
 %                 coefficients just in case modelfun is non empty.
