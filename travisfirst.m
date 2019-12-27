@@ -1,4 +1,6 @@
-    % LXS with default input and output.
+% add appropriate path
+run addFSDA2path.m  
+% LXS with default input and output.
     % Compute LMS estimator without reweighting, add intercept to matrix X
     % and do not produce plots.
     n=200;
