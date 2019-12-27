@@ -32,4 +32,4 @@ f=filesep;
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)+6;
-  %   [out]=LXS(y,X);
+    [out]=LXS(y,X);
