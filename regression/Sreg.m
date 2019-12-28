@@ -96,7 +96,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                 Example - 'bestr',10 
 %                 Data Types - single | double
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
+%               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
