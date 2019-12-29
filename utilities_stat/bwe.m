@@ -38,7 +38,7 @@ function bw = bwe(X, bwopt)
 % Bowman, A.W. and Azzalini, A. (1997), "Applied Smoothing
 % Techniques for Data Analysis", Oxford University Press.
 % Silverman, B.W. (1998), "Density Estimation for Statistics and Data
-% Analysis", Chapman & Hall/CRC, London. [pp. 48] 
+% Analysis", Chapman & Hall/CRC, London. [pp. 48]
 %
 %
 % Copyright 2008-2019.
@@ -129,8 +129,6 @@ function bw = bwe(X, bwopt)
     h = bwe(X,'scott')
     h = bwe(X,'normal')
     h = bwe(X,'robust')
-    %h = bwe(X,'sj')
-    %h = bwe(X,'botev')
 %}
 
 %% bandwidth selection
@@ -161,7 +159,7 @@ if nargin<2 %|| d > 1
         bw = 1;
     end
     
-    if d==1 , bw=1.06 * bw ; end % Univ. Normal rule - Scott p. 144 + p. 154   
+    if d==1 , bw=1.06 * bw ; end % Univ. Normal rule - Scott p. 144 + p. 154
     
 else
     
@@ -180,36 +178,14 @@ else
             % As for Silverman's rule, but in presence of outliers.
             bw = 0.786 * iqr(X) * n^(-1/5);
             
-        case 'diggle'
-            
-        case 'sj'
-            % Bandwidth selection with Sheater and Jones(1991) and Wand and
-            % Jones (1995) pp.74-75
-            
-            number_of_draws = size(X,1);
-            bandwidth = -1;
-            kernel_function = 'gaussian';
-            bw = bSJ(X,number_of_draws,bandwidth,kernel_function);
-            
-            
-        case 'botev'
-            % Z. I. Botev, J. F. Grotowski, and D. P. Kroese (2010). Kernel
-            % density estimation via diffusion. Annals of Statistics, Volume 38,
-            % Number 5, pp. 2916-2957.
-            
-            if d==1
-                bw=kde(X,[],minX,maxX);
-            elseif d==2
-                bw=kde2d(X,[],minX,maxX);
-            elseif d>2
-                bw=akde(X);
-            end
-            
-            
         otherwise
             % It the user's bandwidth option does not exist, bwe is called
             % recursevely without options, so that the default is applied.
             bw = bwe(X);
+            
+            % Remark: other methods to be considered in the future include
+            % Diggle's method and Sheater and Jones(1991) and Wand and
+            % Jones (1995) pp.74-75
             
     end
     
