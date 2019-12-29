@@ -160,10 +160,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                       a, b and c
 %           out.bdp   = vector which contains the values of bdp which have
 %                       been used
-%            out.y    = response vector y. The field is present if option
-%                       yxsave is set to 1.
-%            out.X    = data matrix X. The field is present if option
-%                       yxsave is set to 1.
+%            out.y    = response vector y. 
+%            out.X    = data matrix X. 
 %           out.class = 'Sregeda'
 %
 %  Optional Output:
