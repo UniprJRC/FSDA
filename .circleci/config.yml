@@ -9,3 +9,5 @@ jobs:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - run: matlab -batch "run circlefirst.m"
+- store_test_results:
+    path: test-results
