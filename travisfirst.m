@@ -29,20 +29,11 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
     'VariableNames',{'FileName' 'Category', 'Identifier' 'MeanTime' 'MedianTime'  'Code' 'TestActivity'});
 
 
-% out1=publishFS('existFS.m');
-% disp(out1)
-% out1=publishFS('mpdp.m');
-% disp(out1)
-% out1=publishFS('mtR.m');
-% disp(out1)
-% out1=publishFS('verlessthanFS.m');
-% disp(out1)
 %% Performance part
 % make sure to be in the FSDAroot
 cd(FSDAroot)
 
-
-for i=1:3
+for i=1:nfiles
     clc
     disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
     disp(['File: ' FilesIncluded{i,1}]);
