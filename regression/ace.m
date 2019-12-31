@@ -135,7 +135,7 @@ function [out]=ace(y,X,varargin)
 %{
     % Example 1 from TIB88: brain body weight data.
     % Comparison between ace and avas.
-    YY=load('animals.txt')
+    YY=load('animals.txt');
     y=YY(1:62,2);
     X=YY(1:62,1);
     out=ace(y,X);
