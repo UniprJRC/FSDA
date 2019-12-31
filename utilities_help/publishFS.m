@@ -3790,12 +3790,15 @@ if evalCode ==1
 else
     out.OutArgsStructMisMatch='';
 end
-if length(linkHTML)~=2
-    out.linkHTMLMisMatch=true;
+if ErrWrngSeeAlso == true
+    if length(linkHTML)~=2
+        out.linkHTMLMisMatch=true;
+    else
+        out.linkHTMLMisMatch=false;
+    end
 else
     out.linkHTMLMisMatch=false;
 end
-
 
 end
 
