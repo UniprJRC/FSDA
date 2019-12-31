@@ -67,6 +67,15 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             The default value of webhelp is false.
 %             Example - 'webhelp',true
 %             Data Types - logical
+%ErrWrngSeeAlso: Option to check links in the see also part. Logical.
+%            If ErrWrngSeeAlso is true publishFS checks whether the strings
+%            inside see also are valid files and puts an hyperlink to the
+%            corresponding HTML file. If publishFS cannot find the files
+%            exits the procedure with an error. If ErrWrngSeeAlso is false
+%            it just produces a warning. Default value of ErrWrngSeeAlso is
+%            true.
+%             Example - 'ErrWrngSeeAlso',false
+%             Data Types - logical
 %
 % Output:
 %
@@ -130,6 +139,7 @@ FileWithFullPath=which('docsearchFS.m');
 evalCode=true;
 write2file=true;
 Display='none';
+ErrWrngSeeAlso=true;
 
 if nargin>1
     UserOptions=varargin(1:2:length(varargin));
@@ -153,7 +163,8 @@ end
 
 if nargin>1
     options=struct('evalCode',evalCode,'write2file',write2file,'Display',Display,...
-       'webhelp',webhelp,'outputDir',outputDir,'imagesDir',imagesDir);
+       'webhelp',webhelp,'outputDir',outputDir,'imagesDir',imagesDir,...
+       'ErrWrngSeeAlso',ErrWrngSeeAlso);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -191,7 +202,7 @@ for i=1:size(InputCell,1)
         
         out=publishFS(InputCell{i,1},'evalCode',evalCode,'Display',Display,...
         'webhelp',webhelp,'outputDir',outputDir,...
-        'imagesDir',imagesDir,'write2file',write2file);
+        'imagesDir',imagesDir,'write2file',write2file,'ErrWrngSeeAlso',ErrWrngSeeAlso);
         % Store output cell out inside OUT
         OUT{i}=out;
         
