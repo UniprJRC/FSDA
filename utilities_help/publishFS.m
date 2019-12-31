@@ -79,7 +79,15 @@ function out=publishFS(file,varargin)
 %             The default value of webhelp is false.
 %             Example - 'webhelp',true
 %             Data Types - logical
-%
+%ErrWrngSeeAlso: Option to check links in the see also part. Logical.
+%            If ErrWrngSeeAlso is true publishFS checks whether the strings
+%            inside see also are valid files and puts an hyperlink to the
+%            corresponding HTML file. If publishFS cannot find the files
+%            exits the procedure with an error. If ErrWrngSeeAlso is false
+%            it just produces a warning. Default value of ErrWrngSeeAlso is
+%            true.
+%             Example - 'ErrWrngSeeAlso',false
+%             Data Types - logical
 %
 % Output:
 %
@@ -741,9 +749,11 @@ end
 % 2012b
 matlabversion=verLessThan('matlab','8.1.0');
 
+ErrWrngSeeAlso=true;
+
 if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir, ...
-        'imagesDir',imagesDir,'write2file',true,'webhelp',false);
+        'imagesDir',imagesDir,'write2file',true,'webhelp',false,'ErrWrngSeeAlso',ErrWrngSeeAlso);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -1893,14 +1903,14 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
-  %  iniRelatedExamples=sprintf(['<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r']);
+    %  iniRelatedExamples=sprintf(['<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r']);
     
     
-   iniRelatedExamples=sprintf(['<div class="examples">\r' ...
+    iniRelatedExamples=sprintf(['<div class="examples">\r' ...
         '<h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2>\r' ...
         '<div id="expandableExamples" class="expandableContent">\r' ...
         '<p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p>\r']);
-
+    
     
     for j=1:size(listExtraEx,1)
         
@@ -2846,7 +2856,12 @@ for i=1:nseealso
         listSeeAlso{i}=Seealsoitem;
         
         if isempty(str)
-            error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+            if ErrWrngSeeAlso == true
+                error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+            else
+                warning('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+                continue
+            end
         else
             % Check if the reference is towards a file present in the FSDA toolbox
             FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
@@ -2868,9 +2883,13 @@ for i=1:nseealso
                         addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
                     else
                         if  matlabversion==0
-                            error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                            if ErrWrngSeeAlso == true
+                                error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                            else
+                                warning('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                                continue
+                            end
                         end
-                        
                     end
                     
                 else
@@ -2879,7 +2898,12 @@ for i=1:nseealso
                     cd(pathdocroot)
                     pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
                     if isempty(pathExtHelpFile)
-                        error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                        if ErrWrngSeeAlso == true
+                            error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                        else
+                            warning('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                            continue
+                        end
                     end
                     pathExtHelpFile=pathExtHelpFile(1).folder;
                     cd(currentfolder)
@@ -2984,7 +3008,7 @@ out.ExtraEx=listExtraEx;
 
 if webhelp == true
     
-        OnThisPageini=['<div id="doc_header_spacer" class="header"></div>\r' ...
+    OnThisPageini=['<div id="doc_header_spacer" class="header"></div>\r' ...
         '<div class="sticky_header_container includes_subnav">\r'...
         '<div class="section_header level_3">\r'...
         '<div class="container-fluid">\r'...
@@ -3484,7 +3508,7 @@ if evalCode==true
                         'cannot be greater than 20MB. '...
                         'To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip'...
                         ' and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>'];
-                        incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                    incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
                         incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end) '</a>'];
                 else
                 end
