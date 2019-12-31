@@ -19,7 +19,8 @@ force=false;
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))
-[~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
+[~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
+    'write2file',false,'ErrWrngSeeAlso',false);
 
 ij=1;
 nfiles=length(OUT);
