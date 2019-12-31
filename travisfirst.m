@@ -53,11 +53,12 @@ for i=1:nfiles
             else
                 Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
+            disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
+            disp(['Running example: ' num2str(iEx)]);
             
             % Write Exi to a file
-            % Exif='a b c d e';
-            disp('Current folder')
-            disp(pwd)
+            % disp('Current folder')
+            % disp(pwd)
             file1ID=fopen('tempfile.m','w');
             disp(['File identifier: ' num2str(file1ID)])
             fprintf(file1ID,'%s',Exif);
