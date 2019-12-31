@@ -1,6 +1,6 @@
 
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
-You can start to familiarize with the FSDA toolbox in one of the following ways.
+You can start to familiarize with the FSDA toolbox in one of the following ways.[![CircleCI](https://circleci.com/gh/UniprJRC/FSDA.svg?style=svg)](https://circleci.com/gh/UniprJRC/FSDA)
 
 A. Run the examples contained in files examples_regression.m or examples_multivariate.m or examples_categorical.m 
    Notice that all examples are organized in cells
