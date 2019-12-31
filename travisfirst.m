@@ -29,6 +29,10 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 
 %% Performance part
 % nfiles = number of files
+disp(pwd)
+cd(FSDAroot)
+disp(pwd)
+
 
 for i=1:3
     clc
