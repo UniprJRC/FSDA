@@ -53,6 +53,8 @@ for i=1:3
             
             % Write Exi to a file
             % Exif='a b c d e';
+            disp('Current folder')
+            disp(pwd)
             file1ID=fopen('tempfile.m','w');
             disp(['File identifier: ' num2str(file1ID)])
             fprintf(file1ID,'%s',Exif);
