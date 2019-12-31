@@ -60,7 +60,7 @@ function [res] = mpdp(y, alpha, varargin)
 %                 Example - 'theta', [10 100]
 %                 Data Types - double
 %
-%  RelTol :     Relative error tolernace. Non negative scalar.
+%  RelTol :     Relative error tolerance. Non negative scalar.
 %               Relative error tolerance, specified as the comma-separated
 %               pair consisting of 'RelTol' and a nonnegative real number.
 %               mpdm uses the relative error tolerance to limit an estimate
@@ -91,7 +91,7 @@ function [res] = mpdp(y, alpha, varargin)
 %                  Data Types - double.
 %
 %
-% See also: normpdf
+% See also: normpdf, mpdpR, mpdpReda 
 %
 %  References:
 %
