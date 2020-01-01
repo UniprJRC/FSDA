@@ -72,8 +72,10 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %            inside see also are valid files and puts an hyperlink to the
 %            corresponding HTML file. If publishFS cannot find the files
 %            exits the procedure with an error. If ErrWrngSeeAlso is false
-%            it just produces a warning. Default value of ErrWrngSeeAlso is
-%            true.
+%            no check is done and empty links are produced. Use
+%            ErrWrngSeeAlso set to false if the purpose is just to check
+%            the code (e.g. in external environment like TRAVIS) and not to
+%            buid the help system. Default value of ErrWrngSeeAlso is true.
 %             Example - 'ErrWrngSeeAlso',false
 %             Data Types - logical
 %
