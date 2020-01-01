@@ -33,14 +33,15 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 % make sure to be in the FSDAroot
 cd(FSDAroot)
 
-for i=1:nfiles
+for i=33:nfiles
     clc
-    disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
-    disp(['File: ' FilesIncluded{i,1}]);
+    disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
     Ex=OUT{i,1}.Ex;
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
     for iEx=1:size(Excomb,1)
+        disp(['Running example number ' num2str(iEx)  ' of '   num2str(size(Excomb,1)) ]);
+        
         close all
         Exi=Excomb{iEx,3};
         if ~isempty(Exi) && isempty(strfind(Excomb{iEx,1},'Interactive example'))
@@ -53,14 +54,11 @@ for i=1:nfiles
             else
                 Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
-            disp(['Executing file n.' num2str(i) " of " num2str(nfiles)])
-            disp(['Running example: ' num2str(iEx)]);
             
             % Write Exi to a file
             % disp('Current folder')
             % disp(pwd)
             file1ID=fopen('tempfile.m','w');
-            disp(['File identifier: ' num2str(file1ID)])
             fprintf(file1ID,'%s',Exif);
             fclose('all');
             try
@@ -87,7 +85,8 @@ for i=1:nfiles
                 disp(['Name of the file: '  FilesIncluded{i,1}])
                 warning('Stop here')
             end
-            
+        else
+            disp('Interactive example')
         end
     end
     % disp(['Error on the following function: (fx .num:)' int2str(i)])
