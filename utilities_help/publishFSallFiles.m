@@ -188,6 +188,7 @@ if nargin>1
     webhelp=options.webhelp;
     outputDir=options.outputDir;
     imagesDir=options.imagesDir;
+    ErrWrngSeeAlso=options.ErrWrngSeeAlso;
 end 
     
 FilesWithProblems=cell(1000,6);
