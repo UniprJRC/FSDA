@@ -193,9 +193,11 @@ end
 FilesWithProblems=cell(1000,6);
 OUT=cell(size(InputCell,1),1);
 ij=1;
-for i=1:size(InputCell,1)
+nfiles=size(InputCell,1);
+nfilesstr=num2str(nfiles);
+for i=1:nfiles
     dirpathi=InputCell{i,end};
-    disp(['Processing file: ' dirpathi filesep InputCell{i,1}])
+    disp(['Processing file: ' num2str(i) '/' nfilesstr '  ' dirpathi filesep InputCell{i,1}])
     try
         % call publishFS
         %out=publishFS(InputCell{i,1},'evalCode',evalCode,'write2file',write2file);
