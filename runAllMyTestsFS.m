@@ -41,16 +41,13 @@ for i=33:nfiles
     clc
     disp(['Filename ' FilesIncluded{i,1}])
     disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
-    try
+   
     Ex=OUT{i,1}.Ex;
-    catch
-        disp(OUT{i,1})
-       error('noooo') 
-    end
+   
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
     for iEx=1:size(Excomb,1)
-        disp(['Running example number ' num2str(iEx)  ' of '   num2str(size(Excomb,1)) ]);
+        disp(['Running example number ' num2str(iEx)  ' of '   num2str(size(Excomb,1)) '  File: '  FilesIncluded{i,1}]);
         
         close all
         Exi=Excomb{iEx,3};
