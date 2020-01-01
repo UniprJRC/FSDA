@@ -36,14 +36,16 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 %% Performance part
 % make sure to be in the FSDAroot
 cd(FSDAroot)
+% Call runperf if perf = true
+perf = false;
 
-for i=33:nfiles
+for i=35:nfiles
     clc
     disp(['Filename ' FilesIncluded{i,1}])
     disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
-   
+    
     Ex=OUT{i,1}.Ex;
-   
+    
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
     for iEx=1:size(Excomb,1)
@@ -69,24 +71,27 @@ for i=33:nfiles
             fprintf(file1ID,'%s',Exif);
             fclose('all');
             try
-                
-                outp=runperf('tempfile.m');
-                MeanS=outp.sampleSummary.Mean;
-                FindNaN=isnan(MeanS);
-                MeanS=MeanS(~FindNaN);
-                TotSummary{ij,'MeanTime'}= MeanS;
-                
-                MedianS=outp.sampleSummary.Median;
-                MedianS=MedianS(~FindNaN);
-                TotSummary{ij,'MedianTime'}= MedianS;
-                
-                % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
-                TotSummary(ij,'Code')=Ex(1,3);
-                TotSummary(ij,'TestActivity')={outp.TestActivity};
-                TotSummary(ij,'FileName')=FilesIncluded(i,1);
-                TotSummary(ij,'Category')=FilesIncluded(i,8);
-                TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-                ij=ij+1;
+                if perf==1
+                    outp=runperf('tempfile.m');
+                    MeanS=outp.sampleSummary.Mean;
+                    FindNaN=isnan(MeanS);
+                    MeanS=MeanS(~FindNaN);
+                    TotSummary{ij,'MeanTime'}= MeanS;
+                    
+                    MedianS=outp.sampleSummary.Median;
+                    MedianS=MedianS(~FindNaN);
+                    TotSummary{ij,'MedianTime'}= MedianS;
+                    
+                    % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
+                    TotSummary(ij,'TestActivity')={outp.TestActivity};
+                else
+                    outp=runtests('tempfile.m');
+                end
+                    TotSummary(ij,'Code')=Ex(1,3);
+                    TotSummary(ij,'FileName')=FilesIncluded(i,1);
+                    TotSummary(ij,'Category')=FilesIncluded(i,8);
+                    TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+                    ij=ij+1;
             catch
                 disp(['Error on example ' num2str(iEx)])
                 disp(['Name of the file: '  FilesIncluded{i,1}])
