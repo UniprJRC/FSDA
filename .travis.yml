@@ -1,7 +1,6 @@
 language: minimal
 dist: xenial
 install:
-    - travis_wait
-    - ./install.sh
+    - travis_wait 30
     - wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
 script: matlab -batch "run runAllMyTestsFS.m"       
