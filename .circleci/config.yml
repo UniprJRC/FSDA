@@ -7,6 +7,7 @@ jobs:
       image: ubuntu-1604:201903-01
     steps:
       - checkout
+      - no_output_timeout: 10h
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - run: matlab -batch "run runAllMyTestsFS.m"
 
