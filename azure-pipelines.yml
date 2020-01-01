@@ -1,7 +1,7 @@
 jobs:
 - job: myJob
   timeoutInMinutes: 2
-pool:
+pool: 
   vmImage: 'Ubuntu 16.04'
 steps:
   - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
