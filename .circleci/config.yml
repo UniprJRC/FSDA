@@ -8,5 +8,5 @@ jobs:
     steps:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run: matlab -batch "runAllMyTestsFS.m"
+      - run: matlab -batch "run runAllMyTestsFS.m"
 
