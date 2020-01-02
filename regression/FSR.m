@@ -367,7 +367,7 @@ function [out]=FSR(y,X,varargin)
 %{
     % Extract all possible subsamples in order to find susbet to initialize
     % the search.
-    n=200;
+    n=50;
     p=3;
     X=randn(n,p);
     y=randn(n,1);

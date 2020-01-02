@@ -79,7 +79,17 @@ function out=publishFS(file,varargin)
 %             The default value of webhelp is false.
 %             Example - 'webhelp',true
 %             Data Types - logical
-%
+%ErrWrngSeeAlso: Option to check links in the see also part. Logical.
+%            If ErrWrngSeeAlso is true publishFS checks whether the strings
+%            inside see also are valid files and puts an hyperlink to the
+%            corresponding HTML file. If publishFS cannot find the files
+%            exits the procedure with an error. If ErrWrngSeeAlso is false
+%            no check is done and empty links are produced. Use
+%            ErrWrngSeeAlso set to false if the purpose is just to check
+%            the code (e.g. in external environment like TRAVIS) and not to
+%            buid the help system. Default value of ErrWrngSeeAlso is true.
+%             Example - 'ErrWrngSeeAlso',false
+%             Data Types - logical
 %
 % Output:
 %
@@ -741,9 +751,11 @@ end
 % 2012b
 matlabversion=verLessThan('matlab','8.1.0');
 
+ErrWrngSeeAlso=true;
+
 if nargin>1
     options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir, ...
-        'imagesDir',imagesDir,'write2file',true,'webhelp',false);
+        'imagesDir',imagesDir,'write2file',true,'webhelp',false,'ErrWrngSeeAlso',ErrWrngSeeAlso);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -766,6 +778,7 @@ if nargin>1
     webhelp=options.webhelp;
     outputDir=options.outputDir;
     Display=options.Display;
+    ErrWrngSeeAlso=options.ErrWrngSeeAlso;
     
     checkimageDir = strcmp(UserOptions,'imagesDir');
     checkoutputDir = strcmp(UserOptions,'outputDir');
@@ -1893,14 +1906,14 @@ closeexamples=sprintf(['</div>\r'... % close div id="expandableExamples
 iniRelatedExamples='';
 RelatedExamples='';
 if length(startIndexEx)>length(sintax)
-  %  iniRelatedExamples=sprintf(['<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r']);
+    %  iniRelatedExamples=sprintf(['<h3 id="ExtraExamples" class="bottom_ruled">Related Examples</h3>\r']);
     
     
-   iniRelatedExamples=sprintf(['<div class="examples">\r' ...
+    iniRelatedExamples=sprintf(['<div class="examples">\r' ...
         '<h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2>\r' ...
         '<div id="expandableExamples" class="expandableContent">\r' ...
         '<p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p>\r']);
-
+    
     
     for j=1:size(listExtraEx,1)
         
@@ -2844,63 +2857,65 @@ for i=1:nseealso
         
         % Store See also item
         listSeeAlso{i}=Seealsoitem;
-        
-        if isempty(str)
-            error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
-        else
-            % Check if the reference is towards a file present in the FSDA toolbox
-            FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
-            
-            % Create the string which contains the 'destination' of the hyperlink
-            % DestHyperLink is the 'destination' of the hyperlink
-            if ~isempty(FSDAtoolboxfile) % reference is towards a function of the FSDA toolbox
-                DestHyperLink=[Seealsoitem '.html'];
-            else % reference is towards a MATLAB function or a function of another toolbox
-                pathdocroot=docroot;
+        if ErrWrngSeeAlso == true
+            if isempty(str)
+                    error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+            else
+                % Check if the reference is towards a file present in the FSDA toolbox
+                FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
                 
-                if verLessThanFS(9.1)
-                    % Locate file using old function findFile (just up to 2016a)
-                    % Find path of .html documentation file
-                    pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+                % Create the string which contains the 'destination' of the hyperlink
+                % DestHyperLink is the 'destination' of the hyperlink
+                if ~isempty(FSDAtoolboxfile) % reference is towards a function of the FSDA toolbox
+                    DestHyperLink=[Seealsoitem '.html'];
+                else % reference is towards a MATLAB function or a function of another toolbox
+                    pathdocroot=docroot;
                     
-                    if ~isempty(pathExtHelpFile)
-                        pathExtHelpFile=char(pathExtHelpFile{1});
-                        addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
-                    else
-                        if  matlabversion==0
-                            error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                    if verLessThanFS(9.1)
+                        % Locate file using old function findFile (just up to 2016a)
+                        % Find path of .html documentation file
+                        pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+                        
+                        if ~isempty(pathExtHelpFile)
+                            pathExtHelpFile=char(pathExtHelpFile{1});
+                            addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
+                        else
+                            if  matlabversion==0
+                                    error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                            end
                         end
                         
+                    else
+                        % Locate file using faster function (just from 2016b)
+                        currentfolder=pwd;
+                        cd(pathdocroot)
+                        pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
+                        if isempty(pathExtHelpFile)
+                                error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                        end
+                        pathExtHelpFile=pathExtHelpFile(1).folder;
+                        cd(currentfolder)
+                        addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep Seealsoitem '.html'];
                     end
                     
-                else
-                    % Locate file using faster function (just from 2016b)
-                    currentfolder=pwd;
-                    cd(pathdocroot)
-                    pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
-                    if isempty(pathExtHelpFile)
-                        error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
-                    end
-                    pathExtHelpFile=pathExtHelpFile(1).folder;
-                    cd(currentfolder)
-                    addSubPath=[pathExtHelpFile(length(pathdocroot)+2:end) filesep Seealsoitem '.html'];
-                end
-                
-                
-                if matlabversion==0
-                    % replace '\' with '/'
-                    addSubPath=strrep(addSubPath,'\','/') ;
-                    if webhelp==true
-                        DestHyperLink=['https://www.mathworks.com/help/' addSubPath '" ' 'target="_blank" ' 'title="help from MathWorks website'];
+                    
+                    if matlabversion==0
+                        % replace '\' with '/'
+                        addSubPath=strrep(addSubPath,'\','/') ;
+                        if webhelp==true
+                            DestHyperLink=['https://www.mathworks.com/help/' addSubPath '" ' 'target="_blank" ' 'title="help from MathWorks website'];
+                        else
+                            % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
+                            DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+                        end
                     else
-                        % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
-                        DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
+                        DestHyperLink='';
                     end
-                else
-                    DestHyperLink='';
+                    
                 end
-                
             end
+        else
+            DestHyperLink='';
         end
         
         Seealsohtml=[Seealsohtml sprintf(['<span itemprop="seealso">\r'...
@@ -2984,7 +2999,7 @@ out.ExtraEx=listExtraEx;
 
 if webhelp == true
     
-        OnThisPageini=['<div id="doc_header_spacer" class="header"></div>\r' ...
+    OnThisPageini=['<div id="doc_header_spacer" class="header"></div>\r' ...
         '<div class="sticky_header_container includes_subnav">\r'...
         '<div class="section_header level_3">\r'...
         '<div class="container-fluid">\r'...
@@ -3484,7 +3499,7 @@ if evalCode==true
                         'cannot be greater than 20MB. '...
                         'To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip'...
                         ' and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>'];
-                        incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
+                    incl=[incl(1:PosStrBeforeFirstImage-1) Addbefore ...
                         incl(PosStrBeforeFirstImage:PosStrAfterFirstImage+4) Addafter incl(PosStrAfterFirstImage+5:end) '</a>'];
                 else
                 end
@@ -3766,12 +3781,15 @@ if evalCode ==1
 else
     out.OutArgsStructMisMatch='';
 end
-if length(linkHTML)~=2
-    out.linkHTMLMisMatch=true;
+if ErrWrngSeeAlso == true
+    if length(linkHTML)~=2
+        out.linkHTMLMisMatch=true;
+    else
+        out.linkHTMLMisMatch=false;
+    end
 else
     out.linkHTMLMisMatch=false;
 end
-
 
 end
 

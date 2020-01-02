@@ -496,7 +496,7 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %<a href="matlab: docsearchFS('LTSts')">Link to the help function</a>
 %
-%$LastChangedDate::                      $: Date of the last commit
+%$LastChangedDate:: 2019-12-15 21:09:21 #$: Date of the last commit
 
 % Examples:
 
@@ -1786,7 +1786,7 @@ end
 
 
 % else
-%     % There is an approximate perfect fit for the first h observations. 
+%     % There is an approximate perfect fit for the first h observations.
 %     % We consider as outliers all units with residual greater than 1e-7.
 %     weights = abs(residuals)<=1e-7;
 %
@@ -2042,6 +2042,9 @@ if nexpl>0
 end
 if varampl>0
     lab=[lab;b_varampl(1:varampl)];
+    posvarampl=length(lab)-varampl+1:length(lab);
+else
+    posvarampl=[];
 end
 if lshift>0
     lab=[lab; b_lshift(1)];
@@ -2278,14 +2281,16 @@ if seasonal<6
         yf=yin(bsb);
         
         lasind=length(brobfinal);
-        if seasonal>0
-            selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
-        else
-            % if seasonal is zero it is also necessary to remove the non
-            % linear terms of the seasonal components
-            %   selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+        
+        selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:lasind];
+        
+        % If there is no seasonality it is also necessary to
+        % remove the non linear part of the seasonal component
+        % that is, it is necessary to select the elements of vector selWithoutLastHarmonic
+        % apart from those which are in posvarampl
+        if seasonal==0
+            selWithoutLastHarmonic=setdiff(selWithoutLastHarmonic,posvarampl);
             varampl=0;
-            % dd=1;
         end
         
         if lshift>0
@@ -2875,7 +2880,7 @@ end
         
         % Store all output variables
         outIRWLS = struct('betarw',newbeta,'yhat',yhat,'weights',weights,'exiflag',exitfl,'numscale2rw',numscale2);
-                
+        
     end
 
 end
