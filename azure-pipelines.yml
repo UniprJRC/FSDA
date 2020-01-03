@@ -1,9 +1,20 @@
-jobs:
-- job: myJob
+strategy:
+  matrix:
   timeoutInMinutes: 0
-  pool: 
-    vmImage: 'Ubuntu 16.04'
-  steps:
+    regression:
+      categoryName: 'regression'
+    graphics:
+      categoryName: 'graphics'
+    multivariate:
+      categoryName: 'multivariate'
+    clustering:
+      categoryName: 'clustering'
+    utilities:
+      categoryName: 'utilities'
+pool:
+  vmImage: 'Ubuntu 16.04'
+variables:
+  CATEGORY_TO_TEST: $(categoryName)
+steps:
   - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
   - script: matlab -batch "run runAllMyTestsFS.m"
-
