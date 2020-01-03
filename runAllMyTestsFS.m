@@ -1,3 +1,4 @@
+
 %% Load necessary elements for performance test
 % load OUT
 run addFSDA2path
@@ -22,6 +23,44 @@ disp(FilesExcluded(:,[1 9]))
 [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false);
 
+%% Category to test
+cat2test=getenv('categoryName');
+disp('---------------')
+disp('Test for category:')
+disp(cat2test)
+disp('---------------')
+
+% VIS GUI     MULT CLUS REG UTI
+if strcmp(cat2test,'graphics')
+    str=regexp(FilesIncluded(:,8),'VIS*');
+    boo1=~cellfun(@isempty,str);
+    str=regexp(FilesIncluded(:,8),'GUI');
+    boo2=~cellfun(@isempty,str);
+    boo=boo1 | boo2;
+    
+elseif strcmp(cat2test,'multivariate')
+    str=regexp(FilesIncluded(:,8),'MULT*');
+    boo=~cellfun(@isempty,str);
+    
+elseif strcmp(cat2test,'clustering')
+    str=regexp(FilesIncluded(:,8),'CLUS*');
+    boo=~cellfun(@isempty,str);
+    
+elseif strcmp(cat2test,'regression')
+    str=regexp(FilesIncluded(:,8),'REG*');
+    boo=~cellfun(@isempty,str);
+    
+elseif strcmp(cat2test,'utilities')
+    str=regexp(FilesIncluded(:,8),'UTI*');
+    boo=~cellfun(@isempty,str);
+else
+   error('FSDA:runTests:WrgCLS','Wrong class')     
+end
+
+OUT=OUT(boo,:);
+FilesIncluded=FilesIncluded(boo,:);
+
+
 ij=1;
 nfiles=length(OUT);
 sz=[5000, 7];
@@ -37,8 +76,8 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 % make sure to be in the FSDAroot
 cd(FSDAroot)
 
-% Use perf = true if for each example you want run runperf.m 
-% Use perf = true if for each example you want run runtests.m 
+% Use perf = true if for each example you want run runperf.m
+% Use perf = true if for each example you want run runtests.m
 perf = false;
 
 for i=1:nfiles
@@ -87,11 +126,11 @@ for i=1:nfiles
                 else
                     outp=runtests('tempfile.m');
                 end
-                    TotSummary(ij,'Code')=Ex(1,3);
-                    TotSummary(ij,'FileName')=FilesIncluded(i,1);
-                    TotSummary(ij,'Category')=FilesIncluded(i,8);
-                    TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-                    ij=ij+1;
+                TotSummary(ij,'Code')=Ex(1,3);
+                TotSummary(ij,'FileName')=FilesIncluded(i,1);
+                TotSummary(ij,'Category')=FilesIncluded(i,8);
+                TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+                ij=ij+1;
             catch
                 disp(['Error on example ' num2str(iEx)])
                 disp(['Name of the file: '  FilesIncluded{i,1}])
