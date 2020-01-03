@@ -1,6 +1,5 @@
 strategy:
   matrix:
-  timeoutInMinutes: 0
     regression:
       categoryName: 'regression'
     graphics:
