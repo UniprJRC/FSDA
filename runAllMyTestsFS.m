@@ -24,7 +24,7 @@ disp(FilesExcluded(:,[1 9]))
     'write2file',false,'ErrWrngSeeAlso',false);
 
 %% Category to test
-cat2test=getenv('categoryName');
+cat2test=getenv('CATEGORY_TO_TEST');
 disp('---------------')
 disp('Test for category:')
 disp(cat2test)
