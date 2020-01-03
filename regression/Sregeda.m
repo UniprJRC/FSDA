@@ -97,7 +97,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                 Example - 'bestr',10 
 %                 Data Types - single | double
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
+%               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
@@ -145,9 +145,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %        out.Outliers = Boolean matrix containing the list of
 %                       the units declared as outliers for each value of bdp using confidence
 %                       level specified in input scalar conflev
-%         out.conflev = confidence level which is used to declare outliers.
-%                       Remark: scalar out.conflev will be used to draw the
-%                       horizontal line (confidence band) in the plot.
+%         out.conflev = confidence level which has been used to declare
+%                       outliers.
 %         out.Singsub = Number of subsets wihtout full rank. Notice that
 %                       out.singsub(bdp(jj)) > 0.1*(number of subsamples) produces a
 %                       warning
