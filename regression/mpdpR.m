@@ -570,8 +570,7 @@ end
 
 % likfmin = Objective function to call with fminunc or fminsearch
     function objyhat=likfmin(betsigma, modelfun, y, X, alpha)
-        
-        ny = length(y);
+       
         
         bet=betsigma(1:end-1);
         if isempty(modelfun)
@@ -584,7 +583,7 @@ end
         %   sigma=sqrt(res'*res/(n-p));
         sigma=betsigma(end);
         objyhat=1/(sigma^alpha *sqrt((2*pi)^alpha *(1+alpha))) ...
-            -((alpha+1)/(alpha*ny))*sum((normpdf(res,0,sigma)).^alpha);
+            -((alpha+1)/(alpha*n))*sum((normpdf(res,0,sigma)).^alpha);
     end
 
 end
