@@ -718,7 +718,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
 % callmex is a Boolean which is equal to true if the mex file exists
-callmex=existFS('DfM.mexw64');
+callmex=existFS('DfM');
 % verLess2016b is true if current version is smaller than 2016b
 verLess2016b=verLessThanFS(9.1);
   
