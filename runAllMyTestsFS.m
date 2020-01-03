@@ -33,13 +33,15 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 % disp(tmp)
 
 
-%% Performance part
+%% Performance and Testing part
 % make sure to be in the FSDAroot
 cd(FSDAroot)
-% Call runperf if perf = true
+
+% Use perf = true if for each example you want run runperf.m 
+% Use perf = true if for each example you want run runtests.m 
 perf = false;
 
-for i=35:nfiles
+for i=1:nfiles
     clc
     disp(['Filename ' FilesIncluded{i,1}])
     disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
@@ -64,9 +66,7 @@ for i=35:nfiles
                 Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
             
-            % Write Exi to a file
-            % disp('Current folder')
-            % disp(pwd)
+            % Write Exif to a file
             file1ID=fopen('tempfile.m','w');
             fprintf(file1ID,'%s',Exif);
             fclose('all');
