@@ -44,8 +44,10 @@ function result = existFS(FileName)
 % Examples
 %
 %{
-    % Test whether a mex file exists.
-    out=existFS('DfM.mexw64');
+    % Test whether mex file DfM.XXXX exists.
+    % Depending on the operating system a different mex file will be
+    % searched.
+    out=existFS('DfM');
     if out == true
         disp('Mex file exists');
     else
