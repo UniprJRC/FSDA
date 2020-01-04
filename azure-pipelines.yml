@@ -1,6 +1,3 @@
-- job: Phase_2
-    displayName: Test-Phase2
-
     strategy:
       matrix:
         regression:
@@ -15,6 +12,7 @@
           categoryName: 'utilities'
     pool:
       vmImage: 'Ubuntu 16.04'
+      timeoutInMinutes: 0 
     variables:
       CATEGORY_TO_TEST: $(categoryName)
     steps:
