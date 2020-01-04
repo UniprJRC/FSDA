@@ -12,10 +12,10 @@
           categoryName: 'utilities'
     pool:
       vmImage: 'Ubuntu 16.04'
+    timeoutInMinutes: 0
     variables:
       CATEGORY_TO_TEST: $(categoryName)
     steps:
       - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - script: matlab -batch "run runAllMyTestsFS.m"
-    timeoutInMinutes: 0
   
