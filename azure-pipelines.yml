@@ -1,5 +1,5 @@
 jobs:
-    - job: myJob
+   timeoutInMinutes: 0
 strategy:
   matrix:
     regression:
