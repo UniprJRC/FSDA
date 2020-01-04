@@ -1,5 +1,5 @@
 jobs:
-- job: myJob
+    - job: myJob
 strategy:
   matrix:
     regression:
