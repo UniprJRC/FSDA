@@ -1,5 +1,3 @@
-jobs:
-  -job : Test  
    strategy:
       matrix:
         regression:
