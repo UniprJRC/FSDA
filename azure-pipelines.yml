@@ -1,3 +1,6 @@
+- job: Phase_2
+    displayName: Test-Phase2
+
     strategy:
       matrix:
         regression:
