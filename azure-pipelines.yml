@@ -10,9 +10,9 @@
           categoryName: 'clustering'
         utilities:
           categoryName: 'utilities'
+    timeoutInMinutes: 0
     pool:
       vmImage: 'Ubuntu 16.04'
-    timeoutInMinutes: 0
     variables:
       CATEGORY_TO_TEST: $(categoryName)
     steps:
