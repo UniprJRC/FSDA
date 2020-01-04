@@ -18,3 +18,4 @@ steps:
   - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
   - script: matlab -batch "run runAllMyTestsFS.m"
   - task: PublishBuildArtifacts@1
+    timeoutInMinutes: 0 
