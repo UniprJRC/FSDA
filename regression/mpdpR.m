@@ -193,6 +193,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %{
     % Call of mpdpR with all default options.
     % Simulate a regression model.
+    rng('default')
     rng(1000)
     n=1000;
     p=3;
