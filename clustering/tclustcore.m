@@ -1,5 +1,5 @@
 function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrnum,restrfactor,userepmat,nParam)
-% This function is called by tclusteda and it is not intended to be called directly 
+% This function is called by tclusteda and it is not intended to be called directly
 
 % Copyright 2008-2019.
 % Written by FSDA team
@@ -7,6 +7,9 @@ function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweigh
 
 %% Beginning of code
 [n,v]=size(Y);
+
+% callmex is a Boolean which is equal to true if the mex file exists
+callmex=existFS('DfM');
 
 % tolrestreigen = tolerance to use in function restreigen
 tolrestreigen=1e-08;
@@ -142,7 +145,7 @@ for i=1:nselected
             qqunassigned=qq(h+1:end);
             qq=qq(1:h);
             
-           % try
+            % try
             % Ytri = n(1-alpha)-by-v matrix associated with the units
             % which have the largest n(1-alpha) likelihood contributions
             Ytri=Y(qq,:);
@@ -249,8 +252,11 @@ for i=1:nselected
                     % comment the DfM line below and uncomment the bsxfun
                     % instruction above. In contexts where this is called
                     % many times, this solution is much more performant.
-                    DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
-                    
+                    if callmex==true
+                        DfM(Ytrij,cini(j,:),Ytrij,niini(j),v);
+                    else
+                        Ytrij = bsxfun(@minus,Ytrij,cini(j,:));
+                    end
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
                     
                     % Eigenvalue eigenvector decomposition for group j
