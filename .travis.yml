@@ -3,6 +3,8 @@ jobs:
   include:
   - categoryName: "regression"
     env: CATEGORY_TO_TEST=regression
+  - categoryName: "regressionEXT"
+    env: CATEGORY_TO_TEST=regressionEXT
   - categoryName: "multivariate"
     env: CATEGORY_TO_TEST=multivariate
   - categoryName: "clustering"
