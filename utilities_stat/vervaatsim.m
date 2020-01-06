@@ -210,6 +210,7 @@ function y = vervaatsim(betav,steps,d)
     n = 100;
     nmax    = 500;
     betamax = 10;
+    rng('default')
     rng(123);
     N     = randi(nmax,n,1);
     betav = randi(betamax,n,1);
