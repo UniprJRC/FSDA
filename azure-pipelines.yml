@@ -1,5 +1,6 @@
-    
-    strategy:
+jobs:
+- job: Test
+  strategy:
       matrix:
         regression:
           categoryName: 'regression'
@@ -13,13 +14,11 @@
           categoryName: 'clustering'
         utilities:
           categoryName: 'utilities'
-    pool:
+  pool:
       vmImage: 'Ubuntu 16.04'
-      timeoutInMinutes: 0 
-    variables:
+  variables:
       CATEGORY_TO_TEST: $(categoryName)
-      timeoutInMinutes: 0 
-    steps:
+  timeoutInMinutes: 360 
+  steps:
     - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
     - script: matlab -batch "run runAllMyTestsFS.m" 
-    
