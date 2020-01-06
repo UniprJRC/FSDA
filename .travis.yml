@@ -1,15 +1,21 @@
 language: minimal
 jobs:
   include:
+  - categoryName: "regression"
     env: CATEGORY_TO_TEST=regression
+  - categoryName: "regressionEXT"
     env: CATEGORY_TO_TEST=regressionEXT
+  - categoryName: "multivariate"
     env: CATEGORY_TO_TEST=multivariate
+  - categoryName: "clustering"
     env: CATEGORY_TO_TEST=clustering
+  - categoryName: "utilities"
     env: CATEGORY_TO_TEST=utilities
+  - categoryName: "graphics"
     env: CATEGORY_TO_TEST=graphics
 dist: xenial
 install:
-    - travis_wait 60
+    - travis_wait 360
     - wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
 script: matlab -batch "run runAllMyTestsFS.m"       
 
