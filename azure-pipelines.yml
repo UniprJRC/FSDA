@@ -1,3 +1,4 @@
+    
     strategy:
       matrix:
         regression:
@@ -17,6 +18,8 @@
       timeoutInMinutes: 0 
     variables:
       CATEGORY_TO_TEST: $(categoryName)
+      timeoutInMinutes: 0 
     steps:
     - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-    - script: matlab -batch "run runAllMyTestsFS.m"
+    - script: matlab -batch "run runAllMyTestsFS.m" 
+    
