@@ -132,7 +132,10 @@ for i=1:nfiles
                     % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
                     TotSummary(ij,'TestActivity')={outp.TestActivity};
                 else
+                    tic
                     outp=runtests('tempfile.m');
+                    time=toc;
+                    TotSummary{ij,'MeanTime'}=time;
                 end
                 TotSummary(ij,'Code')=Ex(1,3);
                 TotSummary(ij,'FileName')=FilesIncluded(i,1);
