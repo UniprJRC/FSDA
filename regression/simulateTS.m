@@ -264,6 +264,7 @@ function [out] = simulateTS(T,varargin)
     % contains no trend, a linear time varying seasonal component with
     % three harmonics, no explanatory variables and a signal to noise ratio
     % egual to 20
+    rng('default')
     rng(1)
     model=struct;
     model.trend=[];
