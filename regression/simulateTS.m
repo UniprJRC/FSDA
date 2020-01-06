@@ -360,6 +360,7 @@ function [out] = simulateTS(T,varargin)
     % In this example the simulated time series is saved into a file named
     % ysimout.txt in the current folder
     FileNameOutput=[pwd filesep 'ysimout.txt'];
+    T=100;
     out=simulateTS(T,'FileNameOutput',FileNameOutput);
 %}
 
@@ -380,6 +381,7 @@ function [out] = simulateTS(T,varargin)
 %{
     % Simulated data with linear trend and errors with AR(2) component.
     % No seasonal component.
+    rng('default')
     rng(100)
     model=struct;
     model.trend=1;
