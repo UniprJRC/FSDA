@@ -40,15 +40,23 @@ if strcmp(cat2test,'graphics')
     
 elseif strcmp(cat2test,'multivariate')
     str=regexp(FilesIncluded(:,8),'MULT*');
-    boo=~cellfun(@isempty,str);
+    strnot1=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
+    boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1);
     
 elseif strcmp(cat2test,'clustering')
     str=regexp(FilesIncluded(:,8),'CLUS*');
     boo=~cellfun(@isempty,str);
     
 elseif strcmp(cat2test,'regression')
-    str=regexp(FilesIncluded(:,8),'REG*');
+    str=regexp(FilesIncluded(:,8),'REG-Regression');
     boo=~cellfun(@isempty,str);
+
+elseif strcmp(cat2test,'regressionEXT')
+    str=regexp(FilesIncluded(:,8),'REG-*');
+    strnot1=regexp(FilesIncluded(:,8),'REG-Regression');
+    strnot2=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
+    boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1) & cellfun(@isempty,strnot2);
+
     
 elseif strcmp(cat2test,'utilities')
     str=regexp(FilesIncluded(:,8),'UTI*');
