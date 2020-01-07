@@ -1,10 +1,11 @@
 jobs:
  "regression":
    build:
-   environment: CATEGORY_TO_TEST: "regression"  
-    machine:
+   environment: 
+     - CATEGORY_TO_TEST: "regression"  
+   machine:
       image: ubuntu-1604:201903-01
-    steps:
+   steps:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - run: matlab -batch "run runAllMyTestsFS.m"
@@ -12,10 +13,11 @@ jobs:
 
  "regressionEXT":
    build:
-   environment: CATEGORY_TO_TEST: "regressionEXT"
-    machine:
+   environment: 
+     - CATEGORY_TO_TEST: "regressionEXT"
+   machine:
       image: ubuntu-1604:201903-01
-    steps:
+   steps:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - run: matlab -batch "run runAllMyTestsFS.m"
@@ -26,5 +28,6 @@ workflows:
     jobs:
       - "regression"
       - "regressionEXT"
+
 
 
