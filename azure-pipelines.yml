@@ -4,6 +4,8 @@ jobs:
       matrix:
         regression:
           categoryName: 'regression'
+        regressionTS:
+          categoryName: 'regressionTS'
         regressionEXT:
           categoryName: 'regressionEXT'
         graphics:
@@ -12,6 +14,8 @@ jobs:
           categoryName: 'multivariate'
         clustering:
           categoryName: 'clustering'
+        mixsim:
+          categoryName: 'mixsim'
         utilities:
           categoryName: 'utilities'
   pool:
