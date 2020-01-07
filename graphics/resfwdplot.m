@@ -1403,8 +1403,8 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    disp(gpuDevice)
-    if gpuDeviceCount > 0
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
@@ -1420,6 +1420,8 @@ if ~isempty(datatooltip)
         % Declare a custom datatooltip update function to display additional
         % information about the selected unit
         set(hdt,'UpdateFcn',{@resfwdplotLbl,out,LineColor});
+    catch
+        disp('No graphical device interactive datatooltip not enabled')
     end
 end
 
