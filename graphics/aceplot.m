@@ -216,4 +216,4 @@ end
 %    abline(h = 0, col = "black", lty = 2)
 
 end
-%FScategory:REG-Regression
+%FScategory:VIS-Reg
