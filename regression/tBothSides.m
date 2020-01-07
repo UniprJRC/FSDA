@@ -361,7 +361,7 @@ function [out] = tBothSides(y, X, varargin)
     % This is the spawner recruiter model. See CR for more details.
     % modelfun is the function which specifies the link between X and beta
     modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
-    out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);
+    out=tBothSides(y, X,'modelfun',modelfun,'prolik',true,'beta0',bini);
 %}
 
 

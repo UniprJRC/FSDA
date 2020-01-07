@@ -1,3 +1,4 @@
+
 %% Load necessary elements for performance test
 % load OUT
 run addFSDA2path
@@ -22,6 +23,52 @@ disp(FilesExcluded(:,[1 9]))
 [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false);
 
+%% Category to test
+cat2test=getenv('CATEGORY_TO_TEST');
+disp('---------------')
+disp('Test for category:')
+disp(cat2test)
+disp('---------------')
+
+% VIS GUI     MULT CLUS REG UTI
+if strcmp(cat2test,'graphics')
+    str=regexp(FilesIncluded(:,8),'VIS*');
+    boo1=~cellfun(@isempty,str);
+    str=regexp(FilesIncluded(:,8),'GUI');
+    boo2=~cellfun(@isempty,str);
+    boo=boo1 | boo2;
+    
+elseif strcmp(cat2test,'multivariate')
+    str=regexp(FilesIncluded(:,8),'MULT*');
+    strnot1=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
+    boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1);
+    
+elseif strcmp(cat2test,'clustering')
+    str=regexp(FilesIncluded(:,8),'CLUS*');
+    boo=~cellfun(@isempty,str);
+    
+elseif strcmp(cat2test,'regression')
+    str=regexp(FilesIncluded(:,8),'REG-Regression');
+    boo=~cellfun(@isempty,str);
+
+elseif strcmp(cat2test,'regressionEXT')
+    str=regexp(FilesIncluded(:,8),'REG-*');
+    strnot1=regexp(FilesIncluded(:,8),'REG-Regression');
+    strnot2=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
+    boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1) & cellfun(@isempty,strnot2);
+
+    
+elseif strcmp(cat2test,'utilities')
+    str=regexp(FilesIncluded(:,8),'UTI*');
+    boo=~cellfun(@isempty,str);
+else
+   error('FSDA:runTests:WrgCLS','Wrong class')     
+end
+
+OUT=OUT(boo,:);
+FilesIncluded=FilesIncluded(boo,:);
+
+
 ij=1;
 nfiles=length(OUT);
 sz=[5000, 7];
@@ -33,13 +80,15 @@ TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'dou
 % disp(tmp)
 
 
-%% Performance part
+%% Performance and Testing part
 % make sure to be in the FSDAroot
 cd(FSDAroot)
-% Call runperf if perf = true
+
+% Use perf = true if for each example you want run runperf.m
+% Use perf = true if for each example you want run runtests.m
 perf = false;
 
-for i=35:nfiles
+for i=1:nfiles
     clc
     disp(['Filename ' FilesIncluded{i,1}])
     disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
@@ -64,9 +113,7 @@ for i=35:nfiles
                 Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
             
-            % Write Exi to a file
-            % disp('Current folder')
-            % disp(pwd)
+            % Write Exif to a file
             file1ID=fopen('tempfile.m','w');
             fprintf(file1ID,'%s',Exif);
             fclose('all');
@@ -85,13 +132,16 @@ for i=35:nfiles
                     % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
                     TotSummary(ij,'TestActivity')={outp.TestActivity};
                 else
+                    tic
                     outp=runtests('tempfile.m');
+                    time=toc;
+                    TotSummary{ij,'MeanTime'}=time;
                 end
-                    TotSummary(ij,'Code')=Ex(1,3);
-                    TotSummary(ij,'FileName')=FilesIncluded(i,1);
-                    TotSummary(ij,'Category')=FilesIncluded(i,8);
-                    TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-                    ij=ij+1;
+                TotSummary(ij,'Code')=Ex(1,3);
+                TotSummary(ij,'FileName')=FilesIncluded(i,1);
+                TotSummary(ij,'Category')=FilesIncluded(i,8);
+                TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+                ij=ij+1;
             catch
                 disp(['Error on example ' num2str(iEx)])
                 disp(['Name of the file: '  FilesIncluded{i,1}])

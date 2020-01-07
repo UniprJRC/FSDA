@@ -327,7 +327,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 
 %% Beginning  of code.
 % callmex is a Boolean which is equal to true if the mex file exists
-callmex=existFS('DfM.mexw64');
+callmex=existFS('DfM');
 % verLess2016b is a boolean which is true if current version is less then
 % 2016b
 verLess2016b=verLessThanFS(9.1);

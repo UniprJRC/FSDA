@@ -138,7 +138,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
    
     % thinning over the original bi-variate data
     [Wt2,pretain2,RetUnits] = wthin([x,y]);
-    RetUnits
+    % disp(RetUnits)
 %}
 
 %{
