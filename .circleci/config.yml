@@ -1,5 +1,3 @@
-Circle CI:
-
 version: 2.0
 jobs:
     "regression"
