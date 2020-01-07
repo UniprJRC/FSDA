@@ -936,4 +936,5 @@ out.y=y;
 out.X=X;
 end
 
-%FScategory:CLUS-RobClaMULT
+
+%FScategory:CLUS-RobClaREG
