@@ -1,5 +1,5 @@
 jobs:
-    "regression"
+ "regression"
   build:
     machine:
       image: ubuntu-1604:201903-01
@@ -12,7 +12,7 @@ jobs:
              command: matlab -batch "run runAllMyTestsFS.m"
              no_output_timeout: 60m
 
-   "regressionEXT"
+ "regressionEXT"
   build:
     machine:
       image: ubuntu-1604:201903-01
