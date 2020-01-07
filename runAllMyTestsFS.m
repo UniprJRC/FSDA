@@ -43,10 +43,14 @@ elseif strcmp(cat2test,'multivariate')
     strnot1=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
     boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1);
     
-elseif strcmp(cat2test,'clustering')
-    str=regexp(FilesIncluded(:,8),'(CLUS-RobCla)*');
+elseif strcmp(cat2test,'multivariate-clustering')
+    str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
     boo=~cellfun(@isempty,str);
-
+    
+elseif strcmp(cat2test,'regression-clustering')
+    str=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
+    boo=~cellfun(@isempty,str);
+    
 elseif strcmp(cat2test,'mixsim')
     str=regexp(FilesIncluded(:,8),'CLUS-MixSim');
     boo=~cellfun(@isempty,str);
@@ -66,8 +70,15 @@ elseif strcmp(cat2test,'regressionTS')
     OUT=OUT(boo,:);
     FilesIncluded=FilesIncluded(boo,:);
     str=regexp(FilesIncluded(:,1),'(TS)|(ts)*');
-    boo=~cellfun(@isempty,str);
+    booTS=~cellfun(@isempty,str);
+    % Remove LTSts
+    str=regexp(FilesIncluded(:,1),'LTSts.m');
+    booNotLTSts=cellfun(@isempty,str);
+    boo=booTS & booNotLTSts;
     
+elseif strcmp(cat2test,'regressionLTSts')
+    str=regexp(FilesIncluded(:,1),'LTSts.m');
+    boo=~cellfun(@isempty,str);
     
 elseif strcmp(cat2test,'regressionEXT')
     str=regexp(FilesIncluded(:,8),'REG-*');
