@@ -1,15 +1,36 @@
-Circle CI:
-
 version: 2
 jobs:
+    "regression"
   build:
     machine:
       image: ubuntu-1604:201903-01
     steps:
+    environment:
+            CATEGORY_TO_TEST: "regressionEXT"
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
       - run: 
              command: matlab -batch "run runAllMyTestsFS.m"
              no_output_timeout: 60m
-    
+
+   "regressionEXT"
+  build:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+    environment:
+            CATEGORY_TO_TEST: "regressionEXT"
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run: 
+             command: matlab -batch "run runAllMyTestsFS.m"
+             no_output_timeout: 60m
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - "regression"
+      - "regressionEXT"
+
 
