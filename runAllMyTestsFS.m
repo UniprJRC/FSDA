@@ -44,25 +44,43 @@ elseif strcmp(cat2test,'multivariate')
     boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1);
     
 elseif strcmp(cat2test,'clustering')
-    str=regexp(FilesIncluded(:,8),'CLUS*');
+    str=regexp(FilesIncluded(:,8),'(CLUS-RobCla)*');
+    boo=~cellfun(@isempty,str);
+
+elseif strcmp(cat2test,'mixsim')
+    str=regexp(FilesIncluded(:,8),'CLUS-MixSim');
     boo=~cellfun(@isempty,str);
     
 elseif strcmp(cat2test,'regression')
     str=regexp(FilesIncluded(:,8),'REG-Regression');
     boo=~cellfun(@isempty,str);
-
+    OUT=OUT(boo,:);
+    FilesIncluded=FilesIncluded(boo,:);
+    
+    str=regexp(FilesIncluded(:,1),'(TS)|(ts)*');
+    boo=cellfun(@isempty,str);
+    
+elseif strcmp(cat2test,'regressionTS')
+    str=regexp(FilesIncluded(:,8),'REG-Regression');
+    boo=~cellfun(@isempty,str);
+    OUT=OUT(boo,:);
+    FilesIncluded=FilesIncluded(boo,:);
+    str=regexp(FilesIncluded(:,1),'(TS)|(ts)*');
+    boo=~cellfun(@isempty,str);
+    
+    
 elseif strcmp(cat2test,'regressionEXT')
     str=regexp(FilesIncluded(:,8),'REG-*');
     strnot1=regexp(FilesIncluded(:,8),'REG-Regression');
     strnot2=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
     boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1) & cellfun(@isempty,strnot2);
-
     
 elseif strcmp(cat2test,'utilities')
     str=regexp(FilesIncluded(:,8),'UTI*');
     boo=~cellfun(@isempty,str);
+    
 else
-   error('FSDA:runTests:WrgCLS','Wrong class')     
+    error('FSDA:runTests:WrgCLS','Wrong class')
 end
 
 OUT=OUT(boo,:);

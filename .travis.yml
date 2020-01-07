@@ -3,12 +3,16 @@ jobs:
   include:
   - categoryName: "regression"
     env: CATEGORY_TO_TEST=regression
+  - categoryName: "regressionTS"
+    env: CATEGORY_TO_TEST=regressionTS
   - categoryName: "regressionEXT"
     env: CATEGORY_TO_TEST=regressionEXT
   - categoryName: "multivariate"
     env: CATEGORY_TO_TEST=multivariate
   - categoryName: "clustering"
     env: CATEGORY_TO_TEST=clustering
+  - categoryName: "mixsim"
+    env: CATEGORY_TO_TEST=mixsim
   - categoryName: "utilities"
     env: CATEGORY_TO_TEST=utilities
   - categoryName: "graphics"
