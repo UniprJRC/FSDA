@@ -27,89 +27,91 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
 %                 Data Types - double
-%       alpha    : tuning parameter. Non negative scalar in the interval (0 1].
-%               As the tuning parameter $\alpha$ increases
-%               the robustness of the Minimum Density Power Divergence
-%               estimator increases while its efficiency decreases (Basu et
-%               al., 1998). For $\alpha=0$ the MDPDE becomes the Maximum
-%               Likelihood estimator, while for $\alpha=1$ the divergence
-%               yields the $L_2$ metric and the estimator minimizes the $L_2$
-%               distance between the densities, e.g., Scott (2001), Durio
-%               and Isaia (2003).
+%  alpha :      tuning parameter. Non negative scalar in the interval (0 1].
+%               The robustness of the Minimum Density Power Divergence
+%               estimator increases as the tuning parameter $\alpha$
+%               increases, but at the same time its efficiency decreases
+%               (Basu et al., 1998). For $\alpha=0$ the MDPDE becomes the
+%               Maximum Likelihood estimator, while for $\alpha=1$ the
+%               divergence yields the $L_2$ metric and the estimator
+%               minimizes the $L_2$ distance between the densities, e.g.,
+%               Scott (2001), Durio and Isaia (2003).
 %                 Data Types - double
 %
 %
 %  Optional input arguments:
 %
-%   modelfun   : non linear function to use.
-%                function_handle or empty value (default). If
-%                modelfun is empty the link between $X$ and $\beta$ is assumed
-%                to be linear else it is necessary to specify a function
-%                (using @) that accepts two arguments, a coefficient vector
-%                and the array X and returns the vector of fitted values
-%                from the non linear model y. For example, to specify the
-%                hougen (Hougen-Watson) nonlinear regression function, use
-%                the function handle @hougen.
-%                 Example - 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
-%                 Data Types - function_handle or empty value
-%  theta0       :  Initial point. Vector or empty valu.
+%   modelfun   : non linear function to use. It is a function_handle or
+%                an empty value (default). If modelfun is empty the link
+%                between $X$ and $\beta$ is assumed to be linear, otherwise
+%                it is necessary to specify a function (using @) that
+%                accepts two arguments, a coefficient vector and the array
+%                X and returns the vector of fitted values from the non
+%                linear model y. For example, to specify the hougen
+%                (Hougen-Watson) nonlinear regression function, use the
+%                function handle @hougen.
+%                 Example - 'modelfun', modelfun
+%                 where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
+%                 Data Types - function_handle or empty value.
+%  theta0       : Initial point. Vector or empty valu.
 %                 Empty value or vector containing initial values for the
 %                 coefficients (beta0 and sigma0) just in case modelfun is
 %                 non empty. If modelfun is empty this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, and modelfun is empty (that is if the link between X and beta is linear)
-%               a model with constant term will be fitted (default), else
-%               no constant term will be included. This argument is ignored
-%               if modelfun is not empty.
-%               Example - 'intercept',1
-%               Data Types - double
-%  dispresults :  Display results on the screen. Boolean.
-%                 If dispresults is true (default) it is possible to see on the
-%                 screen table Btable.
+%  intercept   :  Indicator for constant term. Scalar. If 1, and modelfun is
+%                 empty (that is if the link between X and beta is linear)
+%                 a model with constant term will be fitted (default), else
+%                 no constant term will be included. This argument is
+%                 ignored if modelfun is not empty.
+%                 Example - 'intercept',1
+%                 Data Types - double
+%  dispresults :  Display results on the screen. Boolean. If dispresults is
+%                 true (default) it is possible to see on the screen table
+%                 Btable.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
-%     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar.
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
+%      conflev :  Confidence level which is used to declare units as outliers.
+%                 Scalar. Usually conflev=0.95, 0.975 0.99 (individual
+%                 alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
+%                 alpha). Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
-%       plots : Plot on the screen. Scalar.
-%               If plots = 1, generates a plot with the residuals
-%               against index number. The confidence level used to draw the
-%               confidence bands for the residuals is given by the input
-%               option conflev. If conflev is not specified a nominal 0.975
-%               confidence interval will be used.
+%       plots  :  Plot on the screen. Scalar.
+%                 If plots = 1, generates a plot with the residuals
+%                 against index number. The confidence level used to draw
+%                 the confidence bands for the residuals is given by the
+%                 input option conflev. If conflev is not specified a
+%                 nominal 0.975 confidence interval is used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
-%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1
-%               Data Types - double
+%       yxsave :  store X and y. Scalar. Scalar that is set to 1 to request
+%                 that the response vector y and data matrix X are saved
+%                 into the output structure out. Default is 0, i.e. no
+%                 saving is done.
+%                 Example - 'yxsave',1
+%                 Data Types - double
 %      MaxIter : maximum number of iterations allowed. Positive integer.
-%               The default value is 1000-
-%               Example - 'MaxIter',100
-%               Data Types - double
+%                The default value is 1000-
+%                Example - 'MaxIter',100
+%                Data Types - double
 %        TolX  : Tolerance for declaring convergence. Scalar.
-%               The default value of TolX is  
-%               Example - 'TolX',1e-7
-%               Data Types - double
+%                The default value of TolX is 1e-7.
+%                Example - 'TolX',1e-8
+%                Data Types - double
 %
 %  Output:
 %
 %  out :     A structure containing the following fields
 %
-%            out.beta = vector containing the MPDP estimator of regression
-%                       coefficients
-%            out.scale= scalar containing the estimate of the scale
-%                       (sigma).
-% out.residuals= n x 1 vector containing the estimates of the
-%                scaled residuals. The residuals are robust or not
-%                depending on the input value alpha.
-% out.fittedvalues= n x 1 vector containing the fitted values.
+%            out.beta  = vector containing the MPDP estimator of regression
+%                        coefficients.
+%            out.scale = scalar containing the estimate of the scale
+%                        (sigma).
+%        out.residuals = n x 1 vector containing the estimates of the
+%                        scaled residuals. The residuals are robust or not
+%                        depending on the input value alpha.
+%    out.fittedvalues = n x 1 vector containing the fitted values.
 %        out.outliers = this output is present only if conflev has been
 %                       specified. It is a vector containing the list of
 %                       the units declared as outliers using confidence
@@ -122,7 +124,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %           out.class = 'Sreg'
-%           out.Btable = table containing estimated beta coefficients,
+%          out.Btable = table containing estimated beta coefficients,
 %                       standard errors, t-stat and p-values
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients and sigma (in the last
@@ -130,7 +132,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %                       option dispresults is true.
 %                       2nd col = standard errors;
 %                       3rd col = t-statistics;
-%                       4th col = p values.
+%                       4th col = p-values.
 %       out.exitflag = Reason fminunc or fminsearch stopped. Integer.
 %                       A value greater then 0 denotes normal convergence.
 %                       See help of functions fminunc.m or fminsearch.m for
@@ -191,6 +193,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %{
     % Call of mpdpR with all default options.
     % Simulate a regression model.
+    rng('default')
     rng(1000)
     n=1000;
     p=3;
@@ -220,63 +223,66 @@ function [out] = mpdpR(y, X, alpha, varargin)
 
 %{
     %% Compare MLE estimator with MDPD estimator (uncontamindated data).
-    % Scenario as in example 1 of Durio and Isaia (2011)
+    % Scenario as in example 1 of Durio and Isaia (2011).
     % 600 points generated according to the model
     % Y=0.5*X1+0.5*X2+eps
     % and n2 = 120 points (outliers), drawn from the model
     % X1,X2~U(0,1) eps~N(0,0.1^2)
-    n=600;
-    p=2;
-    sig=0.1;
-    eps=randn(n,1);
-    X=rand(n,p);
-    bet=0.5*ones(p,1);
-    y=X*bet+sig*eps;
+    close all;
+    n   = 600;
+    p   = 2;
+    sig = 0.1;
+    eps = randn(n,1);
+    X   = rand(n,p);
+    bet = 0.5*ones(p,1);
+    y   = X*bet+sig*eps;
     [outalpha1] = mpdpR(y, X, 1);
-    h1=subplot(2,1,1);
+    h1 = subplot(2,1,1);
     resindexplot(outalpha1,'h',h1);
-    title('alpha=1')
+    title('alpha=1','FontSize',15);
 
-    h2=subplot(2,1,2);
-    title('alpha=0')
+    h2 = subplot(2,1,2);
     [outalpha0] = mpdpR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
+    title('alpha=0','FontSize',15);
+
 %}
 
 %{
     % Compare MLE estimator with MDPD estimator (EX2).
-    % Scenario as in example 2 of Durio and Isaia (2011)
+    % Scenario as in example 2 of Durio and Isaia (2011).
     % 480 points generated according to the model
     % Y=0.5*X1+0.5*X2+eps
     % and n2 = 120 points (outliers), drawn from the model
     % Y =0.7X1 +0.7X2 + eps
     % X1,X2~U(0,1) eps~N(0,0.1^2)
-    sig=0.1;
-    p=2;
-    n1=480;
-    eps1=randn(n1,1);
-    X1=rand(n1,p);
-    bet1=0.5*ones(p,1);
-    y1=X1*bet1+sig*eps1;
-    n2=120;
-    eps2=randn(n2,1);
-    X2=rand(n2,p);
-    bet2=0.7*ones(p,1);
-    y2=X2*bet2+sig*eps2;
-    y=[y1;y2];
-    X=[X1;X2];
+    close all;
+    sig  = 0.1;
+    p    = 2;
+    n1   = 480;
+    eps1 = randn(n1,1);
+    X1   = rand(n1,p);
+    bet1 = 0.5*ones(p,1);
+    y1   = X1*bet1+sig*eps1;
+    n2   = 120;
+    eps2 = randn(n2,1);
+    X2   = rand(n2,p);
+    bet2 = 0.7*ones(p,1);
+    y2   = X2*bet2+sig*eps2;
+    y    = [y1;y2];
+    X    = [X1;X2];
     group=2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
     [out] = mpdpR(y, X, 1);
-    h1=subplot(2,1,1);
+    h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
-    title('alpha=1')
+    title('alpha=1','FontSize',15);
     n=n1+n2;
-    h2=subplot(2,1,2);
+    h2 = subplot(2,1,2);
     [outalpha0] = mpdpR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
-    title('alpha=0')
+    title('alpha=0','FontSize',15)
     % Compare robust and MLE estimate
     disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
 %}
@@ -289,33 +295,34 @@ function [out] = mpdpR(y, X, alpha, varargin)
     % and n2 = 120 points (outliers), drawn from the model
     % Y=0.35*X1+0.35*X2+0.35*X3+0.35*X4+eps
     % X1,X2,X3,X4~U(0,1) eps~N(0,0.1^2)
-    sig=0.1;
-    p=4;
-    n1=480;
-    eps1=randn(n1,1);
-    X1=rand(n1,p);
-    bet1=0.25*ones(p,1);
-    y1=X1*bet1+sig*eps1;
-    n2=120;
-    eps2=randn(n2,1);
-    X2=rand(n2,p);
-    bet2=0.35*ones(p,1);
-    y2=X2*bet2+sig*eps2;
-    y=[y1;y2];
-    X=[X1;X2];
-    group=2*ones(n,1);
+    close all;
+    sig  = 0.1;
+    p    = 4;
+    n1   = 480;
+    eps1 = randn(n1,1);
+    X1   = rand(n1,p);
+    bet1 = 0.25*ones(p,1);
+    y1   = X1*bet1+sig*eps1;
+    n2   = 120;
+    eps2 = randn(n2,1);
+    X2   = rand(n2,p);
+    bet2 = 0.35*ones(p,1);
+    y2   = X2*bet2+sig*eps2;
+    y    = [y1;y2];
+    X    = [X1;X2];
+    group= 2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
     [out] = mpdpR(y, X, 1);
-    h1=subplot(2,1,1);
+    h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
-    title('alpha=1')
-    n=n1+n2;
+    title('alpha=1','FontSize',15);
+    n = n1+n2;
     h2=subplot(2,1,2);
     % MLE estimate
     [outalpha0] = mpdpR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
-    title('alpha=0')
+    title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
     disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
 %}
@@ -325,32 +332,33 @@ function [out] = mpdpR(y, X, alpha, varargin)
     % Compare MLE estimator with MDPD estimator (EX4).
     % Scenario as in example 4 of Durio and Isaia (2011)
     % 180 points generated according to the model
-    % Y=0.25*X1+eps
+    % Y  = 0.25*X1+eps
     % X1~U(0,0.5) eps~N(0,0.1^2)
     % and n2 = 20 points (outliers), drawn from the model
-    % Y=0.25*X2+eps
+    % Y  = 0.25*X2+eps
     % X2~U(0.5,1) eps~N(0,0.1^2)
     % and m points (m=5, 10, 20, 30 40, 50)
-    % Y=0.7*X3+eps3
+    % Y  = 0.7*X3+eps3
     % X3~U(0.7,1) eps3~N(0,0.05^2)
-    sig=0.1;
-    p=1;
-    n1=180;
-    eps1=randn(n1,1);
-    X1=rand(n1,p)*0.5;
-    y1=X1+sig*eps1;
-    n2=20;
-    eps2=randn(n2,1);
-    X2=rand(n2,p)*0.5+0.5;
-    y2=X2+sig*eps2;
+    close all;
+    sig  = 0.1;
+    p    = 1;
+    n1   = 180;
+    eps1 = randn(n1,1);
+    X1   = rand(n1,p)*0.5;
+    y1   = X1+sig*eps1;
+    n2   = 20;
+    eps2 = randn(n2,1);
+    X2   = rand(n2,p)*0.5+0.5;
+    y2   = X2+sig*eps2;
     % Additional m points
-    m=5;
-    X3=rand(m,p)*0.3+0.7;
-    eps3=randn(m,1);
-    y3=X3+0.05*eps3;
-    y=[y1;y2;y3];
-    X=[X1;X2;X3];
-    group=3*ones(n1+n2+m,1);
+    m    = 5;
+    X3   = rand(m,p)*0.3+0.7;
+    eps3 = randn(m,1);
+    y3   = X3+0.05*eps3;
+    y    = [y1;y2;y3];
+    X    = [X1;X2;X3];
+    group= 3*ones(n1+n2+m,1);
     group(1:n1)=1;
     group(n1+1:n1+n2)=2;
 
@@ -358,13 +366,13 @@ function [out] = mpdpR(y, X, alpha, varargin)
     [out] = mpdpR(y, X, 1);
     h1=subplot(2,1,1);
     resindexplot(out,'h',h1);
-    title('alpha=1')
+    title('alpha=1','FontSize',15);
     n=n1+n2;
     h2=subplot(2,1,2);
     % MLE estimate
     [outalpha0] = mpdpR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
-    title('alpha=0')
+    title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
     disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
 %}
@@ -380,13 +388,13 @@ function [out] = mpdpR(y, X, alpha, varargin)
     h1=subplot(2,1,1);
     [out] = mpdpR(y, X, 1);
     resindexplot(out,'h',h1);
-    title('alpha=1')
+    title('alpha=1','FontSize',15);
 
     h2=subplot(2,1,2);
     % MLE estimate
     [outalpha0] = mpdpR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
-    title('alpha=0')
+    title('alpha=0','FontSize',15);
 %}
 
 %% Beginning of code
@@ -404,23 +412,22 @@ else
 end
 
 
-modelfun='';
-theta0='';
-dispresults=false;
-intercept=1;
-conflev=0.975;
-plots=0;
-yxsave=0;
-    MaxIter=1000;
-    TolX=1e-7;
+modelfun = '';
+theta0   = '';
+dispresults = false;
+intercept   = 1;
+conflev     = 0.975;
+plots       = 0;
+yxsave      = 0;
+MaxIter     = 1000;
+TolX        = 1e-7;
 
 if nargin>3
     options=struct('intercept',intercept,'modelfun',modelfun,...
         'theta0',theta0,'dispresults',dispresults,'conflev',conflev,...
         'plots',plots,'yxsave',yxsave,'MaxIter',MaxIter,'TolX',TolX);
     
-    UserOptions=varargin(1:2:length(varargin));
-    
+    UserOptions=varargin(1:2:length(varargin));   
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -437,18 +444,18 @@ if nargin>3
         error('FSDA:mpdpR:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
-    
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    intercept=options.intercept;
-    modelfun=options.modelfun;
-    theta0=options.theta0;
-    dispresults=options.dispresults;
-    conflev=options.conflev;
-    plots=options.plots;
-    yxsave=options.yxsave;
+    
+    intercept   = options.intercept;
+    modelfun    = options.modelfun;
+    theta0      = options.theta0;
+    dispresults = options.dispresults;
+    conflev     = options.conflev;
+    plots       = options.plots;
+    yxsave      = options.yxsave;
 end
 
 n=length(y);
@@ -459,28 +466,28 @@ if isempty(modelfun) && intercept==1
 end
 p=size(X,2);
 
-
-if isempty(modelfun) && alpha == 0 % MLE of beta and sigma
-    bhat=X\y;
-    yhat=X*bhat;
-    resMLE=y-yhat;
-    scale=sqrt(resMLE'*resMLE/(n-p));
-    residuals=resMLE/scale;
-    exitflag=1;
+if isempty(modelfun) && alpha == 0 
+    % MLE of beta and sigma
+    bhat  = X\y;
+    yhat  = X*bhat;
+    resMLE= y-yhat;
+    scale = sqrt(resMLE'*resMLE/(n-p));
+    residuals = resMLE/scale;
+    exitflag  = 1;
 else
-    
     % Use linear squares as starting values of the parameters
     if isempty(theta0)
-        beta0=X\y;
-        yhat0=y-(X*beta0);
-        sigma0=sqrt(yhat0'*yhat0/(n-p));
-        theta0=[beta0;sigma0];
+        beta0  = X\y;
+        yhat0  = y-(X*beta0);
+        sigma0 = sqrt(yhat0'*yhat0/(n-p));
+        theta0 = [beta0;sigma0];
     else
         if isempty(modelfun)
             if length(theta0)~=p+1
-                error('FSDA:mpdpR:WrongDim',['Wrong dimension for theta0, it must be a vector with length = ', num2str(p+1)]);
+                error('FSDA:mpdpR:WrongDim',...
+                    ['Wrong dimension for theta0, it must be a vector with length = ', num2str(p+1)]);
             else
-                    % Just in case input theta0 is a rwo vector
+                % Just in case input theta0 is a rwo vector
                 theta0=theta0(:);
             end
         end
@@ -488,20 +495,21 @@ else
     
     DisplayLevel='';
     nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',TolX);
-  
+    
     % Given that likfmin only accepts objective functions that depend only
     % on a single variable (in this case betsigma)
-    % Vector of regressione coefficients and scale
+    % Vector of regression coefficients and scale
     likfminOneParameter = @(betsigma)likfmin(betsigma, modelfun, y, X, alpha);
-
-     if dispresults == true
-        [betaout,~,exitflag,~,~,covB] = fminunc(likfminOneParameter,theta0,nlinfitOptions);
+    if dispresults == true
+        [betaout,~,exitflag,~,~,covB] = ...
+            fminunc(likfminOneParameter,theta0,nlinfitOptions);
     else
-        [betaout,~,exitflag]  = fminsearch(likfminOneParameter,theta0,nlinfitOptions);
+        [betaout,~,exitflag]  = ...
+            fminsearch(likfminOneParameter,theta0,nlinfitOptions);
     end
-   
-    bhat=betaout(1:end-1);
-    scale=betaout(end);
+    
+    bhat = betaout(1:end-1);
+    scale = betaout(end);
     if isempty(modelfun)
         yhat=X*bhat;
     else
@@ -525,9 +533,9 @@ if dispresults==true
         se=sqrt(diag(inv(covB(1:end-1,1:end-1))));
     end
     % Show the estimated results
-    tstat=bhat./se;
-    Btable=table(bhat,se,tstat);
-    bnames=cellstr(num2str((1:length(bhat))','b%d'));
+    tstat  = bhat./se;
+    Btable = table(bhat,se,tstat);
+    bnames = cellstr(num2str((1:length(bhat))','b%d'));
     
     Btable.Properties.RowNames=bnames;
     out.Btable=Btable;
@@ -563,6 +571,7 @@ end
 
 % likfmin = Objective function to call with fminunc or fminsearch
     function objyhat=likfmin(betsigma, modelfun, y, X, alpha)
+       
         
         bet=betsigma(1:end-1);
         if isempty(modelfun)

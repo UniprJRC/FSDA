@@ -183,11 +183,11 @@ vvarargin=varargin;
 E = X/R;
 A = -E*E';
 sel=1:n;
-siz = size(A); 
+siz = size(A);
 % Find linear indexes
 % It is better to compute linind directly rather than calling sub2ind
 % linind=sub2ind(siz,sel,sel);
-linind = sel + (sel - 1).*siz(1); 
+linind = sel + (sel - 1).*siz(1);
 
 
 A(linind)=1+A(linind);
@@ -217,12 +217,13 @@ if wAw <1e-12
     Sz_square=NaN;
     Tl=NaN;
     b=NaN;
+    pval=NaN;
     warning('FSDA:addt:NearlySingularMatrix','The augmented X matrix is nearly singular');
 else
     % b=regress(Az,Aw);
     b=zAw/wAw;
     
-    Sz=sqrt(r-zAw^2/wAw); % See Atkinson (1985) p. 98 
+    Sz=sqrt(r-zAw^2/wAw); % See Atkinson (1985) p. 98
     Sz_square=Sz^2/(n-p-1);
     
     if abs(real(Sz)) > 0.0000001

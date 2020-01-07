@@ -555,8 +555,11 @@ elseif 0<g && g<1
     % initialize totRC (total rows and columns), used to index greatest pairwise overlap
     totRC = 1:length(overM);
     
-    % overlap values sorted and saved according to nearest groups already found (i.e. with greater overlap)
-    while ~all(isnan(overM(:)) | overM(:) == 0) % stopping rule: cand matrix has been totally evaluated or the overlap is 0
+    % overlap values sorted and saved according to nearest groups already
+    % found (i.e. with greater overlap)
+    while ~all(isnan(overM(:)) | overM(:) == 0) 
+        % stopping rule: cand matrix has been totally evaluated or the
+        % overlap is 0
         
         if any(cand0(:))~=0 % it could happen that cand0 remains only with zeros
             % find max values and indexes according to cand0

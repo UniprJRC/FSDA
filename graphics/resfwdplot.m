@@ -1035,13 +1035,16 @@ if any(strcmp(fieldnames(out),'class'))
     elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
         out.Un='';
+    elseif strcmp(out.class,'MPDPeda')
+        x=out.alpha;
+        out.Un='';
     end
     
 end
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
-if strcmp(out.class,'Sregeda')
+if strcmp(out.class,'Sregeda') || strcmp(out.class,'MPDPeda')
     set(gca,'XDir','reverse')
 end
 
@@ -1895,6 +1898,10 @@ end % close options.databrush
                 elseif strcmp(out.class,'Sregeda')
                     output_txt{2,1} = ['bdp=' num2str(x1)];
                     output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
+
+                elseif strcmp(out.class,'MPDPeda')
+                    output_txt{2,1} = ['alpha=' num2str(x1)];
+                    
                 else
                     % Add information about the step of the search which is under
                     % investigation or the value of bdp or the value of eff
