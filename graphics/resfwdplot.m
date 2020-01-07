@@ -1403,7 +1403,8 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    try
+    disp(gpuDevice)
+    if gpuDeviceCount > 0
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
@@ -1419,8 +1420,6 @@ if ~isempty(datatooltip)
         % Declare a custom datatooltip update function to display additional
         % information about the selected unit
         set(hdt,'UpdateFcn',{@resfwdplotLbl,out,LineColor});
-    catch
-        disp('Graphics device not enabled')
     end
 end
 
