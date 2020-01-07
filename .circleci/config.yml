@@ -8,8 +8,9 @@ jobs:
    steps:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-              no_output_timeout: 60m 
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
          
 
  "regressionEXT":
@@ -21,8 +22,9 @@ jobs:
    steps:
       - checkout
       - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-       - run:  command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-               no_output_timeout: 60m 
+       - run:  
+           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+           no_output_timeout: 60m 
 
 workflows:
   version: 2
