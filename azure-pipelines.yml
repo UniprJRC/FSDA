@@ -6,14 +6,18 @@ jobs:
           categoryName: 'regression'
         regressionTS:
           categoryName: 'regressionTS'
+        regressionLTSts:
+          categoryName: 'regressionLTSts'
         regressionEXT:
           categoryName: 'regressionEXT'
         graphics:
           categoryName: 'graphics'
         multivariate:
           categoryName: 'multivariate'
-        clustering:
-          categoryName: 'clustering'
+        multivariate-clustering:
+          categoryName: 'multivariate-clustering'
+        regression-clustering:
+          categoryName: 'regression-clustering'
         mixsim:
           categoryName: 'mixsim'
         utilities:
