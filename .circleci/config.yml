@@ -13,10 +13,115 @@ jobs:
           no_output_timeout: 60m 
          
 
+ "regressionTS":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "regressionTS"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "regressionLTSts":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "regressionLTSts"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
  "regressionEXT":
    build:
    environment: 
      - CATEGORY_TO_TEST: "regressionEXT"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "graphics":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "graphics"  
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+         
+
+ "multivariate":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "multivariate"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "multivariate-clustering":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "multivariate-clustering"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "regression-clustering":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "regression-clustering"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "mixsim":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "mixsim"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
+ "utilities":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "utilities"
    machine:
       image: ubuntu-1604:201903-01
    steps:
@@ -31,7 +136,15 @@ workflows:
   build:
     jobs:
       - "regression"
+      - "regressionTS"
+      - "regressionLTSts"
       - "regressionEXT"
+      - "graphics"
+      - "multivariate"
+      - "multivariate-clustering"
+      - "regression-clustering"
+      - "mixsim"
+      - "utilities"
 
 
 
