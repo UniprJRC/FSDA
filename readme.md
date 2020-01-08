@@ -2,7 +2,7 @@
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
 [![Build Status](https://travis-ci.com/UniprJRC/FSDA.svg?branch=master)](https://travis-ci.com/UniprJRC/FSDA)
 [![CircleCI](https://circleci.com/gh/UniprJRC/FSDA.svg?style=svg)](https://circleci.com/gh/UniprJRC/FSDA)
-[![Build Status](https://dev.azure.com/aldocorbellini0395/FSDA/_apis/build/status/UniprJRC.FSDA%20(2)?branchName=master)](https://dev.azure.com/aldocorbellini0395/FSDA/_build/latest?definitionId=3&branchName=master)
+[![Build Status](https://dev.azure.com/aldocorbellini0395/FSDA/_apis/build/status/UniprJRC.FSDA%20(1)?branchName=master)](https://dev.azure.com/aldocorbellini0395/FSDA/_build/latest?definitionId=2&branchName=master)
 
 You can start to familiarize with the FSDA toolbox in one of the following ways.
 
