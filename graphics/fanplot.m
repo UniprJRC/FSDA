@@ -532,18 +532,23 @@ box on
 %% Set the datatooltip for the fanplot
 
 if ~isempty(options.datatooltip)
-    hdt = datacursormode;
-    if ~isstruct(options.datatooltip)
-        set(hdt,'DisplayStyle','window');
-    else
-        % options.databrush contains a structure where the user can set the
-        % properties of the data cursor
-        % options.databrush può anche essere passato come cell?????????????
-        set(hdt,options.datatooltip);
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
+        hdt = datacursormode;
+        if ~isstruct(options.datatooltip)
+            set(hdt,'DisplayStyle','window');
+        else
+            % options.databrush contains a structure where the user can set the
+            % properties of the data cursor
+            % options.databrush può anche essere passato come cell?????????????
+            set(hdt,options.datatooltip);
+        end
+        % Declare a custom datatip update function to display additional
+        % information about the units
+        set(hdt,'UpdateFcn',{@fanplotLbl,out})
+    catch
+        disp('No graphical device, interactive datatooltip not enabled')
     end
-    % Declare a custom datatip update function to display additional
-    % information about the units
-    set(hdt,'UpdateFcn',{@fanplotLbl,out})
 end
 
 % Store all graphics elements of the current figure inside handle hmin
