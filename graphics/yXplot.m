@@ -1232,20 +1232,25 @@ end
 
 % set the options.datatooltip (enable/disable interactive data cursor mode)
 if datatooltip
-    hdt = datacursormode;
-    set(hdt,'Enable','on');
-    
-    % If options.datatooltip is not a struct then use our default options
-    if ~isstruct(options.datatooltip)
-        set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
-    else
-        % options.databrush contains a structure where the user can set the
-        % properties of the data cursor
-        set(hdt,options.datatooltip);
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
+        hdt = datacursormode;
+        set(hdt,'Enable','on');
+        
+        % If options.datatooltip is not a struct then use our default options
+        if ~isstruct(options.datatooltip)
+            set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
+        else
+            % options.databrush contains a structure where the user can set the
+            % properties of the data cursor
+            set(hdt,options.datatooltip);
+        end
+        % Declare a custom datatooltip update function to display additional
+        % information about the selected unit
+        set(hdt,'UpdateFcn',{@yXplotLbl,out})
+    catch
+        disp('No graphical device, interactive datatooltip not enabled')
     end
-    % Declare a custom datatooltip update function to display additional
-    % information about the selected unit
-    set(hdt,'UpdateFcn',{@yXplotLbl,out})
 end
 
 
