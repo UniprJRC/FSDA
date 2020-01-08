@@ -1,7 +1,7 @@
 function addFSDA2path(FSroot)
 %Add FSDA toolbox to path
 %
-%  Required input arguments:
+%   Required input arguments:
 %
 %  Optional input arguments:
 %
