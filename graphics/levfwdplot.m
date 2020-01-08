@@ -5,7 +5,7 @@ function plotopt=levfwdplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  Structure containing monitoring of leverage. Structure. 
+%  out :  Structure containing monitoring of leverage. Structure.
 %               Structure containing the following fields.
 %     out.LEV   =   matrix containing the leverage monitored in each step of
 %               the forward search. Every row is associated with a unit.
@@ -30,7 +30,7 @@ function plotopt=levfwdplot(out,varargin)
 % Optional input arguments:
 %           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc. Structure. 
+%                   style, color of the lines, etc. Structure.
 %                   Structure standard contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -45,7 +45,7 @@ function plotopt=levfwdplot(out,varargin)
 %                       labels of the axes. Default value is 12.
 %                   standard.subsize = numeric vector containing the subset size
 %                       with length equal to the number of columns of
-%                       the leverage matrix. The default value of subsize 
+%                       the leverage matrix. The default value of subsize
 %                       is (n-nsteps+1):n
 %                   standard.LineWidth =: scalar specifying line width for the
 %                       trajectories.
@@ -71,7 +71,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   standard.LineStyle={'-'}
 %
 %                   Example - 'standard.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
@@ -79,7 +79,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   distinguishable from the others.
 %                   It is possible to control the label, the width, the
 %                   color, the line type and the marker of the highlighted
-%                   units. 
+%                   units.
 %                   Structure fground contains the following fields:
 %                   fground.fthresh = (alternative to funit) numeric vector of
 %                       length 1 or 2 which specifies the highlighted
@@ -88,10 +88,10 @@ function plotopt=levfwdplot(out,varargin)
 %                           are those of units that after step [n/2 + 1]
 %                           have at least once a leverage bigger than
 %                           fthresh. Alternatively (if option 'xground' is
-%                           set to be 'res' by the user) the trajectories  
-%                           are highlighted if throughtout the search the 
+%                           set to be 'res' by the user) the trajectories
+%                           are highlighted if throughtout the search the
 %                           units had at leat once a residual (in absolute
-%                           value) greater than fthresh. 
+%                           value) greater than fthresh.
 %                           The default value of fthresh is 2p/n for
 %                           leverage values or 2.5 for residual values.
 %                       -   If length(fthresh)=2 the highlighted trajectories
@@ -132,7 +132,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   Remark. if fground='' no unit is highlighted and no
 %                   label is inserted into the plot.
 %                   Example - 'fground.LineWidth','1'
-%                   Data Types - struct 
+%                   Data Types - struct
 %
 %         bground : trajectories in background. Structure.
 %                   Structure which specifies the trajectories in background,
@@ -170,13 +170,13 @@ function plotopt=levfwdplot(out,varargin)
 %                       When n<=100 and bthresh = -Inf option bstyle is
 %                       ignored.
 %                   Example - 'bground.bstyle','faint'
-%                   Data Types - struct 
+%                   Data Types - struct
 %
 %                   Remark: bground='' is equivalent to bground.thresh=-Inf
 %                   that is all trajectories are considered relevant.
 %
 %      xground :    trajectories to highlight in connection with
-%                   resfwdplot. Character 'lev' (default) | 'res'. 
+%                   resfwdplot. Character 'lev' (default) | 'res'.
 %                   xground = 'lev' (default).
 %                       The levfwdplot trajectories are put in foreground
 %                       or in background depending on the leverage values.
@@ -185,7 +185,7 @@ function plotopt=levfwdplot(out,varargin)
 %                       or in background depending on the residual values.
 %                   See options bground.bthresh and fground.fthresh.
 %                   Example - 'xground','res'
-%                   Data Types - char 
+%                   Data Types - char
 %
 %       tag     :   Personalized tag. String. String which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
@@ -194,9 +194,9 @@ function plotopt=levfwdplot(out,varargin)
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created
 %                   Example - 'tag','myplot'
-%                   Data Types - char 
-%   datatooltip :   interactive clicking. 
-%                   Empty value or scalar (default)| structure.  
+%                   Data Types - char
+%   datatooltip :   interactive clicking.
+%                   Empty value or scalar (default)| structure.
 %                   The default is datatooltip=1
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
@@ -207,14 +207,14 @@ function plotopt=levfwdplot(out,varargin)
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
-%                   Data Types - char 
+%                   Data Types - char
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the units (optional argument used when
 %                   datatooltip=1. If this field is not present labels
 %                   row1, ..., rown will be automatically created and
 %                   included in the pop up datatooltip window).
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %    databrush  :   interactive mouse brushing. empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -227,7 +227,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   does not exist it is automatically created. In
 %                   addition, brushed units are automatically highlighted
 %                   in the minimum deletion residual plot if it is already
-%                   open. 
+%                   open.
 %                   Please note that the window style of the other figures is set
 %                   equal to that which contains the monitoring leverage
 %                   plot. In other words, if the monitoring leverage plot
@@ -295,17 +295,17 @@ function plotopt=levfwdplot(out,varargin)
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
-%                   Data Types - single | double | struct 
+%                   Data Types - single | double | struct
 %       nameX   :   Labels
 %                   of the variables of the regression dataset. Cell array of
 %                   strings. If it is empty (default) the sequence X1, ...,
 %                   Xp will be created automatically
 %                   Example - 'nameX',{'var1', var2, 'var3'}
-%                   Data Types - cell of strings 
+%                   Data Types - cell of strings
 %       namey   :   label of the response. Character. Character containing
 %                   the label of the response
 %                   Example - 'namey','response'
-%                   Data Types - char 
+%                   Data Types - char
 %       msg     :   display or save used options. Scalar which controls whether to display or to save
 %                   as output the options inside structures standard,
 %                   fground and bground which have been used to draw the
@@ -318,7 +318,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   the options which have been used and prints them on the
 %                   screen
 %                   Example - 'msg',1
-%                   Data Types - single or double 
+%                   Data Types - single or double
 %
 % Output:
 %
@@ -410,7 +410,7 @@ function plotopt=levfwdplot(out,varargin)
     %   Example of the use of option datatooltip.
     %   Gives the user the possibility of clicking on the different points
     %   and have information about the unit selected, the step of entry
-    %   into the subset and the associated label. 
+    %   into the subset and the associated label.
     datatooltip = struct;
     % In this example the style of the datatooltip is 'datatip'. Click on a
     % trajectory when the levfwdplot is displayed.
@@ -637,7 +637,7 @@ residuals = out.RES;
 
 % The variable "statistic" determines if the colormap used to highlight the
 % leverage trajectories will be based on leverage or residual values. By
-% default it is the leverage values vector. 
+% default it is the leverage values vector.
 statistic = lever;
 xground = 'lev';
 
@@ -646,16 +646,16 @@ xground = 'lev';
 % fwd search.
 [n,nsteps] = size(statistic);
 
-% Default thresholds used to define units in background and foreground: 
+% Default thresholds used to define units in background and foreground:
 % threshold on leverage, that is 2p/n, from step [n/2 + 1]
-mapthresh = 2*size(out.X,2)/n; 
+mapthresh = 2*size(out.X,2)/n;
 from=floor(n/2)+1;
 init=size(lever,1)-size(lever,2);
 from2 = n-init-from;
 selmax=max(lever(:,from2:end),[],2);
 selmin=min(lever(:,from2:end),[],2);
 
-% Optional threshold used to define units in background and foreground: 
+% Optional threshold used to define units in background and foreground:
 % threshold on residuals throughout the search
 if min(min(residuals))<0
     rmapthresh = 2.5;
@@ -669,12 +669,12 @@ fthresh = mapthresh;
 rfthresh = rmapthresh;
 
 if n>100
-    bthresh = mapthresh; 
-    rbthresh = rmapthresh; 
-    bstyle ='faint'; 
+    bthresh = mapthresh;
+    rbthresh = rmapthresh;
+    bstyle ='faint';
 else
-    bthresh = -inf; 
-    rbthresh = -inf; 
+    bthresh = -inf;
+    rbthresh = -inf;
     bstyle='';
 end
 
@@ -744,18 +744,18 @@ if nargin>1
 end
 
 % If the user prefers to highlight units in background and foreground with
-% a colormap based on residuals, update the thresholds. 
+% a colormap based on residuals, update the thresholds.
 uxground = options.xground;
 if strcmp(uxground,'res')
-   statistic = residuals;
-   fgrounddef.fthresh = rfthresh;
-   bgrounddef.bthresh = rbthresh;
-   options.fground.fthresh = rfthresh;
-   options.bground.bthresh = rbthresh;
-   selmax = rselmax;
-   selmin = rselmin;
+    statistic = residuals;
+    fgrounddef.fthresh = rfthresh;
+    bgrounddef.bthresh = rbthresh;
+    options.fground.fthresh = rfthresh;
+    options.bground.bthresh = rbthresh;
+    selmax = rselmax;
+    selmin = rselmin;
 end
-        
+
 % Databrush option (used in selectdataFS): the options which are not valid
 % for selectdataFS are removed from cell options.databrush
 persist = '';
@@ -769,7 +769,7 @@ if isstruct(options.databrush)
     if d>0
         labeladd=databrush.labeladd;
         databrush=rmfield(databrush,'labeladd');
-        fdatabrush=fieldnames(databrush); 
+        fdatabrush=fieldnames(databrush);
     else
         labeladd='';
     end
@@ -947,7 +947,7 @@ if ~isempty(options.fground)
     
     fground = fgrounddef;
     
-    % fground.flabstep 
+    % fground.flabstep
     if ~isempty(fground.flabstep)
         steps=floor(fground.flabstep);
         if max(steps)>n || min(steps)<x(1)
@@ -1033,16 +1033,16 @@ end
 %% apply bground options
 
 if ~isempty(options.bground)
-
+    
     bground=bgrounddef;
-
+    
     % units = the units which do not have to be modified backunits = the
     % other units which must be plotted using a colormap or which must be
     % hidden or which have to be plotted in greysh
     bthresh=bground.bthresh;
-
+    
     if ~isempty(bthresh) && ischar(bthresh)
-            error('FSDA:levfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
+        error('FSDA:levfwdplot:WrongBthresh','Specify bthresh as a numeric vector');
     else
         if length(bthresh)>1
             units=seq(selmax>bthresh(2) | selmin<bthresh(1));
@@ -1054,7 +1054,7 @@ if ~isempty(options.bground)
     % backunits are defined as the trajectories not belonging to units
     % backunits are associated with unimportant trajectories
     backunits = setdiff(seq,units);
-
+    
     % set line style for trajectories associated with "backunits"
     bstyle = bground.bstyle;
     switch bstyle
@@ -1090,22 +1090,27 @@ if ~isempty(options.datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    % datacursormode on;
-    hdt = datacursormode;
-    set(hdt,'Enable','on');
-    % If options.datatooltip is not a struct then use our default options
-    if ~isstruct(options.datatooltip)
-        set(hdt,'DisplayStyle','window','SnapToDataVertex','on'); 
-    else
-        % options.datatooltip contains a structure where the user can set
-        % the properties of the data cursor
-        set(hdt,options.datatooltip);
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
+        % datacursormode on;
+        hdt = datacursormode;
+        set(hdt,'Enable','on');
+        % If options.datatooltip is not a struct then use our default options
+        if ~isstruct(options.datatooltip)
+            set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
+        else
+            % options.datatooltip contains a structure where the user can set
+            % the properties of the data cursor
+            set(hdt,options.datatooltip);
+        end
+        
+        
+        % Declare a custom datatooltip update function to display additional
+        % information about the selected unit
+        set(hdt,'UpdateFcn',{@levfwdplotLbl,out})
+    catch
+        disp('No graphical device, interactive datatooltip not enabled')
     end
-    
-    
-    % Declare a custom datatooltip update function to display additional
-    % information about the selected unit
-    set(hdt,'UpdateFcn',{@levfwdplotLbl,out})
 end
 
 %% Brush mode (call to function selectdataFS)
@@ -1262,13 +1267,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 brushcum=nbrush;
                 group=ones(n,1);
             end
-
+            
             % group=vector of length(Xsel) observations taking values from
             % 1 to the number of groups selected. unigroup= list of
             % selected groups.
             group(nbrush)=ij+1;
             unigroup=unique(group);
-
+            
             % nbrush= vector which contains the brushed steps selstesp=
             % vector which will contain the steps in which the brushed
             % units enter the search Given nbrush, find selstesp
@@ -1305,7 +1310,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             disp('Steps of entry of brushed units');
             disp(selsteps);
             
-        %% - highlight brushed units also in the minimum deletion residual, if it is open
+            %% - highlight brushed units also in the minimum deletion residual, if it is open
             
             h=findobj('-depth',1,'Tag','pl_mdr');
             
@@ -1395,18 +1400,18 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 figure;
                 set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
             end
-        
+            
             [H,AX,BigAx] = gplotmatrix(Xsel,y,group,clr(unigroup),char(styp{unigroup}),[],'on',[],nameX,namey);
             
             % Assign to this figure a name and a tag=pl_yX
             set(gcf,'Name','Scatter plot matrix y|X with different symbols for brushed units');
             set(gcf,'tag','pl_yX');
-
-            % Set markers   
+            
+            % Set markers
             for mfc=1:length(unigroup)
                 set(findobj(gcf,'marker',char(styp(unigroup(mfc)))),'MarkerFaceColor',clr(unigroup(mfc)));
             end
-
+            
             % Set the legenda properties of the gplotmatrix
             set(H(:,:,1),'DisplayName','Unbrushed units');
             for brugrp = 2:length(unigroup)
@@ -1420,8 +1425,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % add objects to the panels of the yX
             % add2yX(H,AX,BigAx,out,group,nbrush,bivarfit,multivarfit,labeladd);
             add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
-                       
-         %% - check condition to exit from the brush mode
+            
+            %% - check condition to exit from the brush mode
             % If the option persistent is not equal off or on than get out
             % of the loop
             if strcmp('on',persist) || strcmp('off',persist)
@@ -1456,7 +1461,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     if ~isempty(Open_mdr); delete(Open_mdr); end  % mdr plot is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end
-
+                
                 % - and the 'but' variable is set if keyboard key was pressed
                 if ss==1
                     but=2;
@@ -1465,7 +1470,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             else
                 but=2;
             end % close loop associated with persist 'on' or persist 'off'
-            position(plot1); 
+            position(plot1);
         end  % for each brushing operation do ...
         
     end % close loop associated with but
