@@ -175,7 +175,7 @@ function tclustICplot(IC,varargin)
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 % Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
 % Classification", Vol. 2, pp. 193-218.
@@ -694,23 +694,27 @@ end
 
 
     function PrepareDatatooltip(IC)
-        % datacursormode on;
-        hdt = datacursormode;
-        set(hdt,'Enable','on');
-        % If options.datatooltip is not a struct then use our default options
-        if ~isstruct(datatooltip)
-            set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
-        else
-            % options.datatooltip contains a structure where the user can set
-            % the properties of the data cursor
-            set(hdt,datatooltip);
+        try
+            chkgpu=gpuDevice; %#ok<NASGU>
+            % datacursormode on;
+            hdt = datacursormode;
+            set(hdt,'Enable','on');
+            % If options.datatooltip is not a struct then use our default options
+            if ~isstruct(datatooltip)
+                set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
+            else
+                % options.datatooltip contains a structure where the user can set
+                % the properties of the data cursor
+                set(hdt,datatooltip);
+            end
+            
+            LineColor=[1 0 0];
+            % Declare a custom datatooltip update function to display additional
+            % information about the selected unit
+            set(hdt,'UpdateFcn',{@ICplotLbl,IC,LineColor});
+        catch
+            disp('No graphical device, interactive datatooltip not enabled')
         end
-        
-        LineColor=[1 0 0];
-        % Declare a custom datatooltip update function to display additional
-        % information about the selected unit
-        set(hdt,'UpdateFcn',{@ICplotLbl,IC,LineColor});
-        
     end
 
     function output_txt = ICplotLbl(~,event_obj,IC,~)
@@ -813,8 +817,6 @@ end
             set(0,'ShowHiddenHandles','on');    % Show hidden handles
             hText = findobj('Type','text','Tag','DataTipMarker');
             set(hText,'Interpreter','latex');
-            
-            
         end
     end
 
