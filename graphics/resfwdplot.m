@@ -1421,7 +1421,7 @@ if ~isempty(datatooltip)
         % information about the selected unit
         set(hdt,'UpdateFcn',{@resfwdplotLbl,out,LineColor});
     catch
-        disp('No graphical device interactive datatooltip not enabled')
+        disp('No graphical device, interactive datatooltip not enabled')
     end
 end
 
