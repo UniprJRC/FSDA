@@ -5,7 +5,7 @@ function mdrplot(out,varargin)
 %
 % Required input arguments:
 %
-%  out :  Structure containing monitoring of mdr. Structure. 
+%  out :  Structure containing monitoring of mdr. Structure.
 %               Structure containing the following fields.
 %    out.mdr =  minimum deletion residual. A matrix containing the monitoring of minimum deletion
 %               residual in each step of the forward search. The first
@@ -72,9 +72,9 @@ function mdrplot(out,varargin)
 %                   the output of the new plot overwrites the existing one
 %                   in the same window else a new window is created
 %                   Example - 'tag','mymdr'
-%                   Data Types - char 
+%                   Data Types - char
 %   datatooltip :   interactive clicking. Empty value (default) or
-%                   structure. 
+%                   structure.
 %                   If datatooltip is not empty the user can use the mouse
 %                   in order to have information about the unit selected,
 %                   the step in which the unit enters the search and the
@@ -91,10 +91,10 @@ function mdrplot(out,varargin)
 %                   row1, ..., rown will be automatically created and
 %                   included in the pop up datatooltip window)
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE. 
+%                   DATABRUSH IS AN EMPTY VALUE.
 %                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a structure) enables
@@ -112,7 +112,7 @@ function mdrplot(out,varargin)
 %                   If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
 %                   (that is persist='').
-%                  DATABRUSH IS A STRUCTURE. 
+%                  DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure, it is
 %                   possible to use all optional arguments
 %                   of function selectdataFS.m and the following optional
@@ -158,7 +158,7 @@ function mdrplot(out,varargin)
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
-%                   Data Types - single | double | struct 
+%                   Data Types - single | double | struct
 %       FontSize:   Size of axes labels. Scalar. Scalar which controls the
 %                   fontsize of the labels of the axes. Default value is 12
 %                   Example - 'FontSize',14
@@ -172,29 +172,29 @@ function mdrplot(out,varargin)
 %                 	(default) the sequence X1, ..., Xp will be created
 %                   automatically
 %                   Example - 'nameX',{'Age','Income','Married','Profession'}
-%                   Data Types - cell 
+%                   Data Types - cell
 %       namey   :   response label. Character. Character containing the label of the response
 %                   Example - 'namey','response label'
-%                   Data Types - char 
+%                   Data Types - char
 %       lwd     :   Curves line width. Scalar. Scalar which controls linewidth of the curve which
 %                   contains the monitoring of minimum deletion residual.
 %                   Default line width=2
 %                   Example - 'lwd',3
-%                   Data Types - single | double 
+%                   Data Types - single | double
 %       titl    :   main title. Character. A label for the title (default: '')
 %                   Example - 'namey','Plot title'
-%                   Data Types - char 
+%                   Data Types - char
 %       labx    :   x axis title. Character. A label for the x-axis (default: 'Subset size m')
 %                   Example - 'labx','Subset size m'
-%                   Data Types - char 
+%                   Data Types - char
 %       laby    :   y axis title. Character. A label for the y-axis (default: 'Minimum deletion residual')
 %                   Example - 'laby','mdr'
-%                   Data Types - char 
+%                   Data Types - char
 %
 %
 %
 %
-% Output: 
+% Output:
 %
 % See also: resfwdplot
 %
@@ -632,20 +632,25 @@ hmin=gcf;
 
 %% Set the datatooltip for the mdrplot
 if ~isempty(options.datatooltip)
-    % datacursormode on;
-    hdt = datacursormode;
-    set(hdt,'Enable','on'); % DDD
-    % If options.datatooltip is not a struct then use our default options
-    if ~isstruct(options.datatooltip)
-        set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
-    else
-        % options.datatooltip contains a structure where the user can set the
-        % properties of the data cursor
-        set(hdt,options.datatooltip);
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
+        % datacursormode on;
+        hdt = datacursormode;
+        set(hdt,'Enable','on');
+        % If options.datatooltip is not a struct then use our default options
+        if ~isstruct(options.datatooltip)
+            set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
+        else
+            % options.datatooltip contains a structure where the user can set the
+            % properties of the data cursor
+            set(hdt,options.datatooltip);
+        end
+        % Declare a custom datatooltip update function to display additional
+        % information about the selected unit
+        set(hdt,'UpdateFcn',{@mdrplotLbl,out})
+    catch
+        disp('No graphical device, interactive datatooltip not enabled')
     end
-    % Declare a custom datatooltip update function to display additional
-    % information about the selected unit
-    set(hdt,'UpdateFcn',{@mdrplotLbl,out})
 end
 
 %% Brush mode (call to function selectdataFS)
