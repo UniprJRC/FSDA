@@ -31,12 +31,13 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %            matrices for the k groups.
 %   niini  : size of the groups. Vector.
 %           Row vector of length k containing the size of the groups.
-%     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
-%            number of dimensions, number of groups...
-%            pa must contain the following fields:
-%            pa.p = scalar, number of variables.
-%            pa.k = scalar, number of groups.
-%            pa.pars = type of Gaussian Parsimonious Clustering Model.
+%     pa : constraining parameters. Structure. Structure containing 3
+%          letter character specifying modeltype,
+%          number of dimensions, number of groups...
+%          pa must contain the following fields:
+%          pa.p = scalar, number of variables.
+%          pa.k = scalar, number of groups.
+%          pa.pars = type of Gaussian Parsimonious Clustering Model.
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
 %               'EVI','VEI','EEI','VII','EII'
@@ -94,6 +95,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 % Examples:
 
 %% Beginning of code
+
 k=pa.K;
 p=pa.p;
 pars=pa.pars;

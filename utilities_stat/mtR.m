@@ -48,14 +48,14 @@ function [rn , varargout] = mtR(n, distrib, Rstate)
 %
 %   rn :        generated random numbers. Vector. Random numbers that
 %               should be identical with those produced in R.
-%               Data Types - double array.
+%               Data Types - double array
 %
 %
 %  Optional Output:
 %
 % MATLABstate : state of the random number stream in the MATLAB format.
 %               Vector. Column vector which contains the random stream.
-%               Data Types - uint32 array.
+%               Data Types - uint32 array
 %
 %      R seed : seed used to initiate the random stream in R, which mtR
 %               has converted to the corresponding MATLAB state. Scalar.
@@ -64,7 +64,7 @@ function [rn , varargout] = mtR(n, distrib, Rstate)
 %               or/and needs to generate data from a different
 %               distribution, a seed=0 is returned.
 %
-%               Data Types - Double.
+%               Data Types - Double
 %
 % More About:
 %

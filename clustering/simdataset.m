@@ -86,6 +86,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                         interval(1,1) interval (2,1) for variable 1
 %                         ...
 %                         interval(1,v) interval (2,v) for variable v
+%
 %                  typeout = list of length f containing the type of
 %                       outliers which must be simulated. Possible values
 %                       for typeout are:
@@ -117,6 +118,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                interval [-2 2] for each variable.
 %               Example - 'noiseunits', 10
 %               Data Types - double
+%
 %    noisevars : Type of noise variables. Scalar or structure. Empty value, scalar or structure.
 %                - If noisevars is not specified or is an empty value
 %                  (default) no noise variable is added to the matrix of
@@ -173,12 +175,16 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                variables are generated in the interval min(X) max(X).
 %               Example - 'noisevars', 5
 %               Data Types - double
-%       lambda : Transformation coefficients. Vector. Vector of length v containing inverse Box-Cox
-%                transformation coefficients. The value false (default)
-%                implies that no transformation is applied to any variable.
-%               Example - 'lambda',[1 1 0];
+%
+%       lambda : Transformation coefficients. Vector. Vector of length v
+%                containing inverse Box-Cox transformation coefficients.
+%                The value false (default) implies that no transformation
+%                is applied to any variable.
+%               Example - 'lambda',[1 1 0]; 
 %               Data Types - double
-%      R_seed : random numbers from R language. Scalar. Scalar > 0 for the seed to be used to generate random numbers
+%
+%      R_seed : random numbers from R language. Scalar. Scalar > 0 for the
+%               seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
 %               results obtained with the R package MixSim. See file
 %               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB
@@ -191,7 +197,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Output:
 %
-%           X  : Simulated dataset. Matrix. Simulated dataset of size (n + noiseunits)-by-(v + noisevars).
+%           X  : Simulated dataset. Matrix. Simulated dataset of size
+%                ( n + noiseunits)-by-(v + noisevars).
 %                Noise coordinates are provided in the last noisevars columns.
 %           id : Classification vector. Vector. Classification vector of
 %                length n + noiseunits. Negative
@@ -488,6 +495,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 
 %% Beginning of code
+
 if nargin<4
     error('FSDA:simdataset:missingInputs','A required input argument is missing.')
 end

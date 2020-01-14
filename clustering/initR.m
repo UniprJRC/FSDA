@@ -35,6 +35,7 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 pars=pa.pars;

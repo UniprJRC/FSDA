@@ -74,15 +74,18 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               =1.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
+%
 %    refsteps : Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample. Default is 15.
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',10
 %                 Data Types - single | double
+%
 %     reftol  : Tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
+%
 %equalweights : Cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
@@ -108,6 +111,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               term
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
+%
 %       mixt  : Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
 %               assignment approach to model based clustering must be used.
@@ -220,12 +224,14 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               information at iteration level.
 %                   Example - 'msg',1
 %                   Data Types - single | double
+%
 %      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y.
 %               As default nocheck=0.
 %                   Example - 'nocheck',1
 %                   Data Types - single | double
+%
 %      startv1: How to initialize centroids and covariance matrices. Scalar.
 %               If startv1 is 1 then initial centroids and covariance
 %               matrices are based on (v+1) observations randomly chosen,
@@ -239,6 +245,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               (see for more details the help associated with nsamp).
 %                   Example - 'startv1',1
 %                   Data Types - single | double
+%
 % RandNumbForNini: Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
@@ -253,6 +260,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
+%
 %     restrtype : type of restriction. Character. The type of restriction to
 %               be applied on the cluster scatter
 %               matrices. Valid values are 'eigen' (default), or 'deter'.
@@ -260,6 +268,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               implies restriction on the determinants.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
+%
 %       cshape :    constraint to apply to each of the shape matrices.
 %                   Scalar greater or equal than 1. This options only works is 'restrtype' is
 %                   'deter'.
@@ -292,6 +301,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %               equal volumes.
 %                 Example - 'cshape',10
 %                 Data Types - single | double
+%
 %   UnitsSameGroup :  list of the units which must (whenever possible)
 %                   have a particular label. Numeric vector.  For example if
 %                   UnitsSameGroup=[20 26], means that group which contains
@@ -305,11 +315,13 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %                   1, 2, ..., r-1).
 %                 Example - 'UnitsSameGroup',[20 34]
 %                 Data Types -  integer vector
+%
 %      numpool:     The number of parallel sessions to open. Integer. If
 %                   numpool is not defined, then it is set equal to the
 %                   number of physical cores in the computer.
 %                 Example - 'numpool',4
 %                 Data Types -  integer vector
+%
 %      cleanpool:   Function name. Scalar {0,1}. Indicated if the open pool
 %                   must be closed or not. It is useful to leave it open if
 %                   there are subsequent parallel sessions to execute, so
@@ -567,7 +579,9 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000);
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);

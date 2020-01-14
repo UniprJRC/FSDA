@@ -66,11 +66,13 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               prior information)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
-%  intercept :   Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%  intercept :  Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'intercept' and either true to include or false to remove
+%               the constant term from the model.
+%               Example - 'intercept',false
+%               Data Types - boolean
 %   plots   :   Plot on the screen. Scalar. 
 %               If plots=1 the monitoring units plot is displayed on the
 %               screen. The default value of plots is 0 (that is no plot
@@ -248,7 +250,9 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 if nargin < 6
     error('FSDA:FSRBmdr:missingInputs','Some Bayesian input (beta0, R, tau0, n0) is missing');

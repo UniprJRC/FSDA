@@ -167,6 +167,7 @@ function h  = carbikeplot(RelSol,varargin)
 
 
 %% Beginning of code
+
 if ~isstruct(RelSol)
     error('FSDA:carbikeplot:WrongInput','First input argument must be a structure.');
 end

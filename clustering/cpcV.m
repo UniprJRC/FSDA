@@ -54,6 +54,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 maxiterR=pa.maxiterR;

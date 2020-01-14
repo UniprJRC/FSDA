@@ -19,12 +19,14 @@ function [out]=addt(y,X,w,varargin)
 %
 % Optional input arguments:
 %
-%  intercept :  Indicator for constant term. Scalar.
-%               If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%  intercept :  Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'intercept' and either true to include or false to remove
+%               the constant term from the model.
+%               Example - 'intercept',false
+%               Data Types - boolean
+%
 %   la:         Transformation parameter. Scalar | '' (empty value).
 %               It specifies for which Box Cox
 %               transformation parameter it is necessary to compute the t
@@ -128,7 +130,9 @@ function [out]=addt(y,X,w,varargin)
 %}
 %
 %
-%% User options
+%% Beginning of code
+
+% User options
 
 if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')

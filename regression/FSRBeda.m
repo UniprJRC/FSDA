@@ -25,11 +25,13 @@ function [out] = FSRBeda(y, X, varargin)
 %
 % Optional input arguments:
 %
-%   intercept :  Indicator for constant term. Scalar.
-%                     If 1, a model with constant term will be fitted (default),
-%                      else no constant term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
+%   intercept : Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'intercept' and either true to include or false to remove
+%               the constant term from the model.
+%               Example - 'intercept',false
+%               Data Types - boolean
 %    bayes    : It specifies prior information. Structure.
 %               A structure which specifies prior information.
 %               If structure bayes is not supplied the default values which
@@ -676,7 +678,9 @@ function [out] = FSRBeda(y, X, varargin)
         ']  of HPD regions for \beta and \sigma^2'],'t')
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 if nargin>6
     

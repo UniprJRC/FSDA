@@ -6,6 +6,7 @@ function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweigh
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
+
 [n,v]=size(Y);
 
 % callmex is a Boolean which is equal to true if the mex file exists

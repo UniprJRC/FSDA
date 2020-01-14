@@ -27,20 +27,26 @@ function malindexplot(md,v,varargin)
 %                   analysis, see example below).
 %                   Example - 'h',gca
 %                   Data Types - graphics handle
-%              x :  x-axis index. Vector. The vector to be plotted on the x-axis. Default is the
-%                   sequence 1:length(md).
+%
+%              x :  x-axis index. Vector. The vector to be plotted on the
+%                   x-axis. Default is the sequence 1:length(md).
 %                   Example - 'x','1:100'
 %                   Data Types - numeric
+%
 %           labx :  x label. Character. A label for the x-axis (default: '').
 %                   Example - 'labx','unit number'
 %                   Data Types - character
+%
 %           laby :  y label. Character. A label for the y-axis (default: '').
 %                   Example - 'laby','MD'
 %                   Data Types - character
-%          title :  plot title. Character. A label containing the title of the plot. Default is
-%                   'Index plot of Mahalanobid distances'.
+%
+%          title :  plot title. Character. A label containing the title of
+%                   the plot. Default is 'Index plot of Mahalanobid
+%                   distances'.
 %                   Example - 'title','Index plot of MD'
 %                   Data Types - character
+%
 %          numlab:  number of points to be labelled in the plot.
 %                   vector or cell. If numlab is a cell containing scalar k, the units
 %                   with the k largest md are labelled in the plots.
@@ -51,52 +57,63 @@ function malindexplot(md,v,varargin)
 %                   Use numlab='' for no labelling.
 %                   Example - 'numlab',{3}
 %                   Data Types - numeric vector or cell.
+%
 %        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
 %                   the chi^2 distribution.
 %                   Example - 'conflev',0.99
 %                   Data Types - numeric
+%
 %        FontSize:  Labels font size. Scalar. Scalar which controls the
 %                   font size of the labels of the
 %                   axes. Default value is 12.
 %                   Example - 'FontSize',12
 %                   Data Types - numeric
+%
 %     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
 %                   fontsize of the numbers of
 %                   the axes. Default value is 10.
 %                   Example - 'SizeAxesNum',12
 %                   Data Types - numeric
+%
 %           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the y axis. Default is '' (automatic
 %                   scale).
 %                   Example - 'ylimiy',[-3 3]
 %                   Data Types - numeric
+%
 %           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
 %                   maximum value of the x axis. Default is '' (automatic
 %                   scale).
 %                   Example - 'xlimix',[1 30]
 %                   Data Types - numeric
+%
 %          lwdenv:  Envelope line width. Scalar. Scalar which controls the
 %                   width of the lines associated
 %                   with the envelopes. Default is lwdenv=1.
 %                   Example - 'lwdenv',4
 %                   Data Types - numeric
-%      MarkerSize:  Marker size of points. Scalar. Scalar specifying the size of the marker in points
-%                   (1 point = 1/72 inch). Default is MarkerSize = 6.
+%
+%      MarkerSize:  Marker size of points. Scalar. Scalar specifying the
+%                   size of the marker in points (1 point = 1/72 inch).
+%                   Default is MarkerSize = 6.
 %                   Example - 'MarkerSize',4
 %                   Data Types - numeric
+%
 % MarkerFaceColor:  Marker fill color of points. Character or length 3 RGB
 %                   numeric vector. The fill color for markers that are closed shapes
 %                   (circle, square, diamond, pentagram, hexagram, and the
 %                   four triangles).
 %                   Example - 'MarkerFaceColor','b'
 %                   Data Types - numeric | character
+%
 %             tag:  Figure tag. Character.  
 %                   Tag of the figure which will host the malindexplot. The
 %                   default tag is pl_malindex
 %                   Example - 'tag','indexPlot'
 %                   Data Types - character
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.

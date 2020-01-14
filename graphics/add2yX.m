@@ -41,12 +41,13 @@ function add2yX(H,AX,BigAx,varargin)
 %                       Example - 'labeladd','1'
 %                       Data Types - char
 %
-%           intercept:  Indicator for constant term. Scalar.
-%                       intercept = 1 (default) assumes the intercept for the
-%                       bivarfit and multivarfit. When intercept = 0,
+%           intercept:  Indicator for constant term. true (default) | false.
+%                       intercept = true (default) assumes the intercept for the
+%                       bivarfit and multivarfit. When intercept = false,
 %                       the intercept is not used for the fits.
-%                       Example - 'intercept',1
-%                       Data Types - double
+%                       Example - 'intercept',false
+%                       Data Types - boolean
+%
 %           userleg  :   user legend. Char.
 %               It is used to control the legend of the plot.
 %               - Default is ''. In this case, existing legends are left as

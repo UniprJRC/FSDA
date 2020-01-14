@@ -27,6 +27,7 @@ function out=FSMmmdrs(Y,varargin)
 %               specified, it is set equal to p+1.
 %                 Example - 'init',10
 %                 Data Types - double
+%
 %   bsbsteps :  vector which specifies for which steps of the fwd search it
 %               is necessary to save the units forming subset for each
 %               random start. If bsbsteps is 0 for each random start we
@@ -41,14 +42,17 @@ function out=FSMmmdrs(Y,varargin)
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
+%
 %     nsimul :  scalar, number of random starts. Default value=200.
 %                 Example - 'nsimul',1000
 %                 Data Types - double
+%
 %   nocheck  : It controls whether to perform checks on matrix Y. Scalar.
 %                 If nocheck is equal to 1 no check is performed.
 %                 As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - double
+%
 %      plots :  scalar. If equal to one a plot of random starts minimum
 %               Mahalanobis residual appears  on the screen with 1%, 50% and
 %               99% confidence bands else (default) no plot is shown. 
@@ -66,6 +70,7 @@ function out=FSMmmdrs(Y,varargin)
 %               y scale) and in order to connect it dynamically to the
 %               other forward plots it is necessary to use function
 %               mmdrsplot.
+%
 %   numpool :  scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
@@ -107,6 +112,7 @@ function out=FSMmmdrs(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
+%
 %  cleanpool :  Boolean. Cleanpool is 1 (true) if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0 (false).
 %               The default value of cleanpool is false.
@@ -114,6 +120,7 @@ function out=FSMmmdrs(Y,varargin)
 %               numpool is > 1.
 %               Example - 'cleanpool',1
 %               Data Types - boolean
+%
 %       msg  :  Level of output to display. Scalar. Scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
 %               option numpool>1, then a progress bar is displayed, on
@@ -331,8 +338,9 @@ function out=FSMmmdrs(Y,varargin)
     %    600
 %}
 
+%% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin   = nargin;
 vvarargin = varargin;

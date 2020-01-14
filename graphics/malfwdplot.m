@@ -92,6 +92,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %                   Example - 'standard.LineWidth','1'
 %                   Data Types - struct
+%
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
 %                   are highlighted and how they are plotted to be
@@ -149,6 +150,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %                   Example - 'fground.LineWidth','1'
 %                   Data Types - struct
+%
 %         bground : characterictics of the trajectories in background.
 %                   Structure.
 %                    Structure which specifies the trajectories in background,
@@ -198,6 +200,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
@@ -262,6 +265,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       forced to be [0 0 1].
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
+%
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the n units. This optional argument is used for
 %                   datattoltip and brushing. If label is present the
@@ -273,6 +277,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   numbers 1:n will be used for the brushed trajectories.
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -317,6 +322,7 @@ function plotopt=malfwdplot(out,varargin)
 %                     value is labeladd='', i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
+%
 %       nameY   :   variable labels. Cell array of strings.
 %                   Cell array of strings of length v containing the labels
 %                   of the variables of the dataset which will be added to
@@ -325,6 +331,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   automatically
 %                   Example - 'nameY',{'PC1', PC2, 'PC3'}
 %                   Data Types - cell of strings
+%
 %       msg     :   display or save used options. Scalar. Scalar which
 %                   controls whether to display or to save
 %                   as output the options inside structures standard,
@@ -339,6 +346,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   screen
 %                   Example - 'msg',1
 %                   Data Types - single or double
+%
 %        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
@@ -717,8 +725,9 @@ function plotopt=malfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Initialization
-%
+%% Beginning of code
+
+% Initialization
 
 % The number of rows of matrix MDmat is associated with the number of
 % units. The number of columns is associated with the number of steps of

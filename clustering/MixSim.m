@@ -19,11 +19,13 @@ function [out]  = MixSim(k,v,varargin)
 %               overlap. The default value is ''
 %               Example - 'BarOmega',0.05
 %               Data Types - double
+%
 %    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
 %               overlap. If BarOmega is empty the default value of MaxOmega
 %               is 0.15.
 %               Example - 'MaxOmega',0.05
 %               Data Types - double
+%
 %    StdOmega : Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
 %               Remark1 - The probability of overlapping between two
@@ -35,6 +37,7 @@ function [out]  = MixSim(k,v,varargin)
 %               BarOmega MaxOmega and StdOmega.
 %               Example - 'StdOmega',0.05
 %               Data Types - double
+%
 %         sph : Spherical covariances. Scalar logical or structure.
 %               Scalar boolean or structure which specifies covariance
 %               matrix. When sph is logical value, if:
@@ -67,6 +70,7 @@ function [out]  = MixSim(k,v,varargin)
 %                          matrix between the groups.
 %               Example - 'sph',false
 %               Data Types - boolean
+%
 %         hom : Equal Sigmas. Scalar logical.
 %               Scalar boolean which specifies heterogeneous or homogeneous
 %               clusters. This option has an effect just if previous option
@@ -76,6 +80,7 @@ function [out]  = MixSim(k,v,varargin)
 %               \Sigma_k$
 %               Example - 'hom',false
 %               Data Types - boolean
+%
 %         ecc : maximum eccentricity. Scalar.
 %               Scalar in the interval (0, 1] which defines maximum eccentricity.
 %               For example, if ecc=0.9 (default value), we require for
@@ -85,6 +90,7 @@ function [out]  = MixSim(k,v,varargin)
 %               just if previous option sph is a scalar boolean.
 %               Example - 'ecc',0.8
 %               Data Types - double
+%
 %  restrfactor: eigenvalue restriction factor. Scalar.
 %               Scalar in the interval [1 \infty] which specifies the
 %               maximum ratio to allow between the largest eigenvalue and
@@ -105,6 +111,7 @@ function [out]  = MixSim(k,v,varargin)
 %               scalar boolean.
 %               Example - 'restrfactor',8
 %               Data Types - double
+%
 %       PiLow : Smallest mixing proportion. Scalar.
 %               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
@@ -113,18 +120,21 @@ function [out]  = MixSim(k,v,varargin)
 %               0.
 %               Example - 'PiLow',0.1
 %               Data Types - double
+%
 %         int : Simulation interval of mean vectors. vector of length 2.
 %               Mean vectors are simulated uniformly on a hypercube with
 %               sides specified by int = [lower.bound, upper.bound].
 %               The default value of int is [0 1].
 %               Example - 'int',[0 2]
 %               Data Types - double
+%
 %        resN : number of simulations. Scalar.
 %               Maximum number of mixture resimulations to find a
 %               similation setting with prespecified level of overlapping.
 %               The default value of resN is 100
 %               Example - 'resN',20
 %               Data Types - double
+%
 %         tol : Tolerances. Vector of length 2.
 %               tol(1) (which will be called tolmap) specifies
 %               the tolerance between the requested and empirical
@@ -135,6 +145,7 @@ function [out]  = MixSim(k,v,varargin)
 %               The default value of tol(2) 1e-06.
 %               Example - 'tol',[1e-06 1e-08]
 %               Data Types - double
+%
 %         lim : Precision in the calculation of probabilities of overlapping.
 %               Scalar. Maximum number of integration terms to use inside routine
 %               ncx2mixtcdf.m. Default is 1e06.
@@ -144,6 +155,7 @@ function [out]  = MixSim(k,v,varargin)
 %               probability of misclassification
 %               Example - 'lim',1e6
 %               Data Types - double
+%
 %     Display : Level of display. Character.
 %               'off' displays no output;
 %               'notify' (default) displays output if requested
@@ -152,6 +164,7 @@ function [out]  = MixSim(k,v,varargin)
 %               simulation
 %               Example - 'Display','off'
 %               Data Types - character
+%
 %      R_seed : use random numbers from R. scalar.
 %               If scalar > 0 for the seed to be used to generate random numbers
 %               in a R instance. This is used to check consistency of the
@@ -167,6 +180,7 @@ function [out]  = MixSim(k,v,varargin)
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
+%
 %       Remark: If 'BarOmega', 'MaxOmega' and 'StdOmega' are not specified,
 %               the function generates a mixture solely based on
 %               'MaxOmega'=0.15. If both BarOmega, StdOmega and MaxOmega are
@@ -378,7 +392,9 @@ function [out]  = MixSim(k,v,varargin)
     cascade
 %}
 
-%% User options
+%% Beginning of code
+
+% User options
 
 % Default
 if nargin<2

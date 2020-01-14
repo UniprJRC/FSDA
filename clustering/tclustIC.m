@@ -225,9 +225,10 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
 %
-%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to request that the input matrix Y
-%               is saved into the output structure out. Default is 1, that
-%               is  matrix Y is saved inside output structure out.
+%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to
+%               request that the input matrix Y is saved into the output
+%               structure out. Default is 1, that is  matrix Y is saved
+%               inside output structure out.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
@@ -247,9 +248,9 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
-%       cshape :    constraint to apply to each of the shape matrices. 
-%                   Scalar greater or equal than 1. This options only works is 'restrtype' is
-%                   'deter'. 
+%       cshape :  constraint to apply to each of the shape matrices. 
+%               Scalar greater or equal than 1. This options only works is 'restrtype' is
+%               'deter'. 
 %               When restrtype is deter the default value of the "shape" constraint (as
 %               defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -446,6 +447,7 @@ function out  = tclustIC(Y,varargin)
 
 
 %% Beginning of code
+
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);

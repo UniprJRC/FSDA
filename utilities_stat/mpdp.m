@@ -88,7 +88,7 @@ function [res] = mpdp(y, alpha, varargin)
 %   res :       power divergence against the density function densfunc.
 %               Scalar. Value of power divergence wrt the density specified
 %               in densfunc.
-%                  Data Types - double.
+%                  Data Types - double
 %
 %
 % See also: normpdf, mpdpR, mpdpReda 

@@ -101,11 +101,14 @@ function [out, varargout] = LTSts(y,varargin)
 %                               model.lshift=0;
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%   intercept : Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'intercept' and either true to include or false to remove
+%               the constant term from the model.
+%               Example - 'intercept',false
+%               Data Types - boolean
+%
 %           h : The number of observations that determined the least
 %               trimmed squares estimator. Scalar. h is an integer greater
 %               than p (number of columns of matrix X including the
@@ -880,7 +883,9 @@ function [out, varargout] = LTSts(y,varargin)
 
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 % setting global variable yin
 yin = y;

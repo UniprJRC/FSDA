@@ -18,12 +18,15 @@ function [outSC]=Score(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
-%           la  :transformation parameter. Vector. It specifies for which values of the
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
+%           la  : transformation parameter. Vector. It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
 %                 score test. 
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that

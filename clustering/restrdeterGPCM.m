@@ -24,22 +24,26 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %           equal to 1 if the second letter of modeltype is I. This matrix
 %           can be constructed from routine restrshapepars
 %           Data Types - double
+%
 %    OMG  : costrained rotation array. 3D array. p-by-p-by-k 3D array
 %           containing in position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$
 %           Data Types - double
+%
 %   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
 %            p-by-p-by-k array containing the k unconstrained covariance
 %            matrices for the k groups.
+%
 %   niini  : size of the groups. Vector.  
 %           Row vector of length k containing the size of the groups.
 %           Data Types - double
-%     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
-%            number of dimensions, number of groups...
-%            pa must contain the following fields: 
-%            pa.p = scalar, number of variables.
-%            pa.k = scalar, number of groups.
-%            pa.cdet = determinants constraint
+%
+%     pa : constraining parameters. Structure. Structure containing 3
+%            letter character specifying modeltype, number of dimensions,
+%            number of groups... pa must contain the following fields:
+%            pa.p = scalar, number of variables. 
+%            pa.k = scalar, number of groups. 
+%            pa.cdet = determinants constraint.
 %           Data Types - double
 % 
 %
@@ -79,6 +83,7 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 % Examples:
 
 %% Beginning of code
+
 % Initialize constrained determinant vector
 lmd = NaN(1,pa.K);
 

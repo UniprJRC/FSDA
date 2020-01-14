@@ -55,9 +55,11 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               residual (unit).
 %               This matrix can be created using function FSReda
 %               (compulsory argument).
+%
 %       y.Un  =   matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty).
+%
 %       y.label = cell of length n containing the labels of the units.
 %               This optional argument is used in conjuction with options
 %               databrush and datatooltip.
@@ -91,7 +93,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %         Example - 'group',ones(n,1)
-%         Data Types - double.
+%         Data Types - double
 %
 %    plo: yXplot personalization. Empty value, scalar of structure.
 %         This option controls the names which
@@ -146,7 +148,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
 %                   Example - 'plo','1'
-%                   Data Types - scalar or structure.
+%                   Data Types - scalar or structure
 %
 %     tag  :   plot tag. String.
 %              String which identifies the handle of the plot which
@@ -156,7 +158,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %              the output of the new plot overwrites the existing one
 %              in the same window else a new window is created.
 %                 Example - 'tag',''
-%                 Data Types - char.
+%                 Data Types - char
 %
 %    nameX :  explanatory variables names. Cell. Cell array of
 %              strings of length p containing the labels

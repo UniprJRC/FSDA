@@ -67,11 +67,13 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %               screen
 %                 Example - 'plotsPI',1
 %                 Data Types - double
-%   intercept   :  Indicator for constant term. Scalar.
-%                       If 1, a model with constant term will be fitted
-%                       (default), else no constant term will be included.
-%                        Example - 'intercept',1
-%                       Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
 %    bayes      : Prior information. Structure.
 %
 %                       It contains the following fields
@@ -394,7 +396,7 @@ function [out , varargout] = FSRBr(y, X, varargin)
 
 %% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

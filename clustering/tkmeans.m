@@ -287,8 +287,9 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %}
 
 
+%% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);

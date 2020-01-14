@@ -22,11 +22,13 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %
 %  Optional input arguments:
 %
-%   Intercept :  Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
 %
 % CategoricalVars : Categorical variables. 
 %            Cell array of character vectors | logical or numeric index
@@ -82,6 +84,7 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %               'ResponseVar','yield', 'ResponseVar',[4], 'ResponseVar',logical([0 0 0 1 0 0])
 %               Example - 'CategoricalVars',[3]
 %               Data Types: single | double | logical | char
+%
 %   VarNames : Names of variables in fit. 
 %              {'x1','x2',...,'xn','y'} (default) | cell array of character
 %              vectors. Names of variables in fit, specified as the
@@ -98,6 +101,7 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %              options for the estimator. Character. Estimator is a string
 %              which may contain one of the following values 'FS', 'LXS',
 %              'S' or 'MM'.
+%
 %  Family  :   regression context. 
 %              Character specifying the context of the regression model or
 %              structure specifying the estimator.

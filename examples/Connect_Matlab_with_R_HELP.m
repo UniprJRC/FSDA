@@ -115,7 +115,10 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
-%% EXAMPLE 1: create from within R an identity matrix
+
+%% Beginning of code 
+
+% EXAMPLE 1: create from within R an identity matrix
 
 openR
 %
@@ -134,7 +137,7 @@ rn = evalR('diag(3)');
 % close the R connection
 closeR %close the connection
 
-%% EXAMPLE 2: CHECK THE GENERATION OF RANDOM NUMBERS FROM R
+% EXAMPLE 2: CHECK THE GENERATION OF RANDOM NUMBERS FROM R
 
 openR
 
@@ -168,7 +171,7 @@ rn3 = evalR('rnorm(1)');
 
 closeR
 
-%% EXAMPLE 3: CHECK A R DEMO
+% EXAMPLE 3: CHECK A R DEMO
 
 openR
 evalR('demo("persp")');

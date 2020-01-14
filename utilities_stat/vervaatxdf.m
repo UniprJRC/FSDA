@@ -19,7 +19,7 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 %         support of the distribution, which depends on the  parameter
 %         beta. Default is n = 1.
 %         Example - n=1000.
-%         Data Types - Scalar.
+%         Data Types - Scalar
 %
 %
 % pascalM:A precomputed Pascal matrix, used to speed up vervaatxdf in 
@@ -31,21 +31,21 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 %         pascal matrix is used to avoid the reiterated computation of the
 %         binomial coefficient, which would be extremely time consuming.
 %         Example - pascalM = pascal(101).
-%         Data Types - Scalar.
+%         Data Types - Scalar
 %
 % Output:
 %
 % f     : The pdf of the Vervaat perpetuity value. Array. The probability
 %         density function estimated on nx random evaluation points. 
-%         Data Types - Double.
+%         Data Types - Double
 %
 % F     : The cdf of the Vervaat perpetuity value. Array. The cumulative
 %         density function corresponding to f. 
-%         Data Types - Double.
+%         Data Types - Double
 %
 % x     : Random evaluation points. Array. The nx evaluation points
 %         extracted from a uniform in the support of the distribution.
-%         Data Types - Double.
+%         Data Types - Double
 %
 %
 % More About:

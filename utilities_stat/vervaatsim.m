@@ -27,7 +27,7 @@ function y = vervaatsim(betav,steps,d)
 % steps : Markov chain step. Positive integer. The inital number of steps
 %         to run to move the chain forward. Default is steps = 1.
 %         Example - steps=5.
-%         Data Types - Scalar.
+%         Data Types - Scalar
 %
 %
 % d     : Chain value at time 0. Positive integer or -1. The value of the
@@ -36,12 +36,13 @@ function y = vervaatsim(betav,steps,d)
 %         $x_0 = \frac{1 + (2/3)^{1/\beta}}{1 - (2/3)^{1/\beta}}$
 %         ($\mbox{Geo}$ represents the geometric distribution).
 %         Example - d=10.
-%         Data Types - Scalar.
+%         Data Types - Scalar
 %
 % Output:
 %
 % y     : The Vervaat perpetuity value. Scalar. The estimated distribution
-%         value. Data Types - Double.
+%         value. 
+%         Data Types - Double
 %
 %
 % More About:

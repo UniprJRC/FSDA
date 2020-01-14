@@ -151,6 +151,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %}
 
 %% Beginning of code
+
 if nargin < 7 || not(isvector(W) && ~isscalar(W))
     W = [];
 end

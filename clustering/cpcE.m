@@ -35,6 +35,7 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 sumnini=sum(niini);

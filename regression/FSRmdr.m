@@ -39,11 +39,14 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%  intercept :  Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'intercept' and either true to include or false to remove
+%               the constant term from the model.
+%               Example - 'intercept',false
+%               Data Types - boolean
+%
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
 %               minimum deletion residual appears  on the screen with 1%,
 %               50% and 99% confidence bands else (default) no plot is
@@ -422,7 +425,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     title('Monitoring of mdr with bound on the leverage')
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

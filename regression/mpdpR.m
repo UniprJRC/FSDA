@@ -59,13 +59,12 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %                 non empty. If modelfun is empty this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
-%  intercept   :  Indicator for constant term. Scalar. If 1, and modelfun is
-%                 empty (that is if the link between X and beta is linear)
-%                 a model with constant term will be fitted (default), else
-%                 no constant term will be included. This argument is
-%                 ignored if modelfun is not empty.
-%                 Example - 'intercept',1
-%                 Data Types - double
+%  intercept   :  Indicator for constant term. true (default) | false. 
+%                 If true, and modelfun is empty (that is if the link
+%                 between X and beta is linear) a model with constant term
+%                 will be fitted (default), else no constant term will be
+%                 included. This argument is ignored if modelfun is not
+%                 empty. Example - 'intercept',true Data Types - boolean
 %  dispresults :  Display results on the screen. Boolean. If dispresults is
 %                 true (default) it is possible to see on the screen table
 %                 Btable.

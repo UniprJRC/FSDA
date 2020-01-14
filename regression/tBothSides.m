@@ -61,12 +61,13 @@ function [out] = tBothSides(y, X, varargin)
 %                 ignored if la is nont empty.
 %                 Example - 'la',1
 %                 Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, and modelfun is empty (that is if the link between X and beta is linear)
+%  intercept :  Indicator for constant term. true (default) | false. 
+%               If true, and modelfun is empty (that is if the link between X and beta is linear)
 %               a model with constant term will be fitted (default), else
 %               no constant term will be included. This argument is ignored
 %               if modelfun is not empty.
-%               Example - 'intercept',1
-%               Data Types - double
+%               Example - 'intercept',true
+%               Data Types - boolean
 %    family :   parametric transformation to use. String. String which
 %               identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox'

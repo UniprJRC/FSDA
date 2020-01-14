@@ -163,6 +163,7 @@ function out  = tclustICsol(IC,varargin)
 %                 c=7
 %               Remark: field ARIMIXtable is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'MIXMIX' or 'MIXLCA'
+%
 %  out.MIXCLAbs = this output has the same structure as out.MIXMIXbs but
 %               it is referred to MIXCLA.
 %               Remark: field out.MIXCLAbs is present only if 'whichIC' is
@@ -191,6 +192,7 @@ function out  = tclustICsol(IC,varargin)
 %                 This output is also present in table format (see below)
 %               Remark: field ARICLA is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
+%
 % out.ARICLAtable = Table with the same meaning of matrixo CLACLAari above.
 %                 A Matlab table has also been been given to faciliate the
 %                 interpretation of the rows and columns. The Rownames of
@@ -203,6 +205,7 @@ function out  = tclustICsol(IC,varargin)
 %                 c=7
 %               Remark: field ARICLAtable is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
+%
 %           out.kk = vector containing the values of k (number of
 %                   components) which have been considered. This  vector
 %                   is equal to input optional argument kk if kk had been

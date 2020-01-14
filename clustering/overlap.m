@@ -28,6 +28,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               probability of misclassification.
 %               Example - 'tol', 0.0001
 %               Data Types - double
+%
 %  lim : maximum number of integration terms. Scalar. Default is 1000000.
 %               Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear

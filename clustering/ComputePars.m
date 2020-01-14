@@ -105,6 +105,7 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %}
 
 %% Beginning of code
+
 if nargin==5
     % S05 = p-by-p-by-k which will contain in the j-th third dimension
     % \Sigma_j^{0.5} j=1, 2, ..., k

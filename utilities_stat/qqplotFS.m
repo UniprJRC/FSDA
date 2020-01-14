@@ -17,12 +17,12 @@ function Y=qqplotFS(res,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept   :   Indicator for constant term. Scalar.
-%                    If 1, a model with constant term will be added to
-%                       optional matrix X
-%                   (default), else no constant term will be included.
-%                   Example - 'intercept',1
-%                   Data Types - double
+%   intercept   :   Indicator for constant term. true (default) | false.
+%                   If true, a model with constant term will be added to
+%                   optional matrix X (default), else no constant term
+%                   will be included.
+%                   Example - 'intercept',true
+%                   Data Types - boolean
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and

@@ -27,6 +27,7 @@ function list =  getFileDependencies(file)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%% Beginning of code 
 
 % checking the input-parameter
 if(isempty(file))

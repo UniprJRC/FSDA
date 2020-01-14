@@ -24,8 +24,8 @@ function X = vervaatrnd(betav,n,method)
 %
 % n     : Number of random numbers to extract. Positive integer. The sample
 %         size. Default is n = 1.
-%         Example - n=100.
-%         Data Types - Scalar.
+%         Example - 100
+%         Data Types - Double
 %
 % method: Computation method. Integer in {1,2} or structure. The method
 %         used to generate the random numbers: method = 1 (default) is for
@@ -43,12 +43,13 @@ function X = vervaatrnd(betav,n,method)
 %                  distribution).
 %         Example - method = 2;
 %         Example - method = struct; method.steps=10; method.d=3;
-%         Data Types - Struct.
+%         Data Types - Struct
 %
 % Output:
 %
 % X     : Random values extracted from the Vervaat perpetuity. Scalar
-%         or array. The random value(s). Data Types - Double.
+%         or array. The random value(s). 
+%         Data Types - Double
 %
 % More About:
 %

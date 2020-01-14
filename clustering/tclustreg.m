@@ -74,11 +74,13 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %  Optional input arguments:
 %
-%     intercept : Indicator for constant term. Scalar. If 1, a model with
-%                constant term will be fitted (default), else no constant
-%                term will be included.
-%                Example - 'intercept',1
-%                Data Types - double
+%   intercept :  Indicator for constant term. true (default) | false. 
+%                Indicator for the constant term (intercept) in the fit,
+%                specified as the comma-separated pair consisting of
+%                'intercept' and either true to include or false to remove
+%                the constant term from the model.
+%                Example - 'intercept',false
+%                Data Types - boolean
 %
 %       mixt  : mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
@@ -119,6 +121,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               associated with the largest h numbers are untrimmed.
 %               Example - 'mixt',1
 %               Data Types - single | double
+%
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
@@ -127,6 +130,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               sized groups by maximizing the likelihood
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
+%
 %    nsamp : number of subsamples to extract.
 %            Scalar or matrix with k*p columns.
 %            If nsamp is a scalar it contains the number of subsamples
@@ -143,15 +147,18 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            group k
 %             Example - 'nsamp',1000
 %             Data Types - double
+%
 % refsteps:  Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample.  Default is 10.
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',15
 %                 Data Types - single | double
+%
 %     reftol  : Tolerance for the refining steps. Scalar.
 %               The default value is 1e-14;
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
+%
 %    plots : Plot on the screen. Scalar. A flag to control the
 %            generation of the plots.
 %            If plots=1 a plot is showed on the screen with the
@@ -159,6 +166,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            associated to the groups)
 %            Example - 'plots',1
 %            Data Types - double
+%
 %   wtrim: Application of observation weights. Scalar. A flag taking values
 %          in [0, 1, 2, 3, 4], to control the application of weights on the
 %          observations.
@@ -189,12 +197,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            of Cerioli and Perrotta (2014).
 %            Example - 'wtrim',1
 %            Data Types - double
+%
 %      we: Vector of observation weights. Vector. A vector of size n-by-1
 %          containing application-specific weights that the user needs to
 %          apply to each observation. Default
 %          value is  a vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
+%
 %    msg  : Level of output to display. Scalar.
 %           Scalar which controls whether to display or not messages
 %           on the screen.
@@ -206,6 +216,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %           information at iteration level.
 %             Example - 'msg',1
 %             Data Types - single | double
+%
 % RandNumbForNini: Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
@@ -220,6 +231,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
+%
 %  Output:
 %
 %  out :  structure containing the following fields
@@ -627,6 +639,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %% Beginning of code
+
 % Control variables, tolerances and internal flags
 warning('off');
 
