@@ -181,6 +181,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   in the same window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
+%
 %   datatooltip :   interactive clicking. Empty value, scalar or
 %                   structure.
 %                   It is inactive if it is an empty value. The default is
@@ -237,6 +238,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       LineColor is overlooked.
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
+%
 %       label   :   row labels. Cell of strings.
 %                   Cell containing the labels of the units (optional
 %                   argument used when datatooltip=1. If this field is not
@@ -244,6 +246,7 @@ function plotopt=resfwdplot(out,varargin)
 %                   created and included in the pop up datatooltip window)
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -331,6 +334,7 @@ function plotopt=resfwdplot(out,varargin)
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
+%
 %       nameX   :  labels of the explanatory variables. Cell. Cell array of
 %                   strings of length p containing the labels
 %                   of the variables of the regression dataset. If it is
@@ -338,9 +342,12 @@ function plotopt=resfwdplot(out,varargin)
 %                   automatically
 %                   Example - 'nameX',{'var1', var2, 'var3'}
 %                   Data Types - cell of strings
-%       namey   :   response label. Character. Character containing the label of the response
+%
+%       namey   :   response label. Character. Character containing the
+%                   label of the response.
 %                   Example - 'namey','response'
 %                   Data Types - character
+%
 %       msg     :   display  used options. Scalar.
 %                   Scalar which controls whether to display
 %                   as output the options inside structures standard,
@@ -781,7 +788,9 @@ function plotopt=resfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Initialization
+%% Beginning of code 
+
+% Initialization
 %
 % Close existing yXplot and resfwdplot, unless the fanplot is open.
 % if isempty(findobj('type','figure','Tag','pl_fan'))
