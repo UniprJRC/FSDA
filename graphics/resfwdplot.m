@@ -1872,7 +1872,7 @@ end % close options.databrush
         % x and y, plot coordinates of the mouse
         x1 = pos(1); y1 = pos(2);
         
-        % Find index to retrieve obs. name Consider that find return the
+        % Find index to retrieve obs. name. Consider that find returns the
         % linear indexing of matrix xydata
         % residuals=out.RES;
         idx = find(residuals == y1,1);
