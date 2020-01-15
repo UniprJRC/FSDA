@@ -51,6 +51,7 @@ function covplot(out,varargin)
 %                   standard.LineStyle = cell containing the line types.
 %                   Example - 'standard',standard
 %                   Data Types - structure
+%
 %         fground : Trajectories in foregroud. Structure.
 %                   Structure which defines the trajectories in foregroud,
 %                   that is which trajectories are highlighted and how
@@ -99,6 +100,7 @@ function covplot(out,varargin)
 %                       else (default) no marker is used.
 %                   Example - 'fground',fground
 %                   Data Types - structure
+%
 %       tag     :   Handle of the plot. String. String which identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_cov'. Note that if the program finds a plot which
@@ -107,6 +109,7 @@ function covplot(out,varargin)
 %                   in the same window else a new window is created.
 %                   Example - 'tag','pl_mycov'
 %                   Data Types - string
+%
 %   datatooltip :   Information about the unit selected. Empty value or structure.
 %                   The default is datatooltip=1.
 %                   If datatooltip is not empty the user can use the mouse
