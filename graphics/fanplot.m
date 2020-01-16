@@ -29,22 +29,26 @@ function fanplot(out,varargin)
 %
 % Optional input arguments:
 %
-%         label :   Labels. Cell array of strings. Cell containing the labels of the units (optional
-%                   argument used when datatooltip=1). If this field is not
-%                   present labels row1, ..., rown will be automatically
-%                   created and included in the pop up datatooltip window.
+%         label :   Labels. Cell array of strings. Cell containing the
+%                   labels of the units (optional argument used when
+%                   datatooltip=1). If this field is not present labels
+%                   row1, ..., rown will be automatically created and
+%                   included in the pop up datatooltip window.
 %                   Example - 'corr',1
 %                   Data Types - Cell array of strings
-%       conflev :   Confidence level. Scalar or vector. Confidence level for the bands (default is 0.99, that is
-%                   we plot two horizontal lines in correspondence of value
-%                   -2.58 and 2.58).
+%
+%       conflev :   Confidence level. Scalar or vector. Confidence level
+%                   for the bands (default is 0.99, that is we plot two
+%                   horizontal lines in correspondence of value -2.58 and
+%                   2.58).
 %                   Example - 'conflev',[0.9 0.95 0.99]
 %                   Data Types - double
-%   datatooltip :   Information about the unit selected. Empty value or structure. The
-%                   default is datatooltip=''.
-%                   If datatooltip is not empty the user can use the mouse
-%                   in order to have information about the unit selected,
-%                   the step in which the unit enters the search and the
+%
+%   datatooltip :   Information about the unit selected. Empty value or
+%                   structure. The default is datatooltip=''. If
+%                   datatooltip is not empty the user can use the mouse in
+%                   order to have information about the unit selected, the
+%                   step in which the unit enters the search and the
 %                   associated label. If datatooltip is a structure, it is
 %                   possible to control the aspect of the data cursor (see
 %                   function datacursormode for more details or the
@@ -52,6 +56,7 @@ function fanplot(out,varargin)
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - Empty value or structure
+%
 %    databrush :    Databrush options. Empty value, scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE: If databrush is an empty
 %                   value (default), no brushing is done. The activation of
@@ -63,19 +68,19 @@ function fanplot(out,varargin)
 %                   be highlighted in the other following plots (only if
 %                   they are already open): monitoring residual plot
 %                   monitoring leverage plot maximum studentized residual
-%                   $s^2$ and $R^2$ Cook distance and modified Cook distance
-%                   deletion t statistics.
-%                   The window style of the
+%                   $s^2$ and $R^2$ Cook distance and modified Cook
+%                   distance deletion t statistics. The window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
-%                   figures will be docked too.
-%                   DATABRUSH IS A SCALAR: If databrush is a scalar the default selection tool is a
+%                   figures will be docked too. DATABRUSH IS A SCALAR: If
+%                   databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
-%                   (that is persist='').
-%                   DATABRUSH IS A CELL: If databrush is a cell, it is possible to use all
-%                   optional arguments of function selectdataFS.m and LXS.m inside the curly brackets of
-%                   option databrush and the following optional argument:
+%                   (that is persist=''). DATABRUSH IS A CELL: If databrush
+%                   is a cell, it is possible to use all optional arguments
+%                   of function selectdataFS.m and LXS.m inside the curly
+%                   brackets of option databrush and the following optional
+%                   argument:
 %                  persist = Persist is an empty value or a scalar containing
 %                   the strings 'on' or 'off'. If persist = 'on' or 'off'
 %                   brusing can be done as many time as the
@@ -125,59 +130,79 @@ function fanplot(out,varargin)
 %                   line based on the group of unselected observations.
 %                   Example - 'databrush',1
 %                   Data Types - Empty value, scalar or cell.
+%
 %       titl    :   Title. String. A label for the title (default: 'Fan plot')
 %                   Example - 'titl','Fan plot'
 %                   Data Types - char
+%
 %       labx    :   x-axis label. String. A label for the x-axis (default:
 %                   'Subset size m').
 %                   Example - 'labx','Subset size m'
 %                   Data Types - char
+%
 %       laby    :   y-axis label. String. a label for the y-axis
 %                   (default:'Score test statistic').
 %                   Example - 'laby','Score test statistic'
 %                   Data Types - char
-%       xlimx   :   Min and Max of the x axis. Vector. Vector with two elements controlling minimum and maximum
-%                   of the x axis. Default value is [init n].
+%
+%       xlimx   :   Min and Max of the x axis. Vector. Vector with two
+%                   elements controlling minimum and maximum of the x axis.
+%                   Default value is [init n].
 %                   Example - 'xlimx',[init n]
 %                   Data Types - double
-%       ylimy   :   Min and Max of the y axis. Vector. Vector with two elements controlling minimum and
-%                   maximum of the y axis. Default value for
+%
+%       ylimy   :   Min and Max of the y axis. Vector. Vector with two
+%                   elements controlling minimum and maximum of the y axis.
+%                   Default value for
 %                   ylimy(1)=max(min(score_test),-20). Default value for
 %                   ylimy(2)=min(max(score_test),20).
 %                   Example - 'ylimy',[0 100]
 %                   Data Types - double
-%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of the curves which
-%                   contain the score test. Default line width=2.
+%
+%       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
+%                   the curves which contain the score test. 
+%                   Default line width=2.
 %                   Example - 'lwd',2
 %                   Data Types - double
-%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1.
+%
+%       lwdenv  :   Width of the envelope lines. Scalar. Scalar which
+%                   controls the width of the lines associated with the
+%                   envelopes. Default is lwdenv=1.
 %                   Example - 'lwdenv',1
 %                   Data Types - double
-%       FontSize:   Font size of the labels. Scalar. Scalar which controls the font size of the labels of
-%                   the axes and of the labels inside the plot. Default
-%                   value is 12.
+%
+%       FontSize:   Font size of the labels. Scalar. Scalar which controls
+%                   the font size of the labels of the axes and of the
+%                   labels inside the plot. Default value is 12.
 %                   Example - 'FontSize',12
 %                   Data Types - double
-%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which controls the size of the numbers of the
-%                   axes. Default value is 10.
+%
+%    SizeAxesNum:   Size of the numbers of the axis. Scalar. Scalar which
+%                   controls the size of the numbers of the axes.
+%                   Default value is 10.
 %                   Example - 'SizeAxesNum',10
 %                   Data Types - double
-%       nameX   :   Labels of the X variables. Cell array of strings. Cell array of strings of length p containing the labels
-%                   of the varibles of the regression dataset. If it is empty
+%
+%       nameX   :   Labels of the X variables. Cell array of strings. Cell
+%                   array of strings of length p containing the labels of
+%                   the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
 %                   automatically.
 %                   Example - 'nameX',''
 %                   Data Types - Cell array of strings
-%       namey   :   Labels of the y variable. String. String containing the label of the response variable.
+%
+%       namey   :   Labels of the y variable. String. String containing the
+%                   label of the response variable.
 %                   Example - 'namey',''
 %                   Data Types - char
-%       tag     :   Handle of the plot. String. String which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   pl_fan. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created.
+%
+%       tag     :   Handle of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag pl_fan. Notice that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
 %                   Example - 'tag','pl_mycov'
 %                   Data Types - char
 %

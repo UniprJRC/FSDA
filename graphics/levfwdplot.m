@@ -28,6 +28,7 @@ function plotopt=levfwdplot(out,varargin)
 %      Data Types - struct
 %
 % Optional input arguments:
+%
 %           standard : appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
 %                   style, color of the lines, etc. Structure.
@@ -187,14 +188,16 @@ function plotopt=levfwdplot(out,varargin)
 %                   Example - 'xground','res'
 %                   Data Types - char
 %
-%       tag     :   Personalized tag. String. String which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_resfwd'. Note that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
+%       tag     :   Personalized tag. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_resfwd'. Note that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
+%
 %   datatooltip :   interactive clicking.
 %                   Empty value or scalar (default)| structure.
 %                   The default is datatooltip=1
@@ -208,6 +211,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - char
+%
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the units (optional argument used when
 %                   datatooltip=1. If this field is not present labels
@@ -215,6 +219,7 @@ function plotopt=levfwdplot(out,varargin)
 %                   included in the pop up datatooltip window).
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
+%
 %    databrush  :   interactive mouse brushing. empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
@@ -296,27 +301,29 @@ function plotopt=levfwdplot(out,varargin)
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
-%       nameX   :   Labels
-%                   of the variables of the regression dataset. Cell array of
-%                   strings. If it is empty (default) the sequence X1, ...,
-%                   Xp will be created automatically
+%
+%       nameX   :   Labels of the variables of the regression dataset.
+%                   Cell array of strings. If it is empty (default) the
+%                   sequence X1, ..., Xp will be created automatically.
 %                   Example - 'nameX',{'var1', var2, 'var3'}
 %                   Data Types - cell of strings
+%
 %       namey   :   label of the response. Character. Character containing
-%                   the label of the response
+%                   the label of the response.
 %                   Example - 'namey','response'
 %                   Data Types - char
-%       msg     :   display or save used options. Scalar which controls whether to display or to save
-%                   as output the options inside structures standard,
-%                   fground and bground which have been used to draw the
-%                   plot.
+%
+%       msg     :   display or save used options. Scalar which controls
+%                   whether to display or to save as output the options
+%                   inside structures standard, fground and bground which
+%                   have been used to draw the plot.
 %                   plotopt=levfwdplot(out,'msg',1) enables to save inside
 %                   cell  plotopt the options which have been used to draw
 %                   the three types of trajectories (standard, foreground
 %                   and background)
 %                   plotopt=resfwdplot(out,'msg',2) saves inside cell plotopt
 %                   the options which have been used and prints them on the
-%                   screen
+%                   screen.
 %                   Example - 'msg',1
 %                   Data Types - single or double
 %
@@ -622,7 +629,9 @@ function plotopt=levfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Initialization and default options
+%% Beginning of code
+
+% Initialization and default options
 
 % close(findobj('type','figure','Tag','pl_levfwd'));
 % close(findobj('type','figure','Tag','pl_yX'));

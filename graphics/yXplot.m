@@ -130,18 +130,18 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %                   automatically.
 %                   Note that the names can also be specified
 %                   using the optional option nameX.
-%      plo.namey  = response variable name. Character. Character containing the label of the response
-%                   Note that the names can also be specified
-%                   using optional option namey.
+%      plo.namey  = response variable name. Character. Character containing
+%                   the label of the response Note that the names can also
+%                   be specified using optional option namey.
 %      plo.ylimy  = y limits. Vector. vector with two elements controlling
 %                   minimum and maximum on the y axis. Default value is ''
 %                   (automatic scale).
 %                   Note that the y limits can also be specified
 %                   using optional option ylimy.
-%      plo.xlimx  =  x limits. Vector. vector with two elements controlling minimum and maximum
-%                   on the x axis. Default value is '' (automatic scale).
-%                   Note that the x limits can also be specified
-%                   using optional option xlimx.
+%      plo.xlimx  = x limits. Vector. vector with two elements controlling
+%                   minimum and maximum on the x axis. Default value is ''
+%                   (automatic scale). Note that the x limits can also be
+%                   specified using optional option xlimx.
 %       plo.label : cell of length n containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
 %                   label the units.
@@ -172,13 +172,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %              Data Types - char or cell
 %
 %  ylimy    :  y limits. Vector. vector with two elements controlling
-%              minimum and maximum on the y axis. Default value is ''
-%              (automatic scale).
+%              minimum and maximum on the y axis.
+%              Default value is '' (automatic scale).
 %              Example - 'ylimy',[-2 6]
 %              Data Types - double
 %
-%  xlimx   :  x limits. Vector. vector with two elements controlling minimum and maximum
-%              on the x axis. Default value is '' (automatic scale).
+%  xlimx   :   x limits. Vector. vector with two elements controlling
+%              minimum and maximum on the x axis. 
+%              Default value is '' (automatic scale).
 %              Example - 'xlimx',[-2 3]
 %              Data Types - double
 %
@@ -343,7 +344,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               numbers 1:n are used.
 %               The default value of selunit is string '2.5' if input
 %               argument y is a structure else it is an empty value if
-%               input argument y is a vector
+%               input argument y is a vector.
 %               Example - 'selunit','3'
 %               Data Types - numeric or character
 %
@@ -351,11 +352,13 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %  Output:
 %
 %        H      :   array of handles H to the plotted points. 3D array. See
-%                   gplotmatrix for further details
+%                   gplotmatrix for further details.
+%
 %        AX     :   handles to the individual subaxes. Matrix. See
-%                   gplotmatrix for further details
+%                   gplotmatrix for further details.
+%
 %      BigAx    :   handle to big (invisible) axes framing the subaxes.
-%                   Scalar. See gplotmatrix for further details
+%                   Scalar. See gplotmatrix for further details.
 %
 % More About:
 %
@@ -702,8 +705,9 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %}
 
 %% Beginning of code
+
 % (common with resfwdplot)
-%
+
 % Close existing yXplot and resfwdplot
 % if isempty(findobj('type','figure','Tag','pl_fan'))
 %     close(findobj('type','figure','Tag','pl_yX'));

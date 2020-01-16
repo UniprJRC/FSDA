@@ -54,6 +54,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %                 For example ng(2,3) contains the number of elements
 %                 belonging to the third group included into the second
 %                 container.
+%
 %        hb     : Bar array handles. Vector. A vector containing the
 %                 handles to the barseries objects.
 %
@@ -151,6 +152,7 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %}
 
 %% Beginning of code
+
 if nargin < 7 || not(isvector(W) && ~isscalar(W))
     W = [];
 end

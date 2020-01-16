@@ -6,8 +6,8 @@ function out = boxplotb(Y,varargin)
 % Required input arguments:
 %
 %             Y : Observations. Matrix. n x 2 data matrix: n observations
-%               and 2 variables. Rows of Y represent observations, and columns represent
-%               variables.
+%               and 2 variables. Rows of Y represent observations, and
+%               columns represent variables.
 %
 % Optional input arguments:
 %
@@ -29,16 +29,18 @@ function out = boxplotb(Y,varargin)
 %                   Data Types - double
 %                 Remark: The default value of coeff is 1.68, that is 99%
 %                 confidence level contours are produced.
-% strictlyinside: additional peeling. Scalar. If strictlyinside=1 an additional convex hull is
-%                 done on the 50% hull in order to increase the robustness
-%                 properties of the method. In fact there may
-%                 in general be some loss of robustness in small samples
-%                 due to the use of peeling, therefore if we suspect to be
-%                 in presence of a considerable propotion of outliers it
-%                 may be necessary to do an additional peeling. The default
-%                 value of strictlyinside is 0.
+%
+% strictlyinside: additional peeling. Scalar. If strictlyinside=1 an
+%                 additional convex hull is done on the 50% hull in order
+%                 to increase the robustness properties of the method. In
+%                 fact there may in general be some loss of robustness in
+%                 small samples due to the use of peeling, therefore if we
+%                 suspect to be in presence of a considerable propotion of
+%                 outliers it may be necessary to do an additional peeling.
+%                 The default value of strictlyinside is 0.
 %                   Example - 'strictlyinside',1
 %                   Data Types - double
+%
 %       plots   : graphical output. missing value | scalar | structure. 
 %                 This options specifies whether it
 %                 is necessary to produce the bivariate boxplot on the
@@ -68,6 +70,7 @@ function out = boxplotb(Y,varargin)
 %                       OuterColor=[210/255 203/255 255/255].
 %                   Example - 'plots',1
 %                   Data Types - double
+%
 %        resolution : resolution to use. Scalar. Resolution which must be
 %                     used to produce the inner and outer spline. 
 %                     The default value of resolution is 1000, that is the
@@ -90,10 +93,12 @@ function out = boxplotb(Y,varargin)
 %             outer contour.
 %             REMARK: if no unit lies outside the outer spline outliers is a
 %             Empty matrix: 0-by-1
+%
 %         out.cent = 2 x 1 vector containing the coordinates
 %                of the robust centroid. 
 %                cent[1] = x coordinate; 
 %                cent[2] = y coordinate. 
+%
 %          out.Spl = r-by-4 matrix containing the coordinates
 %                of the inner and outer spline. r (rows of matrix Spl) is
 %                approximately equal to the number of vertices of the inner hull
@@ -198,9 +203,9 @@ function out = boxplotb(Y,varargin)
     ylabel('y3 = Percentage of single member families')
 %}
 
+%% Beginning of code
 
-
-%% Input parameters checking
+% Input parameters checking
 % Extract size of the data
 n=size(Y,1);
 % seq = sequence from 1 to n which enables us to identify observations

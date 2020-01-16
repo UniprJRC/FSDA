@@ -50,9 +50,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %               step of the forward search. Every row is associated with a
 %               unit (this is a necessary field if the user wants to brush
 %               the scatter plot matrix).
+%
 %       Y.Un  = matrix containing the order of entry of each unit
 %               (necessary if datatooltip is true or databrush is not
 %               empty).
+%
 %       Y.label = cell of length n containing the labels of the units.
 %               This optional argument is used in conjuction with options
 %               databrush and datatooltip.
@@ -93,9 +95,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %         If plo = 1 the names Y1,..., Yv are added to the margins of the
 %           the scatter plot matrix else nothing is added.
 %
-%         If plo is a structure, it is possible to control not only the names but also, point labels, colors, symbols.
-%         More precisely structure pl may contain the following fields:
-%         plo.labeladd = if it is '1', the elements belonging to the max(group)
+%         If plo is a structure, it is possible to control not only the
+%         names but also, point labels, colors, symbols. More precisely
+%         structure pl may contain the following fields: plo.labeladd = if
+%         it is '1', the elements belonging to the max(group)
 %                in the spm are labelled with their unit row index or their
 %                rowname. The rowname is taken from plo.label or if
 %                plo.label is empty from
@@ -123,9 +126,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Example - 'plo',1
 %                   Data Types - Empty value, scalar or structure.
 %
-% dispopt: what to put on the diagonal. Character. String which controls how to fill the diagonals in a plot of
-%       Y vs Y (main diagonal of the scatter plot matrix). Set dispopt to
-%       'hist' (default) to plot histograms, or 'box' to plot boxplots.
+% dispopt: what to put on the diagonal. Character. String which controls
+%          how to fill the diagonals in a plot of Y vs Y (main diagonal of
+%          the scatter plot matrix). Set dispopt to 'hist' (default) to
+%          plot histograms, or 'box' to plot boxplots.
 %
 %       REMARK 1: the style which is used for univariate boxplots is
 %       'traditional' if the number of groups is <=5, else it is 'compact'.
@@ -133,12 +137,12 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   Data Types - char
 %
 %
-%   tag     :   plot tag. String. string which identifies the handle of the plot which
-%               is about to be created. The default is to use tag
-%               'pl_spm'. Notice that if the program finds a plot which
-%               has a tag equal to the one specified by the user, then
-%               the output of the new plot overwrites the existing one
-%               in the same window else a new window is created.
+%   tag     :   plot tag. String. string which identifies the handle of the
+%               plot which is about to be created. The default is to use
+%               tag 'pl_spm'. Notice that if the program finds a plot which
+%               has a tag equal to the one specified by the user, then the
+%               output of the new plot overwrites the existing one in the
+%               same window else a new window is created.
 %                   Example - 'tag','myspm'
 %                   Data Types - char
 %
@@ -239,6 +243,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
+%
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or cell.
 %                   DATABRUSH IS AN EMPTY VALUE.
@@ -293,7 +298,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %       effect on the monitoring MD plot (malfwdplot). Note that the
 %       options which follow can only be used if the first argument of
 %       spmplot is a structure containing information about the fwd search
-%       (i.e. the fields MAL, Un and eventually label)
+%       (i.e. the fields MAL, Un and eventually label).
 %
 %
 %       subsize :   x axis control in malfwdplot. Vector. numeric vector
@@ -303,25 +308,28 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   size(Y.MAL,1)-size(Y.MAL,2)+1:size(Y.MAL,1)
 %                   Example - 'subsize',10:100
 %                   Data Types - single | double
-%       selstep :   position of text labels of brushed units in malfwdplot. Vector. Numeric vector
-%                   which specifies for which steps of the
-%                   forward search text labels are added in the monitoring
-%                   MD plot after a brushing action in the spmplot.
-%                   The default is to write the labels at the initial and
-%                   final step. The default is selstep=[m0 n] where m0 and
-%                   n are respectively the first and final step of the
-%                   search.
+%
+%       selstep :   position of text labels of brushed units in malfwdplot.
+%                   Vector. Numeric vector which specifies for which steps
+%                   of the forward search text labels are added in the
+%                   monitoring MD plot after a brushing action in the
+%                   spmplot. The default is to write the labels at the
+%                   initial and final step. The default is selstep=[m0 n]
+%                   where m0 and n are respectively the first and final
+%                   step of the search.
 %                   Example - 'selstep',100
 %                   Data Types - single | double
 %
 %  Output:
 %
 %        H      :   array of handles H to the plotted points. 3D array. See
-%                   gplotmatrix for further details
+%                   gplotmatrix for further details.
+%
 %        AX     :   handles to the individual subaxes. Matrix. See
-%                   gplotmatrix for further details
+%                   gplotmatrix for further details.
+%
 %      BigAx    :   handle to big (invisible) axes framing the subaxes.
-%                   Scalar. See gplotmatrix for further details
+%                   Scalar. See gplotmatrix for further details.
 %
 % More About:
 %
