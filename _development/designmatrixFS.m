@@ -48,12 +48,15 @@ function [doubleX,terms,cols2vars,cols2terms,colnames,termnames,doubley,namey,ca
 %                          terms for the 1st through M-th powers of the first
 %                          variable, 1st though N-th powers of the second
 %                          variable, etc.
+%
 %      'PredictorVars'     Specifies which variables in A to treat as predictors.
 %                          Only these variables are copied/converted to columns
 %                          in X. Default is 2:NVARS.
+%
 %      'ResponseVar'       Specifies which variable in A to treat as the
 %                          response.  This variable is not copied/converted to
 %                          columns in X.  Default is last column.
+%
 %      'CategoricalVars'   Specifies which variables in A to treat as categorical
 %                          variables.  These variables are converted to one or
 %                          more binary dummy variables before copying to
@@ -61,6 +64,7 @@ function [doubleX,terms,cols2vars,cols2terms,colnames,termnames,doubley,namey,ca
 %                          these variables.  Default is false for numeric
 %                          variables, true for categorical, logical, cell
 %                          arrays of strings or char.
+%
 %      'CategoricalLevels' A cell array with NCOLS elements. Each entry is
 %                          typically the VariableInfo.Range value for that
 %                          column, where VariableInfo is a FitObject
@@ -68,8 +72,10 @@ function [doubleX,terms,cols2vars,cols2terms,colnames,termnames,doubley,namey,ca
 %                          categorical variables are used. Each such entry
 %                          is a cell or categorical array listing all
 %                          unique values of that categorical variable.
+%
 %      'Intercept'         A logical value indicating whether or not to include
 %                          an intercept term in the model.  Default is true.
+%
 %      'DummyVarCoding'    A string specifying the coding to use for dummy
 %                          variables created from categorical variables, or a
 %                          cell array with NVARS elements containing a string
@@ -89,6 +95,8 @@ function [doubleX,terms,cols2vars,cols2terms,colnames,termnames,doubley,namey,ca
 %   See also DATASET, PREDICTORMATRIX, DATASET/DOUBLE, DATASET/SINGLE.
 
 %   Copyright 2010-2016 The MathWorks, Inc.
+
+%% Beginning of code 
 
 if isa(A,'dataset') 
     A=dataset2table(A);
