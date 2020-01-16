@@ -225,9 +225,10 @@ function out  = tclustIC(Y,varargin)
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
 %
-%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to request that the input matrix Y
-%               is saved into the output structure out. Default is 1, that
-%               is  matrix Y is saved inside output structure out.
+%       Ysave : save input matrix. Scalar. Scalar that is set to 1 to
+%               request that the input matrix Y is saved into the output
+%               structure out. Default is 1, that is  matrix Y is saved
+%               inside output structure out.
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
@@ -248,8 +249,8 @@ function out  = tclustIC(Y,varargin)
 %                 Data Types - single | double
 %
 %       cshape :    constraint to apply to each of the shape matrices. 
-%                   Scalar greater or equal than 1. This options only works is 'restrtype' is
-%                   'deter'. 
+%                   Scalar greater or equal than 1. 
+%                   This options only works is 'restrtype' is 'deter'. 
 %               When restrtype is deter the default value of the "shape" constraint (as
 %               defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
@@ -295,6 +296,7 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
 %                out.CLACLAtable = same output of CLACLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -311,6 +313,7 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%
 %                out.MIXMIXtable = same output of MIXMIX but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -320,6 +323,7 @@ function out  = tclustIC(Y,varargin)
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
+%
 %                out.MIXCLAtable = same output of MIXCLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -446,6 +450,7 @@ function out  = tclustIC(Y,varargin)
 
 
 %% Beginning of code
+
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);

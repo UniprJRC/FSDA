@@ -28,6 +28,7 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %    Omega : p-by-p-k 3D array containing the updated common rotation
 %               matrix replicated k times. Omega(:,:,j)=Omega2D with j=1,
 %               ..., k
+%
 %   Omega2D : p-by-p matrix containing the updated common rotation matrix.
 %
 % Copyright 2008-2019.
@@ -35,6 +36,7 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 sumnini=sum(niini);

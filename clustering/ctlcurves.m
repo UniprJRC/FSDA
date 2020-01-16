@@ -25,6 +25,7 @@ function out  = ctlcurves(Y, varargin)
 %               Vector. The default value of kk is 1:5.
 %                 Example - 'kk',1:4
 %                 Data Types - int16 | int32 | single | double
+%
 %        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
 %               For example is alpha=[0 0.05 0,1] ctlcurves considers these 3
@@ -249,6 +250,7 @@ function out  = ctlcurves(Y, varargin)
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
 %                out.CLACLAtable = same output of CLACLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -265,6 +267,7 @@ function out  = ctlcurves(Y, varargin)
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%
 %                out.MIXMIXtable = same output of MIXMIX but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -274,6 +277,7 @@ function out  = ctlcurves(Y, varargin)
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
+%
 %                out.MIXCLAtable = same output of MIXCLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).

@@ -75,6 +75,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %             p-by-p-by-k array containing the k covariance matrices for
 %             the k groups. See section 'More About' for the notation for
 %             the eigen-decomposition of the component covariance matrices.
+%
 %     lmd  : restricted determinants. Vector. 
 %             Row vector of length $k$ containing restricted determinants.
 %             More precisely, the $j$-th element of lmd contains
@@ -84,10 +85,12 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %             largest and the smallest determinant is not greater than
 %             pa.cdet. All the elements of vector lmd are equal if
 %             modeltype is E** or if pa.cdet=1.
+%
 %      OMG : constrained rotation matrices. p-by-p-by-k array.
 %             p-by-p-by-k array containing the k rotation matrices for
 %             the k groups. If common rotation is imposed (third letter is
 %             equal to E), OMG(:,:,1)=...=OMG(:,:,k).
+%
 %     GAM : constrained shape matrix. 2D array.
 %           Matrix of size p-by-k containing in
 %           column j the elements on the main diagonal of shape matrix

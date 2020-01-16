@@ -92,6 +92,7 @@ function S=genSigmaGPCM(v, k, modeltype)
 %}
 
 %% Beginning of code
+
 % S = 3d array which contains the covariance matriced of the groups
 S=zeros(v,v,k);
 coef=1;

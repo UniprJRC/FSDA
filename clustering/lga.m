@@ -14,26 +14,34 @@ function out = lga(X,k,varargin)
 %  Optional input arguments:
 %
 %
-%     biter : Hyperplane number. Integer. number of different starting hyperplanes to try.
+%     biter : Hyperplane number. Integer. number of different starting
+%             hyperplanes to try.
 %               Example - 'biter',1
 %               Data Types - double
-%     niter : Number of iterations. Positive integer. Number of iterations to attempt for convergence.
+%
+%     niter : Number of iterations. Positive integer. Number of iterations
+%             to attempt for convergence.
 %               Example - 'niter',1
 %               Data Types - double
-%   showall : Type of display. Logical. If true then display all the outcomes, not just the best one.
+%
+%   showall : Type of display. Logical. If true then display all the
+%             outcomes, not just the best one.
 %               Example - 'showall','true'
 %               Data Types - char
-%    stand  : Data standardization. Logical. If true standardize the X matrix with the standard
-%             deviation before fitting.
+%
+%    stand  : Data standardization. Logical. If true standardize the X
+%             matrix with the standard deviation before fitting.
 %               Example - 'stand','true'
 %               Data Types - char
-%    silent : Text ouptut. Logical. If true, produces no text output during processing. The
-%               default value is false.
+%
+%    silent : Text ouptut. Logical. If true, produces no text output during
+%             processing. The default value is false.
 %               Example - 'silent','true'
 %               Data Types - char
-%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the screen with the
-%             final allocation (and if size(X,2)==2 with the lines
-%             associated to the groups).
+%
+%    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on
+%             the screen with the final allocation (and if size(X,2)==2
+%             with the lines associated to the groups).
 %               Example - 'plots',1
 %               Data Types - double
 %

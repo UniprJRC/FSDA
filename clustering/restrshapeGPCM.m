@@ -94,6 +94,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 % Examples:
 
 %% Beginning of code
+
 k=pa.K;
 p=pa.p;
 pars=pa.pars;

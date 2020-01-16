@@ -65,11 +65,13 @@ function [out] = MixSimreg(k,p,varargin)
 %               overlap. The default value is ''
 %               Example - 'BarOmega',0.05 
 %               Data Types - double
+%
 %    MaxOmega : Requested maximum overlap. Scalar. Value of desired maximum
 %               overlap. If BarOmega is empty the default value of MaxOmega
 %               is 0.15.
 %               Example - 'MaxOmega',0.05 
 %               Data Types - double
+%
 %    StdOmega : Requested std of overlap. Scalar. Value of desired standard
 %               deviation of overlap.
 %               Remark 1: The probability of overlapping between two
@@ -81,6 +83,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               BarOmega MaxOmega and StdOmega.
 %               Example - 'StdOmega',0.05 
 %               Data Types - double
+%
 %         hom : Equal Sigmas. Scalar boolean. 
 %               Scalar boolean which specifies if the desired clusters have
 %               to be heterogeneous or homogeneous:
@@ -88,6 +91,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               hom=true            ==> homogeneous \Sigma_1 = ... = \Sigma_k
 %               Example - 'hom',false 
 %               Data Types - boolean
+%
 %  restrfactor: restriction factor. Scalar. 
 %               Scalar in the interval $[1, \infty]$ which specifies the
 %               maximum ratio to allow between the largest $\sigma^2$ and
@@ -100,6 +104,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               restreigen.m.
 %               Example - 'restrfactor',8 
 %               Data Types - double
+%
 %       PiLow : Smallest miximg proportion. Scalar. 
 %               Value of the smallest mixing proportion (if 'PiLow'
 %               is not reachable with respect to k, equal proportions are
@@ -107,6 +112,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               PiLow must be a number in the interval (0 1]
 %               Example - 'PiLow',0.1 
 %               Data Types - double
+%
 %    Xdistrib : distribution to use for each explanatory variable. Scalar
 %               or structure. It specifies the distribution to use
 %               for each explanatory variable and each group. Once chosen,
@@ -169,6 +175,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                       Xdistrib.BarX is used just if Xdistrib.type is 'User'
 %                 Example - 'Xdistrib',1 
 %                 Data Types - double
+%
 % betadistrib : distribution to use for regression coefficients. 
 %               Scalar or structure. It specifies the distribution to use
 %               for each element of the vectors of regression coefficients.
@@ -216,12 +223,14 @@ function [out] = MixSimreg(k,p,varargin)
 %                       is 'User'.
 %                 Example - 'betadistrib',1 
 %                 Data Types - double
+%
 %        resN : maximum number of attempts. Scalar integer.
 %               Maximum number of mixture re-simulations to find a
 %               simulation setting with prespecified level of overlapping.
 %               The default value of resN is 100.
 %                 Example - 'resN',3 
 %                 Data Types - double
+%
 %         tol : tolerance. Vector of length 2. 
 %               - tol(1) (which will be called tolmap) specifies
 %                 the tolerance between the requested and empirical
@@ -232,6 +241,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                 distributions). The default value of tol(2) 1e-06.
 %                 Example - 'tol',[0.01 0.02] 
 %                 Data Types - double
+%
 %         lim : maximum number of integration terms to use inside routine
 %               ncx2mixtcdf. Integer. Default is 1e06.
 %                 Example - 'lim',0.001 
@@ -240,6 +250,7 @@ function [out] = MixSimreg(k,p,varargin)
 %               function ncx2mixtcdf.m which computes the cdf of a linear
 %               combination of non central chi2 r.v.. This is the
 %               probability of misclassification.
+%
 %     Display : Level of display. Logical.
 %               - 'off' displays no output.
 %               - 'notify' (default) displays output if requested
@@ -273,29 +284,38 @@ function [out] = MixSimreg(k,p,varargin)
 %                      OmegaMap(i,j) = $w_{j|i}$ is the probability that X,
 %                      coming from the $i$-th component (group), is classified
 %                      to the $j$-th component.
+%
 %       out.BarOmega = scalar. Value of average overlap. BarOmega is computed
 %                      as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%
 %       out.MaxOmega = scalar. Value of maximum overlap. MaxOmega is the
 %                      maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %                      (i ~= j)=1, 2, ..., k. In other words, MaxOmega=
 %                      OmegaMap(rcMax(1),rcMax(2))+OmegaMap(rcMax(2),rcMax(1))
+%
 %       out.StdOmega = scalar. Value of standard deviation (std) of overlap.
 %                      StdOmega is the standard deviation of the k*(k-1)/2
-%                      probabilities of overlapping%
+%                      probabilities of overlapping.
+%
 %         out.rcMax  = vector of length 2. It containes the row and column
 %                      numbers associated with the pair of components
 %                      producing maximum overlap 'MaxOmega'
+%
 %              fail  = scalar, flag value. 0 indicates a successful mixture
 %                      generation, 1 represents failure.
+%
 %            out.Pi  = vector of length k containing the mixing proportions.
 %                      Clearly, sum(out.Pi)=1.
+%
 %          out.Beta = p-by-k matrix containing (in each column) the
 %                      regression coefficients for each group.
+%
 %            out.Mu  = vector of length k, consisting of components' mean vectors
 %                      for each regression hyperplane.
 %                      out.Mu(1)=BarX'Beta(:,1) ... out.Mu(p)=BarX'Beta(:,k)
+%
 %             out.S =  k-by-1 vector containing the variances for the k
-%                      groups
+%                      groups.
 
 %
 % See also tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
@@ -524,7 +544,9 @@ function [out] = MixSimreg(k,p,varargin)
 
 %}
 
-%% User options
+%% Beginning of code 
+
+% User options
 
 % Default
 if nargin<2

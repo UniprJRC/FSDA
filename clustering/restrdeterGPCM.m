@@ -76,9 +76,9 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %
 %$LastChangedDate:: 2018-09-15 00:27:12 #$: Date of the last commit
 
-% Examples:
 
 %% Beginning of code
+
 % Initialize constrained determinant vector
 lmd = NaN(1,pa.K);
 

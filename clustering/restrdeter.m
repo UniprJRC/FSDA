@@ -74,10 +74,11 @@ function [out]  = restrdeter(eigenvalues, niini, restr, tol, userepmat)
 %            The default value is 1e-8
 %               Example - 'tol',[1e-18] 
 %               Data Types - double
-% userepmat : use builtin repmat. Scalar. If userepmat is true function repmat is used instead
-%             of bsxfun inside the procedure. Remark: repmat is built in
-%             from MATLAB 2013b so it is faster to use repmat if the
-%             current version of MATLAB is >2013a
+%
+% userepmat : use builtin repmat. Scalar. If userepmat is true function
+%             repmat is used instead of bsxfun inside the procedure.
+%             Remark: repmat is built in from MATLAB 2013b so it is faster
+%             to use repmat if the current version of MATLAB is >2013a
 %               Example - 'userepmat',1 
 %               Data Types - double
 %
