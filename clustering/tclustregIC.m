@@ -106,28 +106,26 @@ function out  = tclustregIC(y,X,varargin)
 %                 Data Types - char
 %
 %       cshape :    constraint to apply to each of the shape matrices of
-%                   the explanatory variables.
-%                   Scalar greater or equal than 1. This options only works if 'restrtype' is
-%                   'deter' and $alphaX=1$, that is if constrained weighted
-%               model for X is assumed.
-%               When restrtype is deter the default value of the "shape" constraint (as
-%               defined below) applied to each group is fixed to
-%               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
-%               affine equivariant. In other words, the decomposition or the
-%               $j$-th scatter matrix $\Sigma_j$ is
-%               \[
-%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-%               \]
-%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-%               diagonal matrix with $|\Gamma_j|=1$ and with elements
-%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-%               the eigenvalues of the $\Sigma_j$ matrix) and
-%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-%               known as "shape" matrices, because they determine the shape of the
-%               fitted cluster components. The following $k$
-%               constraints are then imposed on the shape matrices:
-%               \[
-%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   the explanatory variables. Scalar greater or equal than
+%                   1. This options only works if 'restrtype' is 'deter'
+%                   and $alphaX=1$, that is if constrained weighted
+%               model for X is assumed. When restrtype is deter the default
+%               value of the "shape" constraint (as defined below) applied
+%               to each group is fixed to $c_{shape}=10^{10}$, to ensure
+%               the procedure is (virtually) affine equivariant. In other
+%               words, the decomposition or the $j$-th scatter matrix
+%               $\Sigma_j$ is \[ \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j
+%               \Omega_j' \] where $\Omega_j$ is an orthogonal matrix of
+%               eigenvectors, $\Gamma_j$ is a diagonal matrix with
+%               $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal
+%               (proportional to the eigenvalues of the $\Sigma_j$ matrix)
+%               and $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are
+%               commonly known as "shape" matrices, because they determine
+%               the shape of the fitted cluster components. The following
+%               $k$ constraints are then imposed on the shape matrices: \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v}
+%               \gamma_{jl}}\leq
 %                   c_{shape}, \text{ for } j=1,...,k,
 %               \]
 %               In particular, if we are ideally searching for spherical
@@ -173,7 +171,6 @@ function out  = tclustregIC(y,X,varargin)
 %                   out.CLACLA are given.
 %                 Example - 'whichIC','ALL'
 %                 Data Types - character
-%
 %
 %       nsamp : number of subsamples to extract. Scalar or matrix.
 %               If nsamp is a scalar it contains the number of subsamples
@@ -247,7 +244,6 @@ function out  = tclustregIC(y,X,varargin)
 %               (see for more details the help associated with nsamp).
 %                 Example - 'startv1',1
 %                 Data Types - single | double
-%
 %
 %       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
 %               BIC (MIXMIX), ICL (MIXCLA)curve and CLACLA is shown on the
@@ -340,7 +336,6 @@ function out  = tclustregIC(y,X,varargin)
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
-%
 %   wtrim: Application of observation weights. Scalar. A flag taking values [0, 1, 2, 3, 4]
 %          to control the application of weights on the observations.
 %          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
@@ -370,6 +365,7 @@ function out  = tclustregIC(y,X,varargin)
 %            of Cerioli and Perrotta (2014).
 %            Example - 'wtrim',1
 %            Data Types - double
+%
 %      we: Vector of observation weights. Vector. A vector of size n-by-1
 %          containing application-specific weights that the user needs to
 %          apply to each observation. Default
@@ -392,6 +388,7 @@ function out  = tclustregIC(y,X,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   classification likelihood. This output is present only
 %                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
 %                out.CLACLAtable = same output of CLACLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -408,6 +405,7 @@ function out  = tclustregIC(y,X,varargin)
 %                   length(cc) containinig the value of the penalized
 %                   mixture likelihood. This output is present only if
 %                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%
 %                out.MIXMIXtable = same output of MIXMIX but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -417,6 +415,7 @@ function out  = tclustregIC(y,X,varargin)
 %                   length(cc) containinig the value of the ICL. This
 %                   output is present only if 'whichIC' is 'MIXCLA' or
 %                   'whichIC' is 'ALL'.
+%
 %                out.MIXCLAtable = same output of MIXCLA but in MATLAB
 %                   table format (this field is present only if your MATLAB
 %                   version is not<2013b).
@@ -441,22 +440,21 @@ function out  = tclustregIC(y,X,varargin)
 %
 %                out.ccsigmaX = vector containing the values of c (values of the
 %                   restriction factor) which have been considered for the
-%                   covariance matrices of the esplnatory variables. This vector is equal to
-%                   input optional argument ccsigmaX if ccsigmaX had been specified
-%                   and input option alphaX=1 otherwise it is equal to 12
-%                   if alphaX=1 and xxsigmaX has not been specified.
-%                   Finally if input option alphaX is not equal 1
-%                   out.ccsigmaX is an empty value
+%                   covariance matrices of the esplnatory variables. This
+%                   vector is equal to input optional argument ccsigmaX if
+%                   ccsigmaX had been specified and input option alphaX=1
+%                   otherwise it is equal to 12 if alphaX=1 and xxsigmaX
+%                   has not been specified. Finally if input option alphaX
+%                   is not equal 1 out.ccsigmaX is an empty value
 %                out.alphaLik = scalar containing the trimming level which has
 %                   been used in the likelidood.
 %                out.alphaX = scalar containing information about
 %                   second-level trimming or constrained weighted model for X.
-%                out.X  = Original data matrix of explanatory variables. The field is present if
-%                   option Ysave is set to 1.
+%                out.X  = Original data matrix of explanatory variables.
+%                The field is present if option Ysave is set to 1.                   
 %                out.y  = Original vector containing the response
-%                    The field is present if
-%                   option Ysave is set to 1.
-%
+%                    The field is present if option Ysave is set to 1.
+%                   
 % See also tclustreg, tclustICsol, tclustICplot, carbikeplot
 %
 % References:

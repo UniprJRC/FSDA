@@ -34,16 +34,16 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Required input arguments:
 %
-%         n   : sample size or input matrix. Scalar. Scalar or matrix of size n-by-v. If n is a scalar it
-%               is interpreted as the sample size of the dataset which must
-%               be simulated. On the other hand, if n is a n-by-v it is
-%               interpreted as a matrix of size n-by-v which has to be
-%               contaminated with optional input arguments 'noiseunits' and
-%               'noisevars'.
+%         n   : sample size or input matrix. Scalar. Scalar or matrix of
+%               size n-by-v. If n is a scalar it is interpreted as the
+%               sample size of the dataset which must be simulated. On the
+%               other hand, if n is a n-by-v it is interpreted as a matrix
+%               of size n-by-v which has to be contaminated with optional
+%               input arguments 'noiseunits' and 'noisevars'.
 %  Pi : Mixing proportions. Vector. Vector of size k containing mixing
 %       proportions. The sum of the elements of Pi is 1. 
-%  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
-%       k groups. 
+%  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows)
+%       the centroids of the k groups.
 %  S  : Covariance matrices. 3D array. 3D array of size v-by-v-by-k
 %       containing covariance matrices of the
 %       k groups. 
@@ -117,7 +117,9 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                interval [-2 2] for each variable.
 %               Example - 'noiseunits', 10
 %               Data Types - double
-%    noisevars : Type of noise variables. Scalar or structure. Empty value, scalar or structure.
+%
+%    noisevars : Type of noise variables. Scalar or structure. Empty value,
+%                scalar or structure.
 %                - If noisevars is not specified or is an empty value
 %                  (default) no noise variable is added to the matrix of
 %                  simulated data.
@@ -173,14 +175,18 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                variables are generated in the interval min(X) max(X).
 %               Example - 'noisevars', 5
 %               Data Types - double
-%       lambda : Transformation coefficients. Vector. Vector of length v containing inverse Box-Cox
-%                transformation coefficients. The value false (default)
-%                implies that no transformation is applied to any variable.
+%
+%       lambda : Transformation coefficients. Vector. Vector of length v
+%                containing inverse Box-Cox transformation coefficients.
+%                The value false (default) implies that no transformation
+%                is applied to any variable.
 %               Example - 'lambda',[1 1 0];
 %               Data Types - double
-%      R_seed : random numbers from R language. Scalar. Scalar > 0 for the seed to be used to generate random numbers
-%               in a R instance. This is used to check consistency of the
-%               results obtained with the R package MixSim. See file
+%
+%      R_seed : random numbers from R language. Scalar. Scalar > 0 for the
+%               seed to be used to generate random numbers in a R instance.
+%               This is used to check consistency of the results obtained
+%               with the R package MixSim. See file
 %               Connect_Matlab_with_R_HELP.m to know how to connect MATLAB
 %               with R.  This option requires the installation of the
 %               R-(D)COM Interface. Default is 0, i.e. random numbers are
@@ -191,8 +197,10 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Output:
 %
-%           X  : Simulated dataset. Matrix. Simulated dataset of size (n + noiseunits)-by-(v + noisevars).
-%                Noise coordinates are provided in the last noisevars columns.
+%           X  : Simulated dataset. Matrix. Simulated dataset of size 
+%                (n + noiseunits)-by-(v + noisevars). Noise coordinates are
+%                provided in the last noisevars columns.
+%
 %           id : Classification vector. Vector. Classification vector of
 %                length n + noiseunits. Negative
 %                numbers represents the groups associated to the
@@ -488,6 +496,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 
 %% Beginning of code
+
 if nargin<4
     error('FSDA:simdataset:missingInputs','A required input argument is missing.')
 end

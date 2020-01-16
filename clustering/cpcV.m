@@ -39,6 +39,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 %    Omega : p-by-p-k 3D array containing the updated common rotation
 %               matrix replicated k times. Omega(:,:,j)=Omega2D with j=1,
 %               ..., k
+%
 %   Omega2D : p-by-p matrix containing the updated common rotation matrix.
 %
 %
@@ -54,6 +55,7 @@ function [Omega, Omega2D]  = cpcV(lmdc, GAMc, Omega2D, Wk, wk, pa)
 
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 maxiterR=pa.maxiterR;

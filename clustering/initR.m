@@ -22,10 +22,12 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 %     lmd : row vector of length k containing in the j-th position
 %           $|\Sigma_j|^(1/p)$, $j=1, 2, \ldots, k$ if different
 %           determinants are allowed else it is a row vector of ones.
+%
 %   Omega2D : p-by-p matrix containing the eigenvectors of pooled matrix
 %            $\sum_{j=1}^k \frac{n_j}{n} \frac{1}{|\Sigma_j|^(1/p)}
 %            \Sigma_j$. The first column is associated with the largest
 %            eigenvalue .... This is the initial common rotation matrix.
+%
 %    Omega : p-by-p-k 3D array containing in position j Omega2D.
 %            This is the common rotation matrix replicated k times.
 
@@ -35,6 +37,7 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 
 
 %% Beginning of code
+
 p=pa.p;
 k=pa.K;
 pars=pa.pars;

@@ -356,7 +356,9 @@ function out = dempk(Y, k, g, varargin)
 
 
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 nnargin = nargin;
 vvarargin = varargin;
 Y = chkinputM(Y,nnargin,vvarargin);

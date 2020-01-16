@@ -139,32 +139,43 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %                       each of the k groups. Cluster names are integer
 %                       numbers from 1 to k, 0 indicates trimmed
 %                       observations.
+%
 %            out.muopt= k-by-v matrix containing cluster centroids 
 %                       locations. Robust estimate of final centroids of 
 %                       the groups.
+%
 %        out.sigmaopt = v-by-v-by-k empirical covariance matrices of the 
 %                       groups found by tkmeans.
+%
 %         out.BoxTest = Structure containing the results of the Box test of
 %                       equality of covariance matrices.
+%
 %              out.bs = k-by-1 vector containing the units forming initial
 %                       subset associated with muopt.
+%
 %               out.D = n-by-k matrix containing squared Euclidean
 %                       distances from each point to every centroid.
+%
 %            out.siz  = Matrix of size k-by-3
 %                       1st col = sequence from 0 to k
 %                       2nd col = number of observations in each cluster
 %                       3rd col = percentage of observations in each cluster
 %                       Remark: 0 denotes unassigned units.
+%
 %        out.weights  = Numerical vector of length k, containing the
 %                       weights of each cluster. If input option weights=1
 %                       out.weights=(1/k, ...., 1/k) else if input option
 %                       weights <> 1 out.weights=(n1/n, ..., nk/n).
+%
 %               out.h = Scalar. Number of observations that have determined the
 %                       centroids (number of untrimmed units).
+%
 %             out.obj = Scalar. Value of the objective function which is minimized 
 %                       (value of the best returned solution).
+%
 %              out.Y  = Original data matrix Y. The field is present if option
 %                       Ysave is set to 1.
+%
 %             out.emp = "Empirical" statistics computed on final classification. 
 %                       Scalar or structure. When convergence is reached,
 %                       out.emp=0. When convergence is not obtained, this
@@ -286,16 +297,16 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     cascade
 %}
 
+%% Beginning of code 
 
-
-%% Input parameters checking
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
 
-%% User options
+% User options
 
 
 % If the number of all possible subsets is <10000 the default is to extract
