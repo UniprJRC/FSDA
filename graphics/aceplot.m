@@ -26,6 +26,7 @@ function aceplot(out,varargin)
 %               the numbers associate to the units to highlight in the plots.
 %                 Example - 'highlight',1:10
 %                 Data Types - double
+%
 %        ylimy  : 2D array of size 3-by-2 which specifies the
 %                lower and upper limits for the 3 plots of the second
 %                figure. The first row refers to the plot of transformed y
@@ -84,7 +85,6 @@ function aceplot(out,varargin)
 
 %
 %% Beginning of code
-
 
 highlight=[];
 ylimy=[];
