@@ -108,7 +108,7 @@ function out  = tclustIC(Y,varargin)
 %                random numbers which are used to initialize the
 %                proportions of the groups. This option is effective just
 %                if nsamp is a matrix which contains pre-extracted
-%                subsamples and k is a scalat. The purpose of this option
+%                subsamples and k is a scalar. The purpose of this option
 %                is to enable the user to replicate the results. 
 %                The default value of RandNumbForNini is empty,
 %                that is random numbers from uniform are used.
@@ -203,7 +203,6 @@ function out  = tclustIC(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
-%              REMARK 5: the parallelization refers to the ...
 %                 Example - 'numpool',4
 %                 Data Types - double
 %
