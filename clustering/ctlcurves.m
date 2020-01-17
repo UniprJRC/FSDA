@@ -805,7 +805,6 @@ out.Y=Y;
 %% Close pool and show messages if required
 PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
 
-
 end
 
 
