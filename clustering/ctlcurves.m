@@ -1,5 +1,5 @@
 function out  = ctlcurves(Y, varargin)
-%tclustIC computes Classification Trimmed Likelihood Curves
+%ctlcurves computes Classification Trimmed Likelihood Curves
 %
 %<a href="matlab: docsearchFS('ctlcurves')">Link to the help function</a>
 %
@@ -10,11 +10,11 @@ function out  = ctlcurves(Y, varargin)
 %
 %  Required input arguments:
 %
-%            Y: Input data. Matrix. Data matrix containing n observations on v variables
-%               Rows of Y represent observations, and columns represent
-%               variables. Observations (rows) with missing (NaN) or or
-%               infinite (Inf) values will automatically be excluded from
-%               the computations.
+%            Y: Input data. Matrix. Data matrix containing n observations
+%               on v variables, Rows of Y represent observations, and
+%               columns represent variables. Observations (rows) with
+%               missing (NaN) or or infinite (Inf) values will
+%               automatically be excluded from the computations.
 %                 Data Types -  double
 %
 %  Optional input arguments:
@@ -25,12 +25,55 @@ function out  = ctlcurves(Y, varargin)
 %               Vector. The default value of kk is 1:5.
 %                 Example - 'kk',1:4
 %                 Data Types - int16 | int32 | single | double
+%
 %        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
-%               For example is alpha=[0 0.05 0,1] ctlcurves considers these 3
+%               For example if alpha=[0 0.05 0.1] ctlcurves considers these 3
 %               values of trimming level.
-%               The default for alpha is vector
-%               0]. The sequence is forced to be monotonically decreasing.
+%               The default for alpha is vector 0:0.02:0.10;
+%                 Example - 'alpha',[0 0.05 0.1]
+%                 Data Types -  double
+%
+%       mixt  : Mixture modelling or crisp assignment. Scalar.
+%               Option mixt specifies whether mixture modelling or crisp
+%               assignment approach to model based clustering must be used.
+%               In the case of mixture modelling parameter mixt also
+%               controls which is the criterion to find the untrimmed units
+%               in each step of the maximization.
+%               If mixt >=1 mixture modelling is assumed else crisp
+%               assignment. The default value is mixt=0 (i.e. crisp assignment).
+%               In mixture modelling the likelihood is given by:
+%                \[
+%                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j),
+%                \]
+%               while in crisp assignment the likelihood is given by:
+%               \[
+%               \prod_{j=1}^k   \prod _{i\in R_j} \phi (y_i; \; \theta_j),
+%               \]
+%               where $R_j$ contains the indexes of the observations which
+%               are assigned to group $j$.
+%               Remark - if mixt>=1 previous parameter equalweights is
+%               automatically set to 1.
+%               Parameter mixt also controls the criterion to select the
+%               units to trim,
+%               if mixt = 2 the h units are those which give the largest
+%               contribution to the likelihood that is the h largest
+%               values of:
+%               \[
+%                   \sum_{j=1}^k \pi_j \phi (y_i; \; \theta_j)   \qquad
+%                    i=1, 2, ..., n,
+%               \]
+%               else if mixt=1 the criterion to select the h units is
+%               exactly the same as the one which is used in crisp
+%               assignment. That is: the n units are allocated to a
+%               cluster according to criterion:
+%               \[
+%                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i; \; \hat \theta_j)
+%               \]
+%               and then these n numbers are ordered and the units
+%               associated with the largest h numbers are untrimmed.
+%                   Example - 'mixt',1
+%                   Data Types - single | double
 %
 %  restrfactor: Restriction factor. Scalar. Positive scalar which
 %               constrains the allowed differences
@@ -42,6 +85,8 @@ function out  = ctlcurves(Y, varargin)
 %               restrfactor to eigenvalues. In order to apply restrfactor
 %               to determinants it is is necessary to use optional input
 %               argument cshape.
+%                 Example - 'restrfactor',12
+%                 Data Types -  double
 %
 %
 %       nsamp : number of subsamples to extract. Scalar or matrix.
@@ -72,18 +117,6 @@ function out  = ctlcurves(Y, varargin)
 %               startv1=0 elseif nsamp has k*(v+1) columns option startv1=1.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
-%
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples and k is a scalat. The purpose of this option
-%                is to enable the user to replicate the results.
-%                The default value of RandNumbForNini is empty,
-%                that is random numbers from uniform are used.
-%                   Example - 'RandNumbForNini',''
-%                   Data Types - single | double
 %
 %    refsteps : Number of refining iterations. Scalar. Number of refining
 %               iterations in subsample.  Default is 15. refsteps = 0 means
@@ -127,6 +160,28 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
+%       bands  : confidence bands for the curves. boolean or struct. If
+%               bands is a scalar boolean equal to true 50 per cent
+%               confidence bands are computed (and are shown on the screen
+%               if plots=1).
+%               If bands is a struct it may contain the following fields:
+%               bands.conflev = scalar in the interval (0 1) which contains
+%                   the confidence level of the bands.
+%               bands.nsimul = number of replicates to use to create the
+%                   confidence bands. The default value of bands.nsimul is
+%                   60 in order to provide the output in a reasonal time.
+%                   Note that for stable results we recommentd a value of
+%                   bands.nsimul equal to 100.
+%               bands.valSolution   = boolean which specifies if it is
+%                   necessary to perform an outlier detection procedure on
+%                   the components which have been found using optimalK and
+%                   optminal alpha. If bands.valSolution is true then units
+%                   detected as outliers in each component are assigned to
+%                   the noise group. If bands.valSolution is false
+%                   (deafult) or it is not present nothing is done.
+%                 Example - 'bands',true
+%                 Data Types - logical | struct
+%
 %       plots : Plot on the screen. Scalar. If plots = 1, a plot of the
 %               CTLcurves is shown on the screen. If input option bands is
 %               not empty confidence bands are also shown.
@@ -142,20 +197,16 @@ function out  = ctlcurves(Y, varargin)
 %               cores available in the CPU (this choice may be inconvenient
 %               if other applications are running concurrently). The same
 %               happens if the numpool value chosen by the user exceeds the
-%               available number of cores. REMARK 1: up to R2013b, there
-%               was a limitation on the maximum number of cores that could
-%               be addressed by the parallel processing toolbox (8 and,
-%               more recently, 12). From R2014a, it is possible to run a
-%               local cluster of more than 12 workers.
-%               REMARK 2: Unless you adjust the cluster profile, the
+%               available number of cores.
+%               REMARK 1: Unless you adjust the cluster profile, the
 %               default maximum number of workers is the same as the
 %               number of computational (physical) cores on the machine.
-%               REMARK 3: In modern computers the number of logical cores
+%               REMARK 2: In modern computers the number of logical cores
 %               is larger than the number of physical cores. By default,
 %               MATLAB is not using all logical cores because, normally,
 %               hyper-threading is enabled and some cores are reserved to
 %               this feature.
-%               REMARK 4: It is because of Remarks 3 that we have chosen as
+%               REMARK 3: It is because of Remarks 3 that we have chosen as
 %               default value for numpool the number of physical cores
 %               rather than the number of logical ones. The user can
 %               increase the number of parallel pool workers allocated to
@@ -193,22 +244,21 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'nocheck',10
 %                 Data Types - single | double
 %
-%       Ysave : save input matrix. Scalar.
-%               Scalar that is set to 1 to request that the input matrix Y
+%       Ysave : save input matrix. Boolean.
+%               Boolan that is set to true to request that the input matrix Y
 %               is saved into the output structure out. Default is 1, that
 %               is  matrix Y is saved inside output structure out.
-%                 Example - 'Ysave',1
-%                 Data Types - single | double
+%                 Example - 'Ysave',false
+%                 Data Types - logical
 %
-%
-%       cshape :    constraint to apply to each of the shape matrices.
-%                   Scalar greater or equal than 1. This options only works is 'restrtype' is
-%                   'deter'.
-%               When restrtype is deter the default value of the "shape" constraint (as
-%               defined below) applied to each group is fixed to
-%               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
-%               affine equivariant. In other words, the decomposition or the
-%               $j$-th scatter matrix $\Sigma_j$ is
+%       cshape : constraint to apply to each of the shape matrices.
+%                Scalar greater or equal than 1. This options only works
+%                is 'restrtype' is 'deter'.
+%               When restrtype is deter the default value of the "shape"
+%               constraint (as defined below) applied to each group is
+%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+%               (virtually) affine equivariant. In other words, the
+%               decomposition or the $j$-th scatter matrix $\Sigma_j$ is
 %               \[
 %               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
 %               \]
@@ -244,75 +294,80 @@ function out  = ctlcurves(Y, varargin)
 %
 %         out:   structure which contains the following fields:
 %
-%                out.CLACLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
-%                   classification likelihood. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
-%                out.CLACLAtable = same output of CLACLA but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the classification model. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
-%
-%                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
-%                   mixture likelihood. This output is present only if
-%                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
-%                out.MIXMIXtable = same output of MIXMIX but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the ICL. This
-%                   output is present only if 'whichIC' is 'MIXCLA' or
-%                   'whichIC' is 'ALL'.
-%                out.MIXCLAtable = same output of MIXCLA but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the mixture model. This output is present only if
-%                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
-%
+%                out.Mu = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the centroids for each
+%                       value of k and each value of alpha. More precisely,
+%                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
+%                       is a matrix with two rows and v columns containing
+%                       the estimates of the centroids obtained when
+%                       alpha=0.1.
+%            out.Sigma = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the covariance matrices
+%                       for each value of k and each value of alpha. More
+%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
+%                       containing the estimates of the covariance matrices
+%                       obtained when alpha=0.1.
+%            out.Pi   = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the group proportions
+%                       for each value of k and each value of alpha. More
+%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
+%                       containing the estimates of the covariance matrices
+%                       obtained when alpha=0.1.
+%            out.IDX   = cell of size length(kk)-by-length(alpha)
+%                       containing the final assignment for each value of k
+%                       and each value of alpha. More precisely, suppose
+%                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
+%                       vector of length(n) containing the containinig the
+%                       assignment of each unit obtained when alpha=0.1.
+%                       Elements equal to zero denote unassigned units.
+%           out.CTL    = matrix of size length(kk)-by-length(alpha)
+%                       containing the values of the trimmed likelihood
+%                       curves for each value of k and each value of alpha.
+%      out.BandsCTL    = 3D array of size
+%                       length(kk)-by-length(alpha)-by-nsimul containing
+%                       the nsimul replicates of out.CTL. This output is
+%                       present only if input option bands is true or is a
+%                       struct.
+%         out.likLB    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the lower confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha. This output is present only if
+%                       input option bands is true or is a struct.
+%         out.likUB    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the upper confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha. This output is present only if
+%                       input option bands is true or is a struct.
+%            out.idx  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups in correspodence of
+%                       Optimalalpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. This output is present only if input
+%                       option bands is true or is a struct.
+%           out.OptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value. This output is present
+%                       only if optional input argument is true.
+%        out.Optimalalpha = scalar, optimal value of trimming. This
+%                       output is present only if optional input argument is
+%                       true.
 %                out.kk = vector containing the values of k (number of
-%                   components) which have been considered. This  vector
-%                   is equal to input optional argument kk if kk had been
-%                   specified else it is equal to 1:5.
-%
-%                out.alphavec = vector containing the values of c (values of the
-%                   restriction factor) which have been considered. This
-%                   vector is equal to input optional argument alphavec if alphavec had
-%                   been specified else it is equal to [0, 0.01, ..., 0.10].
-%
-%                out.restractor = scalar containing the trimming level
-%                   which has been used.
-%
-%                out.OptimalK = scalar, optimal number of clusters, stored
-%                   as a positive integer value. This output is present
-%                   only if optional input argument is true.
-%
-%                out.Optimalalpha = scalar, optimal value of trimming. This
-%                   output is present only if optional input argument is true.
-%
+%                       components) which have been considered. This  vector
+%                       is equal to input optional argument kk if kk had been
+%                       specified else it is equal to 1:5.
+%                out.alpha = vector containing the values of the trimming
+%                       level which have been considered. This
+%                       vector is equal to input optional argument alpha.
+%         out.restractor = scalar containing the restriction factor
+%                       which has been used to compute tclust.
 %                out.Y  = Original data matrix Y. The field is present if
-%                   option Ysave is set to 1.
-%
+%                       option Ysave is set to 1.
 %
 % More About:
 %
 % These curves show the values of the trimmed classification
-% (log-)likelihoods when altering the trimming proportion alpha and the
+% (log)-likelihoods when altering the trimming proportion alpha and the
 % number of clusters k. The careful examination of these curves provides
 % valuable information for choosing these parameters in a clustering
 % problem. For instance, an appropriate k to be chosen is one that we do
@@ -320,8 +375,11 @@ function out  = ctlcurves(Y, varargin)
 % curve for k with respect to the k+1 curve for almost all the range of
 % alpha values. Moreover, an appropriate choice of parameter alpha may be
 % derived by determining where an initial fast increase of the trimmed
-% classification likelihood curve stops for the final chosen k. A more
-% detailed explanation can be found in Garc<ed>a-Escudero et al. (2010).
+% classification likelihood curve stops for the final chosen k (Garcia
+% Escudero et al. 2011). This routine adds confidence bands in order to
+% provide an automatic criterion in order to choose k and alpha. Optimal
+% trimming level is chosen as the smallest value of alpha such that the
+% bands for two consecutive values of k intersect.
 %
 %
 % See also tclust, tclustICsol, tclustICplot
@@ -343,6 +401,54 @@ function out  = ctlcurves(Y, varargin)
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
+
+%{
+    %% Example of use of ctlcurves with all default options.
+    % Load the geyser data
+    rng('default')
+    rng(10)
+    Y=load('geyser2.txt');
+    out=ctlcurves(Y);
+    % Show the automatic classification
+    spmplot(Y,out.idx);
+%}
+
+%{
+    % Example of the use of options alpha, kk and bands.
+    % Personalized levels of trimming.
+    alpha=0:0.05:0.15;
+    % bands is passed as a false boolean. No bands are shown.
+    bands=false;
+    out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands);
+%}
+
+%{
+    %% bands passed as struct.
+    % load the M5 data.
+    Y=load('M5data.txt');
+    Y=Y(:,1:2);
+    bands=struct;
+    % just 20 simulations to construct the bands.
+    bands.nsimul=20;
+    % Exclude the units detected as outliers for each group.
+    bands.valSolution=true;
+    out=ctlcurves(Y,'bands',bands,'kk',1:3,'alpha',0:0.02:0.1);
+    % Show final classification.
+    spmplot(Y,out.idx);
+%}
+
+%{
+    %% An example with many groups.
+    % Simulate data with 5 groups in 3 dimensions
+    rng(1)
+    k=5; v=3;
+    n=200;
+    Y = MixSim(k, v, 'MaxOmega',0.01);
+    [Y]=simdataset(n, Y.Pi, Y.Mu, Y.S, 'noiseunits', 10);
+    out=ctlcurves(Y,'plots',0,'kk',4:6);
+    spmplot(Y,out.idx);
+%}
+
 
 %% Beginning of code
 
@@ -373,10 +479,8 @@ nsamp=500;
 kk=1:5;
 msg=1;
 alphaTrim=0:0.02:0.10;
-%alphaTrim=0:0.04:0.20;
 
 cleanpool=false;
-RandNumbForNini='';
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
 cshape=10^10;
 restrfactor=100;
@@ -386,16 +490,17 @@ bands=true;
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
-    options=struct('kk',kk,'alphavec',alphaTrim,'whichIC',whichIC,'alpha',alphaTrim,'nsamp',nsamp,'plots',plots,'nocheck',0,...
+    options=struct('kk',kk,'mixt',mixt,'alpha',alphaTrim,...
+        'nsamp',nsamp,'plots',plots,'nocheck',0,'bands',bands, ...
+        'restrfactor', restrfactor, ...
         'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
         'reftol',reftol,'startv1',startv1,'restrtype',restr,'cshape',cshape,...
-        'RandNumbForNini',RandNumbForNini,...
         'numpool',numpool, 'cleanpool', cleanpool);
     
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:tclustIC:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:ctlcurves:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -416,10 +521,10 @@ if ~isempty(UserOptions)
     
     
     restr=options.restrtype;
-    alphaTrim=options.alphavec;
+    alphaTrim=options.alpha;
     kk=options.kk;
     nsamp=options.nsamp;        % Number of subsets to extract
-    plots=options.plots;        % Plot of the resulting classification
+    plots=options.plots;        % Plot the ctl curves
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
     
     refsteps=options.refsteps;
@@ -429,11 +534,16 @@ if ~isempty(UserOptions)
     mixt=options.mixt;
     cleanpool=options.cleanpool;
     numpool=options.numpool;
-    RandNumbForNini=options.RandNumbForNini;
     cshape=options.cshape;
     restrfactor=options.restrfactor;
     bands=options.bands;
+    
+    % Make sure vectors kk and alphaTtrim are sorted.
+    kk=sort(kk);
+    alphaTrim=sort(alphaTrim);
+    
 end
+
 
 lkk=length(kk);
 lalpha=length(alphaTrim);
@@ -442,7 +552,7 @@ MuVal = cell(lkk,lalpha);
 SigmaVal = MuVal;
 PiVal = MuVal;
 IDX=MuVal;
-CTLtab=zeros(lkk,lalpha);
+CTLVal=zeros(lkk,lalpha);
 
 %% Preapare the pool (if required)
 pariter=0;
@@ -450,6 +560,12 @@ pariter=0;
 
 CnsampAll=cell(lkk,1);
 gRandNumbForNiniAll=CnsampAll;
+
+if isstruct(bands) || (islogical(bands) && bands ==true)
+    ComputeBands = true;
+else
+    ComputeBands = false;
+end
 
 for k=1:lkk  % loop for different values of k (number of groups)
     
@@ -464,15 +580,11 @@ for k=1:lkk  % loop for different values of k (number of groups)
         Cnsamp=nsamp;
     end
     
-    if isempty(RandNumbForNini)
-        % For each value of k extract random numbers to initialize proportions
-        % once and for all
-        gRandNumbForNini=rand(seqk,nsamp);
-    else
-        gRandNumbForNini=RandNumbForNini;
-    end
+    % For each value of k extract random numbers to initialize proportions
+    % once and for all
+    gRandNumbForNini=rand(seqk,nsamp);
     
-    if bands==true
+    if ComputeBands==true
         CnsampAll{seqk}=Cnsamp;
         gRandNumbForNiniAll{seqk}=gRandNumbForNini;
     end
@@ -489,49 +601,87 @@ for k=1:lkk  % loop for different values of k (number of groups)
         [indice] = find(outtc.siz(:,1) >0);
         PiVal{k,j} = outtc.siz(indice,2)/sum(outtc.siz(indice,2));
         
-        % columns = values of alpha
-        % rows = values of k
+        % columns (j) = values of alpha
+        % rows (k) = number of groups
         
         % Store centroids
         MuVal{k,j} = outtc.muopt;
+        % Store covariance matrices
         SigmaVal{k,j} = outtc.sigmaopt;
         
         % Store classification
         IDX{k,j} = outtc.idx;
         
         % Store objective function
-        CTLtab(k,j) = outtc.obj;
+        CTLVal(k,j) = outtc.obj;
     end
     if msg==1
         disp(['k=' num2str(seqk)])
     end
 end
 
-if bands==true
-    % Simulation to create the bands
-    nsimul=100;
-    BandsCTL=zeros(lkk,lalpha,nsimul);
-    for k=1:lkk  % loop for different values of k (number of groups)
-        if msg==1
-            disp(['Bands k=' num2str(k)])
+% gamma is the width of the confidence interval divided by 2
+gamma=0.25;
+% nsimul = default number of simulations to create the bands
+nsimul=60;
+% do not validate the components using outlier detectio procedures.
+valSolution=false;
 
+out=struct;
+out.Mu=MuVal;
+out.Sigma=SigmaVal;
+out.Pi=PiVal;
+out.IDX=IDX;
+out.CTL=CTLVal;
+
+if ComputeBands==true
+    
+    if isstruct(bands)
+        fbands=fieldnames(bands);
+        
+        d=find(strcmp('conflev',fbands));
+        if d>0
+            gamma=(1-bands.conflev)/2;
         end
         
+        d=find(strcmp('nsimul',fbands));
+        if d>0
+            nsimul=bands.nsimul;
+        end
+        
+        d=find(strcmp('valSolution',fbands));
+        if d>0
+            valSolution=bands.valSolution;
+        end
+    end
+    
+    % BandsCTL is a 3D array which will contain the replicates for the
+    % solutions
+    BandsCTL=zeros(lkk,lalpha,nsimul);
+    for k=1:lkk  % loop for different values of k (number of groups)
+        
+        
+        % Extract what depends just on k
         seqk=kk(k);
+        CnsampAllk=CnsampAll{seqk};
+        gRandNumbForNiniAllk=gRandNumbForNiniAll{seqk};
+        
+        if msg==1
+            disp(['Bands k=' num2str(seqk)])
+        end
+        
         for j=1:lalpha
-       
-            ktrue = length(PiVal{seqk, j});
-            Mutrue = MuVal{seqk, j};
+            
+            ktrue = length(PiVal{k, j});
+            Mutrue = MuVal{k, j};
             Mutrue=Mutrue(1:ktrue,:);
-            Sigmatrue = SigmaVal{seqk, j};
+            Sigmatrue = SigmaVal{k, j};
             Sigmatrue = Sigmatrue(:,:,1:ktrue);
-            Pitrue=PiVal{seqk, j};
+            Pitrue=PiVal{k, j};
             alphaTrimj=alphaTrim(j);
             ngood=round(n*(1-alphaTrimj));
             nout=n-ngood;
-            CnsampAllk=CnsampAll{seqk};
-            gRandNumbForNiniAllk=gRandNumbForNiniAll{seqk};
-            parfor zz = 1:nsimul
+            parfor (zz = 1:nsimul, numpool)
                 [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
                 if size(Ysim,1)<n
                     Yadd=repmat(Ysim(end,:),n-size(Ysim,1),1);
@@ -545,83 +695,100 @@ if bands==true
             end
         end
     end
-end
-
-out=struct;
-out.Mu=MuVal;
-out.Sigma=SigmaVal;
-out.PiVal=PiVal;
-out.IDX=IDX;
-out.CTLtabl=CTLtab;
-out.BandsCTL=BandsCTL;
-gamma=0.25;
-
-likLB = zeros(length(kk),length(alphaTrim));
-lik050 = likLB;
-likUB =likLB;
-for k=1:length(kk)  % loop for different values of k (number of groups)
-    parfor j=1:length(alphaTrim)
-        likLB(k,j) = quantile(BandsCTL(k,j,:), gamma);
-        lik050(k,j) = median(BandsCTL(k,j,:));
-        likUB(k,j) = quantile(BandsCTL(k,j,:), 1- gamma);
-    end
-end
-
-out.likLB=likLB;
-out.lik050=lik050;
-out.likUB=likUB;
-
-for j = 1:length(kk)-1
-    alphaBest='';
-    for jalpha =1:size(likUB,2)
-        if (likUB(j,jalpha) > likLB(j+1,jalpha) &&  lik050(j+1,jalpha)> lik050(j,jalpha)) || ...
-                (likLB(j,jalpha) < likUB(j+1,jalpha) &&  lik050(j+1,jalpha) < lik050(j,jalpha))
-            % Find best trimming level
-            alphaBest = alphaTrim(jalpha);
-            break
-        else
+    out.BandsCTL=BandsCTL;
+    
+    likLB = zeros(length(kk),length(alphaTrim));
+    lik050 = likLB;
+    likUB =likLB;
+    for k=1:length(kk)  % loop for different values of k (number of groups)
+        parfor j=1:length(alphaTrim)
+            likLB(k,j) = quantile(BandsCTL(k,j,:), gamma);
+            lik050(k,j) = median(BandsCTL(k,j,:));
+            likUB(k,j) = quantile(BandsCTL(k,j,:), 1- gamma);
         end
-        
     end
     
-    if ~isempty(alphaBest)
-        alphafin = alphaBest;
-        kfin = j;
-        conv = 1;
-        break
+    out.likLB=likLB;
+    out.lik050=lik050;
+    out.likUB=likUB;
+    conv=0;
+    
+    for j = 1:length(kk)-1
+        alphaBest='';
+        for jalpha =1:size(likUB,2)
+            if (likUB(j,jalpha) > likLB(j+1,jalpha) &&  lik050(j+1,jalpha)> lik050(j,jalpha)) || ...
+                    (likLB(j,jalpha) < likUB(j+1,jalpha) &&  lik050(j+1,jalpha) < lik050(j,jalpha))
+                % Find best trimming level
+                alphaBest = alphaTrim(jalpha);
+                break
+            else
+            end
+            
+        end
+        
+        if ~isempty(alphaBest)
+            alphafin = alphaBest;
+            kfin = j;
+            conv = 1;
+            break
+        end
     end
+    
+    
+    if conv == 1
+        idxOptimal=IDX{kfin,jalpha};
+    else
+        disp('No intersection among the curves has been found for the selected trimming levels and number of groups')
+        disp('Please increase k or alpha')
+        alphafin=max(alphaTrim);
+        kfin=max(kk);
+        idxOptimal = IDX{end, end};
+    end
+    
+    if valSolution == true
+        % Validate the groups
+        seq=1:n;
+        ExtraZeros=false;
+        for jj=1:kk(kfin)
+            seqjj=seq(idxOptimal==jj);
+            VALjj=FSM(Y(seqjj,:),'msg',0,'plots',0);
+            if ~isnan(VALjj.outliers)
+                % Set to 0 the units declared as outliers in each
+                % component
+                idxOptimal(seqjj(VALjj.outliers))=0;
+                ExtraZeros=true;
+            end
+        end
+        if  ExtraZeros==true
+            alphafin=sum(idxOptimal==0)/n;
+        end
+    end
+    
+    
+    out.idx=idxOptimal;
+    out.Optimalalpha=alphafin;
+    out.OptimalK=kk(kfin);
+    % Store best classification
 end
 
-
-if conv == 1
-    parSelec = [kfin alphafin];
-else
-    parSelec = [999 999];
-end
-
-out.parSelec=parSelec;
-out.Optimalalpha=alphafin;
-out.OptimalK=kfin;
-% Store best classification
-out.idx=IDX{kfin,jalpha};
 
 if plots==1
-    if bands==1
+    if ComputeBands==1
         linetype1 = {'-.','-.','-.','-.','-.'};
-        % linetype = {'-','-','-','-','-'};
         color = {'r','g','b','c','k'};
         LineWidth = 1;
         hold('on')
         for i = 1:length(kk)
             plot(alphaTrim,likLB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
             % plot(alphaTrim,lik050(i,:), 'LineStyle',linetype{i}, 'Color', color{i}, 'LineWidth', LineWidth)
-            text(alphaTrim(end),lik050(i,end),[' k = ' num2str(i)],'FontSize',16, 'Color', color{i})
+            text(alphaTrim(end),lik050(i,end),[' k = ' num2str(kk(i))],'FontSize',16, 'Color', color{i})
             plot(alphaTrim,likUB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
         end
     else
-        plot(alphaTrim, CTLtab)
-        for i = kk
-            text(alphaTrim,CTLtab(i,:),num2str(i*ones(length(alphaTrim),1)),'FontSize', 14)
+        plot(alphaTrim', CTLVal')
+        one=ones(length(alphaTrim),1);
+        for i = 1:length(kk)
+            text(alphaTrim',CTLVal(i,:)',num2str(kk(i)*one),'FontSize', 14)
         end
     end
     xlabel('Trimming level alpha')
@@ -629,9 +796,14 @@ if plots==1
     set(gca,'XTick',alphaTrim);
 end
 
+
+out.kk=kk;
+out.alpha=alphaTrim;
+out.restrfactor=restrfactor;
+out.Y=Y;
+
 %% Close pool and show messages if required
 PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
-
 
 end
 
