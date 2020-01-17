@@ -169,7 +169,16 @@ function out  = ctlcurves(Y, varargin)
 %                   the confidence level of the bands.
 %               bands.nsimul = number of replicates to use to create the
 %                   confidence bands. The default value of bands.nsimul is
-%                   100.
+%                   60 in order to provide the output in a reasonal time.
+%                   Note that for stable results we recommentd a value of
+%                   bands.nsimul equal to 100.
+%               bands.valSolution   = boolean which specifies if it is
+%                   necessary to perform an outlier detection procedure on
+%                   the components which have been found using optimalK and
+%                   optminal alpha. If bands.valSolution is true then units
+%                   detected as outliers in each component are assigned to
+%                   the noise group. If bands.valSolution is false
+%                   (deafult) or it is not present nothing is done.
 %                 Example - 'bands',true
 %                 Data Types - logical | struct
 %
@@ -349,8 +358,7 @@ function out  = ctlcurves(Y, varargin)
 %                       specified else it is equal to 1:5.
 %                out.alpha = vector containing the values of the trimming
 %                       level which have been considered. This
-%                       vector is equal to input optional argument alphavec if alphavec had
-%                       been specified else it is equal to [0, 0.01, ..., 0.10].
+%                       vector is equal to input optional argument alpha.
 %         out.restractor = scalar containing the restriction factor
 %                       which has been used to compute tclust.
 %                out.Y  = Original data matrix Y. The field is present if
@@ -359,7 +367,7 @@ function out  = ctlcurves(Y, varargin)
 % More About:
 %
 % These curves show the values of the trimmed classification
-% (log-)likelihoods when altering the trimming proportion alpha and the
+% (log)-likelihoods when altering the trimming proportion alpha and the
 % number of clusters k. The careful examination of these curves provides
 % valuable information for choosing these parameters in a clustering
 % problem. For instance, an appropriate k to be chosen is one that we do
@@ -394,6 +402,54 @@ function out  = ctlcurves(Y, varargin)
 
 % Examples:
 
+%{
+    %% Example of use of ctlcurves with all default options.
+    % Load the geyser data
+    rng('default')
+    rng(10)
+    Y=load('geyser2.txt');
+    out=ctlcurves(Y);
+    % Show the automatic classification
+    spmplot(Y,out.idx);
+%}
+
+%{
+    % Example of the use of options alpha, kk and bands.
+    % Personalized levels of trimming.
+    alpha=0:0.05:0.15;
+    % bands is passed as a false boolean. No bands are shown.
+    bands=false;
+    out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands);
+%}
+
+%{
+    %% bands passed as struct.
+    % load the M5 data.
+    Y=load('M5data.txt');
+    Y=Y(:,1:2);
+    bands=struct;
+    % just 20 simulations to construct the bands.
+    bands.nsimul=20;
+    % Exclude the units detected as outliers for each group.
+    bands.valSolution=true;
+    out=ctlcurves(Y,'bands',bands,'kk',1:3,'alpha',0:0.02:0.1);
+    % Show final classification.
+    spmplot(Y,out.idx);
+%}
+
+%{
+    %% An example with many groups.
+    % Simulate data with 5 groups in 3 dimensions
+    rng(1)
+    k=5; v=3;
+    n=200;
+    Y = MixSim(k, v, 'MaxOmega',0.01);
+    [Y]=simdataset(n, Y.Pi, Y.Mu, Y.S, 'noiseunits', 10);
+    out=ctlcurves(Y,'plots',0,'kk',4:6);
+    spmplot(Y,out.idx);
+%}
+
+
 %% Beginning of code
 
 nnargin=nargin;
@@ -423,7 +479,6 @@ nsamp=500;
 kk=1:5;
 msg=1;
 alphaTrim=0:0.02:0.10;
-%alphaTrim=0:0.04:0.20;
 
 cleanpool=false;
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
@@ -469,7 +524,7 @@ if ~isempty(UserOptions)
     alphaTrim=options.alpha;
     kk=options.kk;
     nsamp=options.nsamp;        % Number of subsets to extract
-    plots=options.plots;        % Plot of the resulting classification
+    plots=options.plots;        % Plot the ctl curves
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
     
     refsteps=options.refsteps;
@@ -482,7 +537,13 @@ if ~isempty(UserOptions)
     cshape=options.cshape;
     restrfactor=options.restrfactor;
     bands=options.bands;
+    
+    % Make sure vectors kk and alphaTtrim are sorted.
+    kk=sort(kk);
+    alphaTrim=sort(alphaTrim);
+    
 end
+
 
 lkk=length(kk);
 lalpha=length(alphaTrim);
@@ -562,7 +623,9 @@ end
 % gamma is the width of the confidence interval divided by 2
 gamma=0.25;
 % nsimul = default number of simulations to create the bands
-nsimul=100;
+nsimul=60;
+% do not validate the components using outlier detectio procedures.
+valSolution=false;
 
 out=struct;
 out.Mu=MuVal;
@@ -585,29 +648,36 @@ if ComputeBands==true
         if d>0
             nsimul=bands.nsimul;
         end
+        
+        d=find(strcmp('valSolution',fbands));
+        if d>0
+            valSolution=bands.valSolution;
+        end
     end
     
     % BandsCTL is a 3D array which will contain the replicates for the
     % solutions
     BandsCTL=zeros(lkk,lalpha,nsimul);
     for k=1:lkk  % loop for different values of k (number of groups)
-        if msg==1
-            disp(['Bands k=' num2str(k)])
-        end
+        
         
         % Extract what depends just on k
         seqk=kk(k);
         CnsampAllk=CnsampAll{seqk};
         gRandNumbForNiniAllk=gRandNumbForNiniAll{seqk};
         
+        if msg==1
+            disp(['Bands k=' num2str(seqk)])
+        end
+        
         for j=1:lalpha
             
-            ktrue = length(PiVal{seqk, j});
-            Mutrue = MuVal{seqk, j};
+            ktrue = length(PiVal{k, j});
+            Mutrue = MuVal{k, j};
             Mutrue=Mutrue(1:ktrue,:);
-            Sigmatrue = SigmaVal{seqk, j};
+            Sigmatrue = SigmaVal{k, j};
             Sigmatrue = Sigmatrue(:,:,1:ktrue);
-            Pitrue=PiVal{seqk, j};
+            Pitrue=PiVal{k, j};
             alphaTrimj=alphaTrim(j);
             ngood=round(n*(1-alphaTrimj));
             nout=n-ngood;
@@ -667,37 +737,37 @@ if ComputeBands==true
     
     if conv == 1
         idxOptimal=IDX{kfin,jalpha};
-        
-        d=strcmp('rew',fbands);
-        if d>0 && bands.rew == true
-            % Convalidate the groups
-            % idxTMP=ones(n,1);
-            %  idxTMP=ones(n,kfin);
-                seq=1:n;
-            for jj=1:kfin
-                seqjj=seq(idxOptimal==jj);
-                VALjj=FSM(Y(seqjj,:),'msg',0,'plots',0);
-                if ~isnan(VALjj.outliers)
-                    idxOptimal(seqjj(VALjj.outliers))=0;
-                   %  idxOptimal(seqjj(VALjj.outliers),jj)=0;
-                end
-            end
-            % idxOptimal(idxTMP==0)=0;
-        end
-        
-        
-        out.idx=idxOptimal;
     else
         disp('No intersection among the curves has been found for the selected trimming levels and number of groups')
         disp('Please increase k or alpha')
-        alphafin=[];
-        kfin=[];
-        out.idx=[];
+        alphafin=max(alphaTrim);
+        kfin=max(kk);
+        idxOptimal = IDX{end, end};
+    end
+    
+    if valSolution == true
+        % Validate the groups
+        seq=1:n;
+        ExtraZeros=false;
+        for jj=1:kk(kfin)
+            seqjj=seq(idxOptimal==jj);
+            VALjj=FSM(Y(seqjj,:),'msg',0,'plots',0);
+            if ~isnan(VALjj.outliers)
+                % Set to 0 the units declared as outliers in each
+                % component
+                idxOptimal(seqjj(VALjj.outliers))=0;
+                ExtraZeros=true;
+            end
+        end
+        if  ExtraZeros==true
+            alphafin=sum(idxOptimal==0)/n;
+        end
     end
     
     
+    out.idx=idxOptimal;
     out.Optimalalpha=alphafin;
-    out.OptimalK=kfin;
+    out.OptimalK=kk(kfin);
     % Store best classification
 end
 
@@ -705,20 +775,20 @@ end
 if plots==1
     if ComputeBands==1
         linetype1 = {'-.','-.','-.','-.','-.'};
-        % linetype = {'-','-','-','-','-'};
         color = {'r','g','b','c','k'};
         LineWidth = 1;
         hold('on')
         for i = 1:length(kk)
             plot(alphaTrim,likLB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
             % plot(alphaTrim,lik050(i,:), 'LineStyle',linetype{i}, 'Color', color{i}, 'LineWidth', LineWidth)
-            text(alphaTrim(end),lik050(i,end),[' k = ' num2str(i)],'FontSize',16, 'Color', color{i})
+            text(alphaTrim(end),lik050(i,end),[' k = ' num2str(kk(i))],'FontSize',16, 'Color', color{i})
             plot(alphaTrim,likUB(i,:), 'LineStyle',linetype1{i}, 'Color', color{i}, 'LineWidth', LineWidth)
         end
     else
-        plot(alphaTrim, CTLVal)
-        for i = kk
-            text(alphaTrim,CTLVal(i,:),num2str(i*ones(length(alphaTrim),1)),'FontSize', 14)
+        plot(alphaTrim', CTLVal')
+        one=ones(length(alphaTrim),1);
+        for i = 1:length(kk)
+            text(alphaTrim',CTLVal(i,:)',num2str(kk(i)*one),'FontSize', 14)
         end
     end
     xlabel('Trimming level alpha')
