@@ -30,6 +30,7 @@ function [out] = FSRBeda(y, X, varargin)
 %                      else no constant term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
+%
 %    bayes    : It specifies prior information. Structure.
 %               A structure which specifies prior information.
 %               If structure bayes is not supplied the default values which
@@ -55,6 +56,7 @@ function [out] = FSRBeda(y, X, varargin)
 %                      R), was made up of n0 observations.
 %                  Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 %                  Data Types - double
+%
 %       bsb   : list of units forming the initial subset. Vector.
 %                if bsb=0 then the procedure starts with p
 %               units randomly chosen else if bsb is not 0 the search will
@@ -62,6 +64,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               that is in the first step just prior information is used.
 %               Example - bsb=[2 5 1];
 %               Data Types - double
+%
 %        init : Search initialization. Scalar. 
 %               scalar, specifies the point where to start monitoring
 %               required diagnostics. if init is not specified it will be
@@ -70,6 +73,7 @@ function [out] = FSRBeda(y, X, varargin)
 %                 min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                   Example - 'init',100 starts monitoring from step m=100 
 %                   Data Types - double
+%
 %      nocheck: Check input arguments. Scalar.
 %               Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -78,12 +82,14 @@ function [out] = FSRBeda(y, X, varargin)
 %               routine chkinputRB.m for the details of the operations.
 %               Example - 'nocheck',1 
 %               Data Types - double
+%
 %  conflev:   confidence levels to be used to compute HPDI. Vector.
 %               This input option is used just if input
 %               stats=1. The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% HPDI confidence intervals are computed.
 %               Example - 'conflev',[0.90 0.93] 
 %               Data Types - double
+%
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -676,7 +682,9 @@ function [out] = FSRBeda(y, X, varargin)
         ']  of HPD regions for \beta and \sigma^2'],'t')
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 if nargin>6
     

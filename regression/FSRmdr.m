@@ -39,11 +39,13 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
 %               minimum deletion residual appears  on the screen with 1%,
 %               50% and 99% confidence bands else (default) no plot is
@@ -54,13 +56,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
+%
+%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=0. The controls on h, alpha and nsamp still remain
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
 %               screen If msg==1 (default)
@@ -68,12 +72,15 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
-%  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
-%               forced to join the search in the last r steps. The default
-%               is constr=''.  No constraint is imposed
+%
+%  constr :     Constrained search. Vector. r x 1 vector which contains the
+%               list of units which are forced to join the search in the
+%               last r steps. The default is constr=''. 
+%                No constraint is imposed
 %               Example - 'constr',[1:10] forces the first 10 units to join
 %               the subset in the last 10 steps
 %               Data Types - double
+%
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar.
 %               This options controls what to do when rank(X(bsbm,:)) is
@@ -85,6 +92,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               found in the previous step.
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
@@ -98,6 +106,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
+%
 %threshlevoutX: threshold for high leverage units. Scalar or empty value.
 %               Threshold to bound the effect of high leverage units in the
 %               computation of deletion residuals. In the computation of
@@ -422,7 +431,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     title('Monitoring of mdr with bound on the leverage')
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

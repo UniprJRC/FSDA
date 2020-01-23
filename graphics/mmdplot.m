@@ -101,10 +101,9 @@ function mmdplot(out,varargin)
 %                   this option (databrush is a scalar or a structure) enables
 %                   the user  to select a set of trajectories in the
 %                   current plot and to see them highlighted in the spm
-%                   (notice that if the spm does not exist it is
-%                   automatically created). In addition, brushed units can
-%                   be highlighted in the monitoring MD plot
-%                   Note that the window style of the
+%                   (notice that if the spm does not exist it is automatically created).
+%                   In addition, brushed units can be highlighted in the
+%                   monitoring MD plot Note that the window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other

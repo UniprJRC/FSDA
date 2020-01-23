@@ -50,12 +50,14 @@ function [out]=ace(y,X,varargin)
 %           variables and the response have orderable values.
 %           Example - 'l',[3 3 1]
 %           Data Types - double
+%
 %       w  : weights for the observations. Vector. Row or column vector of
 %           length n containing the weights associated to each
 %           observations. If w is not specified we assum $w=1$ for $i=1,
 %           2, \ldots, n$.
 %           Example - 'w',1:n
 %           Data Types - double
+%
 %   nterm  : minimum number of consecutive iteration below the threshold
 %           to terminate the outer loop. Positive scalar. This value
 %           specifies how many consecutive iterations below the threshold
@@ -63,11 +65,13 @@ function [out]=ace(y,X,varargin)
 %           loop. The default value of nterm is 3.
 %           Example - 'nterm',5
 %           Data Types - double
+%
 %   delrsq : termination threshold. Scalar. Iteration (in the outer loop)
 %            stops when rsq changes less than delrsq in nterm. The default
 %            value of delrsq is 0.01.
 %           Example - 'delrsq',0.001
 %           Data Types - double
+%
 %    maxit : maximum number of iterations for the outer loop. Scalar. The
 %            default maximum number of iterations before exiting the outer
 %            loop is 20.

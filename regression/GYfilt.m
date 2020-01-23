@@ -16,16 +16,19 @@ function weights = GYfilt(x,varargin)
 %               probability is 0.95.
 %                 Example - 'alpha',0.99
 %                 Data Types - double
+%
 %   centering:  centering the data. Boolean.
 %               If centering is true input data are preliminarly centered.
 %               The defalt value of centering is true.
 %                 Example - 'centering',false
 %                 Data Types - logical
+%
 %   iterating:  iterative procedure. Boolean.
 %               If Boolean is true then an iterative adaptive procedure is
 %               applied.  The defalt value of iterating is true.
 %                 Example - 'iterating',false
 %                 Data Types - logical
+%
 %      niter :  maximum number of iterations in the iterative adaptive
 %               procedure. Positive integer. This option is used just if previous iterating
 %               is true. The default value of niter is 10.
@@ -67,6 +70,7 @@ function weights = GYfilt(x,varargin)
 %}
 
 %% Beginning of code
+
 if ~isvector(x)
     error('The data should be a vector')
 end

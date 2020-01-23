@@ -118,17 +118,17 @@ function resindexplot(residuals,varargin)
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option (databrush is a
-%                   scalar or a cell) enables the user  to select a set of
-%                   trajectories in the current plot and to see them
-%                   highlighted in the y|X plot, i.e. a matrix of scatter
-%                   plots of y against each column of X, grouped according
-%                   to the selection(s) done by brushing. If the plot y|X
-%                   does not exist, it is automatically created. Please,
-%                   note that the window style of the other figures is set
-%                   equal to that which contains the monitoring residual
-%                   plot. In other words, if the monitoring residual plot
-%                   is docked all the other figures will be docked too
+%                   is done. The activation of this option (databrush is a scalar or a cell)
+%                   enables the user  to select a set of trajectories in
+%                   the current plot and to see them highlighted in the y|X
+%                   plot, i.e. a matrix of scatter plots of y against each
+%                   column of X, grouped according to the selection(s) done
+%                   by brushing. If the plot y|X does not exist, it is
+%                   automatically created. Please, note that the window
+%                   style of the other figures is set equal to that which
+%                   contains the monitoring residual plot. In other words,
+%                   if the monitoring residual plot is docked all the other
+%                   figures will be docked too.
 %                   DATABRUSH IS A SCALAR. If databrush is a scalar the
 %                   default selection tool is a rectangular brush and it is
 %                   possible to brush only once (that is persist='').

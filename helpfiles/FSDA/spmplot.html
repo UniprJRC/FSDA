@@ -37,7 +37,7 @@ spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contour');
 figure
 spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contourf');
 set(gcf,'Tag','newTag')
-cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#Example_3'><img vspace="5" hspace="5" src="images\spmplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\spmplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\spmplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\spmplot_04.png" alt=""> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay and undock.</li></span></a></span></h3><div class="collapse"><p>
+cascade</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay and undock.</li></span></a></span></h3><div class="collapse"><p>
      The latter argument requires to change the tag of the scatterplot
      matrix not to delete.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% This example uses a matrix of logicals to set the undocked panels
 figure
@@ -47,7 +47,7 @@ cascade
 close all;
 figure
 spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','boxplotb','undock',[1,3;2,4]);
-cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#Example_4'><img vspace="5" hspace="5" src="images\spmplot_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\spmplot_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and additional options for
+cascade</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and additional options for
      overlay, specifying densities just for one group.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Iris data: scatter plot matrix with univariate boxplots on the main
 % diagonal.
 close all
@@ -59,7 +59,7 @@ over.type = 'contourf';
 over.include = logical([1 0 0]);
 over.cmap = summer;
 figure
-spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\spmplot_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Iris data: scatter plot matrix with univariate boxplots on the main
+spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Iris data: scatter plot matrix with univariate boxplots on the main
      diagonal and personalized options for symbols, colors, symbol
      size and no legend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
 load fisheriris;
@@ -245,16 +245,7 @@ plo.clr = 'b';
 spmplot(out,'datatooltip',1,'plo',plo)
 % The units which are already labelled in each panel of the scatter
 % plot matrix are those which in the search had a Mahalanobis distance
-% greater than 2.5. Note that the labelling is controlled by option seleunit.</pre></div></div><pre class="codeoutput">
-ans = 
-
-  3&times;3 graphics array:
-
-    Graphics    Line        Line    
-    Line        Graphics    Line    
-    Line        Line        Graphics
-
-</pre><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_12'><img vspace="5" hspace="5" src="images\spmplot_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
+% greater than 2.5. Note that the labelling is controlled by option seleunit.</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
        Example of the use of options selstep and selunit combined with databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   selunit is passed as a character.
 %   It produces a scatter plot matrix in which labels are put for units
 %   which have a Mahalanobis distance greater than str2num(selunit). When a set of

@@ -281,11 +281,11 @@ function plotopt=malfwdplot(out,varargin)
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option (databrush is a
-%                   scalar or a structure) enables the user  to select a
-%                   set of trajectories in the current plot and to see them
-%                   highlighted in the scatter plot matrix (spm). If spm
-%                   does not exist it is automatically created. In
+%                   is done. The activation of this option 
+%                   (databrush is a scalar or a structure) enables the user  
+%                   to select a set of trajectories in the current plot and 
+%                   to see them highlighted in the scatter plot matrix (spm). 
+%                   If spm does not exist it is automatically created. In
 %                   addition, brushed units are automatically highlighted
 %                   in the minimum MD plot if it is already open. Please,
 %                   note that the window style of the other figures is set

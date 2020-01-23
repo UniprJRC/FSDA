@@ -45,6 +45,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %              is 0.01.
 %                 Example - 'alpha',0.01
 %                 Data Types - double
+%
 %       R2th : R2 threshold. Scalar. Scalar which defines the value R2 does
 %              have to exceed. For example if R2 based on good observations
 %              is 0.92 and R2th is 0.90 the estimate of the variance of the
@@ -55,6 +56,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %              there is no correction.
 %                 Example - 'R2th',0.99
 %                 Data Types - double
+%
 %fullreweight: Option to declare outliers. Boolean. If fullreweight is true
 %              (default option), the list of outliers refers to all the
 %              units whose residuals is above the threshold else if it is
@@ -63,6 +65,7 @@ function [out , varargout] = FSRr(y, X, varargin)
 %              than threshold
 %                 Example - 'fullreweight',true
 %                 Data Types - double
+%
 %    plotsPI  : Plot of prediction intervals. Scalar. If plotsPI =1 and
 %               the number of regressors (excluding the constant term) is
 %               equal 1, it is possible to see on the screen the yX scatter

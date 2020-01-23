@@ -31,6 +31,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                     else no constant term will be included.
 %                       Example - 'intercept',1
 %                       Data Types - double
+%
 %        init :      Search initialization. Scalar.
 %                      It specifies the point where to initialize the search
 %                       and start monitoring required diagnostics. if init is not
@@ -39,6 +40,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
+%
 %      nocheck:  Check input arguments. Scalar.
 %                       If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
@@ -47,6 +49,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                       controls on h, alpha and nsamp still remain
 %                       Example - 'nocheck',1
 %                       Data Types - double
+%
 %        tstat:      the kind of t-statistics which have to be monitored.
 %               Character.
 %               tstat = 'trad' implies  monitoring of traditional t
@@ -59,6 +62,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               normal distribution.
 %               Example - 'tstat','trad'
 %               Data Types - char
+%
 %  conflev:   confidence levels to be used to compute confidence interval
 %               for the elements of $\beta$ and for $\sigma^2$. Vector.
 %               The default value of conflev is [0.95 0.99] that
@@ -397,7 +401,9 @@ function [out] = FSReda(y,X,bsb,varargin)
     resfwdplot(out1,'databrush',1);
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 %this example is run as a demonstration in case the user runs FSReda
 %without input parameters.
 if nargin<1

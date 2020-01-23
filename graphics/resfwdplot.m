@@ -250,13 +250,13 @@ function plotopt=resfwdplot(out,varargin)
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a cell) enables the user  to select a set of
-%                   trajectories in the current plot and to see them
-%                   highlighted in the y|X plot, i.e. a matrix of scatter
-%                   plots of y against each column of X, grouped according
-%                   to the selection(s) done by brushing. If the plot y|X
-%                   does not exist it is automatically created.
+%                   The activation of this option (databrush is a scalar or a cell)                                     
+%                   enables the user  to select a set of trajectories in
+%                   the current plot and to see them highlighted in the y|X
+%                   plot, i.e. a matrix of scatter plots of y against each
+%                   column of X, grouped according to the selection(s) done
+%                   by brushing. If the plot y|X does not exist it is
+%                   automatically created.
 %                   In addition, brushed units are automatically highlighted in the
 %                   minimum deletion residual plot if it is already open.
 %                   The extension to the following plots will be available

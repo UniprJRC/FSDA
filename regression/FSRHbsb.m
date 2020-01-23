@@ -62,11 +62,13 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               step we just use prior information
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  intercept :   Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               else no constant term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 % modeltype:    Parametric function to be used in the skedastic equation.
 %               String.
 %               If modeltype is 'arc' (default) than the skedastic function is
@@ -84,6 +86,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               \]
 %               Example - 'modeltype','har'
 %               Data Types - string
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -91,6 +94,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
@@ -98,6 +102,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 % gridsearch:   Algorithm to be used. Scalar.
 %               If gridsearch ==1 grid search will be used else the
 %               scoring algorith will be used.
@@ -105,11 +110,13 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               Data Types - double
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
-%               heteroskedasticity
+%               heteroskedasticity.
+%
 %  constr   :   units which are forced to join the search in the last r steps. Vector.
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
 %               Example - 'constr',[1 6 3]
 %               Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -123,6 +130,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
+%
 %   plots   :   Plot on the screen. Scalar.
 %               If plots=1 the monitoring units plot is displayed on the
 %               screen. The default value of plots is 0 (that is no plot
@@ -211,8 +219,9 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
     disp(isequaln(Un,Unchk))
 %}
 
+%% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

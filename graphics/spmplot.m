@@ -249,13 +249,13 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   DATABRUSH IS AN EMPTY VALUE.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a cell) enables the user  to select a set of
-%                   observations in the current plot and to see them
-%                   highlighted in the malfwdplot, i.e. the plot of the
-%                   trajectories of all observations, grouped according
-%                   to the selection(s) done by brushing. If the malfwdplot
-%                   does not exist it is automatically created.
+%                   The activation of this option (databrush is a scalar or a cell)                    
+%                   enables the user  to select a set of observations in
+%                   the current plot and to see them highlighted in the
+%                   malfwdplot, i.e. the plot of the trajectories of all
+%                   observations, grouped according to the selection(s)
+%                   done by brushing. If the malfwdplot does not exist it
+%                   is automatically created.
 %                   In addition, brushed units can be highlighted in the
 %                   other following plots (only if they are already open):
 %                   - minimum Mahalanobis distance plot;
