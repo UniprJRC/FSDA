@@ -121,12 +121,12 @@ function tclustICplot(IC,varargin)
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option (databrush is a
-%                   scalar or a structure) enables the user  to select a
-%                   set of values of IC in the current plot and to see the
-%                   corresponding classification highlighted in the scatter
-%                   plot matrix (spm). If spm does not exist it is
-%                   automatically created. Please, note that the window
+%                   is done. The activation of this option 
+%                   (databrush is a scalar or a structure) enables the user  
+%                   to select a set of values of IC in the current plot and
+%                   to see the corresponding classification highlighted in
+%                   the scatter plot matrix (spm). If spm does not exist it
+%                   is automatically created. Please, note that the window
 %                   style of the other figures is set equal to that which
 %                   contains the IC plot. In other words, if the IC plot is
 %                   docked all the other figures will be docked too.

@@ -289,7 +289,9 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 warning('off','all');
 

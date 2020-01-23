@@ -6,8 +6,10 @@ function malindexplot(md,v,varargin)
 %
 % Required input arguments:
 %
-%   md : Mahalanobis distances. Vector or structure. Vector of Mahalanobis distances (in squared units) or a structure
-%       containing fields md and Y. In this second case md is a structure with the following fields: 
+%   md : Mahalanobis distances. Vector or structure. Vector of Mahalanobis
+%        distances (in squared units) or a structure containing fields md
+%        and Y. In this second case md is a structure with the following
+%        fields:
 %        md.md = contains the Mahalanobis distances;
 %        md.Y = contains the original data matrix whose Mahalanobis
 %        distances have been computed.
@@ -20,17 +22,18 @@ function malindexplot(md,v,varargin)
 % Optional input arguments:
 %
 %               h : Where to plot. Axis hadle. 
-%                   The axis handle of the Figure where to send the malindexplot.
-%                   This can be used to host the malindexplot in a subplot of
-%                   a complex figure formed by different panels (e.g. a
-%                   panel with malindexplot from a classical mle estimator and
-%                   another with Mahalanobis distances from a robust
-%                   analysis, see example below).
-%                   Example - 'h',gca
-%                   Data Types - graphics handle
+%                   The axis handle of the Figure where to send the
+%                   malindexplot. This can be used to host the malindexplot
+%                   in a subplot of a complex figure formed by different
+%                   panels (e.g. a panel with malindexplot from a classical
+%                   mle estimator and another with Mahalanobis distances
+%                   from a robust analysis, see example below). 
+%                   Example - 'h',gca 
+%                   Data Types - graphics handle                 
 %
 %              x :  x-axis index. Vector. The vector to be plotted on the
-%                   x-axis. Default is the sequence 1:length(md).                   
+%                   x-axis. 
+%                   Default is the sequence 1:length(md).
 %                   Example - 'x','1:100'
 %                   Data Types - numeric
 %
@@ -66,32 +69,32 @@ function malindexplot(md,v,varargin)
 %                   Data Types - numeric
 %
 %        FontSize:  Labels font size. Scalar. Scalar which controls the
-%                   font size of the labels of the
-%                   axes. Default value is 12.
+%                   font size of the labels of the axes. 
+%                   Default value is 12.
 %                   Example - 'FontSize',12
 %                   Data Types - numeric
 %
 %     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
-%                   fontsize of the numbers of
-%                   the axes. Default value is 10.
+%                   fontsize of the numbers of  the axes. 
+%                   Default value is 10.
 %                   Example - 'SizeAxesNum',12
 %                   Data Types - numeric
 %
 %           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the y axis. Default is '' (automatic
-%                   scale).
+%                   maximum value of the y axis. 
+%                   Default is '' (automatic scale).                
 %                   Example - 'ylimiy',[-3 3]
 %                   Data Types - numeric
 %
 %           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the x axis. Default is '' (automatic
-%                   scale).
+%                   maximum value of the x axis. 
+%                   Default is '' (automatic scale).                 
 %                   Example - 'xlimix',[1 30]
 %                   Data Types - numeric
 %
 %          lwdenv:  Envelope line width. Scalar. Scalar which controls the
-%                   width of the lines associated
-%                   with the envelopes. Default is lwdenv=1.
+%                   width of the lines associated  with the envelopes.                   
+%                   Default is lwdenv=1.
 %                   Example - 'lwdenv',4
 %                   Data Types - numeric
 %
@@ -109,25 +112,28 @@ function malindexplot(md,v,varargin)
 %                   Data Types - numeric | character
 %
 %             tag:  Figure tag. Character.  
-%                   Tag of the figure which will host the malindexplot. The
-%                   default tag is pl_malindex
+%                   Tag of the figure which will host the malindexplot. 
+%                   The default tag is pl_malindex.
 %                   Example - 'tag','indexPlot'
 %                   Data Types - character
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
-%                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option (databrush is a
-%                   scalar or a structure) enables the user  to select a
-%                   set the points in the current plot and to see them
+%                   If databrush is an empty value (default), 
+%                   no brushing is done. The activation of this option 
+%                   (databrush is a scalar or a structure) enables the user  
+%                   to select a set the points in the current plot and to see them
 %                   highlighted in the scatter plot matrix (spm). If spm
-%                   does not exist it is automatically created. DATABRUSH
-%                   IS A SCALAR. If databrush is a scalar the default
+%                   does not exist it is automatically created. 
+%                   DATABRUSH IS A SCALAR. 
+%                   If databrush is a scalar the default
 %                   selection tool is a rectangular brush and it is
 %                   possible to brush only once (that is persist='').
-%                   DATABRUSH IS A STRUCTURE. If databrush is a structure,
+%                   DATABRUSH IS A STRUCTURE. 
+%                   If databrush is a structure,
 %                   it is possible to use all optional arguments of
 %                   function selectdataFS.m and the following optional
-%                   arguments: databrush.persist = persisent brushing.
+%                   arguments: 
+%                   databrush.persist = persisent brushing.
 %                     Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
@@ -148,11 +154,9 @@ function malindexplot(md,v,varargin)
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
 %
-%
-%
-%
-%       REMARK: the options which follow work in connection with previous option
-%       databrush and produce their effect on the scatter plot matrix of the original data
+%                   REMARK: the options which follow work in connection
+%                   with previous option databrush and produce their effect
+%                   on the scatter plot matrix of the original data.
 %
 %           nameY: variables labels of the original data matrix. Cell. Cell
 %                array of strings containing the labels of the

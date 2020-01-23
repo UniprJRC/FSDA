@@ -42,6 +42,7 @@ function out = SparseTableTest(N,varargin)
 %              threshold is 2.
 %              Example - 'threshold',3
 %              Data Types - single | double | int32 | int64
+%
 %     alpha  : Significance level. Scalar value in the range (0,1).
 %              Significance level of the hypothesis test, specified as the
 %              comma-separated pair consisting of 'alpha' and a scalar
@@ -49,6 +50,7 @@ function out = SparseTableTest(N,varargin)
 %              0.01.
 %              Example - 'alpha',0.05
 %              Data Types - single | double
+%
 %  testname :  Test to use on collapsed 2-by-2 tables. Char or double.
 %              If testname is a number, it identifies the value of $\lambda$
 %              to use of the power divergence family. See function
@@ -61,6 +63,7 @@ function out = SparseTableTest(N,varargin)
 %              release 2014b.
 %              Example - 'testname',1
 %              Data Types - single | double | char
+%
 % datamatrix : Data matrix or contingency table. Boolean. If datamatrix
 %              is true the first input argument N is forced to be
 %              interpreted as a data matrix, else if the input argument is

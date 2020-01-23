@@ -22,6 +22,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %  InitialEst : starting values of the MM-estimator. [] (default) or structure.
 %               InitialEst must contain the following fields
 %               InitialEst.beta =  p x 1 vector (estimate of the beta)
@@ -31,6 +32,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               possible to specify the options given in function Sreg.
 %               Example - 'InitialEst',[]
 %               Data Types - struct
+%
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
 %               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
@@ -53,21 +55,25 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',[0.85 0.90 0.95 0.99]
 %                 Data Types - double
+%
 %     effshape : location or scale effiicency. dummy scalar.
 %                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
+%
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
 %                 Example - 'refsteps',10
 %                 Data Types - double
+%
 %       tol    : Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
 %                 Example - 'tol',1e-10
 %                 Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -75,12 +81,15 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on matrix y and matrix X. Notice
+%                 that y and X are left unchanged. In other words the
+%                 additional column of ones for the intercept is not added.
+%                 As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
@@ -222,8 +231,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
     resfwdplot(outMM)
 %}
 
+%% Beginning of code 
 
-%% Input parameters checking
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

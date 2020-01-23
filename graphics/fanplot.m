@@ -50,8 +50,8 @@ function fanplot(out,varargin)
 %                   order to have information about the unit selected, the
 %                   step in which the unit enters the search and the
 %                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor (see
-%                   function datacursormode for more details or the
+%                   possible to control the aspect of the data cursor 
+%                   (see function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',''
@@ -65,8 +65,8 @@ function fanplot(out,varargin)
 %                   current plot and to see them highlighted in the y|X
 %                   plot (notice that if the plot y|X does not exist it is
 %                   automatically created). In addition, brushed units can
-%                   be highlighted in the other following plots (only if
-%                   they are already open): monitoring residual plot
+%                   be highlighted in the other following plots 
+%                   (only if they are already open): monitoring residual plot
 %                   monitoring leverage plot maximum studentized residual
 %                   $s^2$ and $R^2$ Cook distance and modified Cook
 %                   distance deletion t statistics. The window style of the

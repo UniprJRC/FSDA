@@ -30,23 +30,27 @@ function out=corrNominal(N, varargin)
 %               NoStandardErrors is false.
 %               Example - 'NoStandardErrors',true
 %               Data Types - Boolean
+%
 %  dispresults :  Display results on the screen. Boolean.
 %               If dispresults is true (default) it is possible to see on the
 %               screen all the summary results of the analysis.
 %               Example - 'dispresults',false
 %               Data Types - Boolean
+%
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
 %               table, because in this case Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
+%
 %       Lc   :  Vector of column labels. Cell.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
 %               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
+%
 % datamatrix :  Data matrix or contingency table. Boolean.
 %               If datamatrix is true the first input argument N is forced
 %               to be interpreted as a data matrix, else if the input
@@ -55,6 +59,7 @@ function out=corrNominal(N, varargin)
 %               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
+%
 %  conflev:     Confidence levels to be used to
 %               compute confidence intervals. Scalar.
 %               The default value of conflev is 0.95, that

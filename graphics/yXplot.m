@@ -211,8 +211,8 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %               DATABRUSH IS AN EMPTY VALUE.
 %               If databrush is an empty value (default), no brushing
 %               is done.
-%               The activation of this option (databrush is a scalar or
-%               a cell) enables the user  to select a set of
+%               The activation of this option (databrush is a scalar or a cell) 
+%               enables the user  to select a set of
 %               observations in the current plot and to see them
 %               highlighted in the resfwdplot, i.e. the plot of the
 %               trajectories of all observations, grouped according

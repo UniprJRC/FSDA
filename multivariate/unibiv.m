@@ -19,13 +19,16 @@ function [fre]=unibiv(Y,varargin)
 %
 %           rf  :  It specifies the confidence
 %                  level of the robust bivariate ellipses. Scalar. 0<rf<1.
-%                  The default value is 0.95 that is the outer contour in presence of normality
-%                  for each ellipse should leave outside 5% of the values.
+%                  The default value is 0.95 that is the outer contour in
+%                  presence of normality for each ellipse should leave
+%                  outside 5% of the values.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
-%      robscale :   how to compute dispersion. Scalar. It specifies the statistical indexes to use
-%                   to compute the dispersion of each variable and the
-%                   correlation among each pair of variables. 
+%
+%      robscale :   how to compute dispersion. Scalar. It specifies the
+%                   statistical indexes to use to compute the dispersion of
+%                   each variable and the correlation among each pair of
+%                   variables.
 %                   robscale=1 (default): the program uses the median correlation
 %                   and the MAD as estimate of the dispersion of each variable; 
 %                   robscale=2: the correlation coefficient among ranks is used
@@ -41,6 +44,7 @@ function [fre]=unibiv(Y,varargin)
 %                   around the univariate medians.
 %                 Example - 'robscale',2 
 %                 Data Types - double
+%
 %         plots :   Plot on the screen. Scalar. It specifies whether it is
 %                   necessary to produce a plot
 %                   with univariate standardized boxplots on the
@@ -53,6 +57,7 @@ function [fre]=unibiv(Y,varargin)
 %                   produced.
 %                 Example - 'plots',2 
 %                 Data Types - double
+%
 %       textlab : plot labels. Scalar.  Scalar which controls the labels in
 %                   the plots. If textlab=1 and
 %                   plots=1 the labels associated
@@ -61,6 +66,7 @@ function [fre]=unibiv(Y,varargin)
 %                   displayed on the screen.
 %                 Example - 'textlab',0
 %                 Data Types - double
+%
 %       tag     :   plot tag.  Character. It identifies the handle of the plot which
 %                   is about to be created. The default is to use tag
 %                   'pl_unibiv'. Notice that if the program finds a plot which
@@ -69,6 +75,7 @@ function [fre]=unibiv(Y,varargin)
 %                   in the same window else a new window is created.
 %                 Example - 'tag','new_tag'
 %                 Data Types - char
+%
 %       madcoef :  scaled MAD. Scalar. Coefficient which is used to scale MAD
 %                   coefficient to have a robust estimate of dispersion.  The
 %                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1. 
@@ -136,7 +143,9 @@ rfdef=0.95;
 options=struct('rf',rfdef,'plots',0,'textlab',0,...
     'tag','pl_unibiv','robscale',1,'madcoef',1.4815);
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

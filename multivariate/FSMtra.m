@@ -35,12 +35,14 @@ function out = FSMtra(Y,varargin)
 %               transformations does not have this limitation.
 %               Example - 'family','YJ'
 %               Data Types - char
+%
 %   init    :   Beginning of monitoring. Scalar. Scalar which defines where
 %               to start monitoring required diagnostics.
 %               Note that if bsb is suppliedinit>=length(bsb). If init is
 %               not specified it will be set equal to floor(n*0.6).
 %               Example - 'init',50
 %               Data Types - double
+%
 %       bsb :   Units forming initial subset. Vector.  It contains the
 %               units forming initial subset. The
 %               default value of bsb is '' that is the initial subset is
@@ -48,15 +50,18 @@ function out = FSMtra(Y,varargin)
 %               This option is useful if a forced start is required.
 %               Example - 'bsb',[4 6 9]
 %               Data Types - double
+%
 %        rf :   confidence level for bivariate ellipses. Scalar. Default is
 %               0.9. If bsb is not empty this argument is ignored.
 %               Example - 'rf',0.99
 %               Data Types - double
+%
 %   ColToTra:   Variables to transform. Vector. Vector which specifies the
 %               variables which must be
 %               transformed. Vector. It is a k x 1 integer vector.
 %               Example - 'ColToTra',[1 3]
 %               Data Types - double
+%
 %        la0:   Values of transformation parameters. Vector. Vector which
 %               contains set of transformation
 %               parameters for the k ColtoTra.  It is a k-by-1
@@ -66,10 +71,12 @@ function out = FSMtra(Y,varargin)
 %               la0=ones(length(ColToTra),1).
 %               Example - 'la0',[-1 0]
 %               Data Types - double
-%  onelambda:   common value of lambda. Scalar. If onelambda=1, a common value lambda is estimated
-%               for all variables specified in ColToTra. 
+%
+%  onelambda:   common value of lambda. Scalar. If onelambda=1, a common
+%               value lambda is estimated for all variables specified in ColToTra.                
 %               Example - 'onelambda',0
 %               Data Types - double
+%
 %   optmin  :  Optimation options. Structure. It contains the options dealing with the
 %               maximization algorithm.  Use optimset to set
 %               these options. Notice that the maximization algorithm which
@@ -77,6 +84,7 @@ function out = FSMtra(Y,varargin)
 %               else is fminsearch.
 %               Example -'optmin.Display','off'
 %               Data Types - double
+%
 %     speed :   Start with previous values in the maximization procedure.
 %               Scalar.  If speed=1 the initial value at step m of
 %               the maximization procedure is the
@@ -84,12 +92,14 @@ function out = FSMtra(Y,varargin)
 %               value 1. The maximization procedure is fminunc or fminsearch.
 %               Example -'speed',0
 %               Data Types - double
+%
 %   colnames:   variable names. Cell array of strings.  It contains the names of
 %               the variables of the dataset. Cell
 %               array of strings of length v. If colnames is empty then the
 %               sequence 1:v is created to label the variables.
 %               Example -'colnames', {'1' '2' '3' '4' '5' '10' '11' '12' '13'};
 %               Data Types - cell array of strings
+%
 %   prolik  :   Monitor profile log likelihood. Scalar or structure. It
 %               specifies whether it is necessary to
 %               monitor the profile log likelihood of the transformation
@@ -115,6 +125,7 @@ function out = FSMtra(Y,varargin)
 %                                 transformation parameters.
 %                 Example -'prolik',7
 %                 Data Types - double
+%
 %   plotsmle:   plot mle. Scalar or structure. It specifies whether it is necessary to
 %               plot the maximum likelihood estimates of the transformation
 %               parameters.  Three horizontal lines
@@ -138,6 +149,7 @@ function out = FSMtra(Y,varargin)
 %                                      identify the trajectories.
 %                 Example -'plotsmle',1
 %                 Data Types - double
+%
 %   plotslrt:   plot lrt. Scalar or structure. It specifies whether it is necessary to
 %               plot the likelihood ratio test. 
 %               If plotslrt is a scalar, the plot of the monitoring of
@@ -156,10 +168,11 @@ function out = FSMtra(Y,varargin)
 %                   plotslrt.Tag      = tag of the plot (default is pl_lrt).
 %                 Example -'plotslrt',1
 %                 Data Types - double
-%  msg  :      Level of display on the screen. Scalar. It controls whether to display or not messages
-%               about great interchange on the screen.  
-%               If msg==1 (default) messages are displayed on the screen
-%               else no message is displayed on the screen.
+%
+%  msg  :      Level of display on the screen. Scalar. It controls whether
+%              to display or not messages about great interchange on the
+%              screen. If msg==1 (default) messages are displayed on the
+%              screen else no message is displayed on the screen.
 %                 Example -'msg',1
 %                 Data Types - double
 %
@@ -568,7 +581,9 @@ function out = FSMtra(Y,varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 % Extract size of the data
 [n,v]=size(Y);
 % Initialize matrix which will contain Mahalanobis distances in each step

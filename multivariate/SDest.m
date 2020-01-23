@@ -21,6 +21,7 @@ function [out, varargout] = SDest(Y,varargin)
 %                to be extracted (if not given, default = 1000)
 %                 Example - 'nsamp',1000 
 %                 Data Types - single | double
+%
 %      jpcorr  : Subsamples additional size. Scalar. 
 %                Integer value greater or equal 0. 
 %                If jpcorr=0 subsamples of size v are extracted. Each
@@ -38,6 +39,7 @@ function [out, varargout] = SDest(Y,varargin)
 %                subsample. The default value of jpcorr is 0.
 %                 Example - 'jpcorr',1 
 %                 Data Types - single | double
+%
 %     conflev : Confidence level which is
 %               used to declare units as outliers. Scalar. 
 %               Scalar between 0 and 1. 
@@ -46,6 +48,7 @@ function [out, varargout] = SDest(Y,varargin)
 %               Default value is 0.975. 
 %                 Example - 'conflev',0.95 
 %                 Data Types - single | double
+%
 %      margin : Marginal projections. Scalar. 
 %               Scalar which specifies if it is necessary to consider
 %               marginal projections. Scalar margin specifies up to which
@@ -57,6 +60,7 @@ function [out, varargout] = SDest(Y,varargin)
 %                 Data Types - single | double
 %               Remark: note that if margin>0, data are
 %               preliminary standardized using medians and MADs.
+%
 %      weight : Value to use in the weight function. String. 
 %               Value to use in the weight function to transform
 %               the outlyingness measure of each observation into a weight.
@@ -111,30 +115,37 @@ function [out, varargout] = SDest(Y,varargin)
 %               - $K$ is a positive tuning parameter.
 %                 Example - 'weight','zch' 
 %                 Data Types - char
+%
 %            q: Constant to be used in the Huber weight function. Scalar. 
 %               The default value of q is 2 (see Maronna and Yohai, 1995).
 %                 Example - 'q',2
 %                 Data Types - single | double
-%            c: Scale parameter. String. If c='hdim' (high dimensions) the scale parameter c in the
-%               Huber weight function is given by:
+%
+%            c: Scale parameter. String. If c='hdim' (high dimensions) the
+%               scale parameter c in the Huber weight function is given by:              
 %               $c= min(\sqrt{\chi^2_{v,0.5}},4)$. If c='sdim' (small
 %               dimensions), parameter c is given by:
 %               $c=\sqrt{\chi^2_{v,0.95}}$. The default is 'hdim'.
 %                 Example - 'c','hdim' 
 %                 Data Types - char
-%          nbp: Nominal breakdown point. Scalar. Nominal breakdown point to be fixed in the Tukey
-%               biweight function to obtain the thresold value c (0<nbp<1). The default
-%               value of npb is 0.5.
+%
+%          nbp: Nominal breakdown point. Scalar. Nominal breakdown point to
+%               be fixed in the Tukey biweight function to obtain the
+%               thresold value c (0<nbp<1). 
+%               The default value of npb is 0.5.
 %                 Example - 'nbp',0.6
 %                 Data Types - single | double
+%
 %            K: Constant to be used in Zuo, Cui and He's family of weights. Scalar. 
 %               The default of K is 3.
 %                 Example - 'K',3
 %                 Data Types - single | double
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. As default nocheck=0.
+%
+%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
+%               check is performed on matrix Y. As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - single | double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates: 
 %               (1) a plot of robust Mahalanobis distances against index number. The 
@@ -143,9 +154,9 @@ function [out, varargout] = SDest(Y,varargin)
 %               not specified a nominal 0.975 confidence interval will be
 %               used. 
 %               (2) a scatter plot matrix with the outliers highlighted. 
-%               (3) a scatter plot of robust Mahalanobis distances against observation weights (i.e. the
-%               outlyingness measure transformed according to the weight
-%               function). 
+%               (3) a scatter plot of robust Mahalanobis distances against
+%               observation weights (i.e. the outlyingness measure
+%               transformed according to the weight function).
 %               If plots is a structure it may contain the following
 %               fields: 
 %                   plots.labeladd = if this option is '1', the outliers in the
@@ -157,23 +168,30 @@ function [out, varargout] = SDest(Y,varargin)
 %                       added are Y1, ...Yv.
 %                 Example - 'plots',1
 %                 Data Types - single | double
-%        msg  : Level of output to display. Scalar. scalar which controls whether to display or not messages
-%               on the screen If msg==1 (default) messages are displayed
-%               on the screen about estimated time to compute the final estimator
-%               else no message is displayed on the screen
+%
+%        msg  : Level of output to display. Scalar. scalar which controls
+%               whether to display or not messages on the screen. 
+%               If msg==1 (default) messages are displayed on the screen about
+%               estimated time to compute the final estimator else no
+%               message is displayed on the screen.
 %                 Example - 'msg',1
 %                 Data Types - single | double
-%       ysave : save input matrix Y. Scalar. Scalar that is set to 1 to request that the data matrix Y
-%               is saved into the output structure out. This feature is
-%               meant at simplifying the use of function malindexplot.
+%
+%       ysave : save input matrix Y. Scalar. Scalar that is set to 1 to
+%               request that the data matrix Y is saved into the output
+%               structure out. This feature is meant at simplifying the use
+%               of function malindexplot. 
 %               Default is 0, i.e. no saving is done.
 %                 Example - 'ysave',1
 %                 Data Types - single | double
-%      dirsave: save directions. Scalar. scalar that is set to 1 to request that the all directions
-%               for all extracted subsets are saved. If dirsave=1 out
-%               structure will contain a field named Dir
+%
+%      dirsave: save directions. Scalar. scalar that is set to 1 to request
+%               that the all directions for all extracted subsets are
+%               saved. If dirsave=1 out structure will contain a field
+%               named Dir
 %                 Example - 'dirsave',1
 %                 Data Types - single | double
+%
 %  rstprojsave: save robust standardized projection scores. Scalar. 
 %               Scalar that is set to 1 to request that the robust
 %               standardized projection scores associated to each direction
@@ -181,7 +199,9 @@ function [out, varargout] = SDest(Y,varargin)
 %               contain a field named RstProj
 %                 Example - 'rstprojsave',1
 %                 Data Types - single | double
-%      projloc: Type of location. String. String with possible values 'median' (default) and 'mean'
+%
+%      projloc: Type of location. String. 
+%               String with possible values 'median' (default) and 'mean'
 %               This option controls the type of location  (robust
 %               estimator of scale) to use for the projections for
 %               each subset. The projections are defined as $d^T \times y_i$
@@ -189,6 +209,7 @@ function [out, varargout] = SDest(Y,varargin)
 %              ($d^T$ is its transpose) (to make estimator location invariant).
 %                 Example - 'projloc',1
 %                 Data Types - single | double
+%
 %    projscale: Type of standardization. String. string with possible values
 %               'mad' (default), 'sn', 'qn' and 'std'.
 %               This option controls the type of standardization  (robust
@@ -417,6 +438,7 @@ function [out, varargout] = SDest(Y,varargin)
 
 
 %% Beginning of code
+
 [n,v]=size(Y);
 
 % default values of subsamples to extract
