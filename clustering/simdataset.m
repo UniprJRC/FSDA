@@ -203,7 +203,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %                   have less than n + noiseunits rows.
 %
 %
-% See also: MixSim
+% See also: MixSim, genSigmaGPCM
 %
 % References:
 %
