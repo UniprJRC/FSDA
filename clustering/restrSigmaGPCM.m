@@ -239,7 +239,6 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 % Set default values for tolerances and maximum number of iterations.
 maxiterDSRdef=20;
 tolDSRdef=1e-5;
-zerotoldef=1e-10;
 maxiterSdef=20;
 tolSdef=1e-5;
 maxiterRdef = 20;
@@ -247,6 +246,7 @@ tolRdef = 1e-5;
 shwdef=100;
 shbdef=100;
 cdetdef=100;
+zerotoldef=1e-10;
 
 % SigmaB = p-times-p-times-k = empirical covariance matrix
 Sigma=SigmaB;
@@ -409,7 +409,7 @@ end
 %% Initialization part
 if strcmp(pars(3),'E')
     % In the common principal components case it is necessary to find
-    % initial values for OMG (rotaion), and lmd lmd (unconstrained
+    % initial values for OMG (rotaion), and lmd (unconstrained
     % determinants)
     [lmd, OMG]  = initR(SigmaB, niini, pa);
     
@@ -539,3 +539,4 @@ else
 end
 
 end
+%FScategory:CLUS-RobClaMULT
