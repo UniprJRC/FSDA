@@ -34,19 +34,20 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %
 %  Required input arguments:
 %
-%         n   : sample size or input matrix. Scalar. Scalar or matrix of size n-by-v. If n is a scalar it
+%         n   : sample size or input matrix. Scalar. Scalar or matrix of
+%               size n-by-v. If n is a scalar it
 %               is interpreted as the sample size of the dataset which must
 %               be simulated. On the other hand, if n is a n-by-v it is
 %               interpreted as a matrix of size n-by-v which has to be
 %               contaminated with optional input arguments 'noiseunits' and
 %               'noisevars'.
-%  Pi : Mixing proportions. Vector. Vector of size k containing mixing
-%       proportions. The sum of the elements of Pi is 1. 
-%  Mu : centroids. Matrix. Matrix of size k-by-v containing (in the rows) the centroids of the
-%       k groups. 
-%  S  : Covariance matrices. 3D array. 3D array of size v-by-v-by-k
-%       containing covariance matrices of the
-%       k groups. 
+%          Pi : Mixing proportions. Vector. Vector of size k containing
+%               mixing proportions. The sum of the elements of Pi is 1.
+%          Mu : centroids. Matrix. Matrix of size k-by-v containing (in the
+%               rows) the centroids of the k groups.
+%          S  : Covariance matrices. 3D array. 3D array of size v-by-v-by-k
+%               containing covariance matrices of the
+%               k groups. 
 %
 %  Optional input arguments:
 %
