@@ -25,7 +25,10 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %             pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-%               'EVI','VEI','EEI','VII','EII'
+%               'EVI','VEI','EEI','VII','EII'.
+%               The field pa.pars is compulsory. All the other fields are
+%               non necessary. If they are not present they are set to
+%               their default values.
 %             pa.cdet = scalar in the interval [1 Inf) which specifies the
 %               the restriction which has to be applied to the determinants.
 %               If pa.cdet=1 all determinants are forced to be equal.
@@ -53,7 +56,8 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %               parametrizations  pa.maxiterDSR is set to 1 apart from for
 %               the specifications 'VVE', 'EVE' and 'VEE'. The default
 %               value of pa.maxiterDSR is 20.
-%           pa.tol=tolerance to use to exit the iterative procedures. Scalar. The
+%           pa.tolS=tolerance to use to exit the iterative procedure for
+%               estimating the shape. Scalar. The
 %               iterative procedures stops when the relative difference of
 %               a certain output matrix is smaller than itertol in two consecutive
 %               iterations. The default value of pa.tol is 1e-12.
@@ -61,8 +65,12 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %               in the eigenvalues restriction routine (file restreigen.m)
 %               or in the final reconstruction of covariance matrices.
 %               The default value of zerotol is 1e-10.
+%          pa.msg = boolean which if set equal to true enables to monitor
+%               the relative change of the estimates of lambda Gamma and
+%               Omega in each iteration. The defaul value of pa.msg is
+%               false, that is nothing is displayed in each iteration.
 %           pa.k  = the number of groups.
-%           pa.p  = the number of variables.
+%           pa.v  = the number of variables.
 %               Data Types - struct
 %
 %  Optional input arguments:
@@ -75,7 +83,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %             p-by-p-by-k array containing the k covariance matrices for
 %             the k groups. See section 'More About' for the notation for
 %             the eigen-decomposition of the component covariance matrices.
-%     lmd  : restricted determinants. Vector. 
+%     lmd  : restricted determinants. Vector.
 %             Row vector of length $k$ containing restricted determinants.
 %             More precisely, the $j$-th element of lmd contains
 %             $\lambda_j^{1/p}$. The elements of lmd satisfy the
@@ -179,18 +187,74 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 
 %
 %{
+    %% Use of restrSigmaGPCM with all default options.
+    % Generate 3 cov matrices of size 2-by-2
+    rng(1500)
+    Sig = [1 .5; .5 2];
+    df = 10; 
+    k=3;
+    v=2;
+    Sigma=zeros(v,v,k);
+    for j=1:k
+        Sigma(:,:,j) = wishrnd(Sig,df)/df;
+    end
+    niini=[20 150 200];
+    % Apply model VVE.
+    pa=struct;
+    pa.pars='VVE';
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, pa);
+%}
 
+%{
+    %% Use function genSigmaGPCM to generate the covariance matrices.
+    v=3;
+    k=5;
+    S=genSigmaGPCM(v, k, 'EVI');
+    pa=struct;
+    pa.pars='VVE';
+    niini=100*ones(1,k);
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
+%}
+
+%{
+    %% Generate ad hoc cov matrices.
+    k=7; v=20;
+    rng('default')
+   seed=1141;
+   add=ones(v,v)+diag(1:v);
+   niini= round(100*mtR(k,0,seed));
+   Sigma=zeros(v,v,k);
+   for j=1:k
+        Sigma(:,:,j)=cov(reshape(mtR(n*v,1,-1),n,v)).*add;
+   end
+    sph=struct; 
+    sph.pars='EVV';
+    niini=100*ones(1,k);
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
 
 %}
 
-
 %% Beginning of code
+
+% Set default values for tolerances and maximum number of iterations.
+maxiterDSRdef=20;
+tolDSRdef=1e-5;
+zerotoldef=1e-10;
+maxiterSdef=20;
+tolSdef=1e-5;
+maxiterRdef = 20;
+tolRdef = 1e-5;
+shwdef=100;
+shbdef=100;
+cdetdef=100;
 
 % SigmaB = p-times-p-times-k = empirical covariance matrix
 Sigma=SigmaB;
 k=length(niini);
 lmd=NaN(1,k);
-
+v=size(Sigma,1);
+pa.v=v;
+pa.k=k;
 % OMG = initialize 3D array containing rotation matrices
 OMG=zeros(size(Sigma));
 
@@ -204,24 +268,131 @@ OMG=zeros(size(Sigma));
 % zerotol it means that all n points are concentrated in k points and there
 % is a perfect fit therefore no further changes on the eigenvalues is
 % required.
-zero_tol=pa.zerotol;
+fpa=fieldnames(pa);
+
+d=max(strcmp('zerotol',fpa));
+if d==0
+     pa.zerotol=zerotoldef;
+end
+zerotol=pa.zerotol;
 
 % pa.pars = character vector with three letters specifying the type of the
 % 14 constraints (i.e. EEE, CVVV, EVE, ...)
 pars=pa.pars;
 
 
-% VEV VEE EVE VVE require iterations because in these cases common rotation
-% matrix is updated in each step.
+% Select cases in which maxiterDSR>1 and specify relative tolerance
+% EVE VEE VVE VVV VEV VVI and VEI require iterations
 % All the other specification do not
-if strcmp(pars,'EEE') || strcmp(pars,'VVV') || strcmp(pars,'EVV') ...
-        || strcmp(pars,'EEV') || strcmp(pars(3),'I')
-    pa.maxiterDSR = 1;
+d=max(strcmp('maxiterDSR',fpa));
+if d==0
+    pa.maxiterDSR=maxiterDSRdef;
 end
 
-% If equal determinants are imposed pa.cdet=1
+modDSR={'EVE' 'VEE' 'VVE' 'VVV' 'VEV' 'VVI' 'VEI'};
+if max(strcmp(pars,modDSR))>0
+    maxiterDSR=pa.maxiterDSR;
+else
+    maxiterDSR = 1;
+end
+
+d=max(strcmp('tolDSR',fpa));
+if d==0
+    tolDSR=tolDSRdef;
+else
+    tolDSR=pa.tolDSR;
+end
+
+d=max(strcmp('maxiterS',fpa));
+if d==0
+    pa.maxiterS=maxiterSdef;
+end
+
+% Cases with different shape (they require iteration for the shape)
+diffSHP={'VVE','EVE','VVV','EVV','VVI','EVI'};
+if max(strcmp(pars,diffSHP))==0
+    pa.maxiterS=1;
+end
+
+d=max(strcmp('tolS',fpa));
+if d==0
+    pa.tolS=tolSdef;
+end
+
+d=max(strcmp('tolDSR',fpa));
+if d==0
+    pa.maxiterR=maxiterRdef;
+end
+
+eqROTdiffSHP={'EVE','VVE'};
+if max(strcmp(pars,eqROTdiffSHP))>0
+    % maxiterR=pa.maxiterR;
+    cpc=true;
+else
+    cpc=false;
+    pa.maxiterR=1;
+end
+
+d=max(strcmp('tolR',fpa));
+if d==0
+    pa.tolR=tolRdef;
+end
+
+d=max(strcmp('shw',fpa));
+if d==0
+    pa.shw=shwdef;
+end
+
+d=max(strcmp('shb',fpa));
+if d==0
+    pa.shb=shbdef;
+end
+
+d=max(strcmp('cdet',fpa));
+if d==0
+    pa.cdet=cdetdef;
+end
+
+d=max(strcmp('msg',fpa));
+if d==1
+    msg=pa.msg;
+else
+    msg=false;
+end
+
+%% Parameters not set by the user
+if strcmp(pars,'EVE') == true
+    itSR=true;
+else
+    itSR=false;
+end
+
+% itDS and irDSR are Boolean. If they are equal to true values of the
+% determinants are updated.
+if strcmp(pars,'VEE') == true || strcmp(pars,'VVE') == true
+    itDSR=true;
+else
+    itDSR=false;
+end
+
+if strcmp(pars(1),'V')
+    itDS=true;
+else
+    itDS=false;
+end
+
+if strcmp(pars,'VII')
+    itDS=false;
+end
+
+if strcmp(pars(3),'E') || strcmp(pars(3),'I')
+    pa.sortsh=1;
+else
+    pa.sortsh=0;
+end
+
 if strcmp(pars(1),'E')
-    pa.cdet = 1;
+    pa.cdet=1;
 end
 
 % If OMG is identity, shape restriction parameter within groups is set to 1
@@ -229,28 +400,26 @@ if strcmp(pars(2),'I')
     pa.shw = 1;
 end
 
+% if Equal shape is imposed shape restriction parameter between groups is
+% set to 1
+if strcmp(pars(2),'E')
+    pa.shb = 1;
+end
+
 %% Initialization part
 if strcmp(pars(3),'E')
     % In the common principal components case it is necessary to find
-    % initial values for OMG, GAM and lmd
-    
-    % Find initial values of lmd (unconstrained determinants) and OMG (rotation)
+    % initial values for OMG (rotaion), and lmd lmd (unconstrained
+    % determinants)
     [lmd, OMG]  = initR(SigmaB, niini, pa);
     
-    % Find initial constrained shape matrix GAM
-    % pa.shw and pa.shb constraining parameters are used
-    [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
-    % Find initial constrained determinants (lmd vector)
-    lmd =restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
-    
-    % In presence of variable shape 
+    % In presence of variable shape
     % compute Wk and wk once and for all.
     % Wk(:,:,j) contains (n_j/n) \Sigma_j
     % wk(j) contains largest eigenvalue of Wk(:,:,j)
     % These two matrices will be used inside routine cpcV
     if (strcmp(pars,'VVE') || strcmp(pars,'EVE'))
-        p=pa.p;
-        Wk=zeros(p,p,k);
+        Wk=zeros(v,v,k);
         wk=zeros(k,1);
         sumnini=sum(niini);
         for j=1:k
@@ -258,6 +427,7 @@ if strcmp(pars(3),'E')
             wk(j) = max(eig(Wk(:,:,j)));
         end
     end
+    
     
 elseif  strcmp(pars(3),'V')
     % Find initial (and final value for OMG)
@@ -270,101 +440,57 @@ elseif  strcmp(pars(3),'V')
         OMG(:,:,j)=V;
     end
     
-else % The remaning case is when **I
+else % The remaining case is when **I
     % Find initial (and final value for OMG).
     % in this case OMG is a 3D arry contaning identity matrices
-    eyep=eye(pa.p);
+    eyep=eye(pa.v);
     for j=1:k
         OMG(:,:,j)=eyep;
     end
 end
 
-% End of initialization
-maxiterDSR=pa.maxiterDSR;
+OMGold=OMG(:,:,1);
+GAMold=99999;
+lmdold=GAMold;
 
 %% Beginning of iterative process
 
-% Apply the iterative procedure to find Det Shape and Rot matrices
+% Apply the iterative procedure to find Det, Shape and Rot matrices
 iter=0;
-% diffOMG value of the relative sum of squares of the difference between
-% the element of matrix Omega2D in two consecutive iterations
 diffglob = 9999;
-tmp=9999;
-OMGtmp=tmp;
-GAMtmp=tmp;
-lmdtmp=tmp;
-itertol=pa.tol;
-p=pa.p;
-updOMG=1;
-updlmd=1;
-updGAM=1;
-diffOMGold=Inf;
-tolToStopIter=1e-10;
 
-while ( (diffglob > itertol) && (iter < maxiterDSR) )
+    if msg==true
+        disp(['   Iter' '    diff_lmd' '    diff_GAM' '   diff_OMG'])
+    end
+
+while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     iter=iter+1;
     
     % In the **E case (except for the case EEE) it is necessary to update in each step of the
     % iterative procedure OMG
-    
-    if (strcmp(pars,'VVE') || strcmp(pars,'EVE')) && updOMG==1
-        % Variable shape: update OMG (rotation)
-        % parameter pa.maxiterR is used here
-        [OMGtry]  = cpcV(lmd, GAM, OMG(:,:,1), Wk, wk, pa);
+    if iter>1 &&  strcmp(pars(3),'E')
         
-    elseif strcmp(pars,'VEE') || strcmp(pars,'EEE') && updOMG==1 
-        % Equal shape: update OMG (rotation)
-        % old eiggiroe
-        [OMGtry]  = cpcE(lmd, SigmaB, niini, pa);
-    else
-        % In all the other cases OMG is not updated
-    end
-    
-    % Omega2Dold = old values of matrix Omega2D in vectorized form
-    OMGold=OMGtmp;
-    % OMGnew = new values of matrix OMG in vectorized form
-    OMGnew=abs(OMGtry(:));
-    % diff = (new values of Omega - old values of Omega)
-    diff=OMGnew-OMGold;
-    % relative sum of squares of the differences
-    % Note that (Omega2Dold'*Omega2Dold)=p
-    diffOMG=diff'*diff/(p*k);
-    
-    % Update OMG just is the relative difference in smaller than that of
-    % previous iteration
-    if diffOMG<= diffOMGold
-        OMG=OMGtry;
-        % if diffOMG is smaller than tolToStopIter do not update omega
-        % anymore
-        if updOMG==1 && diffOMG<tolToStopIter
-             diffOMG=0;
-             updOMG=0;
-         end
-    else
-        % If there are more differences in difflmd and diffGAM set diffOMG
-        % to 0 and do not call anymore procedure to update OMG
-        if difflmd ==0 && diffGAM==0
-            diffOMG=0;
+        if cpc == true
+            % Variable shape: update OMG (rotation)
+            % parameter pa.maxiterR is used here
+            [OMG]  = cpcV(lmd, GAM, OMG(:,:,1), Wk, wk, pa);
         else
-            diffOMG=diffOMGold;
+            % Equal shape: update OMG (rotation)
+            [OMG]  = cpcE(lmd, SigmaB, niini, pa);
+            % In all the other cases OMG is not updated
         end
+       
+        % diffOMG is the relative sum of squares of the differences between
+        % the element of matrix Omega2D in two consecutive iterations
+        OMGnew=OMG(:,:,1);
+        diffOMG=abs((v-sum(sum( (OMGnew'*OMGold).^2 )) )/v);
+        OMGold=OMGnew;
+    else
+        diffOMG=0;
     end
     
-    if updGAM==1
-        % Find new value of GAM (shape matrix) using updated versions of OMG
-        % and lmd
-        [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
-    end
-    
-    if updlmd==1
-        % Find new value of lmd (determinants) starting from constrained shape
-        % GAM and updated OMG
-        [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
-    end
-    
-    GAMold=GAMtmp;
-    lmdold=lmdtmp;
-    
+    % Update GAM
+    [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
     
     % GAMnew = new values of matrix GAM in vectorized form
     GAMnew=GAM(:);
@@ -372,39 +498,32 @@ while ( (diffglob > itertol) && (iter < maxiterDSR) )
     diff=GAMnew-GAMold;
     % relative sum of squares of the differences
     diffGAM=diff'*diff/(GAMold'*GAMold);
-    if updGAM==1 && diffGAM<tolToStopIter
-        updGAM=0;
+    GAMold=GAMnew;
+   
+    % Update determinants in case of varying determinants (apart from VII)
+    if iter==maxiterDSR || itDSR==true || itDS==true
+        % Update lmd
+        [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
+        
+        % lmdnew = new values of vector lmd
+        lmdnew=lmd(:);
+        % diff = (new values of lmd) - (old values of lmd)
+        diff=lmdnew-lmdold;
+        % relative sum of squares of the differences
+        difflmd=diff'*diff/(lmdold'*lmdold);
+        lmdold=lmdnew;
+    else
+        difflmd=0;
     end
     
-    % lmdnew = new values of vector lmd
-    lmdnew=lmd(:);
-    % diff = (new values of lmd) - (old values of lmd)
-    diff=lmdnew-lmdold;
-    % relative sum of squares of the differences
-    difflmd=diff'*diff/(lmdold'*lmdold);
-    if updlmd==1 && difflmd<tolToStopIter
-        updlmd=0;
+    diffglob=max([difflmd, diffGAM,diffOMG,]);
+    if msg==true
+        disp([iter difflmd, diffGAM, diffOMG])
     end
-    
-        %     corrm=abs(corr(OMG(:,:,1),OMGchk));
-    %     if updOMG==1 && min(max(corrm,[],2))>0.99
-    %         updOMG=0;
-    %     end
-
-    diffglob=max([diffGAM,diffOMG,difflmd]);
-    disp([diffGAM,diffOMG,difflmd])
-    
-    % Store values of OMG, GAM and lmd in vectorized form
-    OMGtmp=abs(OMG(:));
-    GAMtmp=GAM(:);
-    lmdtmp=lmd(:);
-    
-    diffOMGold=diffOMG;
-    
 end
 
 % Check if all is well
-codenonZero = max(max(GAM)) > zero_tol;
+codenonZero = max(max(GAM)) > zerotol;
 
 if  codenonZero
     % Reconstruct the cov matrices using final values of lmd, OMG and GAM
@@ -413,11 +532,10 @@ if  codenonZero
     end
 else
     % In this case final Sigma is the identity matrix replicated k times
-    eyep=eye(p);
+    eyep=eye(v);
     for j=1:k
         Sigma(:,:,j) = eyep;
     end
 end
-
 
 end
