@@ -35,8 +35,8 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
-p=pa.p;
-k=pa.K;
+v=pa.v;
+k=pa.k;
 sumnini=sum(niini);
 % Inefficient way of obtaining Sigma
 % Sigma_ = NaN(p,p,k);
@@ -46,9 +46,9 @@ sumnini=sum(niini);
 % end
 % Sigma = sum(Sigma_,3);
 
-Omega=NaN(p,p,k);
+Omega=NaN(v,v,k);
 % Sigma is OMG*GAM*OMG' pooled
-Sigma=zeros(p,p);
+Sigma=zeros(v,v);
 for j=1:k
     Sigma = Sigma + (1/lmdc(j)) * (niini(j) /sumnini)  * SigmaB(:,:,j);
 end
