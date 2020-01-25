@@ -39,34 +39,46 @@ function cdsplot(outms,varargin)
 %
 % Optional input arguments:
 %
-% CandleWidth: width. Scalar. Scalar defining the width of the boxes which represent central part of the
-%              candles. The default width is 0.05.
+% CandleWidth: width. Scalar. Scalar defining the width of the boxes which
+%              represent central part of the candles. The default width is
+%              0.05.
 %                   Example - 'CandleWidth',0.1
 %                   Data Types - double
-%      color : Color. Vector. Three elements color vector, [R G B], or a string specifying the
-%              color name. MATLAB supplies a default color if none is specified
-%              or if it is empty. The default color differs depending on the
-%              background color of the figure window. See COLORSPEC in the
-%              MATLAB Reference Guide for color names.
+%
+%      color : Color. Vector. Three elements color vector, [R G B], or a
+%              string specifying the color name. MATLAB supplies a default
+%              color if none is specified or if it is empty. The default
+%              color differs depending on the background color of the
+%              figure window. See COLORSPEC in the MATLAB Reference Guide
+%              for color names.
 %                   Example - 'color',[0.1 0.2 0.5]
 %                   Data Types - double
-%  LineWidth : Line Width. Scalar. Line Width (in points) for the vertical lines outside the boxes of the
-%              candles. The default LineWidth is 0.5 points.
+%
+%  LineWidth : Line Width. Scalar. Line Width (in points) for the vertical
+%              lines outside the boxes of the candles. The default
+%              LineWidth is 0.5 points.
 %                   Example - 'LineWidth',0.3
 %                   Data Types - double
-%    ylimy    : y axis scale. Vector. Vector with two elements controlling minimum and maximum
-%              on the y axis. Default value is [-2 50] (automatic scale).
+%
+%    ylimy    : y axis scale. Vector. Vector with two elements controlling
+%               minimum and maximum on the y axis. 
+%               Default value is [-2 50] (automatic scale).
 %                   Example - 'ylimy',[0 100]
 %                   Data Types - double
-%    xlimx    : x axis scale. Vector. Vector with two elements controlling minimum and maximum
-%              on the x axis. Default value is '' (automatic scale).
+%
+%    xlimx    : x axis scale. Vector. Vector with two elements controlling
+%               minimum and maximum on the x axis. 
+%               Default value is '' (automatic scale).
 %                   Example - 'xlimx',[0 100]
 %                   Data Types - double
-%   label   : Labels of the selected models. Cell array of strings. Cell array of strings of length k (number of rows of matrix stat)
-%              containing the labels of the selected models. Default value is ''
-%              that is no label is plotted on the screen.
+%
+%   label   : Labels of the selected models. Cell array of strings. Cell
+%             array of strings of length k (number of rows of matrix stat)
+%              containing the labels of the selected models. Default value
+%              is '' that is no label is plotted on the screen.
 %                   Example - 'label',{'a' 'b' 'c'}
 %                   Data Types - char
+%
 %    quant   : Quantiles. Vector. Vector containing quantiles for the horizontal lines
 %              associated witht the confidence bands of Cp. 
 %              The default is to plot 2.5% and
@@ -74,36 +86,46 @@ function cdsplot(outms,varargin)
 %              quant=[0.025;0.975].
 %                   Example - 'quant',[0.01 0.025 0.975 0.99]
 %                   Data Types - double
-%   lablast  : Label for the last unit entered. Scalar. Scalar which specifies whether to add the label of the unit
-%              which enters the final step of the search close to its
-%              symbol. If lablast=1 label is added else (default) no label
-%              is added.
+%
+%   lablast  : Label for the last unit entered. Scalar. Scalar which
+%              specifies whether to add the label of the unit which enters
+%              the final step of the search close to its symbol. If
+%              lablast=1 label is added else (default) no label is added.
 %                   Example - 'lablast',0
 %                   Data Types - double
-%   laboutl  : Label for the influential units. Scalar. Scalar which specifies whether to add the labels of the
-%              'influential units'
-%              if laboutl=1 the unit number is added close to its symbol.
-%              if laboutl=2 the unit number together with the entry step is
-%              added close to its symbol else (default) no label is added.
+%
+%   laboutl  : Label for the influential units. Scalar. Scalar which
+%              specifies whether to add the labels of the 'influential
+%              units' if laboutl=1 the unit number is added close to its
+%              symbol. if laboutl=2 the unit number together with the entry
+%              step is added close to its symbol else (default) no label is
+%              added.
 %                   Example - 'laboutl',1
 %                   Data Types - double
-%   labbold  : Models to highliht. Cell array of strings. Cell array of strings which specifies the models which have
-%              to be highlighted (the linewidth of the vertical lines
-%              outside the boxes of the models specified in labbold is
-%              considerably increased). As default labbold=''.
+%
+%   labbold  : Models to highliht. Cell array of strings. Cell array of
+%              strings which specifies the models which have to be
+%              highlighted (the linewidth of the vertical lines outside the
+%              boxes of the models specified in labbold is considerably
+%              increased). As default labbold=''.
 %                   Example - 'labbold',{'a' 'b'}
 %                   Data Types - char
-%    labenv  :  Quantiles labels. Scalar. If labelv=1 labels of the quantiles used to generate the
-%               horizontal lines associated with the envelopes are added,
-%               else if labelv=0 (default) no label is added.  
+%
+%    labenv  :  Quantiles labels. Scalar. If labelv=1 labels of the
+%               quantiles used to generate the horizontal lines associated
+%               with the envelopes are added, else if labelv=0 (default) no
+%               label is added.
 %                   Example - 'labenv',1
 %                   Data Types - double
-%    barend  : Adding horizontal lines. Scalar. Scalar which specifies whether to add small horizontal lines
-%              at the end of the vertical lines representing the whiskers.
-%              If barend=1 horizontal lines are added else (default) no
-%              additional line is drawn. 
+%
+%    barend  : Adding horizontal lines. Scalar. Scalar which specifies
+%              whether to add small horizontal lines at the end of the
+%              vertical lines representing the whiskers. If barend=1
+%              horizontal lines are added else (default) no additional line
+%              is drawn.
 %                   Example - 'barend',1
 %                   Data Types - double
+%
 %    cpbrush : Brushing. Empty value or matrix. 
 %              If cpbrush is an empty value (default), no brushing is done.
 %              The activation of this option (cpbrush is a scalar) enables

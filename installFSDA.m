@@ -9,8 +9,9 @@
 % 4) Install the apps. 3 apps brushRES, brushFAN and brushROB which help
 % the user to familiarize with the dynamic interactive routines of FSDA.
 
+%% Beginning of code
 
-%% Preliminary step: make sure that the user is inside main FSDA folder
+% Preliminary step: make sure that the user is inside main FSDA folder
 FileName='addFSDA2path';
 FullPath=which(FileName);
 if isempty(FullPath)

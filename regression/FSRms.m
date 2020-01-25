@@ -27,6 +27,7 @@ function outms = FSRms(y,X,varargin)
 %               else, no constant term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
+%
 %      init   : Search initialization. Scalar. 
 %               It specifies the initial subset size to start
 %               monitoring the required quantities, if
@@ -35,12 +36,14 @@ function outms = FSRms(y,X,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100 
 %               Data Types - double
+%
 %         h   : The number of observations that have determined the least
 %               trimmed squares estimator. Scalar.
 %               h is an integer greater or
 %               equal than [(n+p+1)/2] but smaller then n
 %                 Example - 'h',round(n*0,75) 
 %                 Data Types - double
+%
 %     nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar.
 %                   Number of subsamples which will be extracted to find the
@@ -50,12 +53,14 @@ function outms = FSRms(y,X,varargin)
 %               default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - double
+%
 %         lms : Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar.
 %                   If lms=1 (default) Least Median of Squares is
 %               computed, else Least Trimmed of Squares is computed.
 %                 Example - 'lms',1 
 %                 Data Types - double
+%
 %     nocheck : Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Note that y and X are left
@@ -63,8 +68,9 @@ function outms = FSRms(y,X,varargin)
 %               for the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
-%    smallpint: submodels to consider. Vector. It specifies which submodels (number of variables)
-%               must be considered. 
+%
+%    smallpint: submodels to consider. Vector. It specifies which submodels 
+%               (number of variables) must be considered. 
 %               The default is to consider all models
 %               from size 2 to size bigP-1. In other words, as default,
 %               smallpint=(bigP-1):-1:2.
@@ -74,6 +80,7 @@ function outms = FSRms(y,X,varargin)
 %               variables and a constant will be considered. ....
 %               Example - 'smallpint',3 
 %               Data Types - double
+%
 %      labels : names of the explanatory variables. Cell array of strings.
 %               Cell array of strings of length bigP-1 containing the
 %               names of the explanatory variables.
@@ -83,9 +90,11 @@ function outms = FSRms(y,X,varargin)
 %               (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
 %               Example - 'labels',{'1','2'} 
 %               Data Types - cell
-%     fin_step: Initial and final step. Vector with two elements. Initial and final step of the search
-%               which has to be monitored to choose the best models as
-%               specified in scalar first_k. 
+%
+%     fin_step: Initial and final step. Vector with two elements.
+%               Initial and final step of the search which has to be
+%               monitored to choose the best models as specified in scalar
+%               first_k.
 %               The first element of the vector specifies the initial step of the search
 %               which has to be monitored to choose the best models as
 %               specified in scalar first_k below. The second element
@@ -107,6 +116,7 @@ function outms = FSRms(y,X,varargin)
 %               observations
 %               Example - 'fin_step',[1 50] 
 %               Data Types - double
+%
 %      first_k: Number of models to consider. Scalar. Number of best models to
 %               consider in each of the last fin_step. 
 %               For example if
@@ -115,6 +125,7 @@ function outms = FSRms(y,X,varargin)
 %               first_k=3
 %               Example - 'first_k',5
 %               Data Types - double
+%
 %       ignore: submodels to consider. Scalar. 
 %               If ignore=1, when dealing with p explanatory
 %               variables, the submodels of the models with p+1
@@ -125,6 +136,7 @@ function outms = FSRms(y,X,varargin)
 %               size p which contain a constant are considered
 %               Example - 'ignore',1
 %               Data Types - double
+%
 %   ExclThresh:  Exclusion threshold. Scalar.
 %               It has effect only if ignore=1.
 %               Exclusion threshold associated to the uppper
@@ -138,7 +150,9 @@ function outms = FSRms(y,X,varargin)
 %               models considered irrelevant are not considered
 %               Example - 'ExclThresh',0.9
 %               Data Types - double
-%     meanmed : Boxes of tha candles. Scalar. It specifies how to construct the boxes of the candles. 
+%
+%     meanmed : Boxes of tha candles. Scalar. It specifies how to construct
+%               the boxes of the candles.
 %               If meanmed=1 boxes are constructed using mean and median
 %               else using the first and third quartile.
 %               Example - 'meanmed',1
@@ -160,6 +174,7 @@ function outms = FSRms(y,X,varargin)
 %               the candles overlap
 %               Example - 'rl',0.3
 %               Data Types - double
+%
 %     quant   :  quantiles for the horizontal lines
 %               associated with the confidence bands of Cp. Vector.
 %               The default is to plot 2.5% and
@@ -167,21 +182,25 @@ function outms = FSRms(y,X,varargin)
 %               quant=[0.025;0.975];
 %               Example - 'quant',[0.01;0.99]
 %               Data Types - double
+%
 %  CandleWidth:  width of the boxes associated with
 %               the central part of the search. Scalar.
 %               The default width is 0.05;
 %               Example - 'CandleWidth',0.01
 %               Data Types - double
+%
 %   LineWidth : Line Width (in points) for the vertical lines outside the 
 %               boxes of the candles. Scalar.
 %               The default LineWidth is 0.5 points.
 %               Example - 'LineWidth',0.01
 %               Data Types - double
+%
 %     ylimy   : minimum and maximum
 %               on the y axis. Vector.
 %               Default value is [-2 50] (automatic scale)
 %               Example - 'ylimy',[0 10]
 %               Data Types - double
+%
 %     xlimx   :  minimum and maximum
 %               on the x axis. Vector.
 %               Default value is '' (automatic scale)
@@ -414,7 +433,9 @@ function outms = FSRms(y,X,varargin)
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

@@ -30,11 +30,13 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                   monitoring units forming subset
 %                   Example - 'init',100 starts the search from step m=100
 %                   Data Types - double
+%
 %   intercept :    Indicator for constant term. Scalar.
 %                  If 1, a model with constant term will be fitted (default),
 %                  else no constant term will be included.
 %                  Example - 'intercept',1
 %                  Data Types - double
+%
 %    nocheck  :    Check input arguments. Scalar.
 %                  If nocheck is equal to 1 no check is performed on
 %                  matrix y and matrix X. Notice that y and X are left
@@ -42,6 +44,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                  the intercept is not added. As default nocheck=0.
 %                  Example - 'nocheck',1
 %                  Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -55,6 +58,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
+%
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 the monitoring units plot is displayed on the
 %                 screen. The default value of plots is 0 (that is no plot
@@ -203,8 +207,9 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
 %}
 
+%% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

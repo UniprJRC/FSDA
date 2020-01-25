@@ -27,6 +27,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               term will be included.
 %               Example - 'intercept',1 
 %               Data Types - double
+%
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
@@ -34,21 +35,25 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
+%
 %     effshape : locacation or scale effiicency. dummy scalar. 
 %                If effshape=1 efficiency refers to shape 
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
+%
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
 %                 Example - 'refsteps',10
 %                 Data Types - double
+%
 %      reftol: Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
 %                 Example - 'tol',1e-10
 %                 Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -56,8 +61,10 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
-%     rhofunc : rho function. String. String which specifies the rho function which must be used to
-%               weight the residuals. Possible values are
+%
+%     rhofunc : rho function. String. String which specifies the rho
+%               function which must be used to weight the residuals.
+%               Possible values are
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
@@ -73,6 +80,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - char
+%
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the
@@ -81,12 +89,15 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               a, b and c (the default values are a=2, b=4, c=8)
 %                 Example - 'rhofuncparam',5 
 %                 Data Types - single | double
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on matrix y and matrix X. Notice
+%                 that y and X are left unchanged. In other words the
+%                 additional column of ones for the intercept is not added.
+%                 As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
@@ -95,6 +106,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
+%
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
 %               Default is 0, i.e. no saving is done.

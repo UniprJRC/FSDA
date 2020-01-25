@@ -25,6 +25,7 @@ function [out , varargout] = Smulteda(Y,varargin)
 %               The default value of bdp is a sequence from 0.5 to 0.01 with step 0.01
 %                 Example - 'bdp',[0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
+%
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
@@ -32,26 +33,31 @@ function [out , varargout] = Smulteda(Y,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - single | double
-%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
-%               subsample (default = 3).
+%
+%    refsteps : Number of refining iterations. Scalar. 
+%               Number of refining iterationsin each subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',0
 %                 Data Types - single | double
+%
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
 %                 Example - 'reftol',1e-8
 %                 Data Types - single | double
+%
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
 %                 Example - 'refstepsbestr',10
 %                 Data Types - single | double
+%
 % reftolbestr : Tolerance for the refining steps. Scalar.
 %               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
 %                 Example - 'reftolbestr',1e-10
 %                 Data Types - single | double
+%
 %     minsctol: tolerance for the iterative
 %               procedure for finding the minimum value of the scale. Scalar.
 %               Value of tolerance for the iterative
@@ -61,11 +67,14 @@ function [out , varargout] = Smulteda(Y,varargin)
 %               The default value is 1e-7;
 %                 Example - 'minsctol',1e-7
 %                 Data Types - single | double
-%      bestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
+%
+%      bestr  : number of "best betas" to remember. Scalar. Scalar defining
+%               number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
 %               (default=5)
 %                 Example - 'bestr',10
 %                 Data Types - single | double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -73,11 +82,13 @@ function [out , varargout] = Smulteda(Y,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %      nocheck : Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates:
 %               (1) a plot of Mahalanobis distances against index number. The
@@ -96,12 +107,14 @@ function [out , varargout] = Smulteda(Y,varargin)
 %                       added are Y1, ...Yv.
 %                 Example - 'plots',0
 %                 Data Types - single | double
+%
 %        msg  : Level of output to display. Scalar.
 %               If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final estimator
 %               else no message is displayed on the screen
 %                 Example - 'msg',0
 %                 Data Types - single | double
+%
 %       ysave : save input matrix Y. Scalar.
 %               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
@@ -205,6 +218,7 @@ function [out , varargout] = Smulteda(Y,varargin)
 %}
 
 %% Beginning of code
+
 % Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;

@@ -4,6 +4,8 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
+
 %% HD (Heads data) analysis using univariate boxplots
 clearvars;close all;
 load('head.mat');

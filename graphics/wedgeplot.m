@@ -28,6 +28,7 @@ function hf = wedgeplot(RES,varargin)
 %                option for details.
 %                Example - 'transpose',false
 %                Data Types - Boolean
+%
 %   extradata :  extra data to plot in a separate panel in association to the
 %                wedge plot. Matrix. Matrix of size T-by-1 or T-by-p containing
 %                the data which have to be plotted in the separate panel.
@@ -50,12 +51,14 @@ function hf = wedgeplot(RES,varargin)
 %                otherwse it will fall at the bottom.
 %                Example - 'extradata', [y yhat]
 %                Data Types - double
+%
 %      cmapname: color map. Character. Character which indicates the type of
 %                colormmap to use in the wedge plot. The accepted values are
 %                'hot', 'autumn', 'spring', 'pink', 'summer', 'winter', 'gray'.
 %                The default is 'hot'.
 %                Example - 'cmapname','summer'
 %                Data Types - Character
+%
 %        labls : label of the axis which contains the level shift position.
 %                Character. Character containing the label to put on the axis
 %                which contains the level shift position. This axis could be
@@ -64,6 +67,7 @@ function hf = wedgeplot(RES,varargin)
 %                position'.
 %                Example - 'labls','Position of level shift'
 %                Data Types - Character
+%
 %        labin : label of the axis which contains the index number.
 %                Character. Character containing the label to put on the axis
 %                which contains the index number of the units of the time
@@ -72,15 +76,18 @@ function hf = wedgeplot(RES,varargin)
 %                number'.
 %                Example - 'labin','unit number'
 %                Types - Character
-%     titl     : Title. String. A label for the title (default: 'Double wedge
-%                plot').
+%
+%     titl     : Title. String. A label for the title 
+%                (default: 'Double wedge plot').
 %                Example - 'titl','Plot with two wedges'
 %                Data Types - char
+%
 %     FontSize:  Font size of the labels. Scalar. Scalar which controls the font
 %                size of the labels of the axes and of the labels inside the
 %                plot. Default value is 12.
 %                Example - 'FontSize',12
 %                Data Types - double
+%
 %  SizeAxesNum:  Size of the numbers of the axis. Scalar. Scalar which controls
 %                the size of the numbers of the axes. Default value is 12.
 %                Example - 'SizeAxesNum',10

@@ -27,6 +27,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %              specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
+%
 % plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
 %                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
@@ -34,6 +35,7 @@ function [mmd,Un,varargout] = FSMmmdeasy(Y,bsb,varargin)
 %               else (default) no plot is produced.
 %                 Example - 'plots',0 
 %                 Data Types - double
+%
 %  msg  :     It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen

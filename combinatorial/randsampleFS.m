@@ -8,6 +8,7 @@ function y = randsampleFS(n,k,method,after2011b)
 %       n : A vector of numbers will be selected from the integers 1 to n.
 %           Scalar, a positive integer.
 %           Data Types - single|double
+%
 %      k  : The number of elements to be selected. Non negative integer.
 %           Data Types - single|double
 %

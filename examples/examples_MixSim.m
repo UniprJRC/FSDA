@@ -50,6 +50,8 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code 
+
 %% Generate 5 groups in 7 dimensions controlling average and maximum overlapping
 clearvars -except RandomDataFromR; close all;
 

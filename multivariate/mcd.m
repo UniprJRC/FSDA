@@ -17,34 +17,41 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               and 0.5). The default value is 0.5.
 %               Example - 'bdp',1/4
 %               Data Types - double
+%
 %      nsamp  : Number of subsamples. Scalar. Number of subsamples of size
 %               v+1 which have to be extracted (if not given, default =
 %               1000).
 %               Example - 'nsamp',10000
 %               Data Types - double
+%
 %    refsteps : Number of refining iterations. Scalar. Number of refining
 %               iterations in each subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %               Example - 'refsteps',10
 %               Data Types - double
+%
 %     reftol  : Refining steps tolerance. Scalar. Tolerance for the refining steps.
 %               The default value is 1e-6;
 %               Example - 'reftol',1e-8
 %               Data Types - double
+%
 %refstepsbestr: Number of refining iterations. Scalar. Number of refining iterations
 %               for each best subset (default = 50).
 %               Example - 'refstepsbestr',10
 %               Data Types - double
+%
 % reftolbestr : Tolerance for refining steps. Scalar. Value of tolerance for the
 %               refining steps for each of the best subsets.
 %               The default value is 1e-8;
 %               Example - 'reftolbestr',1e-8
 %               Data Types - double
+%
 %      bestr  : Number of best solutions to store. Scalar. Number of "best locations"
 %               to remember from the subsamples. These will be later iterated until
 %               convergence (default=5)
 %               Example - 'bestr',10
 %               Data Types - double
+%
 %     conflev : Confidence level. Scalar. Number between 0 and 1 containing
 %               confidence level which is used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -52,22 +59,26 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %               Default value is 0.975
 %               Example - 'conflev',0.99
 %               Data Types - double
+%
 %  conflevrew : Confidence level for use for reweighting. Scalar. Number
 %               between 0 and 1 containing confidence level which is used to do
 %               the reweighting step. Default value is the one specified in
 %               previous option conflev.
 %               Example - 'conflevrew',0.99
 %               Data Types - double
+%
 %  betathresh : Distribution to use. Scalar. If betathresh = 1 the distribution
 %               which is used to declare units as outliers is a mixture of Rocke
 %               scaled F distribution and beta else (default) traditional chi^2
 %               distribution is used.
 %               Example - 'betathresh',1
 %               Data Types - double
+%
 %      nocheck: No check on input data. Scalar. If nocheck is equal to 1 no check
 %               is performed on matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates:
 %               (1) a plot of Mahalanobis distances against index number. The
@@ -86,28 +97,33 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1
 %               Data Types - double or structure
+%
 %        msg  : Display or not messages on the screen.
 %               Scalar. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
 %               estimator else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
+%
 %     tolMCD  : Tolerance to declare a subset as singular. Scalar. The
 %               default value of tolMCD is exp(-50*v).
 %               Example - 'tolMCD',1e-20
 %               Data Types - double
+%
 %    ysaveRAW : save Y. Scalar. Scalar that is set to 1 to request that the data
 %               matrix Y is saved into the output structure RAW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveRAW',1
 %               Data Types - double
+%
 %    ysaveREW : save Y. Scalar. Scalar that is set to 1 to request that the data
 %               matrix Y is saved into the output structure REW. This feature is
 %               meant at simplifying the use of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveREW',1
 %               Data Types - double
+%
 %smallsamplecor: small sample correction factor. Scalar. Scalar which
 %               defines whether to use or not small sample correction
 %               factor to inflate the scale estimate.  If it is equal to 1
@@ -359,6 +375,7 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %}
 
 %% Beginning of code
+
 [n, v]=size(Y);
 
 % default value of break down point

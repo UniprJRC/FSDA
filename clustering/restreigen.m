@@ -31,6 +31,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %            The default value is 1e-8
 %               Example - 'tol',[1e-18]
 %               Data Types - double
+%
 % userepmat : use repmat, bsxfun or implicit expansion. Scalar. 
 %             If userepmat is equal to 1, function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in

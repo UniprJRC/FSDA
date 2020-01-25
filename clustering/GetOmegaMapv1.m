@@ -35,11 +35,14 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMapv1(c, Pi, Mu, S, fix, 
 %               (that is conditionally on x belonging to cluster i,  which
 %               is called $w_{j|i})$
 %               (i ~= j)=1, 2, ..., k
+%
 %    BarOmega : scalar associated with average overlap.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%
 %    MaxOmega : scalar associated with maximum overlap. MaxOmega is the
 %               maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %               (i ~= j)=1, 2, ..., k
+%
 %       rcMax : column vector of length equal to 2 containing the indexes
 %               associated with the pair of components producing the
 %               highest overlap (largest off diagonal element of matrix

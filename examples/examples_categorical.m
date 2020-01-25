@@ -5,6 +5,7 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code 
 
 %% Correpondence analysis of the smoke data (1)
 % Input is the contingency table

@@ -219,13 +219,16 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %  Output:
 %
 %           y  : Response variable. Vector.
-%               Vector of dimension (n+nout)-by-1  containing the values of the
-%                responses for the k groups.
-%           X  : Explanatory variables. Matrix. Matrix of size (n + nout)-by-(p + nnoise) containinng the
-%                values of the explanatory variables for the k groups.
-%                Noise coordinates are provided in the last nnoise columns.
-%           id : classification vector. Vector. Classification vector of length n + nout; 0 represents an
-%                outlier.
+%                Vector of dimension (n+nout)-by-1  containing the values
+%                of the responses for the k groups.
+%
+%           X  : Explanatory variables. Matrix. Matrix of size 
+%                (n + nout)-by-(p + nnoise) containinng the values of the
+%                explanatory variables for the k groups. Noise coordinates
+%                are provided in the last nnoise columns.
+%
+%           id : classification vector. Vector. Classification vector of
+%                length n + nout; 0 represents an outlier.
 %
 %            REMARK: If nout outliers could not be generated a warning is
 %                produced. In this case matrix X and vector id will have
