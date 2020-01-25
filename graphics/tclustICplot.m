@@ -75,6 +75,7 @@ function tclustICplot(IC,varargin)
 %               The default value of 'whichIC' is 'ALL'
 %                 Example - 'whichIC','ALL'
 %                 Data Types - character
+%
 %       tag     :   Personalized tag. String. String which identifies the
 %                   handle of the plot which is about to be created. The
 %                   default is to use tag 'pl_IC'.
@@ -84,6 +85,7 @@ function tclustICplot(IC,varargin)
 %                   window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
@@ -116,28 +118,26 @@ function tclustICplot(IC,varargin)
 %                   'Window' and datatooltip.SnapToDataVertex = 'on'.
 %                   Example - 'datatooltip',''
 %                   Data Types - scalar double or struct
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a structure) enables the user  to select a set of
-%                   values of IC in the current plot and to see the
-%                   corresponding classification highlighted in the scatter
-%                   plot matrix (spm).
-%                   If spm does not exist it is automatically created.
-%                   Please, note that the window style of the other figures is set
-%                   equal to that which contains the IC
-%                   plot. In other words, if the IC plot
-%                   is docked all the other figures will be docked too.
-%                   DATABRUSH IS A SCALAR.
-%                   If databrush is a scalar the default selection tool is
-%                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='').
-%                   DATABRUSH IS A STRUCTURE.
-%                   If databrush is a structure, it is possible to use all
-%                   optional arguments of function selectdataFS.m and the
-%                   following optional arguments:
-%                   - databrush.persist = repeated brushing enabled. Persist is an empty value or a scalar
+%                   is done. The activation of this option 
+%                   (databrush is a scalar or a structure) enables the user  
+%                   to select a set of values of IC in the current plot and
+%                   to see the corresponding classification highlighted in
+%                   the scatter plot matrix (spm). If spm does not exist it
+%                   is automatically created. Please, note that the window
+%                   style of the other figures is set equal to that which
+%                   contains the IC plot. In other words, if the IC plot is
+%                   docked all the other figures will be docked too.
+%                   DATABRUSH IS A SCALAR. If databrush is a scalar the
+%                   default selection tool is a rectangular brush and it is
+%                   possible to brush only once (that is persist='').
+%                   DATABRUSH IS A STRUCTURE. If databrush is a structure,
+%                   it is possible to use all optional arguments of
+%                   function selectdataFS.m and the following optional
+%                   arguments: - databrush.persist = repeated brushing
+%                   enabled. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -158,6 +158,7 @@ function tclustICplot(IC,varargin)
 %                      histograms, or 'box' to plot boxplots.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
+%
 %         nameY  : variable labels. Cell array. Cell array of strings
 %                   containing the labels of the
 %                   variables. As default value, the labels which are added

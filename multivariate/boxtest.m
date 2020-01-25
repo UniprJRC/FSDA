@@ -38,6 +38,7 @@ function out = boxtest(Y,group,varargin)
 %               computed.
 %               Example - 'Fapprox',true
 %               Data Types - logical
+%
 % dispresults : Display results. Boolean. If dispresults is
 %               true, the value of the test and the associated p-value
 %               will be shown on the screen. On the other hand is
@@ -159,6 +160,7 @@ function out = boxtest(Y,group,varargin)
 %}
 
 %% Beginning of code
+
 if nargin<1
     error('FSDA:boxtest:missingInputs','Input data matrix is missing')
 end

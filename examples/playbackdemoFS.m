@@ -12,6 +12,8 @@ function playbackdemoFS(demo_name)
 %   Example:
 %      playbackdemoFS('fishery')
 
+%% Beginning of code 
+
 if nargin <1
     url = 'www.riani.it/MATLAB/index.html';
 else

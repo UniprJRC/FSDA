@@ -115,6 +115,8 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code 
+
 %% EXAMPLE 1: create from within R an identity matrix
 
 openR

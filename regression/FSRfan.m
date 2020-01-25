@@ -24,6 +24,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   (default), else no constant term will be included.
 %                   Example - 'intercept',1
 %                   Data Types - double
+%
 %       nocheck :   Check input arguments. Scalar.
 %                   If nocheck is equal to 1 no check is performed
 %                   on matrix y and matrix X. Notice that y and X are left
@@ -31,18 +32,21 @@ function [out]=FSRfan(y,X,varargin)
 %                   for the intercept is not added. As default nocheck=0.
 %                   Example - 'nocheck',1
 %                   Data Types - double
+%
 %           la  :   values of the transformation parameter for which it is
 %                   necessary to compute the score test. Vector.
 %                   Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                   is the five most common values of lambda
 %                   Example - 'la',[-1 -0.5]
 %                   Data Types - double
+%
 %           h   :   The number of observations that have determined the
 %                   least trimmed (median of) squares estimator. Integer.
 %                   Generally h is an integer greater or equal than
 %                   [(n+size(X,2)+1)/2] but smaller then n
 %                   Example - 'h',5
 %                   Data Types - double
+%
 %       nsamp   :   Number of subsamples which will be extracted to find
 %                   the robust estimator. Scalar.
 %                   If nsamp=0 all subsets will be
@@ -51,12 +55,14 @@ function [out]=FSRfan(y,X,varargin)
 %                   to extract all subsets otherwise just 1000.
 %                   Example - 'nsamp',1000
 %                   Data Types - double
+%
 %       lms     :   Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar.
 %                   If lms=1 (default) Least Median of Squares is
 %                   computed, else Least trimmed of Squares is computed.
 %                 Example - 'lms',1
 %                 Data Types - double
+%
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
 %                   (default), 'YJ' or 'YJpn'.
@@ -75,6 +81,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   respectively for positive and negative observations.
 %                   Example - 'family','YJ'
 %                   Data Types - char
+%
 %       init    :   Search initialization. Scalar.
 %                   It specifies the initial subset size to start
 %                   monitoring the value of the score test, if init is not
@@ -83,6 +90,7 @@ function [out]=FSRfan(y,X,varargin)
 %                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                    Example - 'init',100 starts monitoring from step m=100
 %                    Data Types - double
+%
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
 %                   else (default) no plot is produced.
@@ -96,46 +104,56 @@ function [out]=FSRfan(y,X,varargin)
 %                   -2.58 and 2.58
 %                   Example - 'conflev',0.95
 %                   Data Types - double
+%
 %       titl    :   a label for the title. Character.
 %                   default: 'Fan plot'
 %                   Example - 'titl','my title'
 %                   Data Types - char
+%
 %       labx    :   a label for the x-axis. Character.
 %                   default: 'Subset size m'
 %                   Example - 'labx','my labx'
 %                   Data Types - char
+%
 %       laby    :   a label for the y-axis. Character.
 %                   default:'Score test statistic'
 %                   Example - 'laby','my laby'
 %                   Data Types - char
+%
 %       xlimx   :   Minimum and maximum of the x axis. Vector.
 %                   Default value is [init n]
 %                   Example - 'xlimx',[0 1]
 %                   Data Types - double
+%
 %       ylimy   :  Minimum and maximum of the y axis. Vector.
 %                   Default value for ylimy(1)=max(min(score_test),-20).
 %                   Default value for ylimy(2)=min(max(score_test),20).
 %                   Example - 'ylimx',[0 1]
 %                   Data Types - double
+%
 %       lwd     :   linewidth of the curves which
 %                   contain the score test. Scalar.
 %                   Default line width=2.
 %                   Example - 'lwd',5
 %                   Data Types - double
+%
 %       lwdenv  :   width of the lines associated
 %                   with the envelopes. Scalar.
 %                   Default is lwdenv=1.
 %                   Example - 'lwdenv',5
 %                   Data Types - double
+%
 %       FontSize:   font size of the labels of  the axes. Scalar.
 %                   Default value is 12.
 %                   Example - 'FontSize',20
 %                   Data Types - double
+%
 %    SizeAxesNum:   Scalar which controls the size of the numbers of the
 %                   axes. Scalar.
 %                   Default value is 10.
 %                  Example - 'SizeAxesNum',12
 %                  Data Types - double
+%
 %         msg   : Level of output to display. Scalar.
 %                   scalar which controls whether to display or not
 %                   messages on the screen. Scalar.
@@ -145,14 +163,14 @@ function [out]=FSRfan(y,X,varargin)
 %                   is displayed on the screen
 %                  Example - 'msg',1
 %                  Data Types - double
+%
 %       tag     :   handle of the plot which is about to be created.
-%                   Character.
-%                   The default is to use tag 'pl_fan'. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%                   Example - 'tag','mytag'
-%                   Data Types - char
+%                   Character. The default is to use tag 'pl_fan'. Notice
+%                   that if the program finds a plot which has a tag equal
+%                   to the one specified by the user, then the output of
+%                   the new plot overwrites the existing one in the same
+%                   window else a new window is created Example -
+%                   'tag','mytag' Data Types - char
 %  Output:
 %
 %         out:   structure which contains the following fields
@@ -374,7 +392,9 @@ function [out]=FSRfan(y,X,varargin)
     title('Extended fan plot')
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

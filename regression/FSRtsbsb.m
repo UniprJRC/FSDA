@@ -20,6 +20,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               specified it is set equal floor(0.5*(T+1))
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %      model :  model type. Structure. A structure which specifies the model
 %               which will be used. The model structure contains the following
 %               fields:
@@ -89,11 +90,13 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.posLS='';
+%
 %  nocheck:     Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %               supplied structure model
 %               Example - 'nocheck',false
 %               Data Types - logical
+%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -107,6 +110,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
+%
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 the monitoring units plot is displayed on the
 %                 screen. The default value of plots is 0 (that is no plot
@@ -242,8 +246,9 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
     % forward search.
 %}
 
+%% Beginning of code 
 
-%% Input parameters checking
+% Input parameters checking
 
 % Set up values for default model
 modeldef          = struct;

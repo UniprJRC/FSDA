@@ -26,6 +26,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %                   possible to specify the options given in function Smult.
 %               Example - 'InitialEst',[] 
 %               Data Types - struct
+%
 %  Soptions  :  options if initial estimator is S and InitialEst is empty.
 %               Srhofunc,Snsamp,Srefsteps, Sreftol, Srefstepsbestr,
 %               Sreftolbestr, Sminsctol, Sbestr.
@@ -37,6 +38,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %               subsets, the supplied option is 'Snsamp',3000
 %               Example - 'Snsamp',1000 
 %               Data Types - single | double
+%
 %         Sbdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
@@ -45,11 +47,14 @@ function [out , varargout] = MMmult(Y,varargin)
 %               efficiency is automatically determined.
 %                 Example - 'Sbdp',0.4
 %                 Data Types - double
-%      Sbestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
+%
+%      Sbestr  : number of "best betas" to remember. Scalar. Scalar
+%               defining number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
 %               (default=5)
 %                 Example - 'Sbestr',10 
 %                 Data Types - single | double
+%
 %     Sminsctol: tolerance for the iterative
 %               procedure for finding the minimum value of the scale. Scalar. 
 %               Value of tolerance for the iterative
@@ -59,6 +64,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %               The default value is 1e-7;
 %                 Example - 'Sminsctol',1e-7 
 %                 Data Types - single | double
+%
 %       Snsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
@@ -66,26 +72,31 @@ function [out , varargout] = MMmult(Y,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'Snsamp',1000 
 %                 Data Types - single | double
-%    Srefsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
-%               subsample (default = 3).
+%
+%    Srefsteps : Number of refining iterations. Scalar. Number of refining
+%                iterationsin each subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'Srefsteps',0 
 %                 Data Types - single | double
+%
 %     Sreftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
 %                 Example - 'Sreftol',1e-8
 %                 Data Types - single | double
+%
 %Srefstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
 %                 Example - 'Srefstepsbestr',10 
 %                 Data Types - single | double
+%
 % Sreftolbestr : Tolerance for the refining steps. Scalar. 
 %               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
 %                 Example - 'Sreftolbestr',1e-10 
 %                 Data Types - single | double
+%
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
@@ -93,21 +104,25 @@ function [out , varargout] = MMmult(Y,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
+%
 %     effshape : location or scale effiicency. dummy scalar. 
 %                If effshape=1 efficiency refers to shape 
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
+%
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
 %                 Example - 'refsteps',10
 %                 Data Types - double
+%
 %       tol    : Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
 %                 Example - 'tol',1e-10
 %                 Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -115,6 +130,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates: 
 %               (1) a plot of Mahalanobis distances against index number. The
@@ -133,11 +149,13 @@ function [out , varargout] = MMmult(Y,varargin)
 %                       are added are Y1, ...Yv.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
+%
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
 %                 no check is performed on
 %                 matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
+%
 %       ysave : save input matrix Y. Scalar. 
 %               Scalar that is set to 1 to request that the data matrix Y
 %               is saved into the output structure out. This feature is
@@ -231,7 +249,7 @@ function [out , varargout] = MMmult(Y,varargin)
 
 %% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;

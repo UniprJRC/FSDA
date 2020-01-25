@@ -21,6 +21,7 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  prob:    quantiles for which envelopes have
 %               to be computed. Vector.
 %               1 x k vector containing quantiles for which envelopes have
@@ -123,8 +124,9 @@ function [MDRenv] = FSRenvmdr(n,p,varargin)
     xlabel('Subset size m');
 %}
 
+%% Beginning of code
 
-%% Input parameters checks
+% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
     error('FSDA:FSRenvmdr:missingInputs','n must be scalar non empty and non missing!!');

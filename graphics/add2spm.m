@@ -8,13 +8,16 @@ function add2spm(H,AX,BigAx,varargin)
 %
 %  Required input arguments:
 %
-%            H   : handles to the lines on the graphs. 2D or 3D array. H is an array of handles to the
-%                   lines on the graphs. The array's third dimension
-%                   corresponds to groups in the grouping variable.
-%                   For more details see the output arguments of gplotmatrix.
+%            H   :  handles to the lines on the graphs. 2D or 3D array.
+%                   H is an array of handles to the lines on the graphs. The
+%                   array's third dimension corresponds to groups in the
+%                   grouping variable. For more details see the output
+%                   arguments of gplotmatrix.
+%
 %           AX   : handles to the axes of the individual plots. Matrix.  AX is a
 %                   matrix of handles to the axes of the individual plots.
 %                   For more details see the output arguments of gplotmatrix.
+%
 %          BigAx :  handle to big (invisible) axes framing the
 %                   entire plot matrix. Scalar.
 %                   For more details see the output arguments of gplotmatrix.
@@ -34,6 +37,7 @@ function add2spm(H,AX,BigAx,varargin)
 %               See last example below for a concrete case.
 %               Example - 'labeladd','1'
 %               Data Types - char
+%
 %  userleg  :   user legend. Char.
 %               It is used to control the legend of the plot.
 %               - Default is ''. In this case, existing legends are left as
@@ -57,6 +61,7 @@ function add2spm(H,AX,BigAx,varargin)
 %                 then such strings are used for the legend.
 %               Example - 'userleg','1'
 %               Data Types - char
+%
 % RowNamesLabels :  cell of length n, where n is the number of points in
 %                   each scatter, containing the labels of the units. If
 %                   this field is empty the sequence 1:n will be used to
@@ -194,6 +199,7 @@ function add2spm(H,AX,BigAx,varargin)
 %}
     
 %% Beginning of code
+
 H=double(H);
 labeladd='';
 userleg='';

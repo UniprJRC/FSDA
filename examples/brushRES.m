@@ -63,6 +63,7 @@ function brushRES(eventdata)
 
 
 %% Beginning of code
+
 if nargin < 1
     % Other open demos create problems. Delete them before starting this new one.
     delete(((findobj('type','figure','Tag','demo'))));
