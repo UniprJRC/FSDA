@@ -37,30 +37,37 @@ function out = FSMfan(Y,la0,varargin)
 %               transformations does not have this limitation.
 %               Example - 'family','YJ' 
 %               Data Types - char
+%
 %        rf :   confidence level for bivariate ellipses. Scalar. Default is
 %               0.9.
 %                 Example - 'rf',0.99 
 %                 Data Types - double
+%
 %       init    : Point where to start monitoring required diagnostics.
 %                 Scalar. Note that if bsb is supplied init>=length(bsb). If
 %                 init is not specified it will be set equal to
 %                 floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
-% ColToComp :  variables for which likelihood ratio tests have to be produced. Vector. It is a k x 1 integer vector. For
-%               example, if ColToComp = [2 4], the signed likelihood ratio tests
-%               are produced for the second and the fourth column of matrix Y. If
-%               col.to.compare = '' then all variables (columns of matrix Y) are
-%               considered.
+%
+% ColToComp :  variables for which likelihood ratio tests have to be
+%              produced. Vector. It is a k x 1 integer vector. For example,
+%              if ColToComp = [2 4], the signed likelihood ratio tests are
+%              produced for the second and the fourth column of matrix Y.
+%              If col.to.compare = '' then all variables 
+%              (columns of matrix Y) are considered.           
 %                 Example - 'ColToComp',[1 3] 
 %                 Data Types - double
+%
 %   laAround:  It specifies for which values
-%               of lambda to compute the likelihood ratio test. Scalar. It is a  r x 1 vector. If this argument is
-%               omitted, the function produces for each variable specified in
-%               ColToComp the likelihood ratio tests associated to the five most
+%               of lambda to compute the likelihood ratio test. Scalar. It
+%               is a  r x 1 vector. If this argument is omitted, the
+%               function produces for each variable specified in ColToComp
+%               the likelihood ratio tests associated to the five most
 %               common values of lambda [-1, -0.5, 0, 0.5, 1].
 %                 Example - 'laAround',[1 0] 
 %                 Data Types - double
+%
 %   optmin  :   It contains the options dealing with the
 %               maximization algorithm. Structure. 
 %               Use optimset to set these options.
@@ -69,23 +76,29 @@ function out = FSMfan(Y,la0,varargin)
 %               fminsearch.
 %                 Example -'optmin.Display','off' 
 %                 Data Types - double 
+%
 %     speed : It indicates the initial value of
-%               the maximization procedure. Scalar. If speed=1 (default) the initial value at step m of
-%               the maximization procedure (fminunc or fminsearch) is the
-%               final value at step m-1 else it is la0.
+%               the maximization procedure. Scalar. If speed=1 (default)
+%               the initial value at step m of the maximization procedure
+%               (fminunc or fminsearch) is the final value at step m-1 else
+%               it is la0.
 %                 Example - 'speed',0
 %                 Data Types - double
-%   colnames: the names of the variables of the dataset. Cell array of strings. Cell array of strings of length v containing the names of
-%               the variables of the dataset. If colnames is empty then the
-%               sequence 1:v is created to label the variables.
+%
+%   colnames: the names of the variables of the dataset. Cell array of
+%             strings. Cell array of strings of length v containing the names of
+%             the variables of the dataset. If colnames is empty then the
+%             sequence 1:v is created to label the variables.
 %                 Example - 'colnames',{'1' '2' '3' '4' '5' '10' '11' '12' '13'}
 %                 Data Types - Cell array of strings.
+%
 %     signlr:  plots of signed square root
-%               likelihood ratios. Scalar. If signlr = 1 (default) plots of signed square root
-%               likelihood ratios are produced, else likelihood ratios are
-%               produced.
+%               likelihood ratios. Scalar. If signlr = 1 (default) plots of
+%               signed square root likelihood ratios are produced, else
+%               likelihood ratios are produced.
 %                 Example - 'signlr',0
 %                 Data Types - double
+%
 %   plotslrt:   It specifies whether it is necessary to
 %               plot the (signed square root) likelihood ratio test. Scalar or structure.
 %               If plotslrt is a scalar, the plot of the monitoring of
@@ -104,6 +117,7 @@ function out = FSMfan(Y,la0,varargin)
 %                   plotslrt.Tag      = tag of the plot (default is pl_lrt). 
 %                 Example -'plotslrt',1
 %                 Data Types - double
+%
 %  msg  :       Message on the screen. Scalar. It controls whether to
 %               display or not messages about great interchange on the
 %               screen. If msg==1 (default) messages are displyed on the screen
@@ -399,7 +413,9 @@ function out = FSMfan(Y,la0,varargin)
     [out]=FSMfan(Y,la0C1,'ColToComp',ColToComp,'laAround',laAround,'plotslrt',plotslrt,'init',100,'family','YJ');
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 % Extract size of the data
 [n,v]=size(Y);
 % Initialize matrix which will contain Mahalanobis distances in each step

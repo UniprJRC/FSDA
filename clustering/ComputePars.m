@@ -14,8 +14,10 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %
 %      S05 : 3D array of size v-by-v-by-k containing matrices 
 %           \Sigma_1^{0.5} ... , \Sigma_k^{0.5}
+%
 %     Sinv : 3D array of size v-by-v-by-k containing matrices 
 %           \Sigma_1^{-1} ... , \Sigma_k^{-1}
+%
 %     detS : vector of length k containing determinants of the covariance
 %            matrices of the k groups
 %            detS= (|\Sigma_1|, |\Sigma_2|, ..., |\Sigma_k|)   
@@ -33,12 +35,14 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %            to compute the probability of overlapping
 %            The non centrality parameter  of the non central chi^2 distribution
 %            associated with li(i,j,l)-1 is (li(i,j,l) di(i,j,l)/(li(i,j,l)-1))^2
+%
 %       di : 3D array of size k-by-k-by-p
 %            di(i,j,l)= \gamma_l' \Sigma_i^{-0.5}(\mu_i-\mu_j)
 %            l=1, 2, ...,v, where \gamma_l is the l-th eigenvector coming
 %            from the spectral decomposition of matrix \Sigma_j|i  . Vector
 %            di(i,j,:) contains the coefficients of N(0,1) (called W_l in
 %            equation 2.2 of Maitra and Melnikov (2010), JCGS)
+%
 %    const1: k x k matrix the  element i,j with i=1,..., k and j=1, ..., k
 %            is equal to log((Pi(j)/Pi(i))^2 * detS(i)/detS(j))
 %            where detS(i) and detS(j) are, respectively, the
@@ -105,6 +109,7 @@ function [li,di,const1]=ComputePars(v, k, Pi, Mu, S, S05, Sinv, detS)
 %}
 
 %% Beginning of code
+
 if nargin==5
     % S05 = p-by-p-by-k which will contain in the j-th third dimension
     % \Sigma_j^{0.5} j=1, 2, ..., k

@@ -54,6 +54,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   else no constant term will be included.
 %                   Example - 'intercept',1 
 %                   Data Types - double
+%
 % modeltype:    Parametric function to be used in the skedastic equation.
 %               String.
 %               If modeltype is 'arc' (default) than the skedastic function is
@@ -71,6 +72,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %               \]
 %               Example - 'modeltype','har' 
 %               Data Types - string
+%
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
 %                   h is an integer greater or
@@ -80,6 +82,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 subgroups of homogeneous observations.
 %                 Example - 'h',round(n*0,75) 
 %                 Data Types - double
+%
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar.
 %                 If nsamp=0 all subsets will be extracted.
@@ -88,6 +91,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 Data Types - double
 %                 Remark: if the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
+%
 %       lms     :  Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar,  vector or structure.
 %                 lms specifies the criterion to use to find the initlal
@@ -119,6 +123,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 lms=struct; lms.bsb=3. 
 %                 Example - 'lms',1 
 %                 Data Types - double
+%
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -129,6 +134,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 else no plot is produced.
 %                 Example - 'plots',1 
 %                 Data Types - double
+%
 %       init    : Search initialization. Scalar. 
 %                 It specifies the initial subset size to start
 %                 monitoring exceedances of minimum deletion residual, if
@@ -137,11 +143,13 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100 
 %               Data Types - double
+%
 %    gridsearch:  Algorithm to be used. Scalar.
 %                   If gridsearch ==1 grid search will be used else (default) the
 %               scoring algorith will be used.
 %               Example - 'gridsearch',1 
 %               Data Types - double
+%
 %       nocheck : Check input arguments. Scalar.
 %                 If nocheck is equal to 1 no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
@@ -149,6 +157,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 for the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
+%
 %    bivarfit : Superimpose bivariate least square lines. Character. 
 %               This option adds one or more least square lines, based on
 %                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
@@ -170,6 +179,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   of mixtures.
 %               Example - 'bivarfit',2 
 %               Data Types - char
+%
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                 This option adds one or more least square lines, based on
 %                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
@@ -189,34 +199,40 @@ function [out]=FSRH(y,X,Z,varargin)
 %                   (i.e. the normal units).
 %               Example - 'multivarfit','1' 
 %               Data Types - char
+%
 %      labeladd : Add outlier labels in plot. Character.
 %                   If this option is '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
 %               Example - 'labeladd','1' 
 %               Data Types - char
+%
 %       nameX  :  Add variable labels in plot. Cell array of strings.
 %               labels of the variables of the regression dataset. If it is empty
 %                 (default) the sequence X1, ..., Xp will be created
 %                 automatically
 %               Example - 'nameX',{'NameVar1','NameVar2'} 
 %               Data Types - cell
+%
 %       namey  :  Add response label. Character. 
 %               label of the response
 %               Example - 'namey','NameOfResponse' 
 %               Data Types - char
+%
 %       ylim   :   Control y scale in plot. Vector. 
 %                minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
 %               Example - 'ylim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
+%
 %       xlim   :  Control x scale in plot. Vector.
 %                minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
 %               Example - 'xlim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
+%
 %      bonflev  : Signal to use to identify outliers. Scalar.
 %                   option to be used if the distribution of the data is
 %                 strongly non normal and, thus, the general signal
@@ -235,6 +251,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 based on consecutive exceedances.
 %               Example - 'bonflev',0.99
 %               Data Types - double
+%
 %       msg    :  Level of output to display. Scalar. 
 %                   It controls whether to display or not messages
 %                 on the screen
@@ -243,6 +260,7 @@ function [out]=FSRH(y,X,Z,varargin)
 %                 else no message is displayed on the screen
 %               Example - 'msg',1 
 %               Data Types - double
+%
 % bsbmfullrank :  Dealing with singluar X matrix. Scalar. 
 %               It tells how to behave in case subset at step m
 %                 (say bsbm) produces a non singular X. In other words,
@@ -345,8 +363,9 @@ function [out]=FSRH(y,X,Z,varargin)
 
 %}
 
+%% Beginning of code
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

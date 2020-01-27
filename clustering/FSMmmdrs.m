@@ -27,6 +27,7 @@ function out=FSMmmdrs(Y,varargin)
 %               specified, it is set equal to p+1.
 %                 Example - 'init',10
 %                 Data Types - double
+%
 %   bsbsteps :  vector which specifies for which steps of the fwd search it
 %               is necessary to save the units forming subset for each
 %               random start. If bsbsteps is 0 for each random start we
@@ -41,14 +42,17 @@ function out=FSMmmdrs(Y,varargin)
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
+%
 %     nsimul :  scalar, number of random starts. Default value=200.
 %                 Example - 'nsimul',1000
 %                 Data Types - double
+%
 %   nocheck  : It controls whether to perform checks on matrix Y. Scalar.
 %                 If nocheck is equal to 1 no check is performed.
 %                 As default nocheck=0.
 %                 Example - 'nocheck',1
 %                 Data Types - double
+%
 %      plots :  scalar. If equal to one a plot of random starts minimum
 %               Mahalanobis residual appears  on the screen with 1%, 50% and
 %               99% confidence bands else (default) no plot is shown. 
@@ -66,6 +70,7 @@ function out=FSMmmdrs(Y,varargin)
 %               y scale) and in order to connect it dynamically to the
 %               other forward plots it is necessary to use function
 %               mmdrsplot.
+%
 %   numpool :  scalar. If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
@@ -107,19 +112,21 @@ function out=FSMmmdrs(Y,varargin)
 %               number of workers in the local/current profile overwrites
 %               default value of 'numpool' obtained as feature('numCores')
 %               (i.e. the number of physical cores).
-%  cleanpool :  Boolean. Cleanpool is 1 (true) if the parallel pool has to be cleaned after
-%               the execution of the random starts. Otherwise it is 0 (false).
-%               The default value of cleanpool is false.
-%               Clearly this option has an effect just if previous option
-%               numpool is > 1.
+%
+%  cleanpool :  Boolean. Cleanpool is 1 (true) if the parallel pool has to
+%               be cleaned after the execution of the random starts.
+%               Otherwise it is 0 (false). The default value of cleanpool
+%               is false. Clearly this option has an effect just if
+%               previous option numpool is > 1.
 %               Example - 'cleanpool',1
 %               Data Types - boolean
-%       msg  :  Level of output to display. Scalar. Scalar which controls whether to display or not messages
-%               about random start progress. More precisely, if previous
-%               option numpool>1, then a progress bar is displayed, on
-%               the other hand a message will be displayed on the screen
-%               when 10%, 25%, 50%, 75% and 90% of the random starts have
-%               been accomplished
+%
+%       msg  :  Level of output to display. Scalar. Scalar which controls
+%               whether to display or not messages about random start
+%               progress. More precisely, if previous option numpool>1,
+%               then a progress bar is displayed, on the other hand a
+%               message will be displayed on the screen when 10%, 25%, 50%,
+%               75% and 90% of the random starts have been accomplished.
 %                 Example - 'msg',0
 %                 Data Types - double
 %               REMARK: in order to create the progress bar when nparpool>1
@@ -178,6 +185,7 @@ function out=FSMmmdrs(Y,varargin)
 %               In other words, BBrs(:,:,j) with j=1, 2, ..., nsimul has
 %               the same structure as before, but now contains just
 %               length(bsbsteps) columns.
+%
 %       out.Y = original n-by-v input datamatrix.
 %
 % See also:     FSRmdr, FSRmdrrs, FSMmmd, mmdrsplot
@@ -332,14 +340,16 @@ function out=FSMmmdrs(Y,varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 
 nnargin   = nargin;
 vvarargin = varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n,v]=size(Y);
 
-%% User options
+% User options
 
 % check how many physical cores are available in the computer (warning:
 % function 'feature' is undocumented; however, FSDA is automatically

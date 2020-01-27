@@ -82,6 +82,7 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %               'ResponseVar','yield', 'ResponseVar',[4], 'ResponseVar',logical([0 0 0 1 0 0])
 %               Example - 'CategoricalVars',[3]
 %               Data Types: single | double | logical | char
+%
 %   VarNames : Names of variables in fit. 
 %              {'x1','x2',...,'xn','y'} (default) | cell array of character
 %              vectors. Names of variables in fit, specified as the
@@ -98,6 +99,7 @@ function out = FSreg(TBL,varargin) % [y, X | TBL], modelDef, ...
 %              options for the estimator. Character. Estimator is a string
 %              which may contain one of the following values 'FS', 'LXS',
 %              'S' or 'MM'.
+%
 %  Family  :   regression context. 
 %              Character specifying the context of the regression model or
 %              structure specifying the estimator.

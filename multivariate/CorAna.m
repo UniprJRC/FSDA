@@ -32,18 +32,21 @@ function out=CorAna(N, varargin)
 %               The default value of k is 2.
 %               Example - 'k',3
 %               Data Types - double
+%
 %       Lr   :  Vector of row labels. Cell.
 %               Cell containing the labels of the rows of the input
 %               contingency matrix N. This option is unnecessary if N is a
 %               table, because in this case  Lr=N.Properties.RowNames;
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
+%
 %       Lc   :  Vector of column labels. Cell.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a
 %               table, because in this case Lc=N.Properties.VariableNames;
 %               Example - 'Lc',{'c1' c2' 'c3' 'c4'}
 %               Data Types - cell array of strings
+%
 %       Sup  :  Structure containing indexes or names of supplementary rows
 %               or columns. Structure. Structure with the following fields.
 %               Sup.r = vector containing row indexes or vector of cell
@@ -105,6 +108,7 @@ function out=CorAna(N, varargin)
 %                       REMARK: The default value of Sup is a missing value
 %                       that is we assume that there are no supplementary
 %                       rows or columns.
+%
 % datamatrix  : Data matrix or contingency table. Boolean. If
 %               datamatrix is true the first input argument N is forced to
 %               be interpreted as a data matrix, else if the input argument
@@ -113,6 +117,7 @@ function out=CorAna(N, varargin)
 %               automatically considers N as a contingency table
 %               Example - 'datamatrix',true
 %               Data Types - logical
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows the Principal
 %               coordinates of rows and columns is shown on the screen. If
@@ -161,6 +166,7 @@ function out=CorAna(N, varargin)
 %                   value is 10.
 %                 Example - 'plots',1
 %                 Data Types - scalar double | struct
+%
 %  dispresults :  Display results on the screen. Boolean.
 %                 If dispresults is true (default) it is possible to see on the
 %                 screen all the summary results of the analysis.

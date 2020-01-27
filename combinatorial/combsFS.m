@@ -23,6 +23,7 @@ function P = combsFS(v,m)
 %    v:         A vector with n elements. It contains the response variable.
 %               It can be either a row or a column vector.
 %               Data Types - single|double
+%
 %    m:         Scalar. It specifies the size of the combinations.
 %               Data Types - single|double
 %
@@ -60,6 +61,7 @@ function P = combsFS(v,m)
 
 
 %% Beginning of code
+
 if nargin~=2
     error('FSDA:combsFS:WrongInputNum', 'Requires 2 input arguments.')
 end

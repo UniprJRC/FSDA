@@ -27,21 +27,26 @@ function resindexplot(residuals,varargin)
 %                   below).
 %                   Example -'h',h1 where h1=subplot(2,1,1)
 %                   Data Types - Axes object (supplied as a scalar)
+%
 %              x :  the vector to be plotted on the x-axis. Numeric vector.
 %                   As default the sequence 1:length(residuals) will be
-%                   used
+%                   used.
 %                   Example -'x',1:100
 %                   Data Types - double
+%
 %           labx :  a label for the x-axis. Character.  (default: '')
 %                   Example -'labx','row index'
 %                   Data Types - char
+%
 %           laby :  a label for the y-axis.  Character.  (default: '')
 %                   Example -'laby','scaled residuals'
 %                   Data Types - char
-%          title :  a label containing the title of the plot.  Character. Default value is
-%                   'Index plot of residuals'
+%
+%          title :  a label containing the title of the plot.  Character.
+%                   Default value is 'Index plot of residuals'
 %                   Example -'title','scaled residuals'
 %                   Data Types - char
+%
 %          numlab:  number of points to be identified in plots.
 %                   [] | cell ({5}) default) | numeric vector | structure.
 %                   NUMLAB IS A CELL.
@@ -63,6 +68,7 @@ function resindexplot(residuals,varargin)
 %                   points. The default value is 12.
 %                   Example -'numlab',[3,10,35]
 %                   Data Types - double
+%
 %        conflev :  confidence interval for the horizontal bands. Numeric
 %                   vector.
 %                   It can be a vector of different confidence level
@@ -70,31 +76,38 @@ function resindexplot(residuals,varargin)
 %                   Example -'conflev',[0.95,0.99,0.999]
 %                   Data Types - double
 %                   Remark: confidence interval is based on the chi^2 distribution
+%
 %        FontSize:  Scalar which controls the fontsize of the labels of the
 %                   axes. Default value is 12.
 %                   Example -'Fontsize',10
 %                   Data Types - double
+%
 %     SizeAxesNum:  Scalar which controls the fontsize of the numbers of
 %                   the axes. Default value is 10.
 %                   Example -'SizeAxesNum',10
 %                   Data Types - double
+%
 %           ylimy:  Vector with two elements which controla minimum and maximum
 %                   value of the y axis. Default is '', automatic scale.
 %                   Example -'ylimy',[-5 5]
 %                   Data Types - double
+%
 %           xlimx:  Vector with two elements controlling minimum and maximum
 %                   on the x axis. Default value is '' (automatic scale).
 %                   Example -'xlimx',[-5 5]
 %                   Data Types - double
+%
 %          lwdenv:  width of the lines associated
 %                   with the envelopes. Scalar. Default is lwdenv=1.
 %                   Example -'lwdenv',2
 %                   Data Types - double
+%
 %      MarkerSize:  size of the marker in points. Scalar.
 %                   The default value for MarkerSize is 6 points (1 point =
 %                   1/72 inch).
 %                   Example -'MarkerSize',10
 %                   Data Types - double
+%
 % MarkerFaceColor:  Marker fill color.
 %                   'none' | 'auto' | RGB triplet | color string.
 %                   Fill color for markers that are closed shapes
@@ -102,30 +115,29 @@ function resindexplot(residuals,varargin)
 %                   four triangles).
 %                   Example -'MarkerFaceColor','b'
 %                   Data Types - char
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a cell) enables the user  to select a set of
-%                   trajectories in the current plot and to see them
-%                   highlighted in the y|X plot, i.e. a matrix of scatter
-%                   plots of y against each column of X, grouped according
-%                   to the selection(s) done by brushing. If the plot y|X
-%                   does not exist, it is automatically created.
-%                   Please, note that the window style of the other figures is set
-%                   equal to that which contains the monitoring residual
-%                   plot. In other words, if the monitoring residual plot
-%                   is docked all the other figures will be docked too
-%                   DATABRUSH IS A SCALAR.
-%                   If databrush is a scalar the default selection tool is
-%                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='').
-%                   DATABRUSH IS A STRUCTURE.
-%                   If databrush is a structure, it is possible to use all
-%                   optional arguments of function selectdataFS.m and the
-%                   following fields
-%                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar
-%                     containing the strings 'on' or 'off'.
+%                   is done. The activation of this option (databrush is a scalar or a cell)
+%                   enables the user  to select a set of trajectories in
+%                   the current plot and to see them highlighted in the y|X
+%                   plot, i.e. a matrix of scatter plots of y against each
+%                   column of X, grouped according to the selection(s) done
+%                   by brushing. If the plot y|X does not exist, it is
+%                   automatically created. Please, note that the window
+%                   style of the other figures is set equal to that which
+%                   contains the monitoring residual plot. In other words,
+%                   if the monitoring residual plot is docked all the other
+%                   figures will be docked too.
+%                   DATABRUSH IS A SCALAR. If databrush is a scalar the
+%                   default selection tool is a rectangular brush and it is
+%                   possible to brush only once (that is persist='').
+%                   DATABRUSH IS A STRUCTURE. If databrush is a structure,
+%                   it is possible to use all optional arguments of
+%                   function selectdataFS.m and the following fields -
+%                   databrush.persist = repeated brushng enabled. Persist
+%                     is an empty value or a scalar containing the strings
+%                     'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
 %                     If persist is 'on' or 'off' brushing can be done as
@@ -186,17 +198,20 @@ function resindexplot(residuals,varargin)
 %                     i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
-%       nameX   :   regressor labels. Cell array of strings of length p containing the labels
-%                   of the variables of the regression dataset. If it is
-%                   empty (default) the sequence X1, ..., Xp will be created
-%                   automatically
+%
+%       nameX   :   regressor labels. Cell array of strings of length p
+%                   containing the labels of the variables of the
+%                   regression dataset. If it is empty (default) the
+%                   sequence X1, ..., Xp will be created automatically.
 %                   Example - 'nameX',{'Age','Income','Married','Profession'}
 %                   Data Types - cell
+%
 %       namey   :   response label. Character. Character containing the
 %                   label of the response. If it is
 %                   empty (default) label 'y' will be used.
 %                   Example - 'namey','response'
 %                   Data Types - char
+%
 %           tag  :  Figure tag. Character.
 %                   Tag of the figure which will host the malindexplot. The
 %                   default tag is pl_resindex
@@ -302,7 +317,9 @@ function resindexplot(residuals,varargin)
     resindexplot(randn(100,1),'numlab',numlab)
 %}
 
-%% Initialization
+%% Beginning of code 
+
+% Initialization
 
 if nargin<1
     error('FSDA:resindexplot:missingInputs','In order to run this function a vector of residuals has to be supplied')

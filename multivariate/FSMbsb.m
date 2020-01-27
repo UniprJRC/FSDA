@@ -27,6 +27,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %              specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50
 %                 Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -40,22 +41,27 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
-% plots :     Plot on the screen. Scalar.  If plots=1, a plot of the monitoring of minMD among
+%
+% plots :     Plot on the screen. Scalar.  
+%               If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
 %               else (default) no plot is produced.
 %               Example - 'plots',0
 %               Data Types - double
+%
 %  msg  :   It controls whether to display or not messages
 %               about great interchange on the screen. Scalar.
 %               If msg==1 (default) messages are displyed on the screen
 %               else no message is displayed on the screen
 %                 Example - 'msg',0
 %                 Data Types - double
-% nocheck :   It controls whether to perform checks on matrix Y. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix Y. As default nocheck=0.
+% nocheck :   It controls whether to perform checks on matrix Y. Scalar. 
+%             If nocheck is equal to 1 no check is performed on matrix Y. 
+%             As default nocheck=0.    
 %                 Example - 'nocheck',1
 %                 Data Types - double
+%
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -189,6 +195,7 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 
 
 %% Beginning of code
+
 % Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;

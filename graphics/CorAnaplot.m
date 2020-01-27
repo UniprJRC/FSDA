@@ -207,16 +207,19 @@ function CorAnaplot(out,varargin)
 %                   is 'auto'.
 %              Example - 'plots',plots=struct; plots.colorcols='k'
 %              Data Types - double
+%
 %       addx : horizontal displacement for labels. Scalar. Amount of
 %              horizontal displacement which has been put on the labels in the
 %              plot. The defalut value of addx is 0.04.
 %              Example - 'addx',0.01
 %              Data Types - double
+%
 %       addy : vertical displacement for labels. Scalar. Amount of
 %              vertical displacement which has been put on the labels in the
 %              plot. The defalut value of addy is 0.
 %              Example - 'addy',0.01
 %              Data Types - double
+%
 %changedimsign: change chosen dimension sign. Boolean vector of length 2.
 %               Sometimes for better interpretability it is necessary to
 %               change the sign of the coordinates for the chosen
@@ -230,6 +233,7 @@ function CorAnaplot(out,varargin)
 %               changed.
 %              Example - 'changedimsign', [true false]
 %              Data Types - boolean
+%
 % confellipse : confidence ellipses around rows and/or columns points.
 %               Scalar or struct.
 %               If confellipse is 1, 90 per cent confidence ellipses are
@@ -293,28 +297,33 @@ function CorAnaplot(out,varargin)
 %                   that is the axes are shown.
 %               Example - 'confellipse', 0
 %               Data Types - scalar or struct
+%
 %       xlimx   :   Min and Max of the x axis. Vector. Vector with two
 %                   elements controlling minimum and maximum
 %                   of the x axis.
 %                   Example - 'xlimx',[-1 1]
 %                   Data Types - double
+%
 %       ylimy   :   Min and Max of the y axis. Vector. Vector with two
 %                   elements controlling minimum and
 %                   maximum of the y axis.
 %                   Example - 'ylimy',[0 1]
 %                   Data Types - double
+%
 %        d1    :  Dimension to show on the horizontal axis. Positive
 %                 integer. Positive integer in the range 1, 2, .., K which
 %                 indicates the dimension to show on the x axis. The
 %                 default value of d1 is 1.
 %                 Example - 'd1',2
 %                 Data Types - single | double
+%
 %        d2    :  Dimension to show on the vertical axis. Positive
 %                 integer. Positive integer in the range 1, 2, .., K which
 %                 indicates the dimension to show on the y axis. The
 %                 default value of d2 is 2.
 %                 Example - 'd2',3
-%                 Data Types - single | double%
+%                 Data Types - single | double
+%
 %           h : the axis handle of a figure where to send the CorAnaplot.
 %               This can be used to host the CorAnaplot in a subplot of a
 %               complex figure formed by different panels (for example a panel
@@ -322,6 +331,7 @@ function CorAnaplot(out,varargin)
 %               with CorAnaplot from plots.alpha=0.5).
 %               Example -'h',h1 where h1=subplot(2,1,1)
 %               Data Types - Axes object (supplied as a scalar)
+%
 % Output:
 %
 %
@@ -789,7 +799,9 @@ function CorAnaplot(out,varargin)
     CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);
 %}
 
-%% Initialization
+%% Beginning of code
+
+% Initialization
 % Default font size for labels of rows or colums to add to the plot
 FontSizedef=10;
 MarkerSizedef=10;

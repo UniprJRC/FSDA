@@ -25,6 +25,7 @@ function [out]=addt(y,X,w,varargin)
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %   la:         Transformation parameter. Scalar | '' (empty value).
 %               It specifies for which Box Cox
 %               transformation parameter it is necessary to compute the t
@@ -32,27 +33,32 @@ function [out]=addt(y,X,w,varargin)
 %               value (default) no transformation is used.
 %               Example - 'la',0.5 tests square root transformation
 %               Data Types - double
+%
 %   plots:      Plot on the screen. Scalar.
 %               If plots=1 the added variable
 %               plot is produced else (default) no plot is produced.
 %               Example - 'plots',1
 %               Data Types - double
+%
 %   units:      Units to remove. Vector.
 %               Vector containing the list of
 %               units which has to be removed in the computation of the
 %               test. The default is to use all units
 %               Example - 'units',[1,3] removes units 1 and 3
 %               Data Types - double
+%
 %   textlab:    Labels of units in the plot. Character. If textlab=''
 %               default no text label is written on the plot
 %               for units else text label of units are added on the plot
 %               Example - 'textlab','1'
 %               Data Types - char
+%
 %   FontSize:   Label font size inside plot. Scalar. It controls the
 %               fontsize of the labels of the axes and eventual plot
 %               labels. Default value is 10
 %               Example - 'FontSize',14
 %               Data Types - double
+%
 %   SizeAxesNum: Font size of axes numbers. Scalar. It controls the
 %               fontsize of the numbers of the
 %               axes. Default value is 10
@@ -128,7 +134,9 @@ function [out]=addt(y,X,w,varargin)
 %}
 %
 %
-%% User options
+%% Beginning of code 
+
+% User options
 
 if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')
