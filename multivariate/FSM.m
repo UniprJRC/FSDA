@@ -16,8 +16,8 @@ function [out]=FSM(Y,varargin)
 %
 % Optional input arguments:
 %
-%          m0   : Initial subset size or vector which contains the list of the units forming
-%                 initial subset. Scalar or vector.
+%          m0   : Initial subset size or vector which contains the list of
+%                 the units forming initial subset. Scalar or vector.
 %                 The default is to start the search with v+1 units which
 %                 consisting of those observations which are not outlying
 %                 on any scatterplot, found as the intersection of all
@@ -27,6 +27,7 @@ function [out]=FSM(Y,varargin)
 %                 option below crit is ignored.
 %                 Example - 'm0',5
 %                 Data Types - double
+%
 %       crit    : It specified the criterion to be used to
 %                 initialize the search. Character.
 %                 if crit='md' the units which form initial subset are
@@ -56,18 +57,21 @@ function [out]=FSM(Y,varargin)
 %                 Remark: if crit='biv' the user can also supply in scalar rf
 %                 (see below) the confidence level of the bivariate
 %                 ellipses.
+%
 %        rf     : confidence level for bivariate ellipses. Scalar. The default is
 %                 0.95. This option is useful only if crit='biv'.
 %                 Example - 'rf',0.9
 %                 Data Types - double
+%
 %       init    : Point where to start monitoring required diagnostics. Scalar.
 %                 Note that if bsb is suppliedinit>=length(bsb). If init is not
 %                 specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50
 %                 Data Types - double
+%
 %       plots   : plot of minimum Mahalanobis distance.
-%                  Scalar or structure. If plots is a missing value or is a scalar equal to 0 no
-%                 plot is produced.
+%                 Scalar or structure. If plots is a missing value or is a
+%                 scalar equal to 0 no plot is produced.
 %                 If plots is a scalar equal to 1 (default) the plot
 %                 of minimum MD with envelopes based on n observations and
 %                 the scatterplot matrix with the outliers highlighted is
@@ -105,6 +109,7 @@ function [out]=FSM(Y,varargin)
 %                       envelopes. Default value of lwdenv=2.
 %               Example - 'plots',2
 %               Data Types - double
+%
 %      bonflev  : option that might be used to identify extreme outliers
 %                 when the distribution of the data is strongly non normal.
 %                 Scalar.
@@ -124,6 +129,7 @@ function [out]=FSM(Y,varargin)
 %                 based on consecutive exceedances.
 %                 Example - 'bonflev',0.7
 %                 Data Types - double
+%
 %       msg     : It controls whether to display or not messages
 %                 on the screen. Scalar.
 %                 If msg==1 (default) messages about the progression of the
@@ -131,6 +137,7 @@ function [out]=FSM(Y,varargin)
 %                 messages will be displayed.
 %                 Example - 'msg',0
 %                 Data Types - double
+%
 %   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
 %                 If nocheck is equal to 1 no check is performed.
 %                 As default nocheck=0.
@@ -271,7 +278,9 @@ function [out]=FSM(Y,varargin)
     [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 %chkinputM does not do any check if option nocheck=1
 nnargin=nargin;
 vvarargin=varargin;

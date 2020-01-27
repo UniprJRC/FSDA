@@ -49,7 +49,7 @@ function [out]  = MixSim(k,v,varargin)
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
 %               'EVI','VEI','EEI','VII','EII' which
 %               specifies the type of Gaussian Parsimonious Clustering
-%               Model which nedds to be generated. Note that this field is
+%               Model which needs to be generated. Note that this field is
 %               compulsory.
 %               sph.cdet = scalar which specifies the restriction factor
 %                          for determinants across groups. If this field is
@@ -745,7 +745,7 @@ out = Q;
                 
             elseif isstruct(sph)
                 % Apply the requested restrictions to Sgen
-                [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
+                [Sgen]  = restrSigmaGPCM(Sgen, Pigen, sph);
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);

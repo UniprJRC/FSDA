@@ -72,7 +72,7 @@ function S=genSigmaGPCM(v, k, modeltype)
     close all
     % These numbers are those which better exemplify the caractheristics of the
     % 14 specifications.
-    seeds=[100 20 12 209 51 6 76 8 9 22 11 12 130 14];
+    seeds=[100 20 12 209 51 6 76 8 9 29 111 12 130 14];
 
     for j=1:length(models)
         if withseed==true

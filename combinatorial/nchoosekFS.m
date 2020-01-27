@@ -7,6 +7,7 @@ function c = nchoosekFS(v,k)
 %
 %       v:  Vector of length n. Integer or array of non-negative integers. 
 %           Data Types - single|double
+%
 %       k:  Items to choose from the set of n elements. Non negative integer.
 %           Data Types - single|double
 %

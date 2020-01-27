@@ -23,9 +23,10 @@ function covplot(out,varargin)
 %
 %  Optional input arguments:
 %
-%       standard:   Appearance of the plot. Structure. Structure which defines the appearance of the plot
-%                   in terms of xlim, ylim, axes labels and their font size
-%                   style, color of the lines, etc.
+%       standard:   Appearance of the plot. Structure. Structure which
+%                   defines the appearance of the plot in terms of xlim,
+%                   ylim, axes labels and their font size style, color of
+%                   the lines, etc.
 %                   The structure contains the following fields:
 %                   standard.SizeAxesNum = scalar specifying the fontsize of the
 %                       axes numbers. Default value is 10.
@@ -82,31 +83,35 @@ function covplot(out,varargin)
 %                   fground.flabstep = numeric vector which specifies the steps of
 %                       the search where to put labels for the highlighted
 %                       trajectories (units). The default is to put the
-%                       labels at the initial and final steps of the search, that is fground.flabstep=[m0 n].
+%                       labels at the initial and final steps of the
+%                       search, that is fground.flabstep=[m0 n].
 %                       flabstep='' means no label.
 %                   fground.LineWidth = scalar specifying line width for the
 %                       highlighted trajectories (units). Default is 1.
 %                   fground.Color = cell array of strings containing the colors to
 %                       be used for the highlighted trajectories (units).
-%                       If length(scolor)==1 the same color will be used for
-%                       all highlighted units.
-%                       If for example length(scolor)=2 and there are 6 highlighted units,
-%                       3 highlighted trajectories appear with selunitcolor{1} and 3 highlighted trajectories with
+%                       If length(scolor)==1 the same color will be used
+%                       for all highlighted units. If for example
+%                       length(scolor)=2 and there are 6 highlighted units,
+%                       3 highlighted trajectories appear with
+%                       selunitcolor{1} and 3 highlighted trajectories with
 %                       selunitcolor{2}.
-%                   fground.LineStyle = cell containing the line type of the highlighted
-%                       trajectories.
+%                   fground.LineStyle = cell containing the line type of
+%                                       the highlighted trajectories.                      
 %                   fground.fmark  = scalar controlling whether to plot highlighted
-%                       trajectories as markers. If 1 each trajectory is plotted using a different marker
-%                       else (default) no marker is used.
+%                       trajectories as markers. If 1 each trajectory is
+%                       plotted using a different marker else (default) no
+%                       marker is used.
 %                   Example - 'fground',fground
 %                   Data Types - structure
 %
-%       tag     :   Handle of the plot. String. String which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_cov'. Note that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created.
+%       tag     :   Handle of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_cov'. Note that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created.
 %                   Example - 'tag','pl_mycov'
 %                   Data Types - string
 %
@@ -236,10 +241,9 @@ function covplot(out,varargin)
 %}
 %
 
+%% Beginning of code 
 
-
-%% Initialization
-%
+% Initialization
 
 [n,v]=size(out.Y);
 

@@ -21,30 +21,38 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %               value is 0.5.
 %               Example - 'bdp',1/4 
 %               Data Types - double
-%      nsamp  : Number of subsamples. Scalar. Number of subsamples of size v+1 which have
-%               to be extracted (if not given, default = 500).
+%
+%      nsamp  : Number of subsamples. Scalar. 
+%               Number of subsamples of size v+1 which have to be extracted 
+%               (if not given, default = 500).
 %               Example - 'nsamp',10000 
 %               Data Types - double
-%    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
-%               subsample (default = 3).
+%
+%    refsteps : Number of refining iterations. Scalar. 
+%               Number of refining iterationsin each subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'refsteps',0 
 %                 Data Types - single | double
-%     reftol  : Tolerance for the refining steps. scalar. Default value of tolerance for the refining steps.
+%
+%     reftol  : Tolerance for the refining steps. scalar. 
+%               Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
 %                 Example - 'reftol',1e-8 
 %                 Data Types - single | double
-%     conflev : Confidence level Scalar. Number between 0 and 1 containing confidence level which is
-%               used to declare units as outliers.
+%
+%     conflev : Confidence level Scalar. Number between 0 and 1 containing
+%               confidence level which is used to declare units as outliers.               
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
 %               Example - 'conflev',0.99
 %               Data Types - double
+%
 %      nocheck: No check on input data. Scalar. If nocheck is equal to 1 no check
 %               is performed on matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots is a structure or scalar equal to 1, generates: 
 %               (1) a plot of Mahalanobis distances against index number. The
@@ -63,6 +71,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                       are added are Y1, ...Yv.
 %               Example - 'plots',1
 %               Data Types - double or structure
+%
 %        msg  : Level of display. Scalar. Display or not messages
 %               on the screen. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
@@ -70,18 +79,22 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 
-%    ysaveRAW : save input matrix. Scalar. Scalar that is set to 1 to request that the data matrix Y
-%               is saved into the output structure RAW. This feature is
-%               meant at simplifying the use of function malindexplot.
-%               Default is 0, i.e. no saving is done.
+%    ysaveRAW : save input matrix. Scalar. Scalar that is set to 1 to
+%               request that the data matrix Y is saved into the output
+%               structure RAW. This feature is meant at simplifying the use
+%               of function malindexplot. Default is 0, i.e. no saving is
+%               done.
 %               Example - 'ysaveRAW',1
 %               Data Types - double
-%    ysaveREW : save input matrix. Scalar. Scalar that is set to 1 to request that the data matrix Y
-%               is saved into the output structure REW. This feature is
-%               meant at simplifying the use of function malindexplot.
+%
+%    ysaveREW : save input matrix. Scalar. Scalar that is set to 1 to
+%               request that the data matrix Y is saved into the output
+%               structure REW. This feature is meant at simplifying the use
+%               of function malindexplot.
 %               Default is 0, i.e. no saving is done.
 %               Example - 'ysaveREW',1
 %               Data Types - double
+%
 %  Output:
 %
 %  The output consists of two structures RAW and REW. RAW refers to raw

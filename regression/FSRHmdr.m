@@ -62,11 +62,13 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               step we just use prior information
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  intercept :   Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %               else no constant term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 % modeltype:    Parametric function to be used in the skedastic equation.
 %               String.
 %               If modeltype is 'arc' (default) than the skedastic function is
@@ -84,16 +86,19 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               \]
 %               Example - 'modeltype','har'
 %               Data Types - string
-%  plots :    Plot on the screen. Scalar.
-%               If equal to one a plot of Bayesian minimum deletion residual
-%               appears  on the screen with 1 per cent, 50 per cent and 99 per cent confidence
-%               bands else (default) no plot is shown.
+%
+%  plots :      Plot on the screen. Scalar.
+%               If equal to one a plot of Bayesian minimum deletion
+%               residual appears  on the screen with 1 per cent, 50 per
+%               cent and 99 per cent confidence bands else (default) no
+%               plot is shown.
 %               Remark. the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
 %               function mdrplot
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -101,6 +106,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
@@ -108,6 +114,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 % gridsearch:   Algorithm to be used. Scalar.
 %               If gridsearch ==1 grid search will be used else the
 %               scoring algorith will be used.
@@ -115,11 +122,13 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               Data Types - double
 %               REMARK: the grid search has only been implemented when
 %               there is just one explantory variable which controls
-%               heteroskedasticity
+%               heteroskedasticity.
+%
 %  constr :    units which are forced to join the search in the last r steps. Vector.
 %               r x 1 vector. The default is constr=''.  No constraint is imposed
 %               Example - 'constr',[1 6 3]
 %               Data Types - double
+%
 % bsbmfullrank :It tells how to behave in case subset at step m
 %               (say bsbm) produces a non singular X. Scalar.
 %               In other words, this options controls what to do when rank(X(bsbm,:)) is
@@ -131,6 +140,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               found in the previous step.
 %               Example - 'bsbmfullrank',0
 %               Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets (and weights vector) in
 %               selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
@@ -337,7 +347,9 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

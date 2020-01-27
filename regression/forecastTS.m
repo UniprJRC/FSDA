@@ -539,6 +539,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %}
 
 %% Beginning of code
+
 if nargin<1
     error('FSDA:forecastTS:MissingInputs','Input structure is missing');
 end

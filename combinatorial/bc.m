@@ -7,6 +7,7 @@ function c = bc(n,k)
 %
 %       n:  Number of elements. Non negative integer. 
 %           Data Types - single|double
+%
 %       k:  Items to choose from the set of n elements. Non negative integer.
 %           Data Types - single|double
 %

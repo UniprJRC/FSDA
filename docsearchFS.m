@@ -33,6 +33,7 @@ function docsearchFS(varargin)
 %}
 
 %% Beginning of code
+
 if nargin <1
     namehtmlhelpfile = deblank(sprintf('%s ', varargin{:}));
 elseif nargin == 1

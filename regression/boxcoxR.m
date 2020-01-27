@@ -52,6 +52,7 @@ function out=boxcoxR(y,X, varargin)
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %    family :   parametric transformation to use. String. String which
 %               identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox'
@@ -72,6 +73,7 @@ function out=boxcoxR(y,X, varargin)
 %               limitation).
 %               Example - 'family','YJ'
 %               Data Types - char
+%
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
 %                 no check is performed on
 %                 vector y and matrix X. Notice that y and X are left
@@ -79,6 +81,7 @@ function out=boxcoxR(y,X, varargin)
 %                 for the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %        conflev : Confidence level for lambda. Scalar.
 %                  scalar between 0 and 1 determining
 %                  confidence level for
@@ -87,6 +90,7 @@ function out=boxcoxR(y,X, varargin)
 %                  The default confidence level is 0.95;
 %               Example - 'conflev',0.99
 %               Data Types - double
+%
 %          laseq : Sequence of values of lambda to consider. Vector. Vector
 %                  which contains the sequence of values of lambda for
 %                  which the profile loglikelihood has to be computed if
@@ -95,6 +99,7 @@ function out=boxcoxR(y,X, varargin)
 %                  is 'YJpn';
 %               Example - 'laseq',[-1:0.001;0.7]
 %               Data Types - double
+%
 %          laseqPos : Transformation for positive observations. 
 %                  Vector. Vector
 %                  which contains the sequence of values of lambda which
@@ -104,6 +109,7 @@ function out=boxcoxR(y,X, varargin)
 %                  if family is 'BoxCox' or 'YJ'
 %               Example - 'laseqPos',[-1:0.001;0.7]
 %               Data Types - double
+%
 %          laseqNeg : Transformation for negative observations. 
 %                  Vector. Vector
 %                  which contains the sequence of values of lambda which
@@ -113,6 +119,7 @@ function out=boxcoxR(y,X, varargin)
 %                  is 'BoxCox' or 'YJ' 
 %               Example - 'laseqNeg',[-1:0.001;0.7]
 %               Data Types - double
+%
 %   plots  :    Profile log likelihood for lambda. Boolean.
 %               It specifies whether it is necessary to show the profile
 %               log likelihood of lambda. If plots is true, the plot of the

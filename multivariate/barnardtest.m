@@ -28,6 +28,7 @@ function pval=barnardtest(N,varargin)
 %               The default value of the resolution is 0.001.
 %               Example - 'resolution',0.01
 %               Data Types - single | double
+%
 % datamatrix :  Data matrix or contingency table. Boolean.
 %               If datamatrix is true the first input argument N is forced
 %               to be interpreted as a data matrix, else if the input

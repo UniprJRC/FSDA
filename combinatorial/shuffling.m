@@ -160,6 +160,7 @@ function x = shuffling(x)
 
 
 %% Beginning of code
+
 %if iscolumn(x) ; x = x' ; end;
 n = numel(x);
 I = n:-1:1;

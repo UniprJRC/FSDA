@@ -25,6 +25,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else no constant term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %           h : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
 %               The number of observations that have determined the least
@@ -37,6 +38,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               [0.5*(n+p+1)]. If h <p+1 an error will be given.
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
+%
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
 %               the algorithm should
@@ -48,6 +50,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               given. Please specify h or bdp not both.
 %                 Example - 'bdp',0.4
 %                 Data Types - double
+%
 %       nsamp : Number of subsamples which will be extracted to find the
 %               robust estimator. Scalar.
 %               If nsamp=0 all subsets will be extracted. They will be (n choose p).
@@ -57,6 +60,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               default is to extract all subsets, otherwise just 1000 if
 %               fastLTS is used (lms=2 or lms is a structure) or 3000 for
 %               standard LTS or LMS.
+%
 %       lms   : Criterion to use to find the initlal
 %                 subset to initialize the search. Scalar, vector or structure.
 %               If lms is a scalar = 1 (default) Least Median of Squares is
@@ -81,6 +85,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %                               The default value is 1e-8.
 %                 Example - 'lms',1
 %                 Data Types - double
+%
 %       rew   : LXS reweighted. Scalar.
 %                If rew=1 the reweighted version of LTS (LMS) is
 %               used and the output quantities refer to the reweighted
@@ -88,6 +93,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else no reweighting is performed (default).
 %                 Example - 'rew',1
 %                 Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -95,6 +101,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows the
 %               robust residuals against index number is shown on the
@@ -105,6 +112,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               be used.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %        msg  : It controls whether to display or not messages on the screen. Scalar.
 %                If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
@@ -114,6 +122,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 %      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additioanl column of ones for
@@ -121,6 +130,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               controls on h, bdp and nsamp still remain.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %        nomes:  It controls whether to display or not on the screen
 %               messages about estimated  time to compute LMS (LTS) . Scalar.
 %               If nomes is equal to 1 no message about estimated
@@ -129,6 +139,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               displayed.
 %               Example - 'nomes',1
 %               Data Types - double
+%
 %  bonflevoutX : remote units in the X space. Scalar or empty (default).
 %               If the design matrix X contains several high leverage units
 %               (that is units which are very far from the bulk of the
@@ -398,7 +409,9 @@ function [out , varargout] = LXS(y,X,varargin)
     title('Fit using best subset with option bonflevoutX  not empty')
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

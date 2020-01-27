@@ -101,11 +101,13 @@ function [out, varargout] = LTSts(y,varargin)
 %                               model.lshift=0;
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
+%
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %           h : The number of observations that determined the least
 %               trimmed squares estimator. Scalar. h is an integer greater
 %               than p (number of columns of matrix X including the
@@ -115,12 +117,14 @@ function [out, varargout] = LTSts(y,varargin)
 %               that if h is supplied input argument bdp is ignored.
 %                 Example - 'h',round(n*0.75)
 %                 Data Types - double
+%
 %         bdp : breakdown point. Scalar. It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
 %               than 0 but smaller or equal than 0.5 will do fine. Please
 %               specify h or bdp, but not both.
 %                 Example - 'bdp',0.4
 %                 Data Types - double
+%
 %       lts   : structure which controls a set of options of the
 %               maximization procedure. Structure. Structure with the
 %               following fields:
@@ -145,6 +149,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                Data Types - struct
 %              Remark: if lts is an empty value all default values of
 %              structure lts will be used.
+%
 %       nsamp : number of subsamples to extract. Scalar or vector of length 2.
 %               Vector of length 1 or 2 which controls the number of
 %               subsamples which will be extracted to find the robust
@@ -169,17 +174,20 @@ function [out, varargout] = LTSts(y,varargin)
 %                 Data Types - double
 %               Remark: if nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
+%
 %  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
 %                 for the refining steps inside ALS routine. The default
 %                 value is 1e-03.
 %                 Example - 'reftolALS',1e-05
 %                 Data Types - double
+%
 % refstepsALS :   Maximum iterations inside ALS. Scalar. Maximum number
 %                 of iterations inside ALS routine. Default value of
 %                 tolerance for the refining steps inside ALS routine. The
 %                 default value is 50.
 %                 Example - 'refstepsALS',20
 %                 Data Types - double
+%
 %     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
 %               Confidence level which is used to declare units as
 %               outliers. Usually conflev=0.95, 0.975 0.99 (individual
@@ -187,6 +195,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               alpha). Default value is 0.975.
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots : Plots on the screen. Scalar.
 %               If plots = 1, a two panel plot will be shown on the screen.
 %               The upper panel contains the orginal time series with
@@ -217,6 +226,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               screen.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %SmallSampleCor:Small sample correction factor to control empirical size of
 %               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
 %               - If SmallSampleCor=1 in the reweighting step the nominal
@@ -243,6 +253,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
 %                 Example - 'SmallSampleCor',3
 %                 Data Types - double
+%
 %        msg  : Messages on the screen. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen. If msg==1 (default) messages are displayed on
@@ -252,6 +263,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               are set to off else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 %      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
 %               check is performed on matrix y and matrix X. Notice that y
 %               and X are left unchanged. In other words the additioanl
@@ -259,6 +271,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               nocheck=0. The controls on h, bdp and nsamp still remain.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 % lshiftlocref: Parameters for local shift refinement. Structure.
 %               This option is used just if model.lshift is greater then 0.
 %               In order to precisely identify level shift position it is
@@ -280,6 +293,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                   in case lshiftlocref.typeres=1. The default value is 2.
 %               Example - 'lshiftlocref',lshiftlocref.typeres=2
 %               Data Types - struct
+%
 %nbestindexes : position of the best solutions. Positive integer. For each
 %               tentative level shift solution, it is interesenting to
 %               understand whether best solutions of target function come
@@ -298,6 +312,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               we want to store. The default value of nbestindexes  is 3.
 %               Example - 'nbestindexes',5
 %               Data Types - double
+%
 %  dispresults : Display results of final fit. Boolean. If dispresults is
 %               true,  labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
@@ -305,6 +320,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               dispresults is false.
 %               Example - 'dispresults',true
 %               Data Types - logical
+%
 %       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
 %                vector y and data matrix X are saved into the output
 %                structure out. Default is 0, i.e. no saving is done.
@@ -880,7 +896,9 @@ function [out, varargout] = LTSts(y,varargin)
 
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 % setting global variable yin
 yin = y;

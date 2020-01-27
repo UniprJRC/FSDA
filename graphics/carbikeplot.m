@@ -28,8 +28,8 @@ function h  = carbikeplot(RelSol,varargin)
 %  Required input arguments:
 %
 %           RelSol : Relevant solutions produced by function tclustICsol. Structure.
-%                It contains
-%                the following fields.
+%                It contains the following fields:
+%
 %   RelSol.MIXMIXbs = cell of size NumberOfBestSolutions-times-5 which contains
 %                the details of the best solutions for MIXMIX (BIC).
 %                Each row refers to a solution.  The information which is
@@ -85,8 +85,9 @@ function h  = carbikeplot(RelSol,varargin)
 %  Optional input arguments:
 %
 %
-% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As default spurios solutions
-%               are not included into the plot
+% SpuriousSolutions  :  Include or nor spurious solutions. Boolean. As
+%                       default spurios solutions are not included into the
+%                       plot.
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
@@ -167,6 +168,7 @@ function h  = carbikeplot(RelSol,varargin)
 
 
 %% Beginning of code
+
 if ~isstruct(RelSol)
     error('FSDA:carbikeplot:WrongInput','First input argument must be a structure.');
 end

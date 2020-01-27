@@ -29,6 +29,7 @@ function [PD , pval] = CressieRead(N,varargin)
 %               $\lambda=2/3$ is the value suggested by Cressie and Read (2004).
 %               Example - 'la',0
 %               Data Types - double
+%
 % datamatrix  : Data matrix or contingency table. Boolean. If datamatrix
 %               is true the first input argument N is forced to be
 %               interpreted as a data matrix, else if the input argument is

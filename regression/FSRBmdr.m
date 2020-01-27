@@ -56,6 +56,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               initialize the search just using prior information.
 %                 Example - 'bsb',[3,6,9]
 %                 Data Types - double
+%
 %  init :       Search initialization. Scalar.
 %               It specifies the point where to start monitoring
 %               required diagnostics. If it is not specified it is set
@@ -67,11 +68,13 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               prior information)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  intercept :   Indicator for constant term. Scalar.
 %               If 1, a model with constant term will be fitted (default),
 %                else no constant term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of Bayesian minimum deletion residual
 %               appears  on the screen with 1%, 50% and 99% confidence
@@ -81,7 +84,8 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               Remark: the plot which is produced is very simple. In order
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is necessary to use
-%               function mdrplot
+%               function mdrplot.
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -89,6 +93,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
 %               about great interchange on the screen
@@ -96,6 +101,7 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 %   bsbsteps :  steps of the fwd search where to save the units forming subset. Vector.
 %               If bsbsteps is 0 we store the units forming
 %               subset in all steps. The default is store the units forming
@@ -396,9 +402,9 @@ function [mdrB,Un,BB,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, varargi
     mdrB=FSRBmdr(y,X,beta0, R, tau0, n0,'init',300,'plots',1);
 %}
 
+%% Beginning of code
 
-
-%% Input parameters checking
+% Input parameters checking
 
 if nargin < 6
     error('FSDA:FSRBmdr:missingInputs','Some Bayesian input (beta0, R, tau0, n0) is missing');

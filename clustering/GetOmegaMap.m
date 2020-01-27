@@ -60,14 +60,15 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %           REMARK: li, di and const1 are the parameters needed for computing
 %           overlap
 %               Data Types - single | double
-%      fix : Inflation/Deflation clusters. Vector. Vector of length k containing zeros or ones
-%          if fix(j) =1 cluster j does not participate to inflation or
-%          deflation. If fix=zeros(k,1) all clusters participate in
-%          inflation/deflation.
-%          REMARK: this parameter is used just if heterogeneous clusters
-%          are used.
+%      fix : Inflation/Deflation clusters. Vector. Vector of length k
+%            containing zeros or ones if fix(j) =1 cluster j does not
+%            participate to inflation or deflation. If fix=zeros(k,1) all
+%            clusters participate in inflation/deflation.
+%            REMARK: this parameter is used just if heterogeneous clusters
+%            are used.
 %               Data Types - single | double
-%      tol : overlap tolerance. Scalar. Error bound for overlap computation default is 1e-06
+%      tol : overlap tolerance. Scalar. Error bound for overlap computation
+%            default is 1e-06
 %               Data Types - single | double
 %      lim : maximum number of integration terms. Scalar. default is 1e06.
 %               REMARK: Optional parameters tol and lim will be used by
@@ -92,16 +93,16 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %
 %  Optional input arguments:
 %
-%     toll : eigenvalues tolerance. Scalar. Tolerance use to declare the eigenvalues of matrix
-%           $\Sigma_{j|i}$ equal to 1. The default value is 1e-06
-%           Background: the probability of overlapping is the result of two
-%           sums. The first is a sum in correspondence of the eigenvalues
-%           of matrix $\Sigma_{j|i}$ not equal 1. The second is a sum in
-%           correspondence of the eigenvalues of matrix \Sigma_j|i equal 1.
-%           Similarly, what is on the right hand side of the probability of
-%           overlapping has two sums (for eigenvalues equal or different
-%           from 1). Toll specifies when we must consider an eigenvalue
-%           equal to 1.
+%    toll : eigenvalues tolerance. Scalar. Tolerance use to declare the
+%           eigenvalues of matrix $\Sigma_{j|i}$ equal to 1. The default
+%           value is 1e-06 Background: the probability of overlapping is
+%           the result of two sums. The first is a sum in correspondence of
+%           the eigenvalues of matrix $\Sigma_{j|i}$ not equal 1. The
+%           second is a sum in correspondence of the eigenvalues of matrix
+%           \Sigma_j|i equal 1. Similarly, what is on the right hand side
+%           of the probability of overlapping has two sums (for eigenvalues
+%           equal or different from 1). Toll specifies when we must
+%           consider an eigenvalue equal to 1.
 %               Example - 'toll',1e-10
 %               Data Types - double
 %
@@ -113,11 +114,14 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %               (that is conditionally on x belonging to cluster i,  which
 %               is called $w_{j|i}$) 
 %               $(i ~= j)=1, 2, ..., k$.
+%
 %    BarOmega : Average overlap. Scalar.
 %               BarOmega is computed as (sum(sum(OmegaMap))-k)/(0.5*k(k-1))
+%
 %    MaxOmega : Maximum overlap. Scalar. MaxOmega is the
 %               maximum of OmegaMap(i,j)+OmegaMap(j,i)
 %               $(i ~= j)=1, 2, ..., k$
+%
 %       rcMax : Components with highest overlap. Column vector of length
 %               equal to 2. It contains the indexes
 %               associated with the pair of components producing the
