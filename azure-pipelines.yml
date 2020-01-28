@@ -33,4 +33,4 @@ jobs:
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
-        testResultsFiles: test-$(categoryName)/test-report.xml
+        testResultsFiles: '**/test-$(categoryName)/test-report.xml'  
