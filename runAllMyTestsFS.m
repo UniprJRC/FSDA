@@ -190,10 +190,26 @@ for i=1:nfiles
     % OUT{i,1}.titl;
 end
 
+
 cd(testpath);
-testResults = runtests;
-cd ..
-save ([cat2test '_testResults.mat'], 'testResults')
+
+% Create test suite of all tests in current folder
+suite = testsuite(pwd);
+
+% Create a TestRunner
+runner = matlab.unittest.TestRunner.withTextOutput();
+
+% Add a plugin to produce a JUnit-style test report
+runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat('test-report.xml'));
+
+% Run the test suite
+runner.run(suite);
+
+
+%cd(testpath);
+%testResults = runtests([FSDAroot '/' testpath]);
+%cd ..
+%save ([cat2test '_testResults.mat'], 'testResults')
 %rmdir('tests', 's')
 
 % TotSummary1=TotSummary(1:ij-1,:);

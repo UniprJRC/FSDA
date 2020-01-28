@@ -30,3 +30,7 @@ jobs:
   steps:
     - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
     - script: matlab -batch "run runAllMyTestsFS.m" 
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: test-$(categoryName)/test-report.xml
