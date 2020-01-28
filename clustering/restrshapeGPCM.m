@@ -20,14 +20,16 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 %     lmd : Determinants. Vector.
 %            Row vector of length k containing in the j-th position
-%           $|\Sigma_j|^(1/p)$, $j=1, 2, \ldots, k$ if different
-%           determinants are allowed else it is a row vector of ones.
+%           the estimate of lambda. In the first iteration the estiamte of
+%           \lambda_j is $|\Sigma_j|^(1/v)$, $j=1, 2, \ldots, k$ if
+%           different determinants are allowed else it is a row vector of
+%           ones.
 %    Omega : Rotation. 3D array.
-%           p-by-p-by-k 3D array containing in
+%           v-by-v-by-k 3D array containing in
 %           position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$.
-%   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
-%            p-by-p-by-k array containing the k unconstrained covariance
+%   SigmaB : initial unconstrained covariance matrices. v-by-v-by-k array.
+%            v-by-v-by-k array containing the k unconstrained covariance
 %            matrices for the k groups.
 %   niini  : size of the groups. Vector.
 %           Row vector of length k containing the size of the groups.
@@ -53,7 +55,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
+%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:
@@ -79,7 +81,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 % References:
 %
-%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
+%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2020),
 %   Robust parsimonious clustering models. Submitted.
 %
 %
@@ -97,44 +99,38 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 k=pa.k;
 v=pa.v;
 pars=pa.pars;
-% if strcmp(pars(2),'E')
-%     % In this case just restriction shw is used
-%     shw=pa.shw;
-%     
-%     if sum(isnan(lmd))>0
-%         for j = k
-%             lmd(j) = (det(SigmaB(:,:,j))).^(1 /pa.v);
-%         end
-%     end
-%     
-%     sumnini=sum(niini);
-%     GAMpooled=zeros(p,p);
-%     
-%     for j=1:k
-%         GAMj=(niini(j)/sumnini)*  (1./lmd(j)) * (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j);
-%         if sum(sum(isnan(GAMj)))>0
-%             GAMj=zeros(p,p);
-%         end
-%         GAMpooled=GAMpooled+GAMj;
-%     end
-%     
-%     % Apply the constraint shw to the diagonal elements of the pooled Gamma matrix
-%     % GAMpooledc is a column vector of length p which contains the diagonal
-%     % elements of the pooled \Gamma matrix after applying constraint shw
-%     GAMpooledc = restreigen(diag(GAMpooled),1,shw,pa.zerotol);
-%     
-%     % Impose the constraint that the product of the elements of vector
-%     % GAMpooledc is equal to 1
-%     lmd=(prod(GAMpooledc,1)).^(1/pa.v);
-%     es=lmd;
-%     es(es==0)=1;
-%     GAMpooledc=GAMpooledc./es;
-%     
-%     % replicate p-by-1 GAMpooledc vector k times
-%     GAMc=repmat(GAMpooledc,1,k);
-%    
-% else
-if strcmp(pars(2),'I')
+
+if strcmp(pars(2),'E')
+    % In this case just restriction shw is used
+    shw=pa.shw;
+    
+    sumnini=sum(niini);
+    GAMpooled=zeros(v,v);
+    
+    for j=1:k
+        GAMj=(niini(j)/sumnini)*  (1./lmd(j)) * (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j);
+        if sum(sum(isnan(GAMj)))>0
+            GAMj=zeros(v,v);
+        end
+        GAMpooled=GAMpooled+GAMj;
+    end
+    
+    % Apply the constraint shw to the diagonal elements of the pooled Gamma matrix
+    % GAMpooledc is a column vector of length p which contains the diagonal
+    % elements of the pooled \Gamma matrix after applying constraint shw
+    GAMpooledc = restreigen(diag(GAMpooled),1,shw,pa.zerotol);
+    
+    % Impose the constraint that the product of the elements of vector
+    % GAMpooledc is equal to 1
+    lmd=(prod(GAMpooledc,1)).^(1/pa.v);
+    es=lmd;
+    es(es==0)=1;
+    GAMc=GAMpooledc./es;
+    
+    % replicate v-by-1 GAMpooledc vector k times
+    GAMc=repmat(GAMc,1,k);
+    
+elseif strcmp(pars(2),'I')
     GAMc=ones(v,k);
     
 else % This is the case strcmp(pars(2),'V')
@@ -144,17 +140,17 @@ else % This is the case strcmp(pars(2),'V')
     maxiterS=pa.maxiterS;
     zerotol=pa.zerotol;
     for j=1:k
-        lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) );
+        lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) )/lmd(j);
     end
     GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh);
 end
 
-    % Impose the constraint that the product of the elements of vector
-    % GAMc is equal to 1
-    lmd=(prod(GAMc,1)).^(1/pa.v);
-    es=lmd;
-    es(es==0)=1;
-    GAMc=GAMc./es;
+%     % Impose the constraint that the product of the elements of vector
+%     % GAMc is equal to 1
+%     lmd=(prod(GAMc,1)).^(1/pa.v);
+%     es=lmd;
+%     es(es==0)=1;
+%     GAMc=GAMc./es;
 
 end
 
@@ -169,7 +165,7 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %
 % Required input arguments:
 %
-% lamGAM  : matrix of size p-by-k
+% lamGAM  : matrix of size v-by-k
 %           lamGAM contains in the first column the elements on the
 %           diagonal of (lam(1)* GAM(:,:,1)). In other words the first
 %           column contains the diagonal elements of matrix
@@ -198,7 +194,7 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
+%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:
