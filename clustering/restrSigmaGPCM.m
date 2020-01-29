@@ -191,7 +191,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
     % Generate 3 cov matrices of size 2-by-2
     rng(1500)
     Sig = [1 .5; .5 2];
-    df = 10; 
+    df = 10;
     k=3;
     v=2;
     Sigma=zeros(v,v,k);
@@ -227,7 +227,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
    for j=1:k
         Sigma(:,:,j)=cov(reshape(mtR(n*v,1,-1),n,v)).*add;
    end
-    sph=struct; 
+    sph=struct;
     sph.pars='EVV';
     niini=100*ones(1,k);
     [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
@@ -251,7 +251,6 @@ zerotoldef=1e-10;
 % SigmaB = p-times-p-times-k = empirical covariance matrix
 Sigma=SigmaB;
 k=length(niini);
-lmd=NaN(1,k);
 v=size(Sigma,1);
 pa.v=v;
 pa.k=k;
@@ -272,7 +271,7 @@ fpa=fieldnames(pa);
 
 d=max(strcmp('zerotol',fpa));
 if d==0
-     pa.zerotol=zerotoldef;
+    pa.zerotol=zerotoldef;
 end
 zerotol=pa.zerotol;
 
@@ -289,6 +288,7 @@ if d==0
     pa.maxiterDSR=maxiterDSRdef;
 end
 
+% Model which require more than one iteration in the main loop
 modDSR={'EVE' 'VEE' 'VVE' 'VVV' 'VEV' 'VVI' 'VEI'};
 if max(strcmp(pars,modDSR))>0
     maxiterDSR=pa.maxiterDSR;
@@ -361,29 +361,6 @@ else
 end
 
 %% Parameters not set by the user
-if strcmp(pars,'EVE') == true
-    itSR=true;
-else
-    itSR=false;
-end
-
-% itDS and irDSR are Boolean. If they are equal to true values of the
-% determinants are updated.
-if strcmp(pars,'VEE') == true || strcmp(pars,'VVE') == true
-    itDSR=true;
-else
-    itDSR=false;
-end
-
-if strcmp(pars(1),'V')
-    itDS=true;
-else
-    itDS=false;
-end
-
-if strcmp(pars,'VII')
-    itDS=false;
-end
 
 if strcmp(pars(3),'E') || strcmp(pars(3),'I')
     pa.sortsh=1;
@@ -409,7 +386,7 @@ end
 %% Initialization part
 if strcmp(pars(3),'E')
     % In the common principal components case it is necessary to find
-    % initial values for OMG (rotaion), and lmd (unconstrained
+    % initial values for OMG (rotation), and lmd (unconstrained
     % determinants)
     [lmd, OMG]  = initR(SigmaB, niini, pa);
     
@@ -427,8 +404,6 @@ if strcmp(pars(3),'E')
             wk(j) = max(eig(Wk(:,:,j)));
         end
     end
-    
-    
 elseif  strcmp(pars(3),'V')
     % Find initial (and final value for OMG)
     for j=1:k
@@ -440,6 +415,13 @@ elseif  strcmp(pars(3),'V')
         OMG(:,:,j)=V;
     end
     
+    % Initialize lmd
+    lmd = ones(1,k);
+    if strcmp(pars(1),'V')
+        for j=1:k
+            lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+        end
+    end
 else % The remaining case is when **I
     % Find initial (and final value for OMG).
     % in this case OMG is a 3D arry contaning identity matrices
@@ -447,21 +429,35 @@ else % The remaining case is when **I
     for j=1:k
         OMG(:,:,j)=eyep;
     end
+    
+    % Initialize lmd
+    lmd = ones(1,k);
+    if strcmp(pars(1),'V')
+        for j=1:k
+            lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+        end
+    end
+end
+
+% Immediately apply the restriction on vector lmd
+if ~isequal(lmd,ones(1,k))
+    GAM=ones(v,k);
+    [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
 end
 
 OMGold=OMG(:,:,1);
-GAMold=99999;
+GAMold=9999;
 lmdold=GAMold;
 
 %% Beginning of iterative process
 
 % Apply the iterative procedure to find Det, Shape and Rot matrices
 iter=0;
-diffglob = 9999;
+diffglob = Inf;
 
-    if msg==true
-        disp(['   Iter' '    diff_lmd' '    diff_GAM' '   diff_OMG'])
-    end
+if msg==true
+    disp(['   Iter' '    diff_lmd' '    diff_GAM' '   diff_OMG'])
+end
 
 while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     iter=iter+1;
@@ -479,7 +475,7 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
             [OMG]  = cpcE(lmd, SigmaB, niini, pa);
             % In all the other cases OMG is not updated
         end
-       
+        
         % diffOMG is the relative sum of squares of the differences between
         % the element of matrix Omega2D in two consecutive iterations
         OMGnew=OMG(:,:,1);
@@ -488,6 +484,7 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     else
         diffOMG=0;
     end
+    
     
     % Update GAM
     [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
@@ -499,22 +496,20 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     % relative sum of squares of the differences
     diffGAM=diff'*diff/(GAMold'*GAMold);
     GAMold=GAMnew;
-   
+    
     % Update determinants in case of varying determinants (apart from VII)
-    if iter==maxiterDSR || itDSR==true || itDS==true
-        % Update lmd
-        [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
-        
-        % lmdnew = new values of vector lmd
-        lmdnew=lmd(:);
-        % diff = (new values of lmd) - (old values of lmd)
-        diff=lmdnew-lmdold;
-        % relative sum of squares of the differences
-        difflmd=diff'*diff/(lmdold'*lmdold);
-        lmdold=lmdnew;
-    else
-        difflmd=0;
-    end
+    % TODO
+    % if iter==1 || itDSR==true || itDS==true
+    % Update lmd
+    [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
+    
+    % lmdnew = new values of vector lmd
+    lmdnew=lmd(:);
+    % diff = (new values of lmd) - (old values of lmd)
+    diff=lmdnew-lmdold;
+    % relative sum of squares of the differences
+    difflmd=diff'*diff/(lmdold'*lmdold);
+    lmdold=lmdnew;
     
     diffglob=max([difflmd, diffGAM,diffOMG,]);
     if msg==true
