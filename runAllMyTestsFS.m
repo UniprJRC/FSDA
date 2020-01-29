@@ -200,7 +200,7 @@ suite = testsuite(pwd);
 runner = matlab.unittest.TestRunner.withTextOutput();
 
 % Add a plugin to produce a JUnit-style test report
-runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat('test-report.xml'));
+runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
 
 % Run the test suite
 runner.run(suite);
