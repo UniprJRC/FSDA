@@ -59,6 +59,7 @@ clf
 %
 % Rob Campbell - May 2010
 
+%% Beginning of code 
 
 % Check input arguments and use default values if needed
 error(nargchk(0,2,nargin))

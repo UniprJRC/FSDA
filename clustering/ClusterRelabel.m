@@ -119,6 +119,7 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 
 
 %% Beginning of code
+
 idxMapping=zeros(length(pivotunits),2);
 jk=1;
 

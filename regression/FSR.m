@@ -34,6 +34,7 @@ function [out]=FSR(y,X,varargin)
 %                 the constant term from the model.
 %                 Example - 'intercept',false
 %                 Data Types - boolean
+%
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar. h is an integer
 %                 greater or equal than p but smaller then n. Generally if
@@ -44,6 +45,7 @@ function [out]=FSR(y,X,varargin)
 %                 initialize the search.
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
+%
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
@@ -51,6 +53,7 @@ function [out]=FSR(y,X,varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000
 %                 Data Types - double
+%
 %       lms     : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
 %                 lms specifies the criterion to use to find the initial
@@ -82,6 +85,7 @@ function [out]=FSR(y,X,varargin)
 %                 lms=struct; lms.bsb=3;
 %                 Example - 'lms',1
 %                 Data Types - double
+%
 %       plots   : Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -92,19 +96,24 @@ function [out]=FSR(y,X,varargin)
 %                 Else no plot is produced.
 %                 Example - 'plots',1
 %                 Data Types - double
-%       init    : Search initialization. Scalar. It specifies the initial subset size to start
-%                 monitoring exceedances of minimum deletion residual, if
-%                 init is not specified it set equal to:
+%
+%       init    : Search initialization. Scalar. It specifies the initial
+%                 subset size to start monitoring exceedances of minimum
+%                 deletion residual, if init is not specified it set equal
+%                 to:
 %                   p+1, if the sample size is smaller than 40;
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on matrix y and matrix X. Notice
+%                 that y and X are left unchanged. In other words the
+%                 additional column of ones for the intercept is not added.
+%                 As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %    bivarfit : Superimpose bivariate least square lines. Character. This option adds
 %                 one or more least squares lines, based on
 %                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
@@ -126,6 +135,7 @@ function [out]=FSR(y,X,varargin)
 %                   of mixtures.
 %               Example - 'bivarfit','2'
 %               Data Types - char
+%
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                 This option adds one or more least square lines, based on
 %                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
@@ -145,12 +155,14 @@ function [out]=FSR(y,X,varargin)
 %                   (i.e. the normal units).
 %               Example - 'multivarfit','1'
 %               Data Types - char
+%
 %      labeladd : Add outlier labels in plot. Character. If this option is
 %                 '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
 %               Example - 'labeladd','1'
 %               Data Types - char
+%
 %       nameX  : Add variable labels in plot. Cell array of strings. Cell
 %                 array of strings of length p containing the labels of
 %                 the variables of the regression dataset. If it is empty
@@ -158,21 +170,26 @@ function [out]=FSR(y,X,varargin)
 %                 automatically
 %               Example - 'nameX',{'NameVar1','NameVar2'}
 %               Data Types - cell
+%
 %       namey  :  Add response label. Character. String containing the
 %                 label of the response
 %               Example - 'namey','NameOfResponse'
 %               Data Types - char
-%       ylim   :  Control y scale in plot. Vector. Vector with two elements controlling minimum and maximum
-%                 on the y axis. Default value is '' (automatic scale)
+%
+%       ylim   :  Control y scale in plot. Vector. Vector with two elements
+%                 controlling minimum and maximum on the y axis. 
+%                 Default value is '' (automatic scale)
 %               Example - 'ylim',[0,10] sets the minimum value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
+%
 %       xlim   : Control x scale in plot. Vector. Vector with two elements
 %               minimum and maximum on the x axis. Default value is ''
 %               (automatic scale)
 %               Example - 'xlim',[0,10] sets the minimum value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
+%
 %      bonflev  : Signal to use to identify outliers. Scalar. Option to be
 %                used if the distribution of the data is
 %                 strongly non normal and, thus, the general signal
@@ -191,6 +208,7 @@ function [out]=FSR(y,X,varargin)
 %                 based on consecutive exceedances.
 %               Example - 'bonflev',0.99
 %               Data Types - double
+%
 %  threshoutX  : threshold to bound the effect of high leverage units.
 %                empty value (default) or scalar or structure.
 %               If the design matrix X contains several high leverage units
@@ -227,6 +245,7 @@ function [out]=FSR(y,X,varargin)
 %               the default threshold of 10 is imposed.
 %               Example - 'threshoutX',1
 %               Data Types - double
+%
 %       msg    :  Level of output to display. Scalar. It controls whether
 %                 to display or not messages on the screen
 %                 If msg==1 (default) messages are displayed on the screen about
@@ -234,6 +253,7 @@ function [out]=FSR(y,X,varargin)
 %                 else no message is displayed on the screen.
 %               Example - 'msg',1
 %               Data Types - double
+%
 % bsbmfullrank : Dealing with singluar X matrix. Scalar. This option tells
 %                 how to behave in case subset at step m
 %                 (say bsbm) produces a singular X. In other words,

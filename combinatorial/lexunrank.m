@@ -30,13 +30,13 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 % Output:
 %
 %   kcomb : The $k$-combination of n elements at position
-%           N. Vector of length k. The position is relative to a reverse co-lexicographic order
-%           of the combinations or, equivalently, of position bc(n,k)-N in
-%           the lexicographic order of the same combinations.
-%           Data Types - single|double
+%           N. Vector of length k. The position is relative to a reverse
+%           co-lexicographic order of the combinations or, equivalently, of
+%           position bc(n,k)-N in the lexicographic order of the same
+%           combinations. Data Types - single|double
 %
-%   calls : Binomial coefficients. Scalar. The number of binomial coefficients used to compute the
-%           $k$-combination. 
+%   calls : Binomial coefficients. Scalar. The number of binomial
+%           coefficients used to compute the $k$-combination.           
 %           Data Types - single|double
 %
 % More About:

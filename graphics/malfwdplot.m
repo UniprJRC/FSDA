@@ -47,6 +47,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %
 %  Optional input arguments:
+%
 %           standard : plot layout. Structure. Appearance of the plot
 %                   in terms of xlim, ylim, axes labels and their font size
 %                   style, color of the lines, etc.
@@ -92,6 +93,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %                   Example - 'standard.LineWidth','1'
 %                   Data Types - struct
+%
 %         fground : trajectories in foregroud.
 %                   Structure. Structure which controls which trajectories
 %                   are highlighted and how they are plotted to be
@@ -149,6 +151,7 @@ function plotopt=malfwdplot(out,varargin)
 %
 %                   Example - 'fground.LineWidth','1'
 %                   Data Types - struct
+%
 %         bground : characterictics of the trajectories in background.
 %                   Structure.
 %                    Structure which specifies the trajectories in background,
@@ -198,6 +201,7 @@ function plotopt=malfwdplot(out,varargin)
 %                   window else a new window is created.
 %                   Example - 'tag','myplot'
 %                   Data Types - char
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
@@ -262,6 +266,7 @@ function plotopt=malfwdplot(out,varargin)
 %                       forced to be [0 0 1].
 %                   Example - 'datatooltip',''
 %                   Data Types - empty value, scalar or struct
+%
 %       label   :   row labels. Cell of strings. Cell containing the labels
 %                   of the n units. This optional argument is used for
 %                   datattoltip and brushing. If label is present the
@@ -273,29 +278,27 @@ function plotopt=malfwdplot(out,varargin)
 %                   numbers 1:n will be used for the brushed trajectories.
 %                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
 %                   Data Types - cell
+%
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done.
-%                   The activation of this option (databrush is a scalar or
-%                   a structure) enables the user  to select a set of
-%                   trajectories in the current plot and to see them
-%                   highlighted in the scatter plot matrix (spm).
-%                   If spm does not exist it is automatically created.
-%                   In addition, brushed units are automatically highlighted in the
-%                   minimum MD plot if it is already open.
-%                   Please, note that the window style of the other figures is set
-%                   equal to that which contains the monitoring MD
-%                   plot. In other words, if the MD plot
-%                   is docked all the other figures will be docked too.
-%                   DATABRUSH IS A SCALAR.
-%                   If databrush is a scalar the default selection tool is
-%                   a rectangular brush and it is possible to brush only
-%                   once (that is persist='').
-%                   DATABRUSH IS A STRUCTURE.
-%                   If databrush is a structure, it is possible to use all
+%                   is done. The activation of this option 
+%                   (databrush is a scalar or a structure) enables the user  
+%                   to select a set of trajectories in the current plot and 
+%                   to see them highlighted in the scatter plot matrix (spm). 
+%                   If spm does not exist it is automatically created. In
+%                   addition, brushed units are automatically highlighted
+%                   in the minimum MD plot if it is already open. Please,
+%                   note that the window style of the other figures is set
+%                   equal to that which contains the monitoring MD plot. In
+%                   other words, if the MD plot is docked all the other
+%                   figures will be docked too. DATABRUSH IS A SCALAR. If
+%                   databrush is a scalar the default selection tool is a
+%                   rectangular brush and it is possible to brush only once
+%                   (that is persist=''). DATABRUSH IS A STRUCTURE. If
+%                   databrush is a structure, it is possible to use all
 %                   optional arguments of function selectdataFS.m and the
-%                   following fields:
-%                   - databrush.persist = repeated brushng enabled. Persist is an empty value or a scalar
+%                   following fields: - databrush.persist = repeated
+%                   brushng enabled. Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
 %                     The default value of persist is '', that is brushing
 %                     is allowed only once.
@@ -317,14 +320,16 @@ function plotopt=malfwdplot(out,varargin)
 %                     value is labeladd='', i.e. no label is added.
 %                   Example - 'databrush',1
 %                   Data Types - single | double | struct
+%
 %       nameY   :   variable labels. Cell array of strings.
 %                   Cell array of strings of length v containing the labels
 %                   of the variables of the dataset which will be added to
 %                   the spmplot after brushing. Cell of strings. If it is
 %                   empty (default) the sequence Y1, ..., Yv will be used
-%                   automatically
+%                   automatically.
 %                   Example - 'nameY',{'PC1', PC2, 'PC3'}
 %                   Data Types - cell of strings
+%
 %       msg     :   display or save used options. Scalar. Scalar which
 %                   controls whether to display or to save
 %                   as output the options inside structures standard,
@@ -336,9 +341,10 @@ function plotopt=malfwdplot(out,varargin)
 %                   and background)
 %                   plotopt=malfwdplot(out,'msg',2) saves inside cell plotopt
 %                   the options which have been used and prints them on the
-%                   screen
+%                   screen.
 %                   Example - 'msg',1
 %                   Data Types - single or double
+%
 %        conflev :  confidence interval for the horizontal bands. Vector.
 %                   It can be a vector of different confidence level values,
 %                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
@@ -717,8 +723,9 @@ function plotopt=malfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Initialization
-%
+%% Beginning of code 
+
+% Initialization
 
 % The number of rows of matrix MDmat is associated with the number of
 % units. The number of columns is associated with the number of steps of

@@ -46,6 +46,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %               To avoid all the above checks set nocheck to true.
 %               Example - 'nocheck',true
 %               Data Types - boolean
+%
 %  algorithm  : Algorithm to use to create the random contingency table.
 %               Character.
 %               Character which specifies which algorithm must be used to
@@ -77,6 +78,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 %                         algorithm is 'all' or '144'.
 %                         Note that sum(out.144,1)=nrowt and that
 %                         sum(out.144,1)=ncolt.
+%
 % 		out.m159      =   $I$-by-$J$-table containing contingency table
 %                         generated using algorithm '159' due to Patefield.
 %                         The $(i,j)$-th element is equal to $n_{ij}$,
@@ -151,6 +153,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 
 
 %% Beginning of code
+
 algorithm='all';
 nocheck=0;
 options=struct('algorithm',algorithm,'nocheck',nocheck);

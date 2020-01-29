@@ -36,21 +36,25 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %                 efficiency or c=6.096 in case of shape efficiency
 %                 Example - 'eff',0.99
 %                 Data Types - double
+%
 %     effshape : locacation or scale effiicency. dummy scalar.
 %                If effshape=1 efficiency refers to shape
 %                efficiency else (default) efficiency refers to location
 %                 Example - 'effshape',1
 %                 Data Types - double
+%
 %     refsteps  : Maximum iterations. Scalar.
 %                 Scalar defining maximum number of iterations in the MM
 %                 loop. Default value is 100.
 %                 Example - 'refsteps',10
 %                 Data Types - double
+%
 %      reftol: Tolerance. Scalar.
 %                 Scalar controlling tolerance in the MM loop.
 %                 Default value is 1e-7
 %                 Example - 'tol',1e-10
 %                 Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -58,6 +62,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot of Mahalanobis distances
 %               against index number. The confidence level used to draw the
@@ -66,11 +71,13 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
+%
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
 %                 no check is performed on
 %                 matrix Y. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %       ysave : input data matrix Y is saved into the output
 %                structure out. Scalar.
 %               Scalar that is set to 1 to request that the data matrix Y

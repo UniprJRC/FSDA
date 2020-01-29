@@ -116,6 +116,9 @@ cd(FSDAroot)
 % Use perf = true if for each example you want run runperf.m
 % Use perf = true if for each example you want run runtests.m
 perf = false;
+testpath= ['tests-' cat2test];
+mkdir(testpath);
+
 
 for i=1:nfiles
     clc
@@ -142,8 +145,11 @@ for i=1:nfiles
                 Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
             end
             
-            % Write Exif to a file
-            file1ID=fopen('tempfile.m','w');
+            % Write Exif to a file which name begins with 'text'
+            filename2open=[testpath '/test' FilesIncluded{i,1}(1:end-2) '_' num2str(iEx) ...
+                'of'  num2str(size(Excomb,1)) FilesIncluded{i,1}(end-1:end)];
+            file1ID=fopen(filename2open,'w');
+            %file1ID=fopen('tempfile.m','w');
             fprintf(file1ID,'%s',Exif);
             fclose('all');
             try
@@ -161,15 +167,15 @@ for i=1:nfiles
                     % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
                     TotSummary(ij,'TestActivity')={outp.TestActivity};
                 else
-                    tic
-                    outp=runtests('tempfile.m');
-                    time=toc;
-                    TotSummary{ij,'MeanTime'}=time;
+                    %tic
+                    %outp=runtests(filename2open);
+                    %time=toc;
+                    %TotSummary{ij,'MeanTime'}=time;
                 end
-                TotSummary(ij,'Code')=Ex(1,3);
-                TotSummary(ij,'FileName')=FilesIncluded(i,1);
-                TotSummary(ij,'Category')=FilesIncluded(i,8);
-                TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+%                 TotSummary(ij,'Code')=Ex(1,3);
+%                 TotSummary(ij,'FileName')=FilesIncluded(i,1);
+%                 TotSummary(ij,'Category')=FilesIncluded(i,8);
+%                 TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
                 ij=ij+1;
             catch
                 disp(['Error on example ' num2str(iEx)])
@@ -184,5 +190,33 @@ for i=1:nfiles
     % OUT{i,1}.titl;
 end
 
-TotSummary1=TotSummary(1:ij-1,:);
-disp(TotSummary1)
+
+cd(testpath);
+
+% Create test suite of all tests in current folder
+suite = testsuite(pwd);
+
+% Create a TestRunner
+runner = matlab.unittest.TestRunner.withTextOutput();
+
+% Add a plugin to produce a JUnit-style test report
+runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
+
+% Run the test suite
+runner.run(suite);
+
+
+%cd(testpath);
+%testResults = runtests([FSDAroot '/' testpath]);
+%cd ..
+%save ([cat2test '_testResults.mat'], 'testResults')
+%rmdir('tests', 's')
+
+% TotSummary1=TotSummary(1:ij-1,:);
+% disp(TotSummary1)
+% cfol=pwd
+% FSDAroot 
+% filename = [FSDAroot '/test-results/' cat2test '_test.xlsx'];
+% writetable(TotSummary1,filename,'Sheet',1,'Range','A1');
+
+
