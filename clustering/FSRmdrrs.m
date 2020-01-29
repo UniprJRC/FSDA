@@ -40,11 +40,13 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %  intercept :  Indicator for constant term. Scalar. If 1, a model with
 %               constant term will be fitted (default), else no constant
 %               term will be included.
 %               Example - 'intercept',1
 %               Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
@@ -61,22 +63,27 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               REMARK: vector bsbsteps must contain numbers from init to
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
+%
 %     nsimul :  number of random starts. Scalar. The default value is200.
 %               Example - 'nsimul',300
 %               Data Types - double
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additioanl column of ones for
-%               the intercept is not added. As default nocheck=0. The
-%               controls on h, alpha and nsamp still remain
+%
+%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=0. The controls on h, alpha and nsamp still remain.
 %               Example - 'nocheck',1
 %               Data Types - double
-%  constr :     Constrained search. Vector. r x 1 vector which contains the list of units which are
-%               forced to join the search in the last r steps. The default
-%               is constr=''.  No constraint is imposed
+%
+%  constr :     Constrained search. Vector. r x 1 vector which contains the
+%               list of units which are forced to join the search in the
+%               last r steps. The default is constr=''.  No constraint is
+%               imposed.
 %               Example - 'constr',[1:10] forces the first 10 units to join
 %               the subset in the last 10 steps
 %               Data Types - double
+%
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
 %               random starts minimum deletion residual appears  on the
 %               screen with 1%, 50% and 99% confidence bands else (default)
@@ -87,6 +94,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrrsplot.
+%
 %   numpool :  use parallel computing and parfor. Scalar.
 %               If numpool > 1, the routine automatically checks
 %               if the Parallel Computing Toolbox is installed and
@@ -129,6 +137,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               (i.e. the number of physical cores).
 %               Example - 'numpool',8
 %               Data Types - double
+%
 %  cleanpool :  clean pool after execution. Boolean.
 %               cleanpool is 1 (true) if the parallel pool has to be cleaned after
 %               the execution of the random starts. Otherwise it is 0 (false).
@@ -137,6 +146,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               numpool is > 1.
 %               Example - 'cleanpool',false
 %               Data Types - boolean
+%
 %  msg  :       Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               about random start progress. More precisely, if previous
@@ -176,6 +186,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               2nd col = minimum deletion residual for random start 1.
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
+%
 %       BBrs :  units belonging to subset. 3D array.
 %               3D array which contains the units belonging to the subset
 %               at the steps specified by input option bsbsteps.
@@ -390,13 +401,16 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % traditional for loop is used
     [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'numpool',0);
 %}
-%% Input parameters checking
+
+%% Beginning of code 
+
+% Input parameters checking
 
 nnargin   = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
-%% User options
+% User options
 
 % Check how many physical cores are available in the computer (warning:
 % function 'feature' is undocumented; however, FSDA is automatically

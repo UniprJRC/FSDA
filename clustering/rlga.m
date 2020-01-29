@@ -20,23 +20,28 @@ function out = rlga(X,k,alpha,varargin)
 %             for the number of different starting hyperplanes to try.
 %               Example - 'biter',1
 %               Data Types - double
+%
 %     niter : Number of iterations. Scalar. An integer for the number of
 %             iterations to attempt for convergence.
 %               Example - 'niter',1
 %               Data Types - double
+%
 %   showall :  Level of display. Logical. If true then display all the
 %               outcomes, not just the best one.
 %               Example - 'showall','true'
 %               Data Types - char
+%
 %    stand  : Data standardization. Boolean. If true the X
 %               matrix is standardized using the standard deviation before
 %               fitting. Logical.
 %               Example - 'stand','true'
 %               Data Types - char
+%
 %    silent : Text output. Logical. If true, produces no text output during
 %               processing. The default value is false.
 %               Example - 'silent','true'
 %               Data Types - char
+%
 %    plots  : plot on the screen. Scalar. If plots=1 a plot is showed on the
 %               screen with the final allocation (and if size(X,2)==2 with the
 %               lines associated to the groups).

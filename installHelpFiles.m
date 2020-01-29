@@ -9,6 +9,7 @@
 
 
 %% Beginning of code
+
 % Store current folder so that after the execution we go back to this
 % folder
 CurrentFolder=pwd;

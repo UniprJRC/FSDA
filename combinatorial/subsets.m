@@ -9,8 +9,10 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %               if nsamp=0 all subsets will be extracted; they will be (n
 %               choose p).
 %               Data Types - single|double
+%
 %         n   : Number of observations of the dataset. Scalar.
 %               Data Types - single|double
+%
 %         p   : Size of the subsets. Scalar. In regression with p
 %               explanatory variable the size of the elmental subsets is p;
 %               in multivariate analysis, in presence of v variables,

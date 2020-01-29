@@ -48,6 +48,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                     else no constant term will be included.
 %                       Example - 'intercept',1
 %                       Data Types - double
+%
 %        init :      Search initialization. Scalar.
 %                      It specifies the point where to initialize the search
 %                       and start monitoring required diagnostics. if init is not
@@ -56,6 +57,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
+%
 %        tstat:      the kind of t-statistics which have to be monitored.
 %                       Character.
 %                       tstat = 'trad' implies  monitoring of traditional t
@@ -68,6 +70,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       normal distribution.
 %                       Example - 'tstat','trad'
 %                       Data Types - char
+%
 %      nocheck:  Check input arguments. Scalar.
 %                       If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
@@ -76,13 +79,15 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       controls on h, alpha and nsamp still remain
 %                       Example - 'nocheck',1
 %                       Data Types - double
+%
 %        conflev:  confidence levels to be used to compute confidence interval
 %                       for the elements of $\beta$ and for $\sigma^2$. Vector.
 %                       The default value of conflev is [0.95 0.99] that
 %                       is 95% and 99% confidence intervals are computed.
 %                       Example - 'conflev',[0.90 0.93] 
 %                       Data Types - double
-% gridsearch:   Algorithm to be used. Scalar.
+%
+% gridsearch:           Algorithm to be used. Scalar.
 %                       If gridsearch ==1 grid search will be used else the
 %                       scoring algorith will be used.
 %                       Example - 'gridsearch',0
@@ -92,6 +97,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       heteroskedasticity
 %                       Example - 'gridsearch',1 
 %                       Data Types - double
+%
 % modeltype:    Parametric function to be used in the skedastic equation.
 %                       String.
 %                       If modeltype is 'arc' (default) than the skedastic function is
@@ -109,10 +115,12 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       \]
 %                       Example - 'modeltype','har' 
 %                       Data Types - string
+%
 %  constr :         units which are forced to join the search in the last r steps. Vector.
 %                       r x 1 vector. The default is constr=''.  No constraint is imposed
 %                       Example - 'constr',[1 6 3]
 %                       Data Types - double
+%
 % Remark:       The user should only give the input arguments that have to
 %                       change their default value. The name of the input arguments
 %                       needs to be followed by their value. The order of the input
@@ -478,7 +486,9 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
         ']'],'t');
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 nnargin = nargin;
 vvarargin = varargin;

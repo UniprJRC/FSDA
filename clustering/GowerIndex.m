@@ -44,6 +44,7 @@ function [S, Stable] = GowerIndex(Y, varargin)
 %      S   :  matrix with Gower similarity coefficients. n-by-n symmetric matrix.
 %             n-by-n matrix whose i-th j-th entry contains the Gower
 %             similarity index between row i and row j of input matrix Y.
+%
 %   Stable :  matrix with Gower similarity coefficients in table format. n-by-n table.
 %             n-by-n table whose i-th j-th entry contains the Gower
 %             similarity index between row i and row j of input matrix Y.  

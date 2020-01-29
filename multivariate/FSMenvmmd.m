@@ -17,11 +17,13 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %              specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50 
 %                 Data Types - double
+%
 % prob:        quantiles for which envelopes have
 %               to be computed. Vector. Vector containing 1 x k elements .
 %               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
 %                 Example - 'prob',[0.05 0.95] 
 %                 Data Types - double
+%
 %   scaled:  It indicates how to compute the envelopes. Scalar. 
 %               If scaled>0 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
@@ -129,7 +131,9 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
     xlabel('Subset size m');
 %}
 
-%% Input parameters checks
+%% Beginning of code
+
+% Input parameters checks
 
 if ~isscalar(n) || isempty(n) || isnan(n)
     error('FSDA:FSMenvmmd:Wrongn','n must be scalar non empty and non missing!!');

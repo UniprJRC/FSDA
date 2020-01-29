@@ -34,6 +34,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       else no constant term will be included.
 %                       Example - 'intercept',1
 %                       Data Types - double
+%
 %     nocheck   : Check input arguments. Scalar.
 %                        If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Note that y and X are left
@@ -41,6 +42,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       for the intercept is not added. As default nocheck=1.
 %                       Example - 'nocheck',1
 %                       Data Types - double
+%
 %           h   :       number of observations that have determined the least
 %                       trimmed squares estimator. Integer.
 %                       h is an integer greater than
@@ -48,17 +50,22 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       [(n+smallp+1)/2]
 %                       Example - 'h',3
 %                       Data Types - double
+%
 %           lms :    Criterion to use to find the initlal  subset to
-%                       initialize the search. Scalar. If lms=1 (default) Least Median of Squares is
-%                       computed, else Least Trimmed of Squares is computed.
+%                       initialize the search. Scalar. If lms=1 (default)
+%                       Least Median of Squares is computed, else Least
+%                       Trimmed of Squares is computed.
 %                       Example - 'lms',1
 %                       Data Types - double
-%          nomes:       Displaying time message. Scalar. If nomes is equal to 1 (default) no message about
-%                       estimated time to compute LMS (LTS) for each considered
-%                       model is displayed, else a message about estimated time
-%                       is displayed.
+%
+%          nomes:       Displaying time message. Scalar. If nomes is equal
+%                       to 1 (default) no message about estimated time to
+%                       compute LMS (LTS) for each considered model is
+%                       displayed, else a message about estimated time is
+%                       displayed.
 %                       Example - 'lms',1
 %                       Data Types - double
+%
 %         nsamp : Number of subsamples which will be extracted to find the
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be extracted.
@@ -67,6 +74,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       Data Types - double
 %                       Remark: if the number of all possible subset is <1000 the
 %                       default is to extract all subsets otherwise just 1000.
+%
 %          init :       Search initialization. Scalar.
 %                       It specifies the initial subset size to start
 %                       monitoring the required quantities, if init is not
@@ -75,18 +83,22 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                       min(3*smallp+1,floor(0.5*(n+smallp+1))), otherwise.
 %                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
+%
 %           aic :      Akaike's information criterion. Scalar.
 %                       If aic=1 the value of AIC is also stored in each
 %                       step of the search else (default) only Mallows Cp is stored
 %                       Example - 'aic',1
 %                       Data Types - double
-%        labels :   names of the explanatory variables. Cell array of strings.
-%                       Cell array of strings of length bigP-1 containing the  names of the explanatory variables.
-%                       If labels is a missing  value the following sequence of strings will be
-%                       automatically created for X
-%                      (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
+%
+%        labels :   names of the explanatory variables. Cell array of
+%                   strings. Cell array of strings of length bigP-1
+%                   containing the names of the explanatory variables. If
+%                   labels is a missing  value the following sequence of
+%                   strings will be automatically created for X
+%                  (1,2,3,4,5,6,7,8,9,A,B,C,D,E,E,G,H,I,J,K,...,Z)
 %                       Example - 'labels',{'Time','1','2','3','4','5','6','7','8'}
 %                       Data Types - cell
+%
 %      fin_step :  portion of the search which has to be
 %                 monitored to choose the best models. Scalar.
 %                 If fin_step is an integer greater
@@ -106,13 +118,15 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 case the value of first_k below is ignored, all models are
 %                 considered of interest and output matrix outCp.Ajout is
 %                 equal to an empty value).
+%
 %       first_k :  number of best models to
 %                      consider in each of the last fin_step. Scalar.
-%                       For example if first_k=5 in each of the last fin_step, the models which had
-%                       the 5 smallest values of Cp are considered. As default
-%                       first_k=3
+%                       For example if first_k=5 in each of the last fin_step, 
+%                       the models which had the 5 smallest values of Cp are considered. 
+%                       As default first_k=3
 %                       Example - 'first_k',5
 %                       Data Types - double
+%
 %          Excl : Matrix which contains the models which surely do not have
 %                 to be considered. Matrix.
 %                   As default Excl=''
@@ -120,6 +134,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                   Excl = [23; 24; 27]; the three models 23, 24, and 27 are skipped
 %                       Example - 'Excl',[23; 24]
 %                       Data Types - double
+%
 %    ExclThresh : Exclusion threshold. Scalar.
 %                 Exclusion threshold associated to the upper
 %                 percentage point of the F distribution of Cp which
@@ -131,6 +146,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 be smaller than 1
 %                 Example - 'ExclThresh',0.6
 %                 Data Types - double
+%
 %         plots : Plot on the screen. Scalar.
 %                 If plots==1 a plot is created on the screen which
 %                 contains the trajectories of Cp monitored along the
@@ -142,6 +158,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 else (default) no plot is shown on the screen
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %        labout :If labout=1 the output LABOUT contains the list of models
 %                 whose Cp values are inacceptable. Scalar. Default: no
 %                 model is created.
@@ -156,6 +173,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 quant=[0.025 0.5 0.975];
 %                 Example - 'quant',0.1
 %                 Data Types - double
+%
 %         steps : Steps to add labels. Vector. It specifies in which steps of the plot which
 %                 monitors Cp it is necessary to include the labels of the
 %                 models which have been previously chosen. 
@@ -163,50 +181,61 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 round([n*0.6  n*0.8  n]);
 %                 Example - 'steps',[4 8]
 %                 Data Types - double
+%
 %       titl    : a label for the title. Character.
 %               default is ['Forward Cp' p= num2str(smallp)]
 %                 Example - 'titl','my title'
 %                 Data Types - char
+%
 %       labx    : a label for the x-axis. Character.
 %                   default: 'Subset size m'
 %                 Example - 'labx','my label'
 %                 Data Types - double
+%
 %       laby    : a label for the y-axis. Character.
 %                   default:''
 %                 Example - 'laby','my label'
 %                 Data Types - char
+%
 %       xlimx   :  minimum and maximum on the x axis. Vector.
 %                 Default value is '' (automatic scale)
 %                 Example - 'xlimx',[0 1]
 %                 Data Types - double
+%
 %       ylimy   : minimum and maximum on the y axis. Vector.
 %                 Default value is '' (automatic scale)
 %                 Example - 'ylimx',[0 1]
 %                 Data Types - double
+%
 %       lwd     : linewidth of the curves which contain the score test.
 %                   Scalar.
 %                 Default line width=2
 %                 Example - 'linewidth',6
 %                 Data Types - double
+%
 %       lwdenv  :  width of the lines associated
 %                 with the envelopes. Scalar.
 %                  Default is lwdenv=1
 %                 Example - 'lwdenv',6
 %                 Data Types - double
+%
 %       FontSize: font size of the labels of
 %                 the axes and of the labels inside the plot. Scalar.
 %                 Default value is 12
 %                 Example - 'FontSize',20
 %                 Data Types - double
+%
 %    SizeAxesNum: size of the numbers of the axes. Scalar.
 %                 Default value is 10
 %                 Example - 'SizeAxesNum',30
 %                 Data Types - double
+%
 %   selunitcolor: colors to be used for the Cp trajectories. Cell array of strings.
 %                   If selunittype is not specified or if
 %                 it is an empty value default Matlab colors are used.
 %                 Example - 'selunitcolor',{'b';'g';'r'}
 %                 Data Types - cell
+%
 %   selunittype : line types of the Cp trajectories. Cell array of strings.
 %                 If selunittype is not specified or if
 %                 it is an empty value all possible line styles are used.
@@ -406,8 +435,9 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);
 %}
 
+%% Beginning of code 
 
-%% Input parameters checking
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

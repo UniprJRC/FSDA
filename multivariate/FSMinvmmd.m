@@ -19,6 +19,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %               it is set equal to mmd(end,1)+1.
 %                 Example - 'n',5
 %                 Data Types - double
+%
 %   plots :     Plot on the screen. Scalar or structure.
 %               If plots = 1, a plot which shows the
 %               confidence level of mmd in each step is shown on the
@@ -192,7 +193,9 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
 %}
 
 
-%% Input parameters checks
+%% Beginning of code 
+
+% Input parameters checks
 nn=mmd(end,1)+1; % This line is introduced for publishFS
 options=struct('n',nn,'plots','');
 

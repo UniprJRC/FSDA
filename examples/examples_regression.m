@@ -5,6 +5,8 @@
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
+
 %% FD (Forbes data) -- Forward EDA (Exploratory Data Analysis with FS) 
 % Interactive_example
 clearvars;close all;

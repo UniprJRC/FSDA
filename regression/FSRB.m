@@ -35,8 +35,8 @@ function [out]=FSRB(y,X,varargin)
 %                       (default),  else no constant term will be included.
 %                       Example - 'intercept',1
 %                       Data Types - double
-%    bayes      : Prior information. Structure.
 %
+%    bayes      : Prior information. Structure.
 %                       It contains the following fields
 %               bayes.beta0=  p-times-1 vector containing prior mean of \beta
 %               bayes.R    =  p-times-p positive definite matrix which can be
@@ -69,9 +69,9 @@ function [out]=FSRB(y,X,varargin)
 %               mean $\beta_0$ and (conditional on $\tau_0$) covariance
 %               $(1/\tau_0) (X_0'X_0)^{-1}$.
 %               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$
-%
 %                     Example - bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 %                     Data Types - double
+%
 % plots   :    Plot on the screen. Scalar.
 %                 If plots=1 (default) the plot of minimum deletion
 %                 residual with envelopes based on n observations and the
@@ -82,6 +82,7 @@ function [out]=FSRB(y,X,varargin)
 %                 Else no plot is produced.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %       init    :  Search initialization. Scalar.
 %                   scalar which specifies the initial subset size to start
 %                   monitoring exceedances of minimum deletion residual, if
@@ -90,13 +91,15 @@ function [out]=FSRB(y,X,varargin)
 %                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                   Example - 'init',100 starts monitoring from step m=100
 %                   Data Types - double
-%   nocheck : Check input arguments. Scalar.
+%
+%   nocheck :        Check input arguments. Scalar.
 %                    If nocheck is equal to 1 no check is performed on
 %                    matrix y and matrix X. Notice that y and X are left
 %                    unchanged. In other words the additional column of ones
 %                     for the intercept is not added. As default nocheck=0.
 %                   Example - 'nocheck',1
 %                   Data Types - double
+%
 %    bivarfit :  Superimpose bivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
 %                   SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
@@ -118,6 +121,7 @@ function [out]=FSRB(y,X,varargin)
 %                   of mixtures.
 %                 Example - 'bivarfit',2
 %                 Data Types - char
+%
 %       multivarfit : Superimpose multivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
 %                   MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
@@ -137,12 +141,14 @@ function [out]=FSRB(y,X,varargin)
 %                   (i.e. the normal units).
 %                 Example - 'multivarfit','1'
 %                 Data Types - char
+%
 %      labeladd : Add outlier labels in plot. Character.
 %                 If this option is '1',  we label the outliers with the
 %                 unit row index in matrices X and y. The default value is
 %                 labeladd='', i.e. no label is added.
 %                 Example - 'labeladd','1'
 %                 Data Types - char
+%
 %       nameX  :  Add variable labels in plot. Cell array of strings.
 %                 cell array of strings of length p containing the labels of
 %                 the variables of the regression dataset. If it is empty
@@ -154,18 +160,21 @@ function [out]=FSRB(y,X,varargin)
 %               character containing the label of the response
 %               Example - 'namey','NameOfResponse'
 %               Data Types - char
+%
 %       ylim   :   Control y scale in plot. Vector.
 %                   vector with two elements controlling minimum and maximum
 %                 on the y axis. Default value is '' (automatic scale)
 %               Example - 'ylim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the y axis
 %               Data Types - double
+%
 %       xlim   :   Control x scale in plot. Vector.
 %                  vector with two elements controlling minimum and maximum
 %                 on the x axis. Default value is '' (automatic scale)
 %               Example - 'xlim','[0,10]' sets the minim value to 0 and the
 %               max to 10 on the x axis
 %               Data Types - double
+%
 %      bonflev  : Signal to use to identify outliers. Scalar.
 %                   option to be used if the distribution of the data is
 %                 strongly non normal and, thus, the general signal
@@ -184,6 +193,7 @@ function [out]=FSRB(y,X,varargin)
 %                 based on consecutive exceedances.
 %               Example - 'bonflev',0.99
 %               Data Types - double
+%
 %       msg    :  Level of output to display. Scalar.
 %               scalar which controls whether to display or not messages
 %                 on the screen
@@ -686,7 +696,9 @@ function [out]=FSRB(y,X,varargin)
     end
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 nnargin=nargin;
 vvarargin=varargin;

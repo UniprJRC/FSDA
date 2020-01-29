@@ -28,6 +28,7 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %               probability of misclassification.
 %               Example - 'tol', 0.0001
 %               Data Types - double
+%
 %  lim : maximum number of integration terms. Scalar. Default is 1000000.
 %               Optional parameters tol and lim will be used by
 %               function ncx2mixtcdf.m which computes the cdf of a linear
@@ -38,27 +39,32 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %
 % Output:
 %
-%    OmegaMap : map of misclassification probabilities. Matrix. k-by-k matrix containing map of misclassification
-%               probabilities. More precisely, OmegaMap(i,j)
-%               $(i ~= j)=1, 2, ..., k$
-%               $OmegaMap(i,j) = w_{j|i}$ is the probability that X
-%               coming from the i-th component (group) is classified
-%               to the $j-th$ component.
+%    OmegaMap : map of misclassification probabilities. Matrix. k-by-k
+%               matrix containing map of misclassification probabilities.
+%               More precisely, OmegaMap(i,j) $(i ~= j)=1, 2, ..., k$
+%               $OmegaMap(i,j) = w_{j|i}$ is the probability that X coming
+%               from the i-th component (group) is classified to the $j-th$
+%               component.
 %               The probability of overlapping (called pij) between groups
 %               i and j is given by
 %                  $pij=pji= w_j|i + w_i|j    \qquad      i,j=1,2, ..., k$.
-%    BarOmega : Average overlap. Scalar. Scalar associated with average overlap. BarOmega is computed as
+%
+%    BarOmega : Average overlap. Scalar. Scalar associated with average
+%               overlap. BarOmega is computed as
 %               sum(sum(OmegaMap))-k)/(0.5*k(k-1).
-%    MaxOmega : Maximum overlap. Scalar. Scalar associated with maximum overlap. MaxOmega is the
-%               maximum of OmegaMap(i,j)+OmegaMap(j,i)
-%               (i ~= j)=1, 2, ..., k.
-%    StdOmega : Std of overlap. Scalar. Scalar assocaited with standard deviation of overlap (that
-%               is the standard deviation of the 0.5*k(k-1) pij
-%               (probabilities of overlapping)
-%       rcMax : pair with largest overlap. Vector. Column vector of length equal to 2 containing the indexes
-%               associated with the pair of components producing the
-%               highest overlap (largest off diagonal element of matrix
-%               OmegaMap)
+%
+%    MaxOmega : Maximum overlap. Scalar. Scalar associated with maximum
+%               overlap. MaxOmega is the maximum of
+%               OmegaMap(i,j)+OmegaMap(j,i) (i ~= j)=1, 2, ..., k.
+%
+%    StdOmega : Std of overlap. Scalar. Scalar assocaited with standard
+%               deviation of overlap (that is the standard deviation of the
+%               0.5*k(k-1) pij (probabilities of overlapping).
+%
+%       rcMax : pair with largest overlap. Vector. Column vector of length
+%               equal to 2 containing the indexes associated with the pair
+%               of components producing the highest overlap (largest off
+%               diagonal element of matrix OmegaMap).
 %
 % See also: FSReda, LXS.m
 %

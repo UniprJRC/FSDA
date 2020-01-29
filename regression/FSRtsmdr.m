@@ -22,6 +22,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               specified it is set equal floor(0.5*(T+1))
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
+%
 %      model :  model type. Structure. A structure which specifies the model
 %               which will be used. The model structure contains the following
 %               fields:
@@ -91,6 +92,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.posLS='';
+%
 %  plots :      Plot on the screen. Scalar. If equal to one a plot of
 %               minimum deletion residual appears  on the screen with 1%,
 %               50% and 99% confidence bands else (default) no plot is
@@ -101,10 +103,12 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
+%
 %  nocheck:     Check input arguments inside structure model. As default
 %               nocheck=0. 
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
 %               screen If msg==1 (default)
@@ -112,6 +116,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               else no message is displayed on the screen
 %               Example - 'msg',1
 %               Data Types - double
+%
 %  constr :     Constrained search. Vector. r x 1 vector which contains the
 %               list of units which are forced to join the search in the
 %               last r steps. The default is constr=''.  No constraint is
@@ -119,6 +124,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               Example - 'constr',[1:10] forces the first 10 units to join
 %               the subset in the last 10 steps
 %               Data Types - double
+%
 % bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
 %               non singular X. Scalar.
 %               This options controls what to do when rank(X(bsbm,:)) is
@@ -130,6 +136,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               found in the previous step.
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
+%
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
@@ -143,6 +150,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
+%
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value.
 %               The name of the input arguments needs to be followed by
@@ -346,7 +354,9 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
     [mdr,Un,BB,Bols,S2,Exflag] =FSRtsmdr(y,bs,'model',model,'init',length(bs)+1,'plots',1);
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 
 % Set up values for default model
 modeldef          = struct;

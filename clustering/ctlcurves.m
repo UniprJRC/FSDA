@@ -294,64 +294,50 @@ function out  = ctlcurves(Y, varargin)
 %
 %         out:   structure which contains the following fields:
 %
-%                out.Mu = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the centroids for each
-%                       value of k and each value of alpha. More precisely,
-%                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
-%                       is a matrix with two rows and v columns containing
-%                       the estimates of the centroids obtained when
-%                       alpha=0.1.
-%            out.Sigma = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the covariance matrices
-%                       for each value of k and each value of alpha. More
-%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
-%                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
-%                       containing the estimates of the covariance matrices
-%                       obtained when alpha=0.1.
-%            out.Pi   = cell of size length(kk)-by-length(alpha)
-%                       containing the estimate of the group proportions
-%                       for each value of k and each value of alpha. More
-%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
-%                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
-%                       containing the estimates of the covariance matrices
-%                       obtained when alpha=0.1.
-%            out.IDX   = cell of size length(kk)-by-length(alpha)
-%                       containing the final assignment for each value of k
-%                       and each value of alpha. More precisely, suppose
-%                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
-%                       vector of length(n) containing the containinig the
-%                       assignment of each unit obtained when alpha=0.1.
-%                       Elements equal to zero denote unassigned units.
-%           out.CTL    = matrix of size length(kk)-by-length(alpha)
-%                       containing the values of the trimmed likelihood
-%                       curves for each value of k and each value of alpha.
-%      out.BandsCTL    = 3D array of size
-%                       length(kk)-by-length(alpha)-by-nsimul containing
-%                       the nsimul replicates of out.CTL. This output is
-%                       present only if input option bands is true or is a
-%                       struct.
-%         out.likLB    =  matrix of size length(kk)-by-length(alpha)
-%                       containing the lower confidence bands of the
-%                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%         out.likUB    =  matrix of size length(kk)-by-length(alpha)
-%                       containing the upper confidence bands of the
-%                       trimmed likelihood curves for each value of k and
-%                       each value of alpha. This output is present only if
-%                       input option bands is true or is a struct.
-%            out.idx  = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups in correspodence of
-%                       Optimalalpha and OptimalK. Cluster names are
-%                       integer numbers from 1 to k. 0 indicates trimmed
-%                       observations. This output is present only if input
-%                       option bands is true or is a struct.
-%           out.OptimalK = scalar, optimal number of clusters, stored
-%                        as a positive integer value. This output is present
-%                       only if optional input argument is true.
-%        out.Optimalalpha = scalar, optimal value of trimming. This
-%                       output is present only if optional input argument is
-%                       true.
+%                out.CLACLA = matrix of size 5-times-8 if kk and cc are not
+%                   specififed else it is a matrix of size length(kk)-times
+%                   length(cc) containinig the value of the penalized
+%                   classification likelihood. This output is present only
+%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
+%                out.CLACLAtable = same output of CLACLA but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
+%
+%                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
+%                   specififed else it is a cell of size length(kk)-times
+%                   length(cc). Each element of the cell is a vector of
+%                   length n containinig the assignment of each unit using
+%                   the classification model. This output is present only
+%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
+%
+%                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
+%                   specififed else it is a matrix of size length(kk)-times
+%                   length(cc) containinig the value of the penalized
+%                   mixture likelihood. This output is present only if
+%                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
+%
+%                out.MIXMIXtable = same output of MIXMIX but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
+%
+%                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
+%                   specififed else it is a matrix of size length(kk)-times
+%                   length(cc) containinig the value of the ICL. This
+%                   output is present only if 'whichIC' is 'MIXCLA' or
+%                   'whichIC' is 'ALL'.
+%
+%                out.MIXCLAtable = same output of MIXCLA but in MATLAB
+%                   table format (this field is present only if your MATLAB
+%                   version is not<2013b).
+%
+%                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
+%                   specififed else it is a cell of size length(kk)-times
+%                   length(cc). Each element of the cell is a vector of
+%                   length n containinig the assignment of each unit using
+%                   the mixture model. This output is present only if
+%                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
+%
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -389,7 +375,7 @@ function out  = ctlcurves(Y, varargin)
 %
 % Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
 % (2011), "Exploring the number of groups in robust model-based
-% clustering." Statistics and Computing, Vol. 21, pp. 585–599.
+% clustering." Statistics and Computing, Vol. 21, pp. 585Â–599.
 %
 % Copyright 2008-2019.
 % Written by FSDA team

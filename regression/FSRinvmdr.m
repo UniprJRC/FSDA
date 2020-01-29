@@ -18,6 +18,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 %               it is set equal to mdr(end,1)+1
 %               Example - 'n',10
 %               Data Types - double
+%
 %   plots :  Plot on the screen. Scalar or structure.
 %               It specify whether it is necessary to
 %               plot in normal coordinates the value of mdr
@@ -171,9 +172,9 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 
 %}
 
+%% Beginning of code 
 
-
-%% Input parameters checks
+% Input parameters checks
 n=mdr(end,1)+1;
 options=struct('n',n,'plots','');
 
