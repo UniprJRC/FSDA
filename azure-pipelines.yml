@@ -37,4 +37,4 @@ jobs:
         testResultsFiles: '**/test-*.xml'  
     - task: PublishPipelineArtifact@1
       inputs:
-      path: $(System.DefaultWorkingDirectory)/tests-regression
+        path: $(System.DefaultWorkingDirectory)/tests-regression
