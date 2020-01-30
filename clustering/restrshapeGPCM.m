@@ -145,13 +145,6 @@ else % This is the case strcmp(pars(2),'V')
     GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh);
 end
 
-%     % Impose the constraint that the product of the elements of vector
-%     % GAMc is equal to 1
-%     lmd=(prod(GAMc,1)).^(1/pa.v);
-%     es=lmd;
-%     es(es==0)=1;
-%     GAMc=GAMc./es;
-
 end
 
 function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, tolS, sortsh)
@@ -167,13 +160,13 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %
 % lamGAM  : matrix of size v-by-k
 %           lamGAM contains in the first column the elements on the
-%           diagonal of (lam(1)* GAM(:,:,1)). In other words the first
+%           diagonal of GAM(:,:,1)). In other words the first
 %           column contains the diagonal elements of matrix
-%           $\lambda_1^(1/p)*\Gamma_1$
+%           $\Gamma_1$
 %           lamGAM contains in the second column the elements on the
-%           diagonal of (lam(2)* GAM(:,:,2)). In other words the first
+%           diagonal of (GAM(:,:,2)). In other words the first
 %           column contains the diagonal elements of matrix
-%           $\lambda_2^(1/p)*\Gamma_2$
+%           $\Gamma_2$
 %           .........
 %   niini  : vector of length k containing the size of the groups.
 %     shw  : scalar greater or equal 1. Constraint to impose inside each
@@ -252,11 +245,6 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     for j=1:K
         [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'asc');
     end
-    
-    %     if sortsh==1
-    %     else
-    %         Ord=repmat((1:p)',1,K);
-    %     end
     
     % Apply restriction between groups
     % The elements of each column of GAM are sorted from largest to smallest
