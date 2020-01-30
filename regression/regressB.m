@@ -57,11 +57,14 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%   intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %      bsb :   units forming subset. Vector.
 %                m x 1 vector.
 %               The default value of bsb is 1:n1, that is all n1 units are
@@ -70,6 +73,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Data Types - double
 %               REMARK: if bsb='' (empty value) just prior information is
 %               used
+%
 %      c  :    it can be used to control the prior information
 %               about beta. Scalar.
 %               Scalar between 0 (excluded) and 1 (included).
@@ -96,6 +100,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               to represent the amount of prior knowledge.
 %               Example - 'c',1.2
 %               Data Types - double
+%
 %   stats:   additional statistics. Scalar.
 %               If stats =1 the following additional statistics are
 %               computed:
@@ -107,6 +112,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               variable j
 %               Example - 'stats',1
 %               Data Types - double
+%
 %  conflev:     confidence levels to be used to
 %               compute HPDI. Vector.
 %               This input option is used just if input
@@ -115,6 +121,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               are computed
 %               Example - 'conflev',[0.99 0.999]
 %               Data Types - double
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left

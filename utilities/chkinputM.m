@@ -52,6 +52,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
     [out]=FSM(X);
 %}
 %% Beginning of code
+
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
 

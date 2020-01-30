@@ -9,7 +9,8 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %    y:         Response variable. Vector. A vector with n elements that contains the response variable.
 %               It can be either a row or column vector.
-%    X :        Predictor variables in the regression equation. Matrix. Data matrix of explanatory variables (also called 'regressors')
+%    X :        Predictor variables in the regression equation. Matrix.
+%               Data matrix of explanatory variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
 %               columns represent variables.
 %               By default, there is a constant term in the model, unless
@@ -43,30 +44,36 @@ function [out]=regressHart(y,X,Z,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept : Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%   intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
 %               squares is used to find initial estimate of beta
 %               Example - 'initialbeta',[3.6 8.1]
 %               Data Types - double
+%
 % initialgamma: initial estimate of gamma. Vector.
-%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
-%               of gamma is nothing but the OLS estimate in a regression
-%               where the response is given by squared residuals and the
-%               regressors are specified in input object Z (this regression
-%               also contains a constant term).
+%               vector of length (r+1). If initialgamma is not supplied
+%               (default)  initial estimate of gamma is nothing but the OLS
+%               estimate in a regression where the response is given by
+%               squared residuals and the regressors are specified in input
+%               object Z (this regression also contains a constant term).
 %               Example - 'initialgamma',[0.6 2.8]
 %               Data Types - double
+%
 %     maxiter : Maximum number of iterations to find model paramters. Scalar.
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
 %               Example - 'maxiter',8
 %               Data Types - double
+%
 %     tol     : The tolerance for controlling convergence. Scalar.
 %               If not defined, tol is fixed to 1e-8. Convergence is
 %               obtained if $||d_{old}-d_{new}||/||d_{new}||<1e-8$ where d is the
@@ -75,6 +82,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %               the values of d in iterations t and t+1 t=1,2,...,maxiter.
 %               Example - 'tol',0.0001
 %               Data Types - double
+%
 %    msgiter : Level of output to display. Scalar.
 %               If msgiter=1 it is possible to see the estimates of
 %               the regression and scedastic parameters together with their
@@ -86,6 +94,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %               screen
 %               Example - 'msgiter',0
 %               Data Types - double
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -218,6 +227,7 @@ function [out]=regressHart(y,X,Z,varargin)
 
 
 %% Beginning of code
+
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

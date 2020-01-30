@@ -55,6 +55,7 @@ function [ypred, yci] = predci(X,beta,Sigma,mse,dfe,alpha,sim,pred,hasintercept)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code
 
 ypred = X * beta;
 

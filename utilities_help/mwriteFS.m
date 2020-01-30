@@ -13,7 +13,7 @@ function [outstring]=mwriteFS(out)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
-
+%% Beginning of code
 
 StartColumn=22;
 StartColOutArg=22;

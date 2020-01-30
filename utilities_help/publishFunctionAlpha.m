@@ -36,6 +36,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %                     current file in alphabetical order.
 %                 Example - 'CreateTxtFile',false
 %                 Data Types - boolean
+%
 % webhelp :   Option which specifies the default path to create html file
 %             containing the alphabetical list of functions.
 %             Logical.
@@ -47,6 +48,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
+%
 % outputDir : Output folder. String.
 %             Output folder to which the HTML document is saved and where
 %             template file function-alphaEmpty.html is located, specified
@@ -63,6 +65,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
 %             Data Types - string
+%
 % Createnavbars : create files topscript.js and bottoscript.js. Boolean.
 %             If Createnavbars is true (default), this routine assumes
 %             there is a templsate input files inside (FSDA
@@ -151,6 +154,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 
 
 %% Beginning of code
+
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix

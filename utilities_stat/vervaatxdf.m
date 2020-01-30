@@ -207,6 +207,8 @@ function [f , F , x] = vervaatxdf(betav,nx,pascalM)
 
 %}
 
+%% Beginning of code 
+
 if nargin==0
     betav = 1;
 end

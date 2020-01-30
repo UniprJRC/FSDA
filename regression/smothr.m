@@ -209,6 +209,7 @@ function ysmo=smothr(l,x,y,w)
 %}
 
 %% Beginning of code
+
 n=length(y);
 
 if nargin<4

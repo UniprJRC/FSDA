@@ -9,7 +9,8 @@ function psider=HUpsider(u,c)
 %    u:         scaled residuals or Mahalanobis distances. Vector. n x 1 vector containing 
 %               for the n units of the sample scaled residuals or
 %               Mahalanobis distances
-%    c :        tuning constant. Scalar. scalar greater than 0 which controls the robustness/efficiency of the estimator 
+%    c :        tuning constant. Scalar. scalar greater than 0 which
+%               controls the robustness/efficiency of the estimator
 %               (beta in regression or mu in the location case ...) 
 %
 % Optional input arguments:
@@ -67,6 +68,7 @@ function psider=HUpsider(u,c)
 %}
 
 %% Beginning of code
+
 psider=zeros(length(u),1);
 psider(abs(u) < c)=1;
 end

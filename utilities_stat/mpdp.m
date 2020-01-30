@@ -146,6 +146,7 @@ function [res] = mpdp(y, alpha, varargin)
 %}
 
 %% Beginning of code
+
 if ~isscalar(alpha)
     error('FSDA:mdpd:WrongInputOpt','alpha should be a non negative scalar')
 else

@@ -20,11 +20,13 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %              specified it will be set equal to floor(0.5*(n+p+1))+1.
 %                 Example - 'init',50 
 %                 Data Types - double
+%
 % prob:        quantiles for which envelopes have
 %               to be computed. Vector. Vector containing 1 x k elements .
 %               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
 %                 Example - 'prob',[0.05 0.95] 
 %                 Data Types - double
+%
 % distrib:      Reference distribution to use. Character.
 %               The statistical distribution used to compute the
 %               approximated Bonferroni bounds. Distributions implemented
@@ -100,8 +102,9 @@ function Bbound = FSMbonfbound(n,p,varargin)
       legend('Order statistic envelope','Bonferroni Chi2 bound','Bonferroni F bound','Location','best');
 %}
 
-%% Input parameters checks
+%% Beginning of code
 
+% Input parameters checks
 if ~isscalar(n) || isempty(n) || isnan(n)
     error('FSDA:FSMbonfbound:Wrongn','n must be scalar non empty and non missing!!');
 end

@@ -24,11 +24,11 @@ function out=regressH(y,X,Z,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%     Z :       Predictor variables in the skedastic equation. Matrix. n x r matrix or vector of length r.
-%               If Z is a n x r matrix it contains the r variables which
-%               form the scedastic function .
-%               If Z is a vector of length r it contains the indexes of the
-%               columns of matrix X which form the scedastic function 
+%     Z :       Predictor variables in the skedastic equation. Matrix. n x
+%               r matrix or vector of length r. If Z is a n x r matrix it
+%               contains the r variables which form the scedastic function.
+%               If Z is a vector of length r it contains the indexes of
+%               the columns of matrix X which form the scedastic function.
 %               Therefore, if for example the explanatory variables
 %               responsible for heteroscedisticity are columns 3 and 5
 %               of matrix X, it is possible to use both the sintax
@@ -59,30 +59,37 @@ function out=regressH(y,X,Z,varargin)
 %               computations.
 %               Example - 'type','har' 
 %               Data Types - string
-%   intercept : Indicator for constant term. Scalar. 
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
+%
+% intercept :   Indicator for constant term. true (default) | false. 
+%               Indicator for the constant term (intercept) in the fit,
+%               specified as the comma-separated pair consisting of
+%               'Intercept' and either true to include or false to remove
+%               the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 % initialbeta : initial estimate of beta. Vector.
 %               p x 1 vector. If initialbeta is not supplied (default) standard least
 %               squares is used to find initial estimate of beta
 %               Example - 'initialbeta',[3 8] 
 %               Data Types - double
+%
 % initialgamma: initial estimate of gamma. Vector.
-%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
-%               of gamma is nothing but the OLS estimate in a regression
-%               where the response is given by squared residuals and the
-%               regressors are specified in input object Z (this regression
-%               also contains a constant term).
+%               vector of length (r+1). If initialgamma is not supplied
+%               (default)  initial estimate of gamma is nothing but the OLS
+%               estimate in a regression where the response is given by
+%               squared residuals and the regressors are specified in input
+%               object Z (this regression also contains a constant term).
 %               Example - 'initialgamma',[0.6 2.8] 
 %               Data Types - double
+%
 %     maxiter : Maximum number of iterations to find model paramters. Scalar. 
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is
 %               enough to put maxiter=1.
 %               Example - 'maxiter',8 
 %               Data Types - double
+%
 %     tol     : The tolerance for controlling convergence. Scalar
 %               If not defined, tol is fixed to 1e-8. Convergence is
 %               obtained if \( ||d_{old}-d_{new}||/||d_{new}||<1e-8 \)
@@ -92,6 +99,7 @@ function out=regressH(y,X,Z,varargin)
 %               values of d in iterations t and t+1 t=1,2, ..., maxiter
 %               Example - 'tol',0.0001 
 %               Data Types - double
+%
 %    msgiter : Level of output to display. Scalar.
 %               If msgiter=1 it is possible to see the estimates of
 %               the regression and scedastic parameters together with their
