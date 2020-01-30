@@ -37,5 +37,5 @@ jobs:
         testResultsFiles: '**/test-*.xml'  
     - task: PublishPipelineArtifact@1
       inputs:
-      targetPath: '$(Pipeline.Workspace)/tests-regression' 
+        targetPath: '$(Pipeline.Workspace)/tests-regression' 
 
