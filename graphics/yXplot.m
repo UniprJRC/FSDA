@@ -458,6 +458,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Example of the use of function yXplot putting the text for the units
     % which have a value of y smaller than 98 and greater than 102.
     % Note that in this case selunit is a cell array.
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
     yXplot(y,X,'selunit',{'98' '102'});
 %}
 
