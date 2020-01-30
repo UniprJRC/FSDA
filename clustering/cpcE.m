@@ -1,8 +1,9 @@
 function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %cpcE computes updated common rotation matrix when shapes are equal
 %
-%  This routine is called when the parametrization is *EE that is when
-%  equal shape and equal rotation are imposed. 
+%  This routine is called when the parametrization is VEE that is when
+%  equal shape and equal rotation are imposed and we have varying
+%  determinants.
 %
 %
 % Required input arguments:
