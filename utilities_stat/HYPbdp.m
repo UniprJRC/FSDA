@@ -22,6 +22,7 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 %              Default value is k=4.5.
 %                 Example - 'k',5
 %                 Data Types - double
+%
 %  traceiter : Level of display. Scalar.
 %               If traceiter = 1 it is possible to monitor
 %              how the value of the objective function E(rho)/\rho(\infty)

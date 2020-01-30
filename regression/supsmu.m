@@ -31,6 +31,7 @@ function smo = supsmu(x,y,varargin)
 %                2, \ldots, n$.
 %                Example - 'Weights',1:n
 %                Data Types - double
+%
 %       Span   :  fraction of the observations in the span. Scalar.
 %               This option sets the width of a fixed-width smoothing operation
 %               relative to the number of data points, 0 < Span < 1.
@@ -38,11 +39,13 @@ function smo = supsmu(x,y,varargin)
 %               algorithm.  Default is 0 (use supersmoother).
 %                Example - 'Span',0.2
 %                Data Types - double
+%
 %     Period  : Sets the period of periodic data.  Default is Inf
 %               (infinity) which implies that the data is not periodic.
 %               Can also be set to zero for the same effect.
 %                Example - 'Period',1
 %                Data Types - double
+%
 %   Alpha       Sets a small-span penalty to produce a greater smoothing
 %               effect.  0 < Alpha < 10, where 0 does nothing and 10
 %               produces the maximum effect.  Default = 0. This paramter
@@ -50,6 +53,7 @@ function smo = supsmu(x,y,varargin)
 %               10 indicate increasing smoothness.
 %                Example - 'Alpha',5
 %                Data Types - double
+%
 %   Unsorted    Sorted or unsorted data. Boolean. 
 %               If the data points are not already sorted in order of the x
 %               values then setting this to true will sort them.

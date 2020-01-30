@@ -47,13 +47,15 @@ function ci=ncpci(x,fType,df,varargin)
 %               is 95 per cent confidence interval
 %               is computed.
 %               Example - 'confLevel',0.99
-%               Data Types - double
+%               Data Types - doubleù
+%
 %     prec   : tolerance for the iterative loop. Scalar.
 %             Iteration will run until the estimated percentile is <=prec
 %             away from the requested percentile.
 %             The default value is 1e-6;
 %                 Example - 'prec',1e-05
 %                 Data Types - single | double
+%
 % doAnimate :   show graphically the iteration process.
 %               Logical.
 %               If doAnimate is true the the iteration process will be

@@ -11,6 +11,9 @@ function [dom, laste] = evalmxdom(f,dom,cellBoundaries,imagePrefix,imageDir,outp
 
 %#ok<*AGROW> (nodeList needs to grow)
 
+
+%% Beginning of code 
+
 % Provide a clean, white figure.
 if options.useNewFigure
     figureName = 'Figure';

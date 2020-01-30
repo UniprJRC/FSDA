@@ -53,30 +53,35 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %                 Example - 'modelfun', modelfun
 %                 where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 %                 Data Types - function_handle or empty value.
+%
 %  theta0       : Initial point. Vector or empty valu.
 %                 Empty value or vector containing initial values for the
 %                 coefficients (beta0 and sigma0) just in case modelfun is
 %                 non empty. If modelfun is empty this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
-%  intercept   :  Indicator for constant term. Scalar. If 1, and modelfun is
-%                 empty (that is if the link between X and beta is linear)
-%                 a model with constant term will be fitted (default), else
-%                 no constant term will be included. This argument is
-%                 ignored if modelfun is not empty.
-%                 Example - 'intercept',1
-%                 Data Types - double
+%
+%  intercept :  Indicator for constant term. true (default) | false.
+%               If true, and modelfun is empty (that is if the link between
+%               X and beta is linear) a model with constant term will be
+%               fitted (default), else no constant term will be included.
+%               This argument is ignored if modelfun is not empty.
+%               Example - 'intercept',true
+%               Data Types - boolean
+%
 %  dispresults :  Display results on the screen. Boolean. If dispresults is
 %                 true (default) it is possible to see on the screen table
 %                 Btable.
 %                 Example - 'dispresults',false
 %                 Data Types - Boolean
+%
 %      conflev :  Confidence level which is used to declare units as outliers.
 %                 Scalar. Usually conflev=0.95, 0.975 0.99 (individual
 %                 alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
 %                 alpha). Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots  :  Plot on the screen. Scalar.
 %                 If plots = 1, generates a plot with the residuals
 %                 against index number. The confidence level used to draw
@@ -85,16 +90,19 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %                 nominal 0.975 confidence interval is used.
 %                 Example - 'plots',0
 %                 Data Types - single | double
+%
 %       yxsave :  store X and y. Scalar. Scalar that is set to 1 to request
 %                 that the response vector y and data matrix X are saved
 %                 into the output structure out. Default is 0, i.e. no
 %                 saving is done.
 %                 Example - 'yxsave',1
 %                 Data Types - double
+%
 %      MaxIter : maximum number of iterations allowed. Positive integer.
 %                The default value is 1000-
 %                Example - 'MaxIter',100
 %                Data Types - double
+%
 %        TolX  : Tolerance for declaring convergence. Scalar.
 %                The default value of TolX is 1e-7.
 %                Example - 'TolX',1e-8

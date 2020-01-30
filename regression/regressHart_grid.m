@@ -7,7 +7,8 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %
 %    y:         Response variable. Vector. A vector with n elements that contains the response variable.
 %               It can be either a row or column vector.
-%    X :        Predictor variables in the regression equation. Matrix. Data matrix of explanatory variables (also called 'regressors')
+%    X :        Predictor variables in the regression equation. Matrix.
+%               Data matrix of explanatory variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
 %               columns represent variables.
 %               By default, there is a constant term in the model, unless
@@ -20,29 +21,35 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %
 % Optional input arguments:
 %
-%  intercept :   Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of profile loglikelihood
 %               appears  on the screen 
 %               else (default) no plot is shown.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %   alpha  :   coefficient in the skedastic equation. Vector. Vector of
 %               length r containing the values of coefficient alpha to
 %               consider in the grid search. The default value for alpha is
 %               alpha=0.1:0.1:4;
 %               Example - 'alpha',0.1:0.1:5
 %               Data Types - double
+%
 %   theta  :   coefficient in the skedastic equation. Vector. Vector of
 %               length r containing the values of coefficient theta to
 %               consider in the grid search. The default value for theta is
 %               theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
 %               Example - 'theta',0.1:0.1:5
 %               Data Types - double
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left

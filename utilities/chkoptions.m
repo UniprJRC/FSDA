@@ -42,6 +42,7 @@ function chkoptions(options,UserOptions)
 %}
 
 %% Beginning of code
+
 inpchk=isfield(options,UserOptions);
 WrongOptions=UserOptions(inpchk==0);
 if ~isempty(WrongOptions)

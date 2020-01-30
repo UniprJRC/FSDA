@@ -18,11 +18,13 @@ function [out]=FSRaddt(y,X,varargin)
 %
 % Optional input arguments:
 %
-%   intercept   :  Indicator for constant term. Scalar. 
-%                       If 1, a model with constant term will be fitted
-%                       (default), else  no constant term will be included.
-%                        Example - 'intercept',1 
-%                       Data Types - double
+%    intercept :    Indicator for constant term. true (default) | false. 
+%                   Indicator for the constant term (intercept) in the fit,
+%                    specified as the comma-separated pair consisting of
+%                   'Intercept' and either true to include or false to remove
+%                   the constant term from the model.
+%                    Example - 'intercept',false
+%                    Data Types - boolean
 %
 %           h   :      The number of observations that have determined the
 %                       least trimmed squares estimator. Scalar.
@@ -31,7 +33,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'h',round(n*0,75) 
 %                       Data Types - double
 %
-%       nsamp   : Number of subsamplse which will be extracted to find the
+%       nsamp   :       Number of subsamplse which will be extracted to find the
 %                       robust estimator. Scalar.
 %                       If nsamp=0 all subsets will be
 %                       extracted. They will be (n choose p). Remark: if the
@@ -40,7 +42,7 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'nsamp',1000 
 %                        Data Types - double
 %
-%       lms     :    Criterion to use to find the initlal subset to
+%       lms     :      Criterion to use to find the initlal subset to
 %                       initialize the search. Scalar,  vector or structure.
 %                       If lms=1 (default) Least Median of Squares is
 %                       computed, else Least Trimmed of Squares is computed. else
@@ -57,13 +59,13 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'init',100 starts monitoring from step m=100 
 %                       Data Types - double
 %
-%       plots   :    Plot on the screen. Scalar.
+%       plots   :       Plot on the screen. Scalar.
 %                       If plots=1 a plot with forward deletion
 %                        t-statistics is produced
 %                        Example - 'plots',1 
 %                        Data Types - double
 %
-%        nameX  : Add variable labels in plot. Cell array of strings.
+%        nameX  :       Add variable labels in plot. Cell array of strings.
 %                       Cell array of strings of length p containing the labels of
 %                       the varibles of the regression dataset. If it is empty
 %                       (default) the sequence X1, ..., Xp will be created
@@ -71,24 +73,24 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'nameX',{'NameVar1','NameVar2'} 
 %                       Data Types - cell
 %
-%       lwdenv  : Line width for envelopes. Scalar.
+%       lwdenv  :       Line width for envelopes. Scalar.
 %                       Line width for envelopes based on student T (default is 2)
 %                        Example - 'lwdenv',1 
 %                        Data Types - double
 %
-%        quant  :  Confidence quantiles for the envelopes. Vector.
+%        quant  :       Confidence quantiles for the envelopes. Vector.
 %                       Confidence quantiles for the envelopes of deletion t
 %                        stat. Default is [0.005 0.995] (i.e. a 99% pointwise
 %                       confidence interval)
 %                        Example - 'quant',[0.025 0.975]
 %                        Data Types - double
 %
-%       lwdt       : Line width for deletion T stat. Scalar.
+%       lwdt       :    Line width for deletion T stat. Scalar.
 %                       (default is 2)
 %                        Example - 'lwdt',1 
 %                        Data Types - double
 %
-%       nocheck : Check input arguments. Scalar.
+%       nocheck :       Check input arguments. Scalar.
 %                       If nocheck is equal to 1 no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones
@@ -101,23 +103,23 @@ function [out]=FSRaddt(y,X,varargin)
 %                       Example - 'titl','Example' 
 %                       Data Types - char
 %
-%       labx    :   a label for the x-axis. Character.
+%       labx    :       a label for the x-axis. Character.
 %                       (default: 'Subset size m')
 %                       Example - 'labx','Subset' 
 %                       Data Types - char
 %
-%       laby    :     a label for the y-axis. Character.
+%       laby    :       a label for the y-axis. Character.
 %                       (default: 'Deletion t statistics')
 %                       Example - 'laby','statistics' 
 %                       Data Types - char
 %
-%     FontSize:  the font size of the labels of
+%     FontSize:         the font size of the labels of
 %                       the axes and of the labels inside the plot. Scalar.
 %                       Default value is 12
 %                       Example - 'FontSize',11 
 %                       Data Types - double
 %
-% SizeAxesNum: size of the numbers of the axes. Scalar.
+% SizeAxesNum:          size of the numbers of the axes. Scalar.
 %                       Default value is 10
 %                       Example - 'SizeAxesNum',11 
 %                       Data Types - double

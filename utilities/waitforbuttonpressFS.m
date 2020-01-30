@@ -10,6 +10,7 @@ function [ss]=waitforbuttonpressFS
 %
 
 %% Beginning of code
+
 try
     ss=1;
     ss=waitforbuttonpress;

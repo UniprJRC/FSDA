@@ -17,11 +17,14 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 %  Optional input arguments:
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1 
-%               Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %         bdp :  breakdown point. Scalar. 
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
@@ -30,14 +33,17 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
 %                 Data Types - double      
+%
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
 %                 Asymptotic nominal efficiency is:
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%     rhofunc : rho function. String. String which specifies the rho function which must be used to
-%               weight the residuals. Possible values are 'bisquare',
+%
+%     rhofunc : rho function. String. String which specifies the rho
+%               function which must be used to weight the residuals.
+%               Possible values are 'bisquare',
 %               'optimal', 'hyperbolic', 'hampel'. 
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions, see
 %               TBrho and TBpsi.
@@ -50,6 +56,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - char
+%
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the
@@ -58,6 +65,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               a, b and c (the default values are a=2, b=4, c=8)
 %                 Example - 'rhofuncparam',5 
 %                 Data Types - single | double
+%
 %       nsamp   : Number of subsamples which will be extracted to find the
 %                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
 %                 They will be (n choose p).
@@ -65,26 +73,31 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 default is to extract all subsets otherwise just 1000.
 %                 Example - 'nsamp',1000 
 %                 Data Types - single | double
+%
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
 %                 Example - 'nsamp',1000 
 %                 Data Types - single | double
+%
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
 %                 Example - 'nsamp',1000 
 %                 Data Types - single | double
+%
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
 %                 Example - 'refstepsbestr',10 
 %                 Data Types - single | double
+%
 % reftolbestr : Tolerance for the refining steps. Scalar. 
 %               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
 %                 Example - 'reftolbestr',1e-10 
 %                 Data Types - single | double
+%
 %     minsctol: tolerance for the iterative
 %               procedure for finding the minimum value of the scale. Scalar. 
 %               Value of tolerance for the iterative
@@ -94,11 +107,14 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               The default value is 1e-7;
 %                 Example - 'minsctol',1e-7 
 %                 Data Types - single | double
-%      bestr  : number of "best betas" to remember. Scalar. Scalar defining number of "best betas" to remember from the
+%
+%      bestr  : number of "best betas" to remember. Scalar. Scalar defining
+%               number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
 %               (default=5)
 %                 Example - 'bestr',10 
 %                 Data Types - single | double
+%
 %     conflev :  Confidence level which is
 %               used to declare units as outliers. Scalar. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -106,6 +122,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               Default value is 0.975
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %        msg  : Level of output to display. Scalar. It controls whether
 %                 to display or not messages on the screen.
 %               If msg==1 (default) messages are displayed
@@ -116,12 +133,15 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               else no message is displayed on the screen
 %                 Example - 'msg',0 
 %                 Data Types - single | double
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1 no check is performed on
-%                 matrix y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%
+%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
+%                 no check is performed on matrix y and matrix X. Notice
+%                 that y and X are left unchanged. In other words the
+%                 additional column of ones for the intercept is not added.
+%                 As default nocheck=0.
 %               Example - 'nocheck',1 
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
 %               against index number. The confidence level used to draw the
@@ -130,6 +150,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               confidence interval will be used.
 %                 Example - 'plots',0 
 %                 Data Types - single | double
+%
 %       yxsave : Save matrices X and y. Scalar. If yxsave is equal to 1 the
 %               response vector y and data matrix X are saved into the output
 %                structure out. 
@@ -285,6 +306,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %}
 
 %% Beginning of code
+
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

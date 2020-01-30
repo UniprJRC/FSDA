@@ -38,6 +38,7 @@ function [out] = tBothSides(y, X, varargin)
 %               beta parameters will be used.
 %                 Example - 'la',0.5
 %                 Data Types - double
+%
 %   modelfun   : non linear function to use.
 %                function_handle or empty value (default). If
 %                modelfun is empty the link between X and \beta is assumed
@@ -49,11 +50,13 @@ function [out] = tBothSides(y, X, varargin)
 %                the function handle @hougen.
 %                 Example - 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 %                 Data Types - function_handle or empty value
+%
 %  beta0       :  empty value or vector containing initial values for the
 %                 coefficients just in case modelfun is non empty.
 %                 If modelfun is empty this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
+%
 %  la0         :  initial value for transformation parameter. Scalar or
 %                 empty value. If optional input parameter la is empty, it
 %                 is possible to specify the initial value to use in the
@@ -61,12 +64,15 @@ function [out] = tBothSides(y, X, varargin)
 %                 ignored if la is nont empty.
 %                 Example - 'la',1
 %                 Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, and modelfun is empty (that is if the link between X and beta is linear)
-%               a model with constant term will be fitted (default), else
-%               no constant term will be included. This argument is ignored
-%               if modelfun is not empty.
-%               Example - 'intercept',1
-%               Data Types - double
+%
+%  intercept :  Indicator for constant term. true (default) | false.
+%               If true, and modelfun is empty (that is if the link between
+%               X and beta is linear) a model with constant term will be
+%               fitted (default), else no constant term will be included.
+%               This argument is ignored if modelfun is not empty.
+%               Example - 'intercept',true
+%               Data Types - boolean
+%
 %    family :   parametric transformation to use. String. String which
 %               identifies the family of transformations which
 %               must be used. Character. Possible values are 'BoxCox'
@@ -84,6 +90,7 @@ function [out] = tBothSides(y, X, varargin)
 %               transformations does not have this limitation.
 %               Example - 'family','YJ'
 %               Data Types - char
+%
 %   prolik  :   Monitor profile log likelihood for lambda. Empty value (default),
 %               scalar or structure. It
 %               specifies whether it is necessary to
@@ -107,6 +114,7 @@ function [out] = tBothSides(y, X, varargin)
 %                                 transformation parameters.
 %                 Example -'prolik',true
 %                 Data Types - Boolean or struct
+%
 %  dispresults :  Display results on the screen. Boolean.
 %                 If dispresults is true (default) it is possible to see on the
 %                 screen table Btable.

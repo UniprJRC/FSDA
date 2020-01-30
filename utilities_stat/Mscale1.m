@@ -31,10 +31,12 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 %               If not defined, scaled MAD of vector |u| is used.
 %               Example - 'initialsc',0.34 
 %               Data Types - double
+%
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
 %               Example - 'tol',1e-10 
 %               Data Types - double
+%
 %     maxiter : scalar. Maximum number of iterations to find the scale.
 %               If not defined, maxiter is fixed to 200.
 %               Example - 'maxiter',100 
@@ -116,6 +118,7 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %% Beginning of code
+
 c=psifunc.c1;
 kc=psifunc.kc1;
 

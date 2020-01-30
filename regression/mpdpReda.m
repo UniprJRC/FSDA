@@ -55,6 +55,7 @@ function [out] = mpdpReda(y, X, varargin)
 %               bdp is a sequence from 1 to 0 with step -0.01.
 %                 Example - 'bdp',[1 0.8 0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
+%
 %   modelfun   : non linear function to use.
 %                function_handle or empty value (default). If
 %                modelfun is empty the link between $X$ and $\beta$ is assumed
@@ -66,17 +67,21 @@ function [out] = mpdpReda(y, X, varargin)
 %                the function handle @hougen.
 %                 Example - 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 %                 Data Types - function_handle or empty value
+%
 %  theta0       :  empty value or vector containing initial values for the
 %                 coefficients (beta0 and sigma0) just in case modelfun is non empty.
 %                 If modelfun is empty this argument is ignored.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, and modelfun is empty (that is if the link between X and beta is linear)
-%               a model with constant term will be fitted (default), else
-%               no constant term will be included. This argument is ignored
-%               if modelfun is not empty.
-%               Example - 'intercept',1
-%               Data Types - double
+%
+%  intercept :  Indicator for constant term. true (default) | false.
+%               If true, and modelfun is empty (that is if the link between
+%               X and beta is linear) a model with constant term will be
+%               fitted (default), else no constant term will be included.
+%               This argument is ignored if modelfun is not empty.
+%               Example - 'intercept',true
+%               Data Types - boolean
+%
 %     conflev :  Confidence level. Scalar.
 %               Confidence level which is used to declare units as outliers. 
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -84,6 +89,7 @@ function [out] = mpdpReda(y, X, varargin)
 %               Default value is 0.975.
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, generates a plot of the monitoring of residuals
 %               against alpha.

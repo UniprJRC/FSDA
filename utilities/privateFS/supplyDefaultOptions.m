@@ -5,6 +5,8 @@ function options = supplyDefaultOptions(options)
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code 
+
 if ~isfield(options,'format')
     options.format = 'html';
 end

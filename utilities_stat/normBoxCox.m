@@ -133,7 +133,9 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 % Extract size of the data
 v=size(Y,2);
 

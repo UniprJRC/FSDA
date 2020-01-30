@@ -27,8 +27,10 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 %
 %    initialsc: scalar. The initial estimate of the scale.
 %               If not defined, scaled MAD of vector |u| is used.
+%
 %     maxiter : scalar. The maximum number of iterations to find the scale.
 %               If not defined, maxiter is fixed to 200.
+%
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
 %
@@ -56,6 +58,7 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 
 
 %% Beginning of code
+
 if nargin<4
     initialsc = median(abs(u))/.6745;
 end

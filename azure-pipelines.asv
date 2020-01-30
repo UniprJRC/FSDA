@@ -1,0 +1,42 @@
+jobs:
+- job: Test
+  strategy:
+      matrix:
+        regression:
+          categoryName: 'regression'
+        regressionTS:
+          categoryName: 'regressionTS'
+        regressionLTSts:
+          categoryName: 'regressionLTSts'
+        regressionEXT:
+          categoryName: 'regressionEXT'
+        graphics:
+          categoryName: 'graphics'
+        multivariate:
+          categoryName: 'multivariate'
+        multivariate-clustering:
+          categoryName: 'multivariate-clustering'
+        regression-clustering:
+          categoryName: 'regression-clustering'
+        mixsim:
+          categoryName: 'mixsim'
+        utilities:
+          categoryName: 'utilities'
+  pool:
+      vmImage: 'Ubuntu 16.04'
+  variables:
+      CATEGORY_TO_TEST: $(categoryName)
+  timeoutInMinutes: 365 
+  steps:
+    - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+    - script: matlab -batch "run runAllMyTestsFS.m" 
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '**/test-*.xml'  
+    - task: PublishPipelineArtifact@1
+      condition: always()
+      inputs:
+        path: $(System.DefaultWorkingDirectory)
+        artifact: Test$(categoryName)

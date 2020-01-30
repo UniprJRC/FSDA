@@ -32,6 +32,7 @@ short_name = FSColors.reddish.ShortName
 %}
 
 %% Beginning of code
+
    properties
       RGB = [];
       ShortName = '';

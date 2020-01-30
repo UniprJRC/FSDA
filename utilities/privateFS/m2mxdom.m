@@ -11,7 +11,9 @@ function [dom,cellBoundaries] = m2mxdom(originalCode)
 
  
 %#ok<*AGROW> The length of chunkList and paragraphText are not known in advance.
- 
+
+%% Beginning of code 
+
 % Normalize line endings to Unix-style.
 code = regexprep(originalCode,'\r\n?','\n');
 newLine = sprintf('\n');

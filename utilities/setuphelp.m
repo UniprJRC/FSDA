@@ -27,6 +27,7 @@ function setuphelp(FSDApath)
 
 
 %% Beginning of code
+
 % identify FSDA root
 %FSDAroot=which('logo.png');
 % if ~isequal(FSDAroot(1:end-9),pwd)

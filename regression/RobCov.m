@@ -40,11 +40,14 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %  Optional input arguments:
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
 %                 0.5 and 0.99). The default value is 0.95
@@ -52,11 +55,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                 $(\int \psi' d\Phi)^2 / (\psi^2 d\Phi)$
 %                 Example - 'eff',0.99
 %                 Data Types - double
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%
 %         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
@@ -69,8 +68,10 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               both of them are specified an error is produced. If both of
 %               them are not specified the defulat is tu use the tuning
 %               constant associated to a nominal efficiency of 0.95.
-%     rhofunc : rho function. String. String which specifies the rho function which must be used to
-%               weight the residuals. Possible values are
+%
+%     rhofunc : rho function. String. String which specifies the rho
+%               function which must be used to weight the residuals.
+%               Possible values are
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
@@ -86,6 +87,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - double
+%
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the

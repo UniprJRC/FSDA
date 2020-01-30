@@ -28,8 +28,10 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %              Default value is c=4
 %               Example - 'c',3
 %               Data Types - double
-%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location. TODO:Hac:shapeeff  
+%
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency
+%              is referred to the shape else (default) is referred to the
+%              location. TODO:Hac:shapeeff
 %               Example - 'shapeeff',1 
 %               Data Types - double
 %
@@ -169,6 +171,7 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %}
 
 %% Beginning of code
+
 options=struct('c',4,'shapeeff',0);
 
 UserOptions=varargin(1:2:length(varargin));

@@ -36,6 +36,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
+%
 % outputDir : Output folder. String.
 %             Output folder to which the HTML document is saved and where
 %             template file function-cateEmpty.html is located, specified
@@ -118,6 +119,7 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %}
 
 %% Beginning of code
+
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
