@@ -26,7 +26,7 @@ jobs:
       vmImage: 'Ubuntu 16.04'
   variables:
       CATEGORY_TO_TEST: $(categoryName)
-  timeoutInMinutes: 360 
+  timeoutInMinutes: 365 
   steps:
     - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
     - script: matlab -batch "run runAllMyTestsFS.m" 
