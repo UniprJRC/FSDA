@@ -35,3 +35,7 @@ jobs:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/test-*.xml'  
+    - task: PublishPipelineArtifact@1
+      inputs:
+      targetPath: '$(Pipeline.Workspace)/tests-regression' 
+
