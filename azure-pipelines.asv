@@ -36,7 +36,7 @@ jobs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/test-*.xml'  
     - task: PublishPipelineArtifact@1
+      condition: always()
       inputs:
-        path: '**/test-regression'
-path: $(System.DefaultWorkingDirectory)/bin/WebApp
-    artifact: WebApp
+        path: $(System.DefaultWorkingDirectory)
+        artifact: Test$(categoryName)

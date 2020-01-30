@@ -38,5 +38,5 @@ jobs:
     - task: PublishPipelineArtifact@1
       condition: always()
       inputs:
-        path: $(System.DefaultWorkingDirectory)
-        artifact: Test01
+        path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
+        artifact: Test-$(categoryName)
