@@ -95,6 +95,7 @@ function [out]=regressHart(y,X,Z,varargin)
 %               Example - 'msgiter',0
 %               Data Types - double
 %
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -227,7 +228,10 @@ function [out]=regressHart(y,X,Z,varargin)
 
 
 %% Beginning of code
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

@@ -170,7 +170,10 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 
 
 %% Beginning of code
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
@@ -361,7 +364,7 @@ References=References(1:j-1,:);
 end
 
 function d = wfEdits(S1,S2)
-% Wagner–Fischer algorithm to calculate the edit distance / Levenshtein distance.
+% Wagnerï¿½Fischer algorithm to calculate the edit distance / Levenshtein distance.
 %
 N1 = 1+numel(S1);
 N2 = 1+numel(S2);

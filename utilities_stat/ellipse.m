@@ -157,7 +157,6 @@ function [Ell , he] = ellipse(mu, Sigma, conflev, Color, axesellipse)
 
 
 %% Beginning of code
-
 % Specify line width of the ellipse and of its axes
 LineWidth=2;
 

@@ -60,7 +60,6 @@ lambda = eigs(A,size(A,1),sigma)
 
 
 %% Beginning of code
-
 if nargin<2
     msg = 0;
 else

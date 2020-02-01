@@ -20,21 +20,23 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 %     lmd : Determinants. Vector.
 %            Row vector of length k containing in the j-th position
-%           $|\Sigma_j|^(1/p)$, $j=1, 2, \ldots, k$ if different
-%           determinants are allowed else it is a row vector of ones.
+%           the estimate of lambda. In the first iteration the estiamte of
+%           \lambda_j is $|\Sigma_j|^(1/v)$, $j=1, 2, \ldots, k$ if
+%           different determinants are allowed else it is a row vector of
+%           ones.
 %    Omega : Rotation. 3D array.
-%           p-by-p-by-k 3D array containing in
+%           v-by-v-by-k 3D array containing in
 %           position (:,:,j) the rotation
 %           matrix $\Omega_j$ for group $j$, with $j=1, 2, \ldots, k$.
-%   SigmaB : initial unconstrained covariance matrices. p-by-p-by-k array.
-%            p-by-p-by-k array containing the k unconstrained covariance
+%   SigmaB : initial unconstrained covariance matrices. v-by-v-by-k array.
+%            v-by-v-by-k array containing the k unconstrained covariance
 %            matrices for the k groups.
 %   niini  : size of the groups. Vector.
 %           Row vector of length k containing the size of the groups.
 %     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
 %            pa must contain the following fields:
-%            pa.p = scalar, number of variables.
+%            pa.v = scalar, number of variables.
 %            pa.k = scalar, number of groups.
 %            pa.pars = type of Gaussian Parsimonious Clustering Model.
 %               A 3 letter word in the set:
@@ -53,7 +55,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
+%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:
@@ -79,7 +81,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %
 % References:
 %
-%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2019),
+%   Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2020),
 %   Robust parsimonious clustering models. Submitted.
 %
 %
@@ -94,27 +96,21 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 % Examples:
 
 %% Beginning of code
-
-k=pa.K;
-p=pa.p;
+k=pa.k;
+v=pa.v;
 pars=pa.pars;
+
 if strcmp(pars(2),'E')
     % In this case just restriction shw is used
     shw=pa.shw;
     
-    if sum(isnan(lmd))>0
-        for j = k
-            lmd(j) = (det(SigmaB(:,:,j))).^(1 /pa.p);
-        end
-    end
-    
     sumnini=sum(niini);
-    GAMpooled=zeros(p,p);
+    GAMpooled=zeros(v,v);
     
     for j=1:k
         GAMj=(niini(j)/sumnini)*  (1./lmd(j)) * (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j);
         if sum(sum(isnan(GAMj)))>0
-            GAMj=zeros(p,p);
+            GAMj=zeros(v,v);
         end
         GAMpooled=GAMpooled+GAMj;
     end
@@ -126,33 +122,32 @@ if strcmp(pars(2),'E')
     
     % Impose the constraint that the product of the elements of vector
     % GAMpooledc is equal to 1
-    lmd=(prod(GAMpooledc,1)).^(1/pa.p);
+    lmd=(prod(GAMpooledc,1)).^(1/pa.v);
     es=lmd;
     es(es==0)=1;
-    GAMpooledc=GAMpooledc./es;
+    GAMc=GAMpooledc./es;
     
-    % replicate p-by-1 GAMpooledc vector k times
-    GAMc=repmat(GAMpooledc,1,k);
+    % replicate v-by-1 GAMpooledc vector k times
+    GAMc=repmat(GAMc,1,k);
     
 elseif strcmp(pars(2),'I')
-    GAMc=ones(p,k);
+    GAMc=ones(v,k);
     
 else % This is the case strcmp(pars(2),'V')
-    lamGAM =NaN(p,k);
+    lamGAM =NaN(v,k);
     shw=pa.shw;
     shb=pa.shb;
     maxiterS=pa.maxiterS;
     zerotol=pa.zerotol;
     for j=1:k
-        lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) );
+        lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) )/lmd(j);
     end
-    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tol);
+    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh);
 end
 
-
 end
 
-function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, itertol)
+function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, tolS, sortsh)
 % restrshapecore computes constrained Gamma (shape) matrix
 %
 % The purpose is to find the new constrained shape matrix.
@@ -163,15 +158,15 @@ function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, it
 %
 % Required input arguments:
 %
-% lamGAM  : matrix of size p-by-k
+% lamGAM  : matrix of size v-by-k
 %           lamGAM contains in the first column the elements on the
-%           diagonal of (lam(1)* GAM(:,:,1)). In other words the first
+%           diagonal of GAM(:,:,1)). In other words the first
 %           column contains the diagonal elements of matrix
-%           $\lambda_1^(1/p)*\Gamma_1$
+%           $\Gamma_1$
 %           lamGAM contains in the second column the elements on the
-%           diagonal of (lam(2)* GAM(:,:,2)). In other words the first
+%           diagonal of (GAM(:,:,2)). In other words the first
 %           column contains the diagonal elements of matrix
-%           $\lambda_2^(1/p)*\Gamma_2$
+%           $\Gamma_2$
 %           .........
 %   niini  : vector of length k containing the size of the groups.
 %     shw  : scalar greater or equal 1. Constraint to impose inside each
@@ -184,7 +179,7 @@ function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, it
 %           in the eigenvalues restriction routine (file restreigen.m).
 % maxiterS : maximum number of iterations in the iterative procedure.
 %           Scalar.
-%  itertol : tolerance to use to exit the iterative procedure. Scalar. The
+%     tolS : tolerance to use to exit the iterative procedure. Scalar. The
 %           iterative procedure stops when the relative difference of
 %           output matrix GAMc is smaller than itertol in two consecutive
 %           iterations or when maxiterS is reached.
@@ -192,7 +187,7 @@ function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, it
 %
 % Output:
 %
-%     GAMc : constrained shape matrix. Matrix of size p-by-k containing in
+%     GAMc : constrained shape matrix. Matrix of size v-by-k containing in
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$. The elements of GAMc satisfy the following
 %           constraints:
@@ -210,8 +205,8 @@ function [GAMc]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, it
 %% Beginning of code
 lamGAMc = lamGAM;
 % Initialize GAMc = Shape matrix constrained
-GAMc =  lamGAM;
 [p,K] = size(lamGAM);
+
 % Apply eigenvalue restriction inside each group using constraining parameter
 % shw
 % The ratio of each column of matrix lamGAMc is not greater than shw
@@ -226,11 +221,18 @@ iter=0;
 % the element of matrix \Gamma in two consecutive iterations
 diffGAM = 9999;
 
-while ( (diffGAM > itertol) && (iter < maxiterS) )
+Ord=NaN(p,K);
+GAMsor=Ord;
+GAMctr=Ord;
+GAMctrSRT=Ord;
+
+while ( (diffGAM > tolS) && (iter < maxiterS) )
     iter = iter + 1;
     
     % In this stage GAM(:,j) is diag(\lambda_j^(1/p) \times \Gamma_j )
     GAM =  lamGAMc;
+    GAMold=GAM(:);
+    
     lmd=(prod(GAM,1)).^(1/p);
     es=lmd;
     es(es==0)=1;
@@ -239,12 +241,9 @@ while ( (diffGAM > itertol) && (iter < maxiterS) )
     GAM=GAM./repmat(es,p,1);
     GAM(GAM==0)=1;
     
-  
-    % TODO TODO
-    Ord=zeros(p,K);
-    % GAMtmp=GAM;
+    
     for j=1:K
-        [GAM(:,j), Ord(:,j)]=sort(GAM(:,j),'desc');
+        [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'asc');
     end
     
     % Apply restriction between groups
@@ -252,22 +251,26 @@ while ( (diffGAM > itertol) && (iter < maxiterS) )
     % The ranks of the orginal ordering of each column is store in matrix ord
     % The ratio of each row of matrix GAMc is not greater than shb
     for i=1:p
-        GAMc(i,:) = restreigen(GAM(i,:), niini, shb, zerotol);
+        GAMctr(i,:) = restreigen(GAMsor(i,:), niini, shb, zerotol);
     end
     
     % Reconstruct the original order for each column
-    for j=1:K
-        GAMc(Ord(:,j),j)=GAMc(:,j);
+    if sortsh==1
+        for j=1:K
+            GAMctrSRT(Ord(:,j),j)=GAMctr(:,j);
+        end
+    else
+        GAMctrSRT=GAMctr;
     end
+    lamGAMc=GAMctrSRT;
     
     % GAMold = old values of matrix Gamma in vectorized form
-    GAMold=lamGAMc(:);
+    GAMnew=lamGAMc(:);
     % diff = (new values of Gamma) - (old values of Gamma)
-    diff=GAMc(:)-GAMold;
+    diff=GAMnew-GAMold;
     % relative sum of squares of the differences
     diffGAM=diff'*diff/(GAMold'*GAMold);
     
-    lamGAMc = GAMc;
 end
 
 end

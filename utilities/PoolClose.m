@@ -101,7 +101,6 @@ function [tend] = PoolClose(cleanpool, tstart, progbar, usePCT,  usematlabpool)
 %
 
 %% Beginning of code
-
 % This is to make 'PoolClose' independent from the specification of usePCT
 % and usematlabpool returned by 'PoolPrepare', i.e. if not provided in input.
 if nargin < 4 || (isempty(usePCT) && isempty(usematlabpool))

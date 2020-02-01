@@ -65,7 +65,6 @@ function upperfracpos(hfigl , hfigr , fraction)
 %}
 
 %% Beginning of code
-
 if nargin < 3
     fraction = 0.5;
 end

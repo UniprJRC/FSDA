@@ -119,7 +119,6 @@ function fstring=publishFunctionCate(InputCell, varargin)
 %}
 
 %% Beginning of code
-
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix

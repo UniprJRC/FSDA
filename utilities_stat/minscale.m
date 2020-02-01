@@ -58,7 +58,6 @@ function sc = minscale(u, c, kc, initialsc, tol, maxiter)
 
 
 %% Beginning of code
-
 if nargin<4
     initialsc = median(abs(u))/.6745;
 end

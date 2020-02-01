@@ -1,8 +1,9 @@
 function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %cpcE computes updated common rotation matrix when shapes are equal
 %
-%  This routine is called when the parametrization is *EE that is when
-%  equal shape and equal rotation are imposed. 
+%  This routine is called when the parametrization is VEE that is when
+%  equal shape and equal rotation are imposed and we have varying
+%  determinants.
 %
 %
 % Required input arguments:
@@ -28,7 +29,6 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %    Omega : p-by-p-k 3D array containing the updated common rotation
 %               matrix replicated k times. Omega(:,:,j)=Omega2D with j=1,
 %               ..., k
-%
 %   Omega2D : p-by-p matrix containing the updated common rotation matrix.
 %
 % Copyright 2008-2019.
@@ -36,9 +36,8 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
-
-p=pa.p;
-k=pa.K;
+v=pa.v;
+k=pa.k;
 sumnini=sum(niini);
 % Inefficient way of obtaining Sigma
 % Sigma_ = NaN(p,p,k);
@@ -48,9 +47,9 @@ sumnini=sum(niini);
 % end
 % Sigma = sum(Sigma_,3);
 
-Omega=NaN(p,p,k);
+Omega=NaN(v,v,k);
 % Sigma is OMG*GAM*OMG' pooled
-Sigma=zeros(p,p);
+Sigma=zeros(v,v);
 for j=1:k
     Sigma = Sigma + (1/lmdc(j)) * (niini(j) /sumnini)  * SigmaB(:,:,j);
 end

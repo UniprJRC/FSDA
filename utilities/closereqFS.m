@@ -9,7 +9,6 @@ function status = closereqFS(~,~)
 %
 
 %% Beginning of code
-
 status = 0;
 selection = questdlg('Close this figure and all the other linked figures and exit brushing mode',...
     'Close figure',...

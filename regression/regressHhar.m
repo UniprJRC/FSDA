@@ -129,7 +129,7 @@ function [out]=regressHhar(y,X,Z,varargin)
 %
 %  More About:
 %
-%   This routine implements Harvey’s (1976) model of
+%   This routine implements Harveyï¿½s (1976) model of
 %   multiplicative heteroscedasticity which is a very flexible, general
 %   model that includes most of the useful formulations as special cases.
 %   The general formulation is: 
@@ -341,7 +341,10 @@ function [out]=regressHhar(y,X,Z,varargin)
 %}
 
 %% Beginning of code
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

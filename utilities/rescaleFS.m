@@ -36,7 +36,10 @@ function y = rescaleFS(x,a,b)
 %}
 
 %% Beginning of code
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 if nargin<2
     a = 0;
 end

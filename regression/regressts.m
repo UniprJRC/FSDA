@@ -356,9 +356,13 @@ function out = regressts(y,varargin)
     title('Estimate of the scale with correction factors')
 %}  
 
+<<<<<<< HEAD
 %% Beginning of code 
 
 % Input parameters checking
+=======
+%% Input parameters checking
+>>>>>>> master
 
 % Set up values for default model
 modeldef          = struct;

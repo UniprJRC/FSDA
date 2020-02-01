@@ -33,7 +33,6 @@ function [docNode,docNodechr]=xmlwriteFS(out, varargin)
 
 
 %% Beginning of code
-
 write2file=true;
 
 if nargin>1

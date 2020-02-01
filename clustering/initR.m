@@ -14,7 +14,7 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 %   niini  : vector of length k containing the size of the groups.
 %     pars : structure containing 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
-%            The fields of pars which are used in this routine are pa.p,
+%            The fields of pars which are used in this routine are pa.v,
 %            pa.k and pa.pars
 %
 % Output:
@@ -22,12 +22,10 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 %     lmd : row vector of length k containing in the j-th position
 %           $|\Sigma_j|^(1/p)$, $j=1, 2, \ldots, k$ if different
 %           determinants are allowed else it is a row vector of ones.
-%
 %   Omega2D : p-by-p matrix containing the eigenvectors of pooled matrix
 %            $\sum_{j=1}^k \frac{n_j}{n} \frac{1}{|\Sigma_j|^(1/p)}
 %            \Sigma_j$. The first column is associated with the largest
 %            eigenvalue .... This is the initial common rotation matrix.
-%
 %    Omega : p-by-p-k 3D array containing in position j Omega2D.
 %            This is the common rotation matrix replicated k times.
 
@@ -37,9 +35,8 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 
 
 %% Beginning of code
-
-p=pa.p;
-k=pa.K;
+v=pa.v;
+k=pa.k;
 pars=pa.pars;
 
 % Initialize lmd
@@ -47,7 +44,7 @@ lmd = NaN(1,k);
 
 if strcmp(pars(1),'V')
     for j=1:k
-        lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / p);
+        lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
     end
 else
     lmd = ones(1,k);
@@ -61,7 +58,7 @@ sumniini=sum(niini);
 % Sw = pooled estimate of \Omega \Gamma \Omega^T (rescaled pooled
 % within-group covariance matrix)
 % Sw = sum(Sigma,3);
-Sw=zeros(p,p);
+Sw=zeros(v,v);
 for j=1:k
     Sw = Sw + (niini(j) / sumniini) * (1 /lmd(j) ) * SigmaB(:,:,j);
 end
@@ -71,7 +68,7 @@ maxsigma_=max(max(isnan(Sw)));
 % In case of missing or infinite values common rotation matrix is forced to
 % be the identity matrix
 if isnan(maxsigma_) || isinf(maxsigma_)
-    Omega2D = eye(p);
+    Omega2D = eye(v);
 else
     % The common rotation matrix is formed by the eigenvectors of the
     % pooled within-group covariance matrix Sw

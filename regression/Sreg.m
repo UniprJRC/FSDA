@@ -275,6 +275,7 @@ function [out , varargout] = Sreg(y,X,varargin)
 
 %% Beginning of code
 
+
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
