@@ -170,10 +170,8 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 
 
 %% Beginning of code
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
