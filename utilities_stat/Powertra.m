@@ -39,18 +39,21 @@ function Ytra=Powertra(Y,la,varargin)
 %               Remark: BoxCox and the basic power family can be used just
 %               if input y is positive. YeoJohnson family of
 %               transformations does not have this limitation.
+%
 %  Jacobian :   Requested Jacobian of transformed values. true (default) or
 %               false. If true (default) the transformation is normalized
 %               to have Jacobian equal to 1. This option does not apply if
 %               inverse =1.
 %                   Example - 'Jacobian',true
 %                   Data Types - string
+%
 %   ColtoTra:   Variable to transform. Vector.  k x 1 integer vector
 %               specifying the variables which must be
 %               transformed. If it is missing and length(la)=v all
 %               variables are transformed
 %                   Example - 'ColtoTra',[1 2 4]
 %                Data Types - single|double
+%
 %  inverse :    Inverse transformation. Logical. If inverse is true, the
 %               inverse transformation is returned. The default value of
 %               inverse is false.
@@ -152,7 +155,9 @@ function Ytra=Powertra(Y,la,varargin)
     disp(max(max(abs(Y-Ychk))))
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
 % Extract size of the data
 v=size(Y,2);
 

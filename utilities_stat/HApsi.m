@@ -8,7 +8,8 @@ function psiHA = HApsi(u, ctuning)
 %    u:         scaled residuals or Mahalanobis distances. Vector. n x 1
 %               vector containing residuals or Mahalanobis distances
 %               for the n units of the sample
-%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of length 4 which specifies the value of the tuning
+%    ctuning :  tuning parameters. Scalar or Vector. Scalar or vector of
+%                length 4 which specifies the value of the tuning
 %                constant c (scalar greater than 0 which controls the
 %                robustness/efficiency of the estimator)
 %                and the prefixed values of paramters a, b, c

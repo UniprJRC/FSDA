@@ -39,6 +39,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %             is omitted.
 %             Example - 'webhelp',true
 %             Data Types - logical
+%
 % outputDir : Output folder. String.
 %             Output folder to which the HTML document is saved and where
 %             template file function-cateEmpty.html is located, specified
@@ -55,6 +56,7 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
 %             Data Types - string
+%
 % write2file: Option to write HTML file. Logical. Option which specifies
 %             whether HTML file must be created or if just HTML string
 %             fstring must be created. The default value of write2file is
@@ -168,6 +170,8 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 
 
 %% Beginning of code
+
+
 % % Use file separator of current operating system
 % % \ = Windows
 % % / = Unix
@@ -358,7 +362,7 @@ References=References(1:j-1,:);
 end
 
 function d = wfEdits(S1,S2)
-% Wagner–Fischer algorithm to calculate the edit distance / Levenshtein distance.
+% Wagnerï¿½Fischer algorithm to calculate the edit distance / Levenshtein distance.
 %
 N1 = 1+numel(S1);
 N2 = 1+numel(S2);

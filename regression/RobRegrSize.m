@@ -14,12 +14,16 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               interpolation using the two closest values smaller or
 %               greater than the one which has been considered
 %               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%
+%
 %           p : number of variables. Scalar integer. Number of explanatory variables.
 %               REMARK - simulations have been done for p=2, 3, ..., 10. If
 %               the user supplies a value of p greater than 10 the
 %               correction factors are extrapolated by fitting a simple
 %               quadratic model in p.
 %               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%
+%
 %       robest: robust estimator. String. String which identifies the robust estimator which is used
 %               Possibile values are:
 %                 'S'    S estimators;
@@ -28,6 +32,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %                 'LTSr' Least trimmed squares estimator reweighted.
 %               If robest is missing MM estimator is used
 %               Data Types -char
+%
 %      rhofunc: Weight function. String.
 %               String which identifies the weight function which has been
 %               used for S or MM.
@@ -42,6 +47,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               If rhofunc is missing and robest is 'S' or 'MM', the
 %               default value of rhofunc is 'ST'.
 %               Data Types -char
+%
 %         bdp :  breakdown point. Scalar.
 %               Scalar between 0 and 0.5. If robest is S, LTS or LTSr
 %               and bdp is missing a value of 0.5 is used as default.
@@ -53,17 +59,23 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               value in the interval (0.25 0.5) an average
 %               between bdp=0.25 and bdp=0.5 is used (for a more refined
 %               correction please see input option Tallis)
+
+%
 %         eff : nominal efficiency. Scalar.
 %               Scalar between between 0.5 and 1-epsilon (if robest is 'MM')
 %               REMARK - simulations have been done for eff = 0.85, 0.90 and
 %               0.95 If the user supplies a value of eff smaller than 0.85
 %               (greater than 0.95), the threshold found for eff=0.85
 %               (eff=0.95) is used.  In all the other cases an average
-%               is taken using the two closest values of eff
+%               is taken using the two closest values of eff.
+%
+%
 %     sizesim : simultaneous or individual size. Scalar.
 %               Scalar which specifies whether simultaneous (sizesim=1) or
 %               individual size is used. If sizesim is missing or equal to
 %               1 a simultaneous size is used.
+%
+%
 %     Tallis  : need to intermpolate. Scalar.
 %               Scalar which has an effect just if bdp is not equal to 0.25
 %               or 0.5. If Tallis=1 the program computes the ratio between

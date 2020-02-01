@@ -47,10 +47,9 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %Optional input arguments:
 %
 %   noisecluster: label or number associated to the 'noise class' or 'noise level'.
-%                 Scalar, numeric or character.
-%                 Number or character label which
-%                 denotes the points which do not belong to any cluster.
-%                 These points are not takern into account for the
+%                 Scalar, numeric or character. Number or character label
+%                 which denotes the points which do not belong to any
+%                 cluster. These points are not takern into account for the
 %                 computation of the Rand type indexes. The default is to
 %                 consider all points in order to compute the ARI index.
 %                 Example - 0 (in this case the units which in of the

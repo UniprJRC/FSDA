@@ -26,11 +26,13 @@ function strFormatted = wraptextFS(str, varargin)
 %               default value of startcolumn is 1.
 %               Example - 'startcolumn',10
 %               Data Types - double
+%
 %    endcolumn :  Right margin of the text. Scalar (non negative integer).
 %               This option controls the right margin of the text.
 %               The default value of endcolumn is 75.
 %               Example - 'endcolumn',50
 %               Data Types - double
+%
 %    width :  width of the text. Scalar (non negative integer).
 %               This option controls the width of the text.
 %               The default value of width is 65.
@@ -39,6 +41,7 @@ function strFormatted = wraptextFS(str, varargin)
 %               Remark: it is necessary just to give two values among,
 %               width, startcolumn and endcolumn because the third is
 %               automatically determined
+%
 % firstline :  indentation for first line. Boolean. If firstline is true
 %              then the first line starts in column 3 and not in column
 %              startcolumn, while the text in all the other columns starts
@@ -46,6 +49,7 @@ function strFormatted = wraptextFS(str, varargin)
 %               The default value of firstline is false
 %               Example - 'firstline',true
 %               Data Types - Boolean
+%
 %   comment :  specify whether text is a Matlab comment. Boolean or structure. If
 %              comment is true then the first character in each row will be
 %              the percentage sign (comment symbol in Matlab). The default
@@ -60,6 +64,7 @@ function strFormatted = wraptextFS(str, varargin)
 %               commentsign.
 %               Example - 'comment',true
 %               Data Types - Boolean
+%
 %      code :  specify whether text is a Matlab code (with comments).
 %              Boolean. If code than the extra space on the left is not
 %              trimmed. The default value of code is false. Option code
@@ -215,7 +220,10 @@ function strFormatted = wraptextFS(str, varargin)
 
 %}
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
+
 
 if nargin < 1
     error('FSDA:wraptextFS:missingInputs', ...

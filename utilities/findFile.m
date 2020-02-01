@@ -22,6 +22,7 @@ function list = findFile(root,varargin)
 %               InclDir is '*'. Default: InclDir={''}.
 %               Example - 'InclDir','dirname'
 %               Data Types - (cell array of) string
+%
 %   ExclDir:    Exclude directory pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not
 %               use regular expression. Examples: 'abc' and 'ab*de*'. Use ''
@@ -29,6 +30,7 @@ function list = findFile(root,varargin)
 %               Windows or '/' in Unix) is not allowed. Case-sensitive. Default: ExclDir={''}.
 %               Example - 'ExclDir','dirname'
 %               Data Types - (cell array of) string
+%
 %   InclFiles:  Include file pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not use regular expression.
 %               Use '*' to include all files. Note that '*' and '*.*' give
@@ -37,6 +39,7 @@ function list = findFile(root,varargin)
 %               Case-sensitive. Default: InclFile={'*'}.
 %               Example - 'InclFiles','filename'
 %               Data Types - (cell array of) string
+%
 %   ExclFiles:  Exclude file pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not use regular expression.
 %               Use '' or {} to skip this check. File separator (i.e. '\'

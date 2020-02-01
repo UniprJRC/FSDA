@@ -68,7 +68,8 @@ function wei = HUwei(u,c)
 
 %}
 
-%% beginning of code
+%% Beginning of code
+
 w = (abs(u)<=c);
 signu=sign(u);
 wei=w +(1-w).*(c*signu./u);

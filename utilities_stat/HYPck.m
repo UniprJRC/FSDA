@@ -16,9 +16,11 @@ function [Anew,Bnew,d]=HYPck(c,k,A,B,d)
 %         A   : A parameter. Scalar. Starting value for parameter A
 %                 Example - 'A',0.85
 %                 Data Types - double
+%
 %         B   : B parameter. Scalar. Starting value for parameter B
 %                 Example - 'B',0.9
 %                 Data Types - double
+%
 %         d   : d parameter. scalar. Starting value for parameter d
 %                 Example - 'd',1,5
 %                 Data Types - double
