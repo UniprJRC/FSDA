@@ -171,7 +171,6 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 %}
 
 %% Beginning of code
-
 options=struct('c',4,'shapeeff',0);
 
 UserOptions=varargin(1:2:length(varargin));

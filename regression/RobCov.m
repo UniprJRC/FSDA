@@ -87,7 +87,10 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - double
+<<<<<<< HEAD
 %
+=======
+>>>>>>> master
 % rhofuncparam: Additional parameters for the specified rho function.
 %               Scalar or vector.
 %               For hyperbolic rho function it is possible to set up the

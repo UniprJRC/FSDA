@@ -157,7 +157,6 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
 %}
 
 %% Beginning of code
-
 if nargin<1
     error('FSDA:suplabel:Missingtext','text to add is missing');
 end

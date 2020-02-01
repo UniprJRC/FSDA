@@ -220,9 +220,13 @@ function strFormatted = wraptextFS(str, varargin)
 
 %}
 
+<<<<<<< HEAD
 %% Beginning of code 
 
 % Input parameters checking
+=======
+%% Input parameters checking
+>>>>>>> master
 
 if nargin < 1
     error('FSDA:wraptextFS:missingInputs', ...

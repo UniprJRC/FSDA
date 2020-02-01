@@ -126,7 +126,6 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %% Beginning of code
-
 c=psifunc.c1;
 kc=psifunc.kc1;
 

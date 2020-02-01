@@ -54,7 +54,6 @@ function cabc()
 %}
 
 %% Beginning of code
-
 % Given a vector containing the open figure handles, all_openfigs, the
 % figure in foreground is all_openfigs(1)
 all_openfigs = findobj(0, 'type', 'figure');

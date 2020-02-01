@@ -73,7 +73,6 @@ function psider=TBpsider(u,c)
 %}
 
 %% Beginning of code
-
 psider = (abs(u) < c) .* (1 - 6*(u/c).^2  + 5*(u/c).^4);
 end
 %FScategory:UTISTAT

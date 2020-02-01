@@ -94,7 +94,7 @@ function [y,X,n,p] = chkinputRB(y, X, nnargin, vvarargin)
     out=regressB(X, beta0, R, tau0, n0,'stats',1);
 %}
 
-%% Beginning of code ù
+%% Beginning of code ï¿½
 
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;

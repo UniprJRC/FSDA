@@ -83,6 +83,7 @@ function out=regressH(y,X,Z,varargin)
 %               Example - 'initialgamma',[0.6 2.8] 
 %               Data Types - double
 %
+%
 %     maxiter : Maximum number of iterations to find model paramters. Scalar. 
 %               If not defined, maxiter is fixed to 200. Remark: in order
 %               to obtain the FGLS estimator (two step estimator) it is

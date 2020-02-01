@@ -37,7 +37,7 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %     pa : constraining parameters. Structure. Structure containing 3 letter character specifying modeltype,
 %            number of dimensions, number of groups...
 %            pa must contain the following fields: 
-%            pa.p = scalar, number of variables.
+%            pa.v = scalar, number of variables.
 %            pa.k = scalar, number of groups.
 %            pa.cdet = determinants constraint
 %           Data Types - double
@@ -76,22 +76,22 @@ function [lmdc]  = restrdeterGPCM(GAM, OMG, SigmaB, niini, pa)
 %
 %$LastChangedDate:: 2018-09-15 00:27:12 #$: Date of the last commit
 
+% Examples:
 
 %% Beginning of code
-
 % Initialize constrained determinant vector
-lmd = NaN(1,pa.K);
+lmd = NaN(1,pa.k);
 
 
 % Inefficient code to obtain lmd
-% for j=1:pa.K
-%     lmd(j) = sum( diag(  diag(1./GAM(:,j)) * (OMG(:,:,j))' * SigmaB(:,:,j) * OMG(:,:,j) )) / pa.p;
+% for j=1:pa.k
+%     lmd(j) = sum( diag(  diag(1./GAM(:,j)) * (OMG(:,:,j))' * SigmaB(:,:,j) * OMG(:,:,j) )) / pa.v;
 % end
 
 
-for j=1:pa.K
+for j=1:pa.k
     OMGj=OMG(:,:,j);
-    lmd(j) = sum( diag(OMGj' * SigmaB(:,:,j) * OMGj)./GAM(:,j) )/ pa.p;
+    lmd(j) = sum( diag(OMGj' * SigmaB(:,:,j) * OMGj)./GAM(:,j) )/ pa.v;
 end
 
 % Note that ((OMG(:,:,j))' * SigmaB(:,:,j) * OMG(:,:,j) computes
@@ -104,7 +104,7 @@ end
 % d_{j1}^{***}, \ldots, d_{jp}^{***}
 
 % lmdc = row vector containing the restricted determinants
-lmdc = restreigen(lmd,niini', pa.cdet^(1/pa.p),pa.zerotol);
+lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol);
 
 end
 

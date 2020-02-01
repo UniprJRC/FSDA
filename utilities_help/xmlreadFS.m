@@ -7,7 +7,6 @@ function out=xmlreadFS(FileName)
 
 
 %% Beginning of code
-
 [FSDAroot]=fileparts(which('docsearchFS.m'));
 
 % Remove .m extension if it exists

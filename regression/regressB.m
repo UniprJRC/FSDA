@@ -57,6 +57,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %
 %  Optional input arguments:
 %
+<<<<<<< HEAD
 %   intercept :  Indicator for constant term. true (default) | false. 
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
@@ -65,6 +66,13 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
+=======
+%   intercept : Indicator for constant term. Scalar.
+%               If 1, a model with constant term will be fitted (default),
+%               else no constant term will be included.
+%               Example - 'intercept',1
+%               Data Types - double
+>>>>>>> master
 %      bsb :   units forming subset. Vector.
 %                m x 1 vector.
 %               The default value of bsb is 1:n1, that is all n1 units are
@@ -73,7 +81,10 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Data Types - double
 %               REMARK: if bsb='' (empty value) just prior information is
 %               used
+<<<<<<< HEAD
 %
+=======
+>>>>>>> master
 %      c  :    it can be used to control the prior information
 %               about beta. Scalar.
 %               Scalar between 0 (excluded) and 1 (included).
@@ -112,6 +123,7 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               variable j
 %               Example - 'stats',1
 %               Data Types - double
+%
 %
 %  conflev:     confidence levels to be used to
 %               compute HPDI. Vector.

@@ -306,7 +306,10 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %}
 
 %% Beginning of code
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

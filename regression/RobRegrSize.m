@@ -15,12 +15,14 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               greater than the one which has been considered
 %               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
 %
+%
 %           p : number of variables. Scalar integer. Number of explanatory variables.
 %               REMARK - simulations have been done for p=2, 3, ..., 10. If
 %               the user supplies a value of p greater than 10 the
 %               correction factors are extrapolated by fitting a simple
 %               quadratic model in p.
 %               Data Types -single | double | int8 | int16 | int32 | int64 |uint8 | uint16 | uint32 | uint64
+%
 %
 %       robest: robust estimator. String. String which identifies the robust estimator which is used
 %               Possibile values are:
@@ -57,6 +59,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               value in the interval (0.25 0.5) an average
 %               between bdp=0.25 and bdp=0.5 is used (for a more refined
 %               correction please see input option Tallis)
+
 %
 %         eff : nominal efficiency. Scalar.
 %               Scalar between between 0.5 and 1-epsilon (if robest is 'MM')
@@ -66,10 +69,12 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %               (eff=0.95) is used.  In all the other cases an average
 %               is taken using the two closest values of eff.
 %
+%
 %     sizesim : simultaneous or individual size. Scalar.
 %               Scalar which specifies whether simultaneous (sizesim=1) or
 %               individual size is used. If sizesim is missing or equal to
 %               1 a simultaneous size is used.
+%
 %
 %     Tallis  : need to intermpolate. Scalar.
 %               Scalar which has an effect just if bdp is not equal to 0.25

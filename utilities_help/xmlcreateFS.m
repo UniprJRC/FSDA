@@ -66,7 +66,6 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 
 
 %% Beginning of code
-
 write2file=true;
 StartColumnEx=5;
 

@@ -81,7 +81,6 @@ function psi=HUpsi(u,c)
 %}
 
 %% Beginning of code
-
 w = (abs(u)<=c);
 
 psi=u.*w +(1-w).*(c*sign(u));
