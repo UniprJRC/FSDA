@@ -57,7 +57,6 @@ function result = existFS(FileName)
 
 %% Beginning of code
 
-
 if nargin<1
     error('FSDA:existFS:MissingFile','FileName to test must be specified');
 end

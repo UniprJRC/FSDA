@@ -17,12 +17,14 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             outputDir. The default value of evalCode is true.
 %             Example - 'evalCode','false'
 %             Data Types - Boolean
+%
 % write2file: Option to write HTML file. Logical. Option which specifies
 %             whether HTML file must be created or if just structure out
 %             must be created. The default value of write2file is true,
 %             that is html file is created
 %             Example - 'write2file','false'
 %             Data Types - Boolean
+%
 % outputDir : Output folder. String.
 %             Output folder to which the HTML document is saved, specified
 %             as the comma-separated pair consisting of 'outputDir' and the
@@ -35,6 +37,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
 %             Data Types - string
+%
 % imagesDir : Output folder of png images. String.
 %             Output folder to which the images attached to the HTML
 %             document are saved, specified as the comma-separated pair
@@ -52,6 +55,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             Remark - imagesDir must be a valid path.
 %             Example - 'imagesDir','C:'
 %             Data Types - string
+%
 % webhelp :   Option to create web page version of local html help file. Logical.
 %             This option substitutes the MATLAB search form component with 
 %             a Google local search form, enabling Google to create an index
@@ -67,6 +71,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             The default value of webhelp is false.
 %             Example - 'webhelp',true
 %             Data Types - logical
+%
 %ErrWrngSeeAlso: Option to check links in the see also part. Logical.
 %            If ErrWrngSeeAlso is true publishFS checks whether the strings
 %            inside see also are valid files and puts an hyperlink to the
@@ -93,6 +98,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %                        6th column = information about mismatch in
 %                        docsearchFS. This column is true if docsearchFS
 %                        does not contain correct information
+%
 %        OUT          :  output of publishFS for each file. Cell of length
 %                        size(InputCell,1). OUT{i} contains the output of
 %                        the application of routine publishFS to i-th file

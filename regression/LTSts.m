@@ -102,11 +102,13 @@ function [out, varargout] = LTSts(y,varargin)
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
 %
-%  intercept :  Indicator for constant term. Scalar. If 1, a model with
-%               constant term will be fitted (default), else no constant
-%               term will be included.
-%               Example - 'intercept',1
-%               Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
 %
 %           h : The number of observations that determined the least
 %               trimmed squares estimator. Scalar. h is an integer greater
@@ -321,9 +323,10 @@ function [out, varargout] = LTSts(y,varargin)
 %               Example - 'dispresults',true
 %               Data Types - logical
 %
-%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request that the response
-%                vector y and data matrix X are saved into the output
-%                structure out. Default is 0, i.e. no saving is done.
+%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request
+%                that the response vector y and data matrix X are saved
+%                into the output structure out. 
+%                Default is 0, i.e. no saving is done.
 %               Example - 'yxsave',1
 %               Data Types - double
 %

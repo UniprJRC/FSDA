@@ -21,6 +21,7 @@ function Bbound = FSRbonfbound(n,p,varargin)
 %                       min(3*p+1,floor(0.5*(n+p+1))), otherwise.
 %                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
+%
 %  prob:    quantiles for which envelopes have
 %               to be computed. Vector.
 %               1 x k vector containing quantiles for which envelopes have
@@ -78,8 +79,10 @@ function Bbound = FSRbonfbound(n,p,varargin)
     Bbound = FSRbonfbound(1000,5,'init',10,'prob',[0.01 0.5 0.99 0.999]);
     plot(MDRenv(:,1),MDRenv(:,2:5),Bbound(:,1),Bbound(:,2:5));
 %}
-%% Input parameters checks
 
+%% Beginning of code
+
+% Input parameters checks
 if ~isscalar(n) || isempty(n) || isnan(n)
     error('FSDA:FSRbonfbound:Wrongn','n must be scalar non empty and non missing!!');
 end

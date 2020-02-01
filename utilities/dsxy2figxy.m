@@ -58,8 +58,9 @@ function varargout = dsxy2figxy(varargin)
     annotation('textarrow',figx,figy)
 %}
 
-%% Obtain arguments (only limited argument checking is performed).
+%% Beginning of code
 
+% Obtain arguments (only limited argument checking is performed).
 % Determine if axes handle is specified
 if length(varargin{1})== 1 && ishandle(varargin{1}) && ...
   strcmp(get(varargin{1},'type'),'axes')	

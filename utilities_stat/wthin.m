@@ -182,7 +182,9 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
 %}
 
-%% options
+%% Beginning of code 
+
+% options
 
 % for reasons of performance options are checked only if necessary
 if nargin > 1

@@ -41,10 +41,13 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %               The default value of sigma is 0
 %               Example - 'sigma',1
 %               Data Types - double
-%   lim :       Number of intergration terms. Scalar. Scalar which defines maximum number of integration terms.
+%
+%   lim :       Number of intergration terms. Scalar. Scalar which defines
+%               maximum number of integration terms.
 %               The default value of lim is 10000
 %               Example - 'lim',100000
 %               Data Types - double
+%
 %   tol :       Tolerance. Scalar.
 %               Scalar which controls the tolerance. The default value of
 %               tolerance is 1e-09

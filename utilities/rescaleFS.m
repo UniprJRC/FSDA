@@ -9,6 +9,7 @@ function y = rescaleFS(x,a,b)
 %  Optional input arguments:
 %     a : scalar, minimum of the required interval 
 %     (default value of a is 0)
+%
 %     b : scalar, maximum of the required interval
 %     (default value of b is 1)
 %
@@ -35,6 +36,8 @@ function y = rescaleFS(x,a,b)
 %}
 
 %% Beginning of code
+
+
 if nargin<2
     a = 0;
 end
