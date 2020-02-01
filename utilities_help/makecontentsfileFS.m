@@ -172,10 +172,9 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 
 
 %% Beginning of code
-<<<<<<< HEAD
 
-=======
->>>>>>> master
+
+
 NameOutputFile='Contents.m'; % default MATLAB name of output file
 dirpath=pwd;   % default path (current folder)
 force=true;   % overwrite existing NameOutputFile
