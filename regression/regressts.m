@@ -81,12 +81,14 @@ function out = regressts(y,varargin)
 %                               model.seasonal=1;
 %                               model.X='';
 %                               model.posLS='';
+%
 %      bsb :   units forming subset. Vector.
 %                m x 1 vector.
 %               The default value of bsb is 1:length(y), that is all units are
 %               used to compute parameter estimates.
 %               Example - 'bsb',[3 5 20:30]
 %               Data Types - double
+%
 %smallsamplecor: small sample correction factor. Boolean. Boolean which
 %               defines whether to use or not small sample correction
 %               factor to inflate the scale estimate just in case option
@@ -99,6 +101,7 @@ function out = regressts(y,varargin)
 %               default value of smallsamplecor is false.
 %               Example - 'smallsamplecor',false
 %               Data Types - logical
+%
 %     asymptcor: asymptotic consistency factor. Boolean. Boolean which
 %               defines whether to use or not consistency correction
 %               factor to inflate the scale estimate just in case option
@@ -108,6 +111,7 @@ function out = regressts(y,varargin)
 %               consistency factor is not used.
 %               Example - 'asymptcor',false
 %               Data Types - logical
+%
 %  plots :      Plot on the screen. Scalar. If equal to one a two panel plot 
 %               appears on the scree. The top panel contains real and
 %               fitted value. The bottom panel contains scaled residuals
@@ -119,11 +123,13 @@ function out = regressts(y,varargin)
 %               to control a series of options in this plot and in order to
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
+%
 %  nocheck:     Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
 %               supplied structure model
 %               Example - 'nocheck',false
 %               Data Types - logical
+%
 %  dispresults : Display results of final fit. Boolean. If dispresults is
 %               true,  labels of coefficients, estimated coefficients,
 %               standard errors, tstat and p-values are shown on the
@@ -131,6 +137,7 @@ function out = regressts(y,varargin)
 %               dispresults is false.
 %               Example - 'dispresults',true
 %               Data Types - logical
+%
 %   StartDate : The time of the first observation.
 %               Numeric vector of length 2. Vector with two integers, which
 %               specify a natural time unit and a (1-based) number of
@@ -349,7 +356,10 @@ function out = regressts(y,varargin)
     title('Estimate of the scale with correction factors')
 %}  
 
-%% Input parameters checking
+%% Beginning of code 
+
+% Input parameters checking
+
 
 % Set up values for default model
 modeldef          = struct;

@@ -53,7 +53,7 @@ function [check , location] = isfunction(funstr)
 %}
 
 
-%% 
+%% Beginning of code 
 
 fhandle = str2func(funstr);
 finfo = functions(fhandle);

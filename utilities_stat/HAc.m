@@ -16,15 +16,18 @@ function [bdp,eff] = HAc(ctun,v,varargin)
 %
 %  Optional input arguments:
 %
-%      param : tuning parameters. Vector. Vector of length 3 specifying the parameters a, b and c of the
-%              weight function of the Hampel estimator.
+%      param : tuning parameters. Vector. Vector of length 3 specifying the
+%              parameters a, b and c of the weight function of the Hampel
+%              estimator.
 %              param(1)=a param(2)=b param(3)=c
 %              If these values are not supplied they will be automatically
 %              set to a=2, b=4 c=8
 %               Example - 'param',[1.5,3.5,8] 
 %               Data Types - double
-%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location. TODO:Hac:shapeeff  
+%
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency
+%              is referred to the shape else (default) is referred to the
+%              location. TODO:Hac:shapeeff
 %               Example - 'shapeeff',1 
 %               Data Types - double
 %

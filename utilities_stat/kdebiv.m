@@ -226,9 +226,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
     end
 %}
 
+%% Beginning of code
 
-
-%% Input parameters checking
+% Input parameters checking
 nnargin=nargin;
 vvarargin=varargin;
 [X, nn , d] = chkinputM(X,nnargin,vvarargin);

@@ -22,6 +22,7 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %               system
 %               Example - 'write2file','false'
 %               Data Types - Boolean
+%
 %StartColumnEx: Starting column for the code of the examples. Scalar.
 %               This option specifies which is the starting column of the
 %               examples. For example if it is equal to 7, the first six
@@ -36,8 +37,8 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 %    docNode:     Document Object Model node. Character. String which contains
 %                the Document Object Model node, as defined by the World Wide Web
 %               consortium.
-% docNodechr:    Output string.  Character. Character vector that contains the serialized DOM node as
-%               it appears in an XML file.
+% docNodechr:   Output string.  Character. Character vector that contains
+%               the serialized DOM node as it appears in an XML file.
 %
 % See also: xmlwrite
 %

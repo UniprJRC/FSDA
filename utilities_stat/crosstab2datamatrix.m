@@ -20,6 +20,7 @@ function X=crosstab2datamatrix(N, varargin)
 %               table, because in this case  Lr=N.Properties.RowNames; 
 %               Example - 'Lr',{'a' 'b' 'c'}
 %               Data Types - cell array of strings
+%
 %       Lc   :  Vector of column labels. Cell of lenght J.
 %               Cell containing the labels of the columns of the input
 %               contingency matrix N. This option is unnecessary if N is a

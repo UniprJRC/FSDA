@@ -26,6 +26,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %           2, \ldots, n$.
 %           Example - 1:n
 %           Data Types - double
+%
 %  span    : length of the local regressions. Scalar. Scalar in the
 %           interval [0, 1] which specifies the length of the local
 %           regressions. If span is 0 (default value) the fractions of

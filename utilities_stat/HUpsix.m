@@ -18,9 +18,10 @@ function psix=HUpsix(u,c)
 %  Output:
 %
 %
-%   psix :     psi(u) function multiplied by u. Vector. n-by-1 vector which contains the values of HU psi(u)*u
-%                function associated to the residuals or Mahalanobis
-%                distances for the n units of the sample.
+%   psix :     psi(u) function multiplied by u. Vector. n-by-1 vector which
+%              contains the values of HU psi(u)*u function associated to
+%              the residuals or Mahalanobis distances for the n units of
+%              the sample.
 %
 %
 % More About:
