@@ -23,10 +23,13 @@ function [bdp,eff,A,B,d] = HYPc(c,v,varargin)
 %              Default value is k=4.5
 %               Example - 'k',4 
 %               Data Types - double
-%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency is referred to the shape else (default)
-%              is referred to the location. TODO:Hac:shapeeff  
+%
+%   shapeeff : location or shape efficiency. Scalar. If 1, the efficiency
+%              is referred to the shape else (default) is referred to the
+%              location. TODO:Hac:shapeeff
 %               Example - 'shapeeff',1 
 %               Data Types - double
+%
 %      param : parameters A, B and d. Vector with 3 elements.
 %              Vector of length 3 specifying the parameters A, B and d of the
 %              weight function of the hyperbolic tangent estimator.

@@ -22,11 +22,13 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %                   Data Types - string
 %                   Remark: dirpath can be conveniently created with
 %                   function findDir.m
+%
 %  NameOutputFile : Name of output file. String.
 %                   String containing the name of the file which has to be
 %                   created. If this option is not specified Contents.m is used.
 %                   Example - 'NameOutputFile','Mycontents.m'
 %                   Data Types - string
+%
 %    force  :       Overwrite existing file.
 %                   Boolean.
 %                   Boolean which specifies whether existing output file must
@@ -34,6 +36,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %                   overwritten else just out cell is produced
 %                   Example - 'force',false
 %                   Data Types - string
+%
 % FilterOutFileName  :  filter files depending on their name. String.
 %                   String which specifies which .m files do not have to be
 %                   included inside NameOutputFile. All files whose name contains
@@ -43,6 +46,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %                   listed inside NameOutputFile
 %                   Example - 'FilterOutFileName','veryold'
 %                   Data Types - string
+%
 %FilterFileContent :  filter .m files depending on their content. String.
 %                   String which specifies the string files must contain
 %                   to be included inside NameOutputFile.
@@ -58,6 +62,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %                   and inside NameOutputFile under column 'category'
 %                   Example - 'FilterFileContent','%FScategory'
 %                   Data Types - string
+%
 % printOutputCell : print out cell is a file. String.
 %                   String contaning the name of the file of the current
 %                   folder which contains the summary of all files present
@@ -167,6 +172,9 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 
 
 %% Beginning of code
+
+
+
 NameOutputFile='Contents.m'; % default MATLAB name of output file
 dirpath=pwd;   % default path (current folder)
 force=true;   % overwrite existing NameOutputFile

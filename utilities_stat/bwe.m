@@ -131,7 +131,9 @@ function bw = bwe(X, bwopt)
     h = bwe(X,'robust')
 %}
 
-%% bandwidth selection
+%% Beginning of code
+
+% bandwidth selection
 %  Remark: ksdensity uses by default Scott's rule
 
 [n,d] = size(X);

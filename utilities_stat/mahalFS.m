@@ -59,6 +59,7 @@ function d = mahalFS(Y,MU,SIGMA)
     % Compute MD using as centroid the medians and shape matrix SIGMA
     d=mahalFS(Y,MU,SIGMA);
 %}
+%% Beginning of code
 
 Ytilde = bsxfun(@minus,Y, MU);
 d=sum((Ytilde/SIGMA).*Ytilde,2);

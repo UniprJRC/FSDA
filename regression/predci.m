@@ -18,7 +18,7 @@ function [ypred, yci] = predci(X,beta,Sigma,mse,dfe,alpha,sim,pred,hasintercept)
 %     dfe :     Degrees of freedom for error (residuals). Scalar.
 %               dfe is equal to the number of observations (number of rows
 %               of matrix Xori) minus the number of estimated coefficients.
-%    alpha:     Positive scalar from 0 to 1. Confidence level of yci is 100(1 – alpha)%.
+%    alpha:     Positive scalar from 0 to 1. Confidence level of yci is 100(1 ï¿½ alpha)%.
 %               For example 0.05 implies a 95% confidence interval.
 %    sim  :     Reference distribution. Logical value.
 %               Logical value specifying whether the confidence bounds are
@@ -55,6 +55,8 @@ function [ypred, yci] = predci(X,beta,Sigma,mse,dfe,alpha,sim,pred,hasintercept)
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
+
+%% Beginning of code
 
 ypred = X * beta;
 

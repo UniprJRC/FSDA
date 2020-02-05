@@ -86,7 +86,9 @@ function Ytra=basicPower(Y,ColtoTra,la, varargin)
     disp(max(max(abs(Y-Ychk))))
 %}
 
-%% Input parameters checking
+%% Beginning of code
+
+% Input parameters checking
 % Extract size of the data
 v=size(Y,2);
 

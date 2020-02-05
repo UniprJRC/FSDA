@@ -71,6 +71,9 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
     X=randn(n,p);
     [out]=FSR(X);
 %}
+
+%% Beginning of code 
+
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
 

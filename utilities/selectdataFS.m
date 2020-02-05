@@ -305,7 +305,8 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 %}
 %
 
-%%
+%% Beginning of code 
+
 pointslist=[];
 xselect=[];
 yselect=[];

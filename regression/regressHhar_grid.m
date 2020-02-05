@@ -23,16 +23,21 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %
 % Optional input arguments:
 %
-%  intercept :   Indicator for constant term. Scalar.
-%               If 1, a model with constant term will be fitted (default),
-%               else no constant term will be included.
-%               Example - 'intercept',1
-%               Data Types - double%  plots :    Plot on the screen. Scalar.
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean 
+%
+%     plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of profile loglikelihood
 %               appears  on the screen 
 %               else (default) no plot is shown.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %  nocheck:   Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
@@ -40,12 +45,14 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %               the intercept is not added. As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
+%
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of profile loglikelihood
 %               appears  on the screen 
 %               else (default) no plot is shown.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %   alpha  :   coefficient in the skedastic equation. Vector. Vector of
 %               length r containing the values of coefficient alpha to
 %               consider in the grid search. The default value for alpha is
@@ -228,6 +235,8 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %}
 
 %% Beginning of code
+
+
 nnargin = nargin;
 vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);

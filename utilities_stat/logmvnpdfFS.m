@@ -41,21 +41,25 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %               together.
 %                 Example - 'X0',X
 %                 Data Types - single|double
+%
 %  eyed :       identity matrix of size length(Mu) wchich passes to C function a container.
 %               Note that options X0, eyed, n, and d must be supplied
 %               together.
 %                 Example - 'eyed',eye(v)
 %                 Data Types - single|double
+%
 %     n :       scalar which passes to C function size(X,1).
 %               Note that options X0, eyed, n, and d must be supplied
 %               together.
 %                 Example - 'eyed',eye(v)
 %                 Data Types - single|double
+%
 %     d :       scalar which passes to C function length(Mu).
 %               Note that options X0, eyed, n, and d must be supplied
 %               together.
 %                 Example - 'eyed',eye(v)
 %                 Data Types - single|double
+%
 %        msg  : Level of output to display. Scalar.
 %               Scalar which controls whether to display or not messages
 %               on the screen. If msg==1 (default) messages are displayed

@@ -24,13 +24,14 @@ function y=triu2vec(A,k)
 %
 %  Optional input arguments:
 %
-%         k   : which diagonal. Scalar. Non negative integer given to return the elements on and
-%               above the k-th diagonal of A, being k=0 the main diagonal.
-%               Default is k = 0, i.e., the main diagonal is also returned.
-%               Negative integers are treated as 0, i.e. elements on and
-%               above the main diagonal are returned. No linear indices or
-%               elements are returned if the user provides an integer k
-%               larger than the order of the input matrix.
+%         k   : which diagonal. Scalar. Non negative integer given to
+%               return the elements on and above the k-th diagonal of A,
+%               being k=0 the main diagonal. Default is k = 0, i.e., the
+%               main diagonal is also returned. Negative integers are
+%               treated as 0, i.e. elements on and above the main diagonal
+%               are returned. No linear indices or elements are returned if
+%               the user provides an integer k larger than the order of the
+%               input matrix.
 %                 Example - 'k',0
 %                 Data Types - double
 %

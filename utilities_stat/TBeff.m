@@ -23,6 +23,7 @@ function ceff = TBeff(eff, v, shapeeff, approxsheff)
 %              is referred to location
 %               Example - 'shapeeff',1
 %               Data Types - double
+%
 % approxsheff: approximate or exact calculations. Dummy scalar.
 %              If 1, when p > 1 the approximate formula for scale
 %              efficiency is used else (default) the exact formula of the

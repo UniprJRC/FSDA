@@ -17,12 +17,14 @@ function Y=qqplotFS(res,varargin)
 %
 %  Optional input arguments:
 %
-%   intercept   :   Indicator for constant term. Scalar.
-%                    If 1, a model with constant term will be added to
-%                       optional matrix X
-%                   (default), else no constant term will be included.
-%                   Example - 'intercept',1
-%                   Data Types - double
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %    X :        Predictor variables. Matrix. Data matrix of explanatory
 %               variables (also called 'regressors')
 %               of dimension (n x p-1). Rows of X represent observations, and
@@ -32,6 +34,7 @@ function Y=qqplotFS(res,varargin)
 %               missing we take as matrix X the column of ones.
 %                   Example - 'X',randn(n,3)
 %                   Data Types - double
+%
 %     conflev :  Confidence level which is
 %               used to compute confidence bands of studentized residuals. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -39,10 +42,12 @@ function Y=qqplotFS(res,varargin)
 %               Default value is 0.90
 %                 Example - 'conflev',0.99
 %                 Data Types - double
+%
 %     nsimul :  number of simulations to compute the envelopes. Scalar. The
 %               default value is 1000.
 %               Example - 'nsimul',300
 %               Data Types - double
+%
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, a plot which shows the
 %               robust the qqplot of residuals with envelopes is shown on the
@@ -53,14 +58,15 @@ function Y=qqplotFS(res,varargin)
 %               be used.
 %                 Example - 'plots',1
 %                 Data Types - double
+%
 %       tag     :   handle of the plot which is about to be created.
-%                   Character.
-%                   The default is to use tag 'pl_qq'. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
-%                   Example - 'tag','mytag'
-%                   Data Types - char
+%                   Character. The default is to use tag 'pl_qq'. Notice
+%                   that if the program finds a plot which has a tag equal
+%                   to the one specified by the user, then the output of
+%                   the new plot overwrites the existing one in the same
+%                   window else a new window is created Example -
+%                   'tag','mytag' Data Types - char
+%
 %               h : the axis handle of a figure where to send the qqplot.
 %                   This can be used to host the qqplot in a subplot of a
 %                   complex figure formed by different panels (for example a panel

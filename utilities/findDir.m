@@ -22,6 +22,7 @@ function list = findDir(root,varargin)
 %               InclDir is '*'. Default: InclDir={''}.
 %               Example - 'InclDir','dirname'
 %               Data Types - (cell array of) string
+%
 %   ExclDir:    Exclude directory pattern(s). String or cell arrays of
 %               strings. User can use wildcards. Do not
 %               use regular expression. Examples: 'abc' and 'ab*de*'. Use ''
