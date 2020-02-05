@@ -498,8 +498,6 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     GAMold=GAMnew;
     
     % Update determinants in case of varying determinants (apart from VII)
-    % TODO
-    % if iter==1 || itDSR==true || itDS==true
     % Update lmd
     [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
     
