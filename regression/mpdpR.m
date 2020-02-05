@@ -397,6 +397,45 @@ function [out] = mpdpR(y, X, alpha, varargin)
     title('alpha=0','FontSize',15);
 %}
 
+%{
+    % mpdpR applied to the Belgium telephone data.
+    % This dataset concerns the number of international calls from Belgium,
+    % taken from the Belgian Statistical Survey, published by the Ministry of
+    % Economy. This dataset consists in 24 observations on the following 2 variables.
+    % Year (1950 - 1973)
+    % Calls (Number of Calls in tens of millions)
+    % Source Rousseeuw P.J. and  Leroy A.M. (1987), Robust Regression and
+    % Outlier Detection; Wiley, page 26, table 2.
+    XX=[50  0.44
+        51  0.47
+        52  0.47
+        53  0.59
+        54  0.66
+        55  0.73
+        56  0.81
+        57  0.88
+        58  1.06
+        59  1.20
+        60  1.35
+        61  1.49
+        62  1.61
+        63  2.12
+        64 11.90
+        65 12.40
+        66 14.20
+        67 15.90
+        68 18.20
+        69 21.20
+        70  4.30
+        71  2.40
+        72  2.70
+        73  2.90];
+    y=XX(:,2);
+    X=XX(:,1);
+    out=mpdpR(y,X,0);
+%}
+
+
 %% Beginning of code
 
 if nargin<3
