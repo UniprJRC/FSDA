@@ -21,31 +21,27 @@ function psi=PDpsi(u,alpha)
 %  Output:
 %
 %
-%   PDpsi :      n x 1 vector which contains the minimum denesity power
+%   PDpsi :      n x 1 vector which contains the minimum density power
 %                divergence (MDPD) psi function
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample.
 %
 % More About:
 %
-% Function PDpsi transforms vector u as follows
-%
 %
 % function PDpsi transforms vector u as follows
-% \[
+%  \[
 % PDpsi(u,alpha)=  \alpha u \exp(-\alpha (u^2/2));
-%      \]
+%  \]
 %
 %
-% See also TBpsi, HYPpsi, HApsi, OPTpsi
+% See also TBpsi, HYPpsi, HApsi, OPTpsi, HUpsi
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
-% Riani, M., Cerioli, A. and Torti, F. (2014), On consistency factors and
-% efficiency of robust S-estimators, "TEST", Vol. 23, pp. 356-387.
-% http://dx.doi.org/10.1007/s11749-014-0357-7
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 %
 % Copyright 2008-2019.

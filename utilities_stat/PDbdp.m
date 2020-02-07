@@ -18,12 +18,13 @@ function alpha = PDbdp(bdp)
 %           power divergence estimator associated to requested breakdown point
 %
 %
-% See also: TBbdp, OPPDdp, HYPbdp, HAbdp
+% See also: TBbdp, OPTbdp, HYPbdp, HAbdp
 %
 % References:
 % 
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 % Copyright 2008-2019.
 % Written by FSDA team
@@ -49,7 +50,7 @@ function alpha = PDbdp(bdp)
    
 % Convergence condition is E(\rho) = sup(\rho(x)) bdp
 %  where sup(\rho(x)) is 1
-alpha=1/((1-bdp)^2)-1;
+alpha=1./((1-bdp).^2)-1;
 
 end
 %FScategory:UTISTAT

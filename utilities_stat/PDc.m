@@ -29,10 +29,9 @@ function [bdp,eff] = PDc(alpha)
 % References:
 %
 %
-% Hampel, F.R., Rousseeuw, P.J. and Ronchetti, E. (1981),
-% The Change-of-Variance Curve and Optimal Redescending M-Estimators,
-% "Journal of the American Statistical Association", Vol. 76,
-% pp. 643-648. [HRR]
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 %
 % Copyright 2008-2019.
@@ -54,7 +53,7 @@ function [bdp,eff] = PDc(alpha)
 %{
     %PDc with 2 output arguments.
     alpha=1;
-    [bdp,eff]=PDc(1)
+    [bdp,eff]=PDc(alpha)
     disp('Break down point and efficienty')
     disp(['alpha=' num2str(alpha)])
     disp(['bdp=' num2str(bdp)])

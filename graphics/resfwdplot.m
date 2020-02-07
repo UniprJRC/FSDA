@@ -820,6 +820,8 @@ selmin=min(residuals,[],2);
 % default values for fthresh, bthresh, bstyle, labx and laby.
 if strcmp(out.class,'Sregeda')
     labx= 'Break down point';
+elseif strcmp(out.class,'MDPDeda')
+    labx= 'alpha';
 elseif strcmp(out.class,'MMregeda')
     labx= 'Efficiency';
 else

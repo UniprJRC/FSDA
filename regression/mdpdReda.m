@@ -31,19 +31,31 @@ function [out] = mdpdReda(y, X, varargin)
 %
 %  Optional input arguments:
 %
-%       alpha    : tuning parameter. Scalar or Vector.
-%               As the tuning parameter $\alpha$ increases the robustness
-%               of the Minimum Density Power Divergence estimator increases
-%               while its efficiency decreases (Basu et al., 1998). For
+%  tuningpar    : tuning parameter. Scalar or Vector.
+%               tuningpar may refer to $\alpha$ (default) or to breakdown
+%               point (depending on input option alphaORbdp.
+%               As the tuning parameter $\alpha$ (bdp) decreases the robustness
+%               of the Minimum Density Power Divergence estimator decreases
+%               while its efficiency increases (Basu et al., 1998). For
 %               $\alpha=0$ the MDPDE becomes the Maximum Likelihood
 %               estimator, while for $\alpha=1$ the divergence yields the
 %               $L_2$ metric and the estimator minimizes the $L_2$ distance
 %               between the densities, e.g., Scott (2001), Durio and Isaia
 %               (2003).  The sequence is forced to be monotonically
 %               decreasing, e.g. alpha=[1 0.9 0.5 0.01]. The default for
-%               bdp is a sequence from 1 to 0 with step -0.01.
+%               tuningpar is a sequence from 1 to 0 with step -0.01.
 %                 Example - 'alpha',[1 0.8 0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
+%
+%   alphaORbdp  : ctuning refers to $\alpha$ or to breakdown point.
+%                 Character. Character which specifies what are the value
+%                 in input option tuningpar. If this option is not
+%                 specified or it is equal to 'alpha' then program assumes
+%                 that the values of tuningpar refer to 'alpha', elseif
+%                 this option is equal to 'bdp', program assumes that the
+%                 values of tuninpar refer to breakdownpoint.
+%                 Example - 'alphaORbdp','bdp'
+%                 Data Types - char
 %
 %   modelfun   : non linear function to use.
 %                function_handle or empty value (default). If
@@ -58,8 +70,10 @@ function [out] = mdpdReda(y, X, varargin)
 %                 Data Types - function_handle or empty value
 %
 %  theta0       :  empty value or vector containing initial values for the
-%                 coefficients (beta0 and sigma0) just in case modelfun is non empty.
-%                 If modelfun is empty this argument is ignored.
+%                 coefficients (beta0 and sigma0) just in case modelfun is
+%                 non empty. If modelfun is empty this argument is ignored
+%                 and LMS solution will be used as initial solution for the
+%                 minimization.
 %                 Example - 'beta0',[0.5 0.2 0.1]
 %                 Data Types - double
 %
@@ -102,7 +116,7 @@ function [out] = mdpdReda(y, X, varargin)
 %         out.conflev = confidence level which is used to declare outliers.
 %         out.alpha   = vector which contains the values of alpha or of bdp
 %                       which have been used depending on input option
-%                       bdpORalpha.
+%                       alphaORbdp.
 %            out.y    = response vector y. The field is present if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
@@ -242,11 +256,11 @@ theta0='';
 intercept=1;
 conflev=0.975;
 plots=0;
-bdpORalpha='alpha';
+alphaORbdp='alpha';
 tuningpar=1:-0.01:0;
 
 if nargin>2
-    options=struct('bdpORalpha',bdpORalpha,'tuningpar',tuningpar,'intercept',intercept,'modelfun',modelfun,...
+    options=struct('alphaORbdp',alphaORbdp,'tuningpar',tuningpar,'intercept',intercept,'modelfun',modelfun,...
         'theta0',theta0,'conflev',conflev,...
         'plots',plots);
     
@@ -275,22 +289,23 @@ if nargin>2
     end
     tuningpar=options.tuningpar;
     tuningpar=sort(tuningpar,'descend');
-    bdpORalpha=options.bdpORalpha;
+    alphaORbdp=options.alphaORbdp;
     
-    if strcmp(bdpORalpha,'alpha')
+    if strcmp(alphaORbdp,'alpha')
         if min(tuningpar)<0
             error('FSDA:mdpdReda:WrongInputOpt','minimum value of alpha must be zero')
         end
         alphavec=tuningpar;
 
-    elseif strcmp(bdpORalpha,'bdp')
+    elseif strcmp(alphaORbdp,'bdp')
         % In this case tuning paramter is breakdown point
         if min(tuningpar)<0 || max(tuningpar)>0.5
             error('FSDA:mdpdReda:WrongInputOpt','bdp must be in the interval [0 0.5]')
         end
+        % convert the values of bdp into values of alpha
         alphavec=PDbdp(tuningpar);
     else
-        error('FSDA:mdpdReda:WrongInputOpt','bdpORalpha must be ''bdp'' or ''alpha''')
+        error('FSDA:mdpdReda:WrongInputOpt','alphaORbdp must be ''bdp'' or ''alpha''')
     end
     
     intercept=options.intercept;
@@ -379,10 +394,10 @@ out.Exitflag=Exitflag;
 out.Outliers = Outliers;
 % Store values of alphavec which have been used
 % alphavec contains values of alpha or values of bdp depending on input
-% option bdpORalpha
+% option alphaORbdp
 out.alpha=alphavec;
 
-out.class='MPDPeda';
+out.class='MDPDeda';
 
 if intercept==1
     % Store X (without the column of ones if there is an intercept)
