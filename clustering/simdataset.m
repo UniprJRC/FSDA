@@ -279,6 +279,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 %{
     %% Add outliers generated from Chi2 with 5 degrees of freedom.
+    out = MixSim(4,2,'BarOmega',0.01);
     n=300;
     noisevars=0;
     noiseunits=struct;
@@ -293,6 +294,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add outliers generated from Chi2 with 40 degrees of freedom.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -306,6 +308,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add outliers generated from normal distribution.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -319,6 +322,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add outliers generated from Student T with 5 degrees of freedom.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -332,6 +336,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add componentwise contamination.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars='';
     noiseunits=struct;
     noiseunits.number=3000;
@@ -345,6 +350,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add outliers generated from Chisquare and T distribution.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=5000*ones(2,1);
@@ -357,6 +363,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add outliers from Chisquare and T distribution and use a personalized value of alpha.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=5000*ones(2,1);
@@ -369,6 +376,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 %{
     %% Add outliers from Chi2 and point mass contamination and add one noise variable.
+    n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -381,6 +390,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 
 %{
     %% Example of the use of personalized interval to generate outliers.
+    n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noiseunits=struct;
     noiseunits.number=1000;
     noiseunits.typeout={'uniform'};
@@ -400,6 +411,8 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
     % Example of the use of personalized interval to generate outliers (1).
     % Generate 1000 outliers from uniform in the interval [-2 3] and
     % 1000 units using componentwise contamination in the interval [-2 3]
+    n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noiseunits=struct;
     noiseunits.number=[1000 1000];
     noiseunits.typeout={'uniform' 'componentwise'};
@@ -413,6 +426,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add 5 noise variables.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=[2 3];
     noisevars.distribution={'Chisquare3','T20'};
@@ -425,6 +439,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add 3 noise variables.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=[1 2];
     noisevars.distribution={'Chisquare3','T2'};
@@ -437,6 +452,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add 3 noise variables and use 'minmax' interval.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=[1 2];
     noisevars.distribution={'Chisquare3','T20'};
@@ -450,6 +466,7 @@ function [X,id]=simdataset(n, Pi, Mu, S, varargin)
 %{
     %% Add 3 noise variables and use a personalized interval for each variable.
     n=300;
+    out = MixSim(4,2,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=[1 2];
     noisevars.distribution={'Chisquare3','T20'};

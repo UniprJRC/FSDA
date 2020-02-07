@@ -405,6 +405,7 @@ function out  = ctlcurves(Y, varargin)
     alpha=0:0.05:0.15;
     % bands is passed as a false boolean. No bands are shown.
     bands=false;
+    Y=load('geyser2.txt');
     out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands);
 %}
 
