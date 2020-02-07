@@ -40,7 +40,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               'bisquare'
 %               'optimal'
 %               'hyperbolic'
-%               'hampel'.
+%               'hampel'
+%               'mpdp'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho.m and TBpsi.m.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -49,6 +50,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               See HYPrho.m and HYPpsi.m.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho.m and HApsi.m.
+%               'mpdp' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - double
@@ -536,10 +539,19 @@ elseif strcmp(rhofunc,'hampel')
     
     psifunc.class='HA';
     
+elseif strcmp(rhofunc,'mdpd')
+    % minimum density power divergence estimator 
+      % minimum density power divergence estimator 
+
+    c=PDbdp(bdp(jj));
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc=bdp(jj);
+    
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    psifunc.class='PD';
 else
-    
-    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
-    
+    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mpdp''')
 end
 
 XXrho=strcat(psifunc.class,'rho');
