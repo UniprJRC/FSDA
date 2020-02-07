@@ -28,8 +28,9 @@ function alpha = PDeff(eff)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 % Copyright 2008-2019.
 % Written by FSDA team
@@ -44,10 +45,10 @@ function alpha = PDeff(eff)
 % Examples:
 %
 %{
-    % Find c for a given efficiency.
+    % Find tuning constant alpha for a given efficiency.
     % The constant alpha associated to a nominal location efficiency of 95% in regression is
     % alpha= 0.224515798935881
-    c=PDeff(0.95)
+    c=PDeff(0.95);
 %}
 %
 %

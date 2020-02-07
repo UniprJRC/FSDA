@@ -29,9 +29,9 @@ function psider=PDpsider(u,alpha)
 %
 % More About:
 %
-% Function PDpsider transforms vector x as follows 
+% Function PDpsider transforms vector u as follows 
 % \[
-% PDpsider(x)= \alpha (1- \alpha x^2) \exp{-\alpha x^2/2} 
+% PDpsider(u)= \alpha (1- \alpha u^2) \exp{-\alpha u^2/2} 
 % \] 
 %
 %
@@ -39,8 +39,9 @@ function psider=PDpsider(u,alpha)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 %
 % Copyright 2008-2019.

@@ -33,15 +33,16 @@ function psix=PDpsix(u,alpha)
 % 
 % \[
 % PDpsix(u,alpha)=  \alpha u^2 \exp(-\alpha (u^2/2));
-%      \]
-
+%  \]
 %
-% See also: TBsix, HApsix, HYPpsix, OPTpsix
+%
+% See also: TBpsix, HApsix, HYPpsix, OPTpsix
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 %
 % Copyright 2008-2019.

@@ -91,13 +91,17 @@ function [res] = mdpd(y, alpha, varargin)
 %                  Data Types - double.
 %
 %
-% See also: normpdf, mdpdR, mdpdReda 
+% See also: normpdf, mdpdR, mdpdReda, PDrho 
 %
 %  References:
 %
-%       Basu, A., Harris, I.R., Hjort, N.L. and Jones, M.C., (1998), Robust
-%       and efficient estimation by minimizing a density power divergence,
-%       Biometrika, 85, pp. 549-559.
+%  Basu, A., Harris, I.R., Hjort, N.L. and Jones, M.C., (1998), Robust
+%  and efficient estimation by minimizing a density power divergence,
+%  Biometrika, 85, pp. 549-559.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
+%
 %
 % Copyright 2008-2019.
 % Written by FSDA team

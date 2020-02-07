@@ -37,8 +37,9 @@ function w = PDwei(u,alpha)
 %
 % References:
 %
-% Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
-% and Methods", Wiley, New York.
+%  Riani, M. Atkinson, A.C., Corbellini A. and Perrotta A. (2020), Robust
+%  Regression with Density Power Divergence: Theory, Comparisons and Data
+%  Analysis, submitted.
 %
 %
 % Copyright 2008-2019.
