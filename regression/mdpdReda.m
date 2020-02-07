@@ -1,7 +1,7 @@
-function [out] = mpdpReda(y, X, varargin)
-%mpdpR allows to monitor  Minimum Density Power Divergence criterion to parametric regression problems.
+function [out] = mdpdReda(y, X, varargin)
+%mdpdR allows to monitor  Minimum Density Power Divergence criterion to parametric regression problems.
 %
-%<a href="matlab: docsearchFS('mpdpReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpdReda')">Link to the help function</a>
 %
 %
 %  Required input arguments:
@@ -27,17 +27,6 @@ function [out] = mpdpReda(y, X, varargin)
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
 %                 Data Types - double
-%       alpha    : tuning parameter. Scalar or Vector.
-%               As the tuning parameter $\alpha$ increases
-%               the robustness of the Minimum Density Power Divergence
-%               estimator increases while its efficiency decreases (Basu et
-%               al., 1998). For $\alpha=0$ the MDPDE becomes the Maximum
-%               Likelihood estimator, while for $\alpha=1$ the divergence
-%               yields the $L_2$ metric and the estimator minimizes the $L_2$
-%               distance between the densities, e.g., Scott (2001), Durio
-%               and Isaia (2003).  The sequence is forced to be monotonically
-%               decreasing, e.g. alpha=[1 0.9 0.5 0.01].
-%                 Data Types - double
 %
 %
 %  Optional input arguments:
@@ -53,7 +42,7 @@ function [out] = mpdpReda(y, X, varargin)
 %               (2003).  The sequence is forced to be monotonically
 %               decreasing, e.g. alpha=[1 0.9 0.5 0.01]. The default for
 %               bdp is a sequence from 1 to 0 with step -0.01.
-%                 Example - 'bdp',[1 0.8 0.5 0.4 0.3 0.2 0.1]
+%                 Example - 'alpha',[1 0.8 0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
 %
 %   modelfun   : non linear function to use.
@@ -83,7 +72,7 @@ function [out] = mpdpReda(y, X, varargin)
 %               Data Types - boolean
 %
 %     conflev :  Confidence level. Scalar.
-%               Confidence level which is used to declare units as outliers. 
+%               Confidence level which is used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975.
@@ -111,13 +100,14 @@ function [out] = mpdpReda(y, X, varargin)
 %                       alpha using confidence level specified in input
 %                       scalar conflev
 %         out.conflev = confidence level which is used to declare outliers.
-%           out.alpha   = vector which contains the values of alpha which have
-%                       been used
+%         out.alpha   = vector which contains the values of alpha or of bdp
+%                       which have been used depending on input option
+%                       bdpORalpha.
 %            out.y    = response vector y. The field is present if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
-%           out.class = 'MPDPeda'
+%           out.class = 'MDPDeda'
 %       out.Exitflag = Reason fminunc or fminsearch stopped. Vector.
 %                       Vector of length alpha containing details about
 %                       convergence.
@@ -149,7 +139,7 @@ function [out] = mpdpReda(y, X, varargin)
 %
 %
 %
-% See also Sregeda, mpdp, mpdpR
+% See also Sregeda, mdpdR
 %
 %  References:
 %
@@ -168,7 +158,7 @@ function [out] = mpdpReda(y, X, varargin)
 % Copyright 2008-2019.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('mpdpReda')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpdReda')">Link to the help function</a>
 %
 %$LastChangedDate:: 2019-05-14 16:04:25 #$: Date of the last commit
 %
@@ -178,8 +168,8 @@ function [out] = mpdpReda(y, X, varargin)
 %
 
 %{
-    % Call of mpdpReda with all default options.
-    % Example of use of mpdpReda with all default options.
+    % Call of mdpdReda with all default options.
+    % Example of use of mdpdReda with all default options.
     % Simulate a regression model.
     n=100;
     p=3;
@@ -190,7 +180,7 @@ function [out] = mpdpReda(y, X, varargin)
     y=X*bet+sig*eps;
     % Contaminate the first 10 observations.
     y(1:10)=y(1:10)+0.05;
-    [out] = mpdpReda(y, X,'plots',1);
+    [out] = mdpdReda(y, X,'plots',1);
 %}
 
 %{
@@ -204,11 +194,11 @@ function [out] = mpdpReda(y, X, varargin)
     y=X*bet+sig*eps;
     % Contaminate the first 10 observations.
     y(1:10)=y(1:10)+0.05;
-    [out] = mpdpReda(y, X,'plots',1,'alpha',[1 0.8 0.2 0]);
+    [out] = mdpdReda(y, X,'plots',1,'alpha',[1 0.8 0.2 0]);
 %}
 
 %{
-    % mpdpReda applied to example 1 of Durio and Isaia (2011).
+    % mdpdReda applied to example 1 of Durio and Isaia (2011).
     % 600 points generated according to the model
     % Y=0.5*X1+0.5*X2+eps
     % and n2 = 120 points (outliers), drawn from the model
@@ -220,7 +210,7 @@ function [out] = mpdpReda(y, X, varargin)
     X=rand(n,p);
     bet=0.5*ones(p,1);
     y=X*bet+sig*eps;
-    [out] = mpdpReda(y,X ,'plots',1);
+    [out] = mdpdReda(y,X ,'plots',1);
 %}
 
 %{
@@ -228,7 +218,7 @@ function [out] = mpdpReda(y, X, varargin)
     load('forbes.txt');
     y=forbes(:,2);
     X=forbes(:,1);
-    [outalpha0] = mpdpReda(y, X, 'plots',1);
+    [outalpha0] = mdpdReda(y, X, 'plots',1);
 %}
 
 %{
@@ -236,7 +226,7 @@ function [out] = mpdpReda(y, X, varargin)
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
-    [out] = mpdpReda(y, X, 'plots',1);
+    [out] = mdpdReda(y, X, 'plots',1);
 %}
 
 
@@ -252,10 +242,11 @@ theta0='';
 intercept=1;
 conflev=0.975;
 plots=0;
-alpha=1:-0.01:0;
+bdpORalpha='alpha';
+tuningpar=1:-0.01:0;
 
 if nargin>2
-    options=struct('alpha',alpha,'intercept',intercept,'modelfun',modelfun,...
+    options=struct('bdpORalpha',bdpORalpha,'tuningpar',tuningpar,'intercept',intercept,'modelfun',modelfun,...
         'theta0',theta0,'conflev',conflev,...
         'plots',plots);
     
@@ -264,7 +255,7 @@ if nargin>2
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:mpdpReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:mdpdReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present in
@@ -274,7 +265,7 @@ if nargin>2
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:mpdpReda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:mdpdReda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     
@@ -282,12 +273,25 @@ if nargin>2
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
-    alpha=options.alpha;
+    tuningpar=options.tuningpar;
+    tuningpar=sort(tuningpar,'descend');
+    bdpORalpha=options.bdpORalpha;
     
-    if min(alpha)<0
-        error('FSDA:mdpdReda:WrongInputOpt','minimum value of alpha must be zero')
+    if strcmp(bdpORalpha,'alpha')
+        if min(tuningpar)<0
+            error('FSDA:mdpdReda:WrongInputOpt','minimum value of alpha must be zero')
+        end
+        alphavec=tuningpar;
+
+    elseif strcmp(bdpORalpha,'bdp')
+        % In this case tuning paramter is breakdown point
+        if min(tuningpar)<0 || max(tuningpar)>0.5
+            error('FSDA:mdpdReda:WrongInputOpt','bdp must be in the interval [0 0.5]')
+        end
+        alphavec=PDbdp(tuningpar);
+    else
+        error('FSDA:mdpdReda:WrongInputOpt','bdpORalpha must be ''bdp'' or ''alpha''')
     end
-    
     
     intercept=options.intercept;
     modelfun=options.modelfun;
@@ -306,17 +310,16 @@ if isempty(modelfun) && intercept==1
 end
 p=size(X,2);
 
-alphavec=alpha;
 MaxIter=1000;
 DisplayLevel='';
 nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',1e-7);
 
 
-% Use linear squares as starting values of the parameters
+% Use LMS solution as starting values of the parameters
 if isempty(theta0)
-    beta0=X\y;
-    yhat0=y-(X*beta0);
-    sigma0=sqrt(yhat0'*yhat0/(n-p));
+    outini=LXS(y,X,'nocheck',1,'msg',0,'nsamp',300);
+    beta0=outini.beta;
+    sigma0=outini.scale;
     theta0=[beta0;sigma0];
 end
 
@@ -336,10 +339,10 @@ Exitflag=zeros(lalphavec,1);
 % Vector of regression coefficients and scale
 
 for jj=1:length(alphavec)
-    alpha=alphavec(jj);
-    likfminOneParameter = @(betsigma)likfmin(betsigma, modelfun, y, X, alpha);
+    alphajj=alphavec(jj);
+    likfminOneParameter = @(betsigma)likfmin(betsigma, modelfun, y, X, alphajj);
     
-    if isempty(modelfun) && alpha == 0 % MLE of beta and sigma
+    if isempty(modelfun) && alphajj == 0 % MLE of beta and sigma
         bhat=X\y;
         yhat=X*bhat;
         resMLE=y-yhat;
@@ -375,6 +378,8 @@ out.Exitflag=Exitflag;
 % Store in output structure the outliers
 out.Outliers = Outliers;
 % Store values of alphavec which have been used
+% alphavec contains values of alpha or values of bdp depending on input
+% option bdpORalpha
 out.alpha=alphavec;
 
 out.class='MPDPeda';

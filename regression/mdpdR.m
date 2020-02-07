@@ -1,7 +1,7 @@
-function [out] = mpdpR(y, X, alpha, varargin)
-%mpdpR allows to apply Minimum Density Power Divergence criterion to parametric regression problems.
+function [out] = mdpdR(y, X, alpha, varargin)
+%mdpdR allows to apply Minimum Density Power Divergence criterion to parametric regression problems.
 %
-%<a href="matlab: docsearchFS('mpdpR')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpdR')">Link to the help function</a>
 %
 %
 % Required input arguments:
@@ -189,7 +189,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 % Copyright 2008-2019.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('mpdpR')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpdR')">Link to the help function</a>
 %
 %$LastChangedDate:: 2019-05-14 16:04:25 #$: Date of the last commit
 %
@@ -199,7 +199,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
 %
 
 %{
-    % Call of mpdpR with all default options.
+    % Call of mdpdR with all default options.
     % Simulate a regression model.
     rng('default')
     rng(1000)
@@ -210,7 +210,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
     X=randn(n,p);
     bet=3*ones(p,1);
     y=X*bet+sig*eps;
-    [out] = mpdpR(y, X, 0.01);
+    [out] = mdpdR(y, X, 0.01);
 %}
 
 %{
@@ -225,7 +225,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
     y=X*bet+sig*eps;
     % Contaminate the first 10 observations.
     y(1:10)=y(1:10)+0.05;
-    [out] = mpdpR(y, X, 1,'yxsave',1);
+    [out] = mdpdR(y, X, 1,'yxsave',1);
     resindexplot(out)
 %}
 
@@ -244,13 +244,13 @@ function [out] = mpdpR(y, X, alpha, varargin)
     X   = rand(n,p);
     bet = 0.5*ones(p,1);
     y   = X*bet+sig*eps;
-    [outalpha1] = mpdpR(y, X, 1);
+    [outalpha1] = mdpdR(y, X, 1);
     h1 = subplot(2,1,1);
     resindexplot(outalpha1,'h',h1);
     title('alpha=1','FontSize',15);
 
     h2 = subplot(2,1,2);
-    [outalpha0] = mpdpR(y, X, 0);
+    [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
 
@@ -282,13 +282,13 @@ function [out] = mpdpR(y, X, alpha, varargin)
     group=2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
-    [out] = mpdpR(y, X, 1);
+    [out] = mdpdR(y, X, 1);
     h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
     title('alpha=1','FontSize',15);
     n=n1+n2;
     h2 = subplot(2,1,2);
-    [outalpha0] = mpdpR(y, X, 0);
+    [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15)
     % Compare robust and MLE estimate
@@ -321,14 +321,14 @@ function [out] = mpdpR(y, X, alpha, varargin)
     group= 2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
-    [out] = mpdpR(y, X, 1);
+    [out] = mdpdR(y, X, 1);
     h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
     title('alpha=1','FontSize',15);
     n = n1+n2;
     h2=subplot(2,1,2);
     % MLE estimate
-    [outalpha0] = mpdpR(y, X, 0);
+    [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
@@ -371,14 +371,14 @@ function [out] = mpdpR(y, X, alpha, varargin)
     group(n1+1:n1+n2)=2;
 
     yXplot(y,X,group)
-    [out] = mpdpR(y, X, 1);
+    [out] = mdpdR(y, X, 1);
     h1=subplot(2,1,1);
     resindexplot(out,'h',h1);
     title('alpha=1','FontSize',15);
     n=n1+n2;
     h2=subplot(2,1,2);
     % MLE estimate
-    [outalpha0] = mpdpR(y, X, 0);
+    [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
@@ -394,19 +394,19 @@ function [out] = mpdpR(y, X, alpha, varargin)
     y=forbes(:,2);
     X=forbes(:,1);
     h1=subplot(2,1,1);
-    [out] = mpdpR(y, X, 1);
+    [out] = mdpdR(y, X, 1);
     resindexplot(out,'h',h1);
     title('alpha=1','FontSize',15);
 
     h2=subplot(2,1,2);
     % MLE estimate
-    [outalpha0] = mpdpR(y, X, 0);
+    [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
 %}
 
 %{
-    % mpdpR applied to the Belgium telephone data.
+    % mdpdR applied to the Belgium telephone data.
     % This dataset concerns the number of international calls from Belgium,
     % taken from the Belgian Statistical Survey, published by the Ministry of
     % Economy. This dataset consists in 24 observations on the following 2 variables.
@@ -440,7 +440,7 @@ function [out] = mpdpR(y, X, alpha, varargin)
         73  2.90];
     y=XX(:,2);
     X=XX(:,1);
-    out=mpdpR(y,X,0);
+    out=mdpdR(y,X,0);
 %}
 
 
@@ -478,7 +478,7 @@ if nargin>3
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:mpdpR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:mdpdR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present in
@@ -488,7 +488,7 @@ if nargin>3
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:mpdpR:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:mdpdR:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -531,7 +531,7 @@ else
     else
         if isempty(modelfun)
             if length(theta0)~=p+1
-                error('FSDA:mpdpR:WrongDim',...
+                error('FSDA:mdpdR:WrongDim',...
                     ['Wrong dimension for theta0, it must be a vector with length = ', num2str(p+1)]);
             else
                 % Just in case input theta0 is a rwo vector
