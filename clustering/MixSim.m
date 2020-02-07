@@ -378,7 +378,9 @@ function [out]  = MixSim(k,v,varargin)
     cascade
 %}
 
-%% User options
+%% Beginning of code
+
+% User options
 
 % Default
 if nargin<2

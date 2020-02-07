@@ -393,6 +393,8 @@ function [out] = MixSimreg(k,p,varargin)
     % 2) X in the second dimension for the third group is generated according to U(1, 3)
     rng(10,'twister')
     % Specify the distribution of the explanatory variables
+    p=5;
+    k=3;
     Xdistrib=struct;
     Xdistrib.type='Uniform';
     Xdistrib.a=zeros(p-1,k);
