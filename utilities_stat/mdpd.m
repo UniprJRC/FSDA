@@ -1,7 +1,7 @@
-function [res] = mpdp(y, alpha, varargin)
-%mpdp computes Minimum Distance Power Divergence statistics
+function [res] = mdpd(y, alpha, varargin)
+%mdpd computes Minimum Distance Power Divergence statistics
 %
-%<a href="matlab: docsearchFS('mpdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpd')">Link to the help function</a>
 %
 %
 % The Power Divergence for a density function $f$ and observations
@@ -91,7 +91,7 @@ function [res] = mpdp(y, alpha, varargin)
 %                  Data Types - double.
 %
 %
-% See also: normpdf, mpdpR, mpdpReda 
+% See also: normpdf, mdpdR, mdpdReda 
 %
 %  References:
 %
@@ -102,7 +102,7 @@ function [res] = mpdp(y, alpha, varargin)
 % Copyright 2008-2019.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('mpdp')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdpd')">Link to the help function</a>
 %
 %$LastChangedDate:: 2019-05-14 16:04:25 #$: Date of the last commit
 
@@ -110,16 +110,16 @@ function [res] = mpdp(y, alpha, varargin)
 % Examples:
 
 %{
-    %% mpdp with all default arguments.
+    %% mdpd with all default arguments.
     rng('default')
     y =randn(10,1);
-    out=mpdp(y,0.2);
+    out=mdpd(y,0.2);
 %}
 
 
 %{
     %% Student T with 5 degrees of freedom.
-    mpdp(y,0.1,'densfunc',@tpdf,'theta',5)
+    mdpd(y,0.1,'densfunc',@tpdf,'theta',5)
 %}
 
 
@@ -128,7 +128,7 @@ function [res] = mpdp(y, alpha, varargin)
     rng('default')
     % Generate 10 numbers from Uniform.
     y =mtR(10,0);
-    out=mpdp(y,0.1,'densfunc',@tpdf,'theta',5, 'lower',-Inf,'upper',Inf);
+    out=mdpd(y,0.1,'densfunc',@tpdf,'theta',5, 'lower',-Inf,'upper',Inf);
     expectedRes = -8.870156744130417;
     assert(isequal(round(out,7), round(expectedRes,7)), 'Error: MATLAB did not output the expected result!')
 %}
@@ -139,7 +139,7 @@ function [res] = mpdp(y, alpha, varargin)
     rng('default')
     % Generate 10 numbers from Uniform.
     y =mtR(10,0);
-    out=mpdp(y,0.1,'densfunc',@tpdf,'theta',5, 'lower',-Inf,'upper',Inf,'RelTol',1e-15);
+    out=mdpd(y,0.1,'densfunc',@tpdf,'theta',5, 'lower',-Inf,'upper',Inf,'RelTol',1e-15);
     expectedRes =  -8.870156744130275;
     assert(isequal(round(out,7), round(expectedRes,7)), 'Error: MATLAB did not output the expected result!')
 
