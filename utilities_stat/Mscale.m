@@ -7,7 +7,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 % Required input arguments:
 %
 %    u:       : residuals or Mahalanobis distances. Vector.
-%               n x 1 vector which contains the scaled residuals or
+%               n x 1 vector which contains the (unscaled) residuals or
 %               Mahalanobis distances
 %               Data Types - single | double
 %     psifunc : rho (psi) function. Structure.
@@ -17,7 +17,8 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %               psifunc must contain the following fields:
 %               psifunc.class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare' (TB),
-%                    'optimal', (OPT) 'hyperbolic' (HYP) and 'hampel' (HA)
+%                    'optimal', (OPT) 'hyperbolic' (HYP), 'hampel' (HA)
+%                    'power divergence' (PD) 
 %               psifunc.c1 = consistency factor (and other parameters)
 %                   associated to required breakdown point or nominal
 %                   efficiency.
