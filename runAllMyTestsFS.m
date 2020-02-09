@@ -140,9 +140,11 @@ for i=1:nfiles
             Exi=regexprep(Exi,'&gt;','>');
             close all
             if iEx==1
-                Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
+                %Exif=[Exi,newline,'close all',newline 'save tempfileWS'];
+                Exif=[Exi,newline,'close all'];
             else
-                Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
+                %Exif=['load tempfileWS',newline,Exi,newline,'close all',newline, 'save tempfileWS'];
+                Exif=[Exi,newline,'close all'];
             end
             
             % Write Exif to a file which name begins with 'text'
