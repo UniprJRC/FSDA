@@ -55,10 +55,14 @@ function alpha = PDeff(eff)
 
 %% Beginning of code
 
-F=eff^2;
-coeff=[F, 6*F, 15*F, 20*F-8, 15*F-12, 6*F-6, F-1];
-r=roots(coeff);
-r = r(imag(r)==0); % Save only the real roots
-alpha = r(r>0);
+F=eff^(2/3);
+alpha=(1-F+sqrt(1-F))/F;
+
+% Alternative more complicated way to find alpha
+% F=eff^2;
+% coeff=[F, 6*F, 15*F, 20*F-8, 15*F-12, 6*F-6, F-1];
+% r=roots(coeff);
+% r = r(imag(r)==0); % Save only the real roots
+% alpha = r(r>0);
 end
 %FScategory:UTISTAT
