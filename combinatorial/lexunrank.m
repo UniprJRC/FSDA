@@ -185,11 +185,17 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 
 %{
         %% number of binomial coefficient calls necessary to compute the 7th 2 combination chosen among 5 element.
+        n = 5; 
+        k = 2; 
+        N = 7;
         [~,calls]=lexunrank(n,k,N)
 %}
 
 %{
         %% 7th 2 combination chosen among 5 element, using the pascal matrix.
+        n = 5; 
+        k = 2; 
+        N = 7;
         [kcomb,calls]=lexunrank(n,k,N,pascal(n))
 %}
 
@@ -214,6 +220,14 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 
 %{
     % Additional example on the use of lexunrank.
+    n = 4; p = 3;
+    n_bc = bc(n,p);
+    pascalM=pascal(n);
+    n_bc==pascalM(n-p+1,p+1)
+    all_recolex = nan(n_bc,p);
+    for N_lex = 0:n_bc-1
+        all_recolex(N_lex+1,:) = lexunrank(n,p,N_lex);
+    end
     % To change from reverse-colex to colex.
     all_colex = flipud(all_recolex)
     % and to change from colex to lex, it is sufficient this
@@ -229,11 +243,21 @@ function [kcomb,calls]=lexunrank(n,k,N,pascalM)
 
 %{
     % Additional example on the use of lexunrank.
+    n = 4; p = 3;
+    n_bc = bc(n,p);
+    pascalM=pascal(n);
+    n_bc==pascalM(n-p+1,p+1);
+    all_recolex = nan(n_bc,p);
+    for N_lex = 0:n_bc-1
+        all_recolex(N_lex+1,:) = lexunrank(n,p,N_lex);
+    end  
+    N_colex = n_bc - N_lex ;   
     % Use of lexunrank with pascal matrix
     kcomb = lexunrank(n,p,N_colex,pascal(n))
     % This is without Pascal matrix
     kcomb2 = lexunrank(n,p,N_colex)
     % Just as confirmation, the combination in the lexi order is
+    all_lex_combs = combsFS(1:n,p)
     all_lex_combs(N_lex,:)
 %}
 

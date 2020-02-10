@@ -91,6 +91,9 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %{
       %% The same histogram is now plotted with different legends.
       figure;
+      y = randn(500,1);
+      groups = randi(4,500,1);
+      nbins = 10;
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'});
       title('The same, with personalized legends','interpreter','latex','FontSize',18);
 %}
@@ -98,6 +101,9 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 %{
       %% The same histogram is now plotted with different colors.
       figure;
+      y = randn(500,1);
+      groups = randi(4,500,1);
+      nbins = 10;
       [ng, hb] = histFS(y,nbins,groups,{'BMW','FIAT','VOLVO','FERRARI'},gca,'kgbr');
       title('FERRARI must be red! Color sequence changed to kgbr','interpreter','latex','FontSize',18);
 %}
@@ -106,6 +112,9 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
       % Apply to the grouped histogram the legends of a different plot.
       % Create a scatterplot
       close all;
+      y = randn(500,1);
+      groups = randi(4,500,1);
+      nbins = 10;
       hs = gscatter(1:numel(y),y,groups);
       hfs = gcf;                              % get the handle of the scatterplot
       has = get(hfs,'CurrentAxes');           % it is the same as has = gca
@@ -121,6 +130,9 @@ function [ng, hb] = histFS(y,nbins,gy,gylab,ax,barcolors,W)
 
 %{
       % Example with personalised clickable legends.
+      y = randn(500,1);
+      groups = randi(4,500,1);
+      nbins = 10;
       myleg = {'my group 1' 'my group 2' 'my group 3' 'my group 4' };
       [ng, hb] = histFS(y,nbins,groups,myleg);
       title('Example with personalised clickable legends','interpreter','latex','FontSize',18);
