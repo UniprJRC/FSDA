@@ -54,8 +54,10 @@ function position(plmain)
     % The three plots have now an unknown tag. In this case, we assume that 
     % the plots are not relevant and are therefore put in a non-interesting
     % screen area (top-right).
-    
     close all
+    Y1=load('geyser2.txt');
+    Y2=load('fishery.txt');
+    Y3=load('M5data.txt');
     figure('Tag','aaaaa'); spmplot(Y1); hmain=gcf;
     figure('Tag','bbbbb'); spmplot(Y2);
     figure('Tag',''); spmplot(Y3);

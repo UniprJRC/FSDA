@@ -135,6 +135,8 @@ function [fre]=unibiv(Y,varargin)
     out=unibiv(Y,'plots',1,'textlab',1);
 %}
 
+%% Beginning of code 
+
 [n,v]=size(Y);
 
 % Default confidence level for bivariate ellipses
@@ -143,7 +145,6 @@ rfdef=0.95;
 options=struct('rf',rfdef,'plots',0,'textlab',0,...
     'tag','pl_unibiv','robscale',1,'madcoef',1.4815);
 
-%% Beginning of code 
 
 % Input parameters checking
 
