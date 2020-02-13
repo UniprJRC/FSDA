@@ -1,2 +1,3 @@
 # ignore testresults folders
 tests-regression/
+tests-regression-clustering/
