@@ -232,6 +232,16 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 
 %{
     % Compare t stat from S and MM estimator.
+    n=200;
+    p=3;
+    state1=123456;
+    randn('state', state1);
+    X=randn(n,p);
+    y=randn(n,1);
+    kk=10;
+    ycont = y;
+    ycont(1:kk)=ycont(1:kk)+7;
+    [outS]=Sreg(ycont,X);
     rhofunc='optimal';
     bdp=0.5;
     out=RobCov(X,outS.residuals,outS.scale,'rhofunc',rhofunc,'bdp',0.5);

@@ -128,7 +128,22 @@ function [AR,RI,MI,HI]=RandIndexFS(c1,c2, noisecluster)
 %}
 
 %{
-   % Computation of ARI, RI, MI and HI.
+   % RandindexFS with the two vectors as input.
+     c=[1 1;
+        1 2
+        2 1;
+        2 2 ;
+        2 2;
+        2 3;
+        3 3;
+        3 3;
+        3 3;
+        3 3];
+    % c1= numeric vector containing the labels of the first partition
+    c1=c(:,1);
+    % c1= numeric vector containing the labels of the second partition
+    c2=c(:,2);
+    % Computation of ARI, RI, MI and HI.
    [ARI,RI,MI,HI]=RandIndexFS(c1,c2);
     disp('Adjusted Rand index')
     disp(ARI)

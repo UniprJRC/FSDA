@@ -259,7 +259,11 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from a specific over-parametrized model.
-
+    n = 100;                        % sample size
+    tmp = rand(n,1);
+    model.X = tmp.*[1:n]';          % a extra covariate
+    model.Xb = 1;                   % beta coefficient of the covariate
+    out_sim=simulateTS(n,'plots',1,'model',model);
     % complete model to be tested.
     overmodel=struct;
     overmodel.trend=2;              % quadratic trend
@@ -278,13 +282,45 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %{
     % run LTStsVarSel starting from over-parametrized model with autoregressive components.
     % add three autoregressive components to the complete model.
+     n = 100;                        % sample size
+    tmp = rand(n,1);
+    model.X = tmp.*[1:n]';          % a extra covariate
+    model.Xb = 1;                   % beta coefficient of the covariate
+    out_sim=simulateTS(n,'plots',1,'model',model);
+    % complete model to be tested.
+    overmodel=struct;
+    overmodel.trend=2;              % quadratic trend
+    overmodel.s=12;                 % monthly time series
+    overmodel.seasonal=303;         % number of harmonics
+    overmodel.lshift=4;             % position where to start monitoring level shift
+    overmodel.X=tmp.*[1:n]';
+    overmodel.ARp=3;
+
+    % pval threshold
+    thPval=0.01;
      
-     overmodel.ARp=3;
     [out_model_2, out_reduced_2] = LTStsVarSel(out_sim.y,'model',overmodel,'thPval',thPval);
 %}
 
 %{
     % run LTStsVarSel with default options and return warning messages.
+        % data model
+    model=struct;
+    model.trend=1;                  % linear trend
+    model.trendb=[0 1];             % parameters of the linear trend
+    model.s=12;                     % monthly time series
+    model.seasonal=1;               % 1 harmonic with linear trend
+    model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+    model.lshiftb=100;              % level shift amplitude
+    model.lshift= 30;               % level shift amplitude
+    model.signal2noiseratio = 100;  % signal to noise
+    
+    n = 100;                        % sample size
+    tmp = rand(n,1);
+    model.X = tmp.*[1:n]';          % a extra covariate
+    model.Xb = 1;                   % beta coefficient of the covariate
+    % generate data
+    out_sim=simulateTS(n,'plots',1,'model',model);
     [out_model_3, out_reduced_3, messages] = LTStsVarSel(out_sim.y);
 %}
 
