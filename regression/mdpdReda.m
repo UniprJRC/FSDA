@@ -1,5 +1,5 @@
 function [out] = mdpdReda(y, X, varargin)
-%mdpdR allows to monitor  Minimum Density Power Divergence criterion to parametric regression problems.
+%mdpdReda allows to monitor  Minimum Density Power Divergence criterion to parametric regression problems.
 %
 %<a href="matlab: docsearchFS('mdpdReda')">Link to the help function</a>
 %
@@ -122,12 +122,18 @@ function [out] = mdpdReda(y, X, varargin)
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
 %           out.class = 'MDPDeda'
-%       out.Exitflag = Reason fminunc or fminsearch stopped. Vector.
-%                       Vector of length alpha containing details about
-%                       convergence.
-%                       A value greater then 0 denotes normal convergence.
-%                       See help of functions fminunc.m or fminsearch.m for
-%                       further details.
+%             out.Fval = Value of the objective function and reason fminunc
+%                       or fminsearch stopped and v. Matrix.
+%                       length(alpha)-by-3 matrix.
+%                       The first column contains the values of alpha which
+%                       have been considered.
+%                       The second column contains the values of the
+%                       objective function at the solution.
+%                       The third column contins the details about
+%                       convergence. A value greater then 0 denotes normal
+%                       convergence. See help of functions fminunc.m or
+%                       fminsearch.m for further details.
+%
 %
 % More About:
 %
@@ -288,7 +294,7 @@ if nargin>2
         options.(varargin{i})=varargin{i+1};
     end
     tuningpar=options.tuningpar;
-    tuningpar=sort(tuningpar,'descend');
+    tuningpar=sort(tuningpar(:),'descend');
     alphaORbdp=options.alphaORbdp;
     
     if strcmp(alphaORbdp,'alpha')
@@ -296,7 +302,7 @@ if nargin>2
             error('FSDA:mdpdReda:WrongInputOpt','minimum value of alpha must be zero')
         end
         alphavec=tuningpar;
-
+        
     elseif strcmp(alphaORbdp,'bdp')
         % In this case tuning paramter is breakdown point
         if min(tuningpar)<0 || max(tuningpar)>0.5
@@ -327,14 +333,26 @@ p=size(X,2);
 
 MaxIter=1000;
 DisplayLevel='';
-nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',1e-7);
+% nlinfitOptions=statset('Display',DisplayLevel,'MaxIter',MaxIter,'TolX',1e-7);
+nlinfitOptions=statset('Display',DisplayLevel,...
+    'MaxIter',MaxIter,'TolX',1e-8,'TolTypeX','rel',...
+    'TolFun',1e-8,'TolTypeFun','rel');
 
 
 % Use LMS solution as starting values of the parameters
 if isempty(theta0)
-    outini=LXS(y,X,'nocheck',1,'msg',0,'nsamp',300);
-    beta0=outini.beta;
-    sigma0=outini.scale;
+    LS=false;
+    if LS==true
+        beta0  = X\y;
+        yhat  = X*beta0;
+        resMLE= y-yhat;
+        sigma0 = sqrt(resMLE'*resMLE/(n-p));
+    else
+        outini=LXS(y,X,'nocheck',1,'msg',0,'nsamp',1000);
+        beta0=outini.beta;
+        sigma0=outini.scale;
+    end
+    
     theta0=[beta0;sigma0];
 end
 
@@ -347,7 +365,7 @@ Beta=zeros(p,lalphavec);
 Scale=zeros(lalphavec,1);
 Residuals=zeros(n,lalphavec);
 Outliers=false(n,lalphavec);
-Exitflag=zeros(lalphavec,1);
+Fval=[alphavec zeros(lalphavec,2)];
 
 % Given that likfmin only accepts objective functions that depend only
 % on a single variable (in this case betsigma)
@@ -365,8 +383,9 @@ for jj=1:length(alphavec)
         residuals=resMLE/scale;
         exitflag=1;
     else
-        [betaout,~,exitflag]  = fminsearch(likfminOneParameter,theta0,nlinfitOptions);
+        [betaout,fval,exitflag]  = fminsearch(likfminOneParameter,theta0,nlinfitOptions);
         
+        theta0=betaout;
         bhat=betaout(1:end-1);
         scale=betaout(end);
         if isempty(modelfun)
@@ -382,20 +401,20 @@ for jj=1:length(alphavec)
     Beta(:,jj)=bhat;
     Scale(jj)=scale;
     Outliers(outliers,jj)=true;
-    Exitflag(jj)=exitflag;
+    Fval(jj,2:3)=[fval exitflag];
 end
 
 out.Beta = Beta;
 out.Scale = Scale;
 out.RES=Residuals;
-out.Exitflag=Exitflag;
+out.Fval=Fval;
 
 % Store in output structure the outliers
 out.Outliers = Outliers;
 % Store values of alphavec which have been used
 % alphavec contains values of alpha or values of bdp depending on input
 % option alphaORbdp
-out.alpha=alphavec;
+out.alpha=tuningpar;
 
 out.class='MDPDeda';
 
