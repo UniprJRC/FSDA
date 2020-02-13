@@ -55,8 +55,8 @@ function alpha = PDeff(eff)
 
 %% Beginning of code
 
-F=eff^(2/3);
-alpha=(1-F+sqrt(1-F))/F;
+F=eff.^(2/3);
+alpha=(1-F+sqrt(1-F))./F;
 
 % Alternative more complicated way to find alpha
 % F=eff^2;
