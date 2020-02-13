@@ -508,6 +508,7 @@ function CorAnaplot(out,varargin)
 
     % change the sign of the second dimension
     changedimsign=[false true];
+    out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
     CorAnaplot(out,'plots',plots,'changedimsign',changedimsign)
 %}
 
@@ -563,6 +564,7 @@ function CorAnaplot(out,varargin)
     end
     % No horizontal displacement for the labels.
     addx=0;
+    out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
     CorAnaplot(out,'addx',addx)
 %}
 
