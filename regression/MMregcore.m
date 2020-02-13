@@ -67,18 +67,21 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
 %               Possible values are
-%               'bisquare'
-%               'optimal'
-%               'hyperbolic'
-%               'hampel'
+%               'bisquare';
+%               'optimal';
+%               'hyperbolic';
+%               'hampel';
+%               'mdpd'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
-%               See TBrho and TBpsi
+%               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
-%               See OPTrho and OPTpsi
+%               See OPTrho and OPTpsi.
 %               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
-%               See HYPrho and HYPpsi
+%               See HYPrho and HYPpsi.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
-%               See HArho and HApsi
+%               See HArho and HApsi.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - char
@@ -416,8 +419,18 @@ elseif strcmp(rhofunc,'hampel')
     
     c=psifunc.c;
     
+elseif strcmp(rhofunc,'mdpd')
+     % Compute tuning constant associated to the requested nominal efficiency
+    % c = consistency factor for a given value of efficiency
+    c=PDeff(eff);
+    
+    psifunc.c=c;
+    psifunc.class='PD';
+    
+    c=psifunc.c;
+  
 else
-    error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
+    error('FSDA:MMregcore:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'', ''mdpd''')
     
 end
 
