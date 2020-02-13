@@ -67,18 +67,21 @@ function [out , varargout] = MMreg(y,X,varargin)
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
 %               Possible values are
-%               'bisquare'
-%               'optimal'
-%               'hyperbolic'
-%               'hampel'
+%               'bisquare';
+%               'optimal';
+%               'hyperbolic';
+%               'hampel';
+%               'mdpd'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
-%               See TBrho and TBpsi
+%               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
-%               See OPTrho and OPTpsi
+%               See OPTrho and OPTpsi.
 %               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
-%               See HYPrho and HYPpsi
+%               See HYPrho and HYPpsi.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
-%               See HArho and HApsi
+%               See HArho and HApsi.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal'
 %                 Data Types - char
@@ -326,6 +329,22 @@ function [out , varargout] = MMreg(y,X,varargin)
     outMM=MMregcore(ycont,X,outS.beta,outS.scale,'rhofunc',rhofuncMM);
     disp('Difference between direct call to S and the calls to Sreg and MMregcore')
     max(abs([out.beta-outMM.beta]))
+%}
+
+%{
+    %%  Example of the use of Power Divergence estimator.
+    n=200;
+    p=3;
+    rng('default')
+    rng(100);
+    X=randn(n,p);
+    % Uncontaminated data
+    y=randn(n,1);
+    % Contaminated data
+    ycont=y;
+    ycont(1:5)=ycont(1:5)+6;
+    % mdpd is used both in the S and in MM step.
+    [out]=MMreg(ycont,X,'Srhofunc','mdpd','rhofunc','mdpd','plots',1);
 %}
 
 %% Beginning of code
