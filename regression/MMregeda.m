@@ -43,7 +43,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %               S at the beginning. For example, if you want to use the
 %               optimal rho function the supplied option is
 %               'Srhofunc','optimal'. For example, if you want to use 3000
-%               subsets, the supplied option is 'Snsamp',3000
+%               subsets, the supplied option is 'Snsamp',3000.
+%               Note that the rho function which is used in the MMstep is
+%               the same as the one used in the S step.
 %               Example - 'Snsamp',1000
 %               Data Types - single | double
 %
@@ -110,7 +112,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           is not empty)
 %       out.Beta        =   p x length(eff) matrix containing MM estimate of
 %                           regression coefficients for each value of eff
-%       out.RES	=   n x length(eff) matrix containing scaled MM
+%       out.RES	=           n x length(eff) matrix containing scaled MM
 %                           residuals for each value of eff
 %                           out.RES(:,jj)=(y-X*out.Beta(:,jj))/out.auxscale
 %       out.Weights     =   n x length(eff) matrix. Weights assigned to
@@ -126,7 +128,6 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           preliminary part. Notice that
 %                           out.singsub > 0.1*(number of subsamples)
 %                           produces a warning
-
 %       out.conflev     =   Confidence level that was used to declare outliers
 %           out.rhofunc =   string identifying the rho function which has been
 %                           used
@@ -206,7 +207,7 @@ function [out , varargout] = MMregeda(y,X,varargin)
     % Contaminated data
     ycont=y;
     ycont(1:5)=ycont(1:5)+6;
-    [out]=MMreg(ycont,X,'Srhofunc','optimal');
+    [out]=MMregeda(ycont,X,'Srhofunc','optimal');
 %}
 
 %{
@@ -286,7 +287,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:MMreg:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:MMregeda:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
