@@ -905,6 +905,8 @@ selmin=min(residuals,[],2);
 % default values for fthresh, bthresh, bstyle, labx and laby.
 if strcmp(out.class,'Sregeda')
     labx= 'Break down point';
+elseif strcmp(out.class,'MDPDeda')
+    labx= 'alpha';
 elseif strcmp(out.class,'MMregeda')
     labx= 'Efficiency';
 else
@@ -1129,8 +1131,12 @@ if any(strcmp(fieldnames(out),'class'))
     elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
         out.Un='';
-    elseif strcmp(out.class,'MPDPeda')
+    elseif strcmp(out.class,'MDPDeda')
         x=out.alpha;
+% if isfield(out, 'alpha')
+% else
+%     x=out.bdp;
+% end
         out.Un='';
     end
     
@@ -1138,7 +1144,7 @@ end
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
-if strcmp(out.class,'Sregeda') || strcmp(out.class,'MPDPeda')
+if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDeda')
     set(gca,'XDir','reverse')
 end
 

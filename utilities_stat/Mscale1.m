@@ -4,7 +4,7 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 % Required input arguments:
 %
 %    u:       : residuals or Mahalanobis distances. Vector.
-%               n x 1 vector which contains the scaled residuals or
+%               n x 1 vector which contains the unscaled residuals or
 %               Mahalanobis distances
 %               Data Types - single | double
 %     psifunc : rho function. Structure.
@@ -59,9 +59,9 @@ function sc = Mscale1(u, psifunc, initialsc, tol, maxiter)
 % \]
 %
 % This routine computes the value of $s$ which satisfies the above
-% equation.
-%       This routine is never called
-%       because the more efficient function Mscale.m is used
+% equation. This routine is never called
+% because the more efficient function Mscale.m is used. Moreover this
+% routine requires function psi(x)*x.
 %
 % See also: Mscale, minscale
 %
