@@ -81,10 +81,6 @@ function ceff = OPTeff(eff,v)
     end
 
 %}
-%
-
-
-%
 
 %% Beginning of code
 

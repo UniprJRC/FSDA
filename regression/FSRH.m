@@ -357,13 +357,15 @@ function [out]=FSRH(y,X,Z,varargin)
     % FSRH with optional arguments.
     % Specifying the search initialization and controlling the y scale in
     % plot. 
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
     out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);
 
 %}
 
-%{
-
-%}
 
 %% Beginning of code
 

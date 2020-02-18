@@ -110,6 +110,7 @@ function a=ctsub(x,y,z)
 
 %{
     % Comparison with MATLAB function cumtrapz.
+    n=1000;
     x=sort(randn(n,1));
     y=randn(n,1);
     % If the third argument of ctsub is equal to the first

@@ -118,6 +118,7 @@ function strFormatted = wraptextFS(str, varargin)
 %{
     % start text in column 3 and put percentage sign at the beginning of
     % each line.
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
@@ -128,6 +129,7 @@ function strFormatted = wraptextFS(str, varargin)
 %{
     % Example of specification of startcolumn and text width.
     % Start text in column 5, the maximum text width is 40.
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
@@ -137,6 +139,7 @@ function strFormatted = wraptextFS(str, varargin)
 
 %{
     % Add an indentation for first line.
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
@@ -147,6 +150,7 @@ function strFormatted = wraptextFS(str, varargin)
 
 %{
    % Use the width of command window.
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
@@ -166,6 +170,7 @@ function strFormatted = wraptextFS(str, varargin)
     comment.startcolumn=5;
     startcolumn=12;
     width=60;
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else
@@ -175,6 +180,7 @@ function strFormatted = wraptextFS(str, varargin)
 
 %{ 
     % Example of use of option code.
+    str='Paene insularum, Sirmio, insularumque ocelle, quascumque in liquentibus stagnis marique vasto fert uterque Neptunus, quam te libenter quamque laetus inviso, vix mi ipse credens Thuniam atque Bithunos liquisse campos et videre te in tuto. o quid solutis est beatius curis, cum mens onus reponit, ac peregrino labore fessi venimus larem ad nostrum, desideratoque acquiescimus lecto? hoc est quod unum est pro laboribus tantis. salve, o venusta Sirmio, atque ero gaude gaudente, vosque, o Lydiae lacus undae, ridete quidquid est domi cachinnorum.';
     if verLessThan('matlab','8.1') ==1
         warning('This function uses routine strjoin and works just with Matlab >=2013a')
     else

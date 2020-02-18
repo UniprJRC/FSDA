@@ -231,6 +231,14 @@ function mmdrsplot(out,varargin)
 
 %{
     %Example of the use of function mmdrsplot with personalized envelopes.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [outeda]=FSMeda(Y,bs);
+    [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
     mmdrsplot(out,'quant',[0.99;0.9999]);
 %}
 
@@ -240,7 +248,15 @@ function mmdrsplot(out,varargin)
     %Example of the use of function mmdrsplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
-     mmdrsplot(out,'datatooltip',1);
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [outeda]=FSMeda(Y,bs);
+    [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
+    mmdrsplot(out,'datatooltip',1);
 %}
 
 %{
@@ -248,6 +264,14 @@ function mmdrsplot(out,varargin)
     % mmdrsplot with option dataooltip passed as structure.
     %Example of the use of function mmdrsplot with datatooltip passed as
     %structure
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [outeda]=FSMeda(Y,bs);
+    [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -257,6 +281,14 @@ function mmdrsplot(out,varargin)
 %{
     % Interactive_example
     %Example of the use of option databrush.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [outeda]=FSMeda(Y,bs);
+    [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
     mmdrsplot(out,'databrush',1);
 %}
 

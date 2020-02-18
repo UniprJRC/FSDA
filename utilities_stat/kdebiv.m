@@ -115,6 +115,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
       % An example using colormap.
       % A standard (not filled) contour plot obtained using colormap 
       % 'cmap' = 'hot'.
+      X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+      X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+      X = [X1 ; X2];
       figure;
       F2 = kdebiv(X,'cmap','hot');
       title('A standard (not filled) contour plot obtained using colormap ''hot''');
@@ -139,6 +142,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 
 %{
       %  Surf and mesh plots.
+      X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+      X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+      X = [X1 ; X2];
       close all;
       figure;
       F4 = kdebiv(X,'contourtype','surf');
@@ -154,6 +160,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 
 %{
       % Test option 'method'.
+      X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+      X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+      X = [X1 ; X2];
       [F,Xi,bw]      = kdebiv(X,'pdfmethod','fsda');
       disp(['fsda: estimated bandwidth over x axis is ' num2str(bw(1))]);
       disp(['fsda: estimated bandwidth over y axis is ' num2str(bw(2))]);
@@ -166,6 +175,9 @@ function [F,Xi,bw] = kdebiv(X,varargin)
 
 %{
     % test option 'method', with plots.
+    X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+    X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+    X = [X1 ; X2];
     close all;
 
     figure

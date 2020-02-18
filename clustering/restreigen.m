@@ -106,6 +106,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
     % Second example of eigenvalue restriction.
     eigenvalues=abs(randn(3,4));
     eigenvalues(:,3)=0;
+    niini=[30;40;20;10];
     restreigen(eigenvalues,niini,1.1)
     eigenvalues(:,3)=1;
     restreigen(eigenvalues,niini,1.1)

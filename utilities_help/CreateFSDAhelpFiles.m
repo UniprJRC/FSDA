@@ -53,6 +53,7 @@ function outHELP=CreateFSDAhelpFiles()
 %
 %$LastChangedDate::                      $: Date of the last commit
 
+%% Beginning of code 
 
 %% STEP 1 create personalized contents files
 FileName='addFSDA2path';
