@@ -372,6 +372,10 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % considered. All the rest is discarded. A message appears to alert the
     % user that this is the case.
     close all
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
+    figure;
     spmplot(meas,species,plo,'hist','tag','dfgdfg');
 %}
 
@@ -407,6 +411,9 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % matrix not to delete.
 
     % This example uses a matrix of logicals to set the undocked panels
+    load fisheriris;
+    plo=struct;
+    plo.nameY={'SL','SW','PL','PW'};
     figure
     spmplot(meas,'group',species,'plo',plo,'dispopt','hist','undock',logical(eye(size(meas,2))));
     cascade
@@ -503,6 +510,17 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % other for normal units. The largest number in the 'group' variable
     % identifies the group of outliers.
     close all
+    state=100;
+    randn('state', state);
+    n=200;
+    Y=randn(n,3);
+    Ycont=Y;
+    Ycont(1:5,:)=Ycont(1:5,:)+3;
+    [out]=FSM(Ycont,'plots',1); 
+    group = zeros(n,1);
+    group(out.outliers)=1;
+    plo=struct;
+    plo.labeladd='1'; % option plo.labeladd is used to label the outliers
     figure('tag','This is a scatterplot with ouTliErs'); % case insensitive
     spmplot(Ycont,group);
 
@@ -668,7 +686,6 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     boo=~isnan(y);
     Y=Y(boo,:);
     Model=Model(boo,:);
-
     m0=5;
     [fre]=unibiv(Y);
     %create an initial subset with the 3 observations with the lowest
@@ -700,7 +717,21 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     %   units is brushed in the spmplot in the monitoring MD
     %   plot the labels for the units which have a MD greater than 10
     %   are added in steps selsteps.
-   spmplot(out,'selstep',[60 80],'selunit','10',...
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    Model=Model(boo,:);
+    m0=5;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',0); 
+    spmplot(out,'selstep',[60 80],'selunit','10',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 %}
 
@@ -713,7 +744,21 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     %   units is brushed in the spmplot in the monitoring MD
     %   plot the labels for the units selunit
     %   are added in steps selsteps.
-   spmplot(out,'selstep',[60 80],'selunit',1:5,...
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    Model=Model(boo,:);
+    m0=5;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',0); 
+    spmplot(out,'selstep',[60 80],'selunit',1:5,...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 %}
 
@@ -726,7 +771,21 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     %   units is brushed in the spmplot in the monitoring MD
     %   plot the labels for the units selunit
     %   are added in steps selsteps.
-   spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
+    load carsmall
+    x1 = Weight;
+    x2 = Horsepower;    % Contains NaN data
+    y = MPG;    % response
+    Y=[x1 x2 y];
+    % Remove Nans
+    boo=~isnan(y);
+    Y=Y(boo,:);
+    Model=Model(boo,:);
+    m0=5;
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,4);
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',0);
+    spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 %}
 

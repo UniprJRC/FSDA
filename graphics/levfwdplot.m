@@ -369,6 +369,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure standard.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     % Initialize structure standard
     % Specify the steps in which labels have to be put
     standard=struct;
@@ -380,6 +387,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure fground.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -397,11 +411,27 @@ function plotopt=levfwdplot(out,varargin)
 %{
     % Same as above, but the colormap used for leverage trajectories is
     % based on residual values.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    fground = struct;
+    fground.LineWidth=3;
     levfwdplot(out,'fground',fground,'xground','res')
 %}
 %
 %{
     % Example of the use of some options inside structure bground
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     bground = struct;
     % Specify a threshold to define the "background" trajectories
     bground.bthresh=0.1;
@@ -417,6 +447,13 @@ function plotopt=levfwdplot(out,varargin)
     %   Gives the user the possibility of clicking on the different points
     %   and have information about the unit selected, the step of entry
     %   into the subset and the associated label.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     datatooltip = struct;
     % In this example the style of the datatooltip is 'datatip'. Click on a
     % trajectory when the levfwdplot is displayed.
@@ -430,6 +467,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     %   Example of the use of option databrush
     %   (brushing is done only once using a rectangular selection tool)
     levfwdplot(out,'databrush',1)
@@ -443,6 +487,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     % Example of the use of brush using selection with circular tool
     databrush=struct;
     databrush.selectionmode='Brush';
@@ -451,6 +502,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     %   Example of the use of brush using lasso selection tool and fleur
     %   pointer
     databrush=struct;
@@ -461,6 +519,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     %   Example of the use of rectangular brush with superimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed
@@ -477,6 +542,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
     databrush=struct;
@@ -489,6 +561,13 @@ function plotopt=levfwdplot(out,varargin)
 %
 %{
     % Interactive_example
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
@@ -503,6 +582,13 @@ function plotopt=levfwdplot(out,varargin)
 %{
     % Interactive_example
     %   The same as before, but also fit one ols line to each selected group
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -515,6 +601,13 @@ function plotopt=levfwdplot(out,varargin)
 %{
     % Interactive_example
     %   The same but now fit a single ols line to all data.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -528,6 +621,13 @@ function plotopt=levfwdplot(out,varargin)
     % Interactive_example
     %   The same but now fit a first ols line to all data and a second line
     %   on the group of observations which remain unselected.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -540,6 +640,13 @@ function plotopt=levfwdplot(out,varargin)
 %{
     % Interactive_example
     %   The same but now fit a single ols line to the group with index 4.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -552,6 +659,13 @@ function plotopt=levfwdplot(out,varargin)
 %{
     % Interactive_example
     %   The same but now add the line mean(y)+Ci*Xi.
+    n=200;
+    p=3;
+    randn('state', 123456);
+    X=randn(n,p);
+    y=randn(n,1);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';

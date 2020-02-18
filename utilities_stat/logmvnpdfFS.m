@@ -110,16 +110,11 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %}
 
 %{
-%}
-
-%{
-%}
-
-%{
-%}
-
-%{
     % Example of the use of option msg.
+    n=20000;
+    v=2;
+    X=randn(n,v);
+    mu = [1 -1]; Sigma = [.9 .4; .4 .3];
     msg=0;
     X0=X;
     eyed=eye(v);

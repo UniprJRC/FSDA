@@ -267,6 +267,9 @@ function [out]=FSRfan(y,X,varargin)
     % FSRfan with optional arguments.
     % Produce a personalized fan plot with required font sizes
     % for labels and axes.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
     [out]=FSRfan(y,X,'plots',1,'FontSize',16,'SizeAxesNum',16);
 %}
 
@@ -274,6 +277,9 @@ function [out]=FSRfan(y,X,varargin)
     % Example specifying $\lambda$.
     % Produce a fan plot for each value of $\lambda$ inside vector la.
     % Extract in matrix Un the units which entered the search in each step
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
     la=[-1 -0.5 0 0.5];
     [out]=FSRfan(y,X,'la',la,'plots',1);
     Unsel=cell2mat(out.Un);
@@ -287,6 +293,9 @@ function [out]=FSRfan(y,X,varargin)
     % starting point for monitoring.
     % Construct fan plot specifying the confidence level and the initial
     % starting point for monitoring.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
     [out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'conflev',0.95,'plots',1);
 %}
 
@@ -296,6 +305,9 @@ function [out]=FSRfan(y,X,varargin)
     % fan plot specifying the confidence level and the initial starting
     % point for monitoring based on p+2 observations strong line width for
     % lines associated with the confidence bands.
+    XX=load('wool.txt');
+    y=XX(:,end);
+    X=XX(:,1:end-1);
     [out]=FSRfan(y,X,'init',size(X,2)+2,'nsamp',0,'lms',0,'lwdenv',3,'plots',1);
 %}
 

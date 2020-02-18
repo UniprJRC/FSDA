@@ -257,6 +257,11 @@ function mdrplot(out,varargin)
 
 %{
     %Example of the use of function mdrplot with personalized envelopes.
+    load('loyalty.txt','loyalty');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     mdrplot(out,'quant',[0.99;0.9999]);
 %}
 
@@ -265,11 +270,21 @@ function mdrplot(out,varargin)
     %Example of the use of function mdrplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
+    load('loyalty.txt','loyalty');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
      mdrplot(out,'datatooltip',1);
 %}
 
 %{
     %Datatooltip passed as structure.
+    load('loyalty.txt','loyalty');
+    y=loyalty(:,4);
+    X=loyalty(:,1:3);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -298,6 +313,13 @@ function mdrplot(out,varargin)
 %{
    %Example of the use of option envm.
    %In this case the resuperimposed envelope is based on n-2 observations
+   state = 137; state1=4567;
+   rand('state', state);
+   randn('state', state1);
+   X=randn(200,3);
+   y=chi2rnd(8,200,1);
+   [outLXS]=LXS(y,X,'nsamp',1000);
+   [out]=FSReda(y,X,outLXS.bs);
    mdrplot(out,'envm',length(out.y)-2);
 
 %}
@@ -306,13 +328,27 @@ function mdrplot(out,varargin)
     % Interactive_example
     % Input option databrush passed as scalar.
     %Example of the use of function mdrplot with databrush
-     mdrplot(out,'databrush',1);
+    state = 137; state1=4567;
+    rand('state', state);
+    randn('state', state1);
+    X=randn(200,3);
+    y=chi2rnd(8,200,1);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
+    mdrplot(out,'databrush',1);
 %}
 
 %{
     % Interactive_example
     % Input option databrush passed as structure.
     %Example where databrush is a structure
+    state = 137; state1=4567;
+    rand('state', state);
+    randn('state', state1);
+    X=randn(200,3);
+    y=chi2rnd(8,200,1);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     databrush=struct
     databrush.selectionmode='Lasso'
      mdrplot(out,'databrush',databrush)
@@ -322,6 +358,13 @@ function mdrplot(out,varargin)
     % Interactive_example
     % Input option databrush passed as structure and brush mode.
     %Example of the use of brush using brush mode
+    state = 137; state1=4567;
+    rand('state', state);
+    randn('state', state1);
+    X=randn(200,3);
+    y=chi2rnd(8,200,1);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     databrush=struct
     databrush.selectionmode='Brush'
     databrush.Label='on';
@@ -333,6 +376,13 @@ function mdrplot(out,varargin)
     % Persistent cumulative brush 1.
     %Example of the use of persistent non cumulative brush. Every time a
     %brushing action is performed previous highlightments are removed
+    state = 137; state1=4567;
+    rand('state', state);
+    randn('state', state1);
+    X=randn(200,3);
+    y=chi2rnd(8,200,1);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     databrush=struct
     databrush.persist='off'
     databrush.RemoveLabels='off';
@@ -345,6 +395,13 @@ function mdrplot(out,varargin)
     %Example of the use of persistent cumulative brush. Every time a
     %brushing action is performed current highlightments are added to
     %previous highlightments
+    state = 137; state1=4567;
+    rand('state', state);
+    randn('state', state1);
+    X=randn(200,3);
+    y=chi2rnd(8,200,1);
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,outLXS.bs);
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'
