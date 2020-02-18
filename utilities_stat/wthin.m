@@ -100,7 +100,11 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %{
     % Bi-dimensional thinning.
     % Same dataset, but thinning is done on the original bi-variate data.
-   
+    x1 = randn(1000,1);
+    x2 = 8 + randn(100,1);
+    x = [x1 ; x2];
+    y = 5*x + 0.9*randn(1100,1);
+    b = [ones(1100,1) , x] \ y;
     plot(x,y,'.');
 
     % thinning over the original bi-variate data
@@ -118,7 +122,11 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     % Since the thinning on the original bi-variate data with the default
     % retention method ('inverse') removes too many units, let's try with
     % the less conservative 'comp2one' option.
-   
+    x1 = randn(1000,1);
+    x2 = 8 + randn(100,1);
+    x = [x1 ; x2];
+    y = 5*x + 0.9*randn(1100,1);
+    b = [ones(1100,1) , x] \ y;
     plot(x,y,'.');
 
     % thinning over the original bi-variate data
@@ -135,7 +143,10 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %{
     % Optional output Xt.
     % Same dataset, the retained data are also returned using varagout option.
-   
+    x1 = randn(1000,1);
+    x2 = 8 + randn(100,1);
+    x = [x1 ; x2];
+    y = 5*x + 0.9*randn(1100,1);
     % thinning over the original bi-variate data
     [Wt2,pretain2,RetUnits] = wthin([x,y]);
     % disp(RetUnits)

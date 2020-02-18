@@ -27,10 +27,25 @@ function [out] = mdpdReda(y, X, varargin)
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations.
 %                 Data Types - double
+%       alpha    : tuning parameter. Scalar or Vector.
+%               As the tuning parameter $\alpha$ increases
+%               the robustness of the Minimum Density Power Divergence
+%               estimator increases while its efficiency decreases (Basu et
+%               al., 1998). For $\alpha=0$ the MDPDE becomes the Maximum
+%               Likelihood estimator, while for $\alpha=1$ the divergence
+%               yields the $L_2$ metric and the estimator minimizes the $L_2$
+%               distance between the densities, e.g., Scott (2001), Durio
+%               and Isaia (2003).  The sequence is forced to be monotonically
+%               decreasing, e.g. alpha=[1 0.9 0.5 0.01].
+%                 Data Types - double
 %
 %
 %  Optional input arguments:
 %
+%       alpha    : tuning parameter. Scalar or Vector.
+%               As the tuning parameter $\alpha$ increases the robustness
+%               of the Minimum Density Power Divergence estimator increases
+%               while its efficiency decreases (Basu et al., 1998). For
 %  tuningpar    : tuning parameter. Scalar or Vector.
 %               tuningpar may refer to $\alpha$ (default) or to breakdown
 %               point (depending on input option alphaORbdp.
@@ -43,6 +58,10 @@ function [out] = mdpdReda(y, X, varargin)
 %               between the densities, e.g., Scott (2001), Durio and Isaia
 %               (2003).  The sequence is forced to be monotonically
 %               decreasing, e.g. alpha=[1 0.9 0.5 0.01]. The default for
+%               bdp is a sequence from 1 to 0 with step -0.01.
+%                 Example - 'bdp',[1 0.8 0.5 0.4 0.3 0.2 0.1]
+%                 Data Types - double
+%
 %               tuningpar is a sequence from 1 to 0 with step -0.01.
 %                 Example - 'alpha',[1 0.8 0.5 0.4 0.3 0.2 0.1]
 %                 Data Types - double
@@ -242,7 +261,7 @@ function [out] = mdpdReda(y, X, varargin)
 %}
 
 %{
-    %% MPDPeda applied to multiple regression data.
+    %% mdpdReda applied to multiple regression data.
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);

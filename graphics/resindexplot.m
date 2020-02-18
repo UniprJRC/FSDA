@@ -265,6 +265,9 @@ function resindexplot(residuals,varargin)
 
 %{
     % Just plot robust residuals.
+    load('stack_loss.txt');
+    y=stack_loss(:,4);
+    X=stack_loss(:,1:3);
     [out]=LXS(y,X,'nsamp',0,'rew',1,'lms',0);
     bonfconf = 1-0.01/size(y,1);    % 99% Bonferronised
     resindexplot(out.residuals,'conflev',[0.95,0.99,bonfconf],'labx','Index number','laby','Robust LTS reweighted residuals');
@@ -279,7 +282,9 @@ function resindexplot(residuals,varargin)
     databrush.RemoveLabels='on'; % Remove labels after selection
     databrush.RemoveTool    = 'on'; % Remove yellow tool after selection
     databrush.RemoveFlagged = 'on'; % Remove filled red color for selected points after selection
-
+    load('stack_loss.txt');
+    y=stack_loss(:,4);
+    X=stack_loss(:,1:3);
     [out]=LXS(y,X,'rew',1,'lms',0,'yxsave',1);
     resindexplot(out,'databrush',databrush)
 
@@ -292,6 +297,9 @@ function resindexplot(residuals,varargin)
     % Example of usage of option numlab.
     % Write the row number for the units which have the 3 largest
     % residuals (in absolute value)
+    load('stack_loss.txt');
+    y=stack_loss(:,4);
+    X=stack_loss(:,1:3);
     [out]=LXS(y,X,'nsamp',1000);
     resindexplot(out.residuals,'numlab',{3});
 %}

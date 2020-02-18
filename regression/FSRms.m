@@ -317,6 +317,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     n=length(y);
     fin_step=floor([n*0.1 n*0.02]);
     outms=FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7]);
@@ -340,6 +341,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'labels',labels,'ignore',0,'plots',1);
 %}
 
@@ -355,6 +357,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1);
     % ignore=0
     [Cpms]=FSRms(y,X,'ignore',0,'smallpint',4:6,'labels',labels,'plots',1);
@@ -371,6 +374,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])
 %}
 
@@ -382,6 +386,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     LineWidth=2;
     CandleWidth=0.03;
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth)
@@ -398,6 +403,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1])
 %}
 
@@ -412,6 +418,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06])
 %}
 
@@ -432,6 +439,7 @@ function outms = FSRms(y,X,varargin)
     X=[(-40:39)' X];
     y=X(:,end);
     X=X(:,1:end-1);
+    labels={'Time','1','2','3','4','5','6','7','8'};
     [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)
 %}
 

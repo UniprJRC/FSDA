@@ -209,6 +209,9 @@ function tclustICplot(IC,varargin)
     %   2) value of c which has been selected
     %   3) values of the information criterion
     %   4) frequency distribution of the associated classification
+    Y=load('geyser2.txt');
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out,'datatooltip',1);
 %}
 %
@@ -220,13 +223,18 @@ function tclustICplot(IC,varargin)
     datatooltip = struct;
     % In this example the style of the datatooltip is 'datatip'. Click on a
     % point when the ICplot is displayed.
-    %
     datatooltip.DisplayStyle = 'datatip';
+    Y=load('geyser2.txt');
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out,'datatooltip',datatooltip);
 %}
 
 %{
     % Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).
+    Y=load('geyser2.txt');
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out,'whichIC','ALL')
 %}
 
@@ -234,6 +242,9 @@ function tclustICplot(IC,varargin)
     % Interactive_example
     % databrushing from the ICplot.
     % Use all default options for databrush (brush just once)
+    Y=load('geyser2.txt');
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out,'databrush',1)
 %}
 
@@ -253,6 +264,9 @@ function tclustICplot(IC,varargin)
     % show boxplots of the groups instead of histograms on the main
     % diagonal of the spm
     databrush.dispopt='box';
+    Y=load('geyser2.txt');
+    UnitsSameGroup=[15 30 69];
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
     tclustICplot(out,'databrush',databrush)
 %}
 

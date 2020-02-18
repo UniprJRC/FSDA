@@ -333,6 +333,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers generated from Chi2 with 5 degrees of freedom.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -346,6 +349,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers generated from Chi2 with 40 degrees of freedom.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -359,6 +365,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers generated from normal distribution.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -372,6 +381,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers generated from Student T with 5 degrees of freedom.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=3000;
@@ -385,6 +397,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add componentwise contamination.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars='';
     noiseunits=struct;
     noiseunits.number=3000;
@@ -398,6 +413,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers generated from Chisquare and T distribution.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=5000*ones(2,1);
@@ -410,6 +428,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers from Chisquare and T distribution and use a personalized value of alpha.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=0;
     noiseunits=struct;
     noiseunits.number=5000*ones(2,1);
@@ -423,6 +444,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Add outliers from Chi2 and point mass contamination and add one noise variable.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noisevars=struct;
     noisevars.number=1;
     noiseunits=struct;
@@ -436,6 +460,9 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 %{
     %% Example of the use of personalized interval to generate outliers.
     n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noiseunits=struct;
     noiseunits.number=1000;
     noiseunits.typeout={'uniform'};
@@ -455,14 +482,20 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
     % Example of the use of personalized interval to generate outliers (1).
     % Generate 1000 outliers from uniform in the interval [-2 3] and
     % 1000 units using componentwise contamination in the interval [-2 3]
+    n=300;
+    k=4;
+    p=2;  % p includes the intercept
+    out=MixSimreg(k,p,'BarOmega',0.01);
     noiseunits=struct;
     noiseunits.number=[1000 1000];
     noiseunits.typeout={'uniform' 'componentwise'};
     noiseunits.interval=[-2; 3];
-
-     [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
-     yXplot(y,X,'group',id);
-     suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')
+    % Finally add a noise variable
+    noisevars=struct;
+    noisevars.number=1;
+    [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
+    yXplot(y,X,'group',id);
+    suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')
 %}
 
 %{

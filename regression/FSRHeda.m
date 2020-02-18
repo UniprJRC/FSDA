@@ -292,6 +292,12 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
     % FSRHeda with optional argument.
     % Example of use of function FSRHeda using a random start and traditional
     % t-stat monitoring.
+    XX=load('tradeH.txt');
+    y=XX(:,2);
+    X=XX(:,1);
+    X=X./max(X);
+    Z=log(X);
+    [out]=LXS(y,X,'nsamp',1000);
     out=FSRHeda(y,X,Z,0,'tstat','trad','init',800);
     subplot(2,2,1)
     plot(out.Tgls(:,1),out.Tgls(:,2))

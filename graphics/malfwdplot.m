@@ -396,6 +396,17 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     %% Example of the use of some options inside structure standard.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     % Initialize structure standard
     standard=struct;
     standard.LineStyle={'-';'-.';':'};
@@ -406,6 +417,17 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure fground.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -422,6 +444,17 @@ function plotopt=malfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure bground.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     bground = struct;
     % Specify a threshold to define the "background" trajectories
     bground.bthresh=2;
@@ -436,6 +469,17 @@ function plotopt=malfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
@@ -471,6 +515,17 @@ function plotopt=malfwdplot(out,varargin)
     %   Gives the user the possibility of clicking on the different points
     %   and have information about the unit selected, the step of entry
     %   into the subset and the associated label
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     malfwdplot(out,'datatooltip',1);
 %}
 
@@ -479,6 +534,17 @@ function plotopt=malfwdplot(out,varargin)
     % Gives the user the possibility of clicking on the different points
     % and have information about the unit selected, the step of entry
     % into the subset and the associated label.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     datatooltip = struct;
     % In this example the style of the datatooltip is 'datatip'. Click on a
     % trajectory when the resfwdplot is displayed.
@@ -510,6 +576,17 @@ function plotopt=malfwdplot(out,varargin)
     % of that step. A right click will terminate the exercise.
     % To activate this modality, we set the field SubsetLinesColor,
     % which specifies the color used to highlight the trajectories.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     datatooltip = struct;
     datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
     malfwdplot(out,'datatooltip',datatooltip);
@@ -526,6 +603,17 @@ function plotopt=malfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     malfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
@@ -537,6 +625,17 @@ function plotopt=malfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of brush using a rectangular selection tool and
     %   a cyan colour.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.FlagColor='c';
@@ -546,6 +645,17 @@ function plotopt=malfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of brush using multile selection circular tools.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='Brush';
     malfwdplot(out,'databrush',databrush);
@@ -555,6 +665,17 @@ function plotopt=malfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur
     %   pointer.
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
@@ -566,6 +687,17 @@ function plotopt=malfwdplot(out,varargin)
     %   Example of the use of rectangular brush.
     %    Labels are added for the brushed units. Persistent labels appear in the plot which has
     %   been brushed
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -581,6 +713,17 @@ function plotopt=malfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.persist='off';
@@ -594,6 +737,17 @@ function plotopt=malfwdplot(out,varargin)
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
+    n=100;
+    p=4;
+    state1=141243498;
+    randn('state', state1);
+    Y=randn(n,p);
+    kk=[1:10];
+    Y(kk,:)=Y(kk,:)+4;
+    [fre]=unibiv(Y);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs,'plots',1,'init',30);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.persist='on';
