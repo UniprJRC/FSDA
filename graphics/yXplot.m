@@ -474,6 +474,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % which have a value of y smaller than 1 per cent percentile and greater than
     % 99 per cent percentile of y.
     % Note that in this case selunit is a cell array.
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
     selth={num2str(prctile(y,1)) num2str(prctile(y,99))};
     yXplot(y,X,'selunit',selth);
 %}
@@ -483,6 +489,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % yXplot with personalized labelling.
     % In this case selunit is passed as a numeric vector and it contains
     % the list of the units which have to be labelled in the yXplot.
+    n=100;
+    p=3;
+    X=randn(n,p);
+    y=randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
     selth=[2 10 20];
     yXplot(y,X,'selunit',selth);
 %}
@@ -550,6 +562,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % yXplot when first input argument y is a structure. Ex1.
     % In the following example the input is a strucure which also contains
     % information about the forward search.
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     % Example of the use of function yXplot with all the default options
@@ -565,6 +583,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   Example of the use of options selunit and selstep.
     % After the instruction below the labels for units inside vector
     % selunit are added to each panel of the yXplot
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     selunit=[2 5 20 23 35 45];
     yXplot(out,'selunit',selunit,'selstep',[20 22 27 36],...
             'databrush',{'persist','off','selectionmode' 'Rect'})
@@ -580,7 +606,15 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   which have a residual greater and 1.5. When a set of units is brushed in the yXplot
     %   in the monitoring residuals plot the labels are added in steps
     %   selsteps.
-   yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
            'databrush',{'persist','off','selectionmode' 'Rect'})
 
 %}
@@ -592,6 +626,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   Highlight only the trajectories which in at least one step of the
     %   search had a value smaller than -3 or greater than 2 and label
     %   them at the beginning and at the end of the search.
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'selunit',{'-3';'2'},...
             'databrush',{'selectionmode' 'Rect'});
 %}
@@ -601,27 +643,59 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Interactive_example
     %   Example of the use of option databrush
     %   (brushing is done only once using a rectangular selection tool).
-       yXplot(out,'databrush',1)
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    yXplot(out,'databrush',1)
     %   An equivalent statement is
-       yXplot(out,'databrush',{'selectionmode' 'Rect'})
+    yXplot(out,'databrush',{'selectionmode' 'Rect'})
 %}
 
 %{
     % Interactive_example
     %   Example of the use of brush using a rectangular selection tool and
     %   a cyan colour.
-   yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 
 %{
     % Interactive_example
     %  Example of the use of brush using multiple selection circular tools.
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode' 'Brush'})
 %}
 
 %{
     % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur pointer.
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})
 %}
 
@@ -630,6 +704,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   Example of the use of rectangular brush. Superimposed labels for
     %   the brushed units and persistent labels in the yXplot which has been
     %   brushed
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
 %}
 
@@ -645,6 +727,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   brushing action is performed previous highlightments are removed
     %   In other words, every time a brushing action is performed
     %   current highlightments replace previous highlightments
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
                             'Label' 'on' 'RemoveLabels' 'off'})
 %}
@@ -654,6 +744,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Example of persistent cumulative brushing (with persist on).
     %   Every time a brushing action is performed
     %   current highlightments are added to previous highlightments
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'Label' 'off' 'RemoveLabels' 'on'})
 %}
@@ -667,6 +765,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %  selected units are displayed in the monitoring residuals plot
     %  Given that  'Label' 'on' 'RemoveLabels' 'off' the labels of the
     %  brushed units are also shown in the yXplot
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
          'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'})
 %}
@@ -676,6 +782,14 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % Example of persistent cumulative brushing (with persist on and labeladd '1').
     %   Now option labeladd '1'. In this case the row numbers of the
     %   selected units are displayed just in the monitoring residuals plot
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
                             'labeladd' '1'})
 %}
@@ -685,7 +799,15 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     %   It gives the possibility of clicking on the different points and have
     %   information about the unit selected, the step of entry into the
     %   subset and the associated label
-        yXplot(out,'datatooltip',1);
+    n=100;
+    p=2;
+    X=randn(n,p);
+    y=100+randn(n,1);
+    sel=51:100;
+    y(sel)=y(sel)+2;
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
+    yXplot(out,'datatooltip',1);
 %}
 
 %{

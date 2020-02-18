@@ -369,12 +369,36 @@ function [out] = simulateTS(T,varargin)
     % Suppose that the inital observation refers to February 2016.
     StartDate=[2016 2];
     % The x axis of the plots contains the dates using format mmm-yyyy
+    rng(1)
+    model=struct;
+    model.trend=2;
+    model.trendb=[5,10,-3];
+    model.seasonal=102;
+    model.seasonalb=100*[2 4 0.1 8 0.001];
+    model.signal2noiseratio=10;
+    model.lshift=30;
+    model.lshiftb=-40000;
+    model.X=2;
+    model.Xb=[10000 20000];
+    T=100;
     out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);
 %}
 
 %{
     % Example of the use of option samescale.
     % Use a different scale for each panel in the output plot.
+    rng(1)
+    model=struct;
+    model.trend=2;
+    model.trendb=[5,10,-3];
+    model.seasonal=102;
+    model.seasonalb=100*[2 4 0.1 8 0.001];
+    model.signal2noiseratio=10;
+    model.lshift=30;
+    model.lshiftb=-40000;
+    model.X=2;
+    model.Xb=[10000 20000];
+    T=100;
     out=simulateTS(T,'model',model,'plots',1,'samescale',false);
 %}
 

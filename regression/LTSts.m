@@ -593,6 +593,24 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     % Model with linear trend and six harmonics for seasonal component.
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
@@ -614,6 +632,24 @@ function [out, varargout] = LTSts(y,varargin)
 %{
     % Model with linear trend, two harmonics for seasonal component and
     % varying amplitude using a linear trend.
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
@@ -634,6 +670,24 @@ function [out, varargout] = LTSts(y,varargin)
 %{
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
@@ -657,6 +711,24 @@ function [out, varargout] = LTSts(y,varargin)
     % Contaminated time series with upward level shift.
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     yLS=y;
     yLS(55:end)=yLS(55:end)+130;
     model=struct;
@@ -683,6 +755,24 @@ function [out, varargout] = LTSts(y,varargin)
     % Contaminated time series with downward level shift.
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     yLS=y;
     yLS(35:end)=yLS(35:end)-300;
     model=struct;
@@ -706,6 +796,24 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     % Model with an explanatory variable using log-transformed series.
+    % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+    % Source:
+    % http://datamarket.com/data/list/?q=provider:tsdl
+
+    y=(y(:));
     y1=log(y);
     % Model with linear trend, six harmonics for seasonal component and
     % varying amplitude using a linear trend).
@@ -781,6 +889,20 @@ function [out, varargout] = LTSts(y,varargin)
     %% Example 2 used in the paper RPRH.
     % A persisting level shift and three isolated outliers, two of which in
     % proximity of the level shift.
+        % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
     close all
     y1=y(:);
     y1(68:end)=y1(68:end)+1300;
@@ -818,6 +940,20 @@ function [out, varargout] = LTSts(y,varargin)
     %% Example 3 used in the paper RPRH.
     % A persisting level shift preceded and followed in the proximity by
     % other two short level shifts, and an isolated outlier.
+        % Load airline data.
+    %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+    y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+         118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+         132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+         129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+         121  125  172  183  229  234  270  318  355  363  420  472    % May
+         135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+         148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+         148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+         136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+         119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+         104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+         118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
     y1=y(:);
     y1(50:55)=y1(50:55)-300;
     y1(68:end)=y1(68:end)-700;

@@ -279,6 +279,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
     y2   = X2*bet2+sig*eps2;
     y    = [y1;y2];
     X    = [X1;X2];
+    n=n1+n2;
     group=2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
@@ -286,7 +287,6 @@ function [out] = mdpdR(y, X, alpha, varargin)
     h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
     title('alpha=1','FontSize',15);
-    n=n1+n2;
     h2 = subplot(2,1,2);
     [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
@@ -318,14 +318,14 @@ function [out] = mdpdR(y, X, alpha, varargin)
     y2   = X2*bet2+sig*eps2;
     y    = [y1;y2];
     X    = [X1;X2];
+    n = n1+n2;
     group= 2*ones(n,1);
     group(1:n1)=1;
     yXplot(y,X,group)
     [out] = mdpdR(y, X, 1);
     h1 = subplot(2,1,1);
     resindexplot(out,'h',h1);
-    title('alpha=1','FontSize',15);
-    n = n1+n2;
+    title('alpha=1','FontSize',15); 
     h2=subplot(2,1,2);
     % MLE estimate
     [outalpha0] = mdpdR(y, X, 0);

@@ -224,6 +224,12 @@ function mmdplot(out,varargin)
 
 %{
     %Example of the use of function mmd with personalized envelopes.
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     mmdplot(out,'quant',[0.99;0.9999]);
 %}
 
@@ -233,6 +239,12 @@ function mmdplot(out,varargin)
     %Example of the use of function mmdplot with datatooltip passed as
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
      mmdplot(out,'datatooltip',1);
 %}
 
@@ -241,6 +253,12 @@ function mmdplot(out,varargin)
     % mmdplot with option dataooltip passed as structure.
     %Example of the use of function mmdplot with datatooltip passed as
     %structure
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     clear tooltip
     tooltip.SnapToDataVertex='on'
     tooltip.DisplayStyle='datatip'
@@ -251,6 +269,12 @@ function mmdplot(out,varargin)
 %{
    %Example of the use of option envm.
    %In this case the resuperimposed envelope is based on n-2 observations
+   Y=load('head.txt');
+   [fre]=unibiv(Y);
+   fre=sortrows(fre,[3 4]);
+   m0=20;
+   bs=fre(1:m0,1);
+   [out]=FSMeda(Y,bs);
    mmdplot(out,'envm',size(Y,1)-2);
 
 %}
@@ -258,6 +282,12 @@ function mmdplot(out,varargin)
 %{
     % Interactive_example
     % Example of the use of function mdrplot with databrush.
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     mmdplot(out,'databrush',1);
 %}
 
@@ -265,6 +295,12 @@ function mmdplot(out,varargin)
     % Interactive_example
     % Example of databrush passed as structure.
     % Example where databrush is a structure
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     databrush=struct
     databrush.selectionmode='Lasso'
     mmdplot(out,'databrush',databrush)
@@ -272,7 +308,13 @@ function mmdplot(out,varargin)
 
 %{
     % Interactive_example
-    %Example of the use of brush using brush mode.    
+    %Example of the use of brush using brush mode.  
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     databrush=struct
     databrush.selectionmode='Brush'
     databrush.Label='on';
@@ -284,6 +326,12 @@ function mmdplot(out,varargin)
     %Example of the use of persistent non cumulative brush.     
     %Every time a
     %brushing action is performed previous highlightments are removed
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     databrush=struct
     databrush.persist='off'
     databrush.Label='on';
@@ -297,6 +345,12 @@ function mmdplot(out,varargin)
     % Every time a
     %brushing action is performed current highlightments are added to
     %previous highlightments
+    Y=load('head.txt');
+    [fre]=unibiv(Y);
+    fre=sortrows(fre,[3 4]);
+    m0=20;
+    bs=fre(1:m0,1);
+    [out]=FSMeda(Y,bs);
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'

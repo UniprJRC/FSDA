@@ -122,31 +122,91 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 
 %{
     % Example of use of option tol.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap]=overlap(k,p,pigen,Mu,S,1e-05)
 %}
 
 %{
     % Example of use of option lim.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap]=overlap(k,p,pigen,Mu,S,[],10000)
 %}
 
 %{
     % Example of use of options lim and tol together.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap]=overlap(k,p,pigen,Mu,S,1e-08,100000)
 %}
 
 %{
     % Display BarOmega and MaxOmega.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap, BarOmega, MaxOmega]=overlap(k,p,pigen,Mu,S)
 %}
 
 %{
     % Display StdOmega.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap, BarOmega, MaxOmega, StdOmega]=overlap(k,p,pigen,Mu,S)
 %}
 
 %{
     % Display rcMax.
+    load fisheriris;
+    Y=meas;
+    pigen=ones(3,1)/3;
+    k=3;
+    p=4;
+    Mu=grpstats(Y,species);
+    S=zeros(4,4,3);
+    S(:,:,1)=cov(Y(1:50,:));
+    S(:,:,2)=cov(Y(51:100,:));
+    S(:,:,3)=cov(Y(101:150,:));
     [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax]=overlap(k,p,pigen,Mu,S)
 %}
 

@@ -403,6 +403,11 @@ function plotopt=resfwdplot(out,varargin)
     % Example of the use of some options inside structure standard.
     % Initialize structure standard
     % Specify the steps in which labels have to be put
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     standard=struct;
     standard.LineStyle={'-';'-.';':'};
     % Specify the line width
@@ -412,6 +417,11 @@ function plotopt=resfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure fground.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     % Initialize structure fground
     fground = struct;
     % Specify which trajectories have to be highlighted
@@ -429,6 +439,11 @@ function plotopt=resfwdplot(out,varargin)
 %
 %{
     % Example of the use of some options inside structure bground.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     bground = struct;
     % Specify a threshold to define the "background" trajectories
     bground.bthresh=2;
@@ -444,6 +459,11 @@ function plotopt=resfwdplot(out,varargin)
     % Gives the user the possibility of clicking on the different points
     % and have information about the unit selected, the step of entry
     % into the subset and the associated label.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     datatooltip = struct;
     % In this example the style of the datatooltip is 'datatip'. Click on a
     % trajectory when the resfwdplot is displayed.
@@ -475,6 +495,11 @@ function plotopt=resfwdplot(out,varargin)
     % of that step. A right click will terminate the exercise.
     % To activate this modality, we set the field SubsetLinesColor,
     % which specifies the color used to highlight the trajectories.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     datatooltip = struct;
     datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
     resfwdplot(out,'datatooltip',datatooltip);
@@ -491,6 +516,11 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of option databrush.
     %   (brushing is done only once using a rectangular selection tool)
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     resfwdplot(out,'databrush',1)
     %   An equivalent statement is
     databrush=struct;
@@ -502,12 +532,22 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     %   Example of the use of brush using a rectangular selection tool.
     % Use a cyan colour.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
 %}
 %
 %{
     % Interactive_example
     % Example of the use of brush using multiple selection circular tools.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Brush';
     resfwdplot(out,'databrush',databrush)
@@ -516,6 +556,11 @@ function plotopt=resfwdplot(out,varargin)
 %{
     % Interactive_example
     %   Example of the use of brush using lasso selection tool and fleur pointer.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
@@ -528,6 +573,11 @@ function plotopt=resfwdplot(out,varargin)
     %  We havesuperimposed labels
     %   for the brushed units and persistent labels in the plot which has
     %   been brushed.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -544,6 +594,11 @@ function plotopt=resfwdplot(out,varargin)
     % Example of persistent brushing.
     %   Example of the use of persistent non cumulative brush. Every time a
     %   brushing action is performed previous highlightments are removed
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -558,6 +613,11 @@ function plotopt=resfwdplot(out,varargin)
     %   Example of the use of persistent cumulative brush. Every time a
     %   brushing action is performed current highlightments are added to
     %   previous highlightments
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -570,6 +630,11 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent cumulative brush with ols line.
     %   The same as before, but also fit one ols line to each selected group
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -583,6 +648,11 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent cumulative brush with a single ols line.
     %   The same but now fit a single ols line to all data.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -597,6 +667,11 @@ function plotopt=resfwdplot(out,varargin)
     % Example of persistent cumulative brush with two ols lines.
     %   The same but now fit a first ols line to all data and a second line
     %   on the group of observations which remain unselected.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -610,6 +685,11 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent cumulative brush with ols line for a particular group.
     %   The same but now fit a single ols line to the group with index 4.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
@@ -623,6 +703,11 @@ function plotopt=resfwdplot(out,varargin)
     % Interactive_example
     % Example of persistent cumulative brush with personalized line.
     %   The same but now add the line mean(y)+Ci*Xi.
+    n=100;
+    y=randn(n,1);
+    X=randn(n,4);
+    [out]=LXS(y,X,'nsamp',1000);
+    [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Rect';
     databrush.Label='on';
