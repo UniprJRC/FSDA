@@ -833,8 +833,8 @@ linkHTML=regexp(fstring,['docsearchFS\(''' name '''\)']);
 %fstring=regexprep(fstring,'[^%]<','&lt;');
 fstring=regexprep(fstring,'<','&lt;');
 fstring=regexprep(fstring,'>','&gt;');
-% replace if present symbol ï¿½ with its HTML code
-fstring=regexprep(fstring,'ï¿½','&uuml;');
+% replace if present symbol ü with its HTML code
+fstring=regexprep(fstring,'ü','&uuml;');
 
 
 
@@ -3556,7 +3556,7 @@ if evalCode==true
                 % incl= string which contains the output of the code
                 incl=texttoadd{i+numexToExec};
                 
-                PosStrBeforeFirstImage=regexp(incl,'<img');
+                PosStrBeforeFirstImage=regexp(char(incl),'<img');
                 if ~isempty(PosStrBeforeFirstImage)
                     PosStrBeforeFirstImage=PosStrBeforeFirstImage(1);
                     PosStrAfterFirstImage=regexp(incl,'alt="">');
