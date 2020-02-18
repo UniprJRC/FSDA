@@ -21,7 +21,7 @@ function c = TBbdp(bdp,v)
 %         function associated to requested breakdown point
 %
 %
-% See also: OPTbdp, HYPbdp, HAbdp
+% See also: OPTbdp, HYPbdp, HAbdp, PDbdp
 %
 % References:
 % 

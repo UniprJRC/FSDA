@@ -36,18 +36,21 @@ function [out , varargout] = Sreg(y,X,varargin)
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
 %               Possible values are
-%               'bisquare'
-%               'optimal'
-%               'hyperbolic'
-%               'hampel'.
+%               'bisquare';
+%               'optimal';
+%               'hyperbolic';
+%               'hampel';
+%               'mdpd'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
-%               See TBrho.m and TBpsi.m.
+%               See TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
-%               See OPTrho.m and OPTpsi.m.
+%               See OPTrho and OPTpsi.
 %               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.
-%               See HYPrho.m and HYPpsi.m.
+%               See HYPrho and HYPpsi.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
-%               See HArho.m and HApsi.m.
+%               See HArho and HApsi.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
 %                 Data Types - double
@@ -481,10 +484,20 @@ elseif strcmp(rhofunc,'hampel')
     
     psifunc.class='HA';
     
+elseif strcmp(rhofunc,'mdpd')
+    % minimum density power divergence estimator 
+
+    c=PDbdp(bdp);
+    % kc1 = E(rho) = sup(rho)*bdp
+    kc=bdp;
+    
+    
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    psifunc.class='PD';
+    
 else
-    
-    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel''')
-    
+    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mpdp''')
 end
 
 XXrho=strcat(psifunc.class,'rho');
