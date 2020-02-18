@@ -1,3 +1,11 @@
 # ignore testresults folders
-tests-regression/
+tests-graphics/
+tests-multivariate/
+tests-multivariate-clustering
 tests-regression-clustering/
+tests-mixsim/
+tests-regression/
+tests-regressionTS/
+tests-regressionLTSts/
+tests-regressionEXT/
+tests-utilities/
