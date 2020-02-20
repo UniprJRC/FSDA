@@ -173,7 +173,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
 %             out.obj = Scalar. Value of the objective function which is minimized 
 %                       (value of the best returned solution).
 %
-%              out.Y  = Original data matrix Y. The field is present if option
+%              out.Y  = Original data matrix Y. The field is present only if option
 %                       Ysave is set to 1.
 %
 %             out.emp = "Empirical" statistics computed on final classification. 

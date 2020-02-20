@@ -185,10 +185,30 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 
 % Examples:
 
-%
+%{
+    % Use of restrSigmaGPCM with just one output argument.
+    % Generate 3 cov matrices of size 2-by-2
+    rng('default')
+    rng(1500)
+    Sig = [1 .5; .5 2];
+    df = 10;
+    k=2;
+    v=2;
+    Sigma=zeros(v,v,k);
+    for j=1:k
+        Sigma(:,:,j) = wishrnd(Sig,df)/df;
+    end
+    niini=2;
+    % Apply model EEE.
+    pa=struct;
+    pa.pars='EEE';
+    SigmaNEW  = restrSigmaGPCM(Sigma, niini, pa);
+%}
+
 %{
     %% Use of restrSigmaGPCM with all default options.
     % Generate 3 cov matrices of size 2-by-2
+    rng('default')
     rng(1500)
     Sig = [1 .5; .5 2];
     df = 10;
@@ -218,20 +238,19 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 
 %{
     %% Generate ad hoc cov matrices.
-    k=7; v=20;
+    k=7; v=20; n=100;
     rng('default')
-   seed=1141;
-   add=ones(v,v)+diag(1:v);
-   niini= round(100*mtR(k,0,seed));
-   Sigma=zeros(v,v,k);
-   for j=1:k
+    seed=1141;
+    add=ones(v,v)+diag(1:v);
+    niini= round(100*mtR(k,0,seed));
+    Sigma=zeros(v,v,k);
+    for j=1:k
         Sigma(:,:,j)=cov(reshape(mtR(n*v,1,-1),n,v)).*add;
-   end
+    end
     sph=struct;
     sph.pars='EVV';
     niini=100*ones(1,k);
-    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
-
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, pa);
 %}
 
 %% Beginning of code

@@ -120,8 +120,8 @@ function out = dempk(Y, k, g, varargin)
 %           out.tkmeansOut  = Output from tkmeans function. The structure
 %                             is present if option tkmeansOut is set to 1.
 %
-%           out.Y           = Original data matrix Y. The field is present
-%                             if option Ysave is set to 1.
+%           out.Y           = Original data matrix Y. This field is present
+%                             only if option Ysave is set to 1.
 %
 %
 %
@@ -349,7 +349,7 @@ function out = dempk(Y, k, g, varargin)
     DEMP2 = dempk(Y, k, G, 'alpha', alpha, 'tkmeansOut', 1, 'plots', 1);
 
     % setting alpha greater than the noise level (almost always appropriate)
-    DEMP3 = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);
+    out = dempk(Y, k, G, 'alpha', alpha+0.04, 'tkmeansOut', 1, 'plots', 1);
 
     cascade;
 %}

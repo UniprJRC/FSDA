@@ -207,6 +207,22 @@ function out  = tclustICsol(IC,varargin)
 %               Remark: field ARICLAtable is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
 %
+% out.MIXCLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%               containing the allocations for MIXCLA associated with the best
+%               NumberOfBestSolutions. This field is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXCLA'.
+%
+% out.MIXMIXbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%               containing the allocations for MIXXMIX associated with the best
+%               NumberOfBestSolutions. This field is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'MIXMIX'.
+%
+% out.CLACLAbsIDX = matrix of dimension n-by-NumberOfBestSolutions
+%               containing the allocations for CLACLA associated with the best
+%               NumberOfBestSolutions. This field is present only if 'whichIC'
+%               is 'ALL' or 'whichIC' is 'CLACLA'.
+%
+%
 %           out.kk = vector containing the values of k (number of
 %                   components) which have been considered. This  vector
 %                   is equal to input optional argument kk if kk had been
@@ -243,12 +259,12 @@ function out  = tclustICsol(IC,varargin)
 %{
     %% Plot of first two best solutions for Geyser data.
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
+    outIC=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
 
     % Plot first two best solutions using as Information criterion MIXMIX
     disp('Best solutions using MIXMIX')
-    [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
-    disp(outMIXMIX.MIXMIXbs)
+    [out]=tclustICsol(outIC,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
+    disp(out.MIXMIXbs)
 %}
 
 %{
@@ -265,18 +281,18 @@ function out  = tclustICsol(IC,varargin)
     % Imposed average overlap
     BarOmega=0.04;
     
-    out=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
+    outMS=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
     % data generation given centroids and cov matrices
-    [Y,id]=simdataset(n, out.Pi, out.Mu, out.S);
+    [Y,id]=simdataset(n, outMS.Pi, outMS.Mu, outMS.S);
 
     % Computation of information criterion
-    out=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',200);
+    outIC=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',200);
     % Plot first 3 best solutions using as Information criterion MIXMIX
     disp('Best 3 solutions using MIXMIX')
-    [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);
+    [outMIXMIX]=tclustICsol(outIC,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);
     disp(outMIXMIX.MIXMIXbs)
     disp('Best 3 solutions using CLACLA')
-    [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
+    [outCLACLA]=tclustICsol(outIC,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
     disp(outCLACLA.CLACLAbs)
 %}
 
