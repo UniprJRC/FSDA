@@ -11,7 +11,7 @@ ycont(1:5)=ycont(1:5)+6;
 [out]=Sreg(ycont,X);
 laby='Scaled S residuals'; 
 titl='';
-resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  3.41 seconds 
+resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  3.07 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Sreg.html#Example_1'><img vspace="5" hspace="5" src="images\Sreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
      Sreg with optimal rho function. Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
@@ -67,20 +67,20 @@ ycont(1:5)=ycont(1:5)+6;
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofunc" class="clearfix"></div><h3 id="input_argument_namevalue_rhofunc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofunc</code> &#8212;rho function.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which specifies the rho
                function which must be used to weight the residuals.</p> <p>
                Possible values are
-               'bisquare'
-               'optimal'
-               'hyperbolic'
-               'hampel'
-               'mpdp'.</p> <p>
+               'bisquare';</p> <p>
+               'optimal';</p> <p>
+               'hyperbolic';</p> <p>
+               'hampel';</p> <p>
+               'mdpd'.</p> <p>
                'bisquare' uses Tukey's $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="TBrho.html">TBrho</a> and <a href="TBpsi.html">TBpsi</a>.</p> <p>
+               See TBrho and TBpsi.</p> <p>
                'optimal' uses optimal $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="OPTrho.html">OPTrho</a> and <a href="OPTpsi.html">OPTpsi</a>.</p> <p>
+               See OPTrho and OPTpsi.</p> <p>
                'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="HYPrho.html">HYPrho</a> and <a href="HYPpsi.html">HYPpsi</a>.</p> <p>
+               See HYPrho and HYPpsi.</p> <p>
                'hampel' uses Hampel $\rho$ and $\psi$ functions.</p> <p>
-               See <a href="HArho.html">HArho</a> and <a href="HApsi.html">HApsi</a>.</p> <p>
-               'mpdp' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
+               See HArho and HApsi.</p> <p>
+               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.</p> <p>
                See <a href="PDrho.html">PDrho</a> and <a href="PDpsi.html">PDpsi</a>.</p><p>
                The default is bisquare
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofunc','optimal' 
@@ -167,9 +167,9 @@ ycont(1:5)=ycont(1:5)+6;
                        for the specified rho function which have been
                        used. For hyperbolic rho function the value of
                        k =sup CVC. For Hampel rho function the parameters
-                       a, b and c. This field is empty for the other rho
-                       functions.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector Y. The field is present if option
-                       yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present if option
+                       a, b and c. This field is present only if input
+                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector Y. The field is present only if option
+                       yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present only if option
                        yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'Sreg'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples 
                        extracted for computing the estimate (the so called
                        elemental sets).</span></a><span class="example_desc"><code>C        : </code>matrix</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory

@@ -355,9 +355,10 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;Add response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>String containing the
                  label of the response
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','NameOfResponse'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements controlling minimum and maximum
-                 on the y axis. Default value is '' (automatic scale)
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim',[0,10] sets the minimum value to 0 and the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_ylim" class="clearfix"></div><h3 id="input_argument_namevalue_ylim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>ylim</code> &#8212;Control y scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector with two elements
+                 controlling minimum and maximum on the y axis.</p> <p> 
+                 Default value is '' (automatic scale)
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim',[0,10] sets the minimum value to 0 and the
 </code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_xlim" class="clearfix"></div><h3 id="input_argument_namevalue_xlim" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>xlim</code> &#8212;Control x scale in plot.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>Vector with two elements
                minimum and maximum on the x axis. Default value is ''
                (automatic scale)
@@ -426,7 +427,7 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
                        4th col = p values.</p></p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar containing the estimate of the scale (sigma).</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>n x 1 vector containing the estimates of the robust
-                scaled residuals.</p></td></tr><tr valign="top"><td><code>yhat</code></td><td><p>n x 1 vector containing the fitted values.</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix
+                scaled residuals.</p></td></tr><tr valign="top"><td><code>fittedvalues</code></td><td><p>n x 1 vector containing the fitted values.</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p><p>(n-init) x 2 matrix
                1st col = fwd search index
                2nd col = value of minimum deletion residual in each step
                of the fwd search

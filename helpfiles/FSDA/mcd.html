@@ -12,7 +12,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.72 seconds 
+RAW=mcd(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  1.37 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcd.html#Example_2'><img vspace="5" hspace="5" src="images\mcd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcd_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_04.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcd monitoring the reweighted estimates.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -30,7 +30,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 [RAW,REW,C]=mcd(Ycont);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (default plots).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = load('aircraft.txt');
 Y = X(:,1:end-1);
-[RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.37 seconds 
+[RAW,RES] = mcd(Y,'bdp',0.25,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.25 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcd.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mcd_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\mcd_06.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_07.png" alt=""> <img vspace="5" hspace="5" src="images\mcd_08.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> mcd applied to the aircraft data (plots using the scale of Pison et al).</li></span></a></span></h3><div class="collapse"><p>
      See Pison et al. 2002, Metrika.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X = load('aircraft.txt');
 Y = X(:,1:end-1);
@@ -43,7 +43,7 @@ title('Corrected MCD')
 % Compare the following figure with panel (4) of Fig. 8 of Pison et al.
 ylimy=[0 36];
 malindexplot(REW.md,v,'conflev',0.975,'laby','robust distances','numlab',REW.outliers,'ylimy',ylimy);
-title('Corrected reweighted MCD')</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.19 seconds 
+title('Corrected reweighted MCD')</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.27 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/mcd.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\mcd_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Data matrix containing n observations on v variables. </span>  </a><span class="example_desc">Rows of Y represent observations, and columns represent variables.</span></span></h3> <div class="collapse"> <p>Missing values (NaN's) and infinite values (Inf's) are allowed,
        since observations (rows) with missing or infinite values will
        be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'bdp',1/4
@@ -166,11 +166,12 @@ title('Corrected reweighted MCD')</pre></div></div><pre class="codeoutput">Tota
                     centroid and covariance matrix. These weights
                     determine which observations are used to compute the
                     final MCD estimates. Unless there is a perfect fit
-                    sum(RAW.weights)=h</p></p></td></tr><tr valign="top"><td><code>plane</code></td><td><p>In case of an exact fit, RAW.plane contains the
+                    sum(RAW.weights)=h</p></p></td></tr><tr valign="top"><td><code>plane</code></td><td><p><p>In case of an exact fit, RAW.plane contains the
                     coefficients of a (hyper)plane
                     a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
                     containing at least h observations, where (m_1,...,m_p)
-                    is the MCD location of these observations.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present if option
+                    is the MCD location of these observations.</p> <p>
+                    This field is present only if there is exact fit.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. This field is present only if option
                     ysaveRAW was set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcd'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_REW" class="clearfix"></div><h3 id="output_argument_REW" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>REW</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>structure which contains the following fields:</p> <p>
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>loc</code></td><td><p><p>The robust location of the data, obtained after
                     reweighting, if the raw MCD is not singular.</p> <p>
@@ -193,10 +194,13 @@ title('Corrected reweighted MCD')</pre></div></div><pre class="codeoutput">Tota
                     Remark: if the reweighted MCD is singular, RAW.weights
                     is given here.</p></p></td></tr><tr valign="top"><td><code>method</code></td><td><p>In case of an exact fit, REW.method contains a
                     character string containing information about the
-                    method and about singular subsamples (if any).</p></td></tr><tr valign="top"><td><code>plane</code></td><td><p>In case of an exact fit, REW.plane contains the
+                    method and about singular subsamples (if any). This
+                    field is present only if there is exact fit.</p></td></tr><tr valign="top"><td><code>plane</code></td><td><p>In case of an exact fit, REW.plane contains the
                     coefficients of a (hyper)plane
                     a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
-                    containing at least h observations, where (m_1,...,m_p)</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present if option
+                    containing at least h observations, where
+                    (m_1,...,m_p). This field is present only if there is
+                    exact fit.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present only if option
                     ysaveREW was set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'mcdr'.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices
                     of the subsamples extracted for
                     computing the estimate.</span></a><span class="example_desc"><code>C     : </code>matrix of size nsamp-by-v</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>

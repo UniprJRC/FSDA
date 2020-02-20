@@ -22,16 +22,27 @@ k=5
        1) value of k which has been selected
        2) value of c which has been selected
        3) values of the information criterion
-       4) frequency distribution of the associated classification<div class="programlisting"><div class="codeinput"><pre class="matlab-code">tclustICplot(out,'datatooltip',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip (personalized options).</li></span></a></span></h3><div class="collapse"><p>
+       4) frequency distribution of the associated classification<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+UnitsSameGroup=[15 30 69];
+out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+tclustICplot(out,'datatooltip',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip (personalized options).</li></span></a></span></h3><div class="collapse"><p>
      Gives the user the possibility of clicking on the different points
      and have information about the selected, the step of entry
      into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">datatooltip = struct;
 % In this example the style of the datatooltip is 'datatip'. Click on a
 % point when the ICplot is displayed.
-%
 datatooltip.DisplayStyle = 'datatip';
-tclustICplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">tclustICplot(out,'whichIC','ALL')</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+Y=load('geyser2.txt');
+UnitsSameGroup=[15 30 69];
+out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+tclustICplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+UnitsSameGroup=[15 30 69];
+out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+tclustICplot(out,'whichIC','ALL')</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
      databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Use all default options for databrush (brush just once)
+Y=load('geyser2.txt');
+UnitsSameGroup=[15 30 69];
+out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
 tclustICplot(out,'databrush',1)</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
      Repeated databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% enable repeated brushing and show boxplots of groups inside diag of spm
 databrush=struct;
@@ -46,6 +57,9 @@ databrush.RemoveLabels='on';
 % show boxplots of the groups instead of histograms on the main
 % diagonal of the spm
 databrush.dispopt='box';
+Y=load('geyser2.txt');
+UnitsSameGroup=[15 30 69];
+out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
 tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>matrix of size length(kk)-times
                    length(cc) containinig the values of the penalized
@@ -132,26 +146,23 @@ tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></
                    below). Default values are datatooltip.DisplayStyle =
                    'Window' and datatooltip.SnapToDataVertex = 'on'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
-                   is done.</p> <p>
-                   The activation of this option (databrush is a scalar or
-                   a structure) enables the user  to select a set of
-                   values of IC in the current plot and to see the
-                   corresponding classification highlighted in the scatter
-                   plot matrix (spm).</p> <p>
-                   If spm does not exist it is automatically created.</p> <p>
-                   Please, note that the window style of the other figures is set
-                   equal to that which contains the IC
-                   plot. In other words, if the IC plot
-                   is docked all the other figures will be docked too.</p> <p>
-                   DATABRUSH IS A SCALAR.</p> <p>
-                   If databrush is a scalar the default selection tool is
-                   a rectangular brush and it is possible to brush only
-                   once (that is persist='').</p> <p>
-                   DATABRUSH IS A STRUCTURE.</p> <p>
-                   If databrush is a structure, it is possible to use all
-                   optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following optional arguments:</p> <p>
-                   - databrush.persist = repeated brushing enabled. Persist is an empty value or a scalar
+                   is done. The activation of this option 
+                   (databrush is a scalar or a structure) enables the user  
+                   to select a set of values of IC in the current plot and
+                   to see the corresponding classification highlighted in
+                   the scatter plot matrix (spm). If spm does not exist it
+                   is automatically created. Please, note that the window
+                   style of the other figures is set equal to that which
+                   contains the IC plot. In other words, if the IC plot is
+                   docked all the other figures will be docked too.</p> <p>
+                   DATABRUSH IS A SCALAR. If databrush is a scalar the
+                   default selection tool is a rectangular brush and it is
+                   possible to brush only once (that is persist='').</p> <p>
+                   DATABRUSH IS A STRUCTURE. If databrush is a structure,
+                   it is possible to use all optional arguments of
+                   function <a href="selectdataFS.html">selectdataFS</a> and the following optional
+                   arguments: - databrush.persist = repeated brushing
+                   enabled. Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
                      The default value of persist is '', that is brushing
                      is allowed only once.</p> <p>
@@ -178,6 +189,6 @@ tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'myY1', 'myY2'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained
- Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+ Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
  <a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div><div><p>Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
  Classification", Vol. 2, pp. 193-218.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

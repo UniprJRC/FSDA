@@ -12,7 +12,7 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-[out]=Smult(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  2.53 seconds 
+[out]=Smult(Ycont,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  3.13 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Smult.html#Example_2'><img vspace="5" hspace="5" src="images\Smult_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\Smult_02.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smult with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -71,10 +71,10 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                (It is used by subroutine minscale.m)
                The default value is 1e-7;</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'minsctol',1e-7 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining number of "best betas" to remember from the
-               subsamples. These will be later iterated until convergence
-               (default=5)
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bestr',10 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar defining
+               number of "best betas" to remember from the subsamples.</p> <p>
+               These will be later iterated until convergence (default=5)
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bestr',10 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level which is
                used to declare units as outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Usually conflev=0.95, 0.975 0.99 (individual alpha)
                or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).</p> <p>
@@ -116,7 +116,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                    outliers using confidence level specified in input
                    scalar conflev</p></td></tr><tr valign="top"><td><code>conflev</code></td><td><p>Confidence level that was used to declare outliers</p></td></tr><tr valign="top"><td><code>singsub</code></td><td><p>Number of subsets without full rank. Notice that
                     out.singsub &gt; 0.1*(number of subsamples) produces a
-                    warning</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p>n x 1 vector containing the estimates of the weights</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present if option ysave
+                    warning</p></td></tr><tr valign="top"><td><code>weights</code></td><td><p>n x 1 vector containing the estimates of the weights</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Data matrix Y. The field is present only if option ysave
                     is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'Smult'</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;Indices of the subsamples 
                        extracted for computing the estimate (the so called
                        elemental sets).</span></a><span class="example_desc"><code>C        : </code>matrix</span></span></h3><div class="collapse"><p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory

@@ -125,18 +125,18 @@ Coeff.   SE
                not include a column of 1s in X. Missing values (NaN's) and
                infinite values (Inf's) are allowed, since observations
                (rows) with missing or infinite values will automatically
-               be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the skedastic equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x r matrix or vector of length r.</p> <p>
-               If Z is a n x r matrix it contains the r variables which
-               form the scedastic function .</p><p>
-               If Z is a vector of length r it contains the indexes of the
-               columns of matrix X which form the scedastic function 
+               be excluded from the computations.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_Z" class="clearfix"> </div> <h3 id="input_argument_Z" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Z</code> &#8212; Predictor variables in the skedastic equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>n x
+               r matrix or vector of length r. If Z is a n x r matrix it
+               contains the r variables which form the scedastic function.</p> <p>
+               If Z is a vector of length r it contains the indexes of
+               the columns of matrix X which form the scedastic function.</p><p>
                Therefore, if for example the explanatory variables
                responsible for heteroscedisticity are columns 3 and 5
                of matrix X, it is possible to use both the sintax
                     regressH(y,X,X(:,[3 5]))
                or the sintax
                     regressH(y,X,[3 5])</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'type','har' 
-</code>,<code> 'intercept',1 
+</code>,<code> 'intercept',false
 </code>,<code> 'initialbeta',[3 8] 
 </code>,<code> 'initialgamma',[0.6 2.8] 
 </code>,<code> 'maxiter',8 
@@ -160,17 +160,19 @@ Coeff.   SE
                values will automatically be excluded from the
                computations.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'type','har' 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-               else no constant term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_initialbeta" class="clearfix"></div><h3 id="input_argument_namevalue_initialbeta" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialbeta</code> &#8212;initial estimate of beta.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>p x 1 vector. If initialbeta is not supplied (default) standard least
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
+               specified as the comma-separated pair consisting of
+               'Intercept' and either true to include or false to remove
+               the constant term from the model.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_initialbeta" class="clearfix"></div><h3 id="input_argument_namevalue_initialbeta" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialbeta</code> &#8212;initial estimate of beta.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>p x 1 vector. If initialbeta is not supplied (default) standard least
                squares is used to find initial estimate of beta
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'initialbeta',[3 8] 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_initialgamma" class="clearfix"></div><h3 id="input_argument_namevalue_initialgamma" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialgamma</code> &#8212;initial estimate of gamma.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
-               of gamma is nothing but the OLS estimate in a regression
-               where the response is given by squared residuals and the
-               regressors are specified in input object Z (this regression
-               also contains a constant term).</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_initialgamma" class="clearfix"></div><h3 id="input_argument_namevalue_initialgamma" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>initialgamma</code> &#8212;initial estimate of gamma.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>vector of length (r+1). If initialgamma is not supplied
+               (default)  initial estimate of gamma is nothing but the OLS
+               estimate in a regression where the response is given by
+               squared residuals and the regressors are specified in input
+               object Z (this regression also contains a constant term).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'initialgamma',[0.6 2.8] 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_maxiter" class="clearfix"></div><h3 id="input_argument_namevalue_maxiter" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>maxiter</code> &#8212;Maximum number of iterations to find model paramters.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If not defined, maxiter is fixed to 200. Remark: in order
                to obtain the FGLS estimator (two step estimator) it is

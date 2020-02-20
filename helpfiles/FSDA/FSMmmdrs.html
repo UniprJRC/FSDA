@@ -25,7 +25,7 @@ close all
 ylim([2 5])
 disp('The two peaks in the trajectories of minimum Mahalanobis distance (mmd).')
 disp('clearly show the presence of two groups.')
-disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Two groups with approximately same units (larger sizes).</li></span></a></span></h3><div class="collapse"><p>
+disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMmmdrs.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmdrs_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Two groups with approximately same units (larger sizes).</li></span></a></span></h3><div class="collapse"><p>
      Same example as before but now the values of n1 and n2 (size of the
      two groups) have been increased.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 rng('default')
@@ -132,6 +132,7 @@ figure
                                 REMARK: vector bsbsteps must contain numbers from init to
                n. if min(bsbsteps)&lt;init a warning message will appear on
                the screen.</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbsteps',[10 20 30]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;scalar, number of random starts.</span></a><span class="example_desc">default value=200.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',1000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;It controls whether to perform checks on matrix Y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed.</p> <p>
@@ -149,6 +150,7 @@ figure
                y scale) and in order to connect it dynamically to the
                other forward plots it is necessary to use function
                mmdrsplot.</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;scalar.</span></a><span class="example_desc">if numpool &gt; 1, the routine automatically checks               if the Parallel Computing Toolbox is installed and               distributes the random starts over numpool parallel               processes.</span></span></h3><div class="collapse">	<p><p>If numpool &lt;= 1, the random starts are run
                sequentially. By default, numpool is set equal to the
@@ -186,25 +188,25 @@ figure
                number of workers in the local/current profile overwrites
                default value of 'numpool' obtained as feature('numCores')
                (i.e. the number of physical cores).</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',8
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;Boolean.</span></a><span class="example_desc">cleanpool is 1 (true) if the parallel pool has to be cleaned after               the execution of the random starts.</span></span></h3><div class="collapse">	<p><p>Otherwise it is 0 (false).</p> <p>
-               The default value of cleanpool is false.</p> <p>
-               Clearly this option has an effect just if previous option
-               numpool is &gt; 1.</p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;Boolean.</span></a><span class="example_desc">cleanpool is 1 (true) if the parallel pool has to               be cleaned after the execution of the random starts.</span></span></h3><div class="collapse">	<p><p>Otherwise it is 0 (false). The default value of cleanpool
+               is false. Clearly this option has an effect just if
+               previous option numpool is &gt; 1.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
-               about random start progress. More precisely, if previous
-               option numpool&gt;1, then a progress bar is displayed, on
-               the other hand a message will be displayed on the screen
-               when 10%, 25%, 50%, 75% and 90% of the random starts have
-               been accomplished
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls
+               whether to display or not messages about random start
+               progress. More precisely, if previous option numpool&gt;1,
+               then a progress bar is displayed, on the other hand a
+               message will be displayed on the screen when 10%, 25%, 50%,
+               75% and 90% of the random starts have been accomplished.</p> <p>
                                 REMARK: in order to create the progress bar when nparpool&gt;1
                the program writes on a temporary .txt file in the folder
                where the user is working. Therefore it is necessary to
                work in a folder where the user has write permission. If this
                is not the case and the user (say) is working without write
                permission in folder C:\Program Files\MATLAB the following
-               message will appear on the screen:</p> <p>
+               message will appear on the screen:</p><p>
                    Error using ProgressBar (line 57)
                    Do you have write permissions for C:\Program Files\MATLAB?
 

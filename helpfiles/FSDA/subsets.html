@@ -4,11 +4,11 @@ C =
 
   5&times;3 int8 matrix
 
-     5    30    67
-    39    55    89
-    62    84    98
-    32    37    99
-    19    90   100
+    1   19   37
+    9   12   71
+   53   56   62
+   38   42   95
+    2   39   53
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Use information on the number of combinations to speed up generation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(100,3);
@@ -17,11 +17,11 @@ C =
 
   5&times;3 int8 matrix
 
-    35    67    80
-    18    19    95
-    22    44   100
-    60    80    98
-    40    54    99
+   17   22   23
+   24   71   74
+   25   54   58
+    6   25   44
+    9   34   53
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Also inform about the time taken for the operation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(1000,5);
@@ -130,7 +130,7 @@ disp(tab);
     0.0007    0.0225    0.2262    0.7505
 
 Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
-    0.0007    0.0231    0.2257    0.7505
+    0.0008    0.0234    0.2308    0.7450
 
 </pre><a href='http://rosa.unipr.it/fsda/subsets.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\subsets_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighted sampling without replacement, with negative weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
 n = 200;
@@ -180,7 +180,7 @@ sample = 1, concentration step = 11
 sample = 42, concentration step = 9
 sample = 42, concentration step = 10
 sample = 42, concentration step = 11
-Total estimated time to complete tclustreg: 10.56 seconds 
+Total estimated time to complete tclustreg: 11.78 seconds 
 sample = 58, concentration step = 7
 sample = 58, concentration step = 8
 sample = 58, concentration step = 9

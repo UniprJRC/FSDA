@@ -85,6 +85,9 @@ ans =
   Use GET to show all properties
 
 </pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_3'><img vspace="5" hspace="5" src="images\simdatasetreg_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=3000;
@@ -92,7 +95,17 @@ noiseunits.number=3000;
 noiseunits.typeout={'Chisquare5'};
 [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
-title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_4'><img vspace="5" hspace="5" src="images\simdatasetreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title(BigAx,'2 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div><pre class="codeoutput">Warning: it was not possible to generate 3000 outliers
+in 30000 replicates in the interval [1--1]
+Number of values which was possible to generate is equal to 2848
+Please modify the type of outliers using option 'typeout' 
+or increase input option 'alpha'
+The value of alpha now is 0.001
+Outliers have been generated according to Chisquare5
+</pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#Example_4'><img vspace="5" hspace="5" src="images\simdatasetreg_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=3000;
@@ -101,6 +114,9 @@ noiseunits.typeout={'Chisquare40'};
 [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib,'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\simdatasetreg_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=3000;
@@ -109,6 +125,9 @@ noiseunits.typeout={'normal'};
 [y,X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S,out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\simdatasetreg_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=3000;
@@ -132,6 +151,9 @@ ans =
   Use GET to show all properties
 
 </pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\simdatasetreg_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars='';
 noiseunits=struct;
 noiseunits.number=3000;
@@ -155,6 +177,9 @@ ans =
   Use GET to show all properties
 
 </pre><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdatasetreg_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=5000*ones(2,1);
@@ -162,6 +187,9 @@ noiseunits.typeout={'Chisquare3','T20'};
 [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\simdatasetreg_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
 noiseunits.number=5000*ones(2,1);
@@ -170,6 +198,9 @@ noiseunits.alpha=0.002;
 [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\simdatasetreg_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noisevars=struct;
 noisevars.number=1;
 noiseunits=struct;
@@ -178,6 +209,9 @@ noiseunits.typeout={'pointmass' 'Chisquare5'};
 [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\simdatasetreg_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
 noiseunits=struct;
 noiseunits.number=1000;
 noiseunits.typeout={'uniform'};
@@ -192,10 +226,17 @@ noisevars.number=1;
 [H,AX,BigAx]=yXplot(y,X,'group',id);
 title(BigAx,'4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdatasetreg.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\simdatasetreg_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
      Generate 1000 outliers from uniform in the interval [-2 3] and
-     1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">noiseunits=struct;
+     1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+k=4;
+p=2;  % p includes the intercept
+out=MixSimreg(k,p,'BarOmega',0.01);
+noiseunits=struct;
 noiseunits.number=[1000 1000];
 noiseunits.typeout={'uniform' 'componentwise'};
 noiseunits.interval=[-2; 3];
+% Finally add a noise variable
+noisevars=struct;
+noisevars.number=1;
 [y, X,id]=simdatasetreg(n, out.Pi, out.Beta, out.S, out.Xdistrib, 'noisevars',noisevars,'noiseunits',noiseunits);
 yXplot(y,X,'group',id);
 suplabel('4 groups with outliers componentwise and from uniform in the interval [-2 3]','t')</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with user defined explanatory variables values (1).</li></span></a></span></h3><div class="collapse"><p>
@@ -435,11 +476,12 @@ title('User-defined distribution for X');</pre></div></div><a href='http://rosa
                 is applied to response variable.</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lambda',2;
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_y" class="clearfix"></div><h3 id="output_argument_y" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>y</code> &#8212;Response variable.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p>
-               Vector of dimension (n+nout)-by-1  containing the values of the
-                responses for the k groups.</p></div></div><div class="expandableContent"><div id="outputarg_X" class="clearfix"></div><h3 id="output_argument_X" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>X</code> &#8212;Explanatory variables.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p><p> Matrix of size (n + nout)-by-(p + nnoise) containinng the
-                values of the explanatory variables for the k groups.</p> <p>
-                Noise coordinates are provided in the last nnoise columns.</p></p></div></div><div class="expandableContent"><div id="outputarg_id" class="clearfix"></div><h3 id="output_argument_id" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>id</code> &#8212;classification vector.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Classification vector of length n + nout; 0 represents an
-                outlier.</p> <p>
+                Vector of dimension (n+nout)-by-1  containing the values
+                of the responses for the k groups.</p></div></div><div class="expandableContent"><div id="outputarg_X" class="clearfix"></div><h3 id="output_argument_X" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>X</code> &#8212;Explanatory variables.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p> Matrix of size 
+                (n + nout)-by-(p + nnoise) containinng the values of the
+                explanatory variables for the k groups. Noise coordinates
+                are provided in the last nnoise columns.</p></div></div><div class="expandableContent"><div id="outputarg_id" class="clearfix"></div><h3 id="output_argument_id" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>id</code> &#8212;classification vector.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Classification vector of
+                length n + nout; 0 represents an outlier.</p> <p>
 
             REMARK: If nout outliers could not be generated a warning is
                 produced. In this case matrix X and vector id will have

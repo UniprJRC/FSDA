@@ -12,9 +12,9 @@ Y=randn(n,v);
 % Contaminated data
 Ycont=Y;
 Ycont(1:5,:)=Ycont(1:5,:)+3;
-[out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  2.46 seconds 
-Total estimated time to complete S estimator:  0.62 seconds 
-Total estimated time to complete S estimator:  0.46 seconds 
+[out]=Smulteda(Ycont,'bdp',[0.5 0.3 0.1],'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  2.55 seconds 
+Total estimated time to complete S estimator:  1.09 seconds 
+Total estimated time to complete S estimator:  0.80 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/Smulteda.html#Example_2'><img vspace="5" hspace="5" src="images\Smulteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Smulteda with extracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state', 123456);
@@ -52,8 +52,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                  If the number of all possible subset is &lt;1000 the
                  default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterationsin each
-               subsample (default = 3).</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterationsin each subsample (default = 3).</p> <p>
                refsteps = 0 means "raw-subsampling" without iterations.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;scalar.</span></a><span class="example_desc">default value of tolerance for the refining steps.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-6;</p> <p>
@@ -72,7 +71,8 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
                (It is used by subroutine minscale.m)
                The default value is 1e-7;</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'minsctol',1e-7
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining number of "best betas" to remember from the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_bestr" class="clearfix"></div><h3 id="input_argument_namevalue_bestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining
+               number of "best betas" to remember from the
                subsamples. These will be later iterated until convergence
                (default=5)
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bestr',10

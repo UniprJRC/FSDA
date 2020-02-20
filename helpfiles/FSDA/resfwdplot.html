@@ -25,12 +25,22 @@ X=randn(n,4);
 % Produce  resfwdplot
 resfwdplot(out);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
      Initialize structure standard
-     Specify the steps in which labels have to be put<div class="programlisting"><div class="codeinput"><pre class="matlab-code">standard=struct;
+     Specify the steps in which labels have to be put<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+standard=struct;
 standard.LineStyle={'-';'-.';':'};
 % Specify the line width
 standard.LineWidth=0.5;
-resfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
-     Initialize structure fground<div class="programlisting"><div class="codeinput"><pre class="matlab-code">fground = struct;
+resfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+% Initialize structure fground
+fground = struct;
 % Specify which trajectories have to be highlighted
 fground.funit=[2 5 20 23 35 45];
 % Specify the steps in which labels have to be put
@@ -40,7 +50,12 @@ fground.flabstep=[n/2 n*0.75 n+0.5];;
 fground.LineWidth=3;
 % Produce a monitoring residuals plot in which labels are put for units
 % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
-resfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">bground = struct;
+resfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+bground = struct;
 % Specify a threshold to define the "background" trajectories
 bground.bthresh=2;
 % Trajectories whose residual is always between -btresh and +bthresh
@@ -49,7 +64,12 @@ bground.bstyle='hide';
 resfwdplot(out,'bground',bground)</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
      Gives the user the possibility of clicking on the different points
      and have information about the unit selected, the step of entry
-     into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">datatooltip = struct;
+     into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+datatooltip = struct;
 % In this example the style of the datatooltip is 'datatip'. Click on a
 % trajectory when the resfwdplot is displayed.
 %
@@ -73,6 +93,11 @@ resfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div>
 % of that step. A right click will terminate the exercise.
 % To activate this modality, we set the field SubsetLinesColor,
 % which specifies the color used to highlight the trajectories.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 datatooltip = struct;
 datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
 resfwdplot(out,'datatooltip',datatooltip);
@@ -83,23 +108,48 @@ datatooltip = struct;
 datatooltip.SubsetLinesColor = 999;
 resfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
        Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is done only once using a rectangular selection tool)
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 resfwdplot(out,'databrush',1)
 %   An equivalent statement is
 databrush=struct;
 databrush.selectionmode='Rect';
 resfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of brush using a rectangular selection tool.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Use a cyan colour.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
-     Example of the use of brush using multiple selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+     Example of the use of brush using multiple selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+databrush=struct;
 databrush.selectionmode='Brush';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
-       Example of the use of brush using lasso selection tool and fleur pointer.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       Example of the use of brush using lasso selection tool and fleur pointer.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
+databrush=struct;
 databrush.selectionmode='lasso';
 databrush.Pointer='fleur';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
      Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%  We havesuperimposed labels
 %   for the brushed units and persistent labels in the plot which has
 %   been brushed.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -107,6 +157,11 @@ databrush.RemoveLabels='off';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
      Example of persistent brushing.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Example of the use of persistent non cumulative brush. Every time a
 %   brushing action is performed previous highlightments are removed
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -116,6 +171,11 @@ resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div
      Example of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Example of the use of persistent cumulative brush. Every time a
 %   brushing action is performed current highlightments are added to
 %   previous highlightments
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -123,6 +183,11 @@ databrush.RemoveLabels='on';
 databrush.persist='on';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
      Example of persistent cumulative brush with ols line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   The same as before, but also fit one ols line to each selected group
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -131,6 +196,11 @@ databrush.persist='on';
 databrush.bivarfit='0';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
      Example of persistent cumulative brush with a single ols line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   The same but now fit a single ols line to all data.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -140,6 +210,11 @@ databrush.bivarfit='1';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
      Example of persistent cumulative brush with two ols lines.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   The same but now fit a first ols line to all data and a second line
 %   on the group of observations which remain unselected.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -148,6 +223,11 @@ databrush.persist='on';
 databrush.bivarfit='2';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
      Example of persistent cumulative brush with ols line for a particular group.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   The same but now fit a single ols line to the group with index 4.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -156,6 +236,11 @@ databrush.persist='on';
 databrush.bivarfit='i4';
 resfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 13.</i>
      Example of persistent cumulative brush with personalized line.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   The same but now add the line mean(y)+Ci*Xi.
+n=100;
+y=randn(n,1);
+X=randn(n,4);
+[out]=LXS(y,X,'nsamp',1000);
+[out]=FSReda(y,X,out.bs);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
@@ -464,20 +549,20 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy)</pre></div></div></p>
                        forced to be [0 0 1].</p><p>
                        If SubsetLinesColor is not empty previous option
                        LineColor is overlooked.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of strings.</span></span></h3><div class="collapse">	<p>Cell containing the labels of the units (optional
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>empty value, scalar or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_label" class="clearfix"></div><h3 id="input_argument_namevalue_label" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>label</code> &#8212;row labels.</span></a><span class="example_desc">cell of strings.</span></span></h3><div class="collapse">	<p><p>Cell containing the labels of the units (optional
                    argument used when datatooltip=1. If this field is not
                    present labels row1, ..., rown will be automatically
-                   created and included in the pop up datatooltip window)
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
+                   created and included in the pop up datatooltip window).</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
                    is done.</p> <p>
-                   The activation of this option (databrush is a scalar or
-                   a cell) enables the user  to select a set of
-                   trajectories in the current plot and to see them
-                   highlighted in the y|X plot, i.e. a matrix of scatter
-                   plots of y against each column of X, grouped according
-                   to the selection(s) done by brushing. If the plot y|X
-                   does not exist it is automatically created.</p> <p>
+                   The activation of this option (databrush is a scalar or a cell)                                     
+                   enables the user  to select a set of trajectories in
+                   the current plot and to see them highlighted in the y|X
+                   plot, i.e. a matrix of scatter plots of y against each
+                   column of X, grouped according to the selection(s) done
+                   by brushing. If the plot y|X does not exist it is
+                   automatically created.</p> <p>
                    In addition, brushed units are automatically highlighted in the
                    minimum deletion residual plot if it is already open.</p> <p>
                    The extension to the following plots will be available
@@ -554,14 +639,15 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy)</pre></div></div></p>
                      matrices X and y. The default value is labeladd='',
                      i.e. no label is added.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;labels of the explanatory variables.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p>Cell array of
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameX" class="clearfix"></div><h3 id="input_argument_namevalue_nameX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameX</code> &#8212;labels of the explanatory variables.</span></a><span class="example_desc">cell.</span></span></h3><div class="collapse">	<p><p>Cell array of
                    strings of length p containing the labels
                    of the variables of the regression dataset. If it is
                    empty the sequence X1, ..., Xp will be created
-                   automatically
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'var1', var2, 'var3'}
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p>Character containing the label of the response
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','response'
+                   automatically.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameX',{'var1', var2, 'var3'}
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_namey" class="clearfix"></div><h3 id="input_argument_namevalue_namey" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>namey</code> &#8212;response label.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Character containing the
+                   label of the response.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'namey','response'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>character</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;display  used options.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display
                    as output the options inside structures standard,
                    fground and bground which have been used to draw the

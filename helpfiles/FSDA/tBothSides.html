@@ -28,15 +28,27 @@ ylabel('y')
 % In this case both lambda and the beta coefficients are estimated
 % A linear link between X and beta is assumed
 out=tBothSides(y, X);
-disp(out.Btable)</pre></div></div><pre class="codeoutput">                     bhat                     se                   tstat      
-              ___________________    ____________________    _________________
+disp(out.Btable)</pre></div></div><pre class="codeoutput">                bhat           se         tstat 
+              _________    __________    _______
 
-    b1        -0.0106766638130858     0.00100092181390408     -10.666830979976
-    b2          0.141425262416822    0.000859863685065905     164.474049634952
-    lambda     0.0639294509915763      0.0816484724188695    0.782984042415492
+    b1        -0.010677     0.0010009    -10.667
+    b2          0.14143    0.00085986     164.47
+    lambda     0.063929      0.081648    0.78298
 
-</pre><a href='http://rosa.unipr.it/fsda/tBothSides.html#Example_1'><img vspace="5" hspace="5" src="images\tBothSides_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of tBothSides with parameter lambda fixed.</li></span></a></span></h3><div class="collapse"><p>
-     In this case only the beta coefficients are estimated<div class="programlisting"><div class="codeinput"><pre class="matlab-code">la=0.063;
+</pre><a href='http://rosa.unipr.it/fsda/tBothSides.html#Example_1'><img vspace="5" hspace="5" src="images\tBothSides_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Call of tBothSides with parameter lambda fixed.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
+yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
+0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
+0.06363	0.12587	0.24552	0.49442	1.12641	2.24941	4.7011	9.01437...
+0.05566	0.12308	0.24889	0.52321	1.10456	2.19937	4.44709	8.73544...
+0.05449	0.11629	0.24858	0.49931	1.03184	2.16042	4.42707	8.33862...
+0.06153	0.11878	0.24657	0.5021	1.02598	2.09198	4.39725	8.33347...
+0.05837	0.11869	0.24212	0.4886	0.98267	2.07686	4.35511	8.35725...
+0.05388	0.11886	0.25975	0.48158	1.04321	2.06961	4.37357	8.39123...
+0.05618	0.12492	0.25311	0.4827	1.03838	2.12548	4.3204	8.3901];
+X=[x';x([1:6 8])'; repmat(x(:),7,1)];
+y=yy';
+% In this case only the beta coefficients are estimated
+la=0.063;
 % A linear link between X and beta is assumed
 out=tBothSides(y, X,'la',la);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of tBothSides with non linear link between X and beta.</li></span></a></span></h3><div class="collapse"><p>
      Load spawners data (table 4.1 p. 141 Book CR)
@@ -99,8 +111,20 @@ plot(Xsor,upConfInt(indXsor),'r--')
 % Plot the estimated 5th percentile of recruitment
 plot(Xsor,lowConfInt(indXsor),'r--')
 ylabel('Recruiters')
-xlabel('Spawners')</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example where only beta coefficents are estimated and initial values for beta are provided.</li></span></a></span></h3><div class="collapse"><p>
-     Initial value of beta coefficients<div class="programlisting"><div class="codeinput"><pre class="matlab-code">bini=[3; 0.0009];
+xlabel('Spawners')</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example where only beta coefficents are estimated and initial values for beta are provided.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
+yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
+0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
+0.06363	0.12587	0.24552	0.49442	1.12641	2.24941	4.7011	9.01437...
+0.05566	0.12308	0.24889	0.52321	1.10456	2.19937	4.44709	8.73544...
+0.05449	0.11629	0.24858	0.49931	1.03184	2.16042	4.42707	8.33862...
+0.06153	0.11878	0.24657	0.5021	1.02598	2.09198	4.39725	8.33347...
+0.05837	0.11869	0.24212	0.4886	0.98267	2.07686	4.35511	8.35725...
+0.05388	0.11886	0.25975	0.48158	1.04321	2.06961	4.37357	8.39123...
+0.05618	0.12492	0.25311	0.4827	1.03838	2.12548	4.3204	8.3901];
+X=[x';x([1:6 8])'; repmat(x(:),7,1)];
+y=yy';
+% Initial value of beta coefficients
+bini=[3; 0.0009];
 % lambda is fixed
 la=-0.2;
 % modelfun is the function which specifies the link between X and beta
@@ -108,7 +132,21 @@ la=-0.2;
 modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 out=tBothSides(y, X,'modelfun',modelfun,'beta0',bini,'la',la);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option dispresults.</li></span></a></span></h3><div class="collapse"><p>
      modelfun is the function which specifies the link between X and beta
-     This is the spawner recruiter model. See CR for more details.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
+     This is the spawner recruiter model. See CR for more details.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
+yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
+0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
+0.06363	0.12587	0.24552	0.49442	1.12641	2.24941	4.7011	9.01437...
+0.05566	0.12308	0.24889	0.52321	1.10456	2.19937	4.44709	8.73544...
+0.05449	0.11629	0.24858	0.49931	1.03184	2.16042	4.42707	8.33862...
+0.06153	0.11878	0.24657	0.5021	1.02598	2.09198	4.39725	8.33347...
+0.05837	0.11869	0.24212	0.4886	0.98267	2.07686	4.35511	8.35725...
+0.05388	0.11886	0.25975	0.48158	1.04321	2.06961	4.37357	8.39123...
+0.05618	0.12492	0.25311	0.4827	1.03838	2.12548	4.3204	8.3901];
+X=[x';x([1:6 8])'; repmat(x(:),7,1)];
+y=yy';
+% Initial value of beta coefficients
+bini=[3; 0.0009];
+modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 out=tBothSides(y, X,'modelfun',modelfun,'dispresults',true,'beta0',bini);
 % modelfun is the function which specifies the link between X and beta
 %     % This is the spawner recruiter model
@@ -116,8 +154,22 @@ out=tBothSides(y, X,'modelfun',modelfun,'dispresults',true,'beta0',bini);
 %     yhat=X*beta(1).*exp(-beta(2)*X);
 %     end</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option prolik.</li></span></a></span></h3><div class="collapse"><p>
      This is the spawner recruiter model. See CR for more details.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% modelfun is the function which specifies the link between X and beta
+x=[0.476	0.924	1.905	3.696	7.619	14.874	30.474	59.134];
+yy=[0.05706	0.11781	0.25071	0.49596	1.03928	2.14635	4.24397	8.53848...
+0.057	0.11615	0.25398	0.4807	1.03659	2.09495		    8.41333...
+0.06363	0.12587	0.24552	0.49442	1.12641	2.24941	4.7011	9.01437...
+0.05566	0.12308	0.24889	0.52321	1.10456	2.19937	4.44709	8.73544...
+0.05449	0.11629	0.24858	0.49931	1.03184	2.16042	4.42707	8.33862...
+0.06153	0.11878	0.24657	0.5021	1.02598	2.09198	4.39725	8.33347...
+0.05837	0.11869	0.24212	0.4886	0.98267	2.07686	4.35511	8.35725...
+0.05388	0.11886	0.25975	0.48158	1.04321	2.06961	4.37357	8.39123...
+0.05618	0.12492	0.25311	0.4827	1.03838	2.12548	4.3204	8.3901];
+X=[x';x([1:6 8])'; repmat(x(:),7,1)];
+y=yy';
+% Initial value of beta coefficients
+bini=[3; 0.0009];
 modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
-out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+out=tBothSides(y, X,'modelfun',modelfun,'prolik',true,'beta0',bini);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -135,10 +187,10 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);</pre></div></div></p>
                values (NaN's) and infinite values (Inf's) are allowed,
                since observations (rows) with missing or infinite values
                will automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'la',0.5
-</code>,<code> 'la',0.5
+</code>,<code> 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 </code>,<code> 'beta0',[0.5 0.2 0.1]
 </code>,<code> 'la',1
-</code>,<code> 'intercept',1
+</code>,<code> 'intercept',true
 </code>,<code> 'family','YJ'
 </code>,<code>'prolik',true
 </code>,<code> 'dispresults',false
@@ -157,7 +209,7 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);</pre></div></div></p>
                 from the non linear model y. For example, to specify the
                 hougen (Hougen-Watson) nonlinear regression function, use
                 the function handle @hougen.</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',0.5
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'modelfun', modelfun where modelfun = @(beta,X) X*beta(1).*exp(-beta(2)*X);
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>function_handle or empty value</code></p></div></div><div class="expandableContent"><div id="inputarg_beta0" class="clearfix"></div><h3 id="input_argument_namevalue_beta0" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>beta0</code> &#8212;empty value or vector containing initial values for the
                  coefficients just in case modelfun is non empty.</span></a><span class="example_desc">if modelfun is empty this argument is ignored.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'beta0',[0.5 0.2 0.1]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_la0" class="clearfix"></div><h3 id="input_argument_namevalue_la0" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>la0</code> &#8212;initial value for transformation parameter.</span></a><span class="example_desc">scalar |                 empty value.</span></span></h3><div class="collapse">	<p><p>If optional input parameter la is empty, it
@@ -165,12 +217,12 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);</pre></div></div></p>
                  non linear least squares routine. This argument is
                  ignored if la is nont empty.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, and modelfun is empty (that is if the link between X and beta is linear)
-               a model with constant term will be fitted (default), else
-               no constant term will be included. This argument is ignored
-               if modelfun is not empty.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_family" class="clearfix"></div><h3 id="input_argument_namevalue_family" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>family</code> &#8212;parametric transformation to use.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>If true, and modelfun is empty (that is if the link between
+               X and beta is linear) a model with constant term will be
+               fitted (default), else no constant term will be included.</p> <p>
+               This argument is ignored if modelfun is not empty.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_family" class="clearfix"></div><h3 id="input_argument_namevalue_family" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>family</code> &#8212;parametric transformation to use.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which
                identifies the family of transformations which
                must be used. Character. Possible values are 'BoxCox'
                (default) or 'YJ'.</p> <p>
@@ -251,7 +303,7 @@ out=tBothSides(y, X,'modelfun',modelfun,'prolik',true);</pre></div></div></p>
  response to $y^{\lambda}$ would result in a different range for the
  transformed response.</p> <p>
  
- Carrol and Ruppert (1988) [Chapter~4]developed a transform both sides
+ Carrol and Ruppert (1988) [Chapter~4] developed a transform both sides
  model for such problems, motivated by theoretical models for sockeye
  salmon breeding. The transformation model is
   \begin{equation}

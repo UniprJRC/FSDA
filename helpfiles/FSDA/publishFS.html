@@ -73,8 +73,10 @@ out=publishFS('FSR','evalCode',true,'Display','iter-detailed','webhelp',true,'ou
             inside see also are valid files and puts an hyperlink to the
             corresponding HTML file. If publishFS cannot find the files
             exits the procedure with an error. If ErrWrngSeeAlso is false
-            it just produces a warning. Default value of ErrWrngSeeAlso is
-            true.</p> <p>
+            no check is done and empty links are produced. Use
+            ErrWrngSeeAlso set to false if the purpose is just to check
+            the code (e.g. in external environment like TRAVIS) and not to
+            buid the help system. Default value of ErrWrngSeeAlso is true.</p> <p>
              </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ErrWrngSeeAlso',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>T consists of a structure 'out' containing the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>title</code></td><td><p><p>title of HTML file. String.</p> <p>
                    String to be included in HTML tag title</p></p></td></tr><tr valign="top"><td><code>purpose</code></td><td><p><p>purpose of the routine. String.</p> <p>

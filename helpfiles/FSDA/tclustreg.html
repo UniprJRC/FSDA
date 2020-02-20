@@ -33,7 +33,7 @@ sample = 8, concentration step = 11
 sample = 17, concentration step = 5
 sample = 17, concentration step = 6
 sample = 38, concentration step = 10
-Total estimated time to complete tclustreg:  5.38 seconds 
+Total estimated time to complete tclustreg:  5.80 seconds 
 sample = 121, concentration step = 5
 sample = 131, concentration step = 8
 sample = 159, concentration step = 7
@@ -63,7 +63,7 @@ sample = 8, concentration step = 10
 sample = 8, concentration step = 11
 sample = 25, concentration step = 4
 sample = 25, concentration step = 5
-Total estimated time to complete tclustreg:  4.67 seconds 
+Total estimated time to complete tclustreg:  4.99 seconds 
 sample = 119, concentration step = 5
 RLGA Algorithm k =2 biter =7 niter =10
 Finished.
@@ -172,6 +172,7 @@ end
 out=tclustreg(y,X(:,2:end),k,50,0.01,0.01,'nsamp',C);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of nsamp passed as a matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y1 = X(:,end);
 X1 = X(:,1:end-1);
+n=200;
 k = 2 ;
 restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
 nsamp=200;
