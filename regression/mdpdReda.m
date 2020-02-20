@@ -113,14 +113,17 @@ function [out] = mdpdReda(y, X, varargin)
 %                       alpha using confidence level specified in input
 %                       scalar conflev
 %         out.conflev = confidence level which is used to declare outliers.
-%         out.alpha   = vector which contains the values of alpha or of bdp
-%                       which have been used depending on input option
-%                       alphaORbdp.
+%         out.alpha   = vector which contains the values of alpha which
+%                       have been used. To each value of alpha corresponds
+%                       a value of bdp (see out.bdp).
+%         out.bdp     = vector which contains the values of bdp which
+%                       have been used. To each value of bdp corresponds
+%                       a value of alpha (see out.alpha).
 %            out.y    = response vector y. The field is present if option
 %                       yxsave is set to 1.
 %            out.X    = data matrix X. The field is present if option
 %                       yxsave is set to 1.
-%           out.class = 'MDPDeda'
+%           out.class = 'MDPDReda'
 %             out.Fval = Value of the objective function and reason fminunc
 %                       or fminsearch stopped and v. Matrix.
 %                       length(alpha)-by-3 matrix.
@@ -300,12 +303,15 @@ if nargin>2
             error('FSDA:mdpdReda:WrongInputOpt','minimum value of alpha must be zero')
         end
         alphavec=tuningpar;
+        % Store corresponding values of bdp,
+        bdpvec= PDc(alphavec);
         
     elseif strcmp(alphaORbdp,'bdp')
         % In this case tuning paramter is breakdown point
         if min(tuningpar)<0 || max(tuningpar)>0.5
             error('FSDA:mdpdReda:WrongInputOpt','bdp must be in the interval [0 0.5]')
         end
+        bdpvec = tuningpar;
         % convert the values of bdp into values of alpha
         alphavec=PDbdp(tuningpar);
     else
@@ -410,11 +416,11 @@ out.Fval=Fval;
 % Store in output structure the outliers
 out.Outliers = Outliers;
 % Store values of alphavec which have been used
-% alphavec contains values of alpha or values of bdp depending on input
-% option alphaORbdp
-out.alpha=tuningpar;
+% to each value of alphavec corresponds a value of bdpvec
+out.alpha=alphavec;
+out.bdp=bdpvec;
 
-out.class='MDPDeda';
+out.class='MDPDReda';
 
 if intercept==1
     % Store X (without the column of ones if there is an intercept)
@@ -453,3 +459,4 @@ end
 
 end
 
+%FScategory:REG-Regression
