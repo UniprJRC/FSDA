@@ -301,14 +301,11 @@ function [out] = MixSimreg(k,p,varargin)
 %                      numbers associated with the pair of components
 %                      producing maximum overlap 'MaxOmega'
 %
-%              fail  = scalar, flag value. 0 indicates a successful mixture
+%           out.fail  = scalar, flag value. 0 indicates a successful mixture
 %                      generation, 1 represents failure.
 %
 %            out.Pi  = vector of length k containing the mixing proportions.
 %                      Clearly, sum(out.Pi)=1.
-%
-%          out.Beta = p-by-k matrix containing (in each column) the
-%                      regression coefficients for each group.
 %
 %            out.Mu  = vector of length k, consisting of components' mean vectors
 %                      for each regression hyperplane.
@@ -316,7 +313,14 @@ function [out] = MixSimreg(k,p,varargin)
 %
 %             out.S =  k-by-1 vector containing the variances for the k
 %                      groups.
-
+%
+%          out.Beta = p-by-k matrix containing (in each column) the
+%                      regression coefficients for each group.
+%
+%         out.Xdistrib=  distribution of X which has been used (struct).
+%
+%       out.betadistrib = distribution of beta which has been used
+%                       (struct).
 %
 % See also tkmeans, tclust, tclustreg, lga, rlga, ncx2mixtcdf, restreigen
 %
@@ -370,17 +374,17 @@ function [out] = MixSimreg(k,p,varargin)
     % 3) regression hyperplanes contain intercepts
     p=5;
     k=3;
-    Q=MixSimreg(k,p,'BarOmega',0.01);
+    out=MixSimreg(k,p,'BarOmega',0.01);
     n=200;
-    % Q.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
+    % out.Xdistrib.BarX in this case has dimension 5-by-3 and is equal to
     % 1.0000    1.0000    1.0000
     % 0.5000    0.5000    0.5000
     % 0.5000    0.5000    0.5000
     % 0.5000    0.5000    0.5000
     % 0.5000    0.5000    0.5000
     % Probabilities of overlapping are evaluated at
-    % Q.Beta(:,1)'*Q.Xdistrib.BarX(:,1) ... Q.Beta(:,3)'*Q.Xdistrib.BarX(:,3)
-    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+    % out.Beta(:,1)'*out.Xdistrib.BarX(:,1) ... out.Beta(:,3)'*out.Xdistrib.BarX(:,3)
+    [y,X,id]=simdatasetreg(n,out.Pi,out.Beta,out.S,out.Xdistrib);
     yXplot(y,X(:,2:end),'group',id);
 %}
 

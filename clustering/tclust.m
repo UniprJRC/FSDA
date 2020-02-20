@@ -364,18 +364,18 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %          out.MIXMIX = BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
 %                       likelihood as goodness of fit measure.
-%                       Remark: this output is present just if input option
+%                       Remark: this output is present only  if input option
 %                       mixt is >0.
 %
 %          out.MIXCLA = BIC which uses the classification likelihood based on
 %                       parameters estimated using the mixture likelihood
 %                       (In some books this quantity is called ICL).
-%                       Remark: this output is present just if input option
+%                       Remark: this output is present only if input option
 %                       mixt is >0.
 %
 %          out.CLACLA = BIC which uses the classification likelihood based on
 %                       parameters estimated using the classification likelihood.
-%                       Remark: this output is present just if input option
+%                       Remark: this output is present only if input option
 %                       mixt is =0.
 %
 %       out.notconver = Scalar. Number of subsets without convergence.
@@ -413,8 +413,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       value of the objective function at the end of the
 %                       iterative process for each extracted subsample.
 %
-%              out.Y  = Original data matrix Y. The field is present if option
-%                       Ysave is set to 1.
+%              out.Y  = Original data matrix Y. The field is present only
+%                       if option Ysave is set to 1.
 %
 %  Optional Output:
 %

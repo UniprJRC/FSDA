@@ -1,5 +1,5 @@
 function [out] = overlapmap(D, varargin) 
-% overlapmap produce an interactive overlap map  
+%overlapmap produces an interactive overlap map  
 % 
 % <a href="matlab: docsearchFS('overlapmap')">Link to the help function</a>
 % 
@@ -328,7 +328,7 @@ function [out] = overlapmap(D, varargin)
     %% Example using simdataset to create homogeneous and spherical clusters 
     % and using tkmeans.
 
-    clear variables; clc; clf; close all 
+    clear variables; close all 
     % Specify k cluster in v dimensions with n obs
     k = 10;
     v = 2;
@@ -349,7 +349,7 @@ function [out] = overlapmap(D, varargin)
     tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
  
     % overlap map with interctive mode
-    overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
+    out = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
 
     cascade;
 %}

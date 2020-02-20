@@ -272,6 +272,5 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     diffGAM=diff'*diff/(GAMold'*GAMold);
     
 end
-
-end
 %FScategory:CLUS-RobClaMULT
+end

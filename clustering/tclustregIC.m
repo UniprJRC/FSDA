@@ -71,6 +71,12 @@ function out  = tclustregIC(y,X,varargin)
 %                 Example - 'alphaX',1
 %                 Data Types - single | double
 %
+%     intercept : Indicator for constant term. Scalar. If 1, a model with
+%                constant term will be fitted (default), else no constant
+%                term will be included.
+%                Example - 'intercept',1
+%                Data Types - double
+%
 %     cc: values of restriction factor for residual variances. Vector.
 %               A vector specifying
 %               the values of the restriction factor
@@ -432,13 +438,13 @@ function out  = tclustregIC(y,X,varargin)
 %                   is equal to input optional argument kk if kk had been
 %                   specified else it is equal to 1:5.
 %
-%                out.ccsigmay = vector containing the values of c (values of the
+%                out.cc = vector containing the values of c (values of the
 %                   restriction factor) which have been considered for the
 %                   variance of the residuals. This vector is equal to
 %                   input optional argument ccsigmay if ccsigmay had been specified
 %                   else it is equal to [1, 2, 4, 8, 16, 32, 64, 128].
 %
-%                out.ccsigmaX = vector containing the values of c (values of the
+%                out.ccSigmaX = vector containing the values of c (values of the
 %                   restriction factor) which have been considered for the
 %                   covariance matrices of the esplnatory variables. This
 %                   vector is equal to input optional argument ccsigmaX if
@@ -932,6 +938,7 @@ out.alphaLik=alphaLik;
 % Store original matrix
 out.y=y;
 out.X=X;
+out.alphaX=alphaX;
 end
 
 
