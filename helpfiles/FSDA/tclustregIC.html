@@ -2,7 +2,7 @@
     rng(191372,'twister');
     p=3;
     k=4;
-    Q=MixSimreg(k,p,'BarOmega',0.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alphaX">alphaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cc">cc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ccSigmaX">ccSigmaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrtype">restrtype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cshape">cshape</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_wtrim">wtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustregIC</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustregIC computes tclustreg for different number of groups k and restriction factors c</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustregIC(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustregIC(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustregIC (where the last two letters stand for 'Information
+    Q=MixSimreg(k,p,'BarOmega',0.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_alphaX">alphaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cc">cc</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ccSigmaX">ccSigmaX</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_restrtype">restrtype</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cshape">cshape</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_kk">kk</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_whichIC">whichIC</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_startv1">startv1</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_Ysave">Ysave</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_wtrim">wtrim</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustregIC</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustregIC computes tclustreg for different number of groups k and restriction factors c</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustregIC(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustregIC(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregIC.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustregIC (where the last two letters stand for 'Information
    Criterion') computes the values of BIC (MIXMIX), ICL (MIXCLA) or CLA
    (CLACLA), for different values of k (number of groups) and different
    values of c (restriction factor for the variances of the residuals),
@@ -90,6 +90,7 @@ tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div></div
              automatically be excluded from the computations.</p> <p>
              </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'alphaLik',0.1
 </code>,<code> 'alphaX',1
+</code>,<code> 'intercept',1
 </code>,<code> 'cc',[1 2 4 8 128]
 </code>,<code> 'ccsigmaX',10
 </code>,<code> 'restrtype','deter'
@@ -145,7 +146,11 @@ tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div></div
                For further details about CWM see Garcia-Escudero et al.</p> <p>
                (2017) or Torti et al. (2018).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'alphaX',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cc" class="clearfix"></div><h3 id="input_argument_namevalue_cc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cc</code> &#8212;values of restriction factor for residual variances.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>A vector specifying
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+                constant term will be fitted (default), else no constant
+                term will be included.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cc" class="clearfix"></div><h3 id="input_argument_namevalue_cc" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cc</code> &#8212;values of restriction factor for residual variances.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>A vector specifying
                the values of the restriction factor
                which have to be considered for the variances of the
                residuals of the regression lines.</p> <p>
@@ -172,27 +177,25 @@ tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div></div
                constrained weighted model for X is assumed.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices of
-                   the explanatory variables.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works if 'restrtype' is
-                   'deter' and $alphaX=1$, that is if constrained weighted
-               model for X is assumed.</p> <p>
-               When restrtype is deter the default value of the "shape" constraint (as
-               defined below) applied to each group is fixed to
-               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
-               affine equivariant. In other words, the decomposition or the
-               $j$-th scatter matrix $\Sigma_j$ is
-               </p>\[
-               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-               \]<p>
-               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-               diagonal matrix with $|\Gamma_j|=1$ and with elements
-               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-               the eigenvalues of the $\Sigma_j$ matrix) and
-               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-               known as "shape" matrices, because they determine the shape of the
-               fitted cluster components. The following $k$
-               constraints are then imposed on the shape matrices:</p> <p>
-               </p>\[
-               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+                   the explanatory variables.</span></a><span class="example_desc">scalar greater | equal than                   1.</span></span></h3><div class="collapse">	<p>This options only works if 'restrtype' is 'deter'
+                   and $alphaX=1$, that is if constrained weighted
+               model for X is assumed. When restrtype is deter the default
+               value of the "shape" constraint (as defined below) applied
+               to each group is fixed to $c_{shape}=10^{10}$, to ensure
+               the procedure is (virtually) affine equivariant. In other
+               words, the decomposition or the $j$-th scatter matrix
+               $\Sigma_j$ is \[ \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j
+               \Omega_j' \] where $\Omega_j$ is an orthogonal matrix of
+               eigenvectors, $\Gamma_j$ is a diagonal matrix with
+               $|\Gamma_j|=1$ and with elements
+               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal
+               (proportional to the eigenvalues of the $\Sigma_j$ matrix)
+               and $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are
+               commonly known as "shape" matrices, because they determine
+               the shape of the fitted cluster components. The following
+               $k$ constraints are then imposed on the shape matrices: \[
+               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v}
+               \gamma_{jl}}\leq
                    c_{shape}, \text{ for } j=1,...,k,
                \]<p>
                In particular, if we are ideally searching for spherical
@@ -429,23 +432,22 @@ tclustICplot(out,'whichIC','MIXMIX')</pre></div></div></p></div></div></div
                    'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                    components) which have been considered. This  vector
                    is equal to input optional argument kk if kk had been
-                   specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>ccsigmay</code></td><td><p>vector containing the values of c (values of the
+                   specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the
                    restriction factor) which have been considered for the
                    variance of the residuals. This vector is equal to
                    input optional argument ccsigmay if ccsigmay had been specified
-                   else it is equal to [1, 2, 4, 8, 16, 32, 64, 128].</p></td></tr><tr valign="top"><td><code>ccsigmaX</code></td><td><p><p>vector containing the values of c (values of the
+                   else it is equal to [1, 2, 4, 8, 16, 32, 64, 128].</p></td></tr><tr valign="top"><td><code>ccSigmaX</code></td><td><p>vector containing the values of c (values of the
                    restriction factor) which have been considered for the
-                   covariance matrices of the esplnatory variables. This vector is equal to
-                   input optional argument ccsigmaX if ccsigmaX had been specified
-                   and input option alphaX=1 otherwise it is equal to 12
-                   if alphaX=1 and xxsigmaX has not been specified.</p> <p>
-                   Finally if input option alphaX is not equal 1
-                   out.ccsigmaX is an empty value</p></p></td></tr><tr valign="top"><td><code>alphaLik</code></td><td><p>scalar containing the trimming level which has
+                   covariance matrices of the esplnatory variables. This
+                   vector is equal to input optional argument ccsigmaX if
+                   ccsigmaX had been specified and input option alphaX=1
+                   otherwise it is equal to 12 if alphaX=1 and xxsigmaX
+                   has not been specified. Finally if input option alphaX
+                   is not equal 1 out.ccsigmaX is an empty value</p></td></tr><tr valign="top"><td><code>alphaLik</code></td><td><p>scalar containing the trimming level which has
                    been used in the likelidood.</p></td></tr><tr valign="top"><td><code>alphaX</code></td><td><p>scalar containing information about
-                   second-level trimming or constrained weighted model for X.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>Original data matrix of explanatory variables. The field is present if
-                   option Ysave is set to 1.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>Original vector containing the response
-                    The field is present if
-                   option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+                   second-level trimming or constrained weighted model for X.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>Original data matrix of explanatory variables.</p> <p>
+                The field is present if option Ysave is set to 1.</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>Original vector containing the response
+                    The field is present if option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
  Methodologies for Clustering Linear Regression Data, "Advances in Data
  Analysis and Classification". [doi
  <a href="https://doi.org/10.1007/s11634-018-0331-4">https://doi.org/10.1007/s11634-018-0331-4</a>].</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

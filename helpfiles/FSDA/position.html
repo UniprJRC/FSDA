@@ -10,6 +10,9 @@ figure('Tag','pl_spm'); spmplot(Y3);
 position(hmain);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>The three plots have now an unknown tag.</li></span></a></span></h3><div class="collapse"><p> In this case, we assume that 
      the plots are not relevant and are therefore put in a non-interesting
      screen area (top-right).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+Y1=load('geyser2.txt');
+Y2=load('fishery.txt');
+Y3=load('M5data.txt');
 figure('Tag','aaaaa'); spmplot(Y1); hmain=gcf;
 figure('Tag','bbbbb'); spmplot(Y2);
 figure('Tag',''); spmplot(Y3);

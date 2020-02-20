@@ -195,13 +195,14 @@ R(4,4)=.6;
 R(5,5)=.6;
 R=inv(R);
 bayes.R=R;
+% Automatic outlier detection procedure.
 outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
 dout=n-length(outBA.ListOut);
 % init = initial point to start monitoring
 init=250;
 xlimL=init; % lower value fo xlim
 xlimU=n+1;  % upper value of xlim 
-outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
+out=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
 % Set font size, line width and line style
 figure;
 lwd=2.5;
@@ -211,10 +212,10 @@ for j=1:5
 my_subplot=subplot(3,2,j);
 hold('on')
 % plot 95% and 99% HPD  trajectories
-plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
-plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+plot(out.beta1(:,1),out.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+plot(out.beta1(:,1),out.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 % plot posterior estimate of beta1_j
-plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+plot(out.beta1(:,1),out.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
 % Add the horizontal line which corresponds to prior values
 xL = get(my_subplot,'XLim');
 line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
@@ -222,8 +223,8 @@ line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
 % entry of the first outlier
 line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 % Set ylim
-ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);
-ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);
+ylimU=max([out.beta1HPD(:,4,j); beta0(j)]);
+ylimL=min([out.beta1HPD(:,3,j); beta0(j)]);
 ylim([ylimL ylimU])
 % Set xlim
 xlim([xlimL xlimU]);
@@ -238,16 +239,16 @@ subplot(3,2,6);
 %figure()
 hold('on')
 % 99%
-plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+plot(out.sigma21HPD(:,1),out.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 % 95%
-plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+plot(out.sigma21HPD(:,1),out.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
 % Plot 1/tau1
-plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')
+plot(out.S21(:,1),1./out.S21(:,3),'LineWidth',lwd,'Color','k')
 ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
 set(gca,'FontSize',FontSize);
 % Set ylim
-ylimU=max([outBAeda.sigma21HPD(:,5); s02]);
-ylimL=min([outBAeda.sigma21HPD(:,4); s02]);
+ylimU=max([out.sigma21HPD(:,5); s02]);
+ylimL=min([out.sigma21HPD(:,4); s02]);
 ylim([ylimL ylimU])
 % Set xlim
 xlim([xlimL xlimU]);
@@ -399,16 +400,18 @@ num2str(xlimL) ',' num2str(xlimU) ...
                $\beta$ is assumed to have a normal distribution with
                mean $\beta_0$ and (conditional on $\tau_0$) covariance
                $(1/\tau_0) (X_0'X_0)^{-1}$.</p><p>
-               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1 
+               $\beta \sim N(    \beta_0, (1/\tau_0) (X_0'X_0)^{-1}    )$</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
 </code>,<code> bayes=struct;bayes.R=R;bayes.n0=n0;bayes.beta0=beta0;bayes.tau0=tau0;
 </code>,<code> bsb=[2 5 1];
 </code>,<code> 'init',100 starts monitoring from step m=100 
 </code>,<code> 'nocheck',1 
 </code>,<code> 'conflev',[0.90 0.93] 
-</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-                      else no constant term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;It specifies prior information.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies prior information.</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
+                 specified as the comma-separated pair consisting of
+                 'Intercept' and either true to include or false to remove
+                 the constant term from the model.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_bayes" class="clearfix"></div><h3 id="input_argument_namevalue_bayes" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bayes</code> &#8212;It specifies prior information.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>A structure which specifies prior information.</p> <p>
                If structure bayes is not supplied the default values which
                are used are: beta0= zeros(p,1) (vector of zeros); R=eye(p) 
                (Identity matrix); tau0=1/1e+6 (very large value for the
@@ -473,11 +476,10 @@ num2str(xlimL) ',' num2str(xlimU) ...
                3rd col = (m+1)-ordered residual.</p><p> 
                Remark: these quantities are stored with sign, that is the
                min deletion residual is stored with negative sign if
-               it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msrB</code></td><td><p><p>n-init+1 x 3 = matrix which contains the monitoring of
-               maximum studentized residual or m-th ordered residual.</p> <p> 
-               1st col = fwd search index (from init to n);</p> <p> 
-               2nd col = maximum studentized residual;</p><p> 
-               3rd col = (m)-ordered studentized residual.</p></p></td></tr><tr valign="top"><td><code>Coo</code></td><td><p><p>(n-init+1) x 2 matrix containing the monitoring of Cook or
+               it corresponds to a negative residual.</p></p></td></tr><tr valign="top"><td><code>msrB</code></td><td><p><p>n-init+1 x 32= matrix which contains the monitoring of
+               maximum studentized residual among units belonging to subset.</p> <p> 
+               1st col = fwd search index (from init to n);</p><p> 
+               2nd col = maximum studentized residual.</p></p></td></tr><tr valign="top"><td><code>Coo</code></td><td><p><p>(n-init+1) x 2 matrix containing the monitoring of Cook or
                modified Cook distance in each step of the forward search.</p> <p> 
                1st col = fwd search index (from init to n);</p><p> 
                2nd col = monitoring of Cook distance.</p></p></td></tr><tr valign="top"><td><code>beta1</code></td><td><p>(n-init+1) x (p+1) matrix containing the monitoring of

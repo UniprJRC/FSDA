@@ -179,7 +179,7 @@ suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </
                 random numbers which are used to initialize the
                 proportions of the groups. This option is effective just
                 if nsamp is a matrix which contains pre-extracted
-                subsamples and k is a scalat. The purpose of this option
+                subsamples and k is a scalar. The purpose of this option
                 is to enable the user to replicate the results.</p> <p> 
                 The default value of RandNumbForNini is empty,
                 that is random numbers from uniform are used.</p><p>
@@ -255,8 +255,7 @@ suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </
                workers set in the local/current profile. Similarly, the
                number of workers in the local/current profile overwrites
                default value of 'numpool' obtained as feature('numCores')
-               (i.e. the number of physical cores).</p> <p>
-              REMARK 5: the parallelization refers to the ...</p><p>
+               (i.e. the number of physical cores).</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',4
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;clean pool.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>cleanpool is 1 if the parallel pool has
                to be cleaned after the execution of the routine. Otherwise
@@ -270,9 +269,10 @@ suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
                no check is performed on matrix Y. As default nocheck=0.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',10
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the input matrix Y
-               is saved into the output structure out. Default is 1, that
-               is  matrix Y is saved inside output structure out.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Ysave" class="clearfix"></div><h3 id="input_argument_namevalue_Ysave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Ysave</code> &#8212;save input matrix.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to
+               request that the input matrix Y is saved into the output
+               structure out. Default is 1, that is  matrix Y is saved
+               inside output structure out.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Ysave',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_UnitsSameGroup" class="clearfix"></div><h3 id="input_argument_namevalue_UnitsSameGroup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>UnitsSameGroup</code> &#8212;Units with same labels.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>List of the units which must (whenever possible)
                    have the same label.  For example if
@@ -287,8 +287,7 @@ suplabel('BIC (MIXMIX)','t')</pre></div></div></p></div></div></div><p> </
                    1, 2, ..., r-1). The default value of UnitsSameGroup is
                    '' that is consistent labels are not imposed.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'UnitsSameGroup',[12 20]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is
-                   'deter'.</p> <p> 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is 'deter'.</p> <p> 
                When restrtype is deter the default value of the "shape" constraint (as
                defined below) applied to each group is fixed to
                $c_{shape}=10^{10}$, to ensure the procedure is (virtually)

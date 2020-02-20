@@ -7,8 +7,10 @@
    in the command window.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tabulateFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_tbl"><code>tbl</code></a>=tabulateFS(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>)</code></span>Tabulate Fisher iris data.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Tabulate Fisher iris data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
 tbl=tabulateFS(species);
 disp(tbl)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Explore the difference between tabulate and tabulateFS.</li></span></a></span></h3><div class="collapse"><p>
-     Run this code to see the output shown in the help file
-    rng('default')  Reinitialize the random number generator to its startup configuration<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(100)
+     Run this code to see the output shown in the help file.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Reinitialize the random number generator to its startup
+% configuration.
+rng('default') 
+rng(100)
 x=randi([1 10],100,1);
 x(100)=30;
 % Output of tabulate

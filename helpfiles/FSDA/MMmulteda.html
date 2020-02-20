@@ -2,13 +2,9 @@
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
 [outMM]=MMmulteda(Y);
-malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.59 seconds 
+malfwdplot(outMM);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  0.56 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_1'><img vspace="5" hspace="5" src="images\MMmulteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MMmult with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y = load('geyser.txt');
-[out1]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.17 seconds 
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
-Warning: Matrix is singular, close to singular or badly scaled. Results may be
-inaccurate. RCOND = NaN. 
+[out1]=MMmulteda(Y,'conflev',0.99,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimator:  1.08 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/MMmulteda.html#Example_2'><img vspace="5" hspace="5" src="images\MMmulteda_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>MMmulteda with exctracted subsamples.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
 Y=swiss_banknotes.data;
 Y=Y(1:100,:);
@@ -53,8 +49,9 @@ Y=Y(1:100,:);
                Note that given bdp nominal
                efficiency is automatically determined.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Sbdp',0.4
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Sbestr" class="clearfix"></div><h3 id="input_argument_namevalue_Sbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Sbestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar defining number of "best betas" to remember from the
-               subsamples. These will be later iterated until convergence
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Sbestr" class="clearfix"></div><h3 id="input_argument_namevalue_Sbestr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Sbestr</code> &#8212;number of "best betas" to remember.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>Scalar
+                defining number of "best betas" to remember from the
+                subsamples. These will be later iterated until convergence
                (default=5)
                  </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Sbestr',10
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Sminsctol" class="clearfix"></div><h3 id="input_argument_namevalue_Sminsctol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Sminsctol</code> &#8212;tolerance for the iterative
@@ -70,9 +67,9 @@ Y=Y(1:100,:);
                  If the number of all possible subset is &lt;1000 the
                  default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Snsamp',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Srefsteps" class="clearfix"></div><h3 id="input_argument_namevalue_Srefsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Srefsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining iterationsin each
-               subsample (default = 3).</p> <p>
-               refsteps = 0 means "raw-subsampling" without iterations.</p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Srefsteps" class="clearfix"></div><h3 id="input_argument_namevalue_Srefsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Srefsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining
+                iterationsin each subsample (default = 3).</p> <p>
+                refsteps = 0 means "raw-subsampling" without iterations.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Srefsteps',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_Sreftol" class="clearfix"></div><h3 id="input_argument_namevalue_Sreftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Sreftol</code> &#8212;scalar.</span></a><span class="example_desc">default value of tolerance for the refining steps.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-6;</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Sreftol',1e-8

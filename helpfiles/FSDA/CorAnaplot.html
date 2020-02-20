@@ -130,6 +130,7 @@ plots.ColorColsSup=ColorColsSup;
 plots.MarkerFaceColorCols=MarkerFaceColorCols;
 % change the sign of the second dimension
 changedimsign=[false true];
+out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
 CorAnaplot(out,'plots',plots,'changedimsign',changedimsign)</pre></div></div><a href='http://rosa.unipr.it/fsda/CorAnaplot.html#Example_2'><img vspace="5" hspace="5" src="images\CorAnaplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>CorAnaplot with personalized displacement.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % Prepare the data.
 N=[51	64	32	29	17	59	66	70;
@@ -180,6 +181,7 @@ Sup.Lc=colslab(6:8);
 end
 % No horizontal displacement for the labels.
 addx=0;
+out=CorAna(Nactive,'Sup',Sup,'plots',0,'dispresults',false);
 CorAnaplot(out,'addx',addx)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Correpondence analysis plot with selected ellipses.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[51	64	32	29	17	59	66	70;
 53	90	78	75	22	115	117	86;
 71	111	50	40	11	79	88	177;
@@ -646,7 +648,7 @@ CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);</pre></div></di
                  indicates the dimension to show on the y axis. The
                  default value of d2 is 2.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'd2',3
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double<div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;the axis handle of a figure where to send the CorAnaplot.</span></a><span class="example_desc">this can be used to host the CorAnaplot in a subplot of a               complex figure formed by different panels (for example a panel               with CorAnaplot from plots.</span></span></h3><div class="collapse">	<p><p>alpha=0.2 and another
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;the axis handle of a figure where to send the CorAnaplot.</span></a><span class="example_desc">this can be used to host the CorAnaplot in a subplot of a               complex figure formed by different panels (for example a panel               with CorAnaplot from plots.</span></span></h3><div class="collapse">	<p><p>alpha=0.2 and another
                with CorAnaplot from plots.alpha=0.5).</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code>'h',h1 where h1=subplot(2,1,1)
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Axes object (supplied as a scalar)</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,

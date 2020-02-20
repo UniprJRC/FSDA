@@ -3,62 +3,60 @@
     find the location of findFile.</a></li><li><a class="intrnllnk" href="#ExtraExample_2">find the location of help file gplotmatrix.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_root">root</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_InclDir">InclDir</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ExclDir">ExclDir</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_InclFiles">InclFiles</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ExclFiles">ExclFiles</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_list">list</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">findFile</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose"> findFile finds recursively all files in root.</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">list=findFile(root)</code><span class="syntax_example"><a class="intrnllnk" href="findFile.html#Example_1">example</a></span></li><li><code class="synopsis">list=findFile(root,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="findFile.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="findFile.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_list"><code>list</code></a>=findFile(<a class="intrnllnk" href="#inputarg_root"><code>root</code></a>)</code></span>findFile with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="findFile.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_list"><code>list</code></a>=findFile(<a class="intrnllnk" href="#inputarg_root"><code>root</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>findFile with optional arguments.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> findFile with all default options.</li></span></a></span></h3><div class="collapse"><p>
     find the location of findFile.m<div class="programlisting"><div class="codeinput"><pre class="matlab-code">FullPath=which('findFile');
 %extract the directory containing findFile.m
-root=FullPath(1:end-length('findFile.m')-1);
+root=fileparts(FullPath);
 %list the content of the directory containing findFile.m
 list = findFile(root)</pre></div></div><pre class="codeoutput">
 list =
 
-  44&times;1 cell array
+  42&times;1 cell array
 
-    {'D:\MATLAB\FSDA\utilities\Contents.m'                      }
-    {'D:\MATLAB\FSDA\utilities\FSColors.m'                      }
-    {'D:\MATLAB\FSDA\utilities\PoolClose.m'                     }
-    {'D:\MATLAB\FSDA\utilities\PoolPrepare.m'                   }
-    {'D:\MATLAB\FSDA\utilities\ProgressBar.m'                   }
-    {'D:\MATLAB\FSDA\utilities\Untitled3.m'                     }
-    {'D:\MATLAB\FSDA\utilities\cabc.m'                          }
-    {'D:\MATLAB\FSDA\utilities\cascade.m'                       }
-    {'D:\MATLAB\FSDA\utilities\chkinputM.m'                     }
-    {'D:\MATLAB\FSDA\utilities\chkinputR.m'                     }
-    {'D:\MATLAB\FSDA\utilities\chkinputRB.m'                    }
-    {'D:\MATLAB\FSDA\utilities\chkoptions.m'                    }
-    {'D:\MATLAB\FSDA\utilities\clickableMultiLegend.m'          }
-    {'D:\MATLAB\FSDA\utilities\closereqFS.m'                    }
-    {'D:\MATLAB\FSDA\utilities\docrootFS.m'                     }
-    {'D:\MATLAB\FSDA\utilities\dsxy2figxy.m'                    }
-    {'D:\MATLAB\FSDA\utilities\existFS.m'                       }
-    {'D:\MATLAB\FSDA\utilities\findDir.m'                       }
-    {'D:\MATLAB\FSDA\utilities\findFile.m'                      }
-    {'D:\MATLAB\FSDA\utilities\ginputFS.m'                      }
-    {'D:\MATLAB\FSDA\utilities\isfunction.m'                    }
-    {'D:\MATLAB\FSDA\utilities\locParseContentsFilesFS.m'       }
-    {'D:\MATLAB\FSDA\utilities\openExampleFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\openMatlabFileFromHTML.m'        }
-    {'D:\MATLAB\FSDA\utilities\position.m'                      }
-    {'D:\MATLAB\FSDA\utilities\privateFS\Contents.m'            }
-    {'D:\MATLAB\FSDA\utilities\privateFS\evalmxdom.m'           }
-    {'D:\MATLAB\FSDA\utilities\privateFS\m2mxdom.m'             }
-    {'D:\MATLAB\FSDA\utilities\privateFS\mxdom2simplehtml.xsl'  }
-    {'D:\MATLAB\FSDA\utilities\privateFS\supplyDefaultOptions.m'}
-    {'D:\MATLAB\FSDA\utilities\quickselectFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\removeExtraSpacesLF.m'           }
-    {'D:\MATLAB\FSDA\utilities\repDupValWithMean.m'             }
-    {'D:\MATLAB\FSDA\utilities\rescaleFS.m'                     }
-    {'D:\MATLAB\FSDA\utilities\selectdataFS.m'                  }
-    {'D:\MATLAB\FSDA\utilities\setuphelp.m'                     }
-    {'D:\MATLAB\FSDA\utilities\subtightplot.m'                  }
-    {'D:\MATLAB\FSDA\utilities\suplabel.m'                      }
-    {'D:\MATLAB\FSDA\utilities\triu2vec.m'                      }
-    {'D:\MATLAB\FSDA\utilities\upperfracpos.m'                  }
-    {'D:\MATLAB\FSDA\utilities\verLessThanFS.m'                 }
-    {'D:\MATLAB\FSDA\utilities\waitforbuttonpressFS.m'          }
-    {'D:\MATLAB\FSDA\utilities\wraptextFS.m'                    }
-    {'D:\MATLAB\FSDA\utilities\zscoreFS.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\Contents.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\FSColors.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\PoolClose.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\PoolPrepare.m'                   }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\ProgressBar.m'                   }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\cabc.m'                          }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\cascade.m'                       }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\chkinputM.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\chkinputR.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\chkinputRB.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\chkoptions.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\clickableMultiLegend.m'          }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\closereqFS.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\docrootFS.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\dsxy2figxy.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\existFS.m'                       }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\findDir.m'                       }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\findFile.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\ginputFS.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\isfunction.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\openExampleFS.m'                 }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\openMatlabFileFromHTML.m'        }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\position.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\Contents.m'            }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\evalmxdom.m'           }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\m2mxdom.m'             }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\mxdom2simplehtml.xsl'  }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\privateFS\supplyDefaultOptions.m'}
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\quickselectFS.m'                 }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\removeExtraSpacesLF.m'           }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\repDupValWithMean.m'             }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\rescaleFS.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\selectdataFS.m'                  }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\setuphelp.m'                     }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\subtightplot.m'                  }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\suplabel.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\triu2vec.m'                      }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\upperfracpos.m'                  }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\verLessThanFS.m'                 }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\waitforbuttonpressFS.m'          }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\wraptextFS.m'                    }
+    {'D:\MATLAB\FSDAgit\FSDA\utilities\zscoreFS.m'                      }
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>findFile with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
-    find the location of findFile.m<div class="programlisting"><div class="codeinput"><pre class="matlab-code">FullPath=which('findFile');
+    find the location of findFile.m<div class="programlisting"><div class="codeinput"><pre class="matlab-code">FullPath=which('addFSDA2path');
 %extract the root directory of FSDA
-root=FullPath(1:strfind(FullPath,'FSDA')+3);
+root=fileparts(FullPath);
 %list the content of the directory under FSDA named 'graphics'
 list = findFile(root,'InclDir','graphics')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>list the content of the directory under FSDA named 'graphics'
      and exclude all those which start with res

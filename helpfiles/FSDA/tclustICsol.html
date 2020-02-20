@@ -6,18 +6,18 @@
    above a certain threshold. For each tentative solution the program
    checks the adjacent values of c for which the solution is stable. A
    matrix with adjusted Rand indexes is given for the extracted solutions.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICsol.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustICsol(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>)</code></span>Plot of first two best solutions for Geyser data.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustICsol.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustICsol(<a class="intrnllnk" href="#inputarg_IC"><code>IC</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot of first two best solutions for Geyser data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
-out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
+outIC=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
 % Plot first two best solutions using as Information criterion MIXMIX
 disp('Best solutions using MIXMIX')
-[outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
-disp(outMIXMIX.MIXMIXbs)</pre></div></div><pre class="codeoutput">k=1
+[out]=tclustICsol(outIC,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',2);
+disp(out.MIXMIXbs)</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
 k=5
 Best solutions using MIXMIX
-    [3]    [ 4]    [1&times;7 double]    [1]    'true'    
-    [4]    [32]    [1&times;8 double]     []    'spurious'
+    {[3]}    {[ 4]}    {1&times;7 double}    {[       1]}    {'true'    }
+    {[4]}    {[32]}    {1&times;8 double}    {0&times;0 double}    {'spurious'}
 
 </pre><a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICsol_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICsol_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data: compare first 3 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
      Data generation<div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
@@ -30,31 +30,31 @@ n=150;
 v=2;
 % Imposed average overlap
 BarOmega=0.04;
-out=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
+outMS=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
 % data generation given centroids and cov matrices
-[Y,id]=simdataset(n, out.Pi, out.Mu, out.S);
+[Y,id]=simdataset(n, outMS.Pi, outMS.Mu, outMS.S);
 % Computation of information criterion
-out=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',200);
+outIC=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',200);
 % Plot first 3 best solutions using as Information criterion MIXMIX
 disp('Best 3 solutions using MIXMIX')
-[outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);
+[outMIXMIX]=tclustICsol(outIC,'whichIC','MIXMIX','plots',1,'NumberOfBestSolutions',3);
 disp(outMIXMIX.MIXMIXbs)
 disp('Best 3 solutions using CLACLA')
-[outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
+[outCLACLA]=tclustICsol(outIC,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3);
 disp(outCLACLA.CLACLAbs)</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
 k=5
 Best 3 solutions using MIXMIX
-    [3]    [ 8]    [1&times;6 double]    [1&times;2 double]    'true'    
-    [2]    [16]    [1&times;5 double]    [         4]    'true'    
-    [4]    [ 4]    [1&times;8 double]              []    'spurious'
+    {[3]}    {[ 8]}    {1&times;6 double}    {1&times;2 double}    {'true'    }
+    {[2]}    {[16]}    {1&times;5 double}    {[       4]}    {'true'    }
+    {[4]}    {[ 4]}    {1&times;8 double}    {0&times;0 double}    {'spurious'}
 
 Best 3 solutions using CLACLA
-    [2]    [16]    [1&times;5 double]    [1&times;2 double]    'true'    
-    [3]    [ 8]    [1&times;7 double]    [         1]    'true'    
-    [4]    [64]    [1&times;2 double]    [1&times;0 double]    'spurious'
+    {[2]}    {[16]}    {1&times;5 double}    {1&times;2 double}    {'true'    }
+    {[3]}    {[ 8]}    {1&times;7 double}    {[       1]}    {'true'    }
+    {[4]}    {[64]}    {1&times;2 double}    {1&times;0 double}    {'spurious'}
 
 </pre><a href='http://rosa.unipr.it/fsda/tclustICsol.html#Example_2'><img vspace="5" hspace="5" src="images\tclustICsol_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICsol_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_06.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_07.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_09.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_10.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsol_11.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input option kk.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 out=tclustIC(Y,'cleanpool',false,'plots',1,'alpha',0.1,'whichIC','CLACLA','kk',[2 3 4 6])
@@ -212,7 +212,16 @@ disp(outCLACLCA.CLACLAbsari)</pre></div></div></p></div></div></div></div>
                  entry of this column are the ARI indexes between c=3 and
                  c=7
                Remark: field ARICLAtable is present only if 'whichIC'
-               is 'ALL' or 'whichIC' is 'CLACLA'</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
+               is 'ALL' or 'whichIC' is 'CLACLA'</p></p></td></tr><tr valign="top"><td><code>MIXCLAbsIDX</code></td><td><p>matrix of dimension n-by-NumberOfBestSolutions
+               containing the allocations for MIXCLA associated with the best
+               NumberOfBestSolutions. This field is present only if 'whichIC'
+               is 'ALL' or 'whichIC' is 'MIXCLA'.</p></td></tr><tr valign="top"><td><code>MIXMIXbsIDX</code></td><td><p>matrix of dimension n-by-NumberOfBestSolutions
+               containing the allocations for MIXXMIX associated with the best
+               NumberOfBestSolutions. This field is present only if 'whichIC'
+               is 'ALL' or 'whichIC' is 'MIXMIX'.</p></td></tr><tr valign="top"><td><code>CLACLAbsIDX</code></td><td><p>matrix of dimension n-by-NumberOfBestSolutions
+               containing the allocations for CLACLA associated with the best
+               NumberOfBestSolutions. This field is present only if 'whichIC'
+               is 'ALL' or 'whichIC' is 'CLACLA'.</p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
                    components) which have been considered. This  vector
                    is equal to input optional argument kk if kk had been
                    specified else it is equal to 1:5.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the

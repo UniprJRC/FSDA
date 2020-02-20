@@ -21,6 +21,7 @@ disp(max(max(eigenvalues))/min(min(eigenvalues)))
 disp('Ratio between largest and smallest restricted eigenvalues')
 disp(max(max(out))/min(min(out)))</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Second example of eigenvalue restriction.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">eigenvalues=abs(randn(3,4));
 eigenvalues(:,3)=0;
+niini=[30;40;20;10];
 restreigen(eigenvalues,niini,1.1)
 eigenvalues(:,3)=1;
 restreigen(eigenvalues,niini,1.1)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare speed.</li></span></a></span></h3><div class="collapse"><p>

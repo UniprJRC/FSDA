@@ -190,19 +190,21 @@ X=fishery(:,1);
                               REMARK: vector bsbsteps must contain numbers from init to
                n. if min(bsbsteps)&lt;init a warning message will appear on
                the screen.</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bsbsteps',[100 200] stores the unis forming
 </code>               subset in steps 100 and 200.</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nsimul" class="clearfix"></div><h3 id="input_argument_namevalue_nsimul" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsimul</code> &#8212;number of random starts.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value is200.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsimul',300
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If nocheck is equal to 1 no check is performed on
-               matrix y and matrix X. Notice that y and X are left
-               unchanged. In other words the additioanl column of ones for
-               the intercept is not added. As default nocheck=0. The
-               controls on h, alpha and nsamp still remain
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;Constrained search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>r x 1 vector which contains the list of units which are
-               forced to join the search in the last r steps. The default
-               is constr=''.  No constraint is imposed
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no
+               check is performed on matrix y and matrix X. Notice that y
+               and X are left unchanged. In other words the additioanl
+               column of ones for the intercept is not added. As default
+               nocheck=0. The controls on h, alpha and nsamp still remain.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;Constrained search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>r x 1 vector which contains the
+               list of units which are forced to join the search in the
+               last r steps. The default is constr=''.  No constraint is
+               imposed.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
 </code>               the subset in the last 10 steps</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If equal to one a plot of
                random starts minimum deletion residual appears  on the
                screen with 1%, 50% and 99% confidence bands else (default)
@@ -211,6 +213,7 @@ X=fishery(:,1);
                to control a series of options in this plot and in order to
                connect it dynamically to the other forward plots it is
                necessary to use function mdrrsplot.</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;use parallel computing and parfor.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks
                if the Parallel Computing Toolbox is installed and

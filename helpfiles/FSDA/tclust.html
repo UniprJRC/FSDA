@@ -30,29 +30,29 @@ plots.cmap = autumn;
 out=tclust(Y,3,0.1,10000,'plots',plots);
 title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.27 seconds 
+Total estimated time to complete tclust:  1.33 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 16.6667%
+Warning: Number of subsets without convergence equal to 20.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.98 seconds 
+Total estimated time to complete tclust:  1.54 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 16.6667%
+Warning: Number of subsets without convergence equal to 19%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.64 seconds 
+Total estimated time to complete tclust:  0.82 seconds 
 ------------------------------
 Warning: Number of subsets without convergence equal to 18.6667%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.14 seconds 
+Total estimated time to complete tclust:  1.60 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 15.6667%
+Warning: Number of subsets without convergence equal to 20.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.59 seconds 
+Total estimated time to complete tclust:  0.83 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 17.6667%
+Warning: Number of subsets without convergence equal to 21.3333%
 ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.76 seconds 
+Total estimated time to complete tclust:  0.89 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 21.6667%
+Warning: Number of subsets without convergence equal to 25.3333%
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#Example_2'><img vspace="5" hspace="5" src="images\tclust_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=20;
 [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
@@ -74,17 +74,17 @@ restrfactor=1;
 out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
 title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
 cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.53 seconds 
+Total estimated time to complete tclust:  1.98 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 20.2%
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.32 seconds 
-------------------------------
-Warning: Number of subsets without convergence equal to 26.8%
+Warning: Number of subsets without convergence equal to 18.6%
 ClaLik with untrimmed units selected using crisp criterion
 Total estimated time to complete tclust:  1.49 seconds 
 ------------------------------
-Warning: Number of subsets without convergence equal to 26.2%
+Warning: Number of subsets without convergence equal to 23.6%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  2.59 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 25.4%
 </pre><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclust_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
@@ -469,12 +469,12 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1)</pre></div><
                parameter cshape the constraint to apply to the shape
                matrices.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to the shape matrices.</span></a><span class="example_desc">scalar greater |               equal 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is
-               'deter'.</p> <p>
-               When restrtype is deter the default value of the "shape" constraint (as
-               defined below) applied to each group is fixed to
-               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
-               affine equivariant. In other words, the decomposition or the
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to the shape matrices.</span></a><span class="example_desc">scalar greater |               equal 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is 'deter'.</p> <p>
+               When restrtype is deter the default value of the "shape"
+               constraint (as defined below) applied to each group is
+               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+               (virtually) affine equivariant. In other words, the
+               decomposition or the
                $j$-th scatter matrix $\Sigma_j$ is
                </p>\[
                \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
@@ -531,15 +531,15 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1)</pre></div><
                        counterparts of idx, muopt, sigmaopt and siz.</p></p></td></tr><tr valign="top"><td><code>MIXMIX</code></td><td><p><p>BIC which uses parameters estimated using the
                        mixture loglikelihood and the maximized mixture
                        likelihood as goodness of fit measure.</p> <p>
-                       Remark: this output is present just if input option
+                       Remark: this output is present only  if input option
                        mixt is &gt;0.</p></p></td></tr><tr valign="top"><td><code>MIXCLA</code></td><td><p><p>BIC which uses the classification likelihood based on
                        parameters estimated using the mixture likelihood
                        (In some books this quantity is called ICL).</p> <p>
-                       Remark: this output is present just if input option
+                       Remark: this output is present only if input option
                        mixt is &gt;0.</p></p></td></tr><tr valign="top"><td><code>CLACLA</code></td><td><p><p>BIC which uses the classification likelihood based on
                        parameters estimated using the classification likelihood.</p> <p>
-                       Remark: this output is present just if input option
-                       mixt is =0.</p></p></td></tr><tr valign="top"><td><code>notconver</code></td><td><p>Scalar. Number of subsets without convergence</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>k-by-1 vector containing the units forming initial
+                       Remark: this output is present only if input option
+                       mixt is =0.</p></p></td></tr><tr valign="top"><td><code>notconver</code></td><td><p>Scalar. Number of subsets without convergence.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>k-by-1 vector containing the units forming initial
                        subset associated with muopt.</p></td></tr><tr valign="top"><td><code>obj</code></td><td><p><p>Scalar. Value of the objective function which is minimized
                        (value of the best returned solution).</p> <p>
                        If input option mixt &gt;1 the likelihood which is
@@ -562,8 +562,8 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1)</pre></div><
                        cluster sizes.</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>Scalar. Number of observations that have determined the
                        centroids (number of untrimmed units).</p></td></tr><tr valign="top"><td><code>fullsol</code></td><td><p>Column vector of size nsamp which contains the
                        value of the objective function at the end of the
-                       iterative process for each extracted subsample.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if option
-                       Ysave is set to 1.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C     : Indexes of extracted subsamples.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
+                       iterative process for each extracted subsample.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present only
+                       if option Ysave is set to 1.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;C     : Indexes of extracted subsamples.</span></a><span class="example_desc"><code> </code>Matrix</span></span></h3><div class="collapse"><p>
                     Matrix of size nsamp-by-(v+1)*k containing (in the
                     rows) the indices of the subsamples extracted for
                     computing the estimate.</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>

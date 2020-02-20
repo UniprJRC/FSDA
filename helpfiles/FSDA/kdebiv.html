@@ -12,7 +12,10 @@ title('A filled contour plot obtained using colormap ''summer''');
 hold on
 plot(X(:,1),X(:,2),'rx')</pre></div></div><a href='http://rosa.unipr.it/fsda/kdebiv.html#Example_1'><img vspace="5" hspace="5" src="images\kdebiv_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>An example using colormap.</li></span></a></span></h3><div class="collapse"><p>
        A standard (not filled) contour plot obtained using colormap 
-       'cmap' = 'hot'.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">figure;
+       'cmap' = 'hot'.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+X = [X1 ; X2];
+figure;
 F2 = kdebiv(X,'cmap','hot');
 title('A standard (not filled) contour plot obtained using colormap ''hot''');
 % A filled contour plot with personalized colormap: note the last
@@ -28,7 +31,10 @@ cmap =   [0, 0, 0.3 ; 0, 0, 0.4 ;  0, 0, 0.5 ; 0, 0, 0.6 ;  0, 0, 0.8 ; 0, 0, 1.
 F3 = kdebiv(X,'cmap',cmap);
 title('A filled contour plot with personalized colormap and data point superimposed');
 % just to position the figures in "cascade".
-cascade;</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Surf and mesh plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
+cascade;</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Surf and mesh plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+X = [X1 ; X2];
+close all;
 figure;
 F4 = kdebiv(X,'contourtype','surf');
 figure;
@@ -37,14 +43,20 @@ figure;
 F6 = kdebiv(X,'contourtype','mesh');
 figure;
 F7 = kdebiv(X,'cmap',summer,'contourtype','mesh');
-cascade;</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Test option 'method'.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">[F,Xi,bw]      = kdebiv(X,'pdfmethod','fsda');
+cascade;</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Test option 'method'.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+X = [X1 ; X2];
+[F,Xi,bw]      = kdebiv(X,'pdfmethod','fsda');
 disp(['fsda: estimated bandwidth over x axis is ' num2str(bw(1))]);
 disp(['fsda: estimated bandwidth over y axis is ' num2str(bw(2))]);
 if ~verLessThan('matlab','9.0')
 [F2,Xi2,bw2] = kdebiv(X,'pdfmethod','matlab');
 disp(['matlab (ksdensity): estimated bandwidth over x axis is ' num2str(bw2(1))]);
 disp(['matlab (ksdensity): estimated bandwidth over y axis is ' num2str(bw2(2))]);
-end</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>test option 'method', with plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
+end</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>test option 'method', with plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X1 = [0+.5*randn(150,1)   5+2.5*randn(150,1)];
+X2 = [1.75+.25*randn(60,1) 8.75+1.25*randn(60,1)];
+X = [X1 ; X2];
+close all;
 figure
 [F2,Xi2,bw2] = kdebiv(X,'cmap','gray','pdfmethod','fsda');
 hold on

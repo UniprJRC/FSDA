@@ -57,12 +57,29 @@ model.lshift=0;             % no level shift
 out=LTSts(y,'model',model,'dispresults',true);
 close all
 % Plot real and fitted values
-plot(y);
+plot(y,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=1, G=0, $\delta_1=0$'};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Model with linear trend and six harmonics for seasonal component.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Model with linear trend and six harmonics for seasonal component.</li></span></a></span></h3><div class="collapse"><p>
+     Load airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
 model.seasonal=6;           % six harmonics
@@ -70,13 +87,30 @@ model.lshift=0;             % no level shift
 out=LTSts(y,'model',model);
 close all
 % Plot real and fitted values
-plot(y);
+plot(y,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=6, G=0, $\delta_1=0$'};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, two harmonics for seasonal component and
-     varying amplitude using a linear trend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
+     varying amplitude using a linear trend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
 model.seasonal=102;         % two harmonics with time varying seasonality
@@ -84,13 +118,30 @@ model.lshift=0;             % no level shift
 out=LTSts(y,'model',model);
 close all
 % Plot real and fitted values
-plot(y);
+plot(y,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=2, G=1, $\delta_1=0$'};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with linear trend, six harmonics for seasonal component and
-     varying amplitude using a linear trend).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
+     varying amplitude using a linear trend).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
 model.seasonal=106;         % six harmonics with linear time varying seasonality
@@ -99,14 +150,31 @@ model.lshift=0;             % no level shift
 out=LTSts(y,'model',model);
 close all
 % Plot real and fitted values
-plot(y);
+plot(y,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 numpar = {'model parameters:' , 'A=1, B=6, G=1, $\delta_1=0$'};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with upward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, six harmonics for seasonal component and
-     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yLS=y;
+     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+yLS=y;
 yLS(55:end)=yLS(55:end)+130;
 model=struct;
 model.trend=1;              % linear trend
@@ -116,16 +184,33 @@ model.lshift=13;            % impose level shift
 out=LTSts(yLS,'model',model);
 close all
 % Plot real and fitted values
-plot(yLS);
+plot(yLS,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1&gt;0$.
 str=strcat('A=1, B=1, G=0, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Contaminated time series with downward level shift.</li></span></a></span></h3><div class="collapse"><p>
      Model with linear trend, six harmonics for seasonal component and
-     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">yLS=y;
+     varying amplitude using a linear trend).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+yLS=y;
 yLS(35:end)=yLS(35:end)-300;
 model=struct;
 model.trend=1;              % linear trend
@@ -135,14 +220,31 @@ model.lshift=13;
 out=LTSts(yLS,'model',model);
 close all
 % Plot real and fitted values
-plot(yLS);
+plot(yLS,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1&gt;0$.
 str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
-title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with an explanatory variable using log-transformed series.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=log(y);
+title(gca,numpar,'interpreter','LaTeX','FontSize',16);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Model with an explanatory variable using log-transformed series.</li></span></a></span></h3><div class="collapse"><p>
+     Load airline data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+y1=log(y);
 % Model with linear trend, six harmonics for seasonal component and
 % varying amplitude using a linear trend).
 model=struct;
@@ -154,9 +256,9 @@ model.X=randn(length(y),1);
 out=LTSts(y1,'model',model);
 close all
 % Plot real and fitted values
-plot(y1);
+plot(y1,'Linewidth',1.5);
 hold('on')
-plot(out.yhat,'red')
+plot(out.yhat,'r--','Linewidth',1.5)
 legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
 % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1&gt;0$.
 str=strcat('A=1, B=6, G=1, $\delta_1=0$');
@@ -205,7 +307,21 @@ title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
 % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LTSts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
-     proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+     proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+close all
 y1=y(:);
 y1(68:end)=y1(68:end)+1300;
 y1(67)=y1(67)-600;
@@ -234,7 +350,21 @@ title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize
 % generate the wedgeplot
 % wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\LTSts_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
-     other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">y1=y(:);
+     other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+y1=y(:);
 y1(50:55)=y1(50:55)-300;
 y1(68:end)=y1(68:end)-700;
 y1(70:75)=y1(70:75)+300;
@@ -277,7 +407,7 @@ model.lshift    = 13;
 % LTSts
 out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true);
 out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true);
-% the wedgeplot with the time series and the detected outliers and 
+% the wedgeplot with the time series and the detected outliers and
 % level shift
 wedgeplot(out4,'extradata',Y4,'titl','P12119085, imports of plants from KN to UK');
 wedgeplot(out5,'extradata',Y5,'titl','P17049075, imports of sugars from UA to LT');
@@ -385,6 +515,8 @@ Level shift for t=32
 Level shift for t=33
 Level shift for t=34
 Level shift for t=35
+IdleTimeout has been reached.
+Parallel pool using the 'local' profile is shutting down.
 Level shift for t=14
 Level shift for t=15
 Level shift for t=16
@@ -467,7 +599,7 @@ Summary of the exceedances
 
 </pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
-</code>,<code> 'intercept',1
+</code>,<code> 'intercept',false
 </code>,<code> 'h',round(n*0.75)
 </code>,<code> 'bdp',0.4
 </code>,<code> 'lts',lts
@@ -561,11 +693,12 @@ Summary of the exceedances
                                model.lshift=0;</p><p>
                Using the notation of the paper RPRH we have A=1, B=1; and
                $\delta_1=0$.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'model', model
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
-               constant term will be fitted (default), else no constant
-               term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that determined the least
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>struct</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
+                 specified as the comma-separated pair consisting of
+                 'Intercept' and either true to include or false to remove
+                 the constant term from the model.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_h" class="clearfix"></div><h3 id="input_argument_namevalue_h" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>h</code> &#8212;The number of observations that determined the least
                trimmed squares estimator.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>h is an integer greater
                than p (number of columns of matrix X including the
                intercept but smaller then n. If the purpose is outlier
@@ -617,6 +750,7 @@ Summary of the exceedances
                The default value of nsamp is 1000;</p> <p>
                                 Remark: if nsamp=0 all subsets will be extracted.</p> <p>
                They will be (n choose p).</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',500
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftolALS" class="clearfix"></div><h3 id="input_argument_namevalue_reftolALS" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftolALS</code> &#8212;Tolerance inside ALS.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Tolerance value of tolerance
                  for the refining steps inside ALS routine. The default
@@ -737,9 +871,10 @@ Summary of the exceedances
                screen in a fully formatted way. The default value of
                dispresults is false.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;store X and y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request that the response
-                vector y and data matrix X are saved into the output
-                structure out. Default is 0, i.e. no saving is done.</p> <p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_yxsave" class="clearfix"></div><h3 id="input_argument_namevalue_yxsave" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>yxsave</code> &#8212;store X and y.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar that is set to 1 to request
+                that the response vector y and data matrix X are saved
+                into the output structure out.</p> <p> 
+                Default is 0, i.e. no saving is done.</p><p>
                       </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'yxsave',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields
 

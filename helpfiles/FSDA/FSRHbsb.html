@@ -60,7 +60,7 @@ disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p><
                bsb=0 then the procedure starts with p units randomly
                chosen else if bsb is not 0 the search will start with
                m0=length(bsb)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
-</code>,<code> 'intercept',1
+</code>,<code> 'intercept',false
 </code>,<code> 'modeltype','har'
 </code>,<code> 'nocheck',1
 </code>,<code> 'msg',1
@@ -75,10 +75,12 @@ disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p><
                The minimum value of init is 0. In this case in the first
                step we just use prior information
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with constant term will be fitted (default),
-               else no constant term will be included.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_modeltype" class="clearfix"></div><h3 id="input_argument_namevalue_modeltype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>modeltype</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>If modeltype is 'arc' (default) than the skedastic function is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
+                 specified as the comma-separated pair consisting of
+                 'Intercept' and either true to include or false to remove
+                 the constant term from the model.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_modeltype" class="clearfix"></div><h3 id="input_argument_namevalue_modeltype" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>modeltype</code> &#8212;Parametric function to be used in the skedastic equation.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p>If modeltype is 'arc' (default) than the skedastic function is
                modelled as follows
                \[
                \sigma^2_i = \sigma^2 (1 + \exp(\gamma_0 + \gamma_1 Z(i,1) +
@@ -106,7 +108,8 @@ disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p><
                scoring algorith will be used.</p> <p>
                               REMARK: the grid search has only been implemented when
                there is just one explantory variable which controls
-               heteroskedasticity
+               heteroskedasticity.</p><p>
+
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'gridsearch',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;units which are forced to join the search in the last r steps.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p>r x 1 vector. The default is constr=''.  No constraint is imposed
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1 6 3]

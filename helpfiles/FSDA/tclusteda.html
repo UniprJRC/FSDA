@@ -100,7 +100,30 @@ RandNumbForNini=rand(k,nsampscalar);
 out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
 100%[===================================================]
 </pre><a href='http://rosa.unipr.it/fsda/tclusteda.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\tclusteda_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclusteda_11.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclusteda using determinant constraint.</li></span></a></span></h3><div class="collapse"><p>
-     Search for spherical clusters.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">cshape=1
+     Search for spherical clusters.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% 5 groups and 5 variables
+rng(100,'twister')
+n1=100;
+n2=80;
+n3=50;
+n4=80;
+n5=70;
+v=5;
+Y1=randn(n1,v)+5;
+Y2=randn(n2,v)+3;
+Y3=rand(n3,v)-2;
+Y4=rand(n4,v)+2;
+Y5=rand(n5,v);
+group=ones(n1+n2+n3+n4+n5,1);
+group(n1+1:n1+n2)=2;
+group(n1+n2+1:n1+n2+n3)=3;
+group(n1+n2+n3+1:n1+n2+n3+n4)=4;
+group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
+close all
+Y=[Y1;Y2;Y3;Y4;Y5];
+n=size(Y,1);
+% Set number of groups
+k=5;
+cshape=1
 out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter','cshape',cshape);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example of use of plots as a structure with field ylimy.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
 Y=swiss_banknotes.data;
 [n,v]=size(Y);
@@ -349,10 +372,10 @@ plots.ylimy=ylimy;
                eigen implies restriction on the eigenvalues while deter
                implies restriction on the determinants.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is
-                   'deter'.</p> <p>
-               When restrtype is deter the default value of the "shape" constraint (as
-               defined below) applied to each group is fixed to
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works
+                   is 'restrtype' is 'deter'.</p> <p>
+               When restrtype is deter the default value of the "shape" 
+               constraint (as defined below) applied to each group is fixed to
                $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
                affine equivariant. In other words, the decomposition or the
                $j$-th scatter matrix $\Sigma_j$ is

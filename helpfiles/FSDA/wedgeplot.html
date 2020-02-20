@@ -107,7 +107,46 @@ ans =
   Use GET to show all properties
 
 </pre><a href='http://rosa.unipr.it/fsda/wedgeplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\wedgeplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
-     subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RES" class="clearfix"> </div> <h3 id="input_argument_RES" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RES</code> &#8212; absolute scaled residuals. </span>  </a><span class="example_desc">Matrix or structure.</span></span></h3> <div class="collapse"> <p><p>Matrix of size T-by-(T-lshift) containing scaled residuals
+     subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
+%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
+y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
+118  126  150  180  196  188  233  277  301  318  342  391    % Feb
+132  141  178  193  236  235  267  317  356  362  406  419    % Mar
+129  135  163  181  235  227  269  313  348  348  396  461    % Apr
+121  125  172  183  229  234  270  318  355  363  420  472    % May
+135  149  178  218  243  264  315  374  422  435  472  535    % Jun
+148  170  199  230  264  302  364  413  465  491  548  622    % Jul
+148  170  199  242  272  293  347  405  467  505  559  606    % Aug
+136  158  184  209  237  259  312  355  404  404  463  508    % Sep
+119  133  162  191  211  229  274  306  347  359  407  461    % Oct
+104  114  146  172  180  203  237  271  305  310  362  390    % Nov
+118  140  166  194  201  229  278  306  336  337  405  432 ]; % Dec
+% Source:
+% http://datamarket.com/data/list/?q=provider:tsdl
+y=(y(:));
+% Add a level shift contamintion plus some outliers.
+y(50:55)=y(50:55)-300;
+y(68:end)=y(68:end)-700;
+y(70:75)=y(70:75)+300;
+y(90:90)=y(90:90)+300;
+% Create structure specifying model
+model=struct;
+model.trend=2;              % quadratic trend
+model.s=12;                 % monthly time series
+model.seasonal=204;         % number of harmonics
+model.lshift=40;            % position where to start monitoring level shift
+model.X='';
+% Create structure lts specifying lts options
+lts=struct;
+lts.bestr=20; % number of best solutions to bring to full convergence
+% h = dimension of the h subset (75 per cent of the data, bdp=0.25)
+[out, varargout]=LTSts(y,'model',model,'nsamp',500,...
+'lts',lts,'plots',0,'msg',0);
+% Create the double wedge plot.
+% Remember to remove the last column of the matrix of the residuals
+% obtained for each level shift position if you want to avoid the
+% top orange band (just execute RES(:,64)=[] before line 258).
+wedgeplot(out,'extradata',[y out.yhat],'transpose',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RES" class="clearfix"> </div> <h3 id="input_argument_RES" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RES</code> &#8212; absolute scaled residuals. </span>  </a><span class="example_desc">Matrix or structure.</span></span></h3> <div class="collapse"> <p><p>Matrix of size T-by-(T-lshift) containing scaled residuals
                 (in absolute value) for all the T units of the original time
                 series monitored in steps lshift+1, lshift+2, ..., T-lshift,
                 where lshift+1 is the first tentative level shift position,
@@ -167,8 +206,8 @@ ans =
                 series. This axis could be either the horizontal or vertical
                 depending on the option transpose. The default label is 'Index
                 number'.</p> <p>
-                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code></code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title (default: 'Double wedge
-                plot').</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code></code></p></div></div><div class="expandableContent"><div id="inputarg_titl" class="clearfix"></div><h3 id="input_argument_namevalue_titl" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>titl</code> &#8212;Title.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>A label for the title 
+                (default: 'Double wedge plot').</p> <p>
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'titl','Plot with two wedges'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_FontSize" class="clearfix"></div><h3 id="input_argument_namevalue_FontSize" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>FontSize</code> &#8212;Font size of the labels.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls the font
                 size of the labels of the axes and of the labels inside the
@@ -180,4 +219,4 @@ ans =
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_hf" class="clearfix"></div><h3 id="output_argument_hf" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hf</code> &#8212;handle to the figure.</span></a><span class="example_desc">Graphics handle</span></span></h3><div class="collapse"><p> Handle to the figure
                which has just been created.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
- "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'antenna/ref/plot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="matlab:web(fullfile(docroot,'deeplearning/ref/plot.html'))" itemprop="url"><span itemprop="name"><code>plot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

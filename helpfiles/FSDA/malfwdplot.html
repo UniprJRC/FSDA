@@ -24,13 +24,35 @@ m0=20;
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',1,'init',30);
 % Produce monitoring MD plot with all the default options
-malfwdplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p>
-     Initialize structure standard<div class="programlisting"><div class="codeinput"><pre class="matlab-code">standard=struct;
+malfwdplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/malfwdplot.html#Example_1'><img vspace="5" hspace="5" src="images\malfwdplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\malfwdplot_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+% Initialize structure standard
+standard=struct;
 standard.LineStyle={'-';'-.';':'};
 % Specify the line width
 standard.LineWidth=0.5;
-malfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p>
-     Initialize structure fground<div class="programlisting"><div class="codeinput"><pre class="matlab-code">fground = struct;
+malfwdplot(out,'standard',standard)</pre></div></div><a href='http://rosa.unipr.it/fsda/malfwdplot.html#Example_2'><img vspace="5" hspace="5" src="images\malfwdplot_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\malfwdplot_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+% Initialize structure fground
+fground = struct;
 % Specify which trajectories have to be highlighted
 fground.funit=[2 5 20 23 35 45];
 % Specify the steps in which labels have to be put
@@ -40,7 +62,18 @@ fground.flabstep=[n/2 n*0.75 n+0.5];;
 fground.LineWidth=3;
 % Produce a monitoring MD plot in which labels are put for units
 % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
-malfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">bground = struct;
+malfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure bground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+bground = struct;
 % Specify a threshold to define the "background" trajectories
 bground.bthresh=2;
 % Trajectories whose MD is always between -btresh and +bthresh
@@ -48,6 +81,17 @@ bground.bthresh=2;
 bground.bstyle='faint';
 malfwdplot(out,'bground',bground)</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
        Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is done only once using a rectangular selection tool)
+n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
 malfwdplot(out,'databrush',1)
 %   An equivalent statement is
 databrush=struct;
@@ -72,10 +116,32 @@ fground.LineWidth=3;
 malfwdplot(out,'fground',fground)</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
        Gives the user the possibility of clicking on the different points
        and have information about the unit selected, the step of entry
-       into the subset and the associated label<div class="programlisting"><div class="codeinput"><pre class="matlab-code">malfwdplot(out,'datatooltip',1);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip personalized.</li></span></a></span></h3><div class="collapse"><p>
+       into the subset and the associated label<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+malfwdplot(out,'datatooltip',1);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip personalized.</li></span></a></span></h3><div class="collapse"><p>
      Gives the user the possibility of clicking on the different points
      and have information about the unit selected, the step of entry
-     into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">datatooltip = struct;
+     into the subset and the associated label.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+datatooltip = struct;
 % In this example the style of the datatooltip is 'datatip'. Click on a
 % trajectory when the resfwdplot is displayed.
 %
@@ -99,6 +165,17 @@ malfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div>
 % of that step. A right click will terminate the exercise.
 % To activate this modality, we set the field SubsetLinesColor,
 % which specifies the color used to highlight the trajectories.
+n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
 datatooltip = struct;
 datatooltip.SubsetLinesColor = FSColors.purplish.RGB;
 malfwdplot(out,'datatooltip',datatooltip);
@@ -109,33 +186,99 @@ datatooltip = struct;
 datatooltip.SubsetLinesColor = 999;
 malfwdplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   (brushing is done only once using a rectangular selection tool)
+n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
 malfwdplot(out,'databrush',1)
 %   An equivalent statement is
 databrush=struct;
 databrush.selectionmode='Rect';
 malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
        Example of the use of brush using a rectangular selection tool and
-       a cyan colour.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       a cyan colour.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+databrush=struct;
 databrush.selectionmode='Rect';
 databrush.FlagColor='c';
 malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
-       Example of the use of brush using multile selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       Example of the use of brush using multile selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+databrush=struct;
 databrush.selectionmode='Brush';
 malfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
        Example of the use of brush using lasso selection tool and fleur
-       pointer.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       pointer.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+databrush=struct;
 databrush.selectionmode='lasso';
 databrush.Pointer='fleur';
 malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
        Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%    Labels are added for the brushed units. Persistent labels appear in the plot which has
 %   been brushed
+n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
 databrush=struct;
 databrush.selectionmode='Rect';
 databrush.Label='on';
 databrush.RemoveLabels='off';
 malfwdplot(out,'databrush',databrush)</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
        Example of the use of persistent non cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
-       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       brushing action is performed previous highlightments are removed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+databrush=struct;
 databrush.selectionmode='Rect';
 databrush.persist='off';
 databrush.Label='on';
@@ -143,7 +286,18 @@ databrush.RemoveLabels='off';
 malfwdplot(out,'databrush',databrush);</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
        Example of the use of persistent cumulative brush.</li></span></a></span></h3><div class="collapse"><p> Every time a
        brushing action is performed current highlightments are added to
-       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">databrush=struct;
+       previous highlightments<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+p=4;
+state1=141243498;
+randn('state', state1);
+Y=randn(n,p);
+kk=[1:10];
+Y(kk,:)=Y(kk,:)+4;
+[fre]=unibiv(Y);
+m0=20;
+bs=fre(1:m0,1);
+[out]=FSMeda(Y,bs,'plots',1,'init',30);
+databrush=struct;
 databrush.selectionmode='Rect';
 databrush.persist='on';
 databrush.Label='on';
@@ -477,27 +631,24 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    numbers 1:n will be used for the brushed trajectories.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'label',{'Smith','Johnson','Robert','Stallone'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
-                   is done.</p> <p>
-                   The activation of this option (databrush is a scalar or
-                   a structure) enables the user  to select a set of
-                   trajectories in the current plot and to see them
-                   highlighted in the scatter plot matrix (spm).</p> <p>
-                   If spm does not exist it is automatically created.</p> <p>
-                   In addition, brushed units are automatically highlighted in the
-                   minimum MD plot if it is already open.</p> <p>
-                   Please, note that the window style of the other figures is set
-                   equal to that which contains the monitoring MD
-                   plot. In other words, if the MD plot
-                   is docked all the other figures will be docked too.</p> <p>
-                   DATABRUSH IS A SCALAR.</p> <p>
-                   If databrush is a scalar the default selection tool is
-                   a rectangular brush and it is possible to brush only
-                   once (that is persist='').</p> <p>
-                   DATABRUSH IS A STRUCTURE.</p> <p>
-                   If databrush is a structure, it is possible to use all
+                   is done. The activation of this option 
+                   (databrush is a scalar or a structure) enables the user  
+                   to select a set of trajectories in the current plot and 
+                   to see them highlighted in the scatter plot matrix (spm).</p> <p> 
+                   If spm does not exist it is automatically created. In
+                   addition, brushed units are automatically highlighted
+                   in the minimum MD plot if it is already open. Please,
+                   note that the window style of the other figures is set
+                   equal to that which contains the monitoring MD plot. In
+                   other words, if the MD plot is docked all the other
+                   figures will be docked too. DATABRUSH IS A SCALAR. If
+                   databrush is a scalar the default selection tool is a
+                   rectangular brush and it is possible to brush only once
+                   (that is persist=''). DATABRUSH IS A STRUCTURE. If
+                   databrush is a structure, it is possible to use all
                    optional arguments of function <a href="selectdataFS.html">selectdataFS</a> and the
-                   following fields:</p><p>
-                   -</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>persist</code></td><td><p><p>repeated brushng enabled. Persist is an empty value or a scalar
+                   following fields: -</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>persist</code></td><td><p><p>repeated
+                   brushng enabled. Persist is an empty value or a scalar
                      containing the strings 'on' or 'off'.</p> <p>
                      The default value of persist is '', that is brushing
                      is allowed only once.</p> <p>
@@ -517,12 +668,12 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                      plot matrix the units of the last selected group with
                      the unit row index in matrices X and y. The default
                      value is labeladd='', i.e. no label is added.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'databrush',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p>Cell array of strings of length v containing the labels
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nameY" class="clearfix"></div><h3 id="input_argument_namevalue_nameY" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nameY</code> &#8212;variable labels.</span></a><span class="example_desc">cell array of strings.</span></span></h3><div class="collapse">	<p><p>Cell array of strings of length v containing the labels
                    of the variables of the dataset which will be added to
                    the spmplot after brushing. Cell of strings. If it is
                    empty (default) the sequence Y1, ..., Yv will be used
-                   automatically
-                   </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'PC1', PC2, 'PC3'}
+                   automatically.</p> <p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nameY',{'PC1', PC2, 'PC3'}
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>cell of strings</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;display or save used options.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which
                    controls whether to display or to save
                    as output the options inside structures standard,
@@ -534,7 +685,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    and background)
                    plotopt=malfwdplot(out,'msg',2) saves inside cell plotopt
                    the options which have been used and prints them on the
-                   screen
+                   screen.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single or double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence interval for the horizontal bands.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It can be a vector of different confidence level values,
                    e.g. [0.95,0.99,0.999]. Confidence interval is based on

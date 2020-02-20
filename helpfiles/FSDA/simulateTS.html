@@ -6,12 +6,13 @@
      A time series of 100 observations is simulated from a model which
      contains a linear trend (with slope 1 and intercept 0), no seasonal
      component, no explanatory variables and a signal to noise ratio egual
-     to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(100,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateTS.html#Example_1'><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Same as above, but without homogenizing the y-scale.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close;
+     to 1 (the default).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(100,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateTS.html#Example_1'><img vspace="5" hspace="5" src="images\simulateTS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Same as above, but without homogenizing the y-scale.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close;
 out=simulateTS(100,'plots',1,'samescale',false);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with a linear time varying seasonal component.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
-     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+     egual to 20<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(1)
 model=struct;
 model.trend=[];
 model.trendb=[];
@@ -81,12 +82,38 @@ T=100;
 out=simulateTS(T,'model',model,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateTS.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\simulateTS_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option FileNameOutput.</li></span></a></span></h3><div class="collapse"><p>
      In this example the simulated time series is saved into a file named
      ysimout.txt in the current folder<div class="programlisting"><div class="codeinput"><pre class="matlab-code">FileNameOutput=[pwd filesep 'ysimout.txt'];
+T=100;
 out=simulateTS(T,'FileNameOutput',FileNameOutput);</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option StartDate.</li></span></a></span></h3><div class="collapse"><p>
      Suppose that the inital observation refers to February 2016.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">StartDate=[2016 2];
 % The x axis of the plots contains the dates using format mmm-yyyy
+rng(1)
+model=struct;
+model.trend=2;
+model.trendb=[5,10,-3];
+model.seasonal=102;
+model.seasonalb=100*[2 4 0.1 8 0.001];
+model.signal2noiseratio=10;
+model.lshift=30;
+model.lshiftb=-40000;
+model.X=2;
+model.Xb=[10000 20000];
+T=100;
 out=simulateTS(T,'model',model,'plots',1,'StartDate',StartDate);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateTS.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\simulateTS_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option samescale.</li></span></a></span></h3><div class="collapse"><p>
-     Use a different scale for each panel in the output plot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateTS(T,'model',model,'plots',1,'samescale',false);</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simulated data with linear trend and errors with AR(2) component.</li></span></a></span></h3><div class="collapse"><p>
-     No seasonal component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(100)
+     Use a different scale for each panel in the output plot.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
+model=struct;
+model.trend=2;
+model.trendb=[5,10,-3];
+model.seasonal=102;
+model.seasonalb=100*[2 4 0.1 8 0.001];
+model.signal2noiseratio=10;
+model.lshift=30;
+model.lshiftb=-40000;
+model.X=2;
+model.Xb=[10000 20000];
+T=100;
+out=simulateTS(T,'model',model,'plots',1,'samescale',false);</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simulated data with linear trend and errors with AR(2) component.</li></span></a></span></h3><div class="collapse"><p>
+     No seasonal component.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+rng(100)
 model=struct;
 model.trend=1;
 model.trendb=[5,1000];
@@ -99,8 +126,10 @@ y=out.y;
 % The lines below just work if the econometric toolbox is present
 % The autocorrelation function of y shows just two peaks in
 % correspondence of the first two lags
+if exist('parcorr','file')&gt;0
 figure
-parcorr(out.y)</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of simulation and fitting.</li></span></a></span></h3><div class="collapse"><p>
+parcorr(out.y)
+end</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of simulation and fitting.</li></span></a></span></h3><div class="collapse"><p>
      Simulated data with linear trend, errors with AR(2) component and 1
      explanatory variable.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(100)
 model=struct;
@@ -115,7 +144,7 @@ model.X=X;
 model.Xb=100;
 out=simulateTS(T,'model',model,'plots',1);
 y=out.y;
-% Fit a model with linear trend, AR(3) and the true expl. variable  
+% Fit a model with linear trend, AR(3) and the true expl. variable
 model=struct;
 model.trend=1;
 model.seasonal=0;
@@ -147,16 +176,16 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        and intercept equal to 0.</p></p></td></tr><tr valign="top"><td><code>s</code></td><td><p><p>scalar greater than zero which specifies the
                        length of the seasonal period. For monthly
                        data (default) s=12, for quartely data s=4, ...</p> <p>
-                       The default value of model.s is 12 (that is monthly
-                       data are assumed)</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar (integer specifying number of
+                       The default value of model.s is 12, which is for
+                       monthly data.</p></p></td></tr><tr valign="top"><td><code>seasonal</code></td><td><p><p>scalar. Integer specifying the number of
                         frequencies, i.e. harmonics, in the seasonal
-                        component. Possible values for seasonal are
-                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.</p> <p>
+                        component. Possible values are $1, 2, ..., [s/2]$,
+                        where $[s/2]=floor(s/2)$.</p> <p>
                         For example:</p> <p>
                         if seasonal = 1 (default) we have:</p> <p>
-                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;</p> <p>
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)$;</p> <p>
                         if seasonal = 2 we have:</p> <p>
-                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
+                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin (2 \pi t/s)
                         + \beta_3 \cos(4 \pi t/s) + \beta_4 \sin (4 \pi t/s)$.</p> <p>
                         Note that when $s$ is even the sine term disappears
                         for $j=s/2$ and so the maximum number of
@@ -186,16 +215,15 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                         2 \pi t/s) + 2.3 \sin ( 2 \pi t/s))$.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not contain a seasonal
-                       component.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>scalar or matrix of size T-by-nexpl. If model.X
+                       component.</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>scalar or matrix of size T-by-nexpl. If model.X
                        is a matrix of size T-by-nexpl, it contains the
                        values of nexpl extra covariates which
                        affect y. If model.X is a scalar equal to k,
                        where k=1, 2, ... k explanatory variables using
                        random numbers from the normal distribution are
-                       generated.</p> <p>
-                       If this field is an empty double (default) the
-                       simulated time series will not be affected by
-                       explanatory variables.</p></p></td></tr><tr valign="top"><td><code>Xb</code></td><td><p><p>vector of doubles containing the beta
+                       generated. If this field is an empty double
+                       (default) the simulated time series will not
+                       contain explanatory variables.</p></td></tr><tr valign="top"><td><code>Xb</code></td><td><p><p>vector of doubles containing the beta
                        coefficients for the explanatory variables.</p> <p>
                        For example model.X = 2 and model.Xb = [4,5]
                        generate two additional explanatory variables
@@ -206,7 +234,8 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                        coefficients for the autoregressive component.</p> <p>
                        For example model.ARb = [0.5 -0.2]
                        generates an AR(2) time series of the
-                       kind: $y_t=0.5 y_{t-1} -0.2 y_{t-2}$ + seasonal + lshift + $\epsilon_t$.</p><p>
+                       kind: $y_t = 0.5 y_{t-1} - 0.2 y_{t-2}$ + seasonal
+                       + lshift + $\epsilon_t$.</p><p>
                        If this field is an empty double (default) the
                        simulated time series will not have an
                        autoregressive component.</p></p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater than 0 which specifies the
@@ -298,6 +327,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);</pre></div></div></p>
                    Column vector of length T which contains the irregular
                    component.</p><p>
                    When the signal to noise ratio tends to infinity the
-                   irregular component tends to 0.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
+                   irregular component tends to 0.</p></p></td></tr><tr valign="top"><td><code>model</code></td><td><p>structure. The model used to simulate the time
+                   series.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Rousseeuw, P.J., Perrotta D., Riani M. and Hubert, M. (2018), Robust
  Monitoring of Many Time Series with Application to Fraud Detection,
  "Econometrics and Statistics". [RPRH]</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="LTSts.html" itemprop="url"><span itemprop="name"><code>LTSts</code></span></a></span> | <span itemprop="seealso"><a href="wedgeplot.html" itemprop="url"><span itemprop="name"><code>wedgeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

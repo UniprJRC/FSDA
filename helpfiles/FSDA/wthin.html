@@ -10,8 +10,12 @@ x = [x1 ; x2];
 y = 5*x + 0.9*randn(1100,1);
 b = [ones(1100,1) , x] \ y;
 yhat = [ones(1100,1) , x] * b;
-plot(x,y,'.',x,yhat,'--');
+plot(x,y,'.',x,yhat);
+%x3 = 0.2 + 0.01*randn(1000,1);
+%y3 = 40 + 0.01*randn(1000,1);
+%plot(x,y,'.',x,yhat,'--',x3,y3,'.');
 % thinning over the predicted values
+%[Wt,pretain] = wthin([yhat ; y3], 'retainby','comp2one');
 [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
 figure;
 plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
@@ -19,7 +23,12 @@ drawnow;
 axis manual;
 title('univariate thinning over predicted ols values')
 clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(~Wt))]);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Bi-dimensional thinning.</li></span></a></span></h3><div class="collapse"><p>
-     Same dataset, but thinning is done on the original bi-variate data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">plot(x,y,'.');
+     Same dataset, but thinning is done on the original bi-variate data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x1 = randn(1000,1);
+x2 = 8 + randn(100,1);
+x = [x1 ; x2];
+y = 5*x + 0.9*randn(1100,1);
+b = [ones(1100,1) , x] \ y;
+plot(x,y,'.');
 % thinning over the original bi-variate data
 [Wt2,pretain2] = wthin([x,y]);
 plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
@@ -29,7 +38,12 @@ title('bivariate thinning')
 clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of 'retainby' option.</li></span></a></span></h3><div class="collapse"><p>
      Since the thinning on the original bi-variate data with the default
      retention method ('inverse') removes too many units, let's try with
-     the less conservative 'comp2one' option.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">plot(x,y,'.');
+     the less conservative 'comp2one' option.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x1 = randn(1000,1);
+x2 = 8 + randn(100,1);
+x = [x1 ; x2];
+y = 5*x + 0.9*randn(1100,1);
+b = [ones(1100,1) , x] \ y;
+plot(x,y,'.');
 % thinning over the original bi-variate data
 [Wt2,pretain2] = wthin([x,y], 'retainby','comp2one');
 plot(x(Wt2,:),y(Wt2,:),'k.',x(~Wt2,:),y(~Wt2,:),'r.');
@@ -37,9 +51,13 @@ drawnow;
 axis manual
 clickableMultiLegend(['Retained: ' num2str(sum(Wt2))],['Thinned:   ' num2str(sum(~Wt2))]);
 title('"comp2one" thinning over the original bi-variate data');</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Optional output Xt.</li></span></a></span></h3><div class="collapse"><p>
-     Same dataset, the retained data are also returned using varagout option.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% thinning over the original bi-variate data
+     Same dataset, the retained data are also returned using varagout option.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x1 = randn(1000,1);
+x2 = 8 + randn(100,1);
+x = [x1 ; x2];
+y = 5*x + 0.9*randn(1100,1);
+% thinning over the original bi-variate data
 [Wt2,pretain2,RetUnits] = wthin([x,y]);
-RetUnits</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fishery;
+% disp(RetUnits)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fishery;
 X=fishery.data;
 % some jittering is necessary because duplicated units are not treated
 % in tclustreg: this needs to be addressed

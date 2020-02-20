@@ -83,9 +83,10 @@ covplot(out,'fground',fground,'tag','pl_mycov')</pre></div></div><a href='http:
 </code>,<code> 'fground',fground
 </code>,<code> 'tag','pl_mycov'
 </code>,<code> 'datatooltip',''
-</code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;Appearance of the plot.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which defines the appearance of the plot
-                   in terms of xlim, ylim, axes labels and their font size
-                   style, color of the lines, etc.</p> <p>
+</code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;Appearance of the plot.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Structure which
+                   defines the appearance of the plot in terms of xlim,
+                   ylim, axes labels and their font size style, color of
+                   the lines, etc.</p> <p>
                    The structure contains the following fields:</p><p>
            </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>SizeAxesNum</code></td><td><p>scalar specifying the fontsize of the
                        axes numbers. Default value is 10.</p></td></tr><tr valign="top"><td><code>xlim</code></td><td><p>two elements vector with minimum and maximum of
@@ -127,24 +128,28 @@ covplot(out,'fground',fground,'tag','pl_mycov')</pre></div></div><a href='http:
                        5.</p></p></td></tr><tr valign="top"><td><code>flabstep</code></td><td><p><p>numeric vector which specifies the steps of
                        the search where to put labels for the highlighted
                        trajectories (units). The default is to put the
-                       labels at the initial and final steps of the search, that is fground.flabstep=[m0 n].</p> <p>
+                       labels at the initial and final steps of the
+                       search, that is fground.flabstep=[m0 n].</p> <p>
                        flabstep='' means no label.</p></p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>scalar specifying line width for the
                        highlighted trajectories (units). Default is 1.</p></td></tr><tr valign="top"><td><code>Color</code></td><td><p><p>cell array of strings containing the colors to
                        be used for the highlighted trajectories (units).</p> <p>
-                       If length(scolor)==1 the same color will be used for
-                       all highlighted units.</p><p>
-                       If for example length(scolor)=2 and there are 6 highlighted units,
-                       3 highlighted trajectories appear with selunitcolor{1} and 3 highlighted trajectories with
-                       selunitcolor{2}.</p></p></td></tr><tr valign="top"><td><code>LineStyle</code></td><td><p>cell containing the line type of the highlighted
-                       trajectories.</p></td></tr><tr valign="top"><td><code>fmark</code></td><td><p>scalar controlling whether to plot highlighted
-                       trajectories as markers. If 1 each trajectory is plotted using a different marker
-                       else (default) no marker is used.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fground',fground
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>structure</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Handle of the plot.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the handle of the plot which
-                   is about to be created. The default is to use tag
-                   'pl_cov'. Note that if the program finds a plot which
-                   has a tag equal to the one specified by the user, then
-                   the output of the new plot overwrites the existing one
-                   in the same window else a new window is created.</p> <p>
+                       If length(scolor)==1 the same color will be used
+                       for all highlighted units. If for example
+                       length(scolor)=2 and there are 6 highlighted units,
+                       3 highlighted trajectories appear with
+                       selunitcolor{1} and 3 highlighted trajectories with
+                       selunitcolor{2}.</p></p></td></tr><tr valign="top"><td><code>LineStyle</code></td><td><p>cell containing the line type of
+                                       the highlighted trajectories.</p></td></tr><tr valign="top"><td><code>fmark</code></td><td><p>scalar controlling whether to plot highlighted
+                       trajectories as markers. If 1 each trajectory is
+                       plotted using a different marker else (default) no
+                       marker is used.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fground',fground
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>structure</code></p></div></div><div class="expandableContent"><div id="inputarg_tag" class="clearfix"></div><h3 id="input_argument_namevalue_tag" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>tag</code> &#8212;Handle of the plot.</span></a><span class="example_desc">string.</span></span></h3><div class="collapse">	<p><p>String which identifies the
+                   handle of the plot which is about to be created. The
+                   default is to use tag 'pl_cov'. Note that if the
+                   program finds a plot which has a tag equal to the one
+                   specified by the user, then the output of the new plot
+                   overwrites the existing one in the same window else a
+                   new window is created.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'tag','pl_mycov'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_datatooltip" class="clearfix"></div><h3 id="input_argument_namevalue_datatooltip" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>datatooltip</code> &#8212;Information about the unit selected.</span></a><span class="example_desc">empty value | structure.</span></span></h3><div class="collapse">	<p><p>The default is datatooltip=1.</p> <p>
                    If datatooltip is not empty the user can use the mouse
