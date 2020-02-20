@@ -905,8 +905,8 @@ selmin=min(residuals,[],2);
 % default values for fthresh, bthresh, bstyle, labx and laby.
 if strcmp(out.class,'Sregeda')
     labx= 'Break down point';
-elseif strcmp(out.class,'MDPDeda')
-    labx= 'alpha';
+elseif strcmp(out.class,'MDPDReda')
+    labx= 'Break down point';
 elseif strcmp(out.class,'MMregeda')
     labx= 'Efficiency';
 else
@@ -1131,12 +1131,8 @@ if any(strcmp(fieldnames(out),'class'))
     elseif strcmp(out.class,'Sregeda')
         x=out.bdp;
         out.Un='';
-    elseif strcmp(out.class,'MDPDeda')
-        x=out.alpha;
-% if isfield(out, 'alpha')
-% else
-%     x=out.bdp;
-% end
+    elseif strcmp(out.class,'MDPDReda')
+        x=out.bdp;
         out.Un='';
     end
     
@@ -1144,7 +1140,7 @@ end
 
 plot1=plot(x,residuals,'tag','data_res','LineWidth',standard.LineWidth);
 
-if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDeda')
+if strcmp(out.class,'Sregeda') || strcmp(out.class,'MDPDReda')
     set(gca,'XDir','reverse')
 end
 
@@ -2004,9 +2000,9 @@ end % close options.databrush
                     output_txt{2,1} = ['bdp=' num2str(x1)];
                     output_txt{4,1} = ['weight=' num2str(out.Weights(row,col))];
                     
-                elseif strcmp(out.class,'MPDPeda')
-                    output_txt{2,1} = ['alpha=' num2str(x1)];
-                    
+                elseif strcmp(out.class,'MDPDReda')
+                    output_txt{2,1} = ['bdp=' num2str(x1)];
+                    output_txt{4,1} = ['alpha=' num2str(out.alpha(out.bdp==x1))];
                 else
                     % Add information about the step of the search which is under
                     % investigation or the value of bdp or the value of eff
