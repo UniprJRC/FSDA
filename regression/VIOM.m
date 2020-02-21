@@ -69,10 +69,10 @@ function [out] = VIOM(y,X,dw,varargin)
 %
 % Cook, R.D.,  Holschuh N., and Weisberg S. (1982). A note on an
 %       alternative outlier model, "Journal of the Royal Statistical Society:
-%       Series B (Methodological), Vol. 44, pp. 370-376.
+%       Series B (Methodological)", Vol. 44, pp. 370-376.
 % Thompson, R. (1985), A note on restricted maximum likelihood estimation with
 %       an alternative outlier model, "Journal of the Royal Statistical
-%       Society: Series B (Methodological), Vol. 47, pp. 53-55.
+%       Society: Series B (Methodological)", Vol. 47, pp. 53-55.
 % Gumedze, F.N. (2019), Use of likelihood ratio tests to detect outliers
 %       under the variance shift outlier model, "Journal of Applied
 %       Statistics", Vol. 46, pp. 598-620.
