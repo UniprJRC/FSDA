@@ -176,7 +176,8 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
 %                    containing at least h observations, where (m_1,...,m_p)
 %                    is the MCD location of these observations.
-%            RAW.Y = Data matrix Y. The field is present if option
+%                    This field is present only if there is exact fit.
+%            RAW.Y = Data matrix Y. This field is present only if option
 %                    ysaveRAW was set to 1.
 %        RAW.class = 'mcd'
 %
@@ -209,12 +210,15 @@ function [RAW,REW,varargout] = mcd(Y,varargin)
 %                    is given here.
 %       REW.method = In case of an exact fit, REW.method contains a
 %                    character string containing information about the
-%                    method and about singular subsamples (if any).
+%                    method and about singular subsamples (if any). This
+%                    field is present only if there is exact fit.
 %       REW.plane  = In case of an exact fit, REW.plane contains the
 %                    coefficients of a (hyper)plane
 %                    a_1(x_i1-m_1)+...+a_p(x_ip-m_p)=0
-%                    containing at least h observations, where (m_1,...,m_p)
-%            REW.Y = Data matrix Y. The field is present if option
+%                    containing at least h observations, where
+%                    (m_1,...,m_p). This field is present only if there is
+%                    exact fit.
+%            REW.Y = Data matrix Y. The field is present only if option
 %                    ysaveREW was set to 1.
 %        REW.class = 'mcdr'.
 %

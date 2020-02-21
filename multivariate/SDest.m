@@ -252,14 +252,14 @@ function [out, varargout] = SDest(Y,varargin)
 %                    If input string weight is 'mcd' the weights are 0 or
 %                    1. More precisely the [n/2] associated with the
 %                    smallest [n/2] measure of outlyingness get weight 1
-%            out.Y = Data matrix Y. The field is present if option ysave
+%            out.Y = Data matrix Y. This field is present only if option ysave
 %                    is set to 1.
 %          out.Dir = nsamp-by-v matrix or nsamp-by-v-by-(v+1) array which
 %                    contains for each subset the direction vectors. More in
 %                    details, if jpcorr=0 Dirsave is a nsamp-by-v matrix else
 %                    Dirsave is a 3D array of dimension nsamp-by-v-by-(v+1).
 %                    Remember that in this last case v+1 directions are
-%                    considered for each subset. The field is present only
+%                    considered for each subset. This field is present only
 %                    if option dirsave is set to 1.
 %      out.RstProj = n-by-nsamp matrix or n-by-nsamp-by-(v+1) 3D array
 %                    which contains the robust standardized projection

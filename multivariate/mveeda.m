@@ -103,17 +103,16 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %                   location for each value of bdp
 %         RAW.Cov  = v-by-v-by-length(bdp) 3D array  containing robust estimate of
 %                   covariance matrix for each value of bdp
-%           RAW.Bs = (v+1)-by-length(bdp) matrix containing the units forming best subset
+%           RAW.BS = (v+1)-by-length(bdp) matrix containing the units forming best subset
 %                    for each value of bdp
 %           RAW.MAL= n x length(bdp) matrix containing the estimates of the robust
 %                       Mahalanobis distances (in squared units) for each value of bdp
 %     RAW.Outliers = n x length(bdp) matrix. Boolean matrix containing the list of
 %                    the units declared as outliers for each value of bdp using confidence
 %                    level specified in input scalar conflev
-%      RAW.conflev = Confidence level that was used to declare outliers
-%      RAW.singsub = Number of subsets without full rank. Notice that
+%      RAW.Singsub = Number of subsets without full rank. Notice that
 %                    out.singsub > 0.1*(number of subsamples) produces a
-%                    warning
+%                    warning. 
 %      RAW.Weights = n x 1 vector containing the estimates of the weights.
 %                    These weights determine which are the h observations which have been used to
 %                    compute the final MVE estimates.
@@ -130,16 +129,15 @@ function [RAW,REW,varargout] = mveeda(Y,varargin)
 %      REW.Loc     = The robust location of the data, obtained after reweighting, if
 %                    the RAW.cov  is not singular.  Otherwise the raw MVE center is
 %                    given here.
-%       REW.Cov    = The robust covariance matrix, obtained after reweighting and
+%       REW.Cov    = The sequence of robust covariance matrices, obtained after reweighting and
 %                    multiplying with a finite sample correction factor and an asymptotic
-%                    consistency factor, if the raw MVE is not singular.  Otherwise the
-%                    raw MVE covariance matrix is given here.
-%       REW.cor    = The robust correlation matrix, obtained after reweighting
-%       REW.md     = The distance of each observation to the final,
-%                    reweighted MVE center of the data, relative to the
-%                    reweighted MVE scatter of the data.  These distances allow
-%                    us to easily identify the outliers. If the reweighted MVE
-%                    is singular, RAW.md is given here.
+%                    consistency factor, if the raw MVE is not singular.  
+%         REW.MAL   = n x length(bdp) matrix containing the estimates of the robust
+%                       Mahalanobis distances (in squared units) for each value of bdp
+%      REW.Weights = n x length(bdp) matrix containing the estimates of the weights.
+%                    These weights determine which are the h observations
+%                    which have been used to compute the final MVE
+%                    estimates.
 %     REW.Outliers = A vector containing the list of the units declared as
 %                    outliers after reweighting.
 %            REW.Y = Data matrix Y.
@@ -614,6 +612,8 @@ RAW.Outliers=Outliersraw;
 RAW.h=hh;
 RAW.bdp=bdp;
 RAW.Y=Y;
+RAW.BS=BS;
+RAW.Singsub=Singsub;
 
 REW=struct;
 REW.MAL=MALrew;

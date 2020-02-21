@@ -178,7 +178,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %     out.Sshape   =  v x v matrix with S estimate of the shape matrix
 %     out.Scov     =  v x v matrix with S estimate of the covariance matrix
 %     out.auxscale =  scalar, S estimate of the scale
-%            out.Y = Data matrix Y. The field is present if option ysave
+%            out.Y = Data matrix Y. The field is present only if option ysave
 %                    is set to 1.
 %      out.conflev = scalar, confidence level which has been used
 %           out.md = n x 1 vector containing robust Mahalanobis distances
@@ -236,7 +236,7 @@ function [out , varargout] = MMmult(Y,varargin)
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
-    [outMM]=MMmult(Y,'plots',1);
+    [out]=MMmult(Y,'plots',1);
 %}
 
 %{

@@ -145,7 +145,7 @@ function [out , varargout] = Smult(Y,varargin)
 %                    out.singsub > 0.1*(number of subsamples) produces a
 %                    warning
 %      out.weights = n x 1 vector containing the estimates of the weights
-%            out.Y = Data matrix Y. The field is present if option ysave
+%            out.Y = Data matrix Y. The field is present only if option ysave
 %                    is set to 1.
 %        out.class = 'Smult'
 %
@@ -463,7 +463,7 @@ end
 if options.ysave
     out.Y = Y;
 end
-
+out.singsub=singsub;
 end
 
 % -------------------------------------------------------------------

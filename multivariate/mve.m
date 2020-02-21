@@ -126,7 +126,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                    These weights determine which are the h observations are used to
 %                    compute the final MVE estimates.
 %            RAW.h = number of observations which have determined MVE.
-%            RAW.Y = Data matrix Y. The field is present if option
+%            RAW.Y = Data matrix Y. The field is present only if option
 %                    ysaveRAW is set to 1.
 %        RAW.class = 'mve'.
 %
@@ -147,7 +147,7 @@ function [RAW,REW,varargout] = mve(Y,varargin)
 %                    is singular, RAW.md is given here.
 %     REW.outliers = A vector containing the list of the units declared as
 %                    outliers after reweighting.
-%            REW.Y = Data matrix Y. The field is present if option
+%            REW.Y = Data matrix Y. The field is present only if option
 %                    ysaveRAW is set to 1.
 %       REW.class = 'mver';
 %            
