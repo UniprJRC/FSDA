@@ -64,7 +64,8 @@ function Xwins = winsor(X, p, dim)
 
 %{ 
     %% Winsorize each column of matrix X.
-    rng('default') % Reinitialize the random number generator to its startup configuration
+    % Reinitialize the random number generator to its startup configuration.
+    rng('default') 
     rng(100)
     X = randn(100,5);
     % Contaminate 5th and 10th row of matrix X

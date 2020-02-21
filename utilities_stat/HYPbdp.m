@@ -131,6 +131,18 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 
 %}
 
+%{
+    % Analysis of efficiency as a function of k =sup CVC.
+    ktun=[2; 3; 4; 5];
+    eff=zeros(length(ktun),1);
+    for i=1:length(ktun)
+    [~,A1,B1]=HYPbdp(0.3,1,ktun(i));
+    eff(i)=B1^2/A1;
+    end
+    % Efficiency increases as sup CVC increases.
+    table(ktun,eff)
+%}
+
 %% Beginning of code
 
 

@@ -126,6 +126,25 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
     s=Mscale(u,psifunc)
 %}
 
+%{
+    % Use of options initialsc, tol and maxiter.
+    % M estimate of the scale using Tukey biweight rho function with a
+    % value of c associated to a breakdown point of 0.5.
+    psifunc=struct;
+    psifunc.class='TB';
+    bdp=0.5;
+    c=TBbdp(bdp,1);
+    % kc = E(rho) = sup(rho)*bdp
+    kc=c^2/6*bdp;
+    psifunc.c1=c;
+    psifunc.kc1=kc;
+    n=10000;
+    shift=5;
+    u=2*randn(n,1);
+    u(1:10)=u(1:10)+shift;
+    s=Mscale(u,psifunc,3,1e-7,20)
+%}
+
 %% Beginning of code
 c=psifunc.c1;
 kc=psifunc.kc1;
