@@ -9,3 +9,5 @@ tests-regressionTS/
 tests-regressionLTSts/
 tests-regressionEXT/
 tests-utilities/
+# ignore search engine fo builddocsearchdb
+/helpfiles/pointersHTML/helpsearch-v3
