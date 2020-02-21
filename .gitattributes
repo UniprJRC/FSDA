@@ -7,7 +7,7 @@
 
 # Declare files that will always have CRLF line endings on checkout.
 *.m text eol=crlf
-*.mlx text eol=crlf
+#*.mlx text eol=crlf
 *.txt text eol=crlf
 
 # Declare special files 
