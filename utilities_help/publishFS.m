@@ -2865,7 +2865,7 @@ for i=1:nseealso
         listSeeAlso{i}=Seealsoitem;
         if ErrWrngSeeAlso == true
             if isempty(str)
-                    error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+                error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
             else
                 % Check if the reference is towards a file present in the FSDA toolbox
                 FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
@@ -2887,7 +2887,7 @@ for i=1:nseealso
                             addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
                         else
                             if  matlabversion==0
-                                    error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                                error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                             end
                         end
                         
@@ -2897,7 +2897,7 @@ for i=1:nseealso
                         cd(pathdocroot)
                         pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
                         if isempty(pathExtHelpFile)
-                                error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                            error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                         end
                         pathExtHelpFile=pathExtHelpFile(1).folder;
                         cd(currentfolder)
@@ -3696,6 +3696,21 @@ if evalCode ==1
         if iscell(listOutArgs{i,5})
             cellOut=listOutArgs{i,5};
             OutputDescribed=cellOut(:,1);
+            % Remove from cell OutputDescribed the rows associated to the
+            % described elements which are optional (that is those which
+            % contain the string "is created only if" or "is produced only
+            % if" or "is present only if".
+            cellOut2=cellOut(:,2);
+            for ii=1:length(cellOut2)
+                cellOut2{ii}=removeExtraSpacesLF(cellOut2{ii});
+            end
+            
+            ifCreated=~cellfun(@isempty,regexp(cellOut2,'is created only if'));
+            ifProduced=~cellfun(@isempty,regexp(cellOut2,'is produced only if'));
+            ifPresent=~cellfun(@isempty,regexp(cellOut2,'is present only if'));
+            OutputDescribedNotCompulsory=ifCreated == true | ifProduced==true | ifPresent==true;
+            
+            
             listouti=listOutArgs{i,1};
             
             % Find at least one example which is executed inside
@@ -3769,7 +3784,7 @@ if evalCode ==1
                     if strcmp(Display,'iter-detailed')
                         disp(['Analysis of output argument: ''' listouti ''''])
                     end
-                    OutiMisMatch=CompareDescribedUsed(OutputDescribed,OutputProduced);
+                    OutiMisMatch=CompareDescribedUsed(OutputDescribed, OutputProduced, OutputDescribedNotCompulsory);
                     if size(OutiMisMatch,1)>1
                         OutArgsMisMatch{ik+1,1}=listouti;
                         OutArgsMisMatch(ik+2:ik+size(OutiMisMatch,1),:)=OutiMisMatch(2:end,:);
@@ -4161,18 +4176,32 @@ else
 end
 end
 
-function OptMisMatch=CompareDescribedUsed(OptArgsDescribed,OptArgsUsed)
+function OptMisMatch=CompareDescribedUsed(OptArgsDescribed,OptArgsUsed,OptNotCompulsory)
 
-OptArgsDescribed=sort(OptArgsDescribed);
+[OptArgsDescribed,OptArgsDescribedsor]=sort(OptArgsDescribed);
+
+if nargin<3
+    OptNotCompulsory=false(length(OptArgsDescribed),1);
+else
+    % sort OptNotCompulsory accordingly
+    OptNotCompulsory=OptNotCompulsory(OptArgsDescribedsor);
+end
+
+
 OptArgsUsed=sort(OptArgsUsed);
 
 
 [~,ia,ib] = setxor(OptArgsDescribed,OptArgsUsed);
 % lused=length(OptArgsUsed);
 % ldesc=length(OptArgsDescribed);
+% Remove from ia the elements which were not compulsory
+ia=ia(~OptNotCompulsory(ia));
+
 OptMisMatch=cell(length(ia)+length(ib)+1,3);
 OptMisMatch{1,2}='Options described';
 OptMisMatch{1,3}='Options used';
+
+
 ij=1;
 if ~isempty(ia)
     disp('Elements described but not used')
