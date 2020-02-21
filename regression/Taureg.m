@@ -17,7 +17,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -25,14 +25,14 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%         bdp :  breakdown point. Scalar. 
+%         bdp :  breakdown point. Scalar.
 %               It measures the fraction of outliers
 %               the algorithm should resist. In this case any value greater
 %               than 0 but smaller or equal than 0.5 will do fine (default=0.5).
 %               Note that given bdp nominal
 %               efficiency is automatically determined.
 %                 Example - 'bdp',0.4
-%                 Data Types - double      
+%                 Data Types - double
 %
 %      eff     : nominal efficiency. Scalar.
 %                Scalar defining nominal efficiency (i.e. a number between
@@ -44,7 +44,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %     rhofunc : rho function. String. String which specifies the rho
 %               function which must be used to weight the residuals.
 %               Possible values are 'bisquare',
-%               'optimal', 'hyperbolic', 'hampel'. 
+%               'optimal', 'hyperbolic', 'hampel'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions, see
 %               TBrho and TBpsi.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions, see
@@ -52,9 +52,9 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               'hyperbolic' uses hyperbolic $\rho$ and $\psi$ functions,
 %               see HYPrho and HYPpsi.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions, see HArho
-%               and HApsi. 
+%               and HApsi.
 %               The default is bisquare
-%                 Example - 'rhofunc','optimal' 
+%                 Example - 'rhofunc','optimal'
 %                 Data Types - char
 %
 % rhofuncparam: Additional parameters for the specified rho function.
@@ -63,7 +63,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
 %               a, b and c (the default values are a=2, b=4, c=8)
-%                 Example - 'rhofuncparam',5 
+%                 Example - 'rhofuncparam',5
 %                 Data Types - single | double
 %
 %       nsamp   : Number of subsamples which will be extracted to find the
@@ -71,52 +71,52 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 They will be (n choose p).
 %                 If the number of all possible subset is <1000 the
 %                 default is to extract all subsets otherwise just 1000.
-%                 Example - 'nsamp',1000 
+%                 Example - 'nsamp',1000
 %                 Data Types - single | double
 %
 %    refsteps : Number of refining iterations. Scalar. Number of refining iterationsin each
 %               subsample (default = 3).
 %               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'nsamp',1000 
+%                 Example - 'nsamp',1000
 %                 Data Types - single | double
 %
 %     reftol  : scalar. Default value of tolerance for the refining steps.
 %               The default value is 1e-6;
-%                 Example - 'nsamp',1000 
+%                 Example - 'nsamp',1000
 %                 Data Types - single | double
 %
 %refstepsbestr: number of refining iterations for each best subset. Scalar.
 %               Scalar defining number of refining iterations for each
 %               best subset (default = 50).
-%                 Example - 'refstepsbestr',10 
+%                 Example - 'refstepsbestr',10
 %                 Data Types - single | double
 %
-% reftolbestr : Tolerance for the refining steps. Scalar. 
+% reftolbestr : Tolerance for the refining steps. Scalar.
 %               Tolerance for the refining steps
 %               for each of the best subsets
 %               The default value is 1e-8;
-%                 Example - 'reftolbestr',1e-10 
+%                 Example - 'reftolbestr',1e-10
 %                 Data Types - single | double
 %
 %     minsctol: tolerance for the iterative
-%               procedure for finding the minimum value of the scale. Scalar. 
+%               procedure for finding the minimum value of the scale. Scalar.
 %               Value of tolerance for the iterative
 %               procedure for finding the minimum value of the scale
 %               for each subset and each of the best subsets
 %               (It is used by subroutine minscale.m)
 %               The default value is 1e-7;
-%                 Example - 'minsctol',1e-7 
+%                 Example - 'minsctol',1e-7
 %                 Data Types - single | double
 %
 %      bestr  : number of "best betas" to remember. Scalar. Scalar defining
 %               number of "best betas" to remember from the
 %               subsamples. These will be later iterated until convergence
 %               (default=5)
-%                 Example - 'bestr',10 
+%                 Example - 'bestr',10
 %                 Data Types - single | double
 %
 %     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar. 
+%               used to declare units as outliers. Scalar.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
 %               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
 %               Default value is 0.975
@@ -131,7 +131,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off
 %               else no message is displayed on the screen
-%                 Example - 'msg',0 
+%                 Example - 'msg',0
 %                 Data Types - single | double
 %
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
@@ -139,7 +139,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                 that y and X are left unchanged. In other words the
 %                 additional column of ones for the intercept is not added.
 %                 As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %
 %       plots : Plot on the screen. Scalar or structure.
@@ -148,14 +148,14 @@ function [out , varargout] = Taureg(y, X, varargin)
 %               confidence bands for the residuals is given by the input
 %               option conflev. If conflev is not specified a nominal 0.975
 %               confidence interval will be used.
-%                 Example - 'plots',0 
+%                 Example - 'plots',0
 %                 Data Types - single | double
 %
 %       yxsave : Save matrices X and y. Scalar. If yxsave is equal to 1 the
 %               response vector y and data matrix X are saved into the output
-%                structure out. 
+%                structure out.
 %               Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1 
+%               Example - 'yxsave',1
 %               Data Types - double
 %
 %  Output:
@@ -188,16 +188,17 @@ function [out , varargout] = Taureg(y, X, varargin)
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c
-%            out.y    = Response vector y. The field is present if option
+%                       a, b and c. This field is present only if input
+%                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
+%            out.y    = Response vector y. The field is present only if option
 %                       yxsave is set to 1.
-%            out.X    = Data matrix X. The field is present if option
+%            out.X    = Data matrix X. The field is present only if option
 %                       yxsave is set to 1.
 %           out.class = 'Taureg'
 %
 %  Optional Output:
 %
-%            C        : matrix containing the indices of the subsamples 
+%            C        : matrix containing the indices of the subsamples
 %                       extracted for computing the estimate (the so called
 %                       elemental sets).
 %
@@ -291,7 +292,7 @@ function [out , varargout] = Taureg(y, X, varargin)
 
 %{
     % Taureg with Hampel rho function.
-    % With parameters a=1.5 b=3.5 c=8. 
+    % With parameters a=1.5 b=3.5 c=8.
     n=200;
     p=3;
     randn('state', 123456);
@@ -845,6 +846,8 @@ if options.yxsave
     % Store response
     out.y=y;
 end
+
+out.class = 'Taureg';
 
 % Plot resindexplot with outliers highlighted
 if options.plots==1

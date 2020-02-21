@@ -127,16 +127,16 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used to draw the
 %                       horizontal line (confidence band) in the plot.
-%            out.y    = response vector Y. The field is present if option
+%            out.y    = response vector Y. The field is present only if option
 %                       yxsave is set to 1.
-%            out.X    = data matrix X. The field is present if option
+%            out.X    = data matrix X. The field is present only if option
 %                       yxsave is set to 1.
 %           out.class = 'Sreg'
 %          out.Btable = table containing estimated beta coefficients,
 %                       standard errors, t-stat and p-values
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients and sigma (in the last
-%                       element). This output is present just if input
+%                       element). This output is present only if input
 %                       option dispresults is true.
 %                       2nd col = standard errors;
 %                       3rd col = t-statistics;
@@ -170,7 +170,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %
 %
 %
-% See also Sreg, mpdp
+% See also Sreg, mdpd, mdpdReda
 %
 %  References:
 %

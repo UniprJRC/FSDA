@@ -22,10 +22,10 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.s = scalar (length of seasonal period). For monthly
 %                         data s=12 (default), for quartely data s=4, ...
 %               model.trend = scalar (order of the trend component).
-%                       trend = 0 implies no trend
-%                       trend = 1 implies linear trend with intercept (default),
-%                       trend = 2 implies quadratic trend
-%                       trend = 3 implies cubic trend
+%                       trend = 0 implies no trend;
+%                       trend = 1 implies linear trend with intercept (default);
+%                       trend = 2 implies quadratic trend;
+%                       trend = 3 implies cubic trend.
 %                       Admissible values for trend are, 0, 1, 2 and 3.
 %                       In the paper RPRH to denote the order of the trend
 %                       symbol A is used.

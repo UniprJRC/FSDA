@@ -340,19 +340,19 @@ function out=RobCov(X,scaledres,scaleest,varargin)
     y=XX(:,2);
     X=XX(:,1);
     outS=Sreg(y,X,'rhofunc','bisquare','bdp',0.5);
-    outRC=RobCov(X,outS.residuals,1,'rhofunc','bisquare','bdp',0.5);
+    out=RobCov(X,outS.residuals,1,'rhofunc','bisquare','bdp',0.5);
     disp('covrob')
-    disp(outRC.covrob)
+    disp(out.covrob)
     disp('covrob1')
-    disp(outRC.covrob1)
+    disp(out.covrob1)
     disp('covrob2')
-    disp(outRC.covrob2)
+    disp(out.covrob2)
     disp('covrob3')
-    disp(outRC.covrob3)
+    disp(out.covrob3)
     disp('covrob4')
-    disp(outRC.covrob4)
+    disp(out.covrob4)
     disp('covrobc')
-    disp(outRC.covrobc)
+    disp(out.covrobc)
 
     % plot X and y and add LS and robust regression line
     plot(X,y,'o')

@@ -385,3 +385,4 @@ out.w = w;
 out.beta = beta;
 
 end
+%FScategory:REG-Regression

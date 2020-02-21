@@ -184,11 +184,11 @@ function [out , varargout] = Sreg(y,X,varargin)
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c. This field is empty for the other rho
-%                       functions.
-%            out.y    = response vector Y. The field is present if option
+%                       a, b and c. This field is present only if input
+%                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
+%            out.y    = response vector Y. The field is present only if option
 %                       yxsave is set to 1.
-%            out.X    = data matrix X. The field is present if option
+%            out.X    = data matrix X. The field is present only if option
 %                       yxsave is set to 1.
 %           out.class = 'Sreg'
 %

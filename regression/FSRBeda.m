@@ -134,11 +134,10 @@ function [out] = FSRBeda(y, X, varargin)
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual.
-%   out.msrB=       n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum studentized residual or m-th ordered residual. 
+%   out.msrB=       n-init+1 x 32= matrix which contains the monitoring of
+%               maximum studentized residual among units belonging to subset. 
 %               1st col = fwd search index (from init to n); 
-%               2nd col = maximum studentized residual; 
-%               3rd col = (m)-ordered studentized residual. 
+%               2nd col = maximum studentized residual.
 %   out.Coo=        (n-init+1) x 2 matrix containing the monitoring of Cook or
 %               modified Cook distance in each step of the forward search. 
 %               1st col = fwd search index (from init to n); 
@@ -471,6 +470,7 @@ function [out] = FSRBeda(y, X, varargin)
     R(5,5)=.6;
     R=inv(R);
     bayes.R=R;
+    % Automatic outlier detection procedure.
     outBA=FSRB(y,X,'bayes',bayes', 'plots',0);
     dout=n-length(outBA.ListOut);
     
@@ -479,7 +479,7 @@ function [out] = FSRBeda(y, X, varargin)
     xlimL=init; % lower value fo xlim
     xlimU=n+1;  % upper value of xlim 
 
-    outBAeda=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
+    out=FSRBeda(y,X,'bayes',bayes,'init',init, 'conflev', [0.95 0.99]);
 
     % Set font size, line width and line style
     figure;
@@ -491,11 +491,11 @@ function [out] = FSRBeda(y, X, varargin)
         my_subplot=subplot(3,2,j);
         hold('on')
         % plot 95% and 99% HPD  trajectories
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
-        plot(outBAeda.beta1(:,1),outBAeda.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+        plot(out.beta1(:,1),out.beta1HPD(:,1:2,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','b')
+        plot(out.beta1(:,1),out.beta1HPD(:,3:4,j),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
 
         % plot posterior estimate of beta1_j
-        plot(outBAeda.beta1(:,1),outBAeda.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
+        plot(out.beta1(:,1),out.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Color','k')
 
         % Add the horizontal line which corresponds to prior values
         xL = get(my_subplot,'XLim');
@@ -506,8 +506,8 @@ function [out] = FSRBeda(y, X, varargin)
         line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 
         % Set ylim
-        ylimU=max([outBAeda.beta1HPD(:,4,j); beta0(j)]);
-        ylimL=min([outBAeda.beta1HPD(:,3,j); beta0(j)]);
+        ylimU=max([out.beta1HPD(:,4,j); beta0(j)]);
+        ylimL=min([out.beta1HPD(:,3,j); beta0(j)]);
         ylim([ylimL ylimU])
 
         % Set xlim
@@ -526,17 +526,17 @@ function [out] = FSRBeda(y, X, varargin)
     %figure()
     hold('on')
     % 99%
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
+    plot(out.sigma21HPD(:,1),out.sigma21HPD(:,4:5),'LineStyle',linst{4},'LineWidth',lwd,'Color','r')
     % 95%
-    plot(outBAeda.sigma21HPD(:,1),outBAeda.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
+    plot(out.sigma21HPD(:,1),out.sigma21HPD(:,2:3),'LineStyle',linst{2},'LineWidth',lwd,'Color','b')
     % Plot 1/tau1
-    plot(outBAeda.S21(:,1),1./outBAeda.S21(:,3),'LineWidth',lwd,'Color','k')
+    plot(out.S21(:,1),1./out.S21(:,3),'LineWidth',lwd,'Color','k')
     ylabel('$\hat{\sigma}^2$','Interpreter','LaTeX','FontSize',20,'rot',-360);
     set(gca,'FontSize',FontSize);
 
     % Set ylim
-    ylimU=max([outBAeda.sigma21HPD(:,5); s02]);
-    ylimL=min([outBAeda.sigma21HPD(:,4); s02]);
+    ylimU=max([out.sigma21HPD(:,5); s02]);
+    ylimL=min([out.sigma21HPD(:,4); s02]);
     ylim([ylimL ylimU])
 
     % Set xlim
@@ -862,8 +862,8 @@ S21=[(init:n)' zer1];
 % subset
 mdr=[(init:n-1)'  zer(:,1)];
 
-% mdr= (n-init+1) x 3 matrix which will contain max studentized residual
-%  among bsb and m-th studentized residual
+% msr= (n-init+1) x 2 matrix which will contain max studentized residual
+%  among bsb 
 msr=[(init:n)'  zer1(:,1)];
 
 % coo= (n-init) x 2 matrix which will contain Cook distances
@@ -1060,7 +1060,7 @@ out.RES=RES*sqrt(S21(end,3));
 out.LEV=LEV;
 out.BB=BB;
 out.mdrB=mdr;
-out.msr=msr;
+out.msrB=msr;
 out.beta1=beta1;
 out.covbeta1=covbeta1;
 out.Gam=Gam;
