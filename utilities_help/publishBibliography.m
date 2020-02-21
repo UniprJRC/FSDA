@@ -267,9 +267,16 @@ for ii = 2:size(uniquesTab,1)
     % write in italic what is inside double quotes
     dbquotesVect=regexp(refText,'\"');
     if (~isempty(dbquotesVect))
-        tmpText=[ refText(1:dbquotesVect(1)-1) '<i>' ...
-            refText(dbquotesVect(1)+1:dbquotesVect(2)-1) '</i>' ...
-            refText(dbquotesVect(2)+1:end)];
+        try
+            tmpText=[ refText(1:dbquotesVect(1)-1) '<i>' ...
+                refText(dbquotesVect(1)+1:dbquotesVect(2)-1) '</i>' ...
+                refText(dbquotesVect(2)+1:end)];
+        catch
+            disp('-------------------------------------')
+            disp("Missing qutotation mark in reference")
+            disp(refText)
+            error('FSDA:publishBilbiography:WrongInput','Missing symbol ''"'' in the above reference');
+        end
         refText=tmpText;
     end
     
@@ -284,8 +291,8 @@ for ii = 2:size(uniquesTab,1)
     strInsert = [strInsert '<p>' refText '</p>' newline]; %#ok<AGROW>
 end
 
- strInsert = [strInsert '<p><hr /> <center><i>This page has been automatically generated' ...
-     ' by our routine <a href="publishBibliography.html">publishBibliography</a></i> </center></p>' newline];
+strInsert = [strInsert '<p><hr /> <center><i>This page has been automatically generated' ...
+    ' by our routine <a href="publishBibliography.html">publishBibliography</a></i> </center></p>' newline];
 
 
 %% Open input bibliographyEmpty.html file, put it in a string and do a series of preliminary operations
