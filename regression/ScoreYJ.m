@@ -55,7 +55,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %        outSC.Score    =    score test. Scalar. t test for additional
 %                            constructed variable
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
-%                           is produced just if input value Lik =1
+%                           is produced only if input value Lik =1
 %
 % See also: FSRfan, Score, normBoxCox, normYJ, ScoreYJpn
 %

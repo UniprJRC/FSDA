@@ -310,7 +310,7 @@ function [out]=FSRts(y,varargin)
 % out.scale  =  scalar containing the estimate of the scale (sigma).
 % out.residuals= n x 1 vector containing the estimates of the robust
 %                scaled residuals.
-% out.yhat= n x 1 vector containing the fitted values.
+% out.fittedvalues= n x 1 vector containing the fitted values.
 % out.mdr    =  (n-init) x 2 matrix
 %               1st col = fwd search index
 %               2nd col = value of minimum deletion residual in each step
@@ -763,6 +763,7 @@ INP.S2=S2(:,1:2);
 % compute and store in output structure the robust scaled residuals
 out.fittedvalues = out.yhat;
 out.residuals    = (y-out.fittedvalues)/out.scale;
+out=rmfield(out,'yhat');
 
 out.class  =  'FSRts';
 out.Exflag=Exflag;

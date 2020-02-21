@@ -203,9 +203,9 @@ function [out , varargout] = LXS(y,X,varargin)
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen
 %           out.class = 'LTS' or 'LMS'.
-%            out.y    = response vector Y. The field is present if option
+%            out.y    = response vector Y. The field is present only if option
 %                       yxsave is set to 1.
-%            out.X    = data matrix X. The field is present if option
+%            out.X    = data matrix X. The field is present only if option
 %                       yxsave is set to 1.
 %
 %  Optional Output:

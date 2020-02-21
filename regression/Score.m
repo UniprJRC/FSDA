@@ -60,7 +60,7 @@ function [outSC]=Score(y,X,varargin)
 %                            contains the values of the score test for the
 %                            5 most common values of lambda.
 %        outSC.Lik      =    value of the likelihood. Scalar. This output
-%                           is produced just if input value Lik =1
+%                           is produced only if input value Lik =1
 %
 % See also: FSRfan, ScoreYJ, ScoreYJpn, normBoxCox, normYJ
 %

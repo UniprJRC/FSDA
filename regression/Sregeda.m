@@ -177,7 +177,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %                       for the specified rho function which have been
 %                       used. For hyperbolic rho function the value of
 %                       k =sup CVC. For Hampel rho function the parameters
-%                       a, b and c
+%                       a, b and c.  This field is present only if input
+%                       argument 'rhofunc' is  'hyperbolic' or 'hampel'.
 %           out.bdp   = vector which contains the values of bdp which have
 %                       been used
 %            out.y    = response vector y. 

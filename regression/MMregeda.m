@@ -136,8 +136,13 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                           used. For hyperbolic rho function the value of
 %                           k =sup CVC. For Hampel rho function the parameters
 %                           a, b and c
+%        out.Outliers = Boolean matrix containing the list of
+%                       the units declared as outliers for each value of eff using confidence
+%                       level specified in input scalar conflev
 %            out.eff    =   vector containing the value of eff which have
 %                           been used.
+%           out.Sbeta   = vector.  S initial estimate of regression
+%                         coefficients.
 %            out.y      =   response vector y.
 %            out.X      =   data matrix X.
 %       out.class       =   'MMregeda'.
@@ -229,9 +234,9 @@ function [out , varargout] = MMregeda(y,X,varargin)
     nsamp=3000;
 
     % MM  estimators
-    [outMM]=MMregeda(y,X,'conflev',conflev(1));
+    [out]=MMregeda(y,X,'conflev',conflev(1));
     laby='Scaled MM residuals';
-    resfwdplot(outMM)
+    resfwdplot(out)
 %}
 
 %% Beginning of code 

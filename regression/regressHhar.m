@@ -57,8 +57,9 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               Data Types - double
 %
 % initialgamma: initial estimate of gamma. Vector.
-%                vector of length (r+1). If initialgamma is not supplied (default)  initial estimate
-%               of gamma is nothing but the OLS estimate in a regression
+%                vector of length (r+1). If initialgamma is not supplied
+%                (default)  initial estimate of gamma is nothing but the
+%                OLS estimate in a regression
 %               where the response is given by squared residuals and the
 %               regressors are specified in input object Z (this regression
 %               also contains a constant term).
@@ -101,6 +102,13 @@ function [out]=regressHhar(y,X,Z,varargin)
 %               Example - 'nocheck',1
 %               Data Types - double
 %
+%   test :      Test statistics.  Boolean. If input option test is true  Wald,
+%               Likelihood ratio, Lagrange multiplier test together with
+%               values of maximized log likelihood are given. The default
+%               is false, that is no test is computed.
+%               Example - 'test',false
+%               Data Types - double
+%
 %  Output:
 %
 %  The output consists of a structure 'out' containing the following fields
@@ -122,10 +130,15 @@ function [out]=regressHhar(y,X,Z,varargin)
 %                       \[ 
 %                       \hat \sigma^2= \exp(\gamma_1) 
 %                       \]
-%              out.WA = scalar. Wald test
-%              out.LR = scalar. Likelihood ratio test
-%              out.LM = scalar. Lagrange multiplier test
-%            out.LogL = scalar. Complete maximized log likelihood
+%              out.WA = scalar. Wald test. This field is present only if
+%                       input option test is true.
+%              out.LR = scalar. Likelihood ratio test. This field is
+%                       present only if input option test is true.
+%              out.LM = scalar. Lagrange multiplier test.  This field is 
+%                       present only if input option test is true.
+%            out.LogL = scalar. Complete maximized log likelihood.  This
+%                       field is present only if
+%                       input option test is true.
 %
 %  More About:
 %
