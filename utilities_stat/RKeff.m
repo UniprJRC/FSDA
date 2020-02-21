@@ -59,8 +59,14 @@ function [c, M] = RKeff(eff,v,ARP)
 %
 % Examples:
 %
+
 %{
     % Find c given a value of efficiency.
+    c=RKeff(0.95,1)
+%}
+
+%{
+    % Find c and M given a value of efficiency.
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 3.180662196584308
     [c,M]=RKeff(0.95,5,0.05)

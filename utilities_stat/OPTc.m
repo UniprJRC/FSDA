@@ -42,7 +42,7 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 %    $\rho$ function is
 %
 % \[
-% TBrho(u)= \left\{
+% OPTrho(u)= \left\{
 %    \begin{array}{lr}
 %     1.3846 \left(\frac{u}{c}\right)^2                      &                                      |\frac{u}{c}| \leq  \frac{2}{3} \\
 %    0.5514-2.6917 \left(\frac{u}{c}\right)^2 +10.7668\left(\frac{u}{c}\right)^4-11.6640\left(\frac{u}{c}\right)^6+4.0375\left(\frac{u}{c}\right)^8   & \qquad \frac{2}{3} \leq  |\frac{u}{c}|\leq  1 \\
@@ -72,6 +72,18 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
+
+%{
+    % bdp associated with a particular c.
+    c=5;
+    bdp = OPTc(c,1)
+%}
+
+%{
+    % bdp and eff associated with a particular c.
+    c=5;
+    [bdp, eff] = OPTc(c,1)
+%}
 
 %{
 
