@@ -215,7 +215,7 @@ function [out] = mdpdReda(y, X, varargin)
     y=X*bet+sig*eps;
     % Contaminate the first 10 observations.
     y(1:10)=y(1:10)+0.05;
-    [out] = mdpdReda(y, X,'plots',1,'alpha',[1 0.8 0.2 0]);
+    [out] = mdpdReda(y, X,'plots',1,'alphaORbdp','alpha','tuningpar',[1 0.8 0.2 0]);
 %}
 
 %{
