@@ -250,7 +250,7 @@ function plotopt=resfwdplot(out,varargin)
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
-%                   The activation of this option (databrush is a scalar or a cell)                                     
+%                   The activation of this option (databrush is a scalar or a cell)
 %                   enables the user  to select a set of trajectories in
 %                   the current plot and to see them highlighted in the y|X
 %                   plot, i.e. a matrix of scatter plots of y against each
@@ -873,7 +873,7 @@ function plotopt=resfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Beginning of code 
+%% Beginning of code
 
 % Initialization
 
@@ -1499,8 +1499,9 @@ if ~isempty(datatooltip)
     hTarget=[];
     hTargetlwd=[];
     hTargetcol=[];
-    try
-        chkgpu=gpuDevice; %#ok<NASGU>
+    f=getfield(opengl('data'),'Software');
+    if ~f
+        %chkgpu=gpuDevice; %#ok<NASGU>
         % datacursormode on;
         hdt = datacursormode;
         set(hdt,'Enable','on');
@@ -1516,7 +1517,8 @@ if ~isempty(datatooltip)
         % Declare a custom datatooltip update function to display additional
         % information about the selected unit
         set(hdt,'UpdateFcn',{@resfwdplotLbl,out,LineColor});
-    catch
+    else
+        
         disp('No graphical device, interactive datatooltip not enabled')
     end
 end
