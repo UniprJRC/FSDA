@@ -54,8 +54,8 @@ if str2double(a.Version)>7.14
         
         if isempty(ext)
             namehtmlhelpfile=[namehtmlhelpfile '.html'];
-        elseif strcmp(ext,'html')==0
-            error('FSDA:docsearchFS','Wrong file extension')
+        elseif ~strcmp(ext,'.html')
+            error('FSDA:docsearchFS','Wrong file extension. Extension must be html')
         end
         web([docroot '/FSDA/' namehtmlhelpfile])
     end
