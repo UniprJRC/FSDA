@@ -29,12 +29,20 @@ if str2double(a.Version)>7.14
         msg2bis= ['"' FSDAhelproot '"' char10];
         msg3=['in the MATLAB help folder.' char10];
         msg3bis= ['"' destinationpathFSDAdoc '"' char10];
-        msg3tris=['Alternatively, run routine' char10 char 10 'installHelpFiles.m.' char10 char10 'For additional details please see section "FSDA documentation" of file:' char10];
+        msg3tris=['Alternatively, run routine' char10 char 10 'installHelpFiles.m.' char10 char10];
+        msg3fourth=['or click on the Copy files button below' char10 char10 'For additional details please see section "FSDA documentation" of file:' char10];
         msg4=[FSDAroot filesep 'doc' filesep 'GettingStarted.mlx'];
         
-        msg=regexprep([msg1 msg1bis msg2 msg2bis msg3 msg3bis msg3tris msg4],'\\','/');
+        msg=regexprep([msg1 msg1bis msg2 msg2bis msg3 msg3bis msg3tris msg3fourth msg4],'\\','/');
         warning('FSDA:docrootFS:wrongSetUp',msg)
-        h=mydialog(msg);
+        %h=mydialog(msg);
+        answer = questdlg(msg,'Copy FSDA HTML help files','Copy files','Close','Close');
+        drawnow; pause(0.05);
+        if isequal(answer,'Copy files')
+            installHelpFiles();
+            web([docrootFS '/FSDA/index.html'])
+            return
+        end
         import com.mathworks.mlwidgets.html.HTMLRenderer;
         % create component
         r = HTMLRenderer;
