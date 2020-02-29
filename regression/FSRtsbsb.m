@@ -118,6 +118,18 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
+% bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
+%               non singular X. Scalar.
+%               This options controls what to do when rank(X(bsbm,:)) is
+%               smaller then number of explanatory variables.
+%               If bsbmfullrank = 1 (default is 1) these units (whose number
+%               is say mnofullrank) are constrained to enter the search in
+%               the final n-mnofullrank steps else the search continues
+%               using as estimate of beta at step m the estimate of beta
+%               found in the previous step.
+%               Example - 'bsbmfullrank',1
+%               Data Types - double
+%
 % Output:
 %
 %  Un:          Units included in each step. Matrix.
@@ -143,8 +155,6 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
 %               ......;
 %               Row n of matrix BB is referred to unit n;
 %               Units not belonging to subset are denoted with NaN.
-%
-% See also FSRbsb, FSRBbsb, FSRHbsb
 %
 % See also: FSRts, LTSts, regressts
 %
@@ -271,7 +281,7 @@ end
 bsbstepdef='';
 
 options=struct('init',init,'nocheck',0,'plots',0,...
-    'bsbsteps',bsbstepdef,'model',modeldef);
+    'bsbmfullrank',1,'bsbsteps',bsbstepdef,'model',modeldef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -296,6 +306,8 @@ if nargin >2
     end
 end
 nocheck=options.nocheck;
+bsbmfullrank=options.bsbmfullrank;
+
 % And check if the optional user parameters are reasonable.
 
 % Default values for the optional parameters are set inside structure
@@ -354,7 +366,7 @@ if seasonal >0
     end
     
     if seasonal < 1 || seasonal >floor(s/2)
-        error('FSDA:FSRtsmdr:WrongInput',['Seasonal component must be an integer between 1 and ' num2str(floor(s/2))])
+        error('FSDA:FSRtsbsb:WrongInput',['Seasonal component must be an integer between 1 and ' num2str(floor(s/2))])
     end
     
     Xseaso=zeros(T,seasonal*2);
