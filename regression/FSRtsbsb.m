@@ -708,12 +708,12 @@ else
                 % check how many observations produce a singular X matrix
                 bsbsing=bsbx(1:size(Xbb,1)-1);
                 
-                if msg==1
+                % if msg==1
                     warning('FSDA:FSRtsmdr','Rank problem in step %d:',mm);
                     disp('Observations')
                     disp(bsbsing')
                     disp('produce a singular matrix')
-                end
+                % end
                 Un=NaN;
                 BB=NaN;
                 return
