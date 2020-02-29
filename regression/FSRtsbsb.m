@@ -1,5 +1,5 @@
 function [Un,BB] = FSRtsbsb(y,bsb,varargin)
-%FSRtsbsb returns the units belonging to the subset in each step of the forward search 
+%FSRtsbsb returns the units belonging to the subset in each step of the forward search
 %
 %<a href="matlab: docsearchFS('FSRtsbsb')">Link to the help function</a>
 %
@@ -246,7 +246,7 @@ function [Un,BB] = FSRtsbsb(y,bsb,varargin)
     % forward search.
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -482,7 +482,7 @@ if ~isempty(model.B)
     b=model.B(:,1); % get initial estimate of parameter values
 else
     
-    % initial value of parameter estimates is based on subset 
+    % initial value of parameter estimates is based on subset
     bsel=Xsel(bsb,:)\y(bsb);
     if varampl>0
         if lshift>0
@@ -544,9 +544,6 @@ end
 %  included.
 Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
-% The last correctly computed beta oefficients
-blast=NaN(p,1);
-
 Xb=Xsel(bsb,:);
 
 % MaxIter=[];
@@ -570,8 +567,8 @@ else
     ij=1;
     
     for mm = ini0:n
-         oldbsb=bsb;
-         
+        oldbsb=bsb;
+        
         % if n>200 show every 100 steps the fwd search index
         if n>200
             if length(intersect(mm,seq100))==1
@@ -589,7 +586,7 @@ else
         
         % Compute beta coefficients using subset
         
-          % Note that Xsel is the X matrix of the linearized version if the
+        % Note that Xsel is the X matrix of the linearized version if the
         % model is non linear (that is it contains time varying amplitude)
         NoRankProblem=( rank(zscore(Xsel(bsb,2:end))) == size(Xsel,2)-1 );
         
@@ -659,7 +656,7 @@ else
                 fdiffstep=[];
                 Xsel = getjacobianFS(betaout,fdiffstep,@lik,yhat);
             end
-  
+            
             % Check whether the estimate of b which has come out is
             % reasonable. An estimate of b is called unreasonable if
             % max(yhat)>2*max(y)  and min(yhat)<0.5*min(y)
@@ -724,15 +721,15 @@ else
             else
                 disp(['Matrix without full rank at step m=' num2str(mm)])
                 disp('Estimate of \beta which is used is based on previous step with full rank')
-                b=blast;
+                b=bprevious;
                 % disp([mm b'])
             end
         end
         
         
-           e=y-yhat;  % e = vector of residuals for all units using b estimated using subset
+        e=y-yhat;  % e = vector of residuals for all units using b estimated using subset
         r(:,2)=e.^2;
-
+        
         
         if mm<n
             
@@ -755,6 +752,17 @@ else
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     Un(mm-init+1,2:end) = unit(1:10)';
                 end
+            end
+            
+            if mm < n-1
+%                 if ~isempty(constr) && mm<n-length(constr)-1
+%                     % disp(mm)
+%                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
+%                     ncl=setdiff(ncl,constr);
+%                 else
+                    ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
+%                 end
+                
             end
         end
     end
