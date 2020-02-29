@@ -208,8 +208,8 @@ if nocheck == false
     end
     
     if sum(ncolt)~=sum(nrowt)
-        error('FSDA:rcontFS:WrongInputOpt',['column sum vectors have the same sum.'...
-            ' Now sum(nrowt)=' num2str(sum(nrowt)) ' and sum(ncolt)='  num2str(ncoly)])
+        error('FSDA:rcontFS:WrongInputOpt',['column sum vectors must have the same sum.'...
+            ' Now sum(nrowt)=' num2str(sum(nrowt)) ' and sum(ncolt)='  num2str(sum(ncolt))])
     end
 end
 
