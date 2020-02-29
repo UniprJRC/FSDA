@@ -902,7 +902,7 @@ else
             else
                 disp(['Matrix without full rank at step m=' num2str(mm)])
                 disp('Estimate of \beta which is used is based on previous step with full rank')
-                b=blast;
+                b=bprevious;
                 % disp([mm b'])
             end
         end
