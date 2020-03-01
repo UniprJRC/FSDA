@@ -248,9 +248,9 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
         Sigma(:,:,j)=cov(reshape(mtR(n*v,1,-1),n,v)).*add;
     end
     sph=struct;
-    sph.pars='EVV';
+    sph.pars='VVE';
     niini=100*ones(1,k);
-    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, pa);
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, sph);
 %}
 
 %% Beginning of code

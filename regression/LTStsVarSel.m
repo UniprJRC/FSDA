@@ -259,7 +259,9 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from a specific over-parametrized model.
-    n = 100;                        % sample size
+
+    % sample size
+    n = 100;                       
     tmp = rand(n,1);
     model.X = tmp.*[1:n]';          % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
