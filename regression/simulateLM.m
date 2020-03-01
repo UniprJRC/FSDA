@@ -145,6 +145,9 @@ function [y, X] = simulateLM(n,varargin)
     % Sim study.
     % Compare the distribution of values of R2 with data generated from 
     % Normal with those generated from Student T with 5 degrees of freedom.
+    % Set value of R2.
+    R2=0.92;
+    beta=[3; 4; 5; 2; 7];
     nsimul=1000;
     R2all=zeros(nsimul,2);
     n=100;

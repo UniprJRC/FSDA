@@ -434,6 +434,7 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
     % Define X
     X=X(:,1:end-1);
     labels={'Time','1','2','3','4','5','6','7','8'};
+    smallp=5;
    [Cpmon]=FSRcp(y,X,smallp,'plots',1,'labels',labels,'xlimx',[40 80],'lwdenv',5,'lwd',4,'FontSize',25,'SizeAxesNum',20);
 %}
 
