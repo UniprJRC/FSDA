@@ -501,10 +501,6 @@ function [out] = FSRBeda(y, X, varargin)
         xL = get(my_subplot,'XLim');
         line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
 
-        % Add vertical line in correspondence of the step prior to the
-        % entry of the first outlier
-        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
-
         % Set ylim
         ylimU=max([out.beta1HPD(:,4,j); beta0(j)]);
         ylimL=min([out.beta1HPD(:,3,j); beta0(j)]);
@@ -513,6 +509,9 @@ function [out] = FSRBeda(y, X, varargin)
         % Set xlim
         xlim([xlimL xlimU]);
 
+        % Add vertical line in correspondence of the step prior to the
+        % entry of the first outlier
+        line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 
         ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
         set(gca,'FontSize',FontSize);
