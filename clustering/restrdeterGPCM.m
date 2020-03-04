@@ -104,6 +104,8 @@ end
 % d_{j1}^{***}, \ldots, d_{jp}^{***}
 
 % lmdc = row vector containing the restricted determinants
+% Make sure niini is a column vector
+niini=niini(:);
 lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol);
 
 end
