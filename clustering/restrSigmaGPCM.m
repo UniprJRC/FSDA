@@ -16,8 +16,9 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %            k groups.
 %               Data Types - single|double
 %
-%   niini  : sizes of the groups. Vector. Row vector of length k containing
-%           the size of the groups.
+%   niini  : sizes of the groups. Vector. Vector of length k containing
+%           the size of the groups. ninini can be either a row or a columns
+%           vector.
 %               Data Types - single|double
 %
 %      pa  : Constraints to apply and model specification. Structure.
@@ -248,9 +249,9 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
         Sigma(:,:,j)=cov(reshape(mtR(n*v,1,-1),n,v)).*add;
     end
     sph=struct;
-    sph.pars='VVE';
-    niini=100*ones(1,k);
-    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini, sph);
+    sph.pars='EVV';
+    niini=100*ones(k,1);
+    [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(Sigma, niini', sph);
 %}
 
 %% Beginning of code
