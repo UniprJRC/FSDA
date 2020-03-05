@@ -165,9 +165,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Example - 'plots',1
 %            Data Types - double
 %
-%   wtrim: Application of observation weights. Scalar. A flag taking values
+%   wtrim: Application of observation weights. Scalar or structure. If
+%           wtrim is a scalar, a flag taking values
 %          in [0, 1, 2, 3, 4], to control the application of weights on the
-%          observations.
+%          observations for betaestimation.
 %          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
 %             algorithm reduces to the standard tclustreg algorithm.
 %          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
@@ -191,8 +192,32 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Bernoulli random variable with probability of success
 %            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
 %            under the constraint that no group is empty.
+%         -  If \texttt{wtrim} = 5, trimming is done by weighting the
+%            observations using values specified in vector \texttt{we}. In
+%            this case, each element $we_i$ of vector \texttt{we} is a
+%            Bernoulli random variable with probability of success
+%            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
+%            under the constraint that no group is empty.
+%          -  If \texttt{wtrim} = 6, trimming is  done by weighting
+%             the observations using values specified in vector \texttt{we}.
+%             Vector \texttt{we} is computed from the data as
+%             a function of the density estimate $\mbox{pdfe}$.
+%            Specifically, the weight of each observation is the
+%            probability of retaining the observation, computed as
+%            \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]     
 %         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
 %            of Cerioli and Perrotta (2014).
+%          If wtrim is a structure, it is composed by:
+%         -  wtrim.wtype_beta: the weight for the beta estimation. It can be
+%           0, 1, 2, 3, as in the case of wtrim scalar
+%         -  wtrim.wtype_obj: the weight for the objective function. It can
+%         be: 
+%             - '0': no weights in the objective function
+%             - 'Z': Bernoulli random variable with probability of success
+%            $\mbox{pdfe}_{ig}$
+%             - 'w': a function of the density estimate $\mbox{pdfe}$.
+%             - 'Zw': the product of the two above.
+%             - 'user': user weights we.
 %            Example - 'wtrim',1
 %            Data Types - double
 %
@@ -202,6 +227,32 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %          value is  a vector of ones.
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
+%
+%       k_dens_mixt: in the Poisson/Exponential mixture density function,
+%                    number of clusters for density mixtures. Scalar.
+%                    This is a guess on the number of data groups. Default
+%                    value is 5.             
+%            Example - 'k_dens_mixt',6
+%            Data Types - single|double
+%
+%   nsamp_dens_mixt: in the Poisson/Exponential mixture density function,
+%                    number of subsamples to extract. Scalar. Default 300.
+%                    Example - 'nsamp_dens_mixt',1000
+%                    Data Types - double
+%
+%refsteps_dens_mixt: in the Poisson/Exponential mixture density function, 
+%                    number of refining iterations. Scalar. Number of refining
+%                    iterations in each subsample.  Default is 10.
+%                    Example - 'refsteps_dens_mixt',15
+%                    Data Types - single | double
+%
+%  method_dens_mixt: in the Poisson/Exponential mixture density function,
+%                    distribution to use. Character. If method_dens_mixt =
+%                    'P', the Poisson distribution is used, with  
+%                    method_dens_mixt = 'E', the Exponential distribution
+%                    is used. Default is 'P'.
+%                    Example - 'method_dens_mixt','E'
+%                    Data Types - char
 %
 %    msg  : Level of output to display. Scalar.
 %           Scalar which controls whether to display or not messages
@@ -215,7 +266,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %             Example - 'msg',1
 %             Data Types - single | double
 %
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%RandNumbForNini: Pre-extracted random numbers to initialize proportions.
 %                Matrix. Matrix with size k-by-size(nsamp,1) containing the
 %                random numbers which are used to initialize the
 %                proportions of the groups. This option is effective just
@@ -253,6 +304,19 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                       variables for the k groups. This output is present
 %                       just if input option alphaX is 1.
 %
+%         out.cstepopt= scalar containing the concentration step where the
+%                       objective function was the largest. This is useful
+%                       when the objective function is not monotene (e.g.
+%                       with second level trimming or with thinning).
+%
+%         out.subsetopt= scalar containing the subset id where the
+%                       objective function was the largest.
+%
+%             wbetaopt = n-by-1 dycotomic vector indicating if in the
+%                       optimal solution a unit was thinned (0) or retained
+%                       (1). This option is valid when wtrim = 3 or
+%                       wtrim.wtype_beta = 'Z'.
+%
 %            out.idx  = n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
 %                       numbers from -2 to k.
@@ -269,30 +333,12 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                       first level trimmed units and -2 indicates second
 %                       level trimmed units).
 %
-% out.idx_before_tr = n-by-1 vector containing assignment of each unit to
-%                       each of the k groups before applying first (and
-%                       second level trimming). Cluster names are integer
-%                       numbers from 1 to k. Note that while out.idx
-%                       contains number which go from -2 to k,
-%                       out.idx_before_tr only contains numbers which go
-%                       from 1 to k.
-%
-%            out.post = n-by-k matrix containing posterior probabilities
-%                       out.post(i,j) contains posterior probabilitiy of unit
-%                       i from component (cluster) j. For the trimmed units
-%                       posterior probabilities are 0.
-%
-%           out.vopt  = Scalar. The value of the target function.
-%
-%             out.we  = n-by-1 vector  containing the user-specific weigths
-%                       of each observation, i.e. its contribution to the
-%                       estimates.
-%
 %   out.postprobopt   = $n \times k$ matrix containing the final posterior
 %                           probabilities. out.postprobopt(i,j) contains
 %                           posterior probabilitiy of unit i from component
 %                           (cluster) j. For the trimmed units posterior
-%                           probabilities are 0.
+%                           probabilities are 0. This output is produced
+%                           only if mixt = 2.
 %
 %          out.MIXMIX = BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
@@ -399,7 +445,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %<a href="matlab: docsearchFS('tclustreg')">Link to the help page for this function</a>
 %
-%$LastChangedDate::                      $: Date of the last commit
+%$LastChangedDate:: 2019-11-20 18:33:09 #$: Date of the last commit
 %
 %
 %
@@ -522,6 +568,22 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     disp('mixture likelihood, tandem thinning based on bernoulli weights' );
     mixt = 2; wtrim = 4; we = [];
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    disp('mixt = 0; wtrim = struct; wtrim.wtype_beta=3;  wtrim.wtype_obj=''Z'';')
+    disp('classification likelihood, componentwise thinning based on bernoulli weights, objective function based on bernoulli weights' );
+    mixt = 0; wtrim = struct; wtrim.wtype_beta=3;  wtrim.wtype_obj='Z';
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    disp('mixt = 0; wtrim = struct; wtrim.wtype_beta=2;  wtrim.wtype_obj=''w'';')
+    disp('classification likelihood, componentwise thinning based on retention probabilities, objective function based on retention probabilities' );
+    mixt = 0; wtrim = struct; wtrim.wtype_beta=2;  wtrim.wtype_obj='w';
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
+    disp('mixt = 0; wtrim = struct; wtrim.wtype_beta=5;  wtrim.wtype_obj=''w''; k_dens_mixt=6;nsamp_dens_mixt=500;refsteps_dens_mixt=20;method_dens_mixt=''E''')
+    disp('classification likelihood, componentwise thinning based on retention probabilities, objective function based on retention probabilities' );
+    mixt = 0; wtrim = struct; wtrim.wtype_beta=2;  wtrim.wtype_obj='w';
+    out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
+
 %}
 
 %{
@@ -574,8 +636,9 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     X  = load('X.txt');
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    n=200;
+    n = 200;
     k = 2 ;
+
     restrfact = 5; alpha1 = 0.05 ; alpha2 = 0.01;
     nsamp=200;
     Cnsamp=subsets(nsamp,n,(size(X1,2)+1)*k);
@@ -649,26 +712,20 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %}
 
 %% Beginning of code
-
 % Control variables, tolerances and internal flags
 warning('off');
-
-% csteps_stop == 0 is to monitor the stability of the objective function
-% for a fixed number of loops (refsteps option). Otherwise, if it is set to
-% 1, the loop stops when the classification does not change in 2 consective
-% c-steps.
-% csteps_stop = 1;
-
-% obj_with_thinned == 1 is to use thinned units in the computation of
-% the objective function.
-obj_with_thinned = 0;
 
 % Groups with less than skipthin_th units are not considered for thinning
 skipthin_th = 50;
 
+%monitors evolution of parameters in refining steps
+monitor = 0;
+
+% penalized objective function
+penal_obj = 0;
+
 % current and best objective function values
 vopt = -1e+20;
-% obj = vopt;
 
 % tolerance for restriction factor
 tolrestreigen = 1e-08;
@@ -688,7 +745,6 @@ end
 nnargin   = nargin;
 vvarargin = varargin;
 
-% [~,p0] = size(X);
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 % Check the presence of the intercept in matrix X
@@ -740,46 +796,60 @@ else
     cwm=0;
 end
 
-
 %% *Bivariate thinning* (_if wtrim == 4 and p == 2_)
 
 % Bivariate thinning is applied once on the full dataset, at the start.
 % This is done before setting the number of random samples nsamp.
 
 if nargin>6
+    % check if wtrim is among the user parameters
     chknwtrim = strcmp(varargin,'wtrim');
-    if sum(chknwtrim)>0 && cell2mat(varargin(find(chknwtrim)+1)) == 4
-        interc = find(max(X,[],1)-min(X,[],1) == 0);
-        if p == numel(interc) + 1
-            
-            % The bandwidth is chosen following Baddeley, as in the R
-            % spatstats package (density.ppp function).
-            bw = (range([X(:,numel(interc)+1),y]))/8;
-            
-            %in order to reproduce results comparable with the paper
-            %Cerioli and Perrotta (2013) the bandwidth is divided by 3
-            bw = bw/3;
-            % Another option to be considered follwing Baddeley is:
-            %bw = min(max(X),max(y))/8;
-            
-            % Thinning step
-            [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one','bandwidth',bw);
-            id_unthinned = Wt4==1;
-            %id_thinned = Wt4==0;
-            
-            % save original data
-            Xori = X;
-            yori = y;
-            
-            % set retained data
-            X    = X(Wt4,:);
-            y    = y(Wt4);
-            
-            %recompute n on the retained data
-            n = size(y,1);
+    if sum(chknwtrim)>0 
+        tmp = cell2mat(varargin(find(chknwtrim)+1));
+        if ~isstruct(tmp)
+            wtrimdef = 0;
+            if cell2mat(varargin(find(chknwtrim)+1)) == 4
+                interc = find(max(X,[],1)-min(X,[],1) == 0);
+                if p == numel(interc) + 1
+
+                    % The bandwidth is chosen following Baddeley, as in the R
+                    % spatstats package (density.ppp function).
+                    bw = (range([X(:,numel(interc)+1),y]))/8;
+
+                    %in order to reproduce results comparable with the paper
+                    %Cerioli and Perrotta (2013) the bandwidth is divided by 3
+                    bw = bw/3;
+                    % Another option to be considered follwing Baddeley is:
+                    %bw = min(max(X),max(y))/8;
+
+                    % Thinning step
+                    [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one','bandwidth',bw);
+                    id_unthinned = Wt4==1;
+                    %id_thinned = Wt4==0;
+
+                    % save original data
+                    Xori = X;
+                    yori = y;
+
+                    % set retained data
+                    X    = X(Wt4,:);
+                    y    = y(Wt4);
+
+                    %recompute n on the retained data
+                    n = size(y,1);
+                end
+            end
+        else
+            wtrimdef = struct;
         end
+    else
+        %no_wtrim = 1;
+        wtrimdef = 0;
     end
+else
+    wtrimdef = 0;
 end
+
 
 %% User options and their default values
 
@@ -819,12 +889,14 @@ if nargin>6
              figure;plot(Xori,yori,'.'); hold on ; text(Xori(nsamp(:)),yori(nsamp(:)),'X');
              figure;plot(Xori,yori,'.'); hold on ; text(X(C(:)),y(C(:)),'X');
             %}
-            if sum(chknwtrim)>0 && cell2mat(varargin(find(chknwtrim)+1)) == 4
-                for f=1:size(C,1)*size(C,2)
-                    if Wt4(C(f)) == 0
-                        [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
-                    else
-                        C(f) = sum(Wt4(1:C(f)));
+            if sum(chknwtrim)>0 && ~isstruct(cell2mat(varargin(find(chknwtrim)+1)))
+                if cell2mat(varargin(find(chknwtrim)+1))== 4
+                    for f=1:size(C,1)*size(C,2)
+                        if Wt4(C(f)) == 0
+                            [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
+                        else
+                            C(f) = sum(Wt4(1:C(f)));
+                        end
                     end
                 end
             end
@@ -842,14 +914,12 @@ else
     % if nargin == 6, then the user has not supplied prior subsets
     NoPriorSubsets=1;
 end
-
 % If the user has not specified prior subsets (nsamp is not a scalar), then
 % set the default number of samples to extract
 if NoPriorSubsets == 1
     ncomb=bc(n,k*(p+intercept));
     nsampdef=min(300,ncomb);
 end
-
 
 %%% - Other user options
 
@@ -859,9 +929,6 @@ refstepsdef  = 10;
 % default tolerance for comparing the classifications in two subsequent
 % concentration steps
 reftoldef=1e-5;
-
-% default value for wtrim: the thinning strategy (wtrim can be 0,1,2,3,4)
-wtrimdef = 0;
 
 % default value for we: the observation weights
 wedef = ones(n,1);
@@ -881,7 +948,9 @@ options = struct('intercept',1,'mixt',mixtdef,...
     'reftol',reftoldef,...
     'we',wedef,'wtrim',wtrimdef,...
     'equalweights',equalweightsdef,...
-    'RandNumbForNini','','msg',1,'plots',1,'nocheck',1);
+    'RandNumbForNini','','msg',1,'plots',1,...
+    'nocheck',1,'k_dens_mixt',5,'nsamp_dens_mixt',nsampdef,...
+    'refsteps_dens_mixt',refstepsdef,'method_dens_mixt','P');
 
 if nargin > 6
     UserOptions = varargin(1:2:length(varargin));
@@ -931,12 +1000,31 @@ reftol   = options.reftol;
 % Equalweights constraints
 equalweights = options.equalweights;
 
-% application-specific weights vector assigned by the user
+% application-specific weights vector assigned by the user for beta
+% estimation
 we         = options.we;
 
-% Flag to control the type of thinning scheme
-wtrim      = options.wtrim;
+%specific parameters for Posson or Exponential mixture density
+k_dens_mixt = options.k_dens_mixt;
+nsamp_dens_mixt = options.nsamp_dens_mixt;
+refsteps_dens_mixt = options.refsteps_dens_mixt;
+method_dens_mixt = options.method_dens_mixt;
 
+
+
+% Flag to control the type of thinning scheme for estimate beta
+% (wtype_beta) and to compute obj function (wtype_obj)
+if isstruct(options.wtrim)
+    % Flag to control the type of thinning scheme for beta estimation
+    wtype_beta      = options.wtrim.wtype_beta;
+    % Flag to control the type of thinning scheme for obj function
+    wtype_obj       = options.wtrim.wtype_obj;
+else 
+% if options.wtrim is a double it referes only to the beta estimation. No
+% weighting will be done in the obj function.
+    wtype_beta      = options.wtrim;
+    wtype_obj       ='0';
+end
 % Flag associated to the strategy for choosing the best refining step
 % In the standard TCLUST the best refining step is granted to be the last
 % one, because the objective funcion is monothonic. However, with second
@@ -944,7 +1032,7 @@ wtrim      = options.wtrim;
 % be monothonic and a different strategy for choosing the best refining
 % step can be considered.
 
-zigzag = (alphaX > 0 && alphaX<1) || wtrim == 3 || wtrim == 2;
+zigzag = (alphaX > 0 && alphaX<1) || wtype_beta == 3 || wtype_beta == 2 || ~strcmp(wtype_obj, '0');
 
 % Mixt option: type of membership of the observations to the sub-populations
 % Control the mixture model to use (classification/mixture, likelihood or a
@@ -954,9 +1042,9 @@ zigzag = (alphaX > 0 && alphaX<1) || wtrim == 3 || wtrim == 2;
 % * mixt = 1: Mixture likelihood, with crisp assignement
 % * mixt = 2: Mixture likelihood
 %
-%%% $$ \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j) $$ $$ \quad $$
-%%% $$ \prod_{j=1}^k  \prod_{i\in R_j} \pi_j \phi(x_i;\theta_j) $$ $$ \quad $$
-%%% $$ \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right] $$
+% $$ \prod_{j=1}^k  \prod_{i\in R_j} \phi (x_i;\theta_j) $$ $$ \quad $$
+% $$ \prod_{j=1}^k  \prod_{i\in R_j} \pi_j \phi(x_i;\theta_j) $$ $$ \quad $$
+% $$ \prod_{i=1}^n \left[ \sum_{j=1}^k \pi_j \phi (x_i;\theta_j)  \right] $$
 mixt       = options.mixt;
 
 if msg == 1
@@ -993,7 +1081,8 @@ end
 
 % Initialize we, a vector of application-specific weights associated to the
 % observations, according to the trimming/thinning strategy.
-switch wtrim
+
+switch wtype_beta
     case 0
         % standard case: weights must be all equal to 1. If user specifies
         % his weights vector differently, then the vector is rectified.
@@ -1005,7 +1094,7 @@ switch wtrim
         end
     case 1
         % User specified weights: must be a column vector
-        we = we(:);
+       
         
         if sum(we == wedef)==n
             disp('Warning: when "wtrim" is 1, trimming is done by weighting');
@@ -1030,7 +1119,6 @@ switch wtrim
         
         % weights must be normalized so that to sum to 1
         we = we/nansum(we);
-        
     case 2
         % weights will contain the componentwise univariate density probabilities.
         if sum(we ~= wedef)>0
@@ -1062,9 +1150,7 @@ switch wtrim
             disp('         your vector "we" will not be considered.');
             we = wedef;
         end
-        
-end
-
+end    
 %%% - Subsets extraction
 
 %case with no prior subsets from the User
@@ -1119,11 +1205,17 @@ if cwm==1
     Lambda_pk = muX';
 end
 
-%w4trimopt = vector of {0,1} weights with 1 to identify units that are not
+%wbetaopt = vector of {0,1} weights with 1 to identify units that are not
 %thinned.  The vector is the one giving rise to the optimal solution.
-%The intermediate vector, w4trim, is used in the first trimming step to
+%The intermediate vector, wbeta, is used in the first trimming step to
 %compute the likelihood contribution on the units that are not thinned.
-w4trimopt = ones(n,1);
+webetaopt = ones(n,1);
+
+%wobjopt = vector of {0,1} weights with 1 to identify units that are not
+%thinned.  The vector is the one giving rise to the optimal solution.
+%The intermediate vector, wbeta, is used in the first trimming step to
+%compute the likelihood contribution on the units that are not thinned.
+%weobjopt = ones(n,1);
 
 %idxopt = (nx1) vector of values in {1, ... , k, -1 , -2} with cluster
 %assignements (1,...,k) and trimmed units (-1 for first level trimming and
@@ -1131,7 +1223,7 @@ w4trimopt = ones(n,1);
 idxopt    = zeros(n,1);
 
 %Remark. The assignement of the thinned units can be found with:
-%A = [find(w4trimopt==0)' , idxopt(find(w4trimopt==0))']
+%A = [find(wbetaopt==0)' , idxopt(find(wbetaopt==0))']
 %where the first column of A is the row index of the thinned unit and the
 %second one is the cluster assignement.
 
@@ -1143,25 +1235,27 @@ nopt       = zeros(1,k);
 postprobopt = zeros(n,k);
 
 %obj_all: used to monitor the objective function during the refining steps.
-obj_all = NaN(nselected,refsteps);
-%indmax_all = NaN(n,refsteps,nselected);
-%beta_all   = NaN(k,refsteps,nselected);
+if monitor
+    obj_all = NaN(nselected,refsteps); %#ok<UNRCH>
+    %indmax_all = NaN(n,refsteps,nselected);
+    %beta_all   = NaN(k,refsteps,nselected);
+end
 
 
 %%% - Find NParam penalty term to use inside AIC and BIC
-npar=p*k;
-
-if equalweights==false
-    npar=npar +(k-1);
-end
 
 % Add paramters referred to sigma2 restrictions
-nParam=npar+ (k-1)*(1-1/restrfact) +1;
 
+npar=p*k;
+if equalweights==false      %to be generalized for equalweights==true
+    npar=npar +(k-1);
+end
+nParam=npar+ (k-1)*(1-1/restrfact) +1;
+    
+    
 if cwm==1
     nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
 end
-
 
 %%  RANDOM STARTS
 
@@ -1370,116 +1464,278 @@ for i =1:nselected
     indold = zeros(n,1)-1;
     mudiff=1e+15;
     cstep=0;
-    while mudiff > reftol && cstep <= refsteps
+    while mudiff > reftol && cstep <= refsteps-1
         cstep = cstep + 1;
         
         %%% -- -- Observation weighting, according to wtrim option (*componentwise thinning* is applied here)
         
-        % w4trim = vector of weights in {0,1}; w4trim = 1 identifies units
+        % wbeta = vector of weights in {0,1}; wbeta = 1 identifies units
         % that are not thinned and contribute to the likelihood in the
         % first trimming step.
         
-        switch wtrim
+        switch wtype_beta
             
-            case 0
-                %%% -- -- * case 0: no observation weighting: w4trim is constant
-                w4trim = ones(n,1);
-                
-            case 1
-                %%% -- -- * case 1: w4trim contains user-specific weights
-                w4trim = we;
-                
-            case 2
-                %%% -- -- * case 2: Componentwise Thinning.
-                % w4trim contains the retention probabilities on yhat,
-                % estimated with FSDA function wthin.
-                
-                % kx1 vector for groups that are too small to be thinned
-                small_group     = zeros(k,1);
-                
-                w4trim = ones(n,1);
-                for jj=1:k
-                    % Boolean index of units in group j
-                    groupj=idx==jj;
-                    if  sum(groupj) > skipthin_th
-                        % update w4trim if the group has more than
-                        % skipthin_th units.
-                        Xj   = X(groupj,:);
-                        yhat = Xj*Beta(:,jj);
-                        % thinning
-                        [~ , pretain]  = wthin(yhat);
-                        w4trim(groupj) = pretain;
-                        % pretain: the retention probabilities are based on
-                        % the predicted values (yhat) estimated at the
-                        % previous concentration step. REMARK: trimmed and
-                        % non-trimmed units are both considered.
-                    else
-                        % The group is too small: skip thinning
-                        if sum(groupj) > 0
-                            small_group(jj) = 1;
-                        end
-                    end
-                    
-                end
-                
-                % For not-empty groups that are too-small to run thinning,
-                % w4trim is the median of the weights of the other groups.
-                if sum(small_group) > 0
-                    % REMARK: was nanmedian
-                    medianweights  = median(w4trim(ismember(idx,find(small_group==0))));
-                    w4trim(groupj) = medianweights;
-                end
-                
-            case 3
-                %%% -- -- * case 3: Componentwise Thinning.
-                
-                % weights are the posterior probabilities multiplied by
-                % the bernoulli weights
-                
-                w4trim = ones(n,1);
-                % find indices of units in group jj
-                for jj=1:k
-                    %The first concentration step uses idx which takes
-                    %values in {1, ... , k}.
-                    %The following concentration steps, where idx takes
-                    %values in {1, ... , k, 0, -1 , -2}, use idx_ne0 which
-                    %takes values  {1, ... , k, -1 , -2}
-                    
-                    if cstep == 1
-                        ijj = idx==jj;
-                    else
-                        ijj = idx_ne0==jj;
-                    end
-                    
-                    % update w4trim if the group has more than
+        case 0
+            %%% -- -- * case 0: no observation weighting: wbeta is constant
+            webeta = ones(n,1);
+            weobj = ones(n,1);
+
+        case 1
+            %%% -- -- * case 1: wbeta contains user-specific weights
+            webeta = we;
+            if strcmp(wtype_obj,'user')
+               weobj =  webeta;
+            else  
+               weobj = ones(n,1);
+            end
+
+         case 2
+            %%% -- -- * case 2: Componentwise Thinning.
+            % wbeta contains the retention probabilities on yhat,
+            % estimated with FSDA function wthin.
+
+            % kx1 vector for groups that are too small to be thinned
+            small_group     = zeros(k,1);
+
+            webeta = ones(n,1);
+            weobj = ones(n,1);
+            for jj=1:k
+                % Boolean index of units in group j
+                groupj=idx==jj;
+                if  sum(groupj) > skipthin_th
+                    % update wbeta if the group has more than
                     % skipthin_th units.
-                    if  sum(ijj)> skipthin_th
-                        % Bernoulli weights based on density estimated
-                        % on the component predicted values in the
-                        % previous step.
-                        Xj          = X(ijj,:);
-                        yhat        = Xj*Beta(:,jj);
-                        [Wt , ~]    = wthin(yhat);
-                        w4trim(ijj) = Wt;
-                        
-                        % count the thinned observations
-                        % nthinned = nthinned + sum(Wt == 0);
-                        % REMARK: group weights do not consider the thinned
-                        % units. To be discussed.
-                        niini(jj) = sum(Wt > 0);
+                    Xj   = X(groupj,:);
+                    yhat = Xj*Beta(:,jj);
+                    % thinning
+                    [Zt , pretain]  = wthin(yhat);
+                    webeta(groupj) = pretain;
+                    if strcmp(wtype_obj,'0')
+                        weobj(groupj) = ones(sum(groupj),1);
+                    elseif strcmp(wtype_obj,'Z')
+                        weobj(groupj) = Zt;
+                    elseif strcmp(wtype_obj,'w')
+                        weobj(groupj) = pretain;
+                    elseif strcmp(wtype_obj,'wZ')
+                        weobj(groupj) = pretain .* Zt;
+                    else
+                        error('wtype_obj option not correct')
                     end
-                    
+                    % pretain: the retention probabilities are based on
+                    % the predicted values (yhat) estimated at the
+                    % previous concentration step. REMARK: trimmed and
+                    % non-trimmed units are both considered.
+                else
+                    % The group is too small: skip thinning
+                    if sum(groupj) > 0
+                        small_group(jj) = 1;
+                    end
                 end
-                
-            case 4
-                %%% -- -- * case 4: Bivariate tandem thinning
-                %w4trim = Wt4;
-                 w4trim = ones(n,1);
+
+            end
+            % For not-empty groups that are too-small to run thinning,
+            % wbeta is the median of the weights of the other groups.
+            if sum(small_group) > 0
+                % REMARK: was nanmedian
+                medianweights  = median(webeta(ismember(idx,find(small_group==0))));
+                webeta(groupj) = medianweights;
+                if strcmp(wtype_obj,'0')
+                    weobj(groupj) = ones(sum(groupj),1);
+                elseif strcmp(wtype_obj,'Z')
+                    weobj(groupj) = ones(sum(groupj),1);
+                elseif strcmp(wtype_obj,'w')
+                    weobj(groupj) = medianweights;
+                elseif strcmp(wtype_obj,'wZ')
+                    weobj(groupj) = medianweights;
+                else
+                        error('wtype_obj option not correct')
+                end
+
+            end
+
+         case 3
+            %%% -- -- * case 3: Componentwise Thinning.
+
+            % weights are the posterior probabilities multiplied by
+            % the bernoulli weights
+
+            webeta = ones(n,1);
+            weobj = ones(n,1);
+            % find indices of units in group jj
+            for jj=1:k
+                %The first concentration step uses idx which takes
+                %values in {1, ... , k}.
+                %The following concentration steps, where idx takes
+                %values in {1, ... , k, 0, -1 , -2}, use idx_ne0 which
+                %takes values  {1, ... , k, -1 , -2}
+
+                if cstep == 1
+                    ijj = idx==jj;
+                else
+                    ijj = idx_ne0==jj;
+                end
+
+                % update wbeta if the group has more than
+                % skipthin_th units.
+                if  sum(ijj)> skipthin_th
+                    % Bernoulli weights based on density estimated
+                    % on the component predicted values in the
+                    % previous step.
+                    Xj          = X(ijj,:);
+                    yhat        = Xj*Beta(:,jj);
+                    [Zt , ~]    = wthin(yhat);%,'bandwidth',0.9);
+                    webeta(ijj) = Zt;
+                    if strcmp(wtype_obj,'Z')
+                         weobj(ijj) = Zt;
+                    elseif strcmp(wtype_obj,'0')
+                         weobj(ijj) = ones(length(sum(ijj)),1);
+
+                    else
+                        error('wtype_obj option not correct')
+                    end
+                    % count the thinned observations
+                    % nthinned = nthinned + sum(Wt == 0);
+                    % REMARK: group weights do not consider the thinned
+                    % units. To be discussed.
+                    niini(jj) = sum(Zt > 0);
+
+                end
+
+            end
+
+        case 4
+            %%% -- -- * case 4: Bivariate tandem thinning
+            %wbeta = Wt4;
+             webeta = ones(n,1);
+             weobj = ones(n,1);
+
+         case 5 % TO BE IMPLEMENTED
+            %%% -- -- * case 5: Mixture of Exponentials.
+
+            % weights are the posterior probabilities multiplied by
+            % the bernoulli weights(verify??????)
+
+            webeta = ones(n,1);
+            weobj = ones(n,1);
+            % find indices of units in group jj
+            for jj=1:k
+                %The first concentration step uses idx which takes
+                %values in {1, ... , k}.
+                %The following concentration steps, where idx takes
+                %values in {1, ... , k, 0, -1 , -2}, use idx_ne0 which
+                %takes values  {1, ... , k, -1 , -2}
+
+                if cstep == 1
+                    ijj = idx==jj;
+                else
+                    ijj = idx_ne0==jj;
+                end
+
+                % update wbeta if the group has more than
+                % skipthin_th units.
+                if  sum(ijj)> k_dens_mix
+
+                    Xj          = X(ijj,:);
+                    yhat        = Xj*Beta(:,jj);
+
+                    %%%%%%%%%%%%%%%% POISSON function %%%%%%%%%%%%%%%%%%%
+
+                    %webeta(ijj) ; %= to be complete???????;
+
+                    if strcmp(wtype_obj,'Z')
+                    %     weobj(ijj);  %=to be complete???????;
+                    elseif strcmp(wtype_obj,'0')
+                         weobj(ijj) = ones(length(sum(ijj)),1);
+
+                    else
+                        error('wtype_obj option not correct')
+                    end
+                    % count the thinned observations
+                    % nthinned = nthinned + sum(Wt == 0);
+                    % REMARK: group weights do not consider the thinned
+                    % units. To be discussed.
+                    %niini(jj) = %to be complete???????;   sum(???????? > 0);
+
+                end
+
+            end
+
+
+         case 6 % TO BE IMPLEMENTED
+            %%% -- -- * case 6: Mixture Poisson.
+            % wbeta contains the retention probabilities on yhat,
+            % estimated with Mixture Poisson function .
+
+            % kx1 vector for groups that are too small to be thinned
+            webeta = ones(n,1);
+            weobj = ones(n,1);
+            small_group     = zeros(k,1);
+
+            for jj=1:k
+                % Boolean index of units in group j
+                groupj=idx==jj;
+                if  sum(groupj) > k_dens_mix
+                    % update wbeta if the group has more than
+                    % skipthin_th units.
+                    Xj   = X(groupj,:);
+                    yhat = Xj*Beta(:,jj);
+                    % ADD Poisson mixture function ?????????
+
+                    % ADD weights ???????????????
+%                         webeta(groupj) = pretain;
+%                         if strcmp(wtype_obj,'0')
+%                             weobj(groupj) = ones(sum(groupj),1);
+%                         elseif strcmp(wtype_obj,'Z')
+%                             weobj(groupj) = Zt;
+%                         elseif strcmp(wtype_obj,'w')
+%                             weobj(groupj) = pretain;
+%                         elseif strcmp(wtype_obj,'wZ')
+%                             weobj(groupj) = pretain .* Zt;
+%                         else
+%                             error('wtype_obj option not correct')
+%                         end
+                    % pretain: the retention probabilities are based on
+                    % the predicted values (yhat) estimated at the
+                    % previous concentration step. REMARK: trimmed and
+                    % non-trimmed units are both considered.
+                else
+                    % The group is too small: skip thinning
+                    if sum(groupj) > 0
+                        small_group(jj) = 1;
+                    end
+                end
+            end
+ 
+            % For not-empty groups that are too-small to run thinning,
+            % wbeta is the median of the weights of the other groups.
+            if sum(small_group) > 0
+                % REMARK: was nanmedian
+                medianweights  = median(webeta(ismember(idx,find(small_group==0))));
+                webeta(groupj) = medianweights;
+                if strcmp(wtype_obj,'0')
+                    weobj(groupj) = ones(sum(groupj),1);
+                elseif strcmp(wtype_obj,'Z')
+                    weobj(groupj) = ones(sum(groupj),1);
+                elseif strcmp(wtype_obj,'w')
+                    weobj(groupj) = medianweights;
+                elseif strcmp(wtype_obj,'wZ')
+                    weobj(groupj) = medianweights;
+                else
+                        error('wtype_obj option not correct')
+                end
+
+            end  
+        end
+        if monitor
+            Beta_all(1:k,cstep) = Beta'; %#ok<UNRCH>
         end
         
         % Mean of the weights must be 1.
-        mean_w4trim = mean(w4trim);
-        w4trim      = w4trim/mean_w4trim;
+        mean_wbeta = mean(webeta);
+        webeta      = webeta/mean_wbeta;
+        
+        mean_wobj = mean(weobj);
+        weobj      = weobj/mean_wobj;
         
         if sum(isnan(Beta(:)))>0
             %%% -- -- _Stop if one of the current beta parameters is undefined, and go to another subset_
@@ -1545,13 +1801,13 @@ for i =1:nselected
         
         % Assign infinite weights to thinned units so that they can
         % never be trimmed
-        disc(w4trim==0)=1e+20;
+        disc(webeta==0)=1e+20;
         
         % Sort the n likelihood contributions and save them in qq
         [~,qq] = sort(disc,'ascend');
         
         % remember to which group the thinned units belong.
-        if wtrim == 3
+        if wtype_beta == 3
             % idx_ne0, computed only for wtrim = 3, is a (nx1) vector of
             % cluster assignements, taking values in  {1, ... , k}; at the
             % end it will take values in {1, ... , k,  -1 , -2}.
@@ -1559,20 +1815,20 @@ for i =1:nselected
             % idx is a (nx1) vector of cluster assignements, taking values
             % in  {1, ... , k, 0}; at the end it will take values in {1,
             % ... , k, 0, -1 , -2}.
-            % idx could be always obtained as idx=idx_ne0.*w4trim
+            % idx could be always obtained as idx=idx_ne0.*wbeta
             
             idx_ne0=idx;
-            idx(w4trim==0)=0;
+            idx(webeta==0)=0;
         end
         
         
         %% -- -- First level trimming
         
         % Order the weights according to qq
-        w4trimordered=w4trim(qq);
+        wbetaordered=webeta(qq);
         
         % Find cumlative sum of weights
-        cumsumww = cumsum(w4trimordered);
+        cumsumww = cumsum(wbetaordered);
         
         % qqunassigned_small = a n-by-1 Boolean vector
         % containing true for the units which
@@ -1591,7 +1847,7 @@ for i =1:nselected
         % idx takes values in {1, ... , k, 0,  -1}. At the end it will
         % takes values in {1, ... , k, 0,  -1, -2}.
         idx(qqunassigned)=-1;
-        if wtrim==3
+        if wtype_beta==3
             % idx_ne0 takes values in {1, ... , k,  -1}. At the end it
             % will takes values in {1, ... , k,  -1, -2}.
             idx_ne0(qqunassigned)=-1;
@@ -1604,8 +1860,8 @@ for i =1:nselected
         % Z = vector nxk taking values in {[0 1], 0}: (0 1] are the
         % posterior probabilities referring to not trimmed and not
         % thinned units, 0 to trimmed or thinned units.
-        Z=bsxfun(@times,postprob,w4trim);
-        
+        Z=bsxfun(@times,postprob,webeta);
+
         %% -- -- Second level of trimming or CWM
         
         % FS or MCD are used to find units to trim
@@ -1710,7 +1966,7 @@ for i =1:nselected
                     
                     % idx takes values in {1, ... , k, 0,  -1,-2}.
                     idx(groupjind(trimj))=-2;
-                    if wtrim==3
+                    if wtype_beta==3
                         % idx_ne0 takes values in {1, ... , k, -1,-2}.
                         idx_ne0(groupjind(trimj))=-2;
                     end
@@ -1734,7 +1990,7 @@ for i =1:nselected
         
         %%% -- -- _Stop if we end up with less than k groups, and go to another subset_
         if ltkg==1
-            Beta=NaN;
+            Beta=NaN; %#ok<NASGU>
             break
         end
         
@@ -1792,7 +2048,7 @@ for i =1:nselected
         
         %%% -- -- _Stop if we end up with less than k groups_
         if ltkg==1
-            Beta=NaN;
+            Beta=NaN; %#ok<NASGU>
             break
         end
         
@@ -1851,14 +2107,13 @@ for i =1:nselected
             %loop on not-empty groups
             for jj = not_empty_g
                 
-                
                 % equalweights =1: equal proportions are supplied for group sizes
                 if equalweights ==1
                     %the next if-then-else statement is an experiment to
                     %decide if the thinned units must be considered or
                     %not in the obj function. The same if-then-else is
                     %not present for equalweights == 0
-                    if (wtrim==3 || wtrim==2) && obj_with_thinned ==1
+                    
                         %In case of bernoulli thinning, if the flag
                         %obj_with_thinned == 1, the objective function is
                         %computed excluding only trimmed units, by using
@@ -1866,24 +2121,27 @@ for i =1:nselected
                         %likelihood is used (mixt = 2), postprob is a
                         %boolean matrix.
                         
-                        obj = obj + log(1/k) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj)) ;
+                        %postprob: row i-column j: 
+                        % ---1 if observation i belongs to group j,
+                        % ---0 if observation i belongs to another group than j or if it is trimmed
+                        % Note that thinned observations are assigned to
+                        % the group for which the log-likelihood is highest
                         
-                    else
-                        %In all other cases, which are
-                        %- 1 = no weights, 
-                        %- 2 = user weights, 
-                        %- 3 = thinning with probabilities and obj_with_thinned == 0,
-                        %- 4 = bernoulli thinning and obj_with_thinned == 0
-                        %the thinned and trimmed units do not contribute to
-                        %the objective function; matrix Z below does the job:
-                        % Z = (bsxfun(@times,postprob,w4trim)) 
+                        %weobj depends from the choice of the input
+                        %parameter wtype_obj. The defaults is to assign to
+                        %each observation weight 1.
+                        
                         obj = obj + log(1/k) +...
-                            sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj)) ;                       
-                    end
+                                sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj).*weobj(:)) ;
+                        %sum_dens(jj,cstep) = sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)));
+                        
+                        if monitor
+                            postprob_all(:,cstep,jj) = postprob(:,jj); %#ok<UNRCH>
+                            weobj_all(:,cstep) = weobj';
+                        end
                     
                     
-                    % equalweights = 0: proportions are set equal to the group sizes.
+                % equalweights = 0: proportions are set equal to the group sizes.
                 else
                     %the objective function is computed excluding both
                     %thinned and trimmed (matrix Z)
@@ -1900,7 +2158,7 @@ for i =1:nselected
                 
             end
             
-            %%% -- -- -- Mixture likelihood (check penalization)
+        %%% -- -- -- Mixture likelihood (check penalization)
         else
             
             %initialization of log-likelihood
@@ -1932,16 +2190,47 @@ for i =1:nselected
             obj = estepFS(log_lh);
         end
         
-        % penalized term (to be corrected)
-        ptermAIC = 2*nParam/mean_w4trim;
-        %Penalization of objective function
-        % obj = 2*obj - ptermAIC;
-        
-        
-        %obj_all = (nselected x refsteps) vector containing the obj values
-        %of all subsets and all concentration steps.
-        obj_all(i,cstep) = obj;
-        
+        if penal_obj == 1
+            % penalized term (to be corrected)
+            ptermAIC = 2*nParam/mean_wbeta;
+            %Penalization of objective function
+            obj = 2*obj - ptermAIC;
+        end
+        if monitor
+            %obj_all = (nselected x refsteps) vector containing the obj values
+            %of all subsets and all concentration steps.
+            %obj_all(i,cstep) = obj;
+            obj_all(i,cstep) = obj; %#ok<UNRCH>
+            %obj_all_new(i,cstep) = obj/(sum(weobj_new));
+            Beta_all(1:k,cstep) = Beta;
+            %weobj_all(i,cstep) = sum(weobj>0);
+            %sigma2ini_all(cstep,:)=sigma2ini;
+        end
+        %{
+         figure;
+        line([0 max(X)],[0 max(X)*Beta(1)])
+        hold on
+        line([0 max(X)],[0 max(X)*Beta(2)])
+        hold on
+        line([0 max(X)],[0 max(X)*Beta(3)])
+        hold on
+        line([0 max(X)],[0 max(X)*Beta(4)])
+        %}
+%         if (wtrim==3 || wtrim==2|| wtrim==5) && obj_with_thinned ==1
+%             if wtrim==5
+%              obj_all(i,cstep) = obj/(sum(w4trim_obj_5)>0);
+%             else
+%              obj_all(i,cstep) = obj/(sum(sum(postprob,2)>0));
+%             end
+%         else
+%              if wtrim == 5
+%                   obj_all(i,cstep) = obj/(sum(w4trim.*w4trim_obj_5));
+%              else
+%                 obj_all(i,cstep) = obj/(sum(sum(Z,2)>0));
+%                 denominator_all(i,cstep) = (sum(sum(Z,2)>0));
+%              end
+%          end
+
         
         %%% -- -- Update the 'optimal' target value and parameters
         
@@ -1969,6 +2258,8 @@ for i =1:nselected
                 end
                 %cstepopt = cstep with the largest obj
                 cstepopt  = cstep;
+                %subsetopt = subset with the largest obj
+                subsetopt  = i;
                 %vopt     = value of obj in the optimal cstep
                 vopt      = obj;
                 %bopt     = value of regression parameters in the optimal cstep
@@ -1978,12 +2269,14 @@ for i =1:nselected
                 nopt      = niini;
                 %sigma2opt= value of groups variances in the optimal cstep
                 sigma2opt  = sigma2ini;
-                %w4trimopt= value of weights (thinning probabilities) in
+                %wbetaopt= value of weights (thinning probabilities) in
                 %the optimal cstep
-                w4trimopt  = w4trim;
-                
+                webetaopt  = webeta;
+                if wtype_beta==5
+                    w4trimopt_obj_5  = w4trim_obj_5;
+                end
                 %idxopt = (nx1) vector of {-1,-2, 1, ..., k}
-                if wtrim==3
+                if wtype_beta==3
                     idxopt = idx_ne0;
                 else
                     idxopt = idx;
@@ -2050,6 +2343,7 @@ end
 out                     = struct;
 %cstepopt =             = cstep with maximum obj
 out.cstepopt            =cstepopt;
+out.subsetopt           =subsetopt;
 %   bopt                = regression parameters
 out.bopt                = bopt;
 %   sigmaopt0           = estimated group variances
@@ -2057,7 +2351,10 @@ out.sigma2opt           = sigma2opt;
 %   sigma2opt_corr      = estimated group variances corrected with  asymptotic
 %                         consistency factor and small sample correction factor
 out.sigma2opt_corr      = sigma2opt_corr;
-
+out.wbetaopt = webetaopt;
+if wtype_beta==5
+    out.w4trimopt_ovj_5 = w4trimopt_obj_5;
+end
 %CWM
 if cwm==1
     %out.muXopt= k-by-p matrix containing cluster centroid locations.
@@ -2070,11 +2367,14 @@ end
 
 %   obj           = value of the target function
 out.obj                = vopt;
-out.obj_all            = obj_all;
-
+if monitor
+    out.obj_all            = obj_all; %#ok<UNRCH>
+    out.Beta_all            = Beta_all;
+end
+out.C=C;
 %in tandem thinning it is necessary to save information about not only
 %retained units (idxopt), but also about thinned units.
-if wtrim == 4
+if wtype_beta == 4
     out.idx = zeros(length(Xori),1);
     out.idx(id_unthinned)=idxopt;
 else
@@ -2088,9 +2388,6 @@ out.siz=tabulateFS(idxopt(:,1));
 if mixt == 2
     out.postprobopt     = postprobopt;
 end
-
-%restrfact = restriction factor used for the analysis.
-out.restrfact           = restrfact;
 
 % Store the indices in varargout
 if nargout==2
@@ -2121,7 +2418,7 @@ end
 
 delunits=false(n,1);
 delunits(idxopt(:,end)<0)=true;
-delunits(w4trim==0)=true;
+delunits(webeta==0)=true;
 
 ll(delunits,:)=[];
 
@@ -2187,7 +2484,7 @@ if plots
         % remove the last ; at the end
         betacoeff=betacoeff(1:end-2);
         
-        title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
+        title({['$ wtrim_{beta}=' num2str(wtype_beta) '\quad wtrim_{obj}=' num2str(wtype_obj) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
             ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
             'interpreter' , 'LaTex', 'fontsize' , 14);
         
@@ -2197,7 +2494,7 @@ if plots
             % plot of the good units allocated to the current group.
             % Indices are taken after the second level trimming.
             % Trimmed points are not plotted by group.
-            if wtrim==4
+            if wtype_beta==4
                 ucg = find(idxopt==jj);
             else
                 ucg = find(out.idx(:,1)==jj);
@@ -2223,7 +2520,7 @@ if plots
         end
         
         % Plot the outliers (trimmed points)
-        if wtrim==4
+        if wtype_beta==4
             ucg = find(idxopt==-1);
         else
             ucg = find(out.idx(:,1)==-1);
@@ -2232,11 +2529,16 @@ if plots
             'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
         
         % Second level trimming points
-        ucg = find(out.idx(:,1)==-2);
+        if wtype_beta==4
+            ucg = find(idxopt==-2);
+        else
+            ucg = find(out.idx(:,1)==-2);
+        end
+        
         plot(X(ucg,end),y(ucg),'*','color','c',...
             'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
         
-        if wtrim == 4
+        if wtype_beta == 4
             % in case of tandem thinning, plot the thinned points
             plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
                 'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
@@ -2262,23 +2564,23 @@ if plots
         %%
         % initialize figure
         
-        if wtrim == 3
+        if wtype_beta == 3
             fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
             gca(fh);
             hold on;
             
             betacoeff=sprintf('%0.3f ;',out.bopt(end,:));
-            title({['$ wtrim=' num2str(wtrim) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
-                ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
-                'interpreter' , 'LaTex', 'fontsize' , 14);
-            
+            title({['$ wtrim_{beta}=' num2str(wtype_beta) '\quad wtrim_{obj}=' num2str(wtype_obj) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
+            ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
+            'interpreter' , 'LaTex', 'fontsize' , 14);
+
             for jj = 1:k
                 group_label = ['Group ' num2str(jj)];
                 
                 % plot of the good units allocated to the current group.
                 % Indices are taken after the second level trimming.
                 % Trimmed points are not plotted by group.
-                ucg = find(out.idx(:,end)==jj & w4trimopt > 0);
+                ucg = find(out.idx(:,end)==jj & webetaopt > 0);
                 
                 
                 % misteriously text does not show a legend. This is why
@@ -2301,7 +2603,7 @@ if plots
                 
                 %plot the thinned (not trimmed) units
                 if jj == k
-                    thinned_nt_trimmed = w4trimopt;
+                    thinned_nt_trimmed = webetaopt;
                     thinned_nt_trimmed([ones(n,1) ;ones(n,1)]) = -12;
                     ucg = find(thinned_nt_trimmed == 0);
                     plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
@@ -2320,7 +2622,7 @@ if plots
             plot(X(ucg,end),y(ucg),'*','color','c',...
                 'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
             
-            if wtrim == 4
+            if wtype_beta == 4
                 % in case of tandem thinning, plot the thinned points
                 plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
                     'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
