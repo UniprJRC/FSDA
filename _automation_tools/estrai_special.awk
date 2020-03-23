@@ -28,7 +28,7 @@ END {
 
 /^%%/ { 	
 	if ((getline tmp) > 0) {
-	  if (index(tmp, "Interactive_example") > 0 || index(tmp, "example_producing_error") > 0) {
+	  if (index(tmp, "Interactive_example") > 0 || index(tmp, "example_producing_error") > 0 || index(tmp, "examples_regression") > 0) {
 		    print tmp " - Example with special tag found. Skipping...";
 		    num++;
 		    skipping_example = 1;
