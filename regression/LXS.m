@@ -63,7 +63,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %               fastLTS is used (lms=2 or lms is a structure) or 3000 for
 %               standard LTS or LMS.
 %
-%       lms   : Criterion to use to find the initlal
+%       lms   : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar, vector or structure.
 %               If lms is a scalar = 1 (default) Least Median of Squares is
 %                       computed,
