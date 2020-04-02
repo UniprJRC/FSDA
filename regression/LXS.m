@@ -20,7 +20,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -54,8 +54,16 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Data Types - double
 %
 %       nsamp : Number of subsamples which will be extracted to find the
-%               robust estimator. Scalar.
-%               If nsamp=0 all subsets will be extracted. They will be (n choose p).
+%               robust estimator or matrix with preextracted subsamples.
+%               Scalar or matrix.
+%               If nsamp=0 all subsets will be extracted. They will be (n
+%               choose p). If nsamp is (say) 200, 200 subsets will be
+%               extracted. If nsamp is a matrix of size r-by-p, it contains
+%               in the rows the subsets which sill have to be extracted.
+%               For example, if p=3 and nsamp=[ 2 4 9; 23 45 49; 90 34 1];
+%               the first subset is made up of units [2 4 9], the second
+%               subset of units [23 45 49] and the third subset of units
+%               [90 34 1];
 %                 Example - 'nsamp',0
 %                 Data Types - double
 %               Remark: if the number of all possible subset is <1000 the
@@ -411,7 +419,7 @@ function [out , varargout] = LXS(y,X,varargin)
     title('Fit using best subset with option bonflevoutX  not empty')
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 nnargin=nargin;
@@ -521,14 +529,20 @@ if nargin > 2
         options.h=nalpha;
     end
     
-    % Check number of subsamples to extract
-    if options.nsamp>ncomb
-        if options.msg==1
-            disp('Number of subsets to extract greater than (n p). It is set to (n p)');
+    if isscalar(options.nsamp)
+        % Check number of subsamples to extract
+        if options.nsamp>ncomb
+            if options.msg==1
+                disp('Number of subsets to extract greater than (n p). It is set to (n p)');
+            end
+            options.nsamp=0;
+        elseif  options.nsamp<0
+            error('FSDA:LXS:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
         end
-        options.nsamp=0;
-    elseif  options.nsamp<0
-        error('FSDA:LXS:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+    else % in this case nsamp is the matrix of prextracted subsamples
+        if size(options.nsamp,2)~=p
+            error('FSDA:LXS:WrongNsamp',['Matrix nsamp must have ' num2str(p) ' columns']);
+        end
     end
 end
 
@@ -629,7 +643,13 @@ warning('off','MATLAB:nearlySingularMatrix');
 
 
 %% Extract in the rows of matrix C the indexes of all required subsets
-[C,nselected] = subsets(nsamp,n,p,ncomb,msg);
+if isscalar(nsamp)
+    [C,nselected] = subsets(nsamp,n,p,ncomb,msg);
+else
+    C=nsamp;
+    nselected=size(C,1);
+end
+
 % Store the indices in varargout
 if nargout==2
     varargout={C};
@@ -1215,10 +1235,10 @@ rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
     % if msg==1
-        disp('Warning: problem in subfunction corfactorRAW')
-        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
-        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
-        disp('This may happen when n is very small and p is large')
+    disp('Warning: problem in subfunction corfactorRAW')
+    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
+    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
+    disp('This may happen when n is very small and p is large')
     % end
 end
 end
@@ -1265,10 +1285,10 @@ rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
     % if msg==1
-        disp('Warning: problem in subfunction corfactorREW');
-        disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
-        disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
-        disp('This may happen when n is very small and p is large');
+    disp('Warning: problem in subfunction corfactorREW');
+    disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
+    disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
+    disp('This may happen when n is very small and p is large');
     % end
 end
 end
