@@ -499,6 +499,11 @@ end
 
 
 %% Start of the forward search
+zeron1=false(n,1);
+
+% Initialization of the n x 1 Boolean vector which contains a true in
+% correspondence of the units belonging to subset in each step
+bsbT=zeron1;
 
 seq=(1:n)';
 
@@ -550,6 +555,8 @@ for i=1:lla
     % Store information about the units forming subset for each value of
     % lambda
     binit(:,i)=out.bs';
+    
+    bsbT(bsb)=true;
     
     % bsb=[1 8 12 15];
     %ini0 = initial value for forward search loop
@@ -625,6 +632,7 @@ for i=1:lla
                 
                 % store units forming old subset in vector oldbsb
                 oldbsb=bsb;
+                oldbsbT=bsbT;
                 
                 % order the r_i and include the smallest among the units
                 %  forming the group of potential outliers
@@ -634,12 +642,21 @@ for i=1:lla
                 % bsb= units forming the new  subset
                 bsb=ord(1:(mm+1),1);
                 
+                bsbT=zeron1;
+                bsbT(bsb)=true;
+                
+                
                 Xb=X(bsb,:);  % subset of X
                 yb=y(bsb);    % subset of y
                 zb=z(bsb);    % subset of z
                 
                 if mm>=init
-                    unit=setdiff(bsb,oldbsb);
+                    
+                    % unit = vector containing units which just entered subset;
+                    % unit=setdiff(bsb,oldbsb);
+                    % new instruction to find unit
+                    unit=find(bsbT & ~oldbsbT);
+                    
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;
                     else
