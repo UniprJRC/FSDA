@@ -658,7 +658,8 @@ if ~isempty(Aj)
                 
                 % order the r_i and include the smallest among the units forming
                 % the group of potential outliers
-                ord=sortrows(r,2);
+                % ord=sortrows(r,2);
+                [~,ord]=sort(r(:,2));
                 
                 % bsb= units forming the new  subset
                 bsb=ord(1:(mm+1),1);

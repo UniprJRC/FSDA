@@ -26,7 +26,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %
 % Optional input arguments:
 %
-%   intercept :  Indicator for constant term. true (default) | false. 
+%   intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -69,7 +69,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               for the elements of $\beta$ and for $\sigma^2$. Vector.
 %               The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% confidence intervals are computed.
-%               Example - 'conflev',[0.90 0.93] 
+%               Example - 'conflev',[0.90 0.93]
 %               Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -86,38 +86,38 @@ function [out] = FSReda(y,X,bsb,varargin)
 %         out:   structure which contains the following fields
 %
 %   out.RES=        n x (n-init+1) = matrix containing the monitoring of
-%               scaled residuals: 
-%               1st row = residual for first unit; 
-%               ...; 
+%               scaled residuals:
+%               1st row = residual for first unit;
+%               ...;
 %               nth row = residual for nth unit.
 %   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
-%               leverage: 
-%               1st row = leverage for first unit: 
-%               ...; 
+%               leverage:
+%               1st row = leverage for first unit:
+%               ...;
 %               nth row = leverage for nth unit.
 %    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
-%               to the subset at each step of the forward search: 
+%               to the subset at each step of the forward search:
 %               1st col = indexes of the units forming subset in the
-%               initial step; 
-%               ...; 
+%               initial step;
+%               ...;
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
 %               deletion residual or (m+1)ordered residual  at each step of
-%               the forward search: 
-%               1st col = fwd search index (from init to n-1); 
-%               2nd col = minimum deletion residual; 
-%               3rd col = (m+1)-ordered residual. 
+%               the forward search:
+%               1st col = fwd search index (from init to n-1);
+%               2nd col = minimum deletion residual;
+%               3rd col = (m+1)-ordered residual.
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual.
 %   out.msr=        n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum studentized residual or m-th ordered residual: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = maximum studentized residual; 
+%               maximum studentized residual or m-th ordered residual:
+%               1st col = fwd search index (from init to n);
+%               2nd col = maximum studentized residual;
 %               3rd col = (m)-ordered studentized residual.
 %   out.nor=        (n-init+1) x 4 matrix containing the monitoring of
-%               normality test in each step of the forward search: 
+%               normality test in each step of the forward search:
 %               1st col = fwd search index (from init to n);
 %               2nd col = Asymmetry test;
 %               3rd col = Kurtosis test;
@@ -126,26 +126,26 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               estimated beta coefficients in each step of the forward
 %               search.
 %    out.S2=       (n-init+1) x 4 matrix containing the monitoring of S2 or R2
-%               in each step of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of S2; 
-%               3rd col = monitoring of R2; 
-%               4th col = monitoring of rescaled S2. 
+%               in each step of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of S2;
+%               3rd col = monitoring of R2;
+%               4th col = monitoring of rescaled S2.
 %               In this case the
 %               estimated of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
 %   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
-%               modified Cook distance in each step of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of Cook distance; 
+%               modified Cook distance in each step of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of Cook distance;
 %               3rd col = monitoring of modified Cook distance.
 %  out.Tols=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated t-statistics (as specified in option input
 %               'tstat'.
 %               in each step of the forward search
 %   out.Un=        (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search. 
+%               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
@@ -153,29 +153,29 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               units included in the final step of the search.
 %  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D array.
-%                 Each third dimension refers to an element of beta: 
-%                 betaINT(:,:,1) is associated with first element of beta; 
-%                 ...; 
-%                 betaINT(:,:,p) is associated with last element of beta. 
+%                 Each third dimension refers to an element of beta:
+%                 betaINT(:,:,1) is associated with first element of beta;
+%                 ...;
+%                 betaINT(:,:,p) is associated with last element of beta.
 %                 The first two columns contain the lower
 %                 and upper confidence limits associated with conflev(1).
 %                 Columns three and four contain the lower
-%                 and upper confidence limits associated with conflev(2); 
-%                 ...; 
+%                 and upper confidence limits associated with conflev(2);
+%                 ...;
 %                 The last two columns contain the lower
 %                 and upper confidence limits associated with conflev(end).
-%                 
+%
 %                 For example betaint(:,3:4,5) contain the lower and upper
 %                 confidence limits for the fifth element of beta using
 %                 confidence level specified in the second element of input
 %                 option conflev.
-%out.sigma2INT = confidence interval for $\sigma^2$. 
-%                1st col = fwd search index; 
+%out.sigma2INT = confidence interval for $\sigma^2$.
+%                1st col = fwd search index;
 %                2nd col = lower confidence limit based on conflev(1);
 %                3rd col = upper confidence limit based on conflev(1);
 %                4th col = lower confidence limit based on conflev(2);
 %                5th col = upper confidence limit based on conflev(2);
-%                ... 
+%                ...
 %                penultimate col = lower confidence limit based on conflev(end);
 %                last col = upper confidence limit based on conflev(end);
 %     out.y=     A vector with n elements that contains the response
@@ -296,7 +296,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %{
     %% Monitoring of 95 per cent and 99 per cent confidence intervals of
     % beta and sigma2.
-    % House price data 
+    % House price data
     load hprice.txt;
     n=size(hprice,1);
     y=hprice(:,1);
@@ -496,6 +496,8 @@ end
 
 ini0=length(bsb);
 
+nocheck=options.nocheck;
+
 % check init
 init=options.init;
 if  init <p
@@ -616,7 +618,7 @@ betaINT=NaN(n-init+1,2*lconflev,p);
 sigma2INT=[(init:n)' zeros(n-init+1,2*lconflev)];
 
 %% Start of the forward search
-if (rank(Xb)~=p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
@@ -629,7 +631,12 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb) == p);
+        if nocheck==1
+            NoRankProblem=true;
+        else
+            NoRankProblem=(rank(Xb) == p);
+        end
+        
         if NoRankProblem  % rank is ok
             b=Xb\yb;
             resBSB=yb-Xb*b;
@@ -772,7 +779,8 @@ else
             
             % order the r_i and include the smallest among the units
             %  forming the group of potential outliers
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
@@ -816,7 +824,7 @@ else
                 % IGinvcdf = required quantiles of Inverse Gamma distribution
                 Chi2invcdf=chi2inv([conflev 1-conflev],mm-p);
                 
-                    c=sqrt(Sbrescaled*dmmX);
+                c=sqrt(Sbrescaled*dmmX);
                 for j=1:lconflev
                     betaINT(mm-init+1,j*2-1:j*2,:)=[ b-Tinvcdf(j)*c  b+Tinvcdf(j)*c]';
                     sigma2INT(mm-init+1,(j*2):(j*2+1))=[Sbrescaled*(mm-p)/Chi2invcdf(j) Sbrescaled*(mm-p)/Chi2invcdf(j+lconflev)];

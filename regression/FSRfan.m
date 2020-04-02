@@ -19,7 +19,7 @@ function [out]=FSRfan(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -406,7 +406,7 @@ function [out]=FSRfan(y,X,varargin)
     title('Extended fan plot')
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -461,6 +461,7 @@ plo=options.plots;
 nsamp=options.nsamp;
 msg=options.msg;
 family=options.family;
+nocheck=options.nocheck;
 
 if strcmp(family,'BoxCox')
     BoxCox=1;
@@ -562,7 +563,7 @@ for i=1:lla
     % last correctly computed beta oefficients
     blast=NaN(p,1);
     
-    if (rank(Xb)~=p)
+    if nocheck==0 && (rank(Xb)~=p)
         warning('FSRfan:message','The provided initial subset does not form full rank matrix');
         % FS loop will not be performed
     else
@@ -596,8 +597,13 @@ for i=1:lla
                 end
             end
             
-            % Compute b using transformed vector zb
-            NoRankProblem=(rank(Xb) == p);
+            if nocheck==1
+                NoRankProblem=true;
+            else
+                % Compute b using transformed vector zb
+                NoRankProblem=(rank(Xb) == p);
+            end
+            
             if NoRankProblem  % rank is ok
                 b=Xb\zb;
                 blast=b;   % Store correctly computed b for the case of rank problem
@@ -622,7 +628,8 @@ for i=1:lla
                 
                 % order the r_i and include the smallest among the units
                 %  forming the group of potential outliers
-                ord=sortrows(r,2);
+                % ord=sortrows(r,2);
+                [~,ord]=sort(r(:,2));
                 
                 % bsb= units forming the new  subset
                 bsb=ord(1:(mm+1),1);
@@ -687,12 +694,15 @@ if plo==1
         plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
         set(plotp,{'LineStyle'},{'--'});
         % set(plotp,{'LineStyle'},slin(1:lla));
-        set(plotp,{'Color'}, ColorOrd(1:lla,:));
+        %  set(plotp,{'Color'}, ColorOrd(1:lla,:));
+        % Green color for positive values of y
+        set(plotp,{'Color'},{'g'})
         
         plotn=plot(Scon(:,1),Scon(:,2:end),'LineWidth',lwd);
         set(plotn,{'LineStyle'},slin(1:lla));
         set(plotn,{'LineStyle'},{'--'});
-        set(plotn,{'Color'}, ColorOrd(1:lla,:));
+        % set(plotn,{'Color'}, ColorOrd(1:lla,:));
+        set(plotn,{'Color'},{'k'})
         
         set(plot1,{'LineStyle'},{'-'});
         

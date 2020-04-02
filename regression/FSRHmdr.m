@@ -63,7 +63,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -349,7 +349,7 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -463,6 +463,7 @@ end
 msg=options.msg;
 constr=options.constr;
 intercept=options.intercept;
+nocheck=options.nocheck;
 
 %% Initialise key matrices
 
@@ -548,7 +549,7 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 hhh=1;
 %% Start of the forward search
-if (rank(Xb)~=p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     mdr=NaN;
@@ -563,7 +564,12 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb) == p);
+        if nocheck==1
+            NoRankProblem=true;
+        else
+            NoRankProblem=(rank(Xb) == p);
+        end
+        
         if NoRankProblem  % rank is ok
             if art==1
                 if  mm > 5  && gridsearch ~=1
@@ -681,7 +687,9 @@ else
                     end
                     
                     % Store minimum deletion residual in matrix mdr
-                    selmdr=sortrows(ord,1);
+                    % selmdr=sortrows(ord,1);
+                    selmdr=min(ord(:,1));
+                    
                     if S2(mm-init+1,2)==0
                         warning('FSDA:FSRHmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init+1);
                     else
@@ -705,7 +713,8 @@ else
             if ~isempty(constr) && mm<n-length(constr)
                 r(constr,2)=Inf;
             end
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);

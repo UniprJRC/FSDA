@@ -16,7 +16,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               infinite values (Inf's) are allowed, since observations
 %               (rows) with missing or infinite values will automatically
 %               be excluded from the computations.
-%     Z :       Predictor variables in the scedastic equation. 
+%     Z :       Predictor variables in the scedastic equation.
 %               n x r matrix or index vector of length r.
 %               If Z is a n x r matrix it contains the r variables which
 %               form the scedastic function as follows (if input option art==1)
@@ -43,7 +43,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %
 % Optional input arguments:
 %
-%   intercept :  Indicator for constant term. true (default) | false. 
+%   intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -86,7 +86,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       for the elements of $\beta$ and for $\sigma^2$. Vector.
 %                       The default value of conflev is [0.95 0.99] that
 %                       is 95% and 99% confidence intervals are computed.
-%                       Example - 'conflev',[0.90 0.93] 
+%                       Example - 'conflev',[0.90 0.93]
 %                       Data Types - double
 %
 % gridsearch:           Algorithm to be used. Scalar.
@@ -97,7 +97,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       REMARK: the grid search has only been implemented when
 %                       there is just one explantory variable which controls
 %                       heteroskedasticity
-%                       Example - 'gridsearch',1 
+%                       Example - 'gridsearch',1
 %                       Data Types - double
 %
 % modeltype:    Parametric function to be used in the skedastic equation.
@@ -115,7 +115,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                           \gamma_{r} Z(i,r)) =\sigma^2 \exp(\gamma_1
 %                           Z(i,1) + \cdots + \gamma_{r} Z(i,r))
 %                       \]
-%                       Example - 'modeltype','har' 
+%                       Example - 'modeltype','har'
 %                       Data Types - string
 %
 %  constr :         units which are forced to join the search in the last r steps. Vector.
@@ -138,64 +138,64 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %         out:   structure which contains the following fields
 %
 %   out.RES=        n x (n-init+1) = matrix containing the monitoring of
-%               scaled residuals: 
-%               1st row = residual for first unit; 
-%               ...; 
+%               scaled residuals:
+%               1st row = residual for first unit;
+%               ...;
 %               nth row = residual for nth unit.
 %   out.LEV=        (n+1) x (n-init+1) = matrix containing the monitoring of
-%               leverage: 
+%               leverage:
 %               1st row = leverage for first unit;
-%               ...; 
+%               ...;
 %               nth row = leverage for nth unit.
 %    out.BB=        n x (n-init+1) matrix containing the information about the units belonging
-%               to the subset at each step of the forward search: 
+%               to the subset at each step of the forward search:
 %               1st col = indexes of the units forming subset in the
-%               initial step; 
-%               ...; 
+%               initial step;
+%               ...;
 %               last column = units forming subset in the final step (all
 %               units).
 %   out.mdr=        n-init x 3 matrix which contains the monitoring of minimum
 %               deletion residual or (m+1)ordered residual  at each step of
-%               the forward search: 
-%               1st col = fwd search index (from init to n-1); 
-%               2nd col = minimum deletion residual; 
-%               3rd col = (m+1)-ordered residual. 
+%               the forward search:
+%               1st col = fwd search index (from init to n-1);
+%               2nd col = minimum deletion residual;
+%               3rd col = (m+1)-ordered residual.
 %               Remark: these quantities are stored with sign, that is the
 %               min deletion residual is stored with negative sign if
 %               it corresponds to a negative residual.
 %   out.msr=    n-init+1 x 3 = matrix which contains the monitoring of
-%               maximum studentized residual or m-th ordered residual: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = maximum studentized residual; 
+%               maximum studentized residual or m-th ordered residual:
+%               1st col = fwd search index (from init to n);
+%               2nd col = maximum studentized residual;
 %               3rd col = (m)-ordered studentized residual.
 %   out.nor=        (n-init+1) x 4 matrix containing the monitoring of
-%               normality test in each step of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = Asymmetry test; 
-%               3rd col = Kurtosis test; 
+%               normality test in each step of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = Asymmetry test;
+%               3rd col = Kurtosis test;
 %               4th col = Normality test.
 %  out.Bgls=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated beta coefficients in each step of the forward
 %               search.
 %    out.S2=    (n-init+1) x 4 matrix containing the monitoring of S2 or R2
-%               in each step of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of S2; 
-%               3rd col = monitoring of R2; 
+%               in each step of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of S2;
+%               3rd col = monitoring of R2;
 %               4th col = monitoring of rescaled S2. In this case the
 %               estimate of $\sigma^2$ at step m is divided by the
 %               consistency factor (to make the estimate asymptotically
 %               unbiased).
 %   out.coo=    (n-init+1) x 3 matrix containing the monitoring of Cook or
-%               modified Cook distance in each step of the forward search: 
-%               1st col = fwd search index (from init to n); 
-%               2nd col = monitoring of Cook distance; 
+%               modified Cook distance in each step of the forward search:
+%               1st col = fwd search index (from init to n);
+%               2nd col = monitoring of Cook distance;
 %               3rd col = monitoring of modified Cook distance.
 %  out.Tgls=    (n-init+1) x (p+1) matrix containing the monitoring of
 %               estimated t-statistics (as specified in option input 'tstat'
 %               in each step of the forward search.
 %   out.Un=        (n-init) x 11 Matrix which contains the unit(s)
-%               included in the subset at each step of the fwd search. 
+%               included in the subset at each step of the fwd search.
 %               REMARK: in every step the new subset is compared with the
 %               old subset. Un contains the unit(s) present in the new
 %               subset but not in the old one Un(1,2) for example contains
@@ -203,38 +203,38 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               units included in the final step of the search
 %  out.betaINT = Confidence intervals for the elements of $\beta$.
 %                 betaINT is a (n-init+1)-by-2*length(confint)-by-p 3D
-%                 array. 
-%                 Each third dimension refers to an element of beta: 
-%                 betaINT(:,:,1) is associated with first element of beta; 
-%                 ...; 
-%                 betaINT(:,:,p) is associated with last element of beta. 
+%                 array.
+%                 Each third dimension refers to an element of beta:
+%                 betaINT(:,:,1) is associated with first element of beta;
+%                 ...;
+%                 betaINT(:,:,p) is associated with last element of beta.
 %                 The first two columns contain the lower
-%                 and upper confidence limits associated with conflev(1); 
+%                 and upper confidence limits associated with conflev(1);
 %                 Columns three and four contain the lower
-%                 and upper confidence limits associated with conflev(2); 
-%                 ...; 
+%                 and upper confidence limits associated with conflev(2);
+%                 ...;
 %                 The last two columns contain the lower
 %                 and upper confidence limits associated with conflev(end).
-%                 
+%
 %                 For example betaint(:,3:4,5) contain the lower and upper
 %                 confidence limits for the fifth element of beta using
 %                 confidence level specified in the second element of input
 %                 option conflev.
 %out.sigma2INT = confidence interval for $\sigma^2$.
-%                1st col = fwd search index; 
-%                2nd col = lower confidence limit based on conflev(1); 
-%                3rd col = upper confidence limit based on conflev(1); 
-%                4th col = lower confidence limit based on conflev(2); 
-%                5th col = upper confidence limit based on conflev(2); 
-%                ...; 
+%                1st col = fwd search index;
+%                2nd col = lower confidence limit based on conflev(1);
+%                3rd col = upper confidence limit based on conflev(1);
+%                4th col = lower confidence limit based on conflev(2);
+%                5th col = upper confidence limit based on conflev(2);
+%                ...;
 %                penultimate col = lower confidence limit based on
-%                conflev(end); 
+%                conflev(end);
 %                last col = upper confidence limit based on conflev(end).
-% out.Hetero =  estimate of coefficients of scedastic equation: 
-%                    1st col = fwd search index; 
+% out.Hetero =  estimate of coefficients of scedastic equation:
+%                    1st col = fwd search index;
 %                    2nd col = estimate of first coeff of scedastic
-%                    equation; 
-%                    ...; 
+%                    equation;
+%                    ...;
 %                   (r+1) col = estimate of last coeff of scedastic
 %                   equation.
 %out.WEI =   Matrix which contains in each column the estimate of the
@@ -251,7 +251,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1).
-%     out.Z=   Predictor variables in the scedastic equation. 
+%     out.Z=   Predictor variables in the scedastic equation.
 %   out.class =  'FSRHeda'.
 %
 %
@@ -421,7 +421,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %{
     %% Monitoring of 95 per cent and 99 per cent confidence intervals of
     % beta and sigma2.
-    % House price data 
+    % House price data
     load hprice.txt;
     n=size(hprice,1);
     y=hprice(:,1);
@@ -494,7 +494,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
         ']'],'t');
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -570,6 +570,7 @@ elseif init >= n
 end
 
 intercept=options.intercept;
+nocheck=options.nocheck;
 
 %% Declare matrices to store quantities
 
@@ -714,7 +715,7 @@ ncl=setdiff(seq,bsb);
 
 hhh = 1;
 %% Start of the forward search
-if (rank(Xb) ~= p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSRHeda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
@@ -727,9 +728,14 @@ else
             end
         end
         
-        NoRankProblem = (rank(Xb) == p);
+        if nocheck==1
+            NoRankProblem=true;
+        else
+            NoRankProblem=(rank(Xb) == p);
+        end
+        
         if NoRankProblem  % rank is ok
-           if art == 1
+            if art == 1
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
                     HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
@@ -782,8 +788,8 @@ else
             % b=Xb\yb;   % HHH
             b = HET.Beta(:,1);
             resBSB = yb-Xb*b;
-            blast = b; 
-  
+            blast = b;
+            
         else   % number of independent columns is smaller than number of parameters
             warning('FSDA:FSRHeda','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             b = blast;
@@ -813,7 +819,7 @@ else
                 % Measure of asymmetry
                 sqb1 = real((sum(resBSB.^3)/mm) / (sum(resBSB.^2)/mm)^(3/2));
                 
-                % Measure of Kurtosis  
+                % Measure of Kurtosis
                 b2 = real((sum(resBSB.^4)/mm) / (sum(resBSB.^2)/mm)^2);
                 
                 % Asymmetry test
@@ -840,11 +846,11 @@ else
                 hi = sum((Xw*mmX).*Xw,2); %#ok<MINV>
                 LEV(bsb,mm-init+1) = hi(bsb);
                 % Take units not belonging to bsb
-%                 if hhh == 1
-%                     Xncl = Xw(ncl, :);
-%                 else
-%                     Xncl = X(ncl,:); % HHH
-%                 end          
+                %                 if hhh == 1
+                %                     Xncl = Xw(ncl, :);
+                %                 else
+                %                     Xncl = X(ncl,:); % HHH
+                %                 end
             end % no rank problem
         end
         
@@ -920,22 +926,23 @@ else
                 if NoRankProblem
                     % ord = matrix whose first col (divided by S2(i)) contains the deletion residuals
                     % for all units. For the units belonging to the subset these are proper deletion residuals
-                     if hhh == 1
+                    if hhh == 1
                         ord = [(r(:,2)./(1+hi)) e];
                     else
                         ord = [(r(:,2)./(omegahat+hi)) e];
                     end
                     
                     % Store minimum deletion residual in 2nd col of matrix mdr
-                      selmdr=sortrows(ord(ncl,:),1);
-                     
+                    % selmdr=sortrows(ord(ncl,:),1);
+                    selmdr=min(ord(ncl,1));
+                    
                     if S2(mm-init+1,2) == 0
                         warning('FSDA:FSRHeda:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init+1);
                     else
                         mdr(mm-init+1,2)=sqrt(selmdr(1,1)/HET.sigma2);
                         % mdr(mm-init+1,2) = sign(selmdr(1,2))*sqrt(selmdr(1,1)/S2(mm-init+1,2));
                     end
-       
+                    
                     % Store (m+1) ordered pseudodeletion residual in 3rd col of matrix
                     % mdr
                     selmdr = sortrows(ord,1);
@@ -953,7 +960,8 @@ else
             end
             % order the r_i and include the smallest among the units
             %  forming the group of potential outliers
-            ord = sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb = ord(1:(mm+1),1);
@@ -962,12 +970,12 @@ else
             yb = y(bsb);    % subset of y
             Zb = Z(bsb,:);  % subset of Z
             
-             if mm < n-1
+            if mm < n-1
                 % ncl= units forming the new noclean
                 ncl=ord(mm+2:n,1);
                 
             end
-
+            
             if mm >= init
                 unit = setdiff(bsb,oldbsb);
                 if length(unit) <= 10
@@ -982,7 +990,7 @@ else
         if mm >= init
             if NoRankProblem
                 if strcmp(options.tstat,'scal')
-                 Tgls(mm-init+1,2:end) = sqrt(corr)*Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
+                    Tgls(mm-init+1,2:end) = sqrt(corr)*Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');
                     
                 elseif strcmp(options.tstat,'trad')
                     Tgls(mm-init+1,2:end) = Bgls(mm-init+1,2:end)./sqrt(Sb*dmmX');

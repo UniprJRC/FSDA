@@ -31,7 +31,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                   Example - 'init',100 starts the search from step m=100
 %                   Data Types - double
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -67,6 +67,14 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                 is produced on the screen).
 %                 Example - 'plots',1
 %                 Data Types - double
+%
+%       msg    :  Level of output to display. Scalar. It controls whether
+%                 to display or not messages on the screen
+%                 If msg==1 (default) messages are displayed on the screen about
+%                   step of the fwd search
+%                 else no message is displayed on the screen.
+%               Example - 'msg',1
+%               Data Types - double
 %
 % Output:
 %
@@ -230,7 +238,8 @@ end
 
 bsbstepdef='';
 
-options=struct('intercept',1,'init',init,'nocheck',0,'plots',0,'bsbsteps',bsbstepdef);
+options=struct('intercept',1,'init',init,'nocheck',0,'plots',0,...
+    'bsbsteps',bsbstepdef,'msg',1);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -263,9 +272,9 @@ if bsb==0
         Ra=(rank(Xb)<p);
         nwhile=nwhile+1;
     end
-        if nwhile==100
-            warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
-        end
+    if nwhile==100
+        warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
+    end
     yb=y(bsb);
 else
     Xb=X(bsb,:);
@@ -277,7 +286,7 @@ ini0=length(bsb);
 % check init
 init=options.init;
 if init <p
-     fprintf(['Attention : init should be larger than p-1. \n',...
+    fprintf(['Attention : init should be larger than p-1. \n',...
         'It is set to p.']);
     init=p;
 elseif init<ini0
@@ -289,6 +298,9 @@ elseif init>=n
         'It is set to n-1.']);
     init=n-1;
 end
+
+msg=options.msg;
+nocheck=options.nocheck;
 
 %% Initialise key matrices
 
@@ -337,9 +349,10 @@ blast=NaN(p,1);
 
 
 %% Forward search loop
-if (rank(Xb)~=p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
     % FS loop will not be performed
+    Un=NaN;
 else
     % ij = index which is linked with the columns of matrix BB. During the
     % search every time a subset is stored inside matrix BB ij icreases by one
@@ -347,7 +360,7 @@ else
     
     for mm = ini0:n
         % if n>200 show every 100 steps the fwd search index
-        if n>200
+        if n>200 && msg==1
             if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
@@ -362,56 +375,63 @@ else
         end
         
         % Compute beta coefficients using subset
-        
-        if rank(Xb)==p  % full rank matrix Xb
-            b = Xb\yb;
-            blast=b;
+        if nocheck==1
+            NoRankProblem=true;
         else
-            b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
-            warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+            NoRankProblem=(rank(Xb) == p);
         end
         
-        % e= vector of residual for all units using b estimated using subset
-        e=y-X*b;
-        
-        r(:,2)=e.^2;
-        
-        if mm<n
+        if NoRankProblem  % rank is ok
+            if rank(Xb)==p  % full rank matrix Xb
+                b = Xb\yb;
+                blast=b;
+            else
+                b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
+                warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+            end
             
-            % store units forming old subset in vector oldbsb
-            oldbsb=bsb;
+            % e= vector of residual for all units using b estimated using subset
+            e=y-X*b;
             
-            % order the r_i and include the smallest among the units forming
-            % the group of potential outliers
-            ord=sortrows(r,2);
+            r(:,2)=e.^2;
             
-            % bsb= units forming the new subset
-            bsb=ord(1:(mm+1),1);
-            
-            Xb=X(bsb,:);  % subset of X
-            yb=y(bsb);    % subset of y
-            
-            if mm>=init
-                unit=setdiff(bsb,oldbsb);
-                % If the interchange involves more than 10 units, store only the
-                % first 10.
-                if (size(unit,2)<=10)
-                    Un(mm-init+1,2:(size(unit,1)+1)) = unit;
-                else
-                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-                    Un(mm-init+1,2:end) = unit(1:10)';
+            if mm<n
+                
+                % store units forming old subset in vector oldbsb
+                oldbsb=bsb;
+                
+                % order the r_i and include the smallest among the units forming
+                % the group of potential outliers
+                % ord=sortrows(r,2);
+                [~,ord]=sort(r(:,2));
+                
+                % bsb= units forming the new subset
+                bsb=ord(1:(mm+1),1);
+                
+                Xb=X(bsb,:);  % subset of X
+                yb=y(bsb);    % subset of y
+                
+                if mm>=init
+                    unit=setdiff(bsb,oldbsb);
+                    % If the interchange involves more than 10 units, store only the
+                    % first 10.
+                    if (size(unit,2)<=10)
+                        Un(mm-init+1,2:(size(unit,1)+1)) = unit;
+                    else
+                        disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                        Un(mm-init+1,2:end) = unit(1:10)';
+                    end
                 end
             end
         end
+    end  % no rank
+    plots=options.plots;
+    if plots==1
+        % Create the 'monitoring units plot'
+        figure;
+        plot(bsbsteps,BB','bx')
+        xlabel('Subset size m');
+        ylabel('Monitoring units plot');
     end
-end  % no rank
-plots=options.plots;
-if plots==1
-    % Create the 'monitoring units plot'
-    figure;
-    plot(bsbsteps,BB','bx')
-    xlabel('Subset size m');
-    ylabel('Monitoring units plot');
-end
 end
 %FScategory:REG-Regression

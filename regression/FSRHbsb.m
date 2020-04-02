@@ -63,7 +63,7 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -339,9 +339,9 @@ end
 msg=options.msg;
 constr=options.constr;
 intercept=options.intercept;
+nocheck=options.nocheck;
 
 %% Initialise key matrices
-
 
 % sequence from 1 to n.
 seq=(1:n)';
@@ -385,7 +385,7 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 hhh=1;
 %% Start of the forward search
-if (rank(Xb)~=p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     % FS loop will not be performed
@@ -403,7 +403,12 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb) == p);
+        if nocheck==1
+            NoRankProblem=true;
+        else
+            NoRankProblem=(rank(Xb) == p);
+        end
+        
         if NoRankProblem  % rank is ok
             if art==1
                 if  mm > 5  && gridsearch ~=1
@@ -488,7 +493,8 @@ else
             if ~isempty(constr) && mm<n-length(constr)
                 r(constr,2)=Inf;
             end
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);

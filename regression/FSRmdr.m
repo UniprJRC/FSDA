@@ -40,7 +40,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -77,7 +77,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 %  constr :     Constrained search. Vector. r x 1 vector which contains the
 %               list of units which are forced to join the search in the
-%               last r steps. The default is constr=''. 
+%               last r steps. The default is constr=''.
 %                No constraint is imposed
 %               Example - 'constr',[1:10] forces the first 10 units to join
 %               the subset in the last 10 steps
@@ -196,7 +196,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               \begin{equation}
 %               r_i^*(m^*)  = \frac{y_{i} - x_{i}^T\hat{\beta}(m^*)} {
 %               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
-%               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}, 
+%               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}},
 %               \end{equation}
 %               where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
 %               of each observation depends on $S^{(m)}_*$. Let the observation
@@ -528,14 +528,16 @@ msg=options.msg;
 constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
- threshlevoutX=options.threshlevoutX;
+nocheck=options.nocheck;
 
- if ~isempty(threshlevoutX)
-     bonflevout=true;
- else
-     bonflevout=false;
- end
- 
+threshlevoutX=options.threshlevoutX;
+
+if ~isempty(threshlevoutX)
+    bonflevout=true;
+else
+    bonflevout=false;
+end
+
 %% Initialise key matrices
 
 % sequence from 1 to n.
@@ -591,7 +593,7 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
 
 %% Start of the forward search
-if (rank(Xb)~=p)
+if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
     mdr=NaN;
@@ -605,7 +607,12 @@ else
             end
         end
         
-        NoRankProblem=(rank(Xb) == p);
+        if nocheck==1
+            NoRankProblem=true;
+        else
+            NoRankProblem=(rank(Xb) == p);
+        end
+        
         if NoRankProblem  % rank is ok
             b=Xb\yb;
             resBSB=yb-Xb*b;
@@ -707,7 +714,9 @@ else
                     end
                     
                     % Store minimum deletion residual in matrix mdr
-                    selmdr=sortrows(ord,1);
+                    % selmdr=sortrows(ord,1);
+                    selmdr=min(ord(:,1));
+
                     if S2(mm-init1+1,2)==0
                         warning('FSDA:FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
                     else
@@ -729,7 +738,8 @@ else
             if ~isempty(constr) && mm<n-length(constr)
                 r(constr,2)=Inf;
             end
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
