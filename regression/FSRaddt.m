@@ -412,7 +412,8 @@ for i=vars
             oldbsb=bsb;
 
             % order the r_i and select the smallest m+1
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
 
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);

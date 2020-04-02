@@ -941,7 +941,9 @@ else
                     ord = [(r(ncl,2)./(1+hi)) e(ncl)];
                     
                     % Store minimum deletion residual in matrix mdr
-                    selmdr=sortrows(ord,1);
+                    % selmdr=sortrows(ord,1);
+                    selmdr=min(ord(:,1));
+                    
                     if S2(mm-init1+1,2)==0
                         warning('FSDA:FSRtsmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
                     else
@@ -960,7 +962,8 @@ else
             if ~isempty(constr) && mm<T-length(constr)
                 r(constr,2)=Inf;
             end
-            ord=sortrows(r,2);
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);

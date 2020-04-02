@@ -610,7 +610,8 @@ for mm=ini0:n
         oldbsb=bsb;
         
         % order the r_i
-        ord=sortrows(r,2);
+        % ord=sortrows(r,2);
+        [~,ord]=sort(r(:,2));
         
         % bsb= units forming the new  subset
         bsb=ord(1:(mm+1),1);
