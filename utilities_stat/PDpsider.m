@@ -58,6 +58,7 @@ function psider=PDpsider(u,alpha)
     % Plot the second derivative of minimum power divergence estimator.
     x=-6:0.01:6;
     alpha=1;
+    c=2;
     psiPDder=PDpsider(x,c);
     plot(x,psiPDder)
     xlabel('x','Interpreter','Latex')
