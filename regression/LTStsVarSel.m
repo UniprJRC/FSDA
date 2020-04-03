@@ -229,7 +229,6 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 %
 %{
     % run LTStsVarSel with all default options.
-
     % data model
     model=struct;
     model.trend=1;                  % linear trend
@@ -241,6 +240,7 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
     model.lshift= 30;               % level shift amplitude
     model.signal2noiseratio = 100;  % signal to noise
     
+    rng('default')
     n = 100;                        % sample size
     tmp = rand(n,1);
     model.X = tmp.*[1:n]';          % a extra covariate
