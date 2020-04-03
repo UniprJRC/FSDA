@@ -291,8 +291,12 @@ function [out] = mdpdR(y, X, alpha, varargin)
     [outalpha0] = mdpdR(y, X, 0);
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15)
+    varnames={'MLE alpha=0' 'MD alpha=1'};
+    if verLessThan('matlab', '9.7.0')
+        varnames=matlab.lang.makeValidName(varnames);
+    end
     % Compare robust and MLE estimate
-    disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
+    disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))
 %}
 
 %{
@@ -332,7 +336,11 @@ function [out] = mdpdR(y, X, alpha, varargin)
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
-    disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
+    varnames={'MLE alpha=0' 'MD alpha=1'};
+    if verLessThan('matlab', '9.7.0')
+        varnames=matlab.lang.makeValidName(varnames);
+    end
+    disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))
 %}
 
 %{
@@ -382,7 +390,11 @@ function [out] = mdpdR(y, X, alpha, varargin)
     resindexplot(outalpha0,'h',h2);
     title('alpha=0','FontSize',15);
     % Compare robust and MLE estimate
-    disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))
+    varnames={'MLE alpha=0' 'MD alpha=1'};
+    if verLessThan('matlab', '9.7.0')
+        varnames=matlab.lang.makeValidName(varnames);
+    end
+    disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))
 %}
 
 %{
