@@ -22,9 +22,9 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %
 %        alpha: trimming level to monitor. Vector. Vector which specifies the
 %               values of trimming levels which have to be considered.
-%               alpha is a vector which contains decresing elements which
+%               alpha is a vector which contains decreasing elements which
 %               lie in the interval 0 and 0.5.
-%               For example is alpha=[0.1 0.05 0] tclusteda considers these 3
+%               For example if alpha=[0.1 0.05 0] tclusteda considers these 3
 %               values of trimming level.
 %               If alpha=0 tclusteda reduces to traditional model
 %               based or mixture clustering (mclust): see Matlab function
