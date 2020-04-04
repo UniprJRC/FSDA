@@ -295,7 +295,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %         out.cstepopt= scalar containing the concentration step where the
 %                       objective function was the largest. This is useful
-%                       when the objective function is not monotene (e.g.
+%                       when the objective function is not monotone (e.g.
 %                       with second level trimming or with thinning).
 %
 %         out.subsetopt= scalar containing the subset id where the
