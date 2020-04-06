@@ -1822,11 +1822,21 @@ if  lsh>0
     else
         huberc=2;
     end
-    
+   
     tloc=bstar(end)-k:bstar(end)+k;
-    tloc=tloc(tloc>6);
-    tloc=tloc(tloc<T-6);
-    
+    % Reduce width of tloc dinamically
+    LSHmin=min(LSH);
+    LSHmax=max(LSH);
+    % make sure that tloc is in the range LSHmin and LSHmax
+    while (max(tloc)>LSHmax  || min(tloc)<LSHmin )
+        if k==0 
+            break
+        end
+        k=k-1;
+            tloc=bstar(end)-k:bstar(end)+k;
+    end
+     
+
     bsb=tloc;
     Likloc=[tloc' zeros(length(tloc),3)];
     ij=0;
