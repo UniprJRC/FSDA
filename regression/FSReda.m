@@ -69,7 +69,15 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               for the elements of $\beta$ and for $\sigma^2$. Vector.
 %               The default value of conflev is [0.95 0.99] that
 %               is 95% and 99% confidence intervals are computed.
-%               Example - 'conflev',[0.90 0.93]
+%               Example - 'conflev',[0.90 0.93] 
+%               Data Types - double
+%
+%   wREML:		compute REML weights for unit excluded from FS at each step.
+%				false (default) | true.  If weak==true REML weights are 
+%               computed.
+%				Example - 'wREML', true
+%               Data Types - boolean
+%
 %               Data Types - double
 % Remark:       The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -184,6 +192,15 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               which has been used (it also contains the column of ones if
 %               input option intercept was missing or equal to 1)
 %  out.class =  'FSReda'.
+%  
+%   out.w =     Singularly optimal REML weights for the units excluded
+%               for the search at each step. 
+%               Present only if wREML == true.
+%               n x (n-init+1) = matrix containing the monitoring of
+%               singlular REML weights:
+%               1st row = weight for first unit;
+%               ...;
+%               nth row = weight for nth unit.
 %
 %
 % See also LXS.m, FSRbsb.m
@@ -403,6 +420,26 @@ function [out] = FSReda(y,X,bsb,varargin)
     resfwdplot(out1,'databrush',1);
 %}
 
+%{
+    %% Example to compute REML single weights for the units excluded
+    % from the search at each step using wREML==true
+    data = importdata('loyalty.mat');
+    y = data.data(:,end);
+    X = data.data(:,1);
+    tit = sprintf('Loyalty data');
+    xla = 'Number of visits';
+    yla = 'Amount spent (in €)';
+    n = size(X, 1);
+    p = size(X, 2);
+    % FSReda
+    [out]=LXS(y,X,'nsamp',1000);
+    [sol_FS] = FSReda(y, X, out.bs, 'intercept', 0, 'wREML', true);
+    % plot solution overwriting the RES output for simplicity
+    sol_FS.RES = sol_FS.w;
+    resfwdplot(sol_FS);
+    ylabel('REML weights FS');
+%}
+
 %% Beginning of code
 
 % Input parameters checking
@@ -455,7 +492,7 @@ end
 
 conflevdef=[0.95 0.99];
 options=struct('intercept',1,'init',init,'tstat','scal',...
-    'nocheck',0,'conflev',conflevdef);
+    'nocheck',0,'conflev',conflevdef,'wREML',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -513,6 +550,8 @@ elseif init>=n
         'It is set to n-1.']);
     init=n-1;
 end
+
+wREML=options.wREML;
 
 %% Declare matrices to store quantities
 
@@ -616,7 +655,11 @@ lconflev=length(conflev);
 betaINT=NaN(n-init+1,2*lconflev,p);
 % sigma2INT confidence interval for $\sigma^2$
 sigma2INT=[(init:n)' zeros(n-init+1,2*lconflev)];
-
+%
+if wREML == true
+	% REML estimated weights matrix
+	wt = RES;
+end
 %% Start of the forward search
 if nocheck==0 && rank(Xb)~=p
     warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
@@ -680,7 +723,7 @@ else
                 
                 mmX=inv(mAm);
                 dmmX=diag(mmX);
-                % Notice that we could replace the lowwing line with
+                % Notice that we could replace the following line with
                 % hi=sum((X/mAm).*X,2); but there is no gain since we need
                 % to compute dmmX=diag(mmX);
                 hi=sum((X*mmX).*X,2); %#ok<MINV>
@@ -798,6 +841,14 @@ else
                 end
             end
             
+            if wREML == true
+                % weighting phase for VIOM using REMLE
+                if mm>=round(n/5) && mm > init  
+                    % singularly optimal weights
+                    sol = VIOM(y, X, setdiff(1:n, oldbsb), 'mult', 0, 'intercept',options.intercept);
+                    wt(:, mm) = sol.w;
+                end
+            end	            
             
             if mm < n-1
                 % ncl= units forming the new noclean
@@ -854,6 +905,11 @@ out.betaINT=betaINT;
 out.sigma2INT=sigma2INT;
 out.y=y;
 out.X=X;
+if wREML == true
+	wt = wt(:, 2:end);
+	wt(:, end+1) = 1;
+	out.w = wt;
+end
 out.class='FSReda';
 end
 %FScategory:REG-Regression
