@@ -27,7 +27,7 @@ function [out]=FSR(y,X,varargin)
 %
 % Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -177,7 +177,7 @@ function [out]=FSR(y,X,varargin)
 %               Data Types - char
 %
 %       ylim   :  Control y scale in plot. Vector. Vector with two elements
-%                 controlling minimum and maximum on the y axis. 
+%                 controlling minimum and maximum on the y axis.
 %                 Default value is '' (automatic scale)
 %               Example - 'ylim',[0,10] sets the minimum value to 0 and the
 %               max to 10 on the y axis
@@ -536,10 +536,17 @@ if nargin > 2
 end
 
 init=options.init;
-h=options.h;
 lms=options.lms;
 bsbmfullrank=options.bsbmfullrank;
 nsamp=options.nsamp;
+h=options.h;
+% Make sure that nsamp and h are not empty
+if isempty(nsamp)
+    nsamp=nsampdef;
+end
+if isempty(h)
+    h=hdef;
+end
 msg=options.msg;
 threshoutX=options.threshoutX;
 intercept = options.intercept;
