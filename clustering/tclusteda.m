@@ -917,7 +917,7 @@ Cini=cell(nselected,1);
 Sigmaini=Cini;
 Niini=Cini;
 
-%%  Random starts
+%%  Loop through all subsets of nselected and store relevant quantitites
 for i=1:nselected
     
     if startv1 ==1
@@ -1259,7 +1259,7 @@ if d>0
     % alphasel contains the indexes of the columns of matrix IDX which have
     % to be plotted
     
-    % We use round(alpha*1e+7)/1e+7 to gaurrantee compatibility with old
+    % We use round(alpha*1e+7)/1e+7 to guarantee compatibility with old
     % versions of MATLAB. For the new versions the instruction would have
     % been:
     % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
