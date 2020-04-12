@@ -143,7 +143,7 @@ function [out] = MixSimreg(k,p,varargin)
 %                   'User'.  OTHER DISTRIBUTION. In this case the user must directly provide
 %                   means of the p explanatory variables for each group.
 %                   Xdistrib.mu   = matrix of size (p-1)-by-k if
-%                        Xdistrib.intercept=1 or p-by-k if
+%                       Xdistrib.intercept=1 or p-by-k if
 %                       Xdistrib.intercept=0 containing the parameters mu
 %                       for each explanatory variable and each group. The
 %                       default value of Xdistrib.mu is 0.5*ones(p-1, k).
@@ -547,6 +547,93 @@ function [out] = MixSimreg(k,p,varargin)
     yXplot(y2,X2,'group',id2,'tag','vector')
     title('Betadistrib is a vector: a parameter for each beta')
     cascade;
+
+%}
+
+%{
+    % Example 7:  A Tweedie-based international trade data example.
+    % This is like example 5, but the explanatory variable follow the
+    % Tweedie distribution.
+    n=500;
+    p=1;
+    k=3;
+    
+    % generate a Tweedie distributed explanatory variable  
+    [alpha,theta,delta] = deal(0.5 , 5 , 1); % Barabesi
+    X = twdrnd(alpha,theta,delta,n);
+    
+    % Distribution of the explanatory variable: the mean the Tweedie is
+    % specified
+    Xdistrib=struct;
+    Xdistrib.intercept=0;
+    Xdistrib.type='User';
+    Xdistrib.BarX = mean(X);
+
+    % Distribution of the regression parameters
+    betadistrib=struct;
+    betadistrib.type='HalfNormal';
+    betadistrib.sigma=6;
+
+    % Overlap level: BarOmega=0.1
+    close all
+    rng(10,'twister')
+    Q=MixSimreg(k,p,'BarOmega',0.1,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    
+    % The X-component
+    Q.Xdistrib.X = X;
+
+    % Now simulate the dataset
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+
+    % And plot it
+    yXplot(y,X,'group',id,'tag','Strong_Overlap');
+    set(gcf,'Name','explanatory variable is Tweedie distributed');
+    title('Three components with the same Tweedie-distributed x-variable');
+
+%}
+
+%{
+    %% Example 8:  Another Tweedie-based international trade data example.
+    % This is like example 7, but with group-specific Tweedie distributions.
+    n=500;
+    p=1;
+    k=3;
+    
+    % generate three Tweedie distributed explanatory variables  
+    [alpha,theta,delta] = deal(0.5 , 5 , 1);
+    alpha2 = 0.7;
+    alpha3 = 0.9;
+    X1 = twdrnd(alpha,theta,delta,floor(n/3));
+    X2 = twdrnd(alpha2,theta,delta,floor(n/3));
+    X3 = twdrnd(alpha3,theta,delta,n-2*floor(n/3));
+    
+    % Distribution of the explanatory variable: the mean the three Tweedie
+    % components is specified
+    Xdistrib=struct;
+    Xdistrib.intercept=0;
+    Xdistrib.type='User';
+    Xdistrib.BarX = [mean(X1) , mean(X2) , mean(X3)];
+
+    % Distribution of the regression parameters
+    betadistrib=struct;
+    betadistrib.type='HalfNormal';
+    betadistrib.sigma=6;
+
+    % Overlap level: BarOmega=0.1
+    close all
+    rng(10,'twister')
+    Q=MixSimreg(k,p,'BarOmega',0.1,'Xdistrib',Xdistrib,'betadistrib',betadistrib);
+    
+    % The three X-components
+    Q.Xdistrib.X = [X1 ; X2 ; X3];
+
+    % Now simulate the dataset
+    [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
+
+    % And plot it
+    yXplot(y,X,'group',id,'tag','Strong_Overlap');
+    set(gcf,'Name','explanatory variable is Tweedie distributed');
+    title('Three components with diofferent Tweedie-distributed explanatory variables');
 
 %}
 
