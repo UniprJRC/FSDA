@@ -43,9 +43,11 @@ function pdf = twdpdf(x,alpha,theta,delta)
 %         Data Types - Double.
 %
 %
-% More About: See twdrnd.
+% More About: 
 %
-% See also:
+% Detailed information can be found in function twdrnd.
+%
+% See also: twdrnd
 %
 % References:
 %

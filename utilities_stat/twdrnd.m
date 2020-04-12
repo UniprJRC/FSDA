@@ -87,7 +87,7 @@ function Y = twdrnd(alpha,theta,delta,n)
 % indices to achieve the desired accuracy. Alternatively, Dunn and Smyth
 % (2008) apply the Fourier transformation on the characteristic function.
 %
-% See also: 
+% See also: twdpdf
 %
 %
 % References:
