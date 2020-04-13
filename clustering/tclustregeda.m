@@ -232,11 +232,12 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                   For the explanation of the above plots see plots=1.
 %                   If plots.name=={ 'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
 %                                   'ScatterWithRegLines'; 'gscatter'; ...
-%                                   'Beta';'Siz'};
+%                                   'Beta';'Siz'}; or
+%                   plots.name={'all'};
 %                   it is also possible to monitor the beta coefficients
 %                   for each group ('Beta') and the size of the groups (Siz).
 %                   Note that the trajectories of beta coefficients are
-%                   standardized in order to ahve all of them on a
+%                   standardized in order to have all of them on a
 %                   comparable scale.
 %                 plots.alphasel = numeric vector which speciies for which
 %                   values of alpha it is possible to see the
@@ -377,7 +378,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       7th col = relative squared Euclidean distance between
 %                           two consecutive $\hat \Sigma_X$.
 %
-% out.UnitsTrmOrChgCla= Matrix containing information information about the
+% out.unitplot = Matrix containing information about the
 %                       units (n1) which were trimmed or changed classification
 %                       at least once in the forward search. The size of
 %                       out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;
@@ -388,9 +389,20 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       ...
 %                       last col = allocation of the n1 units in step alphaLik(end)
 %
-%              out.y  = Original response y.
+%     out.units= structure containing the following fields:
+%                       units.UnitsTrmOrChgCla=units trimmed at least onece
+%                           or changed classification at least once.
+%                       units.UnitsChgCla=units which changed
+%                           classification at least once (i.e. from group 1
+%                           to group 3 ...).
+%                       units.UnitsTrm=units trimmed at least once.
+%                       units.UnitsNeverAssigned=units never assigned
+%                           (i.e. all those which have always been trimmed by
+%                           first level or second level).
 %
-%              out.X  = origianl X matrix. 
+%              out.y  = original response y.
+%
+%              out.X  = original X matrix.
 %
 %  Optional Output:
 %
@@ -413,7 +425,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % with group r for the previous value of alpha. In otder to be consistent
 % along the different runs it is possible to specify through option
 % UnitsSameGroup the list of the units which must (whenever possible) have
-% a particular label. 
+% a particular label.
 %
 %
 % See also: tclustreg, tclustIC, tclusteda
@@ -455,202 +467,23 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Examples:
 
 %{
-    %% Monitoring using geyser data (all default options).
-    close all
-    Y=load('geyser2.txt');
-    % alpha and restriction factor are not specified therefore for alpha
-    % vector [0.10 0.05 0] is used while for the restriction factor, value c=12
-    % is used
-    k=3;
-    [out]=tclusteda(Y,k);
-%}
-
-%{
-    % Monitoring using geyser data with alpha and c specified.
-    Y=load('geyser2.txt');
-    close all
-    % alphavec= vector which contains the trimming levels to consider
-    alphavec=0.10:-0.01:0;
-    % c = restriction factor to use
-    c=100;
-    % k= number of groups
-    k=3;
-    [out]=tclusteda(Y,k,alphavec,c);
-%}
-
-%{
-    %% Monitoring using geyser data with option plots supplied as structure.
-    Y=load('geyser2.txt');
-    close all
-    % alphavec= vector which contains the trimming levels to consider
-    % in this case 31 values of alpha are considered
-    alphavec=0.30:-0.01:0;
-    % c = restriction factor to use
-    c=100;
-    % k= number of groups
-    k=3;
-    % The monitoring plot of allocation will shows just these four values of
-    % alpha
-    plots=struct;
-    plots.alphasel=[0.2 0.10 0.05 0.01];
-    [out]=tclusteda(Y,k,alphavec,c,'plots',plots);
-%}
-
-%{
-    %% Monitoring geyser data with option UnitsSameGroup.
-    Y=load('geyser2.txt');
-    close all
-    % alphavec= vector which contains the trimming levels to consider
-    alphavec=0.30:-0.10:0;
-    % c = restriction factor to use
-    c=100;
-    % k= number of groups
-    k=3;
-    % Make sure that group containing unit 10 is in a group which is labelled
-    % group 1 and group containing unit 12 is in group which is labelled group 2
-    UnitsSameGroup=[10 12];
-    % Mixture model is used
-    mixt=2;
-    [out]=tclusteda(Y,k,alphavec,1000,'mixt',2,'UnitsSameGroup',UnitsSameGroup);
-%}
-
-%{
-    %% tclusteda with M5 data.
-    close all
-    Y=load('M5data.txt');
-
-    % alphavec= vector which contains the trimming levels to consider
-    alphavec=0.10:-0.02:0;
-    out=tclusteda(Y(:,1:2),3,alphavec,1000,'nsamp',1000,'plots',1);
-%}
-
-%{
-    % Structured noise data ex1.
-    close all
-    Y=load('structurednoise.txt');
-    alphavec=0.20:-0.01:0;
-    out=tclusteda(Y,2,alphavec,100,'plots',1);
-%}
-
-%{
-    % Structured noise data ex2.
-    close all
-    Y=load('structurednoise.txt');
-    alphavec=0.20:-0.01:0;
-    % just show the monitoring plot
-    plots=struct;
-    plots.name = {'monitor'};
-    out=tclusteda(Y,2,alphavec,100,'plots',plots);
-%}
-
-%{
-    % mixture100 data.
-    close all
-    Y=load('mixture100.txt');
-    % Traditional tclust
-    alphavec=0.20:-0.01:0;
-    % just show the allocation plot
-    plots=struct;
-    plots.name = {'gscatter'};
-    out=tclusteda(Y,2,alphavec,100,'plots',plots);
-%}
-
-%{
-    %% tclusteda using simulated data.
-    % 5 groups and 5 variables
-    rng(100,'twister')
-    n1=100;
-    n2=80;
-    n3=50;
-    n4=80;
-    n5=70;
-    v=5;
-    Y1=randn(n1,v)+5;
-    Y2=randn(n2,v)+3;
-    Y3=rand(n3,v)-2;
-    Y4=rand(n4,v)+2;
-    Y5=rand(n5,v);
-
-    group=ones(n1+n2+n3+n4+n5,1);
-    group(n1+1:n1+n2)=2;
-    group(n1+n2+1:n1+n2+n3)=3;
-    group(n1+n2+n3+1:n1+n2+n3+n4)=4;
-    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
-
-    close all
-    Y=[Y1;Y2;Y3;Y4;Y5];
-    n=size(Y,1);
-    % Set number of groups
-    k=5;
-
-    % Example of the subsets precalculated
-    nsamp=2000;
-    nsampscalar=nsamp;
-    nsamp=subsets(nsamp,n,(v+1)*k);
-    % Random numbers to compute proportions computed once and for all
-    RandNumbForNini=rand(k,nsampscalar);
-    % The allocation is shown on the space of the first two principal
-    % components
-    out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);
-%}
-
-%{
-    % tclusteda using determinant constraint.
-    % Search for spherical clusters.
-    % 5 groups and 5 variables
-    rng(100,'twister')
-    n1=100;
-    n2=80;
-    n3=50;
-    n4=80;
-    n5=70;
-    v=5;
-    Y1=randn(n1,v)+5;
-    Y2=randn(n2,v)+3;
-    Y3=rand(n3,v)-2;
-    Y4=rand(n4,v)+2;
-    Y5=rand(n5,v);
-
-    group=ones(n1+n2+n3+n4+n5,1);
-    group(n1+1:n1+n2)=2;
-    group(n1+n2+1:n1+n2+n3)=3;
-    group(n1+n2+n3+1:n1+n2+n3+n4)=4;
-    group(n1+n2+n3+n4+1:n1+n2+n3+n4+n5)=5;
-
-    close all
-    Y=[Y1;Y2;Y3;Y4;Y5];
-    n=size(Y,1);
-    % Set number of groups
-    k=5;
-    cshape=1
-    out=tclusteda(Y,k,[],1000,'plots',1,'restrtype','deter','cshape',cshape);
-%}
-
-%{
-    % An example of use of plots as a structure with field ylimy.
-    load('swiss_banknotes');
-    Y=swiss_banknotes.data;
-    [n,v]=size(Y);
-    alphavec=0.15:-0.01:0;
-    % alphavec=0.12:-0.005:0;
-
-    % c = restriction factor to use
-    c=100;
-    % k= number of groups
-    k=2;
-    % restriction on the determinants is imposed
-    restrtype='deter';
-    % Specify lower and upper limits for the monitoring plot
-    plots=struct;
-    % ylimits for monitoring of ARI index
-    ylimARI=[0.95 1];
-    % ylimits for change in centroids
-    ylimCENT=[0 0.02];
-    % ylimits for change in cov matrices
-    ylimCOV=[0 0.01];
-    ylimy=[ylimARI;ylimCENT;ylimCOV];
-    plots.ylimy=ylimy;
-    [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000);
+    %% tclustreg of contaminated X data using all default options.
+    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
+    % The dataset presents two parallel components without contamination.
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);
+    % Contaminate the first 4 units
+    y(1:4)=y(1:4)+6;
+    % Use 2 groups
+    k = 2 ;
+    % Set restriction factor
+    restrfact = 5;
+    % Value of trimming
+    alphaLik = 0.10:-0.01:0;
+    % cwm
+    alphaX = 1;
+    out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);
 %}
 
 
@@ -946,6 +779,8 @@ wtype_beta=0;
 wtype_obj=0;
 zigzag = (alphaX > 0 && alphaX<1) || wtype_beta == 3 || wtype_beta == 2 || ~strcmp(wtype_obj, '0');
 
+% Make sure alphaLik is a column vector;
+alphaLik=alphaLik(:);
 
 lalpha=length(alphaLik);
 if msg == 1
@@ -964,7 +799,8 @@ Sigma2y=zeros(k,lalpha);
 Sigma2yc=Sigma2y;
 Vopt=zeros(lalpha,1);
 Postprob=zeros(n,k,lalpha);
-
+% Do not show messages during each execution of tclustregcore
+msgrs=0;
 parfor (j=1:lalpha, numpool)
     % for j=1:lalpha
     h = floor(n*(1-alphaLik(j)));
@@ -972,7 +808,7 @@ parfor (j=1:lalpha, numpool)
     %%  RANDOM STARTS
     [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
         =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
-        seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
+        seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
     
     %%  END OF RANDOM STARTS
     
@@ -1014,7 +850,7 @@ end
 
 
 if ~isempty(UnitsSameGroup)
-    % Note that this operation is just applies fo first column of IDX
+    % Note that this operation is just applied fo first column of IDX
     idx1=IDX(:,1);
     trimmed1=idx1==-1;
     trimmed2=idx1==-2;
@@ -1172,8 +1008,6 @@ plotall={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
 
 clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 symdef = '+sd^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
-% colord='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
-% symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
 
 col1stLevelTrimmedUnits='r';
 sym1stLevelTrimmedUnits='o';
@@ -1190,8 +1024,12 @@ if isstruct(plots)
         if ~iscell(name)
             error('FSDA:tclustregeda:Wronginput','plots.name must be a cell')
         end
-        % Check that the specified names is in the list of available names.
-        chkoptions(cell2struct(plotall,plotall),name)
+        if strcmp(name,{'all'})
+            name=plotall;
+        else
+            % Check that the specified names is in the list of available names.
+            chkoptions(cell2struct(plotall,plotall),name)
+        end
     else
         name=plotdef;
     end
@@ -1216,16 +1054,29 @@ end
 IDXmin0=IDX<=0;
 IDXwithNaN=IDX;
 IDXwithNaN(IDXmin0)=NaN;
+seq=(1:n)';
 
 % Find the rows which are not constant, that is the units which were trimmed
 % or those which changed classification
-UnitsTrmOrChgCla=find(max(IDX,[],2)-min(IDX,[],2)~=0);
+UnitsTrmOrChgCla=seq(max(IDX,[],2)-min(IDX,[],2)~=0 | (max(IDX,[],2)<0) );
 
-% Find units which changed classification
-UnitsChgCla=find(max(IDXwithNaN,[],2)-min(IDXwithNaN,[],2)~=0);
+% Find units which changed classification at least once
+UnitsChgCla=seq(max(IDXwithNaN,[],2)-min(IDXwithNaN,[],2)~=0 & (max(IDXwithNaN,[],2)>0));
 
-% UnitsTrm= list of the units trimmed at least once.
+% UnitsTrm= list of the units trimmed (first level or seond level) at least once.
 UnitsTrm=setdiff(UnitsTrmOrChgCla,UnitsChgCla);
+
+% Units which have never been assigned
+UnitsNeverAssigned=seq(sum(isnan(IDXwithNaN),2)==lalpha);
+
+units=struct;
+units.UnitsTrmOrChgCla=UnitsTrmOrChgCla;
+units.UnitsChgCla=UnitsChgCla;
+units.UnitsTrm=UnitsTrm;
+units.UnitsNeverAssigned=UnitsNeverAssigned;
+
+out.units=units;
+
 
 % String to include in the legends
 legendGroups=[repmat('Group ',k,1) num2str((1:k)')];
@@ -1278,48 +1129,54 @@ out.Amon=Amon;
 
 
 
- % alphasel contains the indexes of the columns of matrix IDX which have
-    % to be plotted
-    % We use round(alpha*1e+7)/1e+7 to guarantee compatibility with old
-    % versions of MATLAB. For the new versions the instruction would have
-    % been:
-    % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
-    [~,alphasel]=intersect(round(alphaLik*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
-    lalphasel=length(alphasel);
-    
-    
-    %% Produce all necessary calculations for UnitsTrmOrChgCla plot
-        IDs=[UnitsTrmOrChgCla IDX(UnitsTrmOrChgCla,:)];
-    [n1,k1]=size(IDs);
-    onex=ones(n1,1);
-    seqIDs=(1:n1)';
-    
-    Alltrueselj=zeros(n1,1);
-    ij=0;
-    for j=1:k
-        Nj=IDs(:,2:end)==j;
-        sumNj=sum(Nj,2);
-        selj=seqIDs(sumNj>0);
-        %     if mod(j,2)~=0
-        [~,indj]=sort(sumNj(selj),'descend');
-        %     else
-        %        [~,indj]=sort(sumNj(selj),'ascend');
-        %     end
-        trueselj=selj(indj);
-        trueseljf=setdiff(trueselj,Alltrueselj,'stable');
-        lt=length(trueseljf);
-        if lt>0
-            Alltrueselj(ij+1:ij+lt)=trueseljf;
-            ij=ij+lt;
-        end
+% alphasel contains the indexes of the columns of matrix IDX which have
+% to be plotted
+% We use round(alpha*1e+7)/1e+7 to guarantee compatibility with old
+% versions of MATLAB. For the new versions the instruction would have
+% been:
+% [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
+[~,alphasel]=intersect(round(alphaLik*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
+lalphasel=length(alphasel);
+
+
+%% Produce all necessary calculations for UnitsTrmOrChgCla plot
+IDs=[UnitsTrmOrChgCla IDX(UnitsTrmOrChgCla,:)];
+[n1,k1]=size(IDs);
+onex=ones(n1,1);
+seqIDs=(1:n1)';
+
+Alltrueselj=zeros(n1,1);
+ij=0;
+for j=1:k
+    Nj=IDs(:,2:end)==j;
+    sumNj=sum(Nj,2);
+    selj=seqIDs(sumNj>0);
+    %     if mod(j,2)~=0
+    [~,indj]=sort(sumNj(selj),'descend');
+    %     else
+    %        [~,indj]=sort(sumNj(selj),'ascend');
+    %     end
+    trueselj=selj(indj);
+    trueseljf=setdiff(trueselj,Alltrueselj,'stable');
+    lt=length(trueseljf);
+    if lt>0
+        Alltrueselj(ij+1:ij+lt)=trueseljf;
+        ij=ij+lt;
     end
-    
-    % IDt is the same as IDs but the rows are rearranged in order to
-    % have units in group 1 at the bottom then units of group 2...
-    IDt=IDs(Alltrueselj,:);
-    % IDt(IDt==-1)=[];
-    out.UnitsTrmOrChgCla=IDt;
-    
+end
+% UnitsNeverAssigned
+
+unitsNeverAssigned=setdiff(seqIDs,Alltrueselj);
+if ~isempty(unitsNeverAssigned)
+    Alltrueselj(ij+1:end)=unitsNeverAssigned;
+end
+
+% IDt is the same as IDs but the rows are rearranged in order to
+% have units in group 1 at the bottom then units of group 2...
+IDt=IDs(Alltrueselj,:);
+% IDt(IDt==-1)=[];
+out.UnitsTrmOrChgCla=IDt;
+
 %% 1 Monitor change of statistics between two consecutive values of alphaLik
 namej='monitor';
 d=find(strcmp(namej,name));
@@ -1327,7 +1184,7 @@ if d>0
     figure('Name',namej,'Visible','on');
     
     plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
-        '$\mu$' '$\Sigma_X$'};
+        '$\hat \mu_X$' '$\hat \Sigma_X$'};
     if alphaX==1
         nr=3;
         nc=2;
@@ -1359,7 +1216,7 @@ namej='UnitsTrmOrChgCla';
 d=find(strcmp(namej,name));
 if d>0
     
-      figure('Name',namej,'Visible','on');
+    figure('Name',namej,'Visible','on');
     xlim([0 k1+1])
     ylim([0 n1+1])
     set(gca,'XTick',0:k1+1);
@@ -1390,6 +1247,15 @@ if d>0
     xlabel('Trimming level')
     ylabel('Units trimmed at least once or which changed assignment')
     title('In red color units which changed classification')
+    
+    if ~isempty(unitsNeverAssigned)
+        hline=refline(0,n1-length(unitsNeverAssigned)+0.5);
+        hline.Color = 'm';
+        title('In red units which changed classification. Above the hor. line unit never classified.')
+    else
+        title('In red color units which changed classification')
+    end
+    
 end
 
 
@@ -1453,7 +1319,11 @@ if d>0
     figure('Name',namej,'Visible','on');
     % Sigma2y is of dimension k-by-length(alpha)
     subplot(2,1,1)
-    h=plot(alphaLik,Sigma2y'); %#ok<NASGU>
+    % Sigma2y is k-by-length(alphaLik)
+    h=plot(alphaLik,Sigma2y');
+    % set the colors using the order in clrdef
+    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
@@ -1469,6 +1339,9 @@ if d>0
     
     subplot(2,1,2)
     h=plot(alphaLik,Sigma2yc');
+    % set the colors using the order in clrdef
+    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
@@ -1501,9 +1374,10 @@ if d>0
         % initialize figure
         figure('Name',namej,'Visible','on');
         hold on;
-        alpha1range=[num2str(max(alphaLik)) '--' num2str(min(alphaLik))];
-        title({['$\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
-            '\quad \alpha_X=' num2str(alphaX) '$']} , ...
+        alpha1range=['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
+        title({['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
+            num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
+            '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']} , ...
             'interpreter' , 'LaTex', 'fontsize' , 14);
         
         % plot regression lines
@@ -1757,6 +1631,9 @@ if d>0
     for j=1:p
         subplot(nr,nc,j)
         h=plot(alphaLik(:),squeeze(Betast(:,j,:))');
+        % set the colors using the order in clrdef
+        set(h,{'Color'},cellstr(clrdef(1:k)'))
+        
         xlim([min(alphaLik),max(alphaLik)])
         % set(gca,'XTickLabel',num2str(alpha1'))
         
@@ -1784,6 +1661,9 @@ if d>0
     % Monitoring of group size
     figure('Name',namej,'Visible','on');
     h=plot(alphaLik(:),out.Nopt');
+    % set the colors using the order in clrdef
+    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
