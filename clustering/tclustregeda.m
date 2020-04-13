@@ -3,14 +3,11 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %
 %<a href="matlab: docsearchFS('tclustregeda')">Link to the help function</a>
 %
-%   tclustrefeda performs tclustreg for a series of values of the trimming
+%   tclustregeda performs tclustregreg for a series of values of the trimming
 %   factor alpha given k (number of groups) and given restrfactor
-%   (restriction factor) and alphaX (second levl trimming or cluster
+%   (restriction factor) and alphaX (second level trimming or cluster
 %   weighted model). In order to increase the speed of the computations,
 %   parfor is used.
-%
-%
-%  Required input arguments:
 %
 %  Required input arguments:
 %
@@ -50,8 +47,8 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %               lie in the interval 0 and 0.5.
 %               For example if alpha=[0.1 0.05 0] tclustregeda considers these 3
 %               values of trimming level.
-%               If alphaLik=0 tclusteda does not trimming. The default for
-%               alpha is vector [0.1 0.05 0]. The sequence is forced to be
+%               If alphaLik=0 tclustregeda does not trim. The default for
+%               alphaLik is vector [0.1 0.05 0]. The sequence is forced to be
 %               monotonically decreasing.
 %   alphaX : Second-level trimming or constrained weighted model for X. Scalar.
 %            alphaX is a value in the interval [0 1].
@@ -163,98 +160,50 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-%   wtrim: Application of observation weights. Scalar or structure. If
-%           wtrim is a scalar, a flag taking values
-%          in [0, 1, 2, 3, 4], to control the application of weights on the
-%          observations for betaestimation.
-%          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
-%             algorithm reduces to the standard tclustreg algorithm.
-%          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
-%             probability $D_i$ of equation 7 of Garcia et al. 2010 is
-%             computing by maximizing the log-likelihood contributions of
-%             the mixture model of each observation.
-%          -  If \texttt{wtrim} = 1, trimming is done by weighting the
-%             observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} must be supplied by the
-%             user. For instance, \texttt{we} = $X$.
-%          -  If \texttt{wtrim} = 2, trimming is again done by weighting
-%             the observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} is computed from the data as
-%             a function of the density estimate $\mbox{pdfe}$.
-%            Specifically, the weight of each observation is the
-%            probability of retaining the observation, computed as
-%            \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
-%         -  If \texttt{wtrim} = 3, trimming is again done by weighting the
-%            observations using values specified in vector \texttt{we}. In
-%            this case, each element $we_i$ of vector \texttt{we} is a
-%            Bernoulli random variable with probability of success
-%            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
-%            under the constraint that no group is empty.
-%         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
-%            of Cerioli and Perrotta (2014).
-%         -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
-%          -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
-%          If wtrim is a structure, it is composed by:
-%         -  wtrim.wtype_beta: the weight for the beta estimation. It can be
-%           0, 1, 2, 3, as in the case of wtrim scalar
-%         -  wtrim.wtype_obj: the weight for the objective function. It can
-%         be:
-%             - '0': no weights in the objective function
-%             - 'Z': Bernoulli random variable with probability of success
-%            $\mbox{pdfe}_{ig}$
-%             - 'w': a function of the density estimate $\mbox{pdfe}$.
-%             - 'Zw': the product of the two above.
-%             - 'user': user weights we.
-%            Example - 'wtrim',1
-%            Data Types - double
-%
-%      we: Vector of observation weights. Vector. A vector of size n-by-1
-%          containing application-specific weights that the user needs to
-%          apply to each observation. Default
-%          value is  a vector of ones.
-%            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
-%            Data Types - double
-%
-%       k_dens_mixt: in the Poisson/Exponential mixture density function,
-%                    number of clusters for density mixtures. Scalar.
-%                    This is a guess on the number of data groups. Default
-%                    value is 5.
-%            Example - 'k_dens_mixt',6
-%            Data Types - single|double
-%
-%   nsamp_dens_mixt: in the Poisson/Exponential mixture density function,
-%                    number of subsamples to extract. Scalar. Default 300.
-%                    Example - 'nsamp_dens_mixt',1000
-%                    Data Types - double
-%
-%refsteps_dens_mixt: in the Poisson/Exponential mixture density function,
-%                    number of refining iterations. Scalar. Number of refining
-%                    iterations in each subsample.  Default is 10.
-%                    Example - 'refsteps_dens_mixt',15
-%                    Data Types - single | double
-%
-%  method_dens_mixt: in the Poisson/Exponential mixture density function,
-%                    distribution to use. Character. If method_dens_mixt =
-%                    'P', the Poisson distribution is used, with
-%                    method_dens_mixt = 'E', the Exponential distribution
-%                    is used. Default is 'P'.
-%                    Example - 'method_dens_mixt','E'
-%                    Data Types - char
-%
 %
 %
 % plots    :    Plot on the screen. Scalar structure.
 %
 %               Case 1: plots option used as scalar.
 %               - If plots=0,  plots are not generated.
-%               - If plots=1 (default), two plots are shown on the screen.
-%                 The first plot ("monitor plot") shows three panels
+%               - If plots=1 (default), 6 plots are shown on the screen.
+%                 The first plot ("monitor") shows 4 or 6 panels
 %                 monitoring between two consecutive values of alpha the
-%                 change in classification using ARI index (top panel), the
-%                 change in centroids using squared euclidean distances
-%                 (central panel), the change in covariance matrices using
-%                 squared euclidean distance (bottom panel).
-%                 The second plot ("gscatter plot") shows a series of
+%                 change in classification using ARI index (top left panel),
+%                 the relative change in beta (top right panel)
+%                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||beta_{\alpha_2}||^2
+%                 the relative change in \sigma^2 (third panel) the
+%                 relative change in \sigma^2 corrected (fourth panel) and
+%                 if alphaX=1, the relative change in centroids (fifth
+%                 panel), the relative change in covariance matrices using
+%                 squared euclidean distance (sixth panel).
+%                 The second plot ("UnitsTrmOrChgCla") is a bsb plot which
+%                 shows the monitoring of the units which changed
+%                 classification (shown in red) or were trimmed at least
+%                 once.
+%                 The third plot shows ("PostProb") is a 4 panel parallel
+%                 coordinate plots which shows the monitoring of posterior
+%                 probabilities. Four versions of parallel coordinateds
+%                 plots are proposed. The first two use function
+%                 parallelcoords and refer respectively to all the units
+%                 (left panel) or the units which were trimmed or changed
+%                 allocation (right panels). The two bottom panels
+%                 are exactly equal as top panels but use function
+%                 parallelplot.
+%                 The fourth plot ("PostProb") is 4 panel parallel
+%                 coordinate plots which shows the monitoring of posterior
+%                 probabilities. Four versions of parallel coordinateds
+%                 plots are proposed. The first two use function
+%                 parallelcoords and refer respectively to all the units
+%                 (left panel) or the units which were trimmed or changed
+%                 allocation (right panels). The two bottom panels
+%                 are exactly equal as top panels but use function
+%                 parallelplot.
+%                 The fifth plot is a scatter of y versus X (or a yXplot in
+%                 case X ha more than one column) with all the regression
+%                 lines for each value of alphaLik shown. Units trimmed are
+%                 shown in correspondence of max(alphaLik).
+%                 The sixth plot ("gscatter plot") shows a series of
 %                 subplots which monitor the classification for each value
 %                 of alpha. In order to make sure that consistent labels
 %                 are used for the groups, between two consecutive values
@@ -262,44 +211,44 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 shows the smallest distance with group r for the previous
 %                 value of alpha. The type of plot which is used to monitor
 %                 the stability of the classification depends on the value
-%                 of v.
-%                   * for v=1, we use histograms of the univariate data
+%                 of p (number of explanatory variables excluding the intercept).
+%                   * for p=0, we use histograms of the univariate data
 %                   (function histFS is called).
-%                   * for v=2, we use the scatter plot of the two
-%                   variables (function gscatter is called).
-%                   * for v>2, we use the scatter plot of the first two
-%                   principal components (function gscatter is called and
-%                   we show on the axes titles the percentage of variance
-%                   explained by the first two principal components).
+%                   * for p=1, we use the scatter plot of y
+%                   against the unique explanatory variable (function gscatter is called).
+%                   * for p>=2, we use partial least square regression (see
+%                   function plsregress) and use the scatter plot of y
+%                   against the predictor scores Xs, that is, the first PLS
+%                   component that is linear combination of the variables
+%                   in X.
 %
 %               Case 2: plots option used as struct.
 %                 If plots is a structure it may contain the following fields:
 %                 plots.name = cell array of strings which enables to
-%                   specify which plot to display. plots.name = {'gscatter'}
-%                   produces a figure with a series of subplots which show the
-%                   classification for each value of alpha. plots.name = {'monitor'}
-%                   shows a figure with 3 panels which monitor between two
-%                   consecutive values of alpha the change in classification
-%                   using ARI index (top panel), the change in centroids
-%                   using squared euclidean distances (central panel), the
-%                   change in covariance matrices using squared euclidean
-%                   distance (bottom panel). If this field is
-%                   not specified plots.name={'gscatter' 'monitor'} and
-%                   both figures will be shown.
+%                   specify which plot to display.
+%                   plots.name={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
+%                               'ScatterWithRegLines'; 'gscatter'};
+%                   is exactly equivalent to plots=1
+%                   For the explanation of the above plots see plots=1.
+%                   If plots.name=={ 'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
+%                                   'ScatterWithRegLines'; 'gscatter'; ...
+%                                   'Beta';'Siz'};
+%                   it is also possible to monitor the beta coefficients
+%                   for each group ('Beta') and the size of the groups (Siz).
+%                   Note that the trajectories of beta coefficients are
+%                   standardized in order to ahve all of them on a
+%                   comparable scale.
 %                 plots.alphasel = numeric vector which speciies for which
-%                   values of alpha it is possible to see the classification.
+%                   values of alpha it is possible to see the
+%                   classification (in plot gscatter) or the
+%                   superimposition of regression lines (in plot
+%                   ScatterWithRegLines) .
 %                   For example if plots.alphasel =[ 0.05 0.02], the
-%                   classification will be shown just for alpha=0.05 and
-%                   alpha=0.02; If this field is
-%                   not specified plots.alphasel=alpha and therefore the
-%                   classification is shown for each value of alpha.
-%                 plots.ylimy = 2D array of size 3-by 2 which specifies the
-%                   lower and upper limits for the monitoring plots. The
-%                   first row refers the ARI index (top panel), the second
-%                   row refers to the the change in centroids using squared
-%                   euclidean distances (central panel), the third row is
-%                   associated with the change in covariance matrices using
-%                   squared euclidean distance (bottom panel).
+%                   classification in plot gscatter and the regression
+%                   lines in plot ScatterWithRegLines will be shown just
+%                   for alphaLik=0.05 and alphaLik=0.02; If this field is not
+%                   specified plots.alphasel=alphaLik and therefore the
+%                   classification is shown for each value of alphaLik.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | struct
 %
@@ -371,39 +320,77 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %
 %         out:   structure which contains the following fields
 %
-%            out.IDX  = n-by-length(alpha) vector containing assignment of each unit to
+%            out.IDX  = n-by-length(alphaLik) matrix containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
-%                       numbers from 1 to k. 0 indicates trimmed
+%                       numbers from 1 to k:
+%                       -1 indicates first level trimmed observations;
+%                       -2 indicates second level trimmed observations.
 %                       observations. First column refers of out.IDX refers
 %                       to alphaLik(1), second column of out.IDX refers to
 %                       alphaLik(2), ..., last column refers to alphaLik(end).
 %
-%            out.Beta  =  3D array of size k-by-p-by-length(alpha) containing
+%            out.Beta  =  3D array of size k-by-p-by-length(alphaLik) containing
 %                       the monitoring of the regression coefficients for each value of
 %                       alphaLik. out.Beta(:,:,1), refers to alphaLik(1) ...,
 %                       out.Beta(:,:,end) refers to alphaLik(end). First row in
 %                       each slice refers to group 1, second row refers to
 %                       group 2 ...
 %
-%         out.Sigma  =  matrix of size k-by-length(alphaLik) containing in column
+%         out.Sigma2y  =  matrix of size k-by-length(alphaLik) containing in column
 %                       j, with j=1, 2, ...,  length(alphaLik), the
 %                       estimates of the k (constrained) variances of the
-%                       regressions trices associated with alphaLik(j).
+%                       regressions lines (hyperplanes) associated with alphaLik(j).
+%
+%         out.Sigma2yc  =  matrix of size k-by-length(alphaLik) containing in column
+%                       j, with j=1, 2, ...,  length(alphaLik), the
+%                       estimates of the k (constrained) unbiased variances of the
+%                       regressions lines (hyperplanes) associated with alphaLik(j).
+%                       In order to make the estimates of sigmas unbiased
+%                       we apply Tallis correction factor.
+%
+%         out.Nopt  =  matrix of size k-by-length(alphaLik) containing in column
+%                       j, with j=1, 2, ...,  length(alphaLik), the
+%                       sizes of the of the k groups.
+%
+%         out.Vopt  =  column vector of length(alphaLik) containing the
+%                      value of the target likelihod for each value of alphaLik.
+%
 %
 %         out.Amon  =  Amon stands for alphaLik monitoring. Matrix of size
-%                      (length(alphaLik)-1)-by-4 which contains for two
-%                       consecutive values of alpha the monitoring of three
+%                      (length(alphaLik)-1)-by-7 which contains for two
+%                       consecutive values of alpha the monitoring of six
 %                       quantities (change in classification, change in
-%                       centroid location, change in variance of the errors).
+%                       betas, sigmas, correted sigmas and if cwm also
+%                       centroid and coariance in the X space.
 %                       1st col = value of alphaLik.
 %                       2nd col = ARI index.
-%                       3rd col = squared Euclidean distance between
+%                       3rd col = relative squared Euclidean distance between
 %                           two consecutive beta.
-%                       4th col = squared Euclidean distance between
+%                       4th col = relative squared Euclidean distance between
 %                           two consecutive vector of variances of the
 %                           errors of the k regressions.
+%                       5th col = relative squared Euclidean distance between
+%                           two consecutive vector of correct variances of the
+%                           errors of the k regressions.
+%                       6th col = relative squared Euclidean distance between
+%                           two consecutive $\hat \mu_X$.
+%                       7th col = relative squared Euclidean distance between
+%                           two consecutive $\hat \Sigma_X$.
 %
-%              out.y  = Original data matrix Y.
+% out.UnitsTrmOrChgCla= Matrix containing information information about the
+%                       units (n1) which were trimmed or changed classification
+%                       at least once in the forward search. The size of
+%                       out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;
+%                       1st col = list of the units which were trimmed or
+%                       changed classification at least once.
+%                       2nd col = allocation of the n1 units in step alphaLik(1)
+%                       3rd col = allocation of the n1 units in step alphaLik(2)
+%                       ...
+%                       last col = allocation of the n1 units in step alphaLik(end)
+%
+%              out.y  = Original response y.
+%
+%              out.X  = origianl X matrix. 
 %
 %  Optional Output:
 %
@@ -415,17 +402,21 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % More About:
 %
 %
-% This procedure extends to tclust the so called monitoring
-% approach. The phylosophy is to investigate how the results change as the
-% trimming proportion alpha reduces. This function enables us to monitor
-% the change in classification (measured by the ARI index) and the change
-% in regression coefficients and error variances (measured by the squared euclidean
-% distances). In order to make sure that consistent labels are used for the
-% groups, between two consecutive values of alpha, we assign label r to a
-% group if this group shows the smallest distance with group r for the
-% previous value of alpha.
+% This procedure extends to tclustreg the so called monitoring approach.
+% The phylosophy is to investigate how the results change as the trimming
+% proportion alpha reduces. This function enables us to monitor the change
+% in classification (measured by the ARI index) and the change in
+% regression coefficients and error variances (measured by the relative
+% squared euclidean distances). In order to make sure that consistent
+% labels are used for the groups, between two consecutive values of alpha,
+% we assign label r to a group if this group shows the smallest distance
+% with group r for the previous value of alpha. In otder to be consistent
+% along the different runs it is possible to specify through option
+% UnitsSameGroup the list of the units which must (whenever possible) have
+% a particular label. 
 %
-% See also: tclustreg, tclustIC
+%
+% See also: tclustreg, tclustIC, tclusteda
 %
 % References:
 %
@@ -704,15 +695,8 @@ else
 end
 
 % checks on alpha1 (alphaLik) and alpha2 (alphaX)
-if alphaLik < 0
+if min(alphaLik) < 0 || max(alphaLik)>0.5
     error('FSDA:tclustreg:error','error must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
-else
-    % h is the number of observations not to be trimmed (used for fitting)
-    if alphaLik < 1
-        h = floor(n*(1-alphaLik));
-    else
-        h = n - floor(alphaLik);
-    end
 end
 
 % checks on cwm, which decides if clusterwise regression has to be used
@@ -724,64 +708,12 @@ else
     cwm=0;
 end
 
-%% *Bivariate thinning* (_if wtrim == 4 and p == 2_)
-
-% Bivariate thinning is applied once on the full dataset, at the start.
-% This is done before setting the number of random samples nsamp.
-
-if nargin>6
-    % check if wtrim is among the user parameters
-    chknwtrim = strcmp(varargin,'wtrim');
-    if sum(chknwtrim)>0
-        tmp = cell2mat(varargin(find(chknwtrim)+1));
-        if ~isstruct(tmp)
-            wtrimdef = 0;
-            if cell2mat(varargin(find(chknwtrim)+1)) == 4
-                interc = find(max(X,[],1)-min(X,[],1) == 0);
-                if p == numel(interc) + 1
-                    
-                    % The bandwidth is chosen following Baddeley, as in the R
-                    % spatstats package (density.ppp function).
-                    bw = (range([X(:,numel(interc)+1),y]))/8;
-                    
-                    %in order to reproduce results comparable with the paper
-                    %Cerioli and Perrotta (2013) the bandwidth is divided by 3
-                    bw = bw/3;
-                    % Another option to be considered follwing Baddeley is:
-                    %bw = min(max(X),max(y))/8;
-                    
-                    % Thinning step
-                    [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one','bandwidth',bw);
-                    id_unthinned = Wt4==1;
-                    %id_thinned = Wt4==0;
-                    
-                    % save original data
-                    Xori = X;
-                    yori = y;
-                    
-                    % set retained data
-                    X    = X(Wt4,:);
-                    y    = y(Wt4);
-                    
-                    %recompute n on the retained data
-                    n = size(y,1);
-                end
-            end
-        else
-            wtrimdef = struct;
-        end
-    else
-        %no_wtrim = 1;
-        wtrimdef = 0;
-    end
-else
-    wtrimdef = 0;
-end
-
 
 %% User options and their default values
 
 %%% - nsamp: the number of subsets to extract randomly, or the indexes of the initial subsets pre-specified by the User
+numpool = feature('numCores');
+cleanpool=false;
 
 if nargin>6
     
@@ -870,15 +802,17 @@ equalweightsdef = 1;
 %seqk = sequence from 1 to the number of groups
 seqk = 1:k;
 
+plots=1;
+UnitsSameGroup='';
+
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
     'reftol',reftoldef,...
-    'we',wedef,'wtrim',wtrimdef,...
+    'we',wedef,'numpool',numpool,'cleanpool', cleanpool,...
     'equalweights',equalweightsdef,...
-    'RandNumbForNini','','msg',1,'plots',1,...
-    'nocheck',1,'k_dens_mixt',5,'nsamp_dens_mixt',nsampdef,...
-    'refsteps_dens_mixt',refstepsdef,'method_dens_mixt','P');
+    'RandNumbForNini','','msg',1,'plots',plots,...
+    'nocheck',1,'UnitsSameGroup',UnitsSameGroup);
 
 if nargin > 6
     UserOptions = varargin(1:2:length(varargin));
@@ -911,6 +845,7 @@ if nargin > 6
         error('FSDA:tclustreg:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
 end
+numpool=options.numpool;
 
 % global variable controlling if messages are displayed in the console.
 msg = options.msg;
@@ -928,32 +863,13 @@ reftol   = options.reftol;
 % Equalweights constraints
 equalweights = options.equalweights;
 
+
+UnitsSameGroup=options.UnitsSameGroup;
+
 % application-specific weights vector assigned by the user for beta
 % estimation
 we         = options.we;
 
-
-% Flag to control the type of thinning scheme for estimate beta
-% (wtype_beta) and to compute obj function (wtype_obj)
-if isstruct(options.wtrim)
-    % Flag to control the type of thinning scheme for beta estimation
-    wtype_beta      = options.wtrim.wtype_beta;
-    % Flag to control the type of thinning scheme for obj function
-    wtype_obj       = options.wtrim.wtype_obj;
-else
-    % if options.wtrim is a double it referes only to the beta estimation. No
-    % weighting will be done in the obj function.
-    wtype_beta      = options.wtrim;
-    wtype_obj       ='0';
-end
-% Flag associated to the strategy for choosing the best refining step
-% In the standard TCLUST the best refining step is granted to be the last
-% one, because the objective funcion is monothonic. However, with second
-% trimming level or componentwise thinning, the objective function may not
-% be monothonic and a different strategy for choosing the best refining
-% step can be considered.
-
-zigzag = (alphaX > 0 && alphaX<1) || wtype_beta == 3 || wtype_beta == 2 || ~strcmp(wtype_obj, '0');
 
 % Mixt option: type of membership of the observations to the sub-populations
 % Control the mixture model to use (classification/mixture, likelihood or a
@@ -998,11 +914,6 @@ end
 
 %% Initializations
 
-%%% - Observation weights (we)
-
-% Initialize we, a vector of application-specific weights associated to the
-% observations, according to the trimming/thinning strategy.
-
 %%% - Subsets extraction
 
 %case with no prior subsets from the User
@@ -1025,571 +936,870 @@ end
 if nargout==2
     varargout={C};
 end
-
-% sigma2ini= standard deviation of each group
-sigma2ini = ones(1,k);
-
-%%% - Find NParam penalty term to use inside AIC and BIC
-
-
-
-%%  RANDOM STARTS
-[bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt]...
-    =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
-
-%%  END OF RANDOM STARTS
+% Flag associated to the strategy for choosing the best refining step
+% In the standard TCLUST the best refining step is granted to be the last
+% one, because the objective funcion is monothonic. However, with second
+% trimming level or componentwise thinning, the objective function may not
+% be monothonic and a different strategy for choosing the best refining
+% step can be considered.
+wtype_beta=0;
+wtype_obj=0;
+zigzag = (alphaX > 0 && alphaX<1) || wtype_beta == 3 || wtype_beta == 2 || ~strcmp(wtype_obj, '0');
 
 
-%
-% lalpha=length(alpha);
-% if msg == 1
-%     progbar = ProgressBar(lalpha);
-% else
-%     progbar=[];
-% end
-%
-% IDX=zeros(n,lalpha);
-% outcell=cell(lalpha,1);
-%
-% MU=zeros(k,v,lalpha);
-% SIGMA=cell(lalpha,1);
-%
-% parfor (j=1:lalpha, numpool)
-%     outj  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt, ...
-%         equalweights,hh(j),nselected,k,restrnum,restrfactor,userepmat,nParam);
-%
-%     if nnargout==2
-%         outcell{j}=outj;
-%     end
-%
-%     IDX(:,j)=outj.idx;
-%
-%     MU(:,:,j)=outj.muopt;
-%     SIGMA{j}=outj.sigmaopt;
-%
-%     if msg == 1
-%         progbar.progress;  %#ok<PFBNS>
-%     end
-% end
-%
-% if msg == 1
-%     progbar.stop;
-% end
-%
-%
-% if ~isempty(UnitsSameGroup)
-%
-%     [IDXnew1, OldNewIndexes]=ClusterRelabel({IDX(:,1)}, UnitsSameGroup);
-%
-%     MUold1=MU(:,:,1);
-%     SIGMAold1= SIGMA{1};
-%
-%     MUnew1=MUold1;
-%     SIGMAnew1=SIGMAold1;
-%     for jj=1:size(OldNewIndexes,1)
-%         MUnew1(OldNewIndexes(jj,1),:)= MUold1(OldNewIndexes(jj,2),:);
-%         MUnew1(OldNewIndexes(jj,2),:)= MUold1(OldNewIndexes(jj,1),:);
-%         MUold1=MUnew1;
-%
-%         SIGMAnew1(:,:,OldNewIndexes(jj,1))=SIGMAold1(:,:,OldNewIndexes(jj,2));
-%         SIGMAnew1(:,:,OldNewIndexes(jj,2))=SIGMAold1(:,:,OldNewIndexes(jj,1));
-%         SIGMAold1=SIGMAnew1;
-%     end
-%     IDX(:,1)=IDXnew1{:};
-%     MU(:,:,1)=MUold1;
-%     SIGMA{1}=SIGMAold1;
-% end
-%
-%
-
-
-%% Apply consistency factor based on the variance of the truncated normal distribution.
-
-% hh = number of non trimmed observations, after first and second level trimming
-hh = sum(nopt);
-
-% vt = variance of the truncated normal distribution
-% 1-hh/n is the trimming percentage
-vt = norminv(0.5*(1+hh/n));
-
-if hh<n
-    factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
-    % Apply the asymptotic consistency factor to the preliminary squared scale estimate
-    sigma2opt_corr = sigma2opt*factor;
-    % Apply small sample correction factor of Pison et al.
-    sigma2opt_corr = sigma2opt_corr*corfactorRAW(1,n,hh/n);
+lalpha=length(alphaLik);
+if msg == 1
+    progbar = ProgressBar(lalpha);
 else
-    sigma2opt_corr = sigma2opt;
+    progbar=[];
 end
+
+IDX=zeros(n,lalpha);
+
+MU=zeros(k,p-1,lalpha);
+SIGMA=cell(lalpha,1);
+Beta=zeros(k,p,lalpha);
+Nopt=zeros(k,lalpha);
+Sigma2y=zeros(k,lalpha);
+Sigma2yc=Sigma2y;
+Vopt=zeros(lalpha,1);
+Postprob=zeros(n,k,lalpha);
+
+parfor (j=1:lalpha, numpool)
+    % for j=1:lalpha
+    h = floor(n*(1-alphaLik(j)));
+    
+    %%  RANDOM STARTS
+    [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
+        =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
+        seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
+    
+    %%  END OF RANDOM STARTS
+    
+    IDX(:,j)=idxopt;
+    Beta(:,:,j)=bopt';
+    Nopt(:,j)=nopt;
+    MU(:,:,j)=muXopt;
+    SIGMA{j}=sigmaXopt;
+    Vopt(j)=vopt;
+    Postprob(:,:,j)=postprobopt;
+    
+    % hh = number of non trimmed observations, after first and second level trimming
+    hh = sum(nopt);
+    
+    % vt = variance of the truncated normal distribution
+    % 1-hh/n is the trimming percentage
+    vt = norminv(0.5*(1+hh/n));
+    
+    sigma2opt=sigma2opt';
+    if hh<n
+        factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
+        % Apply the asymptotic consistency factor to the preliminary squared scale estimate
+        sigma2opt_corr = sigma2opt*factor;
+    else
+        sigma2opt_corr = sigma2opt;
+    end
+    
+    Sigma2y(:,j)=sigma2opt;
+    Sigma2yc(:,j)=sigma2opt_corr;
+    
+    if msg == 1
+        progbar.progress; %#ok<PFBNS>
+    end
+end
+
+if msg == 1
+    progbar.stop;
+end
+
+
+if ~isempty(UnitsSameGroup)
+    % Note that this operation is just applies fo first column of IDX
+    idx1=IDX(:,1);
+    trimmed1=idx1==-1;
+    trimmed2=idx1==-2;
+    trimmed=idx1<0;
+    idxtmp=idx1;
+    idxtmp(trimmed)=0;
+    [IDXnew1, OldNewIndexes]=ClusterRelabel({idxtmp}, UnitsSameGroup);
+    
+    % MUold1 is k-by-p (rows refer to groups)
+    % Mu is k-by-p-length(alpha)
+    MUold1=MU(:,:,1);
+    % Sigmaold1 is pxpxk
+    SIGMAold1= SIGMA{1};
+    
+    Betaold1=Beta(:,:,1);
+    Sigma2yold1=Sigma2y(:,1);
+    Sigma2ycold1=Sigma2yc(:,1);
+    Postprobold1=Postprob(:,:,1);
+    
+    MUnew1=MUold1;
+    SIGMAnew1=SIGMAold1;
+    Betanew1=Betaold1;
+    Sigma2ynew1=Sigma2yold1;
+    Sigma2ycnew1=Sigma2ycold1;
+    Postprobnew1=Postprobold1;
+    
+    for jj=1:size(OldNewIndexes,1)
+        
+        % in SIGMAnew1 k is in the third dimension
+        SIGMAnew1(:,:,OldNewIndexes(jj,1))=SIGMAold1(:,:,OldNewIndexes(jj,2));
+        SIGMAnew1(:,:,OldNewIndexes(jj,2))=SIGMAold1(:,:,OldNewIndexes(jj,1));
+        SIGMAold1=SIGMAnew1;
+        
+        % in MUnew1 Betanew1, Sigma2ynew1, and Sigma2ycnew1 k is in the rows
+        MUnew1(OldNewIndexes(jj,1),:)= MUold1(OldNewIndexes(jj,2),:);
+        MUnew1(OldNewIndexes(jj,2),:)= MUold1(OldNewIndexes(jj,1),:);
+        MUold1=MUnew1;
+        
+        Betanew1(OldNewIndexes(jj,1),:)=Betanew1(OldNewIndexes(jj,2),:);
+        Betanew1(OldNewIndexes(jj,2),:)=Betanew1(OldNewIndexes(jj,1),:);
+        Betaold1=Betanew1;
+        
+        Sigma2ynew1(OldNewIndexes(jj,1))=Sigma2ynew1(OldNewIndexes(jj,2));
+        Sigma2ynew1(OldNewIndexes(jj,2))=Sigma2ynew1(OldNewIndexes(jj,1));
+        Sigma2yold1=Sigma2ynew1;
+        
+        Sigma2ycnew1(OldNewIndexes(jj,1))=Sigma2ycnew1(OldNewIndexes(jj,2));
+        Sigma2ycnew1(OldNewIndexes(jj,2))=Sigma2ycnew1(OldNewIndexes(jj,1));
+        Sigma2ycold1=Sigma2ycnew1;
+        
+        % In Postprobnew1 k is in the columns
+        Postprobnew1(:,OldNewIndexes(jj,1))=Postprobnew1(:,OldNewIndexes(jj,2));
+        Postprobnew1(:,OldNewIndexes(jj,2))=Postprobnew1(:,OldNewIndexes(jj,1));
+        Postprobold1=Postprobnew1;
+        
+    end
+    IDX(:,1)=IDXnew1{:};
+    IDX(trimmed1,1)=-1;
+    IDX(trimmed2,1)=-2;
+    
+    MU(:,:,1)=MUold1;
+    SIGMA{1}=SIGMAold1;
+    Beta(:,:,1)=Betaold1;
+    Sigma2y(:,1)=Sigma2yold1;
+    Sigma2yc(:,1)=Sigma2ycold1;
+    Postprob(:,:,1)=Postprobold1;
+end
+
+IDXold=IDX;
+maxdist=zeros(lalpha,1);
+seqk=(1:k)';
+
+for j=2:lalpha
+    newlab=zeros(k,1);
+    mindist=newlab;
+    for ii=1:k
+        % centroid of group ii for previous alpha value
+        muii=Beta(ii,:,j-1);
+        % MU(:,:,j) =matrix of centroids for current alpha value
+        
+        %if verMatlab==true;
+        muij=bsxfun(@minus,muii,Beta(:,:,j));
+        %else
+        %    muij=muii-MU(:,:,j);
+        %end
+        
+        [mind,indmin]=min(sum(muij.^2,2));
+        newlab(ii)=indmin;
+        mindist(ii)=mind;
+    end
+    % Store maximum among minimum distances
+    [maxmindist,indmaxdist] =max(mindist);
+    maxdist(j)=maxmindist;
+    
+    if isequal(sort(newlab),seqk)
+        MU(:,:,j)=MU(newlab,:,j);
+        SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+        Beta(:,:,j)=Beta(newlab,:,j);
+        Sigma2y(:,j)=Sigma2y(newlab,j);
+        Sigma2yc(:,j)=Sigma2yc(newlab,j);
+        Postprob(:,:,j)=Postprob(:,newlab,j);
+        
+        for r=1:k
+            IDX(IDXold(:,j)==newlab(r),j)=r;
+        end
+    else
+        newlab(indmaxdist)=setdiff(seqk,newlab);
+        disp(['Preliminary relabelling not possible when alpha=' num2str(alphaLik(j))])
+        if isequal(sort(newlab),seqk)
+            MU(:,:,j)=MU(newlab,:,j);
+            SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+            Beta(:,:,j)=Beta(newlab,:,j);
+            Sigma2y(:,j)=Sigma2y(newlab,j);
+            Sigma2yc(:,j)=Sigma2yc(newlab,j);
+            Postprob(:,:,j)=Postprob(:,newlab,j);
+            
+            
+            for r=1:k
+                IDX(IDXold(:,j)==newlab(r),j)=r;
+            end
+        else
+            disp(['Automatic relabelling not possible when alpha=' num2str(alphaLik(j))])
+        end
+    end
+end
+
 
 %%  Set the output structure
 
-out                     = struct;
-out.subsetopt           =subsetopt;
-%   bopt                = regression parameters
-out.bopt                = bopt;
-%   sigmaopt0           = estimated group variances
-out.sigma2opt           = sigma2opt;
-%   sigma2opt_corr      = estimated group variances corrected with  asymptotic
-%                         consistency factor and small sample correction factor
-out.sigma2opt_corr      = sigma2opt_corr;
-
-%CWM
-if cwm==1
-    %out.muXopt= k-by-p matrix containing cluster centroid locations.
-    out.muXopt=muXopt';
-    %out.sigmaXopt= p-by-p-by-k array containing estimated constrained
-    %covariance covariance matrices of the explanatory variables for the k
-    %groups.
-    out.sigmaXopt=sigmaXopt;
-end
-
-%   obj           = value of the target function
-out.obj                = vopt;
-
-out.C=C;
-%in tandem thinning it is necessary to save information about not only
-%retained units (idxopt), but also about thinned units.
-
-out.idx   = idxopt;
-
-
-% frequency distribution of the allocations
-out.siz=tabulateFS(idxopt(:,1));
-
-%postprobopt = posterior probabilities in the optimal cstep
-if mixt == 2
-    out.postprobopt     = postprobopt;
-end
+out       = struct;
+out.IDX   = IDX;
+out.Sigma2y=Sigma2y;
+out.Sigma2yc=Sigma2yc;
+out.Beta=Beta;
+out.Nopt=Nopt;
+out.MU=MU;
+out.SIGMA=SIGMA;
+out.Vopt=Vopt;
+out.Postprob=Postprob;
 
 % Store the indices in varargout
 if nargout==2
     varargout={C};
 end
 
-%% Compute INFORMATION CRITERIA
-
-% % Discriminant functions for the assignments
-% if equalweights == 1
-%     for jj = 1:k
-%         ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
-%         if cwm==1
-%             ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
-%         end
-%     end
-% else
-%     for jj = 1:k
-%         ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
-%         if cwm==1
-%             ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
-%         end
-%     end
-% end
-
-% Now remove the rows which refer to first, or second level trimmed units
-% or thinned units
-
-% delunits=false(n,1);
-% delunits(idxopt(:,end)<0)=true;
-% delunits(webeta==0)=true;
-% 
-% ll(delunits,:)=[];
-
-% if mixt>=1
-%     [NlogLmixt]=estepFS(ll);
-%     % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
-%     % Note that if there was convergence NlogLmixt should be exactly equal to
-%     % -vopt
-%     NlogLmixt = -NlogLmixt;
-% end
-% 
-% loglik= max(ll,[],2);
-
-
-% NlogL is the negative of the CLASSIFICATION LOG-LIKELIHOOD  of the
-% untrimmed units
-% NlogL=-sum(max(ll(untrimmed units,[],2));
-% Note that if there was convergence NlogL should be exactly equal to
-% -vopt
-% NlogL =-sum(loglik);
-% 
-% 
-% logh=log(h);
-
-% if mixt>0
-%     % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
-%     % and the maximized mixture likelihood as goodness of fit measure (New BIC)
-%     MIXMIX  = 2*NlogLmixt +nParam*logh;
-%     
-%     % MIXCLA = BIC which uses the classification likelihood based on
-%     % parameters estimated using the mixture likelihood (New ICL)
-%     MIXCLA  = 2*NlogL +nParam*logh;
-%     
-%     out.MIXMIX=MIXMIX;
-%     out.MIXCLA=MIXCLA;
-% else
-%     % CLACLA = BIC which uses parameters estimated using the classification
-%     % likelihood and the maximized classification likelihood as goodness of fit
-%     % measure (New New)
-%     CLACLA  = 2*NlogL +nParam*logh;
-%     
-%     out.CLACLA=CLACLA;
-% end
-
 
 %% Generate plots
+% plotdef = list of the plots which are produced by default (is plots=1)
+plotdef={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
+    'ScatterWithRegLines'; 'gscatter'};
+% plotall = list of all available plots
+plotall={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
+    'ScatterWithRegLines'; 'gscatter'; ...
+    'Beta'; 'Siz'};
 
-% corfactorRAW function
-    function rawcorfac = corfactorRAW(p,n,alpha)
+clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+symdef = '+sd^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
+% colord='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
+% symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
+
+col1stLevelTrimmedUnits='r';
+sym1stLevelTrimmedUnits='o';
+
+col2ndLevelTrimmedUnits='c';
+sym2ndLevelTrimmedUnits='*';
+
+if isstruct(plots)
+    fplots=fieldnames(plots);
+    
+    d=find(strcmp('name',fplots));
+    if d>0
+        name=plots.name;
+        if ~iscell(name)
+            error('FSDA:tclustregeda:Wronginput','plots.name must be a cell')
+        end
+        % Check that the specified names is in the list of available names.
+        chkoptions(cell2struct(plotall,plotall),name)
+    else
+        name=plotdef;
+    end
+    
+    d=find(strcmp('alphasel',fplots));
+    if d>0
+        alphasel=plots.alphasel;
+    else
+        alphasel=alphaLik;
+    end
+    
+elseif plots==1
+    name=plotdef;
+    alphasel=alphaLik;
+    % ylimy='';
+end
+
+
+
+%% Create a series of variables which will be used in more than one plot and
+% therefore are computed once and for all
+IDXmin0=IDX<=0;
+IDXwithNaN=IDX;
+IDXwithNaN(IDXmin0)=NaN;
+
+% Find the rows which are not constant, that is the units which were trimmed
+% or those which changed classification
+UnitsTrmOrChgCla=find(max(IDX,[],2)-min(IDX,[],2)~=0);
+
+% Find units which changed classification
+UnitsChgCla=find(max(IDXwithNaN,[],2)-min(IDXwithNaN,[],2)~=0);
+
+% UnitsTrm= list of the units trimmed at least once.
+UnitsTrm=setdiff(UnitsTrmOrChgCla,UnitsChgCla);
+
+% String to include in the legends
+legendGroups=[repmat('Group ',k,1) num2str((1:k)')];
+
+
+% Amon stands for alpha monitoring.
+% Amon is the matrix of size lenght(alpha)-1-by 4 which contains for two
+% consecutive values of alpha the monitoring of three quantities.
+% 1st col = value of alpha
+% 2nd col = ARI index
+% 3rd col = squared Euclidean distance between consecutive beta
+% 4th col = squared Euclidean distance between consecutive sigma2
+% 5th col = squared Euclidean distance between consecutive sigma2c
+% 6th col = squared Euclidean distance between consecutive X centroids
+% 7th col = squared Euclidean distance between consecutive X covariance matrices
+Amon=[alphaLik(2:end) zeros(lalpha-1,6)];
+
+noisecluster=0;
+IDXmin0=IDX<=0;
+IDXm=IDX;
+IDXm(IDXmin0)=0;
+for j=2:lalpha
+    
+    % Compute ARI index between two consecutive alpha values
+    [ARI]=RandIndexFS(IDXm(:,j-1),IDXm(:,j),noisecluster);
+    % Store in the second column the ARI index
+    Amon(j-1,2)=ARI;
+    
+    % Compute and store squared euclidean distance between consecutive
+    % centroids
+    Amon(j-1,3)=sum(sum( (Beta(:,:,j)-Beta(:,:,j-1)).^2, 2)) / sum(sum( Beta(:,:,j-1)).^2, 2);
+    
+    % Compute and store squared euclidean distance between consecutive
+    % sigma2
+    Amon(j-1,4)=sum(sum( (Sigma2y(:,j)-Sigma2y(:,j-1)).^2, 2)) /sum(sum( (Sigma2y(:,j-1)).^2, 2));
+    
+    % Compute and store squared euclidean distance between consecutive
+    % sigma2c
+    Amon(j-1,5)=sum(sum( (Sigma2yc(:,j)-Sigma2yc(:,j-1)).^2, 2))/ sum(sum( (Sigma2yc(:,j-1)).^2, 2));
+    
+    % Compute and store squared euclidean distance between consecutive
+    % centroids
+    Amon(j-1,6)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2)) / sum(sum( (MU(:,:,j-1)).^2, 2));
+    
+    % Compute and store squared euclidean distance between consecutive
+    % covariance matrices (all elements of cov matrices are considered)
+    Amon(j-1,7)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)))/ sum(sum(sum((SIGMA{j-1}).^2,2)));
+end
+out.Amon=Amon;
+
+
+
+ % alphasel contains the indexes of the columns of matrix IDX which have
+    % to be plotted
+    % We use round(alpha*1e+7)/1e+7 to guarantee compatibility with old
+    % versions of MATLAB. For the new versions the instruction would have
+    % been:
+    % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
+    [~,alphasel]=intersect(round(alphaLik*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
+    lalphasel=length(alphasel);
+    
+    
+    %% Produce all necessary calculations for UnitsTrmOrChgCla plot
+        IDs=[UnitsTrmOrChgCla IDX(UnitsTrmOrChgCla,:)];
+    [n1,k1]=size(IDs);
+    onex=ones(n1,1);
+    seqIDs=(1:n1)';
+    
+    Alltrueselj=zeros(n1,1);
+    ij=0;
+    for j=1:k
+        Nj=IDs(:,2:end)==j;
+        sumNj=sum(Nj,2);
+        selj=seqIDs(sumNj>0);
+        %     if mod(j,2)~=0
+        [~,indj]=sort(sumNj(selj),'descend');
+        %     else
+        %        [~,indj]=sort(sumNj(selj),'ascend');
+        %     end
+        trueselj=selj(indj);
+        trueseljf=setdiff(trueselj,Alltrueselj,'stable');
+        lt=length(trueseljf);
+        if lt>0
+            Alltrueselj(ij+1:ij+lt)=trueseljf;
+            ij=ij+lt;
+        end
+    end
+    
+    % IDt is the same as IDs but the rows are rearranged in order to
+    % have units in group 1 at the bottom then units of group 2...
+    IDt=IDs(Alltrueselj,:);
+    % IDt(IDt==-1)=[];
+    out.UnitsTrmOrChgCla=IDt;
+    
+%% 1 Monitor change of statistics between two consecutive values of alphaLik
+namej='monitor';
+d=find(strcmp(namej,name));
+if d>0
+    figure('Name',namej,'Visible','on');
+    
+    plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
+        '$\mu$' '$\Sigma_X$'};
+    if alphaX==1
+        nr=3;
+        nc=2;
+    else
+        nr=2;
+        nc=2;
+    end
+    
+    for j=1:nr*nc
+        subplot(nr,nc,j)
+        plot(Amon(:,1),Amon(:,j+1))
+        xlim([min(alphaLik),max(alphaLik)])
+        % set(gca,'XTickLabel',num2str(alpha1'))
         
-        if p > 2
-            coeffqpkwad875=[-0.455179464070565,1.11192541278794,2;-0.294241208320834,1.09649329149811,3]';
-            coeffqpkwad500=[-1.42764571687802,1.26263336932151,2;-1.06141115981725,1.28907991440387,3]';
-            y1_500=1+(coeffqpkwad500(1,1)*1)/p^coeffqpkwad500(2,1);
-            y2_500=1+(coeffqpkwad500(1,2)*1)/p^coeffqpkwad500(2,2);
-            y1_875=1+(coeffqpkwad875(1,1)*1)/p^coeffqpkwad875(2,1);
-            y2_875=1+(coeffqpkwad875(1,2)*1)/p^coeffqpkwad875(2,2);
-            y1_500=log(1-y1_500);
-            y2_500=log(1-y2_500);
-            y_500=[y1_500;y2_500];
-            A_500=[1,log(1/(coeffqpkwad500(3,1)*p^2));1,log(1/(coeffqpkwad500(3,2)*p^2))];
-            coeffic_500=A_500\y_500;
-            y1_875=log(1-y1_875);
-            y2_875=log(1-y2_875);
-            y_875=[y1_875;y2_875];
-            A_875=[1,log(1/(coeffqpkwad875(3,1)*p^2));1,log(1/(coeffqpkwad875(3,2)*p^2))];
-            coeffic_875=A_875\y_875;
-            fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
-            fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
+        L = get(gca,'XLim');
+        set(gca,'XTick',linspace(L(1),L(2),lalpha))
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+        
+        set(gca,'XDir','reverse')
+        xlabel('Level of trimmming')
+        title(plotsname{j},'interpreter','latex')
+    end
+    sgtitle('Monitor changes between two consecutive alpha values')
+end
+
+
+%% 2 Monitoring stability of classification (units plot)
+namej='UnitsTrmOrChgCla';
+d=find(strcmp(namej,name));
+if d>0
+    
+      figure('Name',namej,'Visible','on');
+    xlim([0 k1+1])
+    ylim([0 n1+1])
+    set(gca,'XTick',0:k1+1);
+    
+    for j=1:k1
+        strj=cellstr(num2str(IDt(:,j)));
+        % Empty spaces for trimmed units
+        strj(strcmp(strj,'-1'))={''};
+        
+        % set colors red for trimmed units blue for those which changed
+        % classification
+        % UnitsTrm
+        h=text(j*onex,seqIDs,strj,'HorizontalAlignment','center');
+        if j==1
+            [~,indredcolor]=intersect(IDt(:,1),UnitsChgCla);
+            col=repmat({'b'},n1,1);
+            col(indredcolor)={'r'};
+            set(h,{'Color'},col)
+        end
+    end
+    alpha1str=num2str(alphaLik(:));
+    newxtcklab=cell(k1+2,1);
+    newxtcklab([1:2 k1+2])={''};
+    newxtcklab(3:k1+1)=cellstr(alpha1str);
+    set(gca,'xticklabels',newxtcklab)
+    set(gca,'yticklabels','')
+    
+    xlabel('Trimming level')
+    ylabel('Units trimmed at least once or which changed assignment')
+    title('In red color units which changed classification')
+end
+
+
+%% 3 Monitoring posterior probabilities
+namej='PostProb';
+d=find(strcmp(namej,name));
+if d>0
+    figure('Name',namej,'Visible','on');
+    Prob1=squeeze(Postprob(:,1,:));
+    Prob1(IDXmin0)=NaN;
+    
+    group=cell(n,1);
+    group(1:n)={'Units which never changed assignment'};
+    group(UnitsChgCla)={'Units which changed assignment'};
+    group(UnitsTrm)={'Trimmed units'};
+    
+    subplot(2,2,1)
+    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str)
+    ylim([-0.05 1.05])
+    xlabel('Level of trimming')
+    ylabel('Post prob. group 1 all units')
+    set(legend,'Location','best')
+    
+    subplot(2,2,2)
+    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
+    groupsel=group(UnitsTrmOrChgCla);
+    
+    parallelcoords(Prob1sel,'Group',groupsel,...
+        'Labels',alpha1str)
+    ylim([-0.05 1.05])
+    xlabel('Level of trimming')
+    ylabel('Post prob. group 1 selected units')
+    set(legend,'Location','best')
+    % Add the label of the units whose final post prob is intermediate
+    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
+    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
+        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+    
+    subplot(2,2,3)
+    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
+    parallelplot(Prob1,'GroupData',group)
+    set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+    xlabel('Level of trimming')
+    ylabel('Post prob. group 1 all units')
+    legend('off')
+    
+    subplot(2,2,4)
+    parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla))
+    set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+    xlabel('Level of trimming')
+    ylabel('Post prob. group 1 selected units')
+    legend('off')
+    sgtitle('Monitor posterior probabilities')
+end
+
+
+%% Monitoring  of sigma2 and sigma2corr
+namej='Sigma';
+d=find(strcmp(namej,name));
+if d>0
+    figure('Name',namej,'Visible','on');
+    % Sigma2y is of dimension k-by-length(alpha)
+    subplot(2,1,1)
+    h=plot(alphaLik,Sigma2y'); %#ok<NASGU>
+    xlim([min(alphaLik),max(alphaLik)])
+    % set(gca,'XTickLabel',num2str(alpha1'))
+    
+    L = get(gca,'XLim');
+    set(gca,'XTick',linspace(L(1),L(2),lalpha))
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    
+    set(gca,'XDir','reverse')
+    xlabel('Level of trimmming')
+    ylabel('$\hat \sigma^2$','Interpreter','latex')
+    legend(legendGroups)
+    legend('hide')
+    
+    subplot(2,1,2)
+    h=plot(alphaLik,Sigma2yc');
+    xlim([min(alphaLik),max(alphaLik)])
+    % set(gca,'XTickLabel',num2str(alpha1'))
+    
+    L = get(gca,'XLim');
+    set(gca,'XTick',linspace(L(1),L(2),lalpha))
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    
+    set(gca,'XDir','reverse')
+    xlabel('Level of trimmming')
+    ylabel('$\hat \sigma^2_c$','Interpreter','latex')
+    legend(legendGroups)
+    legend('show')
+    clickableMultiLegend(h)
+    sgtitle('Monitor error variances')
+end
+
+
+%% Plot scatter with all regression lines (hyperplanes)
+namej='ScatterWithRegLines';
+d=find(strcmp(namej,name));
+if d>0
+    
+    idx=IDX(:,1);
+    % this is just for rotating colors in the plots
+    
+    intercept=1;
+    % The following plots are for the bi-variate case (i.e. v=1)
+    if p-intercept < 2
+        
+        % initialize figure
+        figure('Name',namej,'Visible','on');
+        hold on;
+        alpha1range=[num2str(max(alphaLik)) '--' num2str(min(alphaLik))];
+        title({['$\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
+            '\quad \alpha_X=' num2str(alphaX) '$']} , ...
+            'interpreter' , 'LaTex', 'fontsize' , 14);
+        
+        % plot regression lines
+        vv = [min(X(:,end)) max(X(:,end))];
+        
+        % hRegLines vector of graphic handles which will contain regression
+        % lines
+        hRegLines = gobjects(k,1);
+        % hText vector of graphic handles which will contain the labels of
+        % groups
+        hText = gobjects(k,1);
+        for jj = 1:k
+            group_label = ['Group ' num2str(jj)];
+            
+            % jj refers to groupj 1,...k
+            % jjj refers to trimming
+            if intercept==1
+                
+                for jjj=1:lalpha
+                    %   if jjj==1
+                    gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj)); %#ok<NASGU>
+                end
+                eval(['hRegLines(' num2str(jj) ')=gr;']);
+                
+            elseif intercept==0
+                for jjj=1:lalpha
+                    gr=plot(vv,Beta(jj,1,jjj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj)); %#ok<NASGU>
+                end
+                eval(['hRegLines(' num2str(jj) ')=gr;']);
+            end
+            
+            
+            ucg = find(idx==jj);
+            % we add a (ficticious) plot instruction with white symbols
+            texth=plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']); %#ok<NASGU>
+            text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
+                'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
+                'HorizontalAlignment','center','VerticalAlignment','middle',...
+                'Color',clrdef(jj), 'fontsize' , 12);
+            eval(['hText(' num2str(jj) ')=texth;']);
+        end
+        
+        % Plot the outliers (trimmed points)
+        ucg = find(idx==-1);
+        % hunitsMinus1 = graphical handle to the first level trimmed units
+        hunitsMinus1=plot(X(ucg,end),y(ucg),sym1stLevelTrimmedUnits,'color',col1stLevelTrimmedUnits,'MarkerSize',8,...
+            'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
+        
+        % Plot second level trimmed units (if there are)
+        ucg = find(idx==-2);
+        % hunitsMinus2 = graphical handle to second level trimmed units
+        hunitsMinus2=plot(X(ucg,end),y(ucg),sym2ndLevelTrimmedUnits,'color',col2ndLevelTrimmedUnits,...
+            'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
+        
+        
+        % Add clickable multilegend
+        clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+            'Location','best','interpreter' , 'LaTex', 'fontsize' , 10) % ,'TextColor','r');
+        axis('manual');
+        
+        % control of the axis limits
+        xmin = min(X(:,end)); xmax = max(X(:,end));
+        ymin = min(y); ymax = max(y);
+        deltax = (xmax - xmin) / 10;
+        deltay = (ymax - ymin) / 10;
+        
+        xlim([xmin-deltax,xmax+deltax]);
+        ylim([ymin-deltay,ymax+deltay]);
+        
+    else
+        % In this case p > 2. A standard yXplot is used.
+        
+        bunitsMinus1=sum(idx==-1)>0;
+        bunitsMinus2=sum(idx==-2)>0;
+        if bunitsMinus1 ==true && bunitsMinus2 && true
+            clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
+            symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
+            numsym=k+2;
+        elseif  bunitsMinus2 && true
+            clrdefj=[col2ndLevelTrimmedUnits clrdef];
+            symdefj=[sym2ndLevelTrimmedUnits symdef];
+            numsym=k+1;
+        elseif bunitsMinus1 ==true
+            clrdefj=[col1stLevelTrimmedUnits clrdef];
+            symdefj=[sym1stLevelTrimmedUnits symdef];
+            numsym=k+1;
         else
-            if p == 2
-                fp_500_n=1-(exp(0.673292623522027)*1)/n^0.691365864961895;
-                fp_875_n=1-(exp(0.446537815635445)*1)/n^1.06690782995919;
-            end
-            if p == 1
-                fp_500_n=1-(exp(0.262024211897096)*1)/n^0.604756680630497;
-                fp_875_n=1-(exp(-0.351584646688712)*1)/n^1.01646567502486;
-            end
+            clrdefj=clrdef;
+            symdefj=symdef;
+            numsym=k;
         end
-        if 0.5 <= alpha && alpha <= 0.875
-            fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
+        
+        plo=struct;
+        plo.clr = clrdefj(1:numsym);
+        plo.sym = symdefj(1:numsym);
+        
+        % group names in the legend
+        group = cell(n,1);
+        group(idx==-1) = {'Trimmed units'};
+        group(idx==-2) = {'Trimmed units level 2'};
+        for iii = 1:k
+            group(idx==iii) = {['Group ' num2str(iii)]};
         end
-        if 0.875 < alpha && alpha < 1
-            fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
-        end
-        if alpha < 0.5
-            fp_alpha_n = 1;
-            if msg==1
-                disp('Warning: problem in subfunction corfactorRAW')
-                disp('alpha < 0.5')
+        
+        % yXplot
+        % Remark: it is necessary to sort idx because in this way idx=-2 (if present) is
+        % the first symbol, idx=-1 is the second ....
+        [~,indsor]=sort(idx);
+        [~,AX,~]=yXplot(y(indsor),X(indsor,:),group(indsor),plo);
+        % Dimension of Beta is k-by-p-by-length(alpha)
+        for j = 1:length(AX)
+            % Make the axes of the panel with handle AX(i) the current axes.
+            set(gcf,'CurrentAxes',AX(j));
+            
+            for i=1:k
+                % refline slope and intercept
+                % add a line for each value of alpha1
+                for jj=1:length(alphaLik)
+                    hline=refline([Beta(i,j+1,jj) Beta(i,1,jj)]);
+                    hline.Color=clrdef(i);
+                end
             end
-        end
-        rawcorfac=1/fp_alpha_n;
-        if rawcorfac <=0 || rawcorfac>50
-            rawcorfac=1;
-            if msg==1
-                disp('Warning: problem in subfunction corfactorRAW')
-                disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
-                disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
-                disp('This may happen when n is very small and p is large')
-            end
+            
         end
     end
 end
 
+%% Monitoring of allocation (using gscatter)
+d=find(strcmp('gscatter',name));
+if d>0
+    
+    % Monitoring of allocation
+    if  lalphasel==1
+        nr=1;
+        nc=1;
+    elseif lalphasel==2
+        nr=2;
+        nc=1;
+    elseif lalphasel<=4
+        nr=2;
+        nc=2;
+    elseif lalphasel<=6
+        nr=3;
+        nc=2;
+    elseif lalphasel<=9
+        nr=3;
+        nc=3;
+    elseif lalphasel<=12
+        nr=3;
+        nc=4;
+    else
+        nr=4;
+        nc=4;
+    end
+    
+    resup=1;
+    figure('Name',['Monitoring allocation #' int2str(resup)])
+    
+    if intercept==1
+        Ypca=[X(:,2) y];
+    else
+        Ypca=[X(:,1) y];
+    end
+    
+    jk=1;
+    for j=1:lalphasel
+        
+        % The monitoring must contain a maximum of 16 panels
+        % If length(alpha) is greater than 16 a new set of 16 subpanels is
+        if jk>16
+            jk=1;
+            resup=resup+1;
+            figure('Name',['Monitoring allocation #' int2str(resup)])
+            subplot(nr,nc,jk)
+        else
+            subplot(nr,nc,jk)
+        end
+        jk=jk+1;
+        
+        idxselj=IDX(:,alphasel(j));
+        % Check if inside idxselj there are 1st or 2nd level trimmed units
+        bunitsMinus1=sum(idxselj==-1)>0;
+        bunitsMinus2=sum(idxselj==-2)>0;
+        if bunitsMinus1 ==true && bunitsMinus2 && true
+            clrdefj=[col2ndLevelTrimmedUnits col1stLevelTrimmedUnits clrdef];
+            symdefj=[sym2ndLevelTrimmedUnits sym1stLevelTrimmedUnits symdef];
+        elseif  bunitsMinus2 && true
+            clrdefj=[col2ndLevelTrimmedUnits clrdef];
+            symdefj=[sym2ndLevelTrimmedUnits symdef];
+        elseif bunitsMinus1 ==true
+            clrdefj=[col1stLevelTrimmedUnits clrdef];
+            symdefj=[sym1stLevelTrimmedUnits symdef];
+        else
+            clrdefj=clrdef;
+            symdefj=symdef;
+        end
+        
+        if p>=2
+            hh=gscatter(Ypca(:,1),Ypca(:,2),idxselj,clrdefj,symdefj);
+            
+            xlabel('x1')
+            ylabel('y')
+            
+            clickableMultiLegend(hh)
+            if jk>2
+                legend hide
+            end
+            axis manual
+        else
+            % Univariate case: plot the histogram
+            histFS(y,10,idxselj,[],[],clrdefj)
+        end
+        title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
+    end
+end
 
-% %% Monitor the difference in classification, centroids and covariance matrices
-%
-% % Amon stands for alpha monitoring.
-% % Amon is the matrix of size lenght(alpha)-1-by 4 which contains for two
-% % consecutive values of alpha the monitoring of three quantities.
-% % 1st col = value of alpha
-% % 2nd col = ARI index
-% % 3rd col = squared Euclidean distance between consecutive centroids
-% % 4th col = squared Euclidean distance between consecutive covariance matrices
-% Amon=[alpha(2:end)' zeros(lalpha-1,3)];
-%
-% noisecluster=0;
-%
-% IDXold=IDX;
-%
-% maxdist=zeros(lalpha,1);
-% seqk=(1:k)';
-%
-% %verMatlab=verLessThanFS('9.2');
-%
-% for j=2:lalpha
-%     newlab=zeros(k,1);
-%     mindist=newlab;
-%     for ii=1:k
-%         % centroid of group ii for previous alpha value
-%         muii=MU(ii,:,j-1);
-%         % MU(:,:,j) =matrix of centroids for current alpha value
-%
-%         %if verMatlab==true;
-%         muij=bsxfun(@minus,muii,MU(:,:,j));
-%         %else
-%         %    muij=muii-MU(:,:,j);
-%         %end
-%
-%         [mind,indmin]=min(sum(muij.^2,2));
-%         newlab(ii)=indmin;
-%         mindist(ii)=mind;
-%     end
-%     % Store maximum among minimum distances
-%     [maxmindist,indmaxdist] =max(mindist);
-%     maxdist(j)=maxmindist;
-%
-%     if isequal(sort(newlab),seqk)
-%         MU(:,:,j)=MU(newlab,:,j);
-%         SIGMA(j)= {SIGMA{j}(:,:,newlab)};
-%         for r=1:k
-%             IDX(IDXold(:,j)==newlab(r),j)=r;
-%         end
-%     else
-%         newlab(indmaxdist)=setdiff(seqk,newlab);
-%         disp(['Preliminary relabelling not possible when alpha=' num2str(alpha(j))])
-%         if isequal(sort(newlab),seqk)
-%             MU(:,:,j)=MU(newlab,:,j);
-%             SIGMA(j)= {SIGMA{j}(:,:,newlab)};
-%             for r=1:k
-%                 IDX(IDXold(:,j)==newlab(r),j)=r;
-%             end
-%         else
-%             disp(['Automatic relabelling not possible when alpha=' num2str(alpha(j))])
-%         end
-%     end
-% end
-%
-% for j=2:lalpha
-%
-%     % Compute ARI index between two consecutive alpha values
-%     [ARI]=RandIndexFS(IDX(:,j-1),IDX(:,j),noisecluster);
-%     % Store in the second column the ARI index
-%     Amon(j-1,2)=ARI;
-%
-%     % Compute and store squared euclidean distance between consecutive
-%     % centroids
-%     Amon(j-1,3)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2));
-%
-%     % Compute and store squared euclidean distance between consecutive
-%     % covariance matrices (all elements of cov matrices are considered)
-%     dxdiag=0;
-%     for i=1:k
-%         dxdiag=dxdiag+sum((diag(SIGMA{j}(:,:,i))-diag(SIGMA{j-1}(:,:,i))).^2);
-%     end
-%     Amon(j-1,4)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)));
-%     % sumdistCOVonlydiag(j)=dxdiag;
-% end
-%
-% out=struct;
-%
-% % Store classification
-% out.IDX=IDX;
-% % Store centroids
-% out.MU=MU;
-% % Store covariance matrices
-% out.SIGMA=SIGMA;
-% % Store ARI index, variation in centroid location and
-% % variation in covariance.
-% out.Amon=Amon;
-% % Store Y
-% out.Y=Y;
-%
-% % Store the indices in varargout
-% if nnargout==2
-%     varargout=outcell;
-% end
-%
-%
-%
-% %% Plotting part
-% if isstruct(plots)
-%     fplots=fieldnames(plots);
-%
-%     d=find(strcmp('name',fplots));
-%     if d>0
-%         name=plots.name;
-%         if ~iscell(name)
-%             error('FSDA:tclustregeda:Wronginput','plots.name must be a cell')
-%         end
-%     else
-%         name={'gscatter' 'monitor'};
-%     end
-%
-%     d=find(strcmp('alphasel',fplots));
-%     if d>0
-%         alphasel=plots.alphasel;
-%     else
-%         alphasel=alpha;
-%     end
-%
-%
-%     d=find(strcmp('ylimy',fplots));
-%     if d>0
-%         ylimy=plots.ylimy;
-%         [nylim,vylim]=size(ylimy);
-%         if nylim~=3
-%             error('FSDA:tclusteda:Wronginput','plots.ylimy must be a matrix with 3 rows')
-%         end
-%         if vylim~=2
-%             error('FSDA:tclusteda:Wronginput','plots.ylimy must be a matrix with 2 columns')
-%         end
-%     else
-%         name={'gscatter' 'monitor'};
-%         alphasel=alpha;
-%         ylimy='';
-%     end
-% elseif plots==1
-%     name={'gscatter' 'monitor'};
-%     alphasel=alpha;
-%     ylimy='';
-% end
-%
-% d=find(strcmp('monitor',name));
-%
-% if d>0
-%     % ARI between two consecutive values of alpha
-%     subplot(3,1,1)
-%     plot(Amon(:,1),Amon(:,2))
-%     set(gca,'XDir','reverse');
-%     xlabel('\alpha')
-%     ylabel('ARI index')
-%     set(gca,'FontSize',16)
-%     if ~isempty(ylimy)
-%         ylim(ylimy(1,:))
-%     end
-%
-%     % Monitoring of centroid changes
-%     subplot(3,1,2)
-%     plot(Amon(:,1),Amon(:,3))
-%     set(gca,'XDir','reverse');
-%     xlabel('\alpha')
-%     ylabel('Centroids')
-%     set(gca,'FontSize',16)
-%     if ~isempty(ylimy)
-%         ylim(ylimy(2,:))
-%     end
-%
-%     % Monitoring of covariance matrices change
-%     subplot(3,1,3)
-%     plot(Amon(:,1),Amon(:,3))
-%     set(gca,'XDir','reverse');
-%     xlabel('\alpha')
-%     ylabel('Covariance')
-%     set(gca,'FontSize',16)
-%     if ~isempty(ylimy)
-%         ylim(ylimy(3,:))
-%     end
-%
-% end
-%
-% d=find(strcmp('gscatter',name));
-% if d>0
-%
-%     % alphasel contains the indexes of the columns of matrix IDX which have
-%     % to be plotted
-%
-%     % We use round(alpha*1e+7)/1e+7 to gaurrantee compatibility with old
-%     % versions of MATLAB. For the new versions the instruction would have
-%     % been:
-%     % [~,alphasel]=intersect(round(alpha,9),alphasel,'stable');
-%     [~,alphasel]=intersect(round(alpha*1e+7)/1e+7,round(alphasel*1e+7)/1e+7,'stable');
-%     lalphasel=length(alphasel);
-%
-%     %% Monitoring of allocation
-%     if  lalphasel==1
-%         nr=1;
-%         nc=1;
-%     elseif lalphasel==2
-%         nr=2;
-%         nc=1;
-%     elseif lalphasel<=4
-%         nr=2;
-%         nc=2;
-%     elseif lalphasel<=6
-%         nr=3;
-%         nc=2;
-%     elseif lalphasel<=9
-%         nr=3;
-%         nc=3;
-%     elseif lalphasel<=12
-%         nr=3;
-%         nc=4;
-%     else
-%         nr=4;
-%         nc=4;
-%     end
-%
-%     resup=1;
-%     figure('Name',['Monitoring allocation #' int2str(resup)])
-%
-%     colord='brkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcybrkmgcy';
-%     symdef={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h'};
-%
-%     % Plot first two principal components in presence of more than two
-%     % variables
-%     if v>2
-%         Yst=zscore(Y);
-%         [V,D]=eig(cov(Yst));
-%         [Dsort,ind] = sort(diag(D),'descend');
-%         Ypca=Yst*V(:,ind(1:2));
-%         explained=100*Dsort(1:2)/sum(Dsort);
-%         % Note that the rows above are just for retrocompatibility
-%         % Those who have a release >=2012B can use
-%         % [~,Ypca,~,~,explained]=pca(zscore(Y),'NumComponents',2);
-%     else
-%         Ypca=Y;
-%     end
-%
-%     jk=1;
-%     for j=1:lalphasel
-%
-%         % The monitoring must contain a maximum of 16 panels
-%         % If length(alpha) is greater than 16 a new set of 16 subpanels is
-%         if jk>16
-%             jk=1;
-%             resup=resup+1;
-%             figure('Name',['Monitoring allocation #' int2str(resup)])
-%             subplot(nr,nc,jk)
-%         else
-%             subplot(nr,nc,jk)
-%         end
-%         jk=jk+1;
-%
-%
-%         if v>=2
-%             if alpha(alphasel(j))~=0
-%                 hh=gscatter(Ypca(:,1),Ypca(:,2),IDX(:,alphasel(j)),colord,[symdef{1:k+1}]);
-%             else
-%                 hh=gscatter(Ypca(:,1),Ypca(:,2),IDX(:,alphasel(j)),colord(2:k+1),[symdef{2:k+1}]);
-%             end
-%
-%             if v>2
-%                 xlabel(['PCA1 - ' num2str(explained(1)) '%'])
-%                 ylabel(['PCA2 - ' num2str(explained(2)) '%'])
-%             else
-%                 xlabel('y1')
-%                 ylabel('y2')
-%             end
-%
-%             clickableMultiLegend(hh)
-%             if jk>2
-%                 legend hide
-%             end
-%             axis manual
-%         else
-%             % Univariate case: plot the histogram
-%             if alpha(alphasel(j))~=0
-%                 histFS(Y,10,IDX(:,alphasel(j)),[],[],colord)
-%             else
-%                 histFS(Y,10,IDX(:,alphasel(j)),[],[],colord(2:k+1))
-%             end
-%         end
-%         title(['$\alpha=$' num2str(alpha(alphasel(j)))],'Interpreter','Latex')
-%     end
-% end
-%
+%% Monitoring of beta regression coefficients (standardized)
+namej='Beta';
+d=find(strcmp(namej,name));
+if d>0
+    figure('Name',namej,'Visible','on');
+    % Dimension of Beta is k-by-p-by-length(alpha)
+    % If p is 2 first column contains interecepts and second slopes
+    % Standardize Beta along the 3rd dimension
+    Betast=zscore(Beta,0,3);
+    if  p==1
+        nr=1;
+        nc=1;
+    elseif p==2
+        nr=2;
+        nc=1;
+    elseif p<=4
+        nr=2;
+        nc=2;
+    elseif p<=6
+        nr=3;
+        nc=2;
+    elseif p<=9
+        nr=3;
+        nc=3;
+    elseif p<=12
+        nr=3;
+        nc=4;
+    else
+        nr=4;
+        nc=4;
+    end
+    
+    for j=1:p
+        subplot(nr,nc,j)
+        h=plot(alphaLik(:),squeeze(Betast(:,j,:))');
+        xlim([min(alphaLik),max(alphaLik)])
+        % set(gca,'XTickLabel',num2str(alpha1'))
+        
+        L = get(gca,'XLim');
+        set(gca,'XTick',linspace(L(1),L(2),lalpha))
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+        
+        set(gca,'XDir','reverse')
+        xlabel('Level of trimmming')
+        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex')
+        legend(legendGroups)
+        legend('hide')
+        if j==p
+            legend('show')
+            clickableMultiLegend(h)
+        end
+    end
+    sgtitle('Monitor estimated regression coefficients')
+end
 
+%% Monitor group size
+namej='Siz';
+d=find(strcmp(namej,name));
+if d>0
+    % Monitoring of group size
+    figure('Name',namej,'Visible','on');
+    h=plot(alphaLik(:),out.Nopt');
+    xlim([min(alphaLik),max(alphaLik)])
+    % set(gca,'XTickLabel',num2str(alpha1'))
+    
+    lalpha=length(alphaLik);
+    L = get(gca,'XLim');
+    set(gca,'XTick',linspace(L(1),L(2),lalpha))
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    
+    set(gca,'XDir','reverse')
+    title('Monitor group size')
+    xlabel('Level of trimmming')
+    legend(legendGroups)
+    legend('show')
+    clickableMultiLegend(h)
+    
+end
+
+end
 %FScategory:CLUS-RobClaMULT
