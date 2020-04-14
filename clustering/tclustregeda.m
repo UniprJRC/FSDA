@@ -486,7 +486,33 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);
 %}
 
+%{
+    %% tclustreg with a noise variable and personalized plots.
+    % Use the X data of the previous example
+    X  = load('X.txt');
+    y = X(:,end);
+    rng(100)
+    X = [randn(length(y),1) X(:,1:end-1)];
+    % Contaminate the first 4 units
+    y(1:4)=y(1:4)+6;
+    % Use 2 groups
+    k = 2 ;
 
+    restrfact = 5;
+    % Value of trimming
+    alphaLik = [0.10 0.06 0.03 0];
+    % cwm
+    alphaX = 1;
+    % Personalize plots. Just show the gscatter plot.
+    % In this case there is more than one explanatory variable therefore PLS
+    % regression (adding the dummies for the classified units) is performed.
+    % In the gscatter plots the percentage of variance explained by the first
+    % linear combination of the X variables is given in the title.
+    plots=struct;
+    plots.name={'gscatter'};
+
+    out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);
+%}
 %% Beginning of code
 % Control variables, tolerances and internal flags
 warning('off');
@@ -1538,11 +1564,7 @@ if d>0
     resup=1;
     figure('Name',['Monitoring allocation #' int2str(resup)])
     
-    if intercept==1
-        Ypca=[X(:,2) y];
-    else
-        Ypca=[X(:,1) y];
-    end
+    
     
     jk=1;
     for j=1:lalphasel
@@ -1577,8 +1599,48 @@ if d>0
             symdefj=symdef;
         end
         
-        if p>=2
-            hh=gscatter(Ypca(:,1),Ypca(:,2),idxselj,clrdefj,symdefj);
+        if p>2
+            % In this case PLS regression is used.
+            % In order to take into account group structure k-1 dummy
+            % variables are added to matrix X. Of course trimmed units for
+            % that particular value of alphaLik are excluded, but included
+            % in the gscatter plots.
+            DUM=zeros(n,k-1);
+            for jj=1:k-1
+                DUM(idxselj==jj,jj)=1;
+            end
+            Xext=[X DUM];
+            idxgt0=idxselj>0;
+            % training set
+            ysel0=y(idxgt0);
+            Xsel0=Xext(idxgt0,:);
+            Xsel1=Xext(~idxgt0,:);
+            mXsel0=mean(Xsel0);
+            [~,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
+            % [XL,yl,XS0,YS0,beta,PCTVAR,MSE,stats] = plsregress(Xsel0,ysel0,1);
+            
+            % Find best predictor for non trimmed (XS0) and trimmed units
+            XS1=zeros(n,1);
+            XS1(idxgt0)=XS0;
+            % REMARK
+            % XS0chk=(Xsel0-mXsel0)*stats.W;
+            XS1(~idxgt0)=(Xsel1-mXsel0)*stats.W;
+            
+            hh=gscatter(XS1,y,idxselj,clrdefj,symdefj);
+            
+            xlabel('PLS predictor')
+            ylabel('y')
+            
+            clickableMultiLegend(hh)
+            if jk>2
+                legend hide
+            end
+            axis manual
+            alphajtxt=num2str(alphaLik(alphasel(j)));
+            title(['$\alpha=$' alphajtxt 'Var. \; explained=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','Latex')
+            
+        elseif p==2
+            hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
             
             xlabel('x1')
             ylabel('y')
@@ -1588,11 +1650,12 @@ if d>0
                 legend hide
             end
             axis manual
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
         else
             % Univariate case: plot the histogram
             histFS(y,10,idxselj,[],[],clrdefj)
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
         end
-        title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
     end
 end
 
