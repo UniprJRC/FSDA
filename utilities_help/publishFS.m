@@ -692,6 +692,10 @@ function out=publishFS(file,varargin)
 %{
   % Option outputDir.
   % Create HTML file with embedded images in current folder (pwd).
+    % Find the location of FSDAroot
+    FullPath=which('addFSDA2path');
+    % extract the root directory of FSDA
+    FSDAroot=fileparts(FullPath);
   pwdfolder=pwd;
   disp(pwdfolder)
   [status,msg]=fileattrib(pwdfolder);
