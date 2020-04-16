@@ -546,7 +546,7 @@ reftol=1e-5;
 
 equalweights=false;
 % Eigenvalue restriction is always used for cov matrices of X variables
-% inside cwm 
+% inside cwm
 % restr='eigen';
 
 intercept = 1;
@@ -705,8 +705,8 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     end
     
     
-    % parfor (c=1:length(ccsigmay) , numpool)
-    for c=1:length(ccsigmay)
+    parfor (c=1:length(ccsigmay) , numpool)
+        % for c=1:length(ccsigmay)
         % columns = restr
         % rows = number of groups
         % tclust using mixtures
@@ -729,15 +729,11 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
-            try
-            outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
-                'nsamp',Cnsamp,...
-                'plots',0,'msg',0, ...
-                'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini);
-            catch
-                jjj=1;
-            end
+                outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
+                    'nsamp',Cnsamp,...
+                    'plots',0,'msg',0, ...
+                    'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
+                    'RandNumbForNini',gRandNumbForNini);
             % 'reftol',reftol,'cshape',cshape,'restrtype',restr,
             CLACLA(k,c)=outCla.CLACLA;
             IDXCLA{k,c}=outCla.idx;
