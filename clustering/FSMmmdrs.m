@@ -188,7 +188,7 @@ function out=FSMmmdrs(Y,varargin)
 %
 %       out.Y = original n-by-v input datamatrix.
 %
-% See also:     FSRmdr, FSRmdrrs, FSMmmd, mmdrsplot
+% See also:     FSRmdr, FSRmdrrs, FSMmmd, mmdrsplot, mdrrsplot
 %
 % References:
 %
@@ -385,8 +385,6 @@ if ~isempty(UserOptions)
         options.(varargin{i})=varargin{i+1};
     end
     chkbsbsteps = strcmp(UserOptions,'bsbsteps');
-else
-    UserOptions=0;
 end
 
 init        = options.init;
@@ -397,9 +395,7 @@ cleanpool   = options.cleanpool;
 numpool     = options.numpool;
 bsbsteps    = options.bsbsteps;
 
-if numpool < 1
-    numpool = 1;
-end
+
 
 % Initialize structures to store statistics
 if bsbsteps == 0
@@ -420,8 +416,22 @@ end
 mmdrs = [(init:n-1)' zeros(n-init,nsimul)];
 
 %% Preapare the pool (if required)
+% monitor execution time, without counting the opening/close of the parpool
+tstart = tic;
 
-[numpool,tstart,progbar,usePCT, usematlabpool] = PoolPrepare(numpool, msg*nsimul, UserOptions);
+
+if numpool == 1
+    % the following re-assignement of numpool from 1 to 0 is necessary,
+    % because the 'parfor' statement with numpool = 1 opens a parallel
+    % pool of 1 worker instead of reducing the iteration to a simple and
+    % faster 'for' statement.
+    numpool = 0;
+end
+
+
+if msg == 1 
+    progbar = ProgressBar(nsimul);
+end
 
 %% parfor loop
 parfor (j = 1:nsimul , numpool)
@@ -437,8 +447,8 @@ parfor (j = 1:nsimul , numpool)
     end
     
     if msg==1
-        if usePCT == 1
-            progbar.progress;  %#ok<PFBNS>
+        if numpool>0
+            progbar.progress;   %#ok<PFBNS>
         else
             if j==nsimul/2 || j==nsimul/4  || j==nsimul*0.75 || j==nsimul*0.9
                 disp(['Simul nr. ' num2str(nsimul-j) ' n=' num2str(n)]);
@@ -452,7 +462,19 @@ parfor (j = 1:nsimul , numpool)
 end
 
 %% Close pool and show messages if required
-PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool)
+tend = toc(tstart);
+
+if msg==1 
+    if numpool>0
+        progbar.stop;
+    end
+    disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
+end
+
+% close parallel jobs if necessary
+if cleanpool == true
+    delete(gcp);
+end
 
 %% Plot statistic with random starts
 
