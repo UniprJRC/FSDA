@@ -719,9 +719,9 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                     sele{chkexist+3}=char(styp(ij+1));
                 end
             end
-            
         end
         
+        % FROM HERE
         % seqsim = sequence from 1 to the number of random starts
         seqsim=1:nsimul;
         
@@ -1087,7 +1087,7 @@ end % close options.databrush
         
         % Add information about the number of trajectories selected
         % search
-        output_txt{end+1} = ['Number of trajectoris='  num2str(sum(seltraj))];
+        output_txt{end+1} = ['Number of trajectories='  num2str(sum(seltraj))];
     end
 
 end
