@@ -123,6 +123,8 @@ function [res] = mdpd(y, alpha, varargin)
 
 %{
     %% Student T with 5 degrees of freedom.
+    rng('default')
+    y =randn(10,1);
     mdpd(y,0.1,'densfunc',@tpdf,'theta',5)
 %}
 
