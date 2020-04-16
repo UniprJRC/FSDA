@@ -2258,7 +2258,12 @@ if plots>=1
     maxe = max(yin(:));
     delta = (maxe-mine)*0.1;
     yaxlim = [mine - delta ; maxe + delta];
-    
+    % the next check is introduced because if the two elements of Ylim are
+    % the same (which happens if the series is constant), the set (gca)
+    % some lines below produce errors.
+    if yaxlim(1) == yaxlim(2)
+        yaxlim(2)=yaxlim(2)+0.01*yaxlim(2);
+    end
     % Time series + fitted values
     figure
     htmp = subplot(2,1,1);
