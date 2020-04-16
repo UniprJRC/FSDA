@@ -849,8 +849,6 @@ else
     NoPriorNini=0;
 end
 
-
-
 if mixt>=1 && equalweights == true
     warning('FSDA:tclusteda:WrongEqualWeights','option equalweights must be different from 1 if mixture model approach is assumed')
     warning('FSDA:tclusteda:WrongEqualWeights','options equalweights is reset to 0')
