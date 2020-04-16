@@ -86,9 +86,9 @@ function list = findFile(root,varargin)
     % Find the location of findFile.m
     FullPath=which('addFSDA2path');
     % extract the root directory of FSDA
-    root=fileparts(FullPath);
+    FSDAroot=fileparts(FullPath);
     %list the content of the directory under FSDA named 'graphics'
-    list = findFile(root,'InclDir','graphics')
+    list = findFile(FSDAroot,'InclDir','graphics')
 %}
 
 %{
@@ -97,9 +97,12 @@ function list = findFile(root,varargin)
     % find the location of findFile.m
     % Make sure that the FSDA path is loaded (call routine addFSDA2path).
     addFSDA2path
-    FullPath=which('findFile');
+    FullPath=which('addFSDA2path');
     % extract the root directory of FSDA
-    root=FullPath(1:strfind(FullPath,'FSDA')+3);
+    root=fileparts(FullPath);
+    disp('Path of FSDA root is:')
+    disp(root)
+    disp('----')
     list = findFile(root,'InclDir','graphics','ExclFiles','res*')
 %}
 
