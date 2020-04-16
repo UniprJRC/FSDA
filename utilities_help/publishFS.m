@@ -693,7 +693,7 @@ function out=publishFS(file,varargin)
   % Option outputDir.
   % Create HTML file with embedded images in current folder (pwd).
   pwdfolder=pwd;
-  out=publishFS('FSRmdr','evalCode',false,'outputDir',pwd,'ErrWrngSeeAlso',false)
+  out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
 %}
 
 
@@ -701,12 +701,13 @@ function out=publishFS(file,varargin)
   % Option webhelp with outputDir and imagesDir.
   % Create HTML file for the WEB with Google Search and embedded images in
   % current folder (pwd). 
-   imagesDir=[pwd filesep 'images']
+   imagesDir=[pwd filesep 'images'];
    % Please note that if evalCode is true subfolder ,
    % [(pwd) filesep images] must be created manually by the user
    mkdir('images')
+   outputDir=pwd;
    out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
-    'webhelp',true,'outputDir',pwd,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
+    'webhelp',true,'outputDir',outputDir,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
 %}
 
 
