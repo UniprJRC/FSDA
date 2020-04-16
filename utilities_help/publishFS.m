@@ -692,6 +692,7 @@ function out=publishFS(file,varargin)
 %{
   % Option outputDir.
   % Create HTML file with embedded images in current folder (pwd).
+  pwdfolder=pwd;
   out=publishFS('FSRmdr','evalCode',false,'outputDir',pwd,'ErrWrngSeeAlso',false)
 %}
 
@@ -704,7 +705,8 @@ function out=publishFS(file,varargin)
    % Please note that if evalCode is true subfolder ,
    % [(pwd) filesep images] must be created manually by the user
    mkdir('images')
-   out=publishFS('FSR','evalCode',true,'Display','iter-detailed','webhelp',true,'outputDir',pwd,'imagesDir',imagesDir)
+   out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
+    'webhelp',true,'outputDir',pwd,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
 %}
 
 
