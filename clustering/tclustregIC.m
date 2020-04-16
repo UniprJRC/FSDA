@@ -98,52 +98,6 @@ function out  = tclustregIC(y,X,varargin)
 %                 Example - 'ccsigmaX',10
 %                 Data Types - double
 %
-%     restrtype : type of restriction. Character. The type of restriction to
-%               be applied on the cluster scatter matrices of the
-%               explanatory variables. Valid values are 'eigen' (default),
-%               or 'deter'. eigen implies restriction on the eigenvalues
-%               while deter implies restriction on the determinants of the
-%               covariance matrices. If restrtype is 'deter' it is possible
-%               to control the constraints on the shape matrices using
-%               optional input argument ccsigmaX. Note that this option is
-%               used just if input option $alphaX=1$, that is if
-%               constrained weighted model for X is assumed.
-%                 Example - 'restrtype','deter'
-%                 Data Types - char
-%
-%       cshape :    constraint to apply to each of the shape matrices of
-%                   the explanatory variables. Scalar greater or equal than
-%                   1. This options only works if 'restrtype' is 'deter'
-%                   and $alphaX=1$, that is if constrained weighted
-%               model for X is assumed. When restrtype is deter the default
-%               value of the "shape" constraint (as defined below) applied
-%               to each group is fixed to $c_{shape}=10^{10}$, to ensure
-%               the procedure is (virtually) affine equivariant. In other
-%               words, the decomposition or the $j$-th scatter matrix
-%               $\Sigma_j$ is \[ \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j
-%               \Omega_j' \] where $\Omega_j$ is an orthogonal matrix of
-%               eigenvectors, $\Gamma_j$ is a diagonal matrix with
-%               $|\Gamma_j|=1$ and with elements
-%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal
-%               (proportional to the eigenvalues of the $\Sigma_j$ matrix)
-%               and $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are
-%               commonly known as "shape" matrices, because they determine
-%               the shape of the fitted cluster components. The following
-%               $k$ constraints are then imposed on the shape matrices: \[
-%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v}
-%               \gamma_{jl}}\leq
-%                   c_{shape}, \text{ for } j=1,...,k,
-%               \]
-%               In particular, if we are ideally searching for spherical
-%               clusters it is necessary to set  $c_{shape}=1$. Models with
-%               variable volume and spherical clusters are handled with
-%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
-%               The $restrfactor=cshape=1$ case yields a very constrained
-%               parametrization because it implies spherical clusters with
-%               equal volumes.
-%                 Example - 'cshape',10
-%                 Data Types - single | double
-%
 %           kk: number of mixture components. Integer vector. Integer
 %               vector specifying the number of mixture components
 %               (clusters) for which the BIC is to be calculated.
@@ -457,10 +411,10 @@ function out  = tclustregIC(y,X,varargin)
 %                out.alphaX = scalar containing information about
 %                   second-level trimming or constrained weighted model for X.
 %                out.X  = Original data matrix of explanatory variables.
-%                The field is present if option Ysave is set to 1.                   
+%                The field is present if option Ysave is set to 1.
 %                out.y  = Original vector containing the response
 %                    The field is present if option Ysave is set to 1.
-%                   
+%
 % See also tclustreg, tclustICsol, tclustICplot, carbikeplot
 %
 % References:
@@ -556,7 +510,7 @@ function out  = tclustregIC(y,X,varargin)
 %}
 
 %{
-    % Example of the use of CWM model with constraints on cov(X) 
+    % Example of the use of CWM model with constraints on cov(X)
     rng(191372,'twister');
     p=3;
     k=4;
@@ -564,7 +518,7 @@ function out  = tclustregIC(y,X,varargin)
     n=200;
     [y,X,id]=simdatasetreg(n,Q.Pi,Q.Beta,Q.S,Q.Xdistrib);
     yXplot(y,X,id);
-    % CWM with no contrainst on cov(X) 
+    % CWM with no contrainst on cov(X)
     out = tclustregIC(y,X(:,2:end),'alphaX',1,'ccSigmaX',10^10);
     tclustICplot(out,'whichIC','MIXMIX')
 %}
@@ -591,7 +545,9 @@ refsteps=15;
 reftol=1e-5;
 
 equalweights=false;
-restr='eigen';
+% Eigenvalue restriction is always used for cov matrices of X variables
+% inside cwm 
+% restr='eigen';
 
 intercept = 1;
 plots=0;
@@ -605,7 +561,6 @@ cleanpool=false;
 UnitsSameGroup='';
 RandNumbForNini='';
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
-cshape=10^10;
 alphaLik=0;
 alphaX=1;
 
@@ -618,7 +573,7 @@ we = ones(n,1);
 
 
 options=struct('alphaLik',alphaLik,'alphaX',alphaX,'cc',ccsigmay,...
-    'ccSigmaX',ccSigmaX,'restrtype',restr,'cshape',cshape,'kk',kk,...
+    'ccSigmaX',ccSigmaX,'kk',kk,...
     'whichIC',whichIC,'nsamp',nsamp,'RandNumbForNini',RandNumbForNini,...
     'plots',plots,'nocheck',0,...
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
@@ -656,15 +611,12 @@ if nargin > 2
     end
     
     
-    restr=options.restrtype;
     alphaLik=options.alphaLik;
     alphaX=options.alphaX;
     ccsigmay=options.cc;
     
     if alphaX==1
         ccSigmaX=options.ccSigmaX;
-        restrtype=options.restrtype;
-        cshape=options.cshape;
     end
     
     we=options.we;
@@ -726,8 +678,6 @@ colnamesIC=strcat(cellstr(repmat('c_',length(ccsigmay),1)), cellstr(num2str(ccsi
 colnamesIC=regexprep(colnamesIC,' ','');
 
 %% Preapare the pool (if required)
-pariter=0;
-[numpool,tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool, pariter, UserOptions);
 
 for k=1:length(kk)  % loop for different values of k (number of groups)
     
@@ -755,7 +705,8 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     end
     
     
-    parfor (c=1:length(ccsigmay) , numpool)
+    % parfor (c=1:length(ccsigmay) , numpool)
+    for c=1:length(ccsigmay)
         % columns = restr
         % rows = number of groups
         % tclust using mixtures
@@ -764,7 +715,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
             outMixt=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0,'mixt',2, ...
-                'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
                 'RandNumbForNini',gRandNumbForNini);
             % 'reftol',reftol,'cshape',cshape,'restrtype',restr,
             IDXMIX{k,c}=outMixt.idx;
@@ -778,11 +729,15 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
+            try
             outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0, ...
-                'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
                 'RandNumbForNini',gRandNumbForNini);
+            catch
+                jjj=1;
+            end
             % 'reftol',reftol,'cshape',cshape,'restrtype',restr,
             CLACLA(k,c)=outCla.CLACLA;
             IDXCLA{k,c}=outCla.idx;
@@ -793,8 +748,10 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
     end
 end
 
-%% Close pool and show messages if required
-PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
+%% Store output and plot section
+if cleanpool==true
+    delete(gcp);
+end
 
 out=struct;
 
