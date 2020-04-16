@@ -267,7 +267,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %
 %      nocheck: Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
-%               matrix Y.
+%               vector y and matrix X.
 %               As default nocheck=0.
 %                   Example - 'nocheck',1
 %                   Data Types - single | double
@@ -316,6 +316,12 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 Example - 'cleanpool',true
 %                   Data Types - integer | logical
 %
+%      we: Vector of observation weights. Vector. A vector of size n-by-1
+%          containing application-specific weights that the user needs to
+%          apply to each observation. Default
+%          value is  a vector of ones.
+%            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
+%            Data Types - double
 %
 %  Output:
 %

@@ -296,35 +296,6 @@ function out  = tclustregIC(y,X,varargin)
 %                 Example - 'UnitsSameGroup',[12 20]
 %                 Data Types - single | double
 %
-%   wtrim: Application of observation weights. Scalar. A flag taking values [0, 1, 2, 3, 4]
-%          to control the application of weights on the observations.
-%          -  If \texttt{wtrim}=0 (no weights) and $\texttt{mixt}=0$, the
-%             algorithm reduces to the standard tclustreg algorithm.
-%          -  If \texttt{wtrim}=0 and \texttt{mixt}=2, the maximum posterior
-%             probability $D_i$ of equation 7 of Garcia et al. 2010 is
-%             computing by maximizing the log-likelihood contributions of
-%             the mixture model of each observation.
-%          -  If \texttt{wtrim} = 1, trimming is done by weighting the
-%             observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} must be supplied by the
-%             user. For instance, \texttt{we} = $X$.
-%          -  If \texttt{wtrim} = 2, trimming is again done by weighting
-%             the observations using values specified in vector \texttt{we}.
-%             In this case, vector \texttt{we} is computed from the data as
-%             a function of the density estimate $\mbox{pdfe}$.
-%            Specifically, the weight of each observation is the
-%            probability of retaining the observation, computed as
-%            \[\mbox{pretain}_{i g} = 1 - \mbox{pdfe}_{ig}/\max_{ig}(\mbox{pdfe}_{ig})\]
-%         -  If \texttt{wtrim} = 3, trimming is again done by weighting the
-%            observations using values specified in vector \texttt{we}. In
-%            this case, each element $we_i$ of vector \texttt{we} is a
-%            Bernoulli random variable with probability of success
-%            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
-%            under the constraint that no group is empty.
-%         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
-%            of Cerioli and Perrotta (2014).
-%            Example - 'wtrim',1
-%            Data Types - double
 %
 %      we: Vector of observation weights. Vector. A vector of size n-by-1
 %          containing application-specific weights that the user needs to
