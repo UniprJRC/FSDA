@@ -60,6 +60,8 @@ function [docNode,docNodechr]=xmlcreateFS(FileName, varargin)
 
 %{
     %% Create DOM object starting from file tclust.
+    % Make sure FSDA path is loaded.
+    addFSDA2path;
     NameFile='tclust';
     [docNode,docNodechr]=xmlcreateFS(NameFile,'write2file',false);
 %}
