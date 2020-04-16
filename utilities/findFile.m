@@ -95,6 +95,8 @@ function list = findFile(root,varargin)
     % List the content of the directory under FSDA named 'graphics'
     % and exclude all those which start with res.
     % find the location of findFile.m
+    % Make sure that the FSDA path is loaded (call routine addFSDA2path).
+    addFSDA2path
     FullPath=which('findFile');
     % extract the root directory of FSDA
     root=FullPath(1:strfind(FullPath,'FSDA')+3);
