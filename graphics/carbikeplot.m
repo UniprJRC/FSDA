@@ -99,7 +99,7 @@ function h  = carbikeplot(RelSol,varargin)
 %
 %
 %
-% See also: tclustIC, tclust, tclustICsol
+% See also: tclustICsol, tclustIC, tclust, tclustregIC, tclustreg, 
 %
 % References:
 %
