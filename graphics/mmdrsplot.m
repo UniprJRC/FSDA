@@ -1,4 +1,4 @@
-function mmdrsplot(out,varargin)
+function brushedUnits=mmdrsplot(out,varargin)
 %mmdrsplot plots the trajectories of minimum Mahalanobis distances from different starting points
 %
 %<a href="matlab: docsearchFS('mmdrsplot')">Link to the help function</a>
@@ -53,7 +53,7 @@ function mmdrsplot(out,varargin)
 %                   Data Types - double
 %
 %       lwdenv  :   Line width. Scalar. Scalar which controls the width of
-%                   the lines associated with the envelopes. 
+%                   the lines associated with the envelopes.
 %                   Default is lwdenv=1
 %                   Example - 'lwdenv',2
 %                   Data Types - double
@@ -80,14 +80,6 @@ function mmdrsplot(out,varargin)
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
 %                   Example - 'datatooltip',1
 %                   Data Types - empty value, numeric or structure
-%
-%       label   :   rwo labels. Cell. Cell containing the labels of the
-%                   units (optional argument used when datatooltip=1. If
-%                   this field is not present labels row1, ..., rown will
-%                   be automatically created and included in the pop up
-%                   datatooltip window).
-%                   Example - 'label',{'Smith','Johnson','Robert','Stallone'}
-%                   Data Types - cell
 %
 %    databrush :    interactive mouse brushing. Empty value (default),
 %                   scalar or structure.
@@ -136,7 +128,7 @@ function mmdrsplot(out,varargin)
 %                   inside the curly brackets of option databrush.
 %
 %       FontSize:   Size of axes labels. Scalar. Scalar which controls the
-%                   fontsize of the labels of the axes. 
+%                   fontsize of the labels of the axes.
 %                   Default value is 12.
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
@@ -177,13 +169,13 @@ function mmdrsplot(out,varargin)
 %                   Example - 'laby','mmd'
 %                   Data Types - char
 %
-%       labenv  :   label the envelopes. Boolean. 
+%       labenv  :   label the envelopes. Boolean.
 %                   If labenv is true (default) labels of the confidence
 %                   envelopes which are used are added on the y axis.
 %                   Example - 'labenv',false
 %                   Data Types - boolean
 %
-%        scaled :   scaled or unscaled envelopes. Boolean. 
+%        scaled :   scaled or unscaled envelopes. Boolean.
 %                   Use reference envelopes scaled or unscaled).
 %                   If scaled=1 the envelopes are produced for
 %                   scaled Mahalanobis distances (no consistency factor is
@@ -192,7 +184,13 @@ function mmdrsplot(out,varargin)
 %                   Example - 'scaled',0
 %                   Data Types - char
 %
-% Output:
+%  Output:
+%
+% brushedUnits  : brushed units. Vector. Vector containing the list of the
+%                 units which are inside subset in the trajectories which
+%                 have been brushed using option databrush. If option
+%                 databrush has not been used, brushedUnits will be an empty
+%                 value.
 %
 % See also: FSMmmdrs.m
 %
@@ -294,7 +292,7 @@ function mmdrsplot(out,varargin)
 
 %{
     % Interactive_example
-    % Example of the use of option databrush. 
+    % Example of the use of option databrush.
     % Selected units are also highlighted in the malfwdplot.
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
@@ -337,13 +335,14 @@ function mmdrsplot(out,varargin)
    
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Initialization
 if nargin<1
     error('FSDA:mmdrsplot:missingInputs','A required input argument is missing.')
 end
 
+brushedUnits=[];
 mmdrs=out.mmdrs;
 ntrajectories=size(mmdrs,2)-1;
 
@@ -558,13 +557,13 @@ for i=1:length(quant)
     end
     
     if labenv == true
-    annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
-        'HorizontalAlignment','center',...
-        'VerticalAlignment','middle',...
-        'EdgeColor','none',...
-        'BackgroundColor','none',...
-        'FitBoxToText','off',...
-        'FontSize',FontSize);
+        annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
+            'HorizontalAlignment','center',...
+            'VerticalAlignment','middle',...
+            'EdgeColor','none',...
+            'BackgroundColor','none',...
+            'FitBoxToText','off',...
+            'FontSize',FontSize);
     end
 end
 
@@ -616,27 +615,39 @@ hmin=gcf;
 
 
 
-%% Set the datatooltip for the mmdplot
+%% Set the datatooltip for the mmdrsplot
 if ~isempty(options.datatooltip)
-    % datacursormode on;
-    hdt = datacursormode;
-    set(hdt,'Enable','on'); % DDD
-    % If options.datatooltip is not a struct then use our default options
-    if ~isstruct(options.datatooltip)
-        set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
-    else
-        % options.datatooltip contains a structure where the user can set the
-        % properties of the data cursor
-        set(hdt,options.datatooltip);
+    try
+        chkgpu=gpuDevice; %#ok<NASGU>
+        
+        % datacursormode on;
+        hdt = datacursormode;
+        set(hdt,'Enable','on'); % DDD
+        % If options.datatooltip is not a struct then use our default options
+        if ~isstruct(options.datatooltip)
+            set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
+        else
+            % options.datatooltip contains a structure where the user can set the
+            % properties of the data cursor
+            set(hdt,options.datatooltip);
+        end
+        % Declare a custom datatooltip update function to display additional
+        % information about the selected unit
+        set(hdt,'UpdateFcn',{@mmdplotLbl,out})
+    catch
+        disp('No graphical device, interactive datatooltip not enabled')
     end
-    % Declare a custom datatooltip update function to display additional
-    % information about the selected unit
-    set(hdt,'UpdateFcn',{@mmdplotLbl,out})
 end
 
 %% Brush mode (call to function selectdataFS)
 
 if ~isempty(options.databrush) || isstruct(options.databrush)
+    % Check that BBrs has the proper size
+    if size(BBrs,2)~=n-init+1
+        warning('FSDA:mmdrsplot:WrongInputOpt','Input 3Darray BBrs inside input structure out \n does not contain information about all subsets for each subset size')
+        error('FSDA:mmdrsplot:WrongInputOpt','Please call input function FSRmdrrs with option ''bsbsteps'',0 \n to save the units beloging to subset for all steps of the forward search')
+    end
+    
     
     if isstruct(options.databrush)
         
@@ -1028,6 +1039,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         end
         
     end % close loop associated with but
+    brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = mmdplotLbl(~,event_obj,out)
