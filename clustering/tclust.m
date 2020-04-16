@@ -1822,6 +1822,7 @@ if mixt>0
     
     out.MIXMIX=MIXMIX;
     out.MIXCLA=MIXCLA;
+    out.NlogL= 2*NlogLmixt;
 else
     % CLACLA = BIC which uses parameters estimated using the classification
     % likelihood and the maximized classification likelihood as goodness of fit
@@ -1829,6 +1830,7 @@ else
     CLACLA  = 2*NlogL +nParam*logh;
     
     out.CLACLA=CLACLA;
+    out.NlogL=2*NlogL;
 end
 
 
