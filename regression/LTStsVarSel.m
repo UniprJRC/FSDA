@@ -259,10 +259,19 @@ function [reduced_est, reduced_model, msgstr] = LTStsVarSel(y,varargin)
 
 %{
     % run LTStsVarSel starting from a specific over-parametrized model.
-
     % sample size
     n = 100;                       
     tmp = rand(n,1);
+     % data model
+    model=struct;
+    model.trend=1;                  % linear trend
+    model.trendb=[0 1];             % parameters of the linear trend
+    model.s=12;                     % monthly time series
+    model.seasonal=1;               % 1 harmonic with linear trend
+    model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+    model.lshiftb=100;              % level shift amplitude
+    model.lshift= 30;               % level shift amplitude
+    model.signal2noiseratio = 100;  % signal to noise
     model.X = tmp.*[1:n]';          % a extra covariate
     model.Xb = 1;                   % beta coefficient of the covariate
     out_sim=simulateTS(n,'plots',1,'model',model);
