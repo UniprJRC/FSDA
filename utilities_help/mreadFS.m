@@ -567,7 +567,7 @@ function out=mreadFS(file,varargin)
 
 %{
   % Create output structure out starting from file FSRmdr.
-  out=mreadFS('FSRmdr')
+  out=publishFS('FSRmdr','ErrWrngSeeAlso',false);
 %}
 
 %{
