@@ -133,7 +133,7 @@ function brushedUnits=mmdrsplot(out,varargin)
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%    SizeAxesNum:   Size of axes numbers. Scalar which controls the
+%    SizeAxesNum:   Size of axes numbers. Scalar. Scalar which controls the
 %                   fontsize of the numbers of the axes.
 %                   Default value is 10.
 %                   Example - 'SizeAxesNum',14
@@ -163,7 +163,7 @@ function brushedUnits=mmdrsplot(out,varargin)
 %                   A label for the x-axis (default: 'Subset size m').
 %                   Example - 'labx','Subset size m'
 %                   Data Types - char
-
+%
 %       laby    :   y axis title. Character. A label for the y-axis
 %                  (default: 'Minimum Mahalnobis distance').
 %                   Example - 'laby','mmd'

@@ -1,7 +1,7 @@
 function brushedUnits=mdrrsplot(out,varargin)
-%mdrplot plots the trajectory of minimum deletion residual (mdr)
+%mdrrsplot plots the trajectory of minimum deletion residual from random starts 
 %
-%<a href="matlab: docsearch('mdrrsplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdrrsplot')">Link to the help function</a>
 %
 % Required input arguments:
 %
@@ -24,32 +24,47 @@ function brushedUnits=mdrrsplot(out,varargin)
 % Optional input arguments:
 %
 %       quant   :   vector containing quantiles for which envelopes have
-%                   to be computed. The default is to produce 1%, 50% and
-%                   99% envelopes. In other words the default is
-%                   quant=[0.01;0.5;0.99];
+%                   to be computed. Vector or scalar. The default is to
+%                   produce 1%, 50% and 99% envelopes. In other words the
+%                   default is quant=[0.01;0.5;0.99];
+%               Example - 'quant',[0.01 0.99]
+%               Data Types - double
 %
-%       envm    :   Scalar which specifies the size of the sample which is
-%                   used to superimpose the envelope. The default is to add
+%       envm    :   Size of the sample which is
+%                   used to superimpose the envelope. Scalar. The default is to add
 %                   an envelope based on all the observations (size n
-%                   envelope)
+%                   envelope).
+%               Example - 'envm',n
+%               Data Types - double
 %
 %       xlimx   :   vector with two elements controlling minimum and
 %                   maximum on the x axis. Default value is mdr(1,1)-3 and
 %                   mdr(end,1)*1.3
+%                   Example - 'xlimx',[20 100]
+%                   Data Types - double
 %
-%       ylimy   :   vector with two elements controlling minimum and
+%       ylimy   :   min and max on the y axis. Vector. Vector with two
+%                   elements controlling minimum and
 %                   maximum on the y axis. Default value is min(mdr(:,2))
 %                   and max(mdr(:,2));
+%                   Example - 'ylimy',[2 6]
+%                   Data Types - double
 %
-%       lwdenv  :   Scalar which controls the width of the lines associated
-%                   with the envelopes. Default is lwdenv=1
+%       lwdenv  :   Line width of the envelopes. Scalar. Scalar which
+%                   controls the width of the lines associated
+%                   with the envelopes. Default is lwdenv=1.
+%                   Example - 'lwdenv',2
+%                   Data Types - double
 %
-%       tag     :   string which identifies the handle of the plot which
-%                   is about to be created. The default is to use tag
-%                   'pl_mdrrs'. Notice that if the program finds a plot which
-%                   has a tag equal to the one specified by the user, then
-%                   the output of the new plot overwrites the existing one
-%                   in the same window else a new window is created
+%       tag     :   tag of the plot. String. String which identifies the
+%                   handle of the plot which is about to be created. The
+%                   default is to use tag 'pl_mdrrs'. Notice that if the
+%                   program finds a plot which has a tag equal to the one
+%                   specified by the user, then the output of the new plot
+%                   overwrites the existing one in the same window else a
+%                   new window is created
+%                   Example - 'tag','mymdrrs'
+%                   Data Types - char
 %
 %   datatooltip :   empty value or structure. The default is datatooltip=''
 %                   If datatooltip is not empty the user can use the mouse
@@ -60,26 +75,31 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'
+%                   Example - 'datatooltip',1
+%                   Data Types - empty value, numeric or structure
 %
-%    databrush :    empty value, scalar or structure.
-%                   DATABRUSH IS AN EMPTY VALUE If databrush is an empty
+%    databrush :    interactive mouse brushing. Empty value (default),
+%                   scalar or structure.
+%                   DATABRUSH IS AN EMPTY VALUE .
+%                   If databrush is an empty
 %                   value (default), no brushing is done. The activation of
 %                   this option (databrush is a scalar or a structure) enables
 %                   the user  to select a set of trajectories in the
-%                   current plot and to see them highlighted in the y|X
-%                   plot (notice that if the plot y|X does not exist it is
-%                   automatically created). In addition, brushed units can
-%                   be highlighted in the monitoring residual plot
-%                   Remark: the window style of the
+%                   current plot and to see them highlighted in the spm
+%                   (notice that if the spm does not exist it is automatically created).
+%                   In addition, units forming subset in the selected steps
+%                   selected trajectories can be highlighted in the
+%                   monitoring MD plot Note that the window style of the
 %                   other figures is set equal to that which contains the
 %                   monitoring residual plot. In other words, if the
 %                   monitoring residual plot is docked all the other
 %                   figures will be docked too.
-%                  DATABRUSH IS A SCALAR
+%                  DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default selection tool is a
 %                   rectangular brush and it is possible to brush only once
 %                   (that is persist='').
-%                  DATABRUSH IS A STRUCTURE If databrush is a structure, it is
+%                  DATABRUSH IS A STRUCTURE.
+%                   If databrush is a structure, it is
 %                   possible to use all optional arguments
 %                   of function selectdataFS.m and the following optional
 %                   argument:
@@ -94,33 +114,57 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   persist is 'on' it is possible, every time a new
 %                   brushing is done, to use a different color for the
 %                   brushed units
-%                   labeladd. If this option is '1', we label the units
+%                  labeladd. If this option is '1', we label the units
 %                     of the last selected group with the unit row index in
 %                     matrices X and y. The default value is labeladd='',
 %                     i.e. no label is added.
+%                   Example - 'databrush',1
+%                   Data Types - single | double | struct
 %
-%       Fontsize:   Scalar which controls the fontsize of the labels of the
+%       FontSize:   Label font size. Scalar. Scalar which controls the
+%                   fontsize of the labels of the
 %                   axes. Default value is 12
+%                   Example - 'FontSize',14
+%                   Data Types - single | double
 %
-%    SizeAxesNum:   Scalar which controls the fontsize of the numbers of
-%                   the axes. Default value is 10
+%    SizeAxesNum:   Size of axes numbers. Scalar. Scalar which controls the
+%                   fontsize of the numbers of the axes.
+%                   Default value is 10.
+%                   Example - 'SizeAxesNum',14
+%                   Data Types - single | double
 %
 %       nameX   :   cell array of strings of length p containing the labels
 %                   of the varibles of the regression dataset. If it is empty
 %                 	(default) the sequence X1, ..., Xp will be created
 %                   automatically
+%                   Example - 'nameX',{'Age','Income','Married','Profession'}
+%                   Data Types - cell
 %
-%       namey   :   character containing the label of the response
+%       namey   :   response label. Character. Character containing the
+%                   label of the response.
+%                   Example - 'namey','mylabel'}
+%                   Data Types - character
 %
-%       lwd     :   Scalar which controls linewidth of the curve which
-%                   contains the monitoring of minimum deletion residual.
+%       lwd     :   Trajectories line width. Scalar. Scalar which controls
+%                   linewidth of the curve which contains the monitoring of
+%                   minimum deletion residual.
 %                   Default line width=2
+%                   Example - 'lwd',3
+%                   Data Types - single | double
 %
-%       titl    :   a label for the title (default: '')
+%       titl    :   titel label. Charater. A label for the title (default: '')
+%                   Example - 'namey','Plot title'
+%                   Data Types - char
 %
-%       labx    :   a label for the x-axis (default: 'Subset size m')
+%       labx    :   x axis title. Character.
+%                   A label for the x-axis (default: 'Subset size m').
+%                   Example - 'labx','Subset size m'
+%                   Data Types - char
 %
-%       laby    :   a label for the y-axis (default: 'Minimum deletion residual')
+%       laby    :   y axis title. Character. A label for the y-axis
+%                  (default: 'Minimum deletion residual').
+%                   Example - 'laby','mmd'
+%                   Data Types - char
 %
 %
 %  Output:
@@ -143,25 +187,32 @@ function brushedUnits=mdrrsplot(out,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearch('mdrrsplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('mdrrsplot')">Link to the help function</a>
+%
+%$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 
 %{
     %% Example of the use of function mdrrsplot with all the default
     % options.
-    load('loyalty.txt','loyalty');
-    y=loyalty(:,4);
-    X=loyalty(:,1:3);
-    [out]=FSRmdrrs(y,X);
+    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
+    % The dataset presents two parallel components without contamination.
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
+    [out]=FSRmdrrs(y,X,'bsbsteps',0);
     mdrrsplot(out);
 %}
 
 %{
-    % Example of the use of function mdrplot with personalized envelopes.
-    load('loyalty.txt','loyalty');
-    y=loyalty(:,4);
-    X=loyalty(:,1:3);
+    % Example of the use of function mdrrsplot with personalized envelopes.
+    % tclustreg of contaminated X data using all default options.
+    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
+    % The dataset presents two parallel components without contamination.
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
     [out]=FSRmdrrs(y,X,'bsbsteps',0);
     mdrrsplot(out,'quant',[0.99;0.9999]);
 %}
@@ -219,6 +270,10 @@ function brushedUnits=mdrrsplot(out,varargin)
 %{
     % Interactive_example
     % Example where databrush is a structure and option labeladd is used
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
+    [out]=FSRmdrrs(y,X,'bsbsteps',0);
     databrush=struct
     databrush.selectionmode='Lasso'
     databrush.labeladd='1';
@@ -228,6 +283,10 @@ function brushedUnits=mdrrsplot(out,varargin)
 %{
     % Interactive_example
     %Example of the use of option databrush using brush mode
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
+    [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.selectionmode='Brush'
     mdrrsplot(out,'databrush',databrush)
@@ -238,6 +297,10 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Example of the use of persistent non cumulative brush. Every time a
     % brushing action is performed previous highlights are removed but the
     % labels are not removed from the scatterplot matrix.
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
+    [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.persist='off'
     databrush.labeladd='1';
@@ -250,6 +313,10 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Example of the use of persistent cumulative brush. Every time a
     % brushing action is performed current highlights are added to
     % previous highlights
+    X  = load('X.txt');
+    y = X(:,end);
+    X =X(:,1:end-1);    
+    [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'
@@ -298,7 +365,7 @@ options=struct('quant', quant,...
     'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mdrrs',...
     'datatooltip','','databrush','',...
-    'titl','','labx',labx,'laby',laby,'nameX','','namey','','label','');
+    'titl','','labx',labx,'laby',laby,'nameX','','namey','');
 
 if nargin<1
     error('FSDA:mdrrsplot:missingInputs','A required input argument is missing.')
@@ -996,4 +1063,4 @@ end % close options.databrush
     end
 
 end
-
+%FScategory:CLUS-RobClaMULT
