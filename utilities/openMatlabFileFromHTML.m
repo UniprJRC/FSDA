@@ -55,7 +55,10 @@ function openMatlabFileFromHTML(MatlabFileName,LineToOpen)
     
     % openMatlabFileFromHTML with all default options.
     % In this case file examples_regression.m is opened.
-    openMatlabFileFromHTML('examples_regression.m')
+    % editor is not available in terminal mode (i.e. Azure servers)
+    if matlab.desktop.editor.isEditorAvailable ==true
+        openMatlabFileFromHTML('examples_regression.m')
+    end
 %}
 %
 
