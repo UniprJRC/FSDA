@@ -1,0 +1,402 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>tclustregeda</title><meta content="refpage" name="chunktype"><meta content="function:tclustregeda" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="tclustregeda performs robust linear grouping analysis for a series of values of the trimming factor." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">tclustregeda</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">tclustreg of contaminated X data using all default options.</a></li><li><a class="intrnllnk" href="#Example_2">tclustreg with a noise variable and personalized plots.</a></li><li><a class="intrnllnk" href="#Example_3"></a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_y">y</a></li><li><a class="intrnllnk" href="#input_argument_X">X</a></li><li><a class="intrnllnk" href="#input_argument_k">k</a></li><li><a class="intrnllnk" href="#input_argument_restrfact">restrfact</a></li><li><a class="intrnllnk" href="#input_argument_alphaLik">alphaLik</a></li><li><a class="intrnllnk" href="#input_argument_alphaX">alphaX</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_intercept">intercept</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_mixt">mixt</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_equalweights">equalweights</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_refsteps">refsteps</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_reftol">reftol</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nocheck">nocheck</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_RandNumbForNini">RandNumbForNini</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_UnitsSameGroup">UnitsSameGroup</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_numpool">numpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_cleanpool">cleanpool</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_we">we</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li><li><a class="intrnllnk" href="#output_argument_varargout">varargout</a></li></ul></li><li><a class="intrnllnk" href="#MoreAbout">More About</a></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">tclustregeda</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">tclustregeda performs robust linear grouping analysis for a series of values of the trimming factor</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=tclustregeda(y,X,k,restrfact,alphaLik,alphaX)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregeda.html#Example_1">example</a></span></li><li><code class="synopsis">out=tclustregeda(y,X,k,restrfact,alphaLik,alphaX,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregeda.html#Example_2">example</a></span></li><li><code class="synopsis">[out, varargout]=tclustregeda(___)</code><span class="syntax_example"><a class="intrnllnk" href="tclustregeda.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><p>tclustregeda performs tclustregreg for a series of values of the trimming
+   factor alpha given k (number of groups) and given restrfactor
+   (restriction factor) and alphaX (second level trimming or cluster
+   weighted model). In order to increase the speed of the computations,
+   parfor is used.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustregeda.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustregeda(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>)</code></span>tclustreg of contaminated X data using all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustregeda.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tclustregeda(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#inputarg_X"><code>X</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_restrfact"><code>restrfact</code></a>,<a class="intrnllnk" href="#inputarg_alphaLik"><code>alphaLik</code></a>,<a class="intrnllnk" href="#inputarg_alphaX"><code>alphaX</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>tclustreg with a noise variable and personalized plots.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tclustregeda.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tclustregeda(___)</code></span></p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustreg of contaminated X data using all default options.</li></span></a></span></h3><div class="collapse"><p>
+     The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The dataset presents two parallel components without contamination.
+X  = load('X.txt');
+y = X(:,end);
+X =X(:,1:end-1);
+% Contaminate the first 4 units
+y(1:4)=y(1:4)+6;
+% Use 2 groups
+k = 2 ;
+% Set restriction factor
+restrfact = 5;
+% Value of trimming
+alphaLik = 0.10:-0.01:0;
+% cwm
+alphaX = 1;
+out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclustreg with a noise variable and personalized plots.</li></span></a></span></h3><div class="collapse"><p>
+     Use the X data of the previous example.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
+y = X(:,end);
+rng(100)
+X = [randn(length(y),1) X(:,1:end-1)];
+% Contaminate the first 4 units
+y(1:4)=y(1:4)+6;
+% Use 2 groups
+k = 2 ;
+restrfact = 5;
+% Value of trimming
+alphaLik = [0.10 0.06 0.03 0];
+% cwm
+alphaX = 1;
+% Personalize plots. Just show the gscatter plot.
+% In this case there is more than one explanatory variable therefore PLS
+% regression (adding the dummies for the classified units) is performed.
+% In the gscatter plots the percentage of variance explained by the first
+% linear combination of the X variables is given in the title.
+plots=struct;
+plots.name={'gscatter'};
+out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+             y can be either a row or a column vector.</p><p>
+             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Explanatory variables (also called 'regressors'). </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of dimension $(n \times p-1)$. Rows of X represent
+             observations, and columns represent variables. Missing values
+             (NaN's) and infinite values (Inf's) are allowed, since
+             observations (rows) with missing or infinite values will
+             automatically be excluded from the computations.</p> <p>
+             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of clusters. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>This is a guess on the number of data groups.</p> <p>
+             </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfact" class="clearfix"> </div> <h3 id="input_argument_restrfact" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfact</code> &#8212; restriction factor for regression residuals and covariance
+             matrices of the explanatory variables. </span>  </a><span class="example_desc">Scalar or vector with two
+             elements.</span></span></h3> <div class="collapse"> <p><p>If restrfact is a scalar it controls the
+             differences among group scatters of the residuals. The value
+             1 is the strongest restriction. If restrfactor is a vector
+             with two elements the first element controls the differences
+             among group scatters of the residuals and the second the
+             differences among covariance matrices of the explanatory
+             variables. Note that restrfactor(2) is used just if
+             input option $alphaX=1$, that is if constrained weighted
+             model for X is assumed.</p> <p>
+            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaLik" class="clearfix"> </div> <h3 id="input_argument_alphaLik" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaLik</code> &#8212; trimming level to monitor. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector which specifies the
+               values of trimming levels which have to be considered.</p> <p>
+               alpha is a vector which contains decreasing elements which
+               lie in the interval 0 and 0.5.</p> <p>
+               For example if alpha=[0.1 0.05 0] tclustregeda considers these 3
+               values of trimming level.</p><p>
+               If alphaLik=0 tclustregeda does not trim. The default for
+               alphaLik is vector [0.1 0.05 0]. The sequence is forced to be
+               monotonically decreasing.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alphaX" class="clearfix"> </div> <h3 id="input_argument_alphaX" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alphaX</code> &#8212; Second-level trimming or constrained weighted model for X. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>alphaX is a value in the interval [0 1].</p> <p>
+            - If alphaX=0 there is no second-level trimming.</p> <p>
+            - If alphaX is in the interval [0 0.5] it indicates the
+               fixed proportion of units subject to second level trimming.</p> <p>
+               In this case alphaX is usually smaller than alphaLik.</p> <p>
+               For further details see Garcia-Escudero et. al. (2010).</p> <p>
+            -  If alphaX is in the interval (0.5 1), it indicates a
+               Bonferronized confidence level to be used to identify the
+               units subject to second level trimming. In this case the
+               proportion of units subject to second level trimming is not
+               fixed a priori, but is determined adaptively.</p> <p>
+               For further details see Torti et al. (2018).</p> <p>
+            -  If alphaX=1, constrained weighted model for X is assumed
+               (Gershenfeld, 1997). The CWM estimator is able to
+               take into account different distributions for the explanatory
+               variables across groups, so overcoming an intrinsic limitation
+               of mixtures of regression, because they are implicitly
+               assumed equally distributed. Note that if alphaX=1 it is
+               also possible to apply using restrfactor(2) the constraints
+               on the cov matrices of the explanatory variables.</p> <p>
+               For further details about CWM see Garcia-Escudero et al.</p> <p>
+               (2017) or Torti et al. (2018).</p><p>
+            </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',1
+</code>,<code> 'mixt',1
+</code>,<code> 'equalweights',true
+</code>,<code> 'nsamp',1000
+</code>,<code> 'refsteps',15
+</code>,<code> 'reftol',1e-05
+</code>,<code> 'plots', 1
+</code>,<code> 'msg',1
+</code>,<code> 'nocheck',1
+</code>,<code> 'RandNumbForNini',''
+</code>,<code> 'UnitsSameGroup',[20 34]
+</code>,<code> 'numpool',4
+</code>,<code> 'cleanpool',true
+</code>,<code> 'we',[0.2 0.2 0.2 0.2 0.2]
+</code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If 1, a model with
+                constant term will be fitted (default), else no constant
+                term will be included.</p> <p>
+                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'intercept',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_mixt" class="clearfix"></div><h3 id="input_argument_namevalue_mixt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>mixt</code> &#8212;mixture modelling or crisp assignment.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option mixt specifies whether mixture modelling or crisp
+               assignment approach to model based clustering must be used.</p> <p>
+               In the case of mixture modelling parameter mixt also
+               controls which is the criterior to find the untrimmed units
+               in each step of the maximization
+               If mixt &gt;=1 mixture modelling is assumed else crisp
+               assignment.</p><p>
+                In mixture modelling the likelihood is given by
+                </p>\[
+                \prod_{i=1}^n  \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j),
+                \]
+               while in crisp assignment the likelihood is given by
+               \[
+               \prod_{j=1}^k   \prod _{i\in R_j} \pi_j  \phi (y_i \; x_i' , \beta_j , \sigma_j),
+               \]<p>
+               where $R_j$ contains the indexes of the observations which
+               are assigned to group $j$,
+               Remark - if mixt&gt;=1 previous parameter equalweights is
+               automatically set to 1.</p> <p>
+               Parameter mixt also controls the criterion to select the units to trim
+               if mixt == 2 the h units are those which give the largest
+               contribution to the likelihood that is the h largest
+               values of
+               </p>\[
+                   \sum_{j=1}^k \pi_j \phi (y_i \; x_i' , \beta_j , \sigma_j)   \qquad
+                    i=1, 2, ..., n
+               \]
+               elseif mixt==1 the criterion to select the h units is
+               exactly the same as the one which is used in crisp
+               assignment. That is: the n units are allocated to a
+               cluster according to criterion
+               \[
+                \max_{j=1, \ldots, k} \hat \pi'_j \phi (y_i \; x_i' , \beta_j , \sigma_j)
+               \]<p>
+               and then these n numbers are ordered and the units
+               associated with the largest h numbers are untrimmed.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'mixt',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
+               shall be considered in the concentration, assignment steps
+               and computation of the likelihood.</p> <p>
+               if equalweights = true we are (ideally) assuming equally
+               sized groups by maximizing the likelihood
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | matrix with k*p columns.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
+            which will be extracted.</p> <p>
+            If nsamp=0 all subsets will be extracted.</p> <p>
+            If the number of all possible subset is &lt;300 the
+            default is to extract all subsets, otherwise just 300.</p> <p>
+            If nsamp is a matrix it contains in the rows the indexes of
+            the subsets which have to be extracted. nsamp in this case can
+            be conveniently generated  by function subsets.</p><p>
+            nsamp must have k*p columns. The first p columns are used to
+            estimate the regression coefficient of group 1... the last p
+            columns are used to estimate the regression coefficient of
+            group k
+             </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_refsteps" class="clearfix"></div><h3 id="input_argument_namevalue_refsteps" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>refsteps</code> &#8212;Number of refining iterations.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of refining
+               iterations in each subsample.  Default is 10.</p> <p>
+               refsteps = 0 means "raw-subsampling" without iterations.</p><p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'refsteps',15
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_reftol" class="clearfix"></div><h3 id="input_argument_namevalue_reftol" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>reftol</code> &#8212;Tolerance for the refining steps.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The default value is 1e-14;</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar structure.</span></span></h3><div class="collapse">	<p><p>Case 1: plots option used as scalar.</p> <p>
+               - If plots=0,  plots are not generated.</p> <p>
+               - If plots=1 (default), 6 plots are shown on the screen.</p> <p>
+                 The first plot ("monitor") shows 4 or 6 panels
+                 monitoring between two consecutive values of alpha the
+                 change in classification using ARI index (top left panel),
+                 the relative change in beta (top right panel)
+                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||beta_{\alpha_2}||^2
+                 the relative change in \sigma^2 (third panel) the
+                 relative change in \sigma^2 corrected (fourth panel) and
+                 if alphaX=1, the relative change in centroids (fifth
+                 panel), the relative change in covariance matrices using
+                 squared euclidean distance (sixth panel).</p> <p>
+                 The second plot ("UnitsTrmOrChgCla") is a bsb plot which
+                 shows the monitoring of the units which changed
+                 classification (shown in red) or were trimmed at least
+                 once.</p> <p>
+                 The third plot shows ("PostProb") is a 4 panel parallel
+                 coordinate plots which shows the monitoring of posterior
+                 probabilities. Four versions of parallel coordinateds
+                 plots are proposed. The first two use function
+                 parallelcoords and refer respectively to all the units
+                 (left panel) or the units which were trimmed or changed
+                 allocation (right panels). The two bottom panels
+                 are exactly equal as top panels but use function
+                 parallelplot.</p> <p>
+                 The fourth plot ("PostProb") is 4 panel parallel
+                 coordinate plots which shows the monitoring of posterior
+                 probabilities. Four versions of parallel coordinateds
+                 plots are proposed. The first two use function
+                 parallelcoords and refer respectively to all the units
+                 (left panel) or the units which were trimmed or changed
+                 allocation (right panels). The two bottom panels
+                 are exactly equal as top panels but use function
+                 parallelplot.</p> <p>
+                 The fifth plot is a scatter of y versus X (or a yXplot in
+                 case X ha more than one column) with all the regression
+                 lines for each value of alphaLik shown. Units trimmed are
+                 shown in correspondence of max(alphaLik).</p> <p>
+                 The sixth plot ("gscatter plot") shows a series of
+                 subplots which monitor the classification for each value
+                 of alpha. In order to make sure that consistent labels
+                 are used for the groups, between two consecutive values
+                 of alpha, we assign label r to a group if this group
+                 shows the smallest distance with group r for the previous
+                 value of alpha. The type of plot which is used to monitor
+                 the stability of the classification depends on the value
+                 of p (number of explanatory variables excluding the intercept).</p> <p>
+                   * for p=0, we use histograms of the univariate data
+                   (function histFS is called).</p> <p>
+                   * for p=1, we use the scatter plot of y
+                   against the unique explanatory variable (function gscatter is called).</p> <p>
+                   * for p&gt;=2, we use partial least square regression (see
+                   function plsregress) and use the scatter plot of y
+                   against the predictor scores Xs, that is, the first PLS
+                   component that is linear combination of the variables
+                   in X.</p> <p>
+
+               Case 2: plots option used as struct.</p> <p>
+                 If plots is a structure it may contain the following fields:</p><p>
+         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p><p>cell array of strings which enables to
+                   specify which plot to display.</p> <p>
+                   plots.name={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...</p> <p>
+                               'ScatterWithRegLines'; 'gscatter'};</p> <p>
+                   is exactly equivalent to plots=1
+                   For the explanation of the above plots see plots=1.</p> <p>
+                   If plots.name=={ 'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...</p> <p>
+                                   'ScatterWithRegLines'; 'gscatter'; ...</p> <p>
+                                   'Beta';'Siz'}; or
+                   plots.name={'all'};</p> <p>
+                   it is also possible to monitor the beta coefficients
+                   for each group ('Beta') and the size of the groups (Siz).</p><p>
+                   Note that the trajectories of beta coefficients are
+                   standardized in order to have all of them on a
+                   comparable scale.</p></p></td></tr><tr valign="top"><td><code>alphasel</code></td><td><p><p>numeric vector which speciies for which
+                   values of alpha it is possible to see the
+                   classification (in plot gscatter) or the
+                   superimposition of regression lines (in plot
+                   ScatterWithRegLines) .</p> <p>
+                   For example if plots.alphasel =[ 0.05 0.02], the
+                   classification in plot gscatter and the regression
+                   lines in plot ScatterWithRegLines will be shown just
+                   for alphaLik=0.05 and alphaLik=0.02; If this field is not
+                   specified plots.alphasel=alphaLik and therefore the
+                   classification is shown for each value of alphaLik.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Scalar which controls whether to display or not messages
+               on the screen.</p> <p>
+               If msg=0 nothing is displayed on the screen.</p> <p>
+               If msg=1 (default) messages are displayed
+               on the screen about estimated time to compute the estimator
+               or the number of subsets in which there was no convergence.</p> <p>
+               If msg=2 detailed messages are displayed. For example the
+               information at iteration level.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+               vector y and matrix X.</p> <p>
+               As default nocheck=0.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_RandNumbForNini" class="clearfix"></div><h3 id="input_argument_namevalue_RandNumbForNini" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>RandNumbForNini</code> &#8212;Pre-extracted random numbers to initialize proportions.</span></a><span class="example_desc">matrix.</span></span></h3><div class="collapse">	<p><p>Matrix with size k-by-size(nsamp,1) containing the
+                random numbers which are used to initialize the
+                proportions of the groups. This option is effective just
+                if nsamp is a matrix which contains pre-extracted
+                subsamples. The purpose of this option is to enable the
+                user to replicate the results in case routine tclust is
+                called using a parfor instruction (as it happens for
+                example in routine IC, where tclust is called through a
+                parfor for different values of the restriction factor).</p> <p>
+                The default value of RandNumbForNini is empty that is
+                random numbers from uniform are used.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'RandNumbForNini',''
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_UnitsSameGroup" class="clearfix"></div><h3 id="input_argument_namevalue_UnitsSameGroup" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>UnitsSameGroup</code> &#8212;list of the units which must (whenever possible)
+                   have a particular label.</span></a><span class="example_desc">numeric vector.</span></span></h3><div class="collapse">	<p><p>For example if
+                   UnitsSameGroup=[20 26], means that group which contains
+                   unit 20 is always labelled with number 1. Similarly,
+                   the group which contains unit 26 is always labelled
+                   with number 2, (unless it is found that unit 26 already
+                   belongs to group 1). In general, group which contains
+                   unit UnitsSameGroup(r) where r=2, ...length(kk)-1 is
+                   labelled with number r (unless it is found that unit
+                   UnitsSameGroup(r) has already been assigned to groups
+                   1, 2, ..., r-1).</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'UnitsSameGroup',[20 34]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> integer vector</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;The number of parallel sessions to open.</span></a><span class="example_desc">integer.</span></span></h3><div class="collapse">	<p><p>If
+                   numpool is not defined, then it is set equal to the
+                   number of physical cores in the computer.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'numpool',4
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code> integer vector</code></p></div></div><div class="expandableContent"><div id="inputarg_cleanpool" class="clearfix"></div><h3 id="input_argument_namevalue_cleanpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cleanpool</code> &#8212;Function name.</span></a><span class="example_desc">scalar {0,1}.</span></span></h3><div class="collapse">	<p><p>Indicated if the open pool
+                   must be closed or not. It is useful to leave it open if
+                   there are subsequent parallel sessions to execute, so
+                   that to save the time required to open a new pool.</p> <p>
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'cleanpool',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>integer | logical</code></p></div></div><div class="expandableContent"><div id="inputarg_we" class="clearfix"></div><h3 id="input_argument_namevalue_we" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>we</code> &#8212;Vector of observation weights.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>A vector of size n-by-1
+          containing application-specific weights that the user needs to
+          apply to each observation. Default
+          value is  a vector of ones.</p> <p>
+            </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'we',[0.2 0.2 0.2 0.2 0.2]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields
+
+    <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>IDX</code></td><td><p><p>n-by-length(alphaLik) matrix containing assignment of each unit to
+                       each of the k groups. Cluster names are integer
+                       numbers from 1 to k:</p> <p>
+                       -1 indicates first level trimmed observations;</p> <p>
+                       -2 indicates second level trimmed observations.</p><p>
+                       observations. First column refers of out.IDX refers
+                       to alphaLik(1), second column of out.IDX refers to
+                       alphaLik(2), ..., last column refers to alphaLik(end).</p></p></td></tr><tr valign="top"><td><code>Beta</code></td><td><p>3D array of size k-by-p-by-length(alphaLik) containing
+                       the monitoring of the regression coefficients for each value of
+                       alphaLik. out.Beta(:,:,1), refers to alphaLik(1) ...,
+                       out.Beta(:,:,end) refers to alphaLik(end). First row in
+                       each slice refers to group 1, second row refers to
+                       group 2 ...</p></td></tr><tr valign="top"><td><code>Sigma2y</code></td><td><p>matrix of size k-by-length(alphaLik) containing in column
+                       j, with j=1, 2, ...,  length(alphaLik), the
+                       estimates of the k (constrained) variances of the
+                       regressions lines (hyperplanes) associated with alphaLik(j).</p></td></tr><tr valign="top"><td><code>Sigma2yc</code></td><td><p><p>matrix of size k-by-length(alphaLik) containing in column
+                       j, with j=1, 2, ...,  length(alphaLik), the
+                       estimates of the k (constrained) unbiased variances of the
+                       regressions lines (hyperplanes) associated with alphaLik(j).</p> <p>
+                       In order to make the estimates of sigmas unbiased
+                       we apply Tallis correction factor.</p></p></td></tr><tr valign="top"><td><code>Nopt</code></td><td><p>matrix of size k-by-length(alphaLik) containing in column
+                       j, with j=1, 2, ...,  length(alphaLik), the
+                       sizes of the of the k groups.</p></td></tr><tr valign="top"><td><code>Vopt</code></td><td><p>column vector of length(alphaLik) containing the
+                      value of the target likelihod for each value of alphaLik.</p></td></tr><tr valign="top"><td><code>Amon</code></td><td><p><p>Amon stands for alphaLik monitoring. Matrix of size
+                      (length(alphaLik)-1)-by-7 which contains for two
+                       consecutive values of alpha the monitoring of six
+                       quantities (change in classification, change in
+                       betas, sigmas, correted sigmas and if cwm also
+                       centroid and coariance in the X space.</p> <p>
+                       1st col = value of alphaLik.</p> <p>
+                       2nd col = ARI index.</p> <p>
+                       3rd col = relative squared Euclidean distance between
+                           two consecutive beta.</p> <p>
+                       4th col = relative squared Euclidean distance between
+                           two consecutive vector of variances of the
+                           errors of the k regressions.</p> <p>
+                       5th col = relative squared Euclidean distance between
+                           two consecutive vector of correct variances of the
+                           errors of the k regressions.</p> <p>
+                       6th col = relative squared Euclidean distance between
+                           two consecutive $\hat \mu_X$.</p><p>
+                       7th col = relative squared Euclidean distance between
+                           two consecutive $\hat \Sigma_X$.</p></p></td></tr><tr valign="top"><td><code>unitplot</code></td><td><p><p>Matrix containing information about the
+                       units (n1) which were trimmed or changed classification
+                       at least once in the forward search. The size of
+                       out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;</p> <p>
+                       1st col = list of the units which were trimmed or
+                       changed classification at least once.</p> <p>
+                       2nd col = allocation of the n1 units in step alphaLik(1)
+                       3rd col = allocation of the n1 units in step alphaLik(2)
+                       ...</p><p>
+                       last col = allocation of the n1 units in step alphaLik(end)</p></p></td></tr><tr valign="top"><td><code>units</code></td><td><p><p>structure containing the following fields:</p> <p>
+                       units.UnitsTrmOrChgCla=units trimmed at least onece
+                           or changed classification at least once.</p> <p>
+                       units.UnitsChgCla=units which changed
+                           classification at least once (i.e. from group 1
+                           to group 3 ...).</p> <p>
+                       units.UnitsTrm=units trimmed at least once.</p><p>
+                       units.UnitsNeverAssigned=units never assigned
+                           (i.e. all those which have always been trimmed by
+                           first level or second level).</p></p></td></tr><tr valign="top"><td><code>y</code></td><td><p>original response y.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>original X matrix.</p></td></tr></table></p></div></div><div class="expandableContent"><div id="outputarg_varargout" class="clearfix"></div><h3 id="output_argument_varargout" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>varargout</code> &#8212;In jth
+                     position the structure which comes out from procedure
+                     tclustreg applied to alphaLik(j), with j =1, 2, .</span></a><span class="example_desc">outcell : cell of length length(alpha)</span></span></h3><div class="collapse"><p>..,
+                     length(alphaLik).</p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
+
+ This procedure extends to tclustreg the so called monitoring approach.</p> <p>
+ The phylosophy is to investigate how the results change as the trimming
+ proportion alpha reduces. This function enables us to monitor the change
+ in classification (measured by the ARI index) and the change in
+ regression coefficients and error variances (measured by the relative
+ squared euclidean distances). In order to make sure that consistent
+ labels are used for the groups, between two consecutive values of alpha,
+ we assign label r to a group if this group shows the smallest distance
+ with group r for the previous value of alpha. In otder to be consistent
+ along the different runs it is possible to specify through option
+ UnitsSameGroup the list of the units which must (whenever possible) have
+ a particular label.</p><p>
+
+
+</p></p></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p><p>Mayo-Iscar A. (2016), The joint role of trimming and constraints in
+ robust estimation for mixtures of gaussian factor analyzers,
+ "Computational Statistics & Data Analysis", Vol. 99, pp. 131-147.</p> <p>
+
+ Garcia-Escudero, L.A., Gordaliza, A., Greselin, F., Ingrassia, S. and</p></p></div><div><p><p>Mayo-Iscar, A. (2017), Robust estimation of mixtures of regressions with
+ random covariates, via trimming and constraints, "Statistics and
+ Computing", Vol. 27, pp. 377-402.</p> <p>
+
+ Garcia-Escudero, L.A., Gordaliza A., Mayo-Iscar A., and San Martin R.</p></p></div><div><p>(2010), Robust clusterwise linear regression through trimming,
+ "Computational Statistics and Data Analysis", Vol. 54, pp.3057-3069.</p></div><div><p>Cerioli, A. and Perrotta, D. (2014). Robust Clustering Around Regression
+ Lines with High Density Regions. Advances in Data Analysis and
+ Classification, Vol. 8, pp. 5-26.</p></div><div><p>Torti F., Perrotta D., Riani, M. and Cerioli A. (2018). Assessing Robust
+ Methodologies for Clustering Linear Regression Data, "Advances in Data
+ Analysis and Classification".</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustreg.html" itemprop="url"><span itemprop="name"><code>tclustreg</code></span></a></span> | <span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclusteda.html" itemprop="url"><span itemprop="name"><code>tclusteda</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
