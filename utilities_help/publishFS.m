@@ -696,10 +696,13 @@ function out=publishFS(file,varargin)
     FullPath=which('addFSDA2path');
     % extract the root directory of FSDA
     FSDAroot=fileparts(FullPath);
-  pwdfolder=pwd;
-  disp(pwdfolder)
-  [status,msg]=fileattrib(pwdfolder);
-  disp(msg)
+    pwdfolder=pwd;
+    disp(pwdfolder)
+    [status,msg]=fileattrib(pwdfolder);
+    disp(msg)
+    cd(FSDAroot)
+    pwdfolder=pwd;
+    disp('----------')
   out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
 %}
 
@@ -710,10 +713,17 @@ function out=publishFS(file,varargin)
   % current folder (pwd). 
   pwdfolder=pwd;
   disp(pwdfolder)
-   imagesDir=[pwd filesep 'images'];
+    FullPath=which('addFSDA2path');
+    % extract the root directory of FSDA
+    FSDAroot=fileparts(FullPath);
+    % Navigate to the main direcotry of FSDA
+    cd(FSDAroot)
+    pwdfolder=pwd;
+    disp(pwdfolder)
+   imagesDir=[pwd filesep 'myimages'];
    % Please note that if evalCode is true subfolder ,
-   % [(pwd) filesep images] must be created manually by the user
-   mkdir('images')
+   % [(pwd) filesep myimages] must be created manually by the user
+   mkdir('myimages')
    outputDir=pwd;
    out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
     'webhelp',true,'outputDir',outputDir,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
