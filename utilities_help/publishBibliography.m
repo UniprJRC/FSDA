@@ -144,12 +144,15 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
     force=false;
+    warning('off')
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,...
             'printOutputCell','Contents.m');
     [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
-            'write2file',false,'ErrWrngSeeAlso',false);
+            'write2file',false,'ErrWrngSeeAlso',false,'msg',false);
+    warning('on')
     % Create HTML file containing all the items which make up the bibliography
     fileBiblio=publishBibliography(FilesIncluded,OUT,'write2file',false);
+    
 %}
 
 %{
@@ -169,11 +172,13 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     ExclDir={'privateFS'  'datasets'};
     % Create list of folders which must have the personalized contents file
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
-    % Crete personalized contents file for main folder of FSDA
+    % Create personalized contents file for main folder of FSDA
     % and required subfolders.
     force=false;
+    warning('off')
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false);
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false,'msg',false);
+    warning('on')
     % Finally create bibliography file and put its content inside variable fileBiblio
     fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',true);
 %}
@@ -195,15 +200,17 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     ExclDir={'privateFS'  'datasets'};
     % Create list of folders which must have the personalized contents file
     list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
-    % Crete personalized contents file for main folder of FSDA
+    % Create personalized contents file for main folder of FSDA
     % and required subfolders.
     force=false;
+    warning('off')
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false);
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false,'msg',false);
+    warning('on')
     % Finally create bibliography file and put its content inside variable fileBiblio
     % output variable Citations shows where each refernce has been found.
    [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT,'write2file',false);
-    disp(Citations)
+   %  disp(Citations)
 %}
 
 
