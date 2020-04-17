@@ -185,14 +185,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     % htmlwriteFS with all the default options.
     % Create file FSRmdr.html starting from file FSRmdr.
     NameFile='FSRmdr.m';
-    IPS=mreadFS(NameFile);
-    % Note that this function uses routine strjoin and can be used just if
-    % MATLAB >=2013a
-    if verLessThan('matlab','8.1.0')
-        warning('version of MATLAB greater or equal than 2013a is needed')
-    else
-        [htmlstring, laste]=htmlwriteFS(IPS,'ErrWrngSeeAlso',false);
-    end
+    out=publishFS(NameFile,'ErrWrngSeeAlso',false,'evalCode',false);
 %}
 
 %{
@@ -201,14 +194,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     % display detailed information about the Input, Output and Optional
     % arguments.
     NameFile='FSRmdr.m';
-    IPS=mreadFS(NameFile);
-    % Note that this function uses routine strjoin and can be used just if
-    % MATLAB >=2013a
-    if verLessThan('matlab','8.1.0')
-        warning('version of MATLAB greater or equal than 2013a is needed')
-    else
-        [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed','ErrWrngSeeAlso',false,'evalCode',false);
-    end
+    out=publishFS(NameFile,'Display','iter-detailed','ErrWrngSeeAlso',false,'evalCode',false);
 %}
 
 
