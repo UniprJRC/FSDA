@@ -401,6 +401,9 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       option equalweights is set to 0, then $\pi_j'=1$, $j=1, ...,
 %                       k$.
 %
+%          out.NlogL = Scalar. -2 log likelihood. In presence of full
+%                       convergeneve -out.NlogL/2 is equal to out.obj.
+%
 %   out.equalweights  = Logical. It is true if in the clustering procedure
 %                       we (ideally) assumed equal cluster weights
 %                       else it is false if we allowed for different
@@ -412,6 +415,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %          out.fullsol= Column vector of size nsamp which contains the
 %                       value of the objective function at the end of the
 %                       iterative process for each extracted subsample.
+%
 %
 %              out.Y  = Original data matrix Y. The field is present only
 %                       if option Ysave is set to 1.
@@ -1527,7 +1531,7 @@ for i=1:nselected
     
 end
 notconver=noconv/nselected;
-if msg==1
+if msg==2
     if notconver>0.1
         disp('------------------------------')
         disp(['Warning: Number of subsets without convergence equal to ' num2str(100*notconver) '%'])
