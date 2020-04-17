@@ -207,7 +207,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     if verLessThan('matlab','8.1.0')
         warning('version of MATLAB greater or equal than 2013a is needed')
     else
-        [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed','ErrWrngSeeAlso',false);
+        [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed','ErrWrngSeeAlso',false,'evalCode',false);
     end
 %}
 
