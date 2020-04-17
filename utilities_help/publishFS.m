@@ -3372,7 +3372,7 @@ if evalCode==true
         
         % Check that subfolder tmp exists if not it is necessary to create
         % it.
-        if exist('tmp','file') ~= 7
+        if exist('tmp','dir') ~= 7
             % ... code 7 refers to directory
             mkdir('tmp');
         end
