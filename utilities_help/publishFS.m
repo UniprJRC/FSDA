@@ -698,12 +698,10 @@ function out=publishFS(file,varargin)
     FSDAroot=fileparts(FullPath);
     pwdfolder=pwd;
     disp(pwdfolder)
-    [status,msg]=fileattrib(pwdfolder);
-    disp(msg)
+    % Navigate into the main root of FSDA
     cd(FSDAroot)
     pwdfolder=pwd;
-    disp('----------')
-  out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
+    out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
 %}
 
 
@@ -711,8 +709,7 @@ function out=publishFS(file,varargin)
   % Option webhelp with outputDir and imagesDir.
   % Create HTML file for the WEB with Google Search and embedded images in
   % current folder (pwd). 
-  pwdfolder=pwd;
-  disp(pwdfolder)
+    % Make sure you are in the main root of FSDA
     FullPath=which('addFSDA2path');
     % extract the root directory of FSDA
     FSDAroot=fileparts(FullPath);
