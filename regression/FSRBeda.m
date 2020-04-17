@@ -258,7 +258,7 @@ function [out] = FSRBeda(y, X, varargin)
     n=size(hprice,1);
     y=hprice(:,1);
     X=hprice(:,2:5);
-    [out]=FSRBeda(y,X)
+    [out]=FSRBeda(y,X);
 %}
 
 %{
@@ -295,7 +295,7 @@ function [out] = FSRBeda(y, X, varargin)
     R(5,5)=.6;
     R=inv(R);
     bayes.R=R;
-    [out]=FSRBeda(y,X,'bayes',bayes)    
+    [out]=FSRBeda(y,X,'bayes',bayes);    
 %}
 
 %{
@@ -680,7 +680,7 @@ function [out] = FSRBeda(y, X, varargin)
     % Add multiple title
     suplabel(['Bank profit data; forward plots in the interval ['...
         num2str(xlimL) ',' num2str(xlimU) ...
-        ']  of HPD regions for \beta and \sigma^2'],'t')
+        ']  of HPD regions for \beta and \sigma^2'],'t');
 %}
 
 %% Beginning of code 

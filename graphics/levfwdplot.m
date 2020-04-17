@@ -382,7 +382,7 @@ function plotopt=levfwdplot(out,varargin)
     standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
-    levfwdplot(out,'standard',standard)
+    levfwdplot(out,'standard',standard);
 %}
 %
 %{
@@ -405,7 +405,7 @@ function plotopt=levfwdplot(out,varargin)
     fground.LineWidth=3;
     % Produce a monitoring residuals plot in which labels are put for units
     % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
-    levfwdplot(out,'fground',fground)
+    levfwdplot(out,'fground',fground);
 %}
 %
 %{
@@ -420,7 +420,7 @@ function plotopt=levfwdplot(out,varargin)
     [out]=FSReda(y,X,out.bs);
     fground = struct;
     fground.LineWidth=3;
-    levfwdplot(out,'fground',fground,'xground','res')
+    levfwdplot(out,'fground',fground,'xground','res');
 %}
 %
 %{
@@ -438,7 +438,7 @@ function plotopt=levfwdplot(out,varargin)
     % Trajectories whose leverage is always between -btresh and +bthresh
     % are shown as specified in bground.bstyle
     bground.bstyle='hide';
-    levfwdplot(out,'bground',bground)
+    levfwdplot(out,'bground',bground);
 %}
 %
 %
@@ -497,7 +497,7 @@ function plotopt=levfwdplot(out,varargin)
     % Example of the use of brush using selection with circular tool
     databrush=struct;
     databrush.selectionmode='Brush';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -514,7 +514,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -533,7 +533,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.selectionmode='Rect';
     databrush.Label='on';
     databrush.RemoveLabels='off';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %   All previuos examples used a non persistent brushing (that is brushing
@@ -556,7 +556,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.Label='on';
     databrush.RemoveLabels='off';
     databrush.persist='off';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -576,7 +576,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.Label='on';
     databrush.RemoveLabels='on';
     databrush.persist='on';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -595,7 +595,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='on';
     databrush.persist='on';
     databrush.bivarfit='0';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -614,7 +614,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='1';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -634,7 +634,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='2';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -653,7 +653,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='i4';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -672,7 +672,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.multivarfit='1';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -693,7 +693,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.multivarfit='2';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -717,7 +717,7 @@ function plotopt=levfwdplot(out,varargin)
     databrush.RemoveLabels='on';
     databrush.persist='on';
     databrush.multivarfit='2';
-    levfwdplot(out,'databrush',databrush)
+    levfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -732,7 +732,7 @@ function plotopt=levfwdplot(out,varargin)
     plotopt=levfwdplot(out,'msg',2)
     % In order to reuse the options which have been stored inside plotopt
     % use the following sintax
-    % levfwdplot(out,plotopt{:})
+    % levfwdplot(out,plotopt{:});
 %}
 
 
