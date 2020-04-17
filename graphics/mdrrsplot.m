@@ -250,7 +250,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     X=loyalty(:,1:3);
     [out]=FSRmdrrs(y,X);
    %In this case the resuperimposed envelope is based on n-2 observations
-   mdrplot(out,'envm',length(out.y)-2);
+   mdrrsplot(out,'envm',length(out.y)-2);
 
 %}
 
