@@ -1,5 +1,5 @@
 function out=mreadFS(file,varargin)
-%Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files
+%Enables to create a structure with InputArgs/OptArgs/OutArgs ... from .m function files (OBSOLETE FUNCTION REPLACED BY publishFS.m)
 %
 %<a href="matlab: docsearchFS('mreadFS')">Link to the help function</a>
 %
@@ -574,7 +574,7 @@ function out=mreadFS(file,varargin)
   % Create output structure out starting from file FSRmdr and
   % display detailed information about the Input, Output and Optional
   % arguments.
-  out=publishFS('FSRmdr','Display','iter-detailed')
+  out=publishFS('FSRmdr','Display','iter-detailed','ErrWrngSeeAlso',false);
 %}
 
 
@@ -914,7 +914,6 @@ if ~isempty(OptArgsvvarargin)
 end
 
 [commasIn] = regexp(InputArgs,',');
-j=1;
 
 % nTOTargin= total number of input arguments (requested + optional),
 % excluding name-value pairs arguments

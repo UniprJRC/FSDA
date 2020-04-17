@@ -1,10 +1,12 @@
 function [outstring,laste]=htmlwriteFS(IPS,varargin)
-%htmlwriteFS enables to create automatic HELP FILES from a specific MATLAB structure created with function mreadFS.m
+%htmlwriteFS is an obsolete function which will be removed in future releases. Use publishFS.m instead.
 %
 %<a href="matlab: docsearchFS('htmlwriteFS')">Link to the help function</a>
 %
 %   htmlwriteFS creates HTML files a MATLAB structure created
-%   with function mreadFS.m
+%   with function mreadFS.m. Note that htmlwriteFS and mreadFS.m are
+%   obsolete and will be removed in future releases. USE publishFS.m
+%   instead.
 %
 % Required input arguments:
 %
@@ -138,11 +140,22 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
 %             that is html file is created
 %             Example - 'write2file','false'
 %             Data Types - Boolean
+%ErrWrngSeeAlso: Option to check links in the see also part. Logical.
+%            If ErrWrngSeeAlso is true publishFS checks whether the strings
+%            inside see also are valid files and puts an hyperlink to the
+%            corresponding HTML file. If publishFS cannot find the files
+%            exits the procedure with an error. If ErrWrngSeeAlso is false
+%            no check is done and empty links are produced. Use
+%            ErrWrngSeeAlso set to false if the purpose is just to check
+%            the code (e.g. in external environment like TRAVIS) and not to
+%            buid the help system. Default value of ErrWrngSeeAlso is true.
+%             Example - 'ErrWrngSeeAlso',false
+%             Data Types - logical
 %
 % Output:
 %
 % outstring : string wchich contains the processed HRML file. String.
-%             String containing parsed html file. 
+%             String containing parsed html file.
 %  laste   : Information about errors. MException class. Object of class
 %            MException which provides information about last error in
 %            executing the examples. If the procedure runs without errors
@@ -178,7 +191,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     if verLessThan('matlab','8.1.0')
         warning('version of MATLAB greater or equal than 2013a is needed')
     else
-        [htmlstring, laste]=htmlwriteFS(IPS);
+        [htmlstring, laste]=htmlwriteFS(IPS,'ErrWrngSeeAlso',false);
     end
 %}
 
@@ -194,7 +207,7 @@ function [outstring,laste]=htmlwriteFS(IPS,varargin)
     if verLessThan('matlab','8.1.0')
         warning('version of MATLAB greater or equal than 2013a is needed')
     else
-        [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed');
+        [htmlstring, laste]=htmlwriteFS(IPS,'Display','iter-detailed','ErrWrngSeeAlso',false);
     end
 %}
 
@@ -222,9 +235,11 @@ FileWithFullPath=which('docsearchFS.m');
 outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
 imagesDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' fsep 'images'];
 
+ErrWrngSeeAlso=true;
 
 if nargin>1
-    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,'imagesDir',imagesDir,'write2file',true);
+    options=struct('evalCode',evalCode,'Display',Display,'outputDir',outputDir,...
+        'imagesDir',imagesDir,'write2file',true,'ErrWrngSeeAlso',ErrWrngSeeAlso);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -246,6 +261,7 @@ if nargin>1
     write2file=options.write2file;
     outputDir=options.outputDir;
     Display=options.Display;
+    ErrWrngSeeAlso=options.ErrWrngSeeAlso;
     checkimageDir = strcmp(UserOptions,'imagesDir');
     checkoutputDir = strcmp(UserOptions,'outputDir');
     
@@ -852,11 +868,11 @@ for i=1:nTOTargin
     
     if ~isempty(strfind(listInpArgs{i,3},'tructure'))
         FormattedInpArg=formatHTMLtable(listInpArgs{i,8});
-            if ~isempty(listInpArgs{i,4})
-                FormattedInpArg=[listInpArgs{i,4} '<p>'  FormattedInpArg '</p>'];
-            end
+        if ~isempty(listInpArgs{i,4})
+            FormattedInpArg=[listInpArgs{i,4} '<p>'  FormattedInpArg '</p>'];
+        end
     else
-         FormattedInpArg=listInpArgs{i,4};
+        FormattedInpArg=listInpArgs{i,4};
     end
     reqargs=[reqargs sprintf(['<div class="expandableContent">\r'...
         ' <div id="inputarg_' listInpArgs{i,1} '" class="clearfix">\r'...
@@ -1185,32 +1201,36 @@ for i=1:nseealso
     
     str=which(Seealsoitem);
     
-    if isempty(str)
-        error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
-    else
-        % Check if the reference is towards a file present in the FSDA toolbox
-        FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
-        
-        % Create the string which contains the 'destination' of the hyperlink
-        % DestHyperLink is the 'destination' of the hyperlink
-        if ~isempty(FSDAtoolboxfile) % reference is towards a function of the FSDA toolbox
-            DestHyperLink=[Seealsoitem '.html'];
-        else % reference is towards a MATLAB function or a function of another toolbox
-            pathdocroot=docroot;
-            % Find path of .html documentation file
-            pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+    if ErrWrngSeeAlso == true
+        if isempty(str)
+            error('FSDA:publishFS:WrngSeeAlso',['Wrong reference in "See Also:" cannot find a reference to ' Seealsoitem ]);
+        else
+            % Check if the reference is towards a file present in the FSDA toolbox
+            FSDAtoolboxfile=regexpi(str,'FSDA', 'once');
             
-            if isempty(pathExtHelpFile)
-                error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+            % Create the string which contains the 'destination' of the hyperlink
+            % DestHyperLink is the 'destination' of the hyperlink
+            if ~isempty(FSDAtoolboxfile) % reference is towards a function of the FSDA toolbox
+                DestHyperLink=[Seealsoitem '.html'];
+            else % reference is towards a MATLAB function or a function of another toolbox
+                pathdocroot=docroot;
+                % Find path of .html documentation file
+                pathExtHelpFile=findFile(pathdocroot,'InclFiles',[Seealsoitem '.html']);
+                
+                if isempty(pathExtHelpFile)
+                    error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
+                end
+                pathExtHelpFile=char(pathExtHelpFile{1});
+                addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
+                
+                % replace '\' with '/'
+                addSubPath=strrep(addSubPath,'\','/') ;
+                % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
+                DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
             end
-            pathExtHelpFile=char(pathExtHelpFile{1});
-            addSubPath=pathExtHelpFile(length(pathdocroot)+2:end);
-            
-            % replace '\' with '/'
-            addSubPath=strrep(addSubPath,'\','/') ;
-            % DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '.html''))'];
-            DestHyperLink=['matlab:web(fullfile(docroot,''' addSubPath '''))'];
         end
+    else
+        DestHyperLink='';
     end
     
     
@@ -1439,22 +1459,22 @@ outstring=([titl metacontent2015b sitecont sintaxhtml sintaxclose description  .
 %
 %
 if write2file
-file1ID=fopen([outputDir fsep name '.html'],'w');
-
-if file1ID==-1
-
-    if ismac || isunix
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
-    elseif ispc
-        outputDir=strrep(outputDir,'\','\\');
-        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
-    else
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    file1ID=fopen([outputDir fsep name '.html'],'w');
+    
+    if file1ID==-1
+        
+        if ismac || isunix
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        elseif ispc
+            outputDir=strrep(outputDir,'\','\\');
+            errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+        else
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        end
+        
+        error('FSDA:publishFS:WrngOutFolder',errmsg);
+        
     end
-
-    error('FSDA:publishFS:WrngOutFolder',errmsg);
-
-end
 end
 
 %% EXECUTE THE EXAMPLES WHICH START WITH SYMBOLS %%
@@ -1469,7 +1489,7 @@ if evalCode==true
             numexToExec=numexToExec+1;
         end
     end
-
+    
     numextraexToExec=0;
     if ~isempty(listExtraEx)
         for i=1:size(listExtraEx,1)
@@ -1479,52 +1499,52 @@ if evalCode==true
             end
         end
     end
-
+    
     if numextraexToExec+numexToExec>0
         % tmp .file containing all the .m examples will be created. It will be
         % created in subfolder tmp of helpfiles and then automatically removed.
         % This subfolder will be added to put for this session
         nametmp=[name 'tmp.m'];
         % nametmp=[name '.m'];
-
+        
         fullPathToScript=[outputDir fsep 'tmp' fsep nametmp];
         % fullPathToScript=[pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp' fsep nametmp];
-
-
+        
+        
         filetmp=fopen(fullPathToScript,'w');
         addpath([outputDir fsep 'tmp'])
         % addpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
         addpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
-
+        
         %        addpath([pathstr fileseparator '\helpfiles\FSDA\tmp'])
         %        addpath([pathstr '\utilities\privateFS'])
-
+        
         % Replace < and > HTML symbols with < and >
         ExToExec=strrep(ExToExec,'&lt;','<');
         ExToExec=strrep(ExToExec,'&gt;','>');
-
+        
         fprintf(filetmp,'%s',ExToExec);
         fclose(filetmp);
-
+        
         options=struct;
         options = supplyDefaultOptions(options);
         options.codeToEvaluate=[name 'tmp'];
         options.createThumbnail=0;
         [dom,cellBoundaries] = m2mxdom(ExToExec);
         prefix=name;
-
-
+        
+        
         % file='C:\Users\MarcoAW\D\matlab\FSDA\examples\tmp.m';
         [dom,laste] = evalmxdom(fullPathToScript,dom,cellBoundaries,prefix,imagesDir,outputDir,options);
         %
-
+        
         ext='html';
         AbsoluteFilename = fullfile(outputDir,[prefix '.' ext]);
         [xResultURI]=xslt(dom,options.stylesheet,AbsoluteFilename);
-
+        
         % Now remove the temporary .m file with the examples which had been created
         delete(fullPathToScript)
-
+        
         % load html output in a string and extract the parts which are required
         if ismac || isunix
             fileHTML = fopen(xResultURI(6:end), 'r+');
@@ -1534,13 +1554,13 @@ if evalCode==true
             fileHTML = fopen(xResultURI(6:end), 'r+');
             disp('Cannot recognize platform: I use unix as default')
         end
-
+        
         % Insert the file into fstring
         fstringHTML=fscanf(fileHTML,'%c');
-
+        
         totex=numexToExec+numextraexToExec;
         texttoadd=cell(totex,1);
-
+        
         fHTML=regexp(fstringHTML,'<h2>Ex');
         if isempty(fHTML)
             fHTML=regexp(fstringHTML,'<pre class="codeoutput">','once');
@@ -1549,7 +1569,7 @@ if evalCode==true
         if isempty(fHTML)
             fHTML=regexp(fstringHTML,'<img vspace','once');
         end
-
+        
         % if fHTML is still empty search codeinput
         if isempty(fHTML)
             fHTML=regexp(fstringHTML,'<pre class="codeinput">','once');
@@ -1559,10 +1579,10 @@ if evalCode==true
                 error('FSDA:publishFS:WrngOutFolder',errmsg)
             end
         end
-
-
-
-
+        
+        
+        
+        
         for j=1:totex
             if j<totex && totex>1
                 fcand=fstringHTML(fHTML(j):fHTML(j+1)-1);
@@ -1570,7 +1590,7 @@ if evalCode==true
                 fendHTML=regexp(fstringHTML,'<p class="footer">','once');
                 fcand=fstringHTML(fHTML(end):fendHTML-1);
             end
-
+            
             % in fcand search the two following strings
             fcode=regexp(fcand,'<pre class="codeoutput">','once');
             if isempty(fcode)
@@ -1584,44 +1604,44 @@ if evalCode==true
                 texttoadd{j}=fcand(min(fcode,fimg):end);
             end
         end
-
+        
         % Now insert the strings which have been stored in cell texttoadd in the
         % appropriate position of outstring
         a=cell2mat(listEx(:,4));
         seqa=1:length(a);
         sel=seqa(a==1);
-
+        
         ij=1;
-
+        
         for i=1:length(sel)
             % Process string listEx{i,1}
             listExi=listEx{sel(i),1};
-
+            
             % Add symbol \ before special characters in string listExi
             % otherwise regexp will not  find listExi inside
             % outstring
             listExi=SpecialCharacters(listExi);
-
-
+            
+            
             iniout=regexp(outstring,listExi);
-
-
+            
+            
             if length(iniout)<2
                 errmsg= [' Title of example \n''' listExi '''\n could not be found \n'...
                     'Probably because the string contains special characters\n' ...
                     'which cannot be interpreted by MATLAB function regexp'];
                 error('FSDA:publishFS:WrngOutFolder',errmsg)
             end
-
+            
             finout=regexp(outstring,'</pre>');
             % finout=finout(finout>iniout(2));
-
+            
             % Make sure that string '</pre>' which has been found is after
             % the i-th instance of M.gif
             posextoinclude=regexp(outstring,'M\.gif');
             finout=finout(finout>posextoinclude(ij));
             ij=ij+1;
-
+            
             % outstring(finout:finout+11)
             % inclplint = point where output of the example must be included
             inclpoint=finout(1)+18;
@@ -1629,21 +1649,21 @@ if evalCode==true
             incl=texttoadd{i};
             outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
         end
-
+        
         if ~isempty(listExtraEx)
             a=cell2mat(listExtraEx(:,4));
             seqa=1:length(a);
             sel=seqa(a==1);
-
+            
             for i=1:length(sel)
                 % Process string listEx{i,1}
                 listExi=listExtraEx{sel(i),1};
-
+                
                 % Add symbol \ in before special characters in string listExi
                 % otherwise regexp will not  find listExi inside
                 % outstring
                 listExi=SpecialCharacters(listExi);
-
+                
                 iniout=regexp(outstring,listExi);
                 if length(iniout)>2
                     disp(['Duplicate name for: ' listExi ' found'])
@@ -1656,16 +1676,16 @@ if evalCode==true
                     error('FSDA:publishFS:WrngEx',errmsg)
                 else
                 end
-
+                
                 % iniout=iniout(1);
-
+                
                 finout=regexp(outstring,'</pre>');
                 % finout=finout(finout>iniout);
-
+                
                 posextoinclude=regexp(outstring,'M\.gif');
                 finout=finout(finout>posextoinclude(ij));
                 ij=ij+1;
-
+                
                 % outstring(finout:finout+11)
                 % inclplint = point where output of the example must be included
                 inclpoint=finout(1)+18;
@@ -1674,16 +1694,16 @@ if evalCode==true
                 outstring=[outstring(1:inclpoint) incl outstring(inclpoint+1:end)];
             end
         end
-
+        
         close all
-
+        
         % Remove folder which had temporarily added to path
         %         rmpath([pathstr '\helpfiles\FSDA\tmp'])
         %         rmpath([pathstr '\utilities\privateFS'])
-
+        
         %rmpath([pathstr fsep 'helpfiles' fsep 'FSDA' fsep 'tmp'])
-
-
+        
+        
         rmpath([outputDir fsep 'tmp'])
         rmpath([pathFSDAstr fsep 'utilities' fsep 'privateFS'])
     else
@@ -1696,8 +1716,8 @@ end
 
 %% WRITE string outstring into final HTML file
 if write2file
-fprintf(file1ID,'%s',outstring);
-fclose('all');
+    fprintf(file1ID,'%s',outstring);
+    fclose('all');
 end
 
 
@@ -1879,43 +1899,43 @@ cloTable='</table>';
 % fieldnames will go into the first column of the table
 % the content of the field names will fo into the second column of
 % the table
-    
-        
-    % rowtodel = vector which contains the duplicate rows of
-    % listStruArgs which have to be deleted
-    inisel=1:size(listStructureArgs,1);
-    
-       preamble='Structure which contains the following fields';
-           preambleHTML=formatHTMLwithMATHJAX(preamble);
 
 
-    Tablehtml='';
-    for k=inisel % length(ini)
-        
-        descrlong=listStructureArgs{k,2};
-        
-        descrlongHTML=formatHTMLwithMATHJAX(descrlong);
-        
-        % listOutArgs{k,2}
-        Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
-            '<td><code>' listStructureArgs{k,1} '</code></td>\r'...
-            '<td>\r'...
-            '<p>']) descrlongHTML  sprintf(['</p>\r'...
-            '</td>\r'...
-            '</tr>'])];
-    end
-   
-       
+% rowtodel = vector which contains the duplicate rows of
+% listStruArgs which have to be deleted
+inisel=1:size(listStructureArgs,1);
+
+preamble='Structure which contains the following fields';
+preambleHTML=formatHTMLwithMATHJAX(preamble);
+
+
+Tablehtml='';
+for k=inisel % length(ini)
+    
+    descrlong=listStructureArgs{k,2};
+    
+    descrlongHTML=formatHTMLwithMATHJAX(descrlong);
+    
+    % listOutArgs{k,2}
+    Tablehtml=[Tablehtml sprintf(['<tr valign="top">\r'...
+        '<td><code>' listStructureArgs{k,1} '</code></td>\r'...
+        '<td>\r'...
+        '<p>']) descrlongHTML  sprintf(['</p>\r'...
+        '</td>\r'...
+        '</tr>'])];
+end
+
+
 %     % Add the Remark after the table, if it is present
 %     if ~isempty(posREMARK)
 %         descrREMARK=descriinput(posREMARK:end);
 %         descrREMARKHTML=formatHTMLwithMATHJAX(descrREMARK);
-%         
+%
 %         descrioutput=[preambleHTML iniTable Tablehtml cloTable '<p>' descrREMARKHTML '</p>'];
 %     else
-        listStructureArgsFormatted=[preambleHTML iniTable Tablehtml cloTable];
+listStructureArgsFormatted=[preambleHTML iniTable Tablehtml cloTable];
 %     end
-    
+
 
 end
 
