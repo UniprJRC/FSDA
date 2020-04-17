@@ -82,7 +82,8 @@ function out = lga(X,k,varargin)
 % Examples:
 %
 %{
-    %% lga with all default options.
+    %% lga with all default options. 
+    rng(123); % this leads to ROSS = 7.2172;
     X=load('X.txt');
     out=lga(X,3);
 %}
@@ -129,9 +130,9 @@ for i=1:2:length(varargin)
     options.(varargin{i})=varargin{i+1};
 end
 
-biter=options.biter;
-niter=options.niter;
-silent=options.silent;
+biter  = options.biter;
+niter  = options.niter;
+silent = options.silent;
 
 if ~silent
     disp(['LGA Algorithm k =', num2str(k), ' biter =', num2str(biter), ...
@@ -145,18 +146,13 @@ if stand
     X = bsxfun(@rdivide, X, sigma);
 end
 
-% hpcoef is a a 3D array of size
-% number of cluster-times-number of variables+1-times-biter
-% each row is a hyperplane
+% hpcoef is a a 3D array of size. number of cluster-times-number of
+% variables+1-times-biter. Each row is a hyperplane
 hpcoef=zeros(k,d+1,biter);
 
 for j=1:biter
     % Choose starting clusters
     clindex=reshape(randsample(1:n,k*d),k,d);
-    %     clindex(1,:)=[191 185];
-    %     clindex(2,:)=[51, 27];
-    %     clindex(3,:)=[8, 35];
-    
     for i=1:k
         hpcoef(i,:,j)=lgaorthreg(X(clindex(i,:),:));
     end
@@ -222,7 +218,6 @@ if showall
     ROSS = outputs(n+2,:);
     hp =nan;
 else
-    
     % Fit the best hyerplane(s) with ROSS
     hp =nan(k,d+1);
     for i=1:k
@@ -244,26 +239,16 @@ out.biter=biter;
 out.niter=niter;
 out.scaled=stand;
 out.k=k;
+out.alpha=0; % added for consistency with rlga: it is always 0 for lga;
 out.class='lga';
 
-plots=options.plots;
-
-if plots
-    if d==2
-        % spmplot(X,cluster)
-        gscatter(X(:,1),X(:,2),out.cluster);
-        v=axis';
-        hold('on');
-        for i=1:k
-            a= hp(i, 3)/hp(i, 2);
-            b= -hp(i, 1)/hp(i, 2);
-            plot(v(1:2),a+b*v(1:2));
-        end
-    else
-        spmplot(X,out.cluster);
-    end
-    
+if options.plots
+    % the plot requires the data X, the hyperplan information hp, and the
+    % output structure of lga or rlga
+    linear_grouping_plot(X,hp,out);
 end
+
+%% inner functions
 
     function yorthreg=lgaorthreg(X)
         % Perform orthogonal regression.
@@ -308,8 +293,8 @@ end
                 converged = true;
             end
         end
-        ROSS=lgacalculateROSS(hpcoef, xsc, n, d, groups);
-        outputsj=[groups;converged;ROSS];
+        ROSSin=lgacalculateROSS(hpcoef, xsc, n, d, groups);
+        outputsj=[groups;converged;ROSSin];
         
     end
 
@@ -330,25 +315,20 @@ end
         seq=(1:n)';
         ROSS=sum(dist((groups-1) * n + seq));
         
-        % Next lines are alternative ways to extract the elements of dist
-        % dist(sub2ind(size(dist), indici(:,1), indici(:,2)))
-        % indici=[(1:n)' groups];
-        % dist((indici(:,2)-1) * size(dist,1) + indici(:,1))
-        % dist((groups-1) * n + seq)
     end
 
 
-    function xbest = lgaCheckUnique(x)
+    function xbest = lgaCheckUnique(x) %#ok<DEFNU>
         % function used above to check whether there is more than one minimum
         function zfin=CheckUniqueRand (z)
             zfin=sum(sum(z.^2))-0.5*(sum((sum(z,2)').^2)+ sum((sum(z,1)').^2));
         end
         
-        d =size(x,2);
+        dd =size(x,2);
         
-        index = true(d,1);
-        for ii=1:(d-1)
-            for jj =(ii+1):d
+        index = true(dd,1);
+        for ii=1:(dd-1)
+            for jj =(ii+1):dd
                 y = crosstab(x(:,ii), x(:,jj));
                 z = CheckUniqueRand(y);
                 if (z==0)
