@@ -144,23 +144,24 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
     force=false;
-    [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
+    [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,...
+            'printOutputCell','Contents.m');
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
+            'write2file',false,'ErrWrngSeeAlso',false);
     % Create HTML file containing all the items which make up the bibliography
     fileBiblio=publishBibliography(FilesIncluded,OUT,'write2file',false);
 %}
 
 %{
-    % Skip_example
     % Example of use of option outputDir.
-    % We assume that path outputPath exists and that inside this path there
-    % is template file
-    outputPath='C:\temp';
+    % Create bibiography.html in the main root of FSDA.
     FileName='addFSDA2path';
     FullPath=which(FileName);
     %Navigate to the main folder of FSDA
     FSDAroot=fileparts(FullPath);
     cd(FSDAroot)
+    % Specify file path where bibliography file has to be created.
+    outputPath=pwd;
     % Specify subfolders of main folders for which contents file has to be
     % created
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
@@ -172,8 +173,9 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % and required subfolders.
     force=false;
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
-    fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',false);
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false);
+    % Finally create bibliography file and put its content inside variable fileBiblio
+    fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',true);
 %}
 
 %{
@@ -197,8 +199,10 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
     % and required subfolders.
     force=false;
     [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
-    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
-    [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT,'write2file',false);
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false,'ErrWrngSeeAlso',false);
+    % Finally create bibliography file and put its content inside variable fileBiblio
+    % output variable Citations shows where each refernce has been found.
+   [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT,'write2file',false);
     disp(Citations)
 %}
 
@@ -227,8 +231,10 @@ end
 FileWithFullPath=which('docsearchFS.m');
 [pathFSDAstr]=fileparts(FileWithFullPath);
 
+inputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+
 if webhelp == false
-    outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA'];
+    outputDir=inputDir;
 else
     outputDir=[pathFSDAstr fsep 'helpfiles' fsep 'FSDAweb'];
 end
@@ -329,14 +335,15 @@ strInsert = [strInsert '<p><hr /> <center><i>This page has been automatically ge
     ' by our routine <a href="publishBibliography.html">publishBibliography</a></i> </center></p>' newline];
 
 
-%% Open input bibliographyEmpty.html file, put it in a string and do a series of preliminary operations
-FileWithFullPath=[outputDir fsep 'bibliographyEmpty.html'];
+%% Open input bibliographyEmpty.html file put it in a string and do a series of preliminary operations
+% bibliographyEmpty.html is in (FSDAroot) filesep helpfiles filesep FSDA
+FileWithFullPath=[inputDir fsep 'bibliographyEmpty.html'];
 
 fileID = fopen(char(FileWithFullPath), 'r');
 
 if fileID==-1
-    disp(['Output path: '''  char(outputDir) ''' must  contain a file named  ''bibliographyEmpty.html'''])
-    error('FSDA:publishBibliography:WrongPath','Output path does not have the input file')
+    disp(['Path: '''  inputDir ''' must  contain a file named  ''bibliographyEmpty.html'''])
+    error('FSDA:publishBibliography:WrongPath','Input  template file not found')
 end
 
 % Insert the file into fstring
