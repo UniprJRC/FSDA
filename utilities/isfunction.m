@@ -43,13 +43,13 @@ function [check , location] = isfunction(funstr)
 % Examples:
 %{
     % check if a function of the statistical toolbox exists.
-    [check , location] = isfunction('regress')
+    [check , location] = isfunction('regress');
 %}
 
 
 %{
     % check if a function of the FSDA toolbox exists.
-    [check , location] = isfunction('FSR')
+    [check , location] = isfunction('FSR');
 %}
 
 

@@ -70,7 +70,7 @@ function list = findDir(root,varargin)
     % findDir with optional arguments.
     FullPath=which('findDir');
     root=FullPath(1:end-length('findDir.m')-1);
-    list = findDir(root,'InclDir','datasets')
+    list = findDir(root,'InclDir','datasets');
 %}
 
 %{
@@ -81,7 +81,7 @@ function list = findDir(root,varargin)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
+    list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir);
 %}
 
 %% Beginning of code

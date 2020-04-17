@@ -149,7 +149,7 @@ function h  = carbikeplot(RelSol,varargin)
     NumberOfBestSolutions=9;
     [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',NumberOfBestSolutions,'ThreshRandIndex',ThreshRandIndex);
     % Car-bike plot to show what are the most relevant solutions
-    carbikeplot(outCLACLA)
+    carbikeplot(outCLACLA);
 
 %}
 
@@ -162,7 +162,7 @@ function h  = carbikeplot(RelSol,varargin)
     disp('Best solutions using MIXMIX')
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',6);
     % Produce the car-bike plot
-    carbikeplot(outMIXMIX)
+    carbikeplot(outMIXMIX);
 %}
 
 
