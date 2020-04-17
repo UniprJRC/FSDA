@@ -287,6 +287,7 @@ end
 name=IPS.titl;
 purpose=IPS.purpose;
 gendesc=IPS.description;
+ErrWrngSeeAlso=IPS.ErrWrngSeeAlso;
 
 %% Add title
 
