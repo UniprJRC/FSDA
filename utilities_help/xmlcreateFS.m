@@ -95,9 +95,9 @@ if nargin>1
     StartColumnEx=options.StartColumnEx;
 end
 
-
+ErrWrngSeeAlso=false;
 % out=publishFS('tclust','evalCode',false,'write2file',false);
-out=publishFS(FileName,'evalCode',false,'write2file',false);
+out=publishFS(FileName,'evalCode',false,'write2file',false,'ErrWrngSeeAlso',ErrWrngSeeAlso);
 
 %% Format and clean description
 if ~isempty(out.description)
