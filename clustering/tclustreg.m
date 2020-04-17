@@ -191,16 +191,16 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            this case, each element $we_i$ of vector \texttt{we} is a
 %            Bernoulli random variable with probability of success
 %            $\mbox{pdfe}_{ig}$. In the clustering framework this is done
-%            under the constraint that no group is empty. 
+%            under the constraint that no group is empty.
 %         -  If \texttt{wtrim} = 4, trimming is done with the tandem approach
 %            of Cerioli and Perrotta (2014).
 %         -  If \texttt{wtrim} = 5 (TO BE IMPLEMENTED)
-%          -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)  
+%          -  If \texttt{wtrim} = 6 (TO BE IMPLEMENTED)
 %          If wtrim is a structure, it is composed by:
 %         -  wtrim.wtype_beta: the weight for the beta estimation. It can be
 %           0, 1, 2, 3, as in the case of wtrim scalar
 %         -  wtrim.wtype_obj: the weight for the objective function. It can
-%         be: 
+%         be:
 %             - '0': no weights in the objective function
 %             - 'Z': Bernoulli random variable with probability of success
 %            $\mbox{pdfe}_{ig}$
@@ -220,7 +220,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %       k_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of clusters for density mixtures. Scalar.
 %                    This is a guess on the number of data groups. Default
-%                    value is 5.             
+%                    value is 5.
 %            Example - 'k_dens_mixt',6
 %            Data Types - single|double
 %
@@ -229,7 +229,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                    Example - 'nsamp_dens_mixt',1000
 %                    Data Types - double
 %
-%refsteps_dens_mixt: in the Poisson/Exponential mixture density function, 
+%refsteps_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of refining iterations. Scalar. Number of refining
 %                    iterations in each subsample.  Default is 10.
 %                    Example - 'refsteps_dens_mixt',15
@@ -237,7 +237,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %  method_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    distribution to use. Character. If method_dens_mixt =
-%                    'P', the Poisson distribution is used, with  
+%                    'P', the Poisson distribution is used, with
 %                    method_dens_mixt = 'E', the Exponential distribution
 %                    is used. Default is 'P'.
 %                    Example - 'method_dens_mixt','E'
@@ -317,7 +317,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                       2nd col = number of observations in each cluster;
 %                       3rd col = percentage of observations in each
 %                       cluster;
-%                       Remark: 0 denotes thinned units (if the weights 
+%                       Remark: 0 denotes thinned units (if the weights
 %                       to find thinned units are 0 or 1, -1 indicates
 %                       first level trimmed units and -2 indicates second
 %                       level trimmed units).
@@ -459,6 +459,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % Comparison with robust linear grouping
     out = rlga(X,k,alpha2);
 
+    cascade;
 %}
 
 %{
@@ -466,8 +467,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     clear all; close all;
     load fishery;
     X = fishery.data;
-    % some jittering is necessary because duplicated units are not treated:
-    % this needs to be addressed
+    % some jittering might be useful if there are many duplicated units
     X = X + 10^(-8) * abs(randn(677,2));
 
     %tclustreg on fishery data
@@ -475,18 +475,15 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     X1 = X(:,1:end-1);
     k = 3 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',0);
+    title('TCLUST-REG');
 
     %lga and rlga on fishery data
-    figure('name','RLGA');
     out=lga(X,3);
-    clickableMultiLegend('1','2','3','data1','data2','data3');
-    axis manual;
 
     alpha = 0.95;
-    figure('name','LGA');
     out=rlga(X,3,1-alpha);
-    clickableMultiLegend('0','1','2','3','data1','data2','data3');
-    axis manual;
+
+    cascade;
 %}
 
 %{
@@ -568,6 +565,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     mixt = 0; wtrim = struct; wtrim.wtype_beta=2;  wtrim.wtype_obj='w';
     out = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',0,'mixt',mixt,'wtrim',wtrim);
 
+    cascade
 %}
 
 %{
@@ -635,7 +633,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % level trimming
     close all
     % Generate two groups and a set of concentrated outliers
-    rng('default') 
+    rng('default')
     rng(100)
     p=1;
     n1=90;
@@ -767,37 +765,37 @@ end
 if nargin>6
     % check if wtrim is among the user parameters
     chknwtrim = strcmp(varargin,'wtrim');
-    if sum(chknwtrim)>0 
+    if sum(chknwtrim)>0
         tmp = cell2mat(varargin(find(chknwtrim)+1));
         if ~isstruct(tmp)
             wtrimdef = 0;
             if cell2mat(varargin(find(chknwtrim)+1)) == 4
                 interc = find(max(X,[],1)-min(X,[],1) == 0);
                 if p == numel(interc) + 1
-
+                    
                     % The bandwidth is chosen following Baddeley, as in the R
                     % spatstats package (density.ppp function).
                     bw = (range([X(:,numel(interc)+1),y]))/8;
-
+                    
                     %in order to reproduce results comparable with the paper
                     %Cerioli and Perrotta (2013) the bandwidth is divided by 3
                     bw = bw/3;
                     % Another option to be considered follwing Baddeley is:
                     %bw = min(max(X),max(y))/8;
-
+                    
                     % Thinning step
                     [Wt4,~] = wthin([X(:,numel(interc)+1),y], 'retainby','comp2one','bandwidth',bw);
                     id_unthinned = Wt4==1;
                     %id_thinned = Wt4==0;
-
+                    
                     % save original data
                     Xori = X;
                     yori = y;
-
+                    
                     % set retained data
                     X    = X(Wt4,:);
                     y    = y(Wt4);
-
+                    
                     %recompute n on the retained data
                     n = size(y,1);
                 end
@@ -975,9 +973,9 @@ if isstruct(options.wtrim)
     wtype_beta      = options.wtrim.wtype_beta;
     % Flag to control the type of thinning scheme for obj function
     wtype_obj       = options.wtrim.wtype_obj;
-else 
-% if options.wtrim is a double it referes only to the beta estimation. No
-% weighting will be done in the obj function.
+else
+    % if options.wtrim is a double it referes only to the beta estimation. No
+    % weighting will be done in the obj function.
     wtype_beta      = options.wtrim;
     wtype_obj       ='0';
 end
@@ -1050,8 +1048,6 @@ switch wtype_beta
         end
     case 1
         % User specified weights: must be a column vector
-       
-        
         if sum(we == wedef)==n
             disp('Warning: when "wtrim" is 1, trimming is done by weighting');
             disp('         the observations using values specified in vector "we";');
@@ -1106,7 +1102,7 @@ switch wtype_beta
             disp('         your vector "we" will not be considered.');
             we = wedef;
         end
-end    
+end
 %%% - Subsets extraction
 
 %case with no prior subsets from the User
@@ -1153,8 +1149,8 @@ if equalweights==false      %to be generalized for equalweights==true
     npar=npar +(k-1);
 end
 nParam=npar+ (k-1)*(1-1/restrfact) +1;
-    
-    
+
+
 if cwm==1
     nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
 end
@@ -1192,9 +1188,10 @@ end
 %%  Set the output structure
 
 out                     = struct;
+out.class               = 'tclustreg';
 %cstepopt =             = cstep with maximum obj
-out.cstepopt            =cstepopt;
-out.subsetopt           =subsetopt;
+out.cstepopt            = cstepopt;
+out.subsetopt           = subsetopt;
 %   bopt                = regression parameters
 out.bopt                = bopt;
 %   sigmaopt0           = estimated group variances
@@ -1202,35 +1199,39 @@ out.sigma2opt           = sigma2opt;
 %   sigma2opt_corr      = estimated group variances corrected with  asymptotic
 %                         consistency factor and small sample correction factor
 out.sigma2opt_corr      = sigma2opt_corr;
-out.wbetaopt = webetaopt;
+out.wbetaopt            = webetaopt;
+
 if wtype_beta==5
-    %TO BE IMPLEMENTED 
+    %TO BE IMPLEMENTED
     %out.w4trimopt_ovj_5 = w4trimopt_obj_5;
 end
+
 %CWM
 if cwm==1
     %out.muXopt= k-by-p matrix containing cluster centroid locations.
-    out.muXopt=muXopt';
+    out.muXopt           = muXopt';
     %out.sigmaXopt= p-by-p-by-k array containing estimated constrained
     %covariance covariance matrices of the explanatory variables for the k
     %groups.
-    out.sigmaXopt=sigmaXopt;
+    out.sigmaXopt        = sigmaXopt;
 end
 
-%   obj           = value of the target function
-out.obj                = vopt;
+%   obj = value of the target function
+out.obj                  = vopt;
 if monitor
-    out.obj_all            = obj_all; %#ok<UNRCH>
-    out.Beta_all            = Beta_all;
+    out.obj_all          = obj_all; %#ok<UNRCH>
+    out.Beta_all         = Beta_all;
 end
+
 out.C=C;
-%in tandem thinning it is necessary to save information about not only
-%retained units (idxopt), but also about thinned units.
+
+%in tandem thinning it is necessary to save information about retained
+%units (idxopt) as well as thinned units.
 if wtype_beta == 4
-    out.idx = zeros(length(Xori),1);
-    out.idx(id_unthinned)=idxopt;
+    out.idx               = zeros(length(Xori),1);
+    out.idx(id_unthinned) = idxopt;
 else
-    out.idx   = idxopt;
+    out.idx               = idxopt;
 end
 
 % frequency distribution of the allocations
@@ -1243,7 +1244,7 @@ end
 
 % Store the indices in varargout
 if nargout==2
-    varargout={C};
+    varargout           = {C};
 end
 
 %% Compute INFORMATION CRITERIA
@@ -1320,6 +1321,8 @@ end
 
 if plots
     
+    plot_type = out.class;
+    
     % this is just for rotating colors in the plots
     clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
     symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
@@ -1328,25 +1331,19 @@ if plots
     if p-intercept < 2
         
         % initialize figure
-        fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
+        fh = figure('Name',[plot_type , ' plot'],'NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
-        % Create labels for beta coefficients
-        betacoeff=sprintf('%0.3f; ',out.bopt(end,:));
-        % remove the last ; at the end
-        betacoeff=betacoeff(1:end-2);
-        
-        title({['$ wtrim_{beta}=' num2str(wtype_beta) '\quad wtrim_{obj}=' num2str(wtype_obj) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
-            ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
-            'interpreter' , 'LaTex', 'fontsize' , 14);
-        
+                
         for jj = 1:k
             group_label = ['Group ' num2str(jj)];
             
             % plot of the good units allocated to the current group.
             % Indices are taken after the second level trimming.
             % Trimmed points are not plotted by group.
-            if wtype_beta==4
+            if wtype_beta==3
+                ucg = find(out.idx(:,end)==jj & webetaopt > 0);
+            elseif wtype_beta==4
                 ucg = find(idxopt==jj);
             else
                 ucg = find(out.idx(:,1)==jj);
@@ -1369,10 +1366,22 @@ if plots
                     'Color',clrdef(jj));
             end
             
+            if wtype_beta == 3
+                %plot the thinned (not trimmed) units
+                if jj == k
+                    thinned_nt_trimmed = webetaopt;
+                    thinned_nt_trimmed([ones(n,1) ;ones(n,1)]) = -12;
+                    ucg = find(thinned_nt_trimmed == 0);
+                    plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
+                        'DisplayName',['thinned units (' num2str(length(ucg)) ')' ]);
+                end
+            end
         end
         
         % Plot the outliers (trimmed points)
-        if wtype_beta==4
+        if wtype_beta==3
+            ucg = find(out.idx(:,end)==-1);
+        elseif wtype_beta==4
             ucg = find(idxopt==-1);
         else
             ucg = find(out.idx(:,1)==-1);
@@ -1381,7 +1390,9 @@ if plots
             'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
         
         % Second level trimming points
-        if wtype_beta==4
+        if wtype_beta==3
+            ucg = find(out.idx(:,end)==-2);
+        elseif wtype_beta==4
             ucg = find(idxopt==-2);
         else
             ucg = find(out.idx(:,1)==-2);
@@ -1413,93 +1424,7 @@ if plots
         xlim([xmin-deltax,xmax+deltax]);
         ylim([ymin-deltay,ymax+deltay]);
         
-        %%
-        % initialize figure
-        
-        if wtype_beta == 3
-            fh = figure('Name','TclustReg plot','NumberTitle','off','Visible','on');
-            gca(fh);
-            hold on;
-            
-            betacoeff=sprintf('%0.3f ;',out.bopt(end,:));
-            title({['$ wtrim_{beta}=' num2str(wtype_beta) '\quad wtrim_{obj}=' num2str(wtype_obj) '\quad mixt=' num2str(mixt) , '  \quad c=' num2str(restrfact) '\quad \alpha_{Lik}=' num2str(alphaLik) '\quad \alpha_X=' num2str(alphaX) '$'] , ...
-            ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
-            'interpreter' , 'LaTex', 'fontsize' , 14);
-
-            for jj = 1:k
-                group_label = ['Group ' num2str(jj)];
-                
-                % plot of the good units allocated to the current group.
-                % Indices are taken after the second level trimming.
-                % Trimmed points are not plotted by group.
-                ucg = find(out.idx(:,end)==jj & webetaopt > 0);
-                
-                
-                % misteriously text does not show a legend. This is why
-                % we add a (ficticious) plot instruction with white symbols
-                plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
-                text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
-                    'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
-                    'HorizontalAlignment','center','VerticalAlignment','middle',...
-                    'Color',clrdef(jj), 'fontsize' , 12);
-                
-                % plot regression lines
-                vv = [min(X(:,end)) max(X(:,end))];
-                if intercept==1
-                    plot(vv,bopt(1,jj)+bopt(2,jj)*vv,'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdef(jj));
-                elseif intercept==0
-                    plot(vv,bopt(:,jj)*vv,'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdef(jj));
-                end
-                
-                %plot the thinned (not trimmed) units
-                if jj == k
-                    thinned_nt_trimmed = webetaopt;
-                    thinned_nt_trimmed([ones(n,1) ;ones(n,1)]) = -12;
-                    ucg = find(thinned_nt_trimmed == 0);
-                    plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
-                        'DisplayName',['thinned units (' num2str(length(ucg)) ')' ]);
-                end
-                
-            end
-            
-            % Plot the outliers (trimmed points)
-            ucg = find(out.idx(:,end)==-1);
-            plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
-                'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
-            
-            % Second level trimming points
-            ucg = find(out.idx(:,end)==-2);
-            plot(X(ucg,end),y(ucg),'*','color','c',...
-                'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
-            
-            if wtype_beta == 4
-                % in case of tandem thinning, plot the thinned points
-                plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
-                    'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
-            end
-            
-            % Position the legends and make them clickable. For some reason
-            % clickableMultiLegend does not set properly the FontSize: to be fixed.
-            lh=legend('show');
-            legstr = get(lh,'String');
-            clickableMultiLegend(legstr,'Location','northwest','interpreter' , 'LaTex', 'fontsize' , 12);
-            
-            axis('manual');
-            
-            % control of the axis limits
-            xmin = min(X(:,end)); xmax = max(X(:,end));
-            ymin = min(y); ymax = max(y);
-            deltax = (xmax - xmin) / 10;
-            deltay = (ymax - ymin) / 10;
-            
-            xlim([xmin-deltax,xmax+deltax]);
-            ylim([ymin-deltay,ymax+deltay]);
-        end
-    else
-        
-        % In this case p > 2. A standard spmplot is used.
+    else % In this case p > 2. A standard spmplot is used.
         
         if intercept
             YY = [X(:,2:end),y];
@@ -1520,7 +1445,6 @@ if plots
             plo.clr = [plo.clr , 'r'];
         end
         
-        
         % group names in the legend
         group = cell(n,1);
         group(idxopt(:,end)==-1) = {'Trimmed units'};
@@ -1531,11 +1455,22 @@ if plots
         
         % scatterplot
         spmplot(YY,group,plo,'hist');
-        %%
-        
-        
         
     end
+    
+    % Title, reporting labels for beta coefficients
+    betacoeff=sprintf('%0.3f; ',out.bopt(end,:));
+    if wtype_beta ~= 3
+        betacoeff=betacoeff(1:end-2); % remove the last
+    end
+    title({['$ wtrim_{beta}=' num2str(wtype_beta) ...
+        '\quad wtrim_{obj}=' num2str(wtype_obj) ...
+        '\quad mixt=' num2str(mixt) , ...
+        '  \quad c='  num2str(restrfact) ...
+        '\quad \alpha_{Lik}=' num2str(alphaLik) ...
+        '\quad \alpha_X=' num2str(alphaX) '$'] , ...
+        ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
+        'interpreter' , 'LaTex', 'fontsize' , 14);
     
 end
 
