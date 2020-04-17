@@ -611,7 +611,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     % matrix once selected. Option labeladd '1' inside databrush enables to add
     % the labels of the selected units in the linked malfwdplot
     spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect', ...
-    'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist')
+    'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist');
 %}
 
 %{
@@ -648,7 +648,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     Y =randn(n,p);
     Y(seluni,:)=Y(seluni,:)+2;
     % add labels for units inside vector seluni
-    spmplot(Y,'selunit',seluni)
+    spmplot(Y,'selunit',seluni);
 %}
 
 %{
@@ -669,7 +669,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo=struct;
     plo.label=cellstr(RowLabelsMatrixY);
     % add labels for units inside vector seluni
-    spmplot(Y,'selunit',seluni,'plo',plo)
+    spmplot(Y,'selunit',seluni,'plo',plo);
 %}
 
 %{
@@ -701,7 +701,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     plo=struct;
     plo.labeladd='1';
 	plo.clr = 'b';
-    spmplot(out,'datatooltip',1,'plo',plo)
+    spmplot(out,'datatooltip',1,'plo',plo);
     % The units which are already labelled in each panel of the scatter
     % plot matrix are those which in the search had a Mahalanobis distance
     % greater than 2.5. Note that the labelling is controlled by option seleunit.
@@ -732,7 +732,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',0); 
     spmplot(out,'selstep',[60 80],'selunit','10',...
-           'databrush',{'persist','off','selectionmode' 'Rect'})
+           'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
 
 %{
@@ -759,7 +759,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',0); 
     spmplot(out,'selstep',[60 80],'selunit',1:5,...
-           'databrush',{'persist','off','selectionmode' 'Rect'})
+           'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
 
 %{
@@ -786,7 +786,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     bs=fre(1:m0,1);
     [out]=FSMeda(Y,bs,'plots',0);
     spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
-           'databrush',{'persist','off','selectionmode' 'Rect'})
+           'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
 
 %% Beginning of code

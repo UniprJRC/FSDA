@@ -402,7 +402,7 @@ function [out, varargout] = SDest(Y,varargin)
     Y=randn(n,v);
     % Contaminated data
     Ycont=Y;
-    Ycont(2:20,3)=5;
+    Ycont(2:20,3)=5+1e-7*randn(19,1);
     [out]=SDest(Ycont,'jpcorr',5,'plots',1,'nsamp',100000);
 
     %  SDest with directions and robust standardized projection scores saved
