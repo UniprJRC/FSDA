@@ -60,6 +60,7 @@ function out = rlga(X,k,alpha,varargin)
 %         out.X	        = the (scaled if selected) dataset.
 %         out.scaled    = logical. Is the data set scaled?
 %         out.k         = the number of clusters to be found.
+%         out.alpha     = the trimming percentage.
 %         out.biter     = the biter setting used.
 %         out.niter	    = the niter setting used.
 %         out.class     = 'rlga'.
@@ -88,6 +89,7 @@ function out = rlga(X,k,alpha,varargin)
 %
 %{
     % rlga with all default options.
+    rng(123); % this leads to ROSS = 5.1298;
     X=load('X.txt');
     out=rlga(X,3,0.05);
 %}
@@ -133,8 +135,7 @@ end
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
-    
+       
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:rlga:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -199,7 +200,6 @@ end
 %
 % end
 
-
 % Find the number of converged results
 nconverg = sum(outputs(n+1,:));
 if nconverg == 0
@@ -245,7 +245,6 @@ if showall
     ROSS = outputs(n+2,:);
     hp =nan;
 else
-    
     % Fit the best hyerplane(s) with ROSS
     hp =nan(k,d+1);
     for i=1:k
@@ -253,7 +252,6 @@ else
     end
     
     ROSS=rlgacalculateROSS(hp, X, d, outputs(1:n));
-    
 end
 
 out.cluster=outputs(1:n,:);
@@ -266,89 +264,16 @@ out.biter=biter;
 out.niter=niter;
 out.scaled=stand;
 out.k=k;
+out.alpha=alpha;
 out.class='rlga';
 
-plots=options.plots;
-
-if plots
-    
-    % this is just for rotating colors in the plots
-    clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
-    symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
-    
-    if d==2
-        % initialize figure
-        fh = figure('Name','RLGA plot','NumberTitle','off','Visible','on');
-        gca(fh);
-        hold on;
-        
-        % control of the axis limits
-        xmin = min(X(:,1)); xmax = max(X(:,1));
-        ymin = min(X(:,2)); ymax = max(X(:,2));
-        deltax = (xmax - xmin) / 10;
-        deltay = (ymax - ymin) / 10;
-        
-        xlim([xmin-deltax,xmax+deltax]);
-        ylim([ymin-deltay,ymax+deltay]);
-        
-        % gscatter(X(:,1),X(:,2),out.cluster,'w',symdef(1:k),10,'off');
-        % al contains the axes limits
-        al = axis';
-        
-        hold('on')
-        for i=1:k
-            group_label = ['Group ' num2str(i)];
-            ucg = find(out.cluster==i);
-            
-            plot(X(ucg,1),X(ucg,2),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
-            text(X(ucg,1),X(ucg,2),num2str(i*ones(length(ucg),1)),...
-                'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
-                'HorizontalAlignment','center','VerticalAlignment','middle',...
-                'Color',clrdef(i));
-            
-            a =  hp(i, 3)/hp(i, 2);
-            b = -hp(i, 1)/hp(i, 2);
-            plot(al(1:2),a+b*al(1:2),'DisplayName',[group_label ' fit' ],'Color',clrdef(i));
-        end
-        
-        % Plot the outliers (trimmed points)
-        ucg = find(out.cluster==0);
-        plot(X(ucg,1),X(ucg,2),'o','color','r','MarkerSize',8,...
-            'DisplayName',['Trimmed units (' num2str(length(ucg)) ')']);
-        
-        title(['$\alpha = ' num2str(alpha) ' \quad ROSS = ' num2str(out.ROSS) '$' ],...
-            'interpreter' , 'latex', 'fontsize' , 18);
-        
-        % Position the legends and make them clickable. For some reason
-        % clickableMultiLegend does not set properly the FontSize: to be fixed.
-        lh=legend('show');
-        legstr = get(lh,'String');
-        clickableMultiLegend(legstr,'FontSize',14,'Location','northwest');
-        
-        axis('manual');
-        
-    else
-        
-        % axis labels
-        nameY = cellstr([repmat('X',d,1) , num2str((1:d)')]);
-        nameY = nameY';
-        plo=struct;
-        plo.nameY=nameY;
-        plo.sym = [symdef(1:k) , 'o' ];
-        plo.clr = [clrdef(1:k) , 'r' ]; 
-        
-        % group names in the legend
-        group = cell(n,1);
-        group(out.cluster==0) = {'Trimmed units'};
-        for iii = 1:k
-            group(out.cluster==iii) = {['Group ' num2str(iii)]};
-        end
-        
-        spmplot(X,group,plo,'hist');
-        
-    end
-    
+if options.plots
+    % the plot requires the data X, the hyperplan information hp, and the
+    % output structure of lga or rlga
+    linear_grouping_plot(X,hp,out);
 end
+
+%% inner funtions
 
 %% lgaorthreg performs orthogonal regression
     function yorthreg = lgaorthreg(X)
@@ -364,6 +289,7 @@ end
     end
 
 %% Do "concentration steps"
+
     function outputsj=rlgaiterate(hpcoef, xsc, k, d, n, niter,alpha)
         
         % give the function the inital set of hyperplanes (in hpcoef)
@@ -399,6 +325,7 @@ end
     end
 
 %% rlgadodist calculates the (orthogonal) Residuals for different hyerplanes
+
     function indmin=rlgadodist(y, coeff, d, n,alpha)
         % Find which hyperplane each observation is closest to. Then takes the
         % smallest alpha of them (setting the rest to zero)
@@ -408,6 +335,7 @@ end
     end
 
 %% rlgacalculateROSS calculates the total Residual Orthogonal Sum of Squares for a given grouping
+
     function outROSS = rlgacalculateROSS(hpcoef, xsc, d, groups)
         
         z    = bsxfun(@minus,xsc *(hpcoef(:,1:d)'), hpcoef(:,d+1)');
@@ -424,6 +352,7 @@ end
     end
 
 %% lgaCheckUnique check if there is more than one minimum
+
 % used for debugging
 
     function xbest = lgaCheckUnique(x) %#ok<DEFNU>

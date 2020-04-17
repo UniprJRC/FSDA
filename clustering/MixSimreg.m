@@ -633,7 +633,7 @@ function [out] = MixSimreg(k,p,varargin)
     % And plot it
     yXplot(y,X,'group',id,'tag','Strong_Overlap');
     set(gcf,'Name','explanatory variable is Tweedie distributed');
-    title('Three components with diofferent Tweedie-distributed explanatory variables');
+    title('Three components with different Tweedie-distributed explanatory variables');
 
 %}
 
