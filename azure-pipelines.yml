@@ -41,8 +41,6 @@ jobs:
         path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
         artifact: Test-$(categoryName)
     - task: PublishCodeCoverageResults@1
-      condition: always()
       inputs:
-       codeCoverageTool: Cobertura
-       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-       reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/tests-$(categoryName)'
