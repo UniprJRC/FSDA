@@ -77,7 +77,7 @@ function ceff = OPTeff(eff,v)
     jk=0;
     for j=ef
         jk=jk+1;
-        CC(jk,2)=OPTeff(j,1)
+        CC(jk,2)=OPTeff(j,1);
     end
 
 %}

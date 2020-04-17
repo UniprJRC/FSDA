@@ -72,6 +72,14 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 %                   Example - 'printOutputCell','ContentsAll.m'
 %                   Data Types - string
 %
+%        msg  :     It controls whether to display or not messages on the
+%                   screen. Scalar.
+%                   If msg==false (default) messages are not displayed
+%                   on the screen about all files which will form the
+%                   overall content and warnings are shown on the screen.
+%                   Example - 'msg',false
+%                   Data Types - boolean
+%
 % Output:
 %
 %          out:   structured information of filtered files containing
@@ -131,10 +139,6 @@ function [out, Excluded]=makecontentsfileFS(varargin)
 
 %{
     % makecontentsfileFS with all default options.
-    out=makecontentsfileFS('force',false);
-%}
-
-%{
     %Just create output cell out but not the output file if it already exists.
     % Create personalized content file of current folder.
     out=makecontentsfileFS('force',false);
@@ -149,7 +153,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     FSDAroot=FullPath(1:end-length(FileName)-3);
     dirpathsel=[FSDAroot filesep 'utilities'];
     %  Note that force is false and therefore just output cell is created.
-    out=makecontentsfileFS('dirpath',dirpathsel,'FilterFileContent','%FScategory:','force',false)
+    out=makecontentsfileFS('dirpath',dirpathsel,'FilterFileContent','%FScategory:','force',false);
 %}
 
 %{
@@ -167,7 +171,7 @@ function [out, Excluded]=makecontentsfileFS(varargin)
     list = findDir(root,'InclDir',InclDir,'ExclDir',ExclDir)
     % Crete personalized contents file for main folder of FSDA
     % and required subfolders.
-    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false)
+    [out,Excluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',false);
 %}
 
 
@@ -181,9 +185,10 @@ force=true;   % overwrite existing NameOutputFile
 FilterOutFileName='old'; % Remove all files whose name contains string old
 FilterFileContent=''; % Do not look into the content of the file
 printOutputCell=''; % specifies if the overall output has to be written in a file
+msg=false;
 
 options=struct('NameOutputFile',NameOutputFile,'dirpath',dirpath,...
-    'force',force,'FilterOutFileName',FilterOutFileName,...
+    'force',force,'FilterOutFileName',FilterOutFileName,'msg',msg,...
     'FilterFileContent',FilterFileContent,'printOutputCell',printOutputCell);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -205,6 +210,7 @@ if ~isempty(UserOptions)
     FilterOutFileName=options.FilterOutFileName;
     FilterFileContent=options.FilterFileContent;
     printOutputCell=options.printOutputCell;
+    msg=options.msg;
     
     % Check if dirpath is a string or a cell array of strings
     if iscell(dirpath)
@@ -299,7 +305,9 @@ for j=1:ldirpath
                 killIndex = i;
                 noContentsFlag = 0;
             else
-                disp(d(i).name)
+                if msg==true
+                    disp(d(i).name)
+                end
                 try
                     [description,category]=get_H1lineandCategory(d(i).name,FilterFileContent);
                 catch
@@ -333,7 +341,7 @@ for j=1:ldirpath
         maxNameLenAllStr = num2str(maxNameLenAll);
         maxCategoryLenAllStr = num2str(maxCategoryLenAll);
         maxDescriptionLenAllStr = num2str(maxDescriptionLenAll);
-       
+        
         dout=struct2cell(d)';
         % dout(:,1)= name of the file (with extension)
         % dout(:,2)= date (in local format)
@@ -400,7 +408,9 @@ for j=1:ldirpath
         end
         fclose(fid);
     else
-        warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        if msg==true
+            warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        end
     end
 end
 
@@ -442,7 +452,9 @@ if ~isempty(printOutputCell)
         end
         fclose(fid);
     else
-        warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        if msg==true
+            warning(message('MATLAB:filebrowser:MakeContentsFileExists'))
+        end
     end
     
 end

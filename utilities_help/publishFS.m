@@ -17,13 +17,17 @@ function out=publishFS(file,varargin)
 % Optional input arguments:
 %
 %   Display : Level of display. String.
-%             'off' or 'none' displays no output.
+%             'off' or 'none' displays no output at all.
+%             'onlyMismatches' (default) just displays the mismatches of
+%             input and output arguments with respect to what has been
+%             commented in the preamble of the .m file.
 %             'iter' displays a series of messages on the screen about
 %             the execution of the different section of the input .m file
-%             'iter-detailed' displays a series of messages on the screen not only about
-%             the execution of the different section of the input .m file,
-%             but also about cells containing information about the required input arguments,
-%             optional input arguments, and output arguments
+%             'iter-detailed' displays a series of messages on the screen
+%             not only about the execution of the different section of the
+%             input .m file, but also about cells containing information
+%             about the required input arguments, optional input arguments,
+%             and output arguments
 %             Example - 'Display','none'
 %             Data Types - string
 %
@@ -708,7 +712,7 @@ function out=publishFS(file,varargin)
 %{
   % Option webhelp with outputDir and imagesDir.
   % Create HTML file for the WEB with Google Search and embedded images in
-  % current folder (pwd). 
+  % current folder (pwd).
     % Make sure you are in the main root of FSDA
     FullPath=which('addFSDA2path');
     % extract the root directory of FSDA
@@ -737,7 +741,7 @@ end
 
 evalCode=true;
 write2file=true;
-Display='none';
+Display='onlyMismatches';
 
 % % Use file separator of current operating system
 % % \ = Windows
@@ -3686,7 +3690,7 @@ if ~isempty(OptArgsVarargin)
         if strcmp(Display,'iter-detailed')
             disp('Check if Name/Pairs optional input arguments are documented')
         end
-        OptMisMatch=CompareDescribedUsed(listOptArgs(:,1),OptArgsUsed);
+        OptMisMatch=CompareDescribedUsed(listOptArgs(:,1),OptArgsUsed,[],Display);
         
         %     if ~isequal(OptArgsDescribed,OptArgsUsed)
         %         warning('Options described are different from Option effectively used')
@@ -3813,7 +3817,7 @@ if evalCode ==1
                     if strcmp(Display,'iter-detailed')
                         disp(['Analysis of output argument: ''' listouti ''''])
                     end
-                    OutiMisMatch=CompareDescribedUsed(OutputDescribed, OutputProduced, OutputDescribedNotCompulsory);
+                    OutiMisMatch=CompareDescribedUsed(OutputDescribed, OutputProduced, OutputDescribedNotCompulsory, Display);
                     if size(OutiMisMatch,1)>1
                         OutArgsMisMatch{ik+1,1}=listouti;
                         OutArgsMisMatch(ik+2:ik+size(OutiMisMatch,1),:)=OutiMisMatch(2:end,:);
@@ -4205,15 +4209,19 @@ else
 end
 end
 
-function OptMisMatch=CompareDescribedUsed(OptArgsDescribed,OptArgsUsed,OptNotCompulsory)
+function OptMisMatch=CompareDescribedUsed(OptArgsDescribed,OptArgsUsed,OptNotCompulsory, Display)
 
 [OptArgsDescribed,OptArgsDescribedsor]=sort(OptArgsDescribed);
 
-if nargin<3
+if nargin<3  || isempty(OptNotCompulsory)
     OptNotCompulsory=false(length(OptArgsDescribed),1);
 else
     % sort OptNotCompulsory accordingly
     OptNotCompulsory=OptNotCompulsory(OptArgsDescribedsor);
+end
+
+if nargin<4
+    Display='iter';
 end
 
 
@@ -4230,21 +4238,26 @@ OptMisMatch=cell(length(ia)+length(ib)+1,3);
 OptMisMatch{1,2}='Options described';
 OptMisMatch{1,3}='Options used';
 
-
+% chkwarn=warning('query');
+% show
 ij=1;
 if ~isempty(ia)
-    disp('Elements described but not used')
     % OptMisMatch{ij+1:ij+length(ia),1}=OptArgsDescribed{ia};
     OptMisMatch(ij+1:ij+length(ia),1)=OptArgsDescribed(ia);
     OptMisMatch(ij+1:ij+length(ia),2:3)=num2cell([true(length(ia),1),false(length(ia),1)]);
     ij=ij+length(ia);
-    disp(OptArgsDescribed(ia))
+    if strcmp(Display,'iter-detailed') || strcmp(Display,'iter') || strcmp(Display,'onlyMismatches')
+        disp('Elements described but not used')
+        disp(OptArgsDescribed(ia))
+    end
 end
 if ~isempty(ib)
-    disp('Elements used but not described')
     OptMisMatch(ij+1:ij+length(ib),1)=OptArgsUsed(ib);
     OptMisMatch(ij+1:ij+length(ib),2:3)=num2cell([false(length(ib),1),true(length(ib),1)]);
-    disp(OptArgsUsed(ib))
+    if strcmp(Display,'iter-detailed') || strcmp(Display,'iter') || strcmp(Display,'onlyMismatches')
+        disp('Elements used but not described')
+        disp(OptArgsUsed(ib))
+    end
 end
 end
 

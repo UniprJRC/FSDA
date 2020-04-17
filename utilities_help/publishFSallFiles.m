@@ -84,6 +84,14 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             Example - 'ErrWrngSeeAlso',false
 %             Data Types - logical
 %
+%        msg  :     It controls whether to display or not messages on the
+%                   screen. Scalar.
+%                   If msg==false messages are displayed
+%                   on the screen about all files which are processed
+%                   and warnings are shown on the screen.
+%                   Example - 'msg',false
+%                   Data Types - boolean
+%
 % Output:
 %
 %    FilesWithProblems : information about files whose automatic HTML
@@ -148,6 +156,7 @@ evalCode=true;
 write2file=true;
 Display='none';
 ErrWrngSeeAlso=true;
+msg=true;
 
 if nargin>1
     UserOptions=varargin(1:2:length(varargin));
@@ -170,15 +179,15 @@ else
 end
 
 if nargin>1
-    options=struct('evalCode',evalCode,'write2file',write2file,'Display',Display,...
+    options=struct('evalCode',evalCode,'write2file',write2file,...
        'webhelp',webhelp,'outputDir',outputDir,'imagesDir',imagesDir,...
-       'ErrWrngSeeAlso',ErrWrngSeeAlso);
+       'ErrWrngSeeAlso',ErrWrngSeeAlso,'msg',msg);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:regressB:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:publishFSallFiles:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -192,13 +201,18 @@ if nargin>1
     % set the options chosen by the user
     evalCode=options.evalCode;
     write2file=options.write2file;
-    Display=options.Display;
     webhelp=options.webhelp;
     outputDir=options.outputDir;
     imagesDir=options.imagesDir;
     ErrWrngSeeAlso=options.ErrWrngSeeAlso;
+    msg=options.msg;
 end 
     
+if msg==false
+    Display='none';
+else
+    Display='iter';
+end
 FilesWithProblems=cell(1000,6);
 OUT=cell(size(InputCell,1),1);
 ij=1;
@@ -206,7 +220,9 @@ nfiles=size(InputCell,1);
 nfilesstr=num2str(nfiles);
 for i=1:nfiles
     dirpathi=InputCell{i,end};
+    if msg==true
     disp(['Processing file: ' num2str(i) '/' nfilesstr '  ' dirpathi filesep InputCell{i,1}])
+    end
     try
         % call publishFS
         %out=publishFS(InputCell{i,1},'evalCode',evalCode,'write2file',write2file);
