@@ -631,7 +631,6 @@ for i=1:lla
             if mm<n
                 
                 % store units forming old subset in vector oldbsb
-                oldbsb=bsb;
                 oldbsbT=bsbT;
                 
                 % order the r_i and include the smallest among the units
@@ -655,7 +654,7 @@ for i=1:lla
                     % unit = vector containing units which just entered subset;
                     % unit=setdiff(bsb,oldbsb);
                     % new instruction to find unit
-                    unit=find(bsbT & ~oldbsbT);
+                    unit=seq(bsbT & ~oldbsbT);
                     
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;

@@ -1,4 +1,4 @@
-function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
+function out=FSRmdrrs(y,X,varargin)
 %FSRmdrrs performs random start monitoring of minimum deletion residual
 %
 % The trajectories originate from many different random initial subsets and
@@ -100,41 +100,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               if the Parallel Computing Toolbox is installed and
 %               distributes the random starts over numpool parallel
 %               processes. If numpool <= 1, the random starts are run
-%               sequentially. By default, numpool is set equal to the
-%               number of physical cores available in the CPU (this choice
-%               may be inconvenient if other applications are running
-%               concurrently). The same happens if the numpool value
-%               chosen by the user exceeds the available number of cores.
-%               REMARK 1: up to R2013b, there was a limitation on the
-%               maximum number of cores that could be addressed by the
-%               parallel processing toolbox (8 and, more recently, 12).
-%               From R2014a, it is possible to run a local cluster of more
-%               than 12 workers.
-%               REMARK 2: Unless you adjust the cluster profile, the
-%               default maximum number of workers is the same as the
-%               number of computational (physical) cores on the machine.
-%               REMARK 3: In modern computers the number of logical cores
-%               is larger than the number of physical cores. By default,
-%               MATLAB is not using all logical cores because, normally,
-%               hyper-threading is enabled and some cores are reserved to
-%               this feature.
-%               REMARK 4: It is because of Remarks 3 that we have chosen as
-%               default value for numpool the number of physical cores
-%               rather than the number of logical ones. The user can
-%               increase the number of parallel pool workers allocated to
-%               the multiple start monitoring by:
-%               - setting the NumWorkers option in the local cluster profile
-%                 settings to the number of logical cores (Remark 2). To do
-%                 so go on the menu "Home|Parallel|Manage Cluster Profile"
-%                 and set the desired "Number of workers to start on your
-%                 local machine".
-%               - setting numpool to the desired number of workers;
-%               Therefore, *if a parallel pool is not already open*,
-%               UserOption numpool (if set) overwrites the number of
-%               workers set in the local/current profile. Similarly, the
-%               number of workers in the local/current profile overwrites
-%               default value of 'numpool' obtained as feature('numCores')
-%               (i.e. the number of physical cores).
+%               sequentially.
 %               Example - 'numpool',8
 %               Data Types - double
 %
@@ -178,7 +144,8 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %
 % Output:
 %
-%       mdrrs:  random start minimum deletion residual. Matrix.
+%  out :     A structure containing the following fields:
+%     out.mdrrs:  random start minimum deletion residual. Matrix.
 %               (n-init)-by-(nsimul+1) matrix which contains the monitoring
 %               of minimum deletion residual at each step of the forward
 %               search for each random start.
@@ -187,7 +154,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               ...
 %               nsimul+1 col = minimum deletion residual for random start nsimul.
 %
-%       BBrs :  units belonging to subset. 3D array.
+%      out.BBrs :  units belonging to subset. 3D array.
 %               3D array which contains the units belonging to the subset
 %               at the steps specified by input option bsbsteps.
 %               If bsbsteps=0 BBrs has size n-by-(n-init+1)-by-nsimul.
@@ -210,8 +177,11 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
 %               the same structure as before, but now contains just
 %               length(bsbsteps) columns.
 %
+%         out.y = Store original response.
 %
-% See also:     FSRmdr, FSMmmdrs, FSMmmd
+%         out.X = Store original X matrix.
+%
+% See also:     mdrrsplot, FSRmdr, FSMmmdrs, FSMmmd
 %
 % References:
 %
@@ -263,7 +233,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     figure
     % parfor of Parallel Computing Toolbox is used (if present in current computer)
     % and pool is not cleaned after % the execution of the random starts
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
+    [out]=FSRmdrrs(y,X,'constr','','nsimul',100,'init',10,'plots',1,'cleanpool',false);
     disp('The two peaks in the trajectories of minimum deletion residual (mdr).')
     disp('clearly show the presence of two groups.')
     disp('The decrease after the peak in the trajectories of mdr is due to the masking effect.')
@@ -360,7 +330,7 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     X=fishery(:,1);
     % parfor of Parallel Computing Toolbox is used (if installed)
     figure
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
+    [out]=FSRmdrrs(y,X,'nsimul',100,'plots',1);
 %}
 
 %{
@@ -372,7 +342,8 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     % parfor of Parallel Computing Toolbox is used (if present in current
     % computer)
     figure
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'bsbsteps',[10 300 600]);
+    [out]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'bsbsteps',[10 300 600]);
+    BBrs=out.BBrs;
     % sum(~isnan(BBrs(:,1,1)))
     %
     % ans =
@@ -399,10 +370,10 @@ function [mdrrs,BBrs]=FSRmdrrs(y,X,varargin)
     y=fishery(:,2);
     X=fishery(:,1);
     % traditional for loop is used
-    [mdrrs,BBrs]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'numpool',0);
+    [out]=FSRmdrrs(y,X,'nsimul',100,'plots',1,'numpool',0);
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -447,8 +418,6 @@ if ~isempty(UserOptions)
         options.(varargin{i})=varargin{i+1};
     end
     chkbsbsteps = strcmp(UserOptions,'bsbsteps');
-else
-    UserOptions=0;
 end
 
 init        = options.init;
@@ -484,87 +453,12 @@ end
 
 mdrrs = [(init:n-1)' zeros(n-init,nsimul)];
 
-%% Check MATLAB environment
-
-% Use the Parallel Computing Toolbox if it is installed and if the parallel
-% pool available consists of more than one worker.
-vPCT = ver('distcomp');
-if numpool > 1 && ~isempty(vPCT)
-    usePCT = 1;
-else
-    usePCT = 0;
-end
-
-% Check for the MATLAB release in use. From R2013b, 'parpool' has taken the
-% place of 'matlabpool'.
-if verLessThan('matlab', '8.2.0')
-    usematlabpool = 1;
-else
-    usematlabpool = 0;
-end
-
-%% Prepare the parallel pool
-
-if usePCT==1 % In this case Parallel Computing Toolbox Exists
-    
-    % First check if there is a parallel pool open. If this is the case,
-    % then the pool will be used. To keep it open for later reuse is
-    % useful, as opening a pool takes some time. Variable 'pworkers' is 0
-    % if there is no parallel pool open; otherwise it contains the number
-    % of workers allocated for the parallel pool.
-    if usematlabpool
-        pworkers = matlabpool('size'); %#ok<DPOOL>
-    else
-        ppool = gcp('nocreate');
-        if isempty(ppool)
-            pworkers = 0;
-            % If the user has not specified numpool, then the number of
-            % workers which will be used is the one set in the current
-            % profile
-            if max(strcmp(UserOptions,'numpool')) ~= 1
-                pworkersLocProfile=parcluster();
-                numpool=pworkersLocProfile.NumWorkers;
-            end
-            
-            % Therefore if a parallel pool is not open,  UserOption numpool
-            % (if set) overwrites the number of workers set in the
-            % local/current profile. Similarly, the number of workers in
-            % the local/current profile overwrites default value of 'numpool' obtained as
-            % feature('numCores') (i.e. the number of phisical cores)
-        else
-            pworkers = ppool.Cluster.NumWorkers;
-        end
-    end
-    
-    if pworkers > 0
-        % If a parallel pool is already open, ensure that numpool is not
-        % larger than the number of workers allocated to the parallel pool.
-        numpool = min(numpool,pworkers);
-    else
-        % If there is no parallel pool open, create one with numpool workers.
-        if usematlabpool
-            matlabpool('open',numpool); %#ok<DPOOL>
-        else
-            parpool(numpool);
-        end
-    end
-    
-end
 
 %% Monitoring minimum deletion residual with random starts
 
 % monitor execution time, without counting the opening/close of the parpool
 tstart = tic;
 
-if usePCT == 1 && msg == 1
-    progbar = ProgressBar(nsimul);
-else
-    % In the parfor, 'progbar' will not be instanciated if usePCT is 0. In
-    % this case, as a measure of precaution, the MATLAB interpreter
-    % generates an error, to force the user to treat the case. This
-    % assignment is a workaround to avoid this type of error.
-    progbar = 9999;
-end
 
 if numpool == 1
     % the following re-assignement of numpool from 1 to 0 is necessary,
@@ -574,7 +468,13 @@ if numpool == 1
     numpool = 0;
 end
 
+if msg == 1 
+    progbar = ProgressBar(nsimul);
+end
+
+
 parfor (j = 1:nsimul , numpool)
+% for j = 1:nsimul
     [mdr,~,BB] = FSRmdr(y,X,0,'init',init,'intercept',intercept,...
         'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps);
     if size(mdr,2)>1
@@ -588,7 +488,7 @@ parfor (j = 1:nsimul , numpool)
         mdrrs(:,j+1) = NaN;
     end
     if msg==1
-        if usePCT == 1
+        if numpool > 0
             progbar.progress;  %#ok<PFBNS>
         else
             if j==nsimul/2 || j==nsimul/4  || j==nsimul*0.75 || j==nsimul*0.9
@@ -604,21 +504,23 @@ end
 
 tend = toc(tstart);
 
-if msg==1
-    if usePCT == 1
+if msg==1 
+    if numpool>0
         progbar.stop;
     end
     disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
 end
 
 % close parallel jobs if necessary
-if usePCT == 1 && cleanpool == true
-    if usematlabpool
-        matlabpool('close'); %#ok<DPOOL>
-    else
-        delete(gcp);
-    end
+if cleanpool == true
+    delete(gcp);
 end
+
+out=struct;
+out.mdrrs=mdrrs;
+out.BBrs=BBrs;
+out.X=X;
+out.y=y;
 
 %% Plot statistic with random starts
 

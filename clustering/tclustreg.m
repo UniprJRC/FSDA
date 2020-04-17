@@ -269,6 +269,14 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                random numbers from uniform are used.
 %                   Example - 'RandNumbForNini',''
 %                   Data Types - single | double
+%
+%      nocheck: Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               vector y and matrix X.
+%               As default nocheck=0.
+%                   Example - 'nocheck',1
+%                   Data Types - single | double
+%
 %  Output:
 %
 %  out :  structure containing the following fields
