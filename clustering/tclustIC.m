@@ -587,8 +587,6 @@ colnamesIC=strcat(cellstr(repmat('c_',length(cc),1)), cellstr(num2str(cc')));
 colnamesIC=regexprep(colnamesIC,' ','');
 
 %% Preapare the pool (if required)
-pariter=0;
-[numpool,tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool, pariter, UserOptions);
 
 for k=1:length(kk)  % loop for different values of k (number of groups)
     
@@ -643,7 +641,9 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
 end
 
 %% Close pool and show messages if required
-PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
+if cleanpool==true
+    delete(gcp);
+end
 
 out=struct;
 

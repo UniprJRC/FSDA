@@ -81,21 +81,28 @@ function list = findFile(root,varargin)
 %
 %{
     % findFile with optional arguments.
-    %find the location of findFile.m
+    % Make sure that the FSDA path is loaded (call routine addFSDA2path).
+    addFSDA2path
+    % Find the location of findFile.m
     FullPath=which('addFSDA2path');
-    %extract the root directory of FSDA
-    root=fileparts(FullPath);
+    % extract the root directory of FSDA
+    FSDAroot=fileparts(FullPath);
     %list the content of the directory under FSDA named 'graphics'
-        list = findFile(root,'InclDir','graphics')
+    list = findFile(FSDAroot,'InclDir','graphics')
 %}
 
 %{
-    %list the content of the directory under FSDA named 'graphics'
-    % and exclude all those which start with res
-    %find the location of findFile.m
-    FullPath=which('findFile');
-    %extract the root directory of FSDA
-    root=FullPath(1:strfind(FullPath,'FSDA')+3);
+    % List the content of the directory under FSDA named 'graphics'
+    % and exclude all those which start with res.
+    % find the location of findFile.m
+    % Make sure that the FSDA path is loaded (call routine addFSDA2path).
+    addFSDA2path
+    FullPath=which('addFSDA2path');
+    % extract the root directory of FSDA
+    root=fileparts(FullPath);
+    disp('Path of FSDA root is:')
+    disp(root)
+    disp('----')
     list = findFile(root,'InclDir','graphics','ExclFiles','res*')
 %}
 
@@ -138,7 +145,7 @@ if ~ischar(root)
 end
 
 if isempty(root)
-    error('FSDA:findFile:WrongInputOpt','root is empty.');
+    warning('FSDA:findFile:WrongInputOpt','root is empty.');
 end
 
 % Force InclFiles and ExclFiles to be a cell array of string.

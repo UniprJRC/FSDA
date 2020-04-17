@@ -542,8 +542,6 @@ IDX=MuVal;
 CTLVal=zeros(lkk,lalpha);
 
 %% Preapare the pool (if required)
-pariter=0;
-[numpool,tstart, progbar, usePCT, usematlabpool] = PoolPrepare(numpool, pariter, UserOptions);
 
 CnsampAll=cell(lkk,1);
 gRandNumbForNiniAll=CnsampAll;
@@ -758,6 +756,12 @@ if ComputeBands==true
     % Store best classification
 end
 
+% Close pool and show messages if required
+if cleanpool==true
+    delete(gcp);
+end
+
+%% Plot section
 
 if plots==1
     if ComputeBands==1
@@ -789,8 +793,6 @@ out.alpha=alphaTrim;
 out.restrfactor=restrfactor;
 out.Y=Y;
 
-%% Close pool and show messages if required
-PoolClose(cleanpool, tstart, progbar, usePCT, usematlabpool);
 
 end
 

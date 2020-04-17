@@ -3,14 +3,15 @@ function out  = tclustICsol(IC,varargin)
 %
 %<a href="matlab: docsearchFS('tclustICsol')">Link to the help function</a>
 %
-%   tclustICsol takes as input the output of function tclustIC (that is a
-%   series of matrices which contain the values of the information criteria
-%   BIC/ICL/CLA for different values of k and c) and extracts the first
-%   best solutions. Two solutions are considered equivalent if the value of
-%   the adjusted Rand index (or the adjusted Fowlkes and Mallows index) is
-%   above a certain threshold. For each tentative solution the program
-%   checks the adjacent values of c for which the solution is stable. A
-%   matrix with adjusted Rand indexes is given for the extracted solutions.
+%   tclustICsol takes as input the output of function tclustIC or
+%   tclustICreg (that is a series of matrices which contain the values of
+%   the information criteria BIC/ICL/CLA for different values of k and c)
+%   and extracts the first best solutions. Two solutions are considered
+%   equivalent if the value of the adjusted Rand index (or the adjusted
+%   Fowlkes and Mallows index) is above a certain threshold. For each
+%   tentative solution the program checks the adjacent values of c for
+%   which the solution is stable. A matrix with adjusted Rand indexes is
+%   given for the extracted solutions.
 %
 %  Required input arguments:
 %
@@ -50,7 +51,14 @@ function out  = tclustICsol(IC,varargin)
 %                   restriction factor) which have been considered.
 %                IC.Y =  original n-times-v data matrix on which the IC
 %                   (Information criterion) has
-%                    been computed
+%                    been computed. This input option is present only if IC
+%                    comes from tclustIC.
+%                IC.y =  original n-times-1 regression response on which the IC
+%                   (Information criterion). This input option is present
+%                   only if IC comes from tclustregIC.
+%                IC.X =  original n-times-p matrix of explanatory varaibles
+%                   on which the IC (Information criterion). This input
+%                   option is present only if IC comes from tclustregIC.
 %                 Data Types - struct
 %
 %  Optional input arguments:
@@ -93,6 +101,11 @@ function out  = tclustICsol(IC,varargin)
 %               whether to plot on the screen the best solutions which have
 %               been found.
 %                 Example - 'plots',1
+%                 Data Types - single | double
+%
+% SpuriousSolutions  :  Include or nor spurious solutions in the plot. Boolean.
+%                       As default spurios solutions are shown in the plot.
+%                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
 %       msg  :  Message on the screen. Scalar. Scalar which controls
@@ -234,13 +247,13 @@ function out  = tclustICsol(IC,varargin)
 %                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
 %                   64, 128].
 %
-% See also: tclustIC, tclust, carbikeplot
+% See also: tclustIC, tclust, tclustICreg, tclustreg, carbikeplot
 %
 % References:
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 %
 % Hubert L. and Arabie P. (1985), Comparing Partitions, "Journal of
@@ -332,13 +345,17 @@ whichIC='ALL';
 ThreshRandIndex=0.7;
 % Plots on the screen
 plots=1;
+% Include or not the plot of spurious solutions.
+SpuriousSolutions = true;
+
 % Message about code execution
 msg=0;
 % the adjusted Rand index will be used
 Rand = 1;
 if nargin>1
-    options=struct('whichIC',whichIC,'plots',plots,...
-        'NumberOfBestSolutions',NumberOfBestSolutions, 'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',Rand);
+    options=struct('whichIC',whichIC,'plots',plots,'SpuriousSolutions',SpuriousSolutions,...
+        'NumberOfBestSolutions',NumberOfBestSolutions, ...
+        'ThreshRandIndex', ThreshRandIndex,'msg',msg,'Rand',Rand);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -357,7 +374,7 @@ if nargin>1
         WrongOptions=UserOptions(inpchk==0);
         if ~isempty(WrongOptions)
             disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-            error('FSDA:tclustBICsol:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+            error('FSDA:tclustICsol:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
     
@@ -372,6 +389,7 @@ if nargin>1
     ThreshRandIndex=options.ThreshRandIndex;
     whichIC=options.whichIC;
     plots=options.plots;
+    SpuriousSolutions=options.SpuriousSolutions;
     msg=options.msg;
     Rand=options.Rand;
 end
@@ -448,6 +466,14 @@ colnamesARI=regexprep(cuplow,' ','');
 
 
 out=struct;
+fIC=fieldnames(IC);
+if max(strcmp(fIC,'Y')) == true
+    mult=true;
+elseif max(strcmp(fIC,'y')) == true && max(strcmp(fIC,'X')) == true
+    mult=false;
+else
+     error('FSDA:tclustICsol:WrongIC','Input structure must contain field Y or fields y and X')
+end
 
 if typeIC==2 || typeIC==3
     [MIXMIXbs,MIXMIXbsari]=findBestSolutions(IC.MIXMIX,ARIMIX,IC.IDXMIX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
@@ -456,7 +482,12 @@ if typeIC==2 || typeIC==3
     
     % Store matrix which contains in the columns the details of the
     % classification
-    MIXMIXbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots);
+    if mult==true
+        MIXMIXbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots,SpuriousSolutions);
+    else
+        MIXMIXbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots,SpuriousSolutions);
+    end
+    
     out.MIXMIXbsIDX=MIXMIXbsIDX;
     out.ARIMIX=ARIMIX(:,2:end);
     if verMatlab == false
@@ -471,7 +502,14 @@ if typeIC==1 || typeIC==3
     out.MIXCLAbsari=MIXCLAbsari;
     % Store matrix which contains in the columns the details of the
     % classification
-    MIXCLAbsIDX=plotBestSolutions(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots);
+    
+    if mult==true
+        MIXCLAbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots,SpuriousSolutions);
+    else
+        MIXCLAbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXMIX,MIXCLAbs,kk,cc,'MIXCLA',plots,SpuriousSolutions);
+    end
+    
+    
     out.MIXCLAbsIDX=MIXCLAbsIDX;
     out.ARIMIX=ARIMIX(:,2:end);
     if verMatlab == false
@@ -486,7 +524,11 @@ if typeIC==0 || typeIC==3
     out.CLACLAbsari=CLACLAbsari;
     % Store matrix which contains in the columns the details of the
     % classification
-    CLACLAbsIDX=plotBestSolutions(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots);
+    if mult==true
+        CLACLAbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots,SpuriousSolutions);
+    else
+        CLACLAbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots,SpuriousSolutions);
+    end
     out.CLACLAbsIDX=CLACLAbsIDX;
     out.ARICLA=ARICLA(:,2:end);
     if verMatlab == false
@@ -701,7 +743,7 @@ end
 end
 
 
-function IDXout=plotBestSolutions(Y,IDX,Bestsols,kk,cc,lab,plots)
+function IDXout=plotBestSolutionsMult(Y,IDX,Bestsols,kk,cc,lab,plots,SpuriousSolutions)
 seqkk=1:length(kk);
 seqcc=1:length(cc);
 nbestsol=size(Bestsols,1);
@@ -709,7 +751,7 @@ IDXout=zeros(size(Y,1),nbestsol);
 for i=1:nbestsol
     IDXi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
     IDXout(:,i)=IDXi;
-    if plots==1
+    if (plots==1 &&  SpuriousSolutions ==true) || (plots==1 && strcmp(Bestsols{i,5},'true'))
         figure
         spmplot(Y,IDXi,1,'box');
         detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
@@ -723,6 +765,30 @@ end
 if plots==1
     cascade
 end
-
 end
+
+
+function IDXout=plotBestSolutionsReg(y,X,IDX,Bestsols,kk,cc,lab,plots,SpuriousSolutions)
+seqkk=1:length(kk);
+seqcc=1:length(cc);
+nbestsol=size(Bestsols,1);
+IDXout=zeros(length(y),nbestsol);
+for i=1:nbestsol
+    IDXi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
+    IDXout(:,i)=IDXi;
+    if (plots==1 &&  SpuriousSolutions ==true) || (plots==1 && strcmp(Bestsols{i,5},'true'))
+        yXplot(y,X,'group',IDXi,'tag',['pl_yX' num2str(i)]);
+        detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
+        bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
+        Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
+        stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
+        title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
+    end
+end
+
+if plots==1
+    cascade
+end
+end
+
 %FScategory:CLUS-RobClaMULT

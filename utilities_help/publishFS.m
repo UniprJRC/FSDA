@@ -678,7 +678,7 @@ function out=publishFS(file,varargin)
 
 %{
   % Create file FSRmdr.html starting from file FSRmdr.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false)
 %}
 
 %{
@@ -686,22 +686,37 @@ function out=publishFS(file,varargin)
   % Create file FSRmdr.html starting from file FSRmdr and
   % display detailed information about the Input, Output and Optional
   % arguments.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed')
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false)
 %}
 
 %{
   % Option outputDir.
-  % Create HTML file with embedded images in folder C:\tmp.
-  out=publishFS('FSRmdr','evalCode',true,'outputDir','C:\tmp')
+  % Create HTML file with embedded images in current folder (pwd).
+    % Find the location of FSDAroot
+    FullPath=which('addFSDA2path');
+    % extract the root directory of FSDA
+    FSDAroot=fileparts(FullPath);
+  pwdfolder=pwd;
+  disp(pwdfolder)
+  [status,msg]=fileattrib(pwdfolder);
+  disp(msg)
+  out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
 %}
 
 
 %{
   % Option webhelp with outputDir and imagesDir.
-  % Create HTML file for the WEB with Gogole Search and embedded images in folder C:\rosa.
-  % please note that C:\rosa, C:\rosa\tmp and C:\rosa\images should be
-  % created manually by the user
-out=publishFS('FSR','evalCode',true,'Display','iter-detailed','webhelp',true,'outputDir','c:\rosa','imagesDir','c:\rosa\images')
+  % Create HTML file for the WEB with Google Search and embedded images in
+  % current folder (pwd). 
+  pwdfolder=pwd;
+  disp(pwdfolder)
+   imagesDir=[pwd filesep 'images'];
+   % Please note that if evalCode is true subfolder ,
+   % [(pwd) filesep images] must be created manually by the user
+   mkdir('images')
+   outputDir=pwd;
+   out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
+    'webhelp',true,'outputDir',outputDir,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
 %}
 
 
@@ -3343,6 +3358,13 @@ if evalCode==true
     
     if numextraexToExec+numexToExec>0
         ExToExecStr=ExToExecStr(1:numextraexToExec+numexToExec);
+        
+        % Check that subfolder tmp exists if not it is necessary to create
+        % it.
+        if exist('tmp','file') ~= 7
+            % ... code 7 refers to directory
+            mkdir('tmp');
+        end
         
         % tmp .file containing all the .m examples will be created. It will be
         % created in subfolder tmp of helpfiles and then automatically removed.

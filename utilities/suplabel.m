@@ -96,7 +96,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     plot((1:10).^2)
     subplot(2,1,2);
     plot((1:10).^3)
-    suplabel('Population growth','y')
+    suplabel('Population growth','y');
 %}
 
 %{
@@ -111,9 +111,9 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     subplot(3,2,5);
     plot((1:10).^2)
     possuperaxes=[0.1 0.1 0.35 0.8];
-    suplabel('Population growth','y',possuperaxes)
-    suplabel('Right label','yy',possuperaxes)
-    suplabel('Years','x',possuperaxes)
+    suplabel('Population growth','y',possuperaxes);
+    suplabel('Right label','yy',possuperaxes);
+    suplabel('Years','x',possuperaxes);
     
     % The three panels of the right have a common xlabel, ylabel and
     % right ylabel
@@ -124,9 +124,9 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     subplot(3,2,6);
     plot((1:10).^2)
     possuperaxes=[0.55 0.1 0.3 0.8];
-    suplabel('Population growth 2','y',possuperaxes)
-    suplabel('Right label','yy',possuperaxes)
-    suplabel('Months','x',possuperaxes)
+    suplabel('Population growth 2','y',possuperaxes);
+    suplabel('Right label','yy',possuperaxes);
+    suplabel('Months','x',possuperaxes);
 %}
 
 
@@ -139,7 +139,7 @@ function [haxis,hlabel]=suplabel(text,whichaxis,possuperaxes)
     spmplot(meas,species,plo,'hist');
     % insert text 'any string' as x label
     % and return both the handle to the axis (inside haxis) and the handle to the label (inside hlabel).
-    [haxis,hlabel]=suplabel('Title added to the x axis')  
+    [haxis,hlabel]=suplabel('Title added to the x axis');  
 %}
 
 %{

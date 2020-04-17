@@ -153,17 +153,51 @@ function [fstring,citsCell]=publishBibliography(InputCell,OUT, varargin)
 %{
     % Skip_example
     % Example of use of option outputDir.
-    % We assume that path outputPath exist and that inside this path there
+    % We assume that path outputPath exists and that inside this path there
     % is template file
     outputPath='C:\temp';
+    FileName='addFSDA2path';
+    FullPath=which(FileName);
+    %Navigate to the main folder of FSDA
+    FSDAroot=fileparts(FullPath);
+    cd(FSDAroot)
+    % Specify subfolders of main folders for which contents file has to be
+    % created
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+        'examples' 'utilities' 'utilities_stat' 'utilities_help'};
+    ExclDir={'privateFS'  'datasets'};
+    % Create list of folders which must have the personalized contents file
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
+    % Crete personalized contents file for main folder of FSDA
+    % and required subfolders.
+    force=false;
+    [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
     fileBiblio=publishBibliography(FilesIncluded,OUT,'outputDir',outputPath,'write2file',false);
 %}
 
 %{
-    % Skip_example
     % Example where second output is returned.
+    % Skip_example
     % In this case output Citations contains the list of the citations
     % which have been found.
+    FileName='addFSDA2path';
+    FullPath=which(FileName);
+    %Navigate to the main folder of FSDA
+    FSDAroot=fileparts(FullPath);
+    cd(FSDAroot)
+    % Specify subfolders of main folders for which contents file has to be
+    % created
+    InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
+        'examples' 'utilities' 'utilities_stat' 'utilities_help'};
+    ExclDir={'privateFS'  'datasets'};
+    % Create list of folders which must have the personalized contents file
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
+    % Crete personalized contents file for main folder of FSDA
+    % and required subfolders.
+    force=false;
+    [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
+    [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
     [fileBiblio,Citations]=publishBibliography(FilesIncluded,OUT,'write2file',false);
     disp(Citations)
 %}
@@ -314,24 +348,23 @@ fstring=fscanf(fileID,'%c');
 fstring=[fstring(1:finHTMLTEXT+3) strInsert fstring(finHTMLTEXT+4:end)];
 
 name='bibliography';
-
-file1ID=fopen([outputDir fsep name '.html'],'w');
-
-if file1ID==-1
+if write2file == true
+    file1ID=fopen([outputDir fsep name '.html'],'w');
     
-    if ismac || isunix
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
-    elseif ispc
-        outputDir=strrep(outputDir,'\','\\');
-        errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
-    else
-        errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+    if file1ID==-1
+        
+        if ismac || isunix
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        elseif ispc
+            outputDir=strrep(outputDir,'\','\\');
+            errmsg= [' Path ' outputDir '\\' name '.html does not exist or output file '  name '.html is not writable'];
+        else
+            errmsg= [' Path ' outputDir '/' name '.html does not exist or output file '  name '.html is not writable'];
+        end
+        
+        error('FSDA:publishBibliography:WrngOutFolder',errmsg);
     end
     
-    error('FSDA:publishBibliography:WrngOutFolder',errmsg);
-end
-
-if write2file == true
     fprintf(file1ID,'%s',fstring);
 end
 fclose('all');

@@ -613,7 +613,7 @@ for i =1:nselected
         
         %alphaX < 1: is the the fixed (<0.5) or adaptive (>0.5)
         %proportion of units to trim
-        if alphaX<1
+        if alphaX<1 && alphaX>0
             for jj=1:k
                 % groupjind = indices of units belonging to group j
                 groupjind = find(idx==jj);
@@ -970,7 +970,7 @@ for i =1:nselected
         % when second-level triming and/or thinning are applied);
         % otherwise, this is done once at the final step.
         
-        if zigzag == 1 || mudiff<reftol || (zigzag == 0  && cstep == refsteps)
+        if zigzag == 1 || mudiff<reftol || (zigzag == 0  && cstep == refsteps) || vopt==-1e+20
             
             % obj >= vopt: to check an increase in the target value.
             if obj >= vopt && sum(isnan(Beta(:))) ==0
