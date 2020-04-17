@@ -644,7 +644,7 @@ for i =1:nselected
                     
                     % check number of units in relation to the number
                     % of variables
-                    if njj/(p-intercept)>10 && alphaX>0
+                    if njj/(p-intercept)>10
                         
                         %The MCD is applied only when p=1, because in
                         %this case it is faster than the FS.
