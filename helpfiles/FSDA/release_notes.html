@@ -88,6 +88,9 @@ document.write(divsbefore);</script>
 	<p>FSDA follows typical MATLAB timetable in the sense that there are two releases 
 	per year. The first typically in May/June and the second around October/November.
 	</p>
+	<p>All up to date files are in the git public repository
+	<a href="https://github.com/UniprJRC/FSDA">https://github.com/UniprJRC/FSDA</a>
+	</p>
 	<table border="2" cellpadding="4" cellspacing="0" class="body" style="width: 100%;">
 		<colgroup>
 			<col><col><col width="20%"><col width="20%">
@@ -104,15 +107,68 @@ document.write(divsbefore);</script>
 			</tr>
 		</thead>
 		<tr>
+			<td style="vertical-align: top;"><strong>V8.0 (R2020a)</strong></td>
+			<td style="vertical-align: top;">
+			<p class="p5">&nbsp;</p>
+			<p class="p5">ROBUST REGRESSION</p>
+			<p class="p5">A new set of routines for minimum density power 
+			divergence estimators have been added (<a href="mdpd.html">mdpd</a>, 
+			<a href="mdpdR.html">mdpdR</a>, <a href="mdpdReda.html">mdpdReda</a>, 
+			<a href="PDrho.html">PDrho</a>, <a href="PDpsi.html">PDpsi</a>, 
+			<a href="PDwei.html">PDwei</a>, <a href="PDpsider.html">PDpsider</a>, 
+			<a href="PDpsix.html">PDpsix</a>, <a href="PDbdp.html">PDbdp</a>, 
+			<a href="PDeff.html">PDeff</a>, <a href="PDc.html">PDc</a> (for more 
+			details see <a href="https://www.mdpi.com/1099-4300/22/4/399">
+			https://www.mdpi.com/1099-4300/22/4/399</a>) </p>
+			<p class="p5">New function <a href="simulateLM.html">simulateLM</a> 
+			to simulate linear regression data with prespecified value of R2, 
+			prespecified correlation among the explanatory variables and type of 
+			distribution.</p>
+			<p class="p5">New function <a href="VIOM.html">VIOM</a> which computes weights estimates under a Variance-Inflation Outlier Model
+using MLE or Restricted MLE (REMLE). </p>
+			<p class="p5">twopdf tworn</p>
+			<p class="p5">ROBUST CLUSTERING</p>
+			<p class="p5">New function <a href="tclustregeda.html">tclustregeda</a>&nbsp; 
+			which enables to monitor the regression clustering classification 
+			for different levels of trimming.</p>
+			<p class="p5">New function <a href="tclustregIC.html">tclustregIC</a> 
+			which enables to compute the BIC (and other information criteria) 
+			for different values of restriction factors and different number of 
+			groups in presence of classification or mixture likelihood. </p>
+			<p class="p5">&nbsp;</p>
+			<p class="p5">UTILITIES</p>
+			<p class="p5">New function <a href="existFS.html">existFS</a> which 
+			checks whether a file exists and puts the answer in a cached 
+			persistent variable</p>
+			<p class="p5">DOCUMENTATION</p>
+			<p class="p5">Added file getting_started.mlx in subfolder doc of the 
+			main root of FSDA for packaging the FSDA toolbox,</p>
+			<p class="p1">&nbsp;</p>
+			</td>
+			<td style="vertical-align: top; width: 20%;">From this release we 
+			support old 
+			releases up to 2015a.<br><br>Functions PoolPrepare.m and PoolClose.m 
+			which were necessary to cope with different version of the first 
+			releases of parallel computing toolbox have been removed.<br><br>tclustregcore.m and tcluscore.m (the core part which computes the EM 
+			algorithm for each subset which&nbsp; is extracted) have been 
+			created. These two functions are not intended to be called directly 
+			by the user.<br></td>
+			<td class="auto-style1" style="vertical-align: top;">Mathworks 
+			search engine in our HTML web pages in version 2020a does not work 
+			anylonger.<br>To search for FSDA function it is necessary to use the 
+			supplemental software search engine.<br><br>Corrected small bug in 
+			LTSts in case of levl shift with very small series.<br><br></td>
+			<td style="vertical-align: top;">April &nbsp;2020</td>
+		</tr>
+		<tr>
 			<td style="vertical-align: top;"><strong>V7.1 (R2019b)</strong></td>
 			<td style="vertical-align: top;">
 		<p class="p5">This is the first release which is distributed from 
 		Mathworks marketplace and from github platform. </p>
-			<p class="p5">&nbsp;</p>
 			<p class="p5">TRANSFORMATION IN REGRESSION </p>
-			<p class="p5">New function <a href="tBothSides.html">tBothSides</a>&nbsp; 
-			which enables to transform both sides of a (nonlinear) regression 
-			model.</p>
+			<p class="p5">New function <a href="tclustregeda.html">tclustregeda</a>&nbsp; 
+			which enables to monitor the regression clustering classification 
+			for different levels of trimming.</p>
 			<p class="p5">New function <a href="boxcoxR.html">boxcoxR</a> which 
 			finds MLE of lambda in linear regression (and confidence interval) 
 			using Box Cox or Yeo and Johnson family.</p>
