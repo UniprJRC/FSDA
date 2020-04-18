@@ -229,7 +229,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     % 3 groups and trimming level of 3 percent
     close all
     Y=load('geyser2.txt');
-    out=tkmeans(Y,3,0.03,'plots',1)
+    out=tkmeans(Y,3,0.03,'plots',1);
 %}
 
 %{
@@ -237,7 +237,7 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     % option weights =1
     close all
     Y=load('geyser2.txt');
-    out=tkmeans(Y,3,0.03,'plots',1,'weights',1)
+    out=tkmeans(Y,3,0.03,'plots',1,'weights',1);
 %}
 
 %{
@@ -245,11 +245,11 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     % Weights =1
     Y=load('M5data.txt');
     close all
-    out=tkmeans(Y(:,1:2),3,0,'plots',1)
-    out=tkmeans(Y(:,1:2),3,0.1,'plots','ellipse')
-    out=tkmeans(Y(:,1:2),3,0.1,'plots','contour')
-    out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf')
-    out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb')
+    out=tkmeans(Y(:,1:2),3,0,'plots',1);
+    out=tkmeans(Y(:,1:2),3,0.1,'plots','ellipse');
+    out=tkmeans(Y(:,1:2),3,0.1,'plots','contour');
+    out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf');
+    out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb');
     cascade;
 
     % using a structure for plots
@@ -275,8 +275,8 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     %
     close all
     Y=load('structurednoise.txt');
-    out=tkmeans(Y(:,1:2),2,0.1,'plots',1)
-    out=tkmeans(Y(:,1:2),5,0.15,'plots',1)
+    out=tkmeans(Y(:,1:2),2,0.1,'plots',1);
+    out=tkmeans(Y(:,1:2),5,0.15,'plots',1);
 
     cascade
 %}
@@ -291,8 +291,8 @@ function [out , varargout]  = tkmeans(Y,k,alpha,varargin)
     % 
     close all
     Y=load('mixture100.txt');
-    out=tkmeans(Y(:,1:2),3,0,'plots',1)
-    out=tkmeans(Y(:,1:2),2,0.05,'plots',1)
+    out=tkmeans(Y(:,1:2),3,0,'plots',1);
+    out=tkmeans(Y(:,1:2),2,0.05,'plots',1);
 
     cascade
 %}

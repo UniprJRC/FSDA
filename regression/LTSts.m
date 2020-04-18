@@ -67,17 +67,21 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 which
+%               model.lshift = scalar greater or equal than 0 or equal to -1 which
 %                         specifies whether it is necessary to include a
 %                         level shift component. lshift = 0 (default)
-%                         implies no level shift component. If lshift is an
-%                         interger greater then 0 then it is possible to
-%                         specify the moment to start considering level
-%                         shifts. For example if lshift =13 then the
-%                         following additional parameters are estimated
-%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where $\beta_{LS1}$
-%                          is a real number and $\beta_{LS2}$ is an integer
-%                          which assumes values 14, 14, ..., T-13.
+%                         implies no level shift component. lshift = -1
+%                         specifies the moment to start considering level
+%                         shifts automatically from specification of
+%                         lshift in position floor((T-1-p)/2). If lshift is
+%                         an interger greater then 0 then it specifies the
+%                         moment to start considering level shifts. For
+%                         example if lshift =13 then the following
+%                         additional parameters are estimated
+%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
+%                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
+%                          is an integer which assumes values 14, 14, ...,
+%                          T-13.
 %                         In general, the level shift which are considered
 %                         are referred to times (lshift+1):(T-lshift).
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
@@ -1257,8 +1261,16 @@ pini=ntrend+nseaso+nexpl;
 % nini +
 % varampl = number of parameters involving time varying trend,
 % + 2 additional parameters is there is a level shift component
-p=pini+varampl+(lshift>0)*2;
+p=pini+varampl+(lshift>0 || lshift==-1)*2;
 
+%automatic specification of lshift which takes into account the fact that
+%at line 217 of FSRinvmdr the degrees of freedom mm-p must be positive.
+%Being mm the length of LSH = (lshift+1):(T-lshift), mm-p>0 can be written as:
+%(T-lshift)-(lshift+1) > p -->  2*lshift < T-1-p  --> lshift < (T-1-p)/2
+
+if lshift==-1   
+    lshift=floor((T-1-p)/2);
+end
 % indexes of linear part of seasonal component
 if seasonal <6
     indlinsc=(trend+2):(trend+1+seasonal*2);

@@ -682,7 +682,7 @@ function out=publishFS(file,varargin)
 
 %{
   % Create file FSRmdr.html starting from file FSRmdr.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false)
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false);
 %}
 
 %{
@@ -690,7 +690,7 @@ function out=publishFS(file,varargin)
   % Create file FSRmdr.html starting from file FSRmdr and
   % display detailed information about the Input, Output and Optional
   % arguments.
-  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false)
+  out=publishFS('FSRmdr','evalCode',false,'Display','iter-detailed','ErrWrngSeeAlso',false);
 %}
 
 %{
@@ -705,7 +705,7 @@ function out=publishFS(file,varargin)
     % Navigate into the main root of FSDA
     cd(FSDAroot)
     pwdfolder=pwd;
-    out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false)
+    out=publishFS('FSRmdr','evalCode',false,'outputDir',pwdfolder,'ErrWrngSeeAlso',false);
 %}
 
 
@@ -727,7 +727,7 @@ function out=publishFS(file,varargin)
    mkdir('myimages')
    outputDir=pwd;
    out=publishFS('FSR','evalCode',true,'Display','iter-detailed',...
-    'webhelp',true,'outputDir',outputDir,'imagesDir',imagesDir,'ErrWrngSeeAlso',false)
+    'webhelp',true,'outputDir',outputDir,'imagesDir',imagesDir,'ErrWrngSeeAlso',false);
 %}
 
 
@@ -3372,7 +3372,7 @@ if evalCode==true
         
         % Check that subfolder tmp exists if not it is necessary to create
         % it.
-        if exist('tmp','file') ~= 7
+        if exist('tmp','dir') ~= 7
             % ... code 7 refers to directory
             mkdir('tmp');
         end
