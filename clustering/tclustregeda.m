@@ -788,7 +788,7 @@ if NoPriorSubsets
     
     %nselected is set equal to the number of subsets:
     % - nselected = nsamp, if nsamp is a scalar;
-    % - nselected = size(nsamp,1), if nsamp is ther matrix of the initial subsets    
+    % - nselected = size(nsamp,1), if nsamp is ther matrix of the initial subsets
 end
 
 %%% - Output structures
@@ -806,7 +806,7 @@ end
 wtype_beta = 0;
 wtype_obj  = 0;
 zigzag     = (alphaX > 0 && alphaX<1) || wtype_beta == 3 || ...
-              wtype_beta == 2 || ~strcmp(wtype_obj, '0');
+    wtype_beta == 2 || ~strcmp(wtype_obj, '0');
 
 % Make sure alphaLik is a column vector;
 alphaLik = alphaLik(:);
@@ -841,8 +841,8 @@ parfor (j=1:lalpha, numpool)
     
     [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
         = tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,...
-          equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
-          seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
+        equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
+        seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
     
     %%  END OF RANDOM STARTS
     
@@ -1209,13 +1209,16 @@ IDt=IDs(Alltrueselj,:);
 out.UnitsTrmOrChgCla=IDt;
 
 %% 1 Monitor change of statistics between two consecutive values of alphaLik
-namej='monitor';
+
+namej = 'monitor';
+tit   = {'Tclustreg monitoring plot' , 'Changes between two consecutive \alpha-values'};
+
 d=find(strcmp(namej,name));
 if d>0
     figure('Name',namej,'Visible','on');
-    
     plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
         '$\hat \mu_X$' '$\hat \Sigma_X$'};
+    
     if alphaX==1
         nr=3;
         nc=2;
@@ -1225,42 +1228,47 @@ if d>0
     end
     
     for j=1:nr*nc
-        subplot(nr,nc,j)
-        plot(Amon(:,1),Amon(:,j+1))
-        xlim([min(alphaLik),max(alphaLik)])
-        % set(gca,'XTickLabel',num2str(alpha1'))
-        
+        subplot(nr,nc,j);
+        plot(Amon(:,1),Amon(:,j+1),'LineWidth',1);
+        set(gca,'xticklabel',[],'XGrid','on');
+        xlim([min(alphaLik),max(alphaLik)]);
         L = get(gca,'XLim');
-        set(gca,'XTick',linspace(L(1),L(2),lalpha))
-        set(gca,'XTickLabel',num2str(flipud(alphaLik)))
-        
-        set(gca,'XDir','reverse')
-        xlabel('Level of trimmming')
-        title(plotsname{j},'interpreter','latex')
+        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , 12);
+        if j>nc*(nr-1)
+            xtickangle(gca,45);
+            set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , 12);
+            xlabel('Level of trimmming', 'fontsize' , 14);
+        end
+        set(gca,'XDir','reverse');
+        title(plotsname{j},'interpreter','latex', 'fontsize' , 16);
+        axtoolbar('Visible','off');
     end
-    sgtitle('Monitor changes between two consecutive alpha values')
+    sgtitle(tit , 'fontsize' , 18);
 end
 
 
 %% 2 Monitoring stability of classification (units plot)
+
 namej='UnitsTrmOrChgCla';
+tit1 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in red' , 'Above the horizontal line unit never classified'};
+tit2 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in red'};
+
 d=find(strcmp(namej,name));
 if d>0
     
     figure('Name',namej,'Visible','on');
     xlim([0 k1+1])
     ylim([0 n1+1])
-    set(gca,'XTick',0:k1+1);
+    set(gca,'XTick',0:k1+1, 'fontsize' , 12);
     
     for j=1:k1
         strj=cellstr(num2str(IDt(:,j)));
         % Empty spaces for trimmed units
         strj(strcmp(strj,'-1'))={''};
         
-        % set colors red for trimmed units blue for those which changed
+        % set colors red for trimmed units; blue for those which changed
         % classification
-        % UnitsTrm
-        h=text(j*onex,seqIDs,strj,'HorizontalAlignment','center');
+        h=text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , 12);
         if j==1
             [~,indredcolor]=intersect(IDt(:,1),UnitsChgCla);
             col=repmat({'b'},n1,1);
@@ -1272,29 +1280,34 @@ if d>0
     newxtcklab=cell(k1+2,1);
     newxtcklab([1:2 k1+2])={''};
     newxtcklab(3:k1+1)=cellstr(alpha1str);
-    set(gca,'xticklabels',newxtcklab)
-    set(gca,'yticklabels','')
+    set(gca,'xticklabels',newxtcklab, 'fontsize' , 12)
+    set(gca,'yticklabels','', 'fontsize' , 12)
     
-    xlabel('Trimming level')
-    ylabel('Units trimmed at least once or which changed assignment')
-    title('In red color units which changed classification')
+    xlabel('Trimming level', 'fontsize' , 14)
+    ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'fontsize' , 14)
     
     if ~isempty(unitsNeverAssigned)
         hline=refline(0,n1-length(unitsNeverAssigned)+0.5);
         hline.Color = 'm';
-        title('In red units which changed classification. Above the hor. line unit never classified.')
+        title(tit1 , 'fontsize' , 16 , 'FontWeight', 'normal');
     else
-        title('In red color units which changed classification')
+        title(tit2 , 'fontsize' , 16 , 'FontWeight', 'normal');
     end
-    
+    axtoolbar('Visible','off');
 end
 
 
 %% 3 Monitoring posterior probabilities
-namej='PostProb';
+namej = 'PostProb';
+tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
+lw = 1;  % line width of all plots
+
 d=find(strcmp(namej,name));
 if d>0
-    figure('Name',namej,'Visible','on');
+    hf = figure('Name',namej,'Visible','on');
+    newpos = get(hf,'Position');
+    set(hf,'Position',[1,1,1.7,1.7].*newpos);
+    
     Prob1=squeeze(Postprob(:,1,:));
     Prob1(IDXmin0)=NaN;
     
@@ -1303,122 +1316,135 @@ if d>0
     group(UnitsChgCla)={'Units which changed assignment'};
     group(UnitsTrm)={'Trimmed units'};
     
-    subplot(2,2,1)
-    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str)
-    ylim([-0.05 1.05])
-    xlabel('Level of trimming')
-    ylabel('Post prob. group 1 all units')
-    set(legend,'Location','best')
+    subplot(2,2,1);
+    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]);
+    xlabel('Level of trimming','FontSize',14);
+    ylabel('Post prob. group 1 all units','FontSize',14);
+    set(legend,'Location','best');
+    axtoolbar('Visible','off');
     
-    subplot(2,2,2)
+    subplot(2,2,2);
     Prob1sel=Prob1(UnitsTrmOrChgCla,:);
     groupsel=group(UnitsTrmOrChgCla);
     
-    parallelcoords(Prob1sel,'Group',groupsel,...
-        'Labels',alpha1str)
-    ylim([-0.05 1.05])
-    xlabel('Level of trimming')
-    ylabel('Post prob. group 1 selected units')
-    set(legend,'Location','best')
+    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]);
+    xlabel('Level of trimming','FontSize',14);
+    ylabel('Post prob. group 1 selected units','FontSize',14);
+    set(legend,'Location','best');
     % Add the label of the units whose final post prob is intermediate
     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
         cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+    axtoolbar('Visible','off');
     
     subplot(2,2,3)
     % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
-    parallelplot(Prob1,'GroupData',group)
+    parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',lw);
     set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
     xlabel('Level of trimming')
     ylabel('Post prob. group 1 all units')
     legend('off')
     
     subplot(2,2,4)
-    parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla))
+    parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+        'FontSize',12,'LineWidth',lw,'LineAlpha',0.99);
     set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
     xlabel('Level of trimming')
     ylabel('Post prob. group 1 selected units')
     legend('off')
-    sgtitle('Monitor posterior probabilities')
+    
+    sgtitle(tit, 'fontsize' , 18 , 'FontWeight', 'normal');
 end
 
 
 %% Monitoring  of sigma2 and sigma2corr
-namej='Sigma';
+namej = 'Sigma';
+tit   = {'Tclustreg monitoring plot -- Error variances'};
+
 d=find(strcmp(namej,name));
 if d>0
     figure('Name',namej,'Visible','on');
-    % Sigma2y is of dimension k-by-length(alpha)
-    subplot(2,1,1)
+    
+    % first subplot
+    subplot(2,1,1);
     % Sigma2y is k-by-length(alphaLik)
-    h=plot(alphaLik,Sigma2y');
+    h1  = plot(alphaLik,Sigma2y','LineWidth',1);
     % set the colors using the order in clrdef
-    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    set(h1,{'Color'},cellstr(clrdef(1:k)'))
     
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha))
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , 12);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , 12);
+    set(gca,'XDir','reverse','XGrid','on');
     
-    set(gca,'XDir','reverse')
-    xlabel('Level of trimmming')
-    ylabel('$\hat \sigma^2$','Interpreter','latex')
-    legend(legendGroups)
-    legend('hide')
+    xlabel('Level of trimmming', 'fontsize' , 14);
+    ylabel('$\hat \sigma^2$','Interpreter','latex', 'fontsize' , 16);
+    axis('manual');
+    axtoolbar('Visible','off');
     
-    subplot(2,1,2)
-    h=plot(alphaLik,Sigma2yc');
+    % second subplot
+    subplot(2,1,2);
+    h2  = plot(alphaLik,Sigma2yc','LineWidth',1);
     % set the colors using the order in clrdef
-    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    set(h2,{'Color'},cellstr(clrdef(1:k)'));
     
-    xlim([min(alphaLik),max(alphaLik)])
+    xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
     
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha))
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , 12);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , 12);
+    set(gca,'XDir','reverse','XGrid','on');
     
-    set(gca,'XDir','reverse')
-    xlabel('Level of trimmming')
-    ylabel('$\hat \sigma^2_c$','Interpreter','latex')
-    legend(legendGroups)
-    legend('show')
-    clickableMultiLegend(h)
-    sgtitle('Monitor error variances')
+    xlabel('Level of trimmming', 'fontsize' , 14);
+    ylabel('$\hat \sigma^2_c$','Interpreter','latex', 'fontsize' , 16);
+    %legend(hs2,legendGroups);
+    
+    axis('manual');
+    axtoolbar('Visible','off');
+    
+    clickableMultiLegend(h1,legendGroups);
+    hl2 = clickableMultiLegend(h2,legendGroups); 
+    set(hl2,'visible','off');
+
+    sgtitle(tit, 'fontsize' , 18 , 'FontWeight', 'normal');
 end
 
 
 %% Plot scatter with all regression lines (hyperplanes)
-namej='ScatterWithRegLines';
+namej = 'ScatterWithRegLines';
+alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
+tit = {['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
+        num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
+        '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']};
+
+%clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+%ccc = cmapFS(lalpha,FSColors.red.RGB);
+    
 d=find(strcmp(namej,name));
 if d>0
     
-    idx=IDX(:,1);
-    % this is just for rotating colors in the plots
-    
+    idx = IDX(:,1); % used for rotating colors in the plots
+
     intercept=1;
-    % The following plots are for the bi-variate case (i.e. v=1)
     if p-intercept < 2
+        % The following plots are for the bi-variate case (i.e. v=1)
         
         % initialize figure
         figure('Name',namej,'Visible','on');
         hold on;
-        alpha1range=['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
-        title({['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
-            num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
-            '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']} , ...
-            'interpreter' , 'LaTex', 'fontsize' , 14);
         
         % plot regression lines
         vv = [min(X(:,end)) max(X(:,end))];
         
-        % hRegLines vector of graphic handles which will contain regression
-        % lines
+        % hRegLines vector of graphic handles containing regression lines
         hRegLines = gobjects(k,1);
-        % hText vector of graphic handles which will contain the labels of
-        % groups
+        % hText vector of graphic handles containing the labels of groups
         hText = gobjects(k,1);
         for jj = 1:k
             group_label = ['Group ' num2str(jj)];
@@ -1429,19 +1455,24 @@ if d>0
                 
                 for jjj=1:lalpha
                     %   if jjj==1
-                    gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,'DisplayName',[group_label ' fit' ],...
+                    gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
+                        'DisplayName',[group_label ' fit' ],...
                         'Color',clrdef(jj)); %#ok<NASGU>
+%                     gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
+%                         'DisplayName',[group_label ' fit' ],...
+%                         'Color',ccc(jj,:)); %#ok<NASGU>
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
                 
             elseif intercept==0
+                
                 for jjj=1:lalpha
-                    gr=plot(vv,Beta(jj,1,jjj)*vv,'DisplayName',[group_label ' fit' ],...
+                    gr=plot(vv,Beta(jj,1,jjj)*vv,...
+                        'DisplayName',[group_label ' fit' ],...
                         'Color',clrdef(jj)); %#ok<NASGU>
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
             end
-            
             
             ucg = find(idx==jj);
             % we add a (ficticious) plot instruction with white symbols
@@ -1456,13 +1487,16 @@ if d>0
         % Plot the outliers (trimmed points)
         ucg = find(idx==-1);
         % hunitsMinus1 = graphical handle to the first level trimmed units
-        hunitsMinus1=plot(X(ucg,end),y(ucg),sym1stLevelTrimmedUnits,'color',col1stLevelTrimmedUnits,'MarkerSize',8,...
+        hunitsMinus1=plot(X(ucg,end),y(ucg),...
+            sym1stLevelTrimmedUnits,'color',col1stLevelTrimmedUnits,...
+            'MarkerSize',8,...
             'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
         
         % Plot second level trimmed units (if there are)
         ucg = find(idx==-2);
         % hunitsMinus2 = graphical handle to second level trimmed units
-        hunitsMinus2=plot(X(ucg,end),y(ucg),sym2ndLevelTrimmedUnits,'color',col2ndLevelTrimmedUnits,...
+        hunitsMinus2=plot(X(ucg,end),y(ucg),...
+            sym2ndLevelTrimmedUnits,'color',col2ndLevelTrimmedUnits,...
             'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
         
         
@@ -1536,6 +1570,9 @@ if d>0
             
         end
     end
+
+    title(tit , 'interpreter' , 'LaTex', 'fontsize' , 18);
+    axtoolbar('Visible','off');
 end
 
 %% Monitoring of allocation (using gscatter)
@@ -1543,33 +1580,56 @@ d=find(strcmp('gscatter',name));
 if d>0
     
     % Monitoring of allocation
-    if  lalphasel==1
-        nr=1;
-        nc=1;
-    elseif lalphasel==2
-        nr=2;
-        nc=1;
-    elseif lalphasel<=4
-        nr=2;
-        nc=2;
-    elseif lalphasel<=6
-        nr=3;
-        nc=2;
-    elseif lalphasel<=9
-        nr=3;
-        nc=3;
-    elseif lalphasel<=12
-        nr=3;
-        nc=4;
-    else
-        nr=4;
-        nc=4;
+    switch lalphasel
+        case 1
+            nr=1;
+            nc=1;
+        case 2
+            nr=2;
+            nc=1;
+        case {3,4}
+            nr=2;
+            nc=2;
+        case {5,6}
+            nr=3;
+            nc=2;
+        case {7,8,9}
+            nr=3;
+            nc=3;
+        case {10,11,12}
+            nr=3;
+            nc=4;
+        otherwise
+            nr=4;
+            nc=4;
     end
+    
+    %     % Monitoring of allocation
+    %     if  lalphasel==1
+    %         nr=1;
+    %         nc=1;
+    %     elseif lalphasel==2
+    %         nr=2;
+    %         nc=1;
+    %     elseif lalphasel<=4
+    %         nr=2;
+    %         nc=2;
+    %     elseif lalphasel<=6
+    %         nr=3;
+    %         nc=2;
+    %     elseif lalphasel<=9
+    %         nr=3;
+    %         nc=3;
+    %     elseif lalphasel<=12
+    %         nr=3;
+    %         nc=4;
+    %     else
+    %         nr=4;
+    %         nc=4;
+    %     end
     
     resup=1;
     figure('Name',['Monitoring allocation #' int2str(resup)])
-    
-    
     
     jk=1;
     for j=1:lalphasel
@@ -1604,34 +1664,34 @@ if d>0
             symdefj=symdef;
         end
         
-        if p>2
+        if p > 2
             % In this case PLS regression is used.
             % In order to take into account group structure k-1 dummy
             % variables are added to matrix X. Of course trimmed units for
             % that particular value of alphaLik are excluded, but included
             % in the gscatter plots.
-            DUM=zeros(n,k-1);
-            for jj=1:k-1
-                DUM(idxselj==jj,jj)=1;
+            DUM    = zeros(n,k-1);
+            for jj = 1:k-1
+                DUM(idxselj==jj,jj) = 1;
             end
-            Xext=[X DUM];
-            idxgt0=idxselj>0;
+            Xext    = [X DUM];
+            idxgt0  = idxselj>0;
             % training set
-            ysel0=y(idxgt0);
-            Xsel0=Xext(idxgt0,:);
-            Xsel1=Xext(~idxgt0,:);
-            mXsel0=mean(Xsel0);
+            ysel0   = y(idxgt0);
+            Xsel0   = Xext(idxgt0,:);
+            Xsel1   = Xext(~idxgt0,:);
+            mXsel0  = mean(Xsel0);
             [~,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
             % [XL,yl,XS0,YS0,beta,PCTVAR,MSE,stats] = plsregress(Xsel0,ysel0,1);
             
             % Find best predictor for non trimmed (XS0) and trimmed units
-            XS1=zeros(n,1);
-            XS1(idxgt0)=XS0;
+            XS1     = zeros(n,1);
+            XS1(idxgt0) = XS0;
             % REMARK
             % XS0chk=(Xsel0-mXsel0)*stats.W;
-            XS1(~idxgt0)=(Xsel1-mXsel0)*stats.W;
+            XS1(~idxgt0) = (Xsel1-mXsel0)*stats.W;
             
-            hh=gscatter(XS1,y,idxselj,clrdefj,symdefj);
+            hh = gscatter(XS1,y,idxselj,clrdefj,symdefj);
             
             xlabel('PLS predictor')
             ylabel('y')
