@@ -444,7 +444,7 @@ function out  = tclustIC(Y,varargin)
         xlabel('Restr. fact. $c$','Interpreter','Latex')
         title(['k=' num2str(j)])
     end
-    suplabel('BIC (MIXMIX)','t')
+    suplabel('BIC (MIXMIX)','t');
 %}
 
 

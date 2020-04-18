@@ -739,7 +739,8 @@ else
                 r(constr,2)=Inf;
             end
             % ord=sortrows(r,2);
-            [~,ord]=sort(r(:,2));
+            % [~,ord]=sort(r(:,2)./(X(:,end).^2));
+              [~,ord]=sort(r(:,2));
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);

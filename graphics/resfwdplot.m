@@ -412,7 +412,7 @@ function plotopt=resfwdplot(out,varargin)
     standard.LineStyle={'-';'-.';':'};
     % Specify the line width
     standard.LineWidth=0.5;
-    resfwdplot(out,'standard',standard)
+    resfwdplot(out,'standard',standard);
 %}
 %
 %{
@@ -433,7 +433,7 @@ function plotopt=resfwdplot(out,varargin)
     fground.LineWidth=3;
     % Produce a monitoring residuals plot in which labels are put for units
     % [2 5 20 23 35 45] in steps [n/2 n*0.75 n+0.5] of the search
-    resfwdplot(out,'fground',fground)
+    resfwdplot(out,'fground',fground);
 %}
 %
 %
@@ -450,7 +450,7 @@ function plotopt=resfwdplot(out,varargin)
     % Trajectories whose residual is always between -btresh and +bthresh
     % are shown as specified in bground.bstyle
     bground.bstyle='hide';
-    resfwdplot(out,'bground',bground)
+    resfwdplot(out,'bground',bground);
 %}
 %
 %
@@ -537,7 +537,7 @@ function plotopt=resfwdplot(out,varargin)
     X=randn(n,4);
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
+    resfwdplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'});
 %}
 %
 %{
@@ -550,7 +550,7 @@ function plotopt=resfwdplot(out,varargin)
     [out]=FSReda(y,X,out.bs);
     databrush=struct;
     databrush.selectionmode='Brush';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -564,7 +564,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush=struct;
     databrush.selectionmode='lasso';
     databrush.Pointer='fleur';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -582,7 +582,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.selectionmode='Rect';
     databrush.Label='on';
     databrush.RemoveLabels='off';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %   All previous examples used a non persistent brushing (that is brushing
@@ -604,7 +604,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.Label='on';
     databrush.RemoveLabels='off';
     databrush.persist='off';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -623,7 +623,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.Label='on';
     databrush.RemoveLabels='on';
     databrush.persist='on';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -641,7 +641,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='on';
     databrush.persist='on';
     databrush.bivarfit='0';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -659,7 +659,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='1';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -678,7 +678,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='2';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -696,7 +696,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.bivarfit='i4';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -714,7 +714,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.multivarfit='1';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -736,7 +736,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     databrush.persist='on';
     databrush.multivarfit='2';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -761,7 +761,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='on';
     databrush.persist='on';
     databrush.multivarfit='2';
-    resfwdplot(out,'databrush',databrush)
+    resfwdplot(out,'databrush',databrush);
 %}
 %
 %{
@@ -778,7 +778,7 @@ function plotopt=resfwdplot(out,varargin)
     plotopt=resfwdplot(out,'msg',1)
     % In order to reuse the options which have been stored inside plotopt
     % use the following sintax
-    % resfwdplot(out,plotopt{:})
+    % resfwdplot(out,plotopt{:});
 %}
 
 %{
@@ -793,7 +793,7 @@ function plotopt=resfwdplot(out,varargin)
     standard=struct;
     % xlabels start from 400
     standard.xvalues=400:1:(size(out.RES,2)+400-1);
-    resfwdplot(out,'standard',standard)
+    resfwdplot(out,'standard',standard);
 %}
 
 %{
@@ -833,7 +833,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.RemoveLabels='off';
     % Add the labels of the units in the associated yXplot matrix
     databrush.labeladd='1'; %
-    resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
+    resfwdplot(out,'databrush',databrush,'label',RowLabelsy);
 %}
 
 %{
@@ -864,7 +864,7 @@ function plotopt=resfwdplot(out,varargin)
     databrush.labeladd='1';
     % Enable repeated brushing actions
     databrush.persist='on';
-    resfwdplot(out,'databrush',databrush,'label',RowLabelsy)
+    resfwdplot(out,'databrush',databrush,'label',RowLabelsy);
 %}
 
 %
