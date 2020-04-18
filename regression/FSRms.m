@@ -441,7 +441,7 @@ function outms = FSRms(y,X,varargin)
     y=X(:,end);
     X=X(:,1:end-1);
     labels={'Time','1','2','3','4','5','6','7','8'};
-    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[255], 'CandleWidth',0.01);
+    [Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5], 'CandleWidth',0.01);
 %}
 
 %% Beginning of code
