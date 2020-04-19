@@ -494,6 +494,8 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %{
     %% tclustreg with a noise variable and personalized plots.
     % Use the X data of the previous example.
+    close all;
+    clear all;
     X  = load('X.txt');
     y = X(:,end);
     rng(100)
@@ -1427,12 +1429,12 @@ tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_
 % \alpha values. Colormap follows our color rotation standard:
 % clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 clrdefmap = zeros(lalpha,3,6);
-clrdefmap(:,:,1) = cmapFS(10,FSColors.blue.RGB,FSColors.blueish.RGB);
-clrdefmap(:,:,2) = cmapFS(10,FSColors.black.RGB,FSColors.greysh.RGB);
-clrdefmap(:,:,3) = cmapFS(10,FSColors.magenta.RGB,FSColors.purplish.RGB);
-clrdefmap(:,:,4) = cmapFS(10,FSColors.green.RGB,FSColors.greenish.RGB);
-clrdefmap(:,:,5) = cmapFS(10,FSColors.cyan.RGB,FSColors.lightblue.RGB);
-clrdefmap(:,:,6) = cmapFS(10,FSColors.red.RGB,FSColors.reddish.RGB);
+clrdefmap(:,:,1) = cmapFS(lalpha,FSColors.blue.RGB,FSColors.blueish.RGB);
+clrdefmap(:,:,2) = cmapFS(lalpha,FSColors.black.RGB,FSColors.greysh.RGB);
+clrdefmap(:,:,3) = cmapFS(lalpha,FSColors.magenta.RGB,FSColors.purplish.RGB);
+clrdefmap(:,:,4) = cmapFS(lalpha,FSColors.green.RGB,FSColors.greenish.RGB);
+clrdefmap(:,:,5) = cmapFS(lalpha,FSColors.cyan.RGB,FSColors.lightblue.RGB);
+clrdefmap(:,:,6) = cmapFS(lalpha,FSColors.red.RGB,FSColors.reddish.RGB);
 clrdefmap=repmat(clrdefmap,1,1,4);
 
 d=find(strcmp(namej,name));
@@ -1582,7 +1584,7 @@ end
 
 %% Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
-tit0 = 'Tclustreg monitoring plot -- allocation';
+tit0 = 'Tclustreg monitoring plot -- allocation of units';
 
 if d>0
     
@@ -1675,28 +1677,36 @@ if d>0
             
             hh = gscatter(XS1,y,idxselj,clrdefj,symdefj);
             
-            xlabel('PLS predictor')
-            ylabel('y')
+            if jk>nc*(nr-1)
+                xlabel('PLS predictor', 'fontsize' , 14);
+            else 
+                xlabel(' ');
+            end
+            if ismember(jk,1:nc:nc*nr)
+                ylabel('y', 'fontsize' , 14);
+            else
+                ylabel(' ');
+            end
             
-            clickableMultiLegend(hh)
+            clickableMultiLegend(hh, 'fontsize' , 10)
             if jk>1
                 legend hide
             end
             axis manual
             alphajtxt=num2str(alphaLik(alphasel(j)));
-            title(['$\alpha=$' alphajtxt 'Var. explained=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , 14)
+            title(['$\alpha$=' alphajtxt ' -- Var.Expl.=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , 14)
             
         elseif p==2
             hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
             
             if jk>nc*(nr-1)
-                xlabel('x1');
+                xlabel('x1', 'fontsize' , 14);
             end
-            if ~ismember(jk,1:nr+1:nc*nr)
-                ylabel('');
+            if ~ismember(jk,1:nc:nc*nr)
+                ylabel('', 'fontsize' , 14);
             end
             
-            clickableMultiLegend(hh)
+            clickableMultiLegend(hh, 'fontsize' , 10)
             if jk>1
                 legend hide
             end
@@ -1715,6 +1725,8 @@ end
 
 %% Monitoring of beta regression coefficients (standardized)
 namej='Beta';
+tit = 'Tclustreg monitoring plot -- Estimated regression coefficients';
+
 d=find(strcmp(namej,name));
 if d>0
     figure('Name',namej,'Visible','on');
@@ -1722,89 +1734,97 @@ if d>0
     % If p is 2 first column contains interecepts and second slopes
     % Standardize Beta along the 3rd dimension
     Betast=zscore(Beta,0,3);
-    if  p==1
-        nr=1;
-        nc=1;
-    elseif p==2
-        nr=2;
-        nc=1;
-    elseif p<=4
-        nr=2;
-        nc=2;
-    elseif p<=6
-        nr=3;
-        nc=2;
-    elseif p<=9
-        nr=3;
-        nc=3;
-    elseif p<=12
-        nr=3;
-        nc=4;
-    else
-        nr=4;
-        nc=4;
+    switch p
+        case 1 %p==1
+            nr=1;
+            nc=1;
+        case 2 % p==2
+            nr=2;
+            nc=1;
+        case {3,4} % p<=4
+            nr=2;
+            nc=2;
+        case {5,6} %p<=6
+            nr=3;
+            nc=2;
+        case {7,8,9} % p<=9
+            nr=3;
+            nc=3;
+        case {10,11,12} % p<=12
+            nr=3;
+            nc=4;
+        otherwise
+            nr=4;
+            nc=4;
     end
     
     for j=1:p
-        subplot(nr,nc,j)
-        h=plot(alphaLik(:),squeeze(Betast(:,j,:))');
+        subplot(nr,nc,j);
+        h=plot(alphaLik(:),squeeze(Betast(:,j,:))','LineWidth',1);
         % set the colors using the order in clrdef
-        set(h,{'Color'},cellstr(clrdef(1:k)'))
+        set(h,{'Color'},cellstr(clrdef(1:k)'));
         
-        xlim([min(alphaLik),max(alphaLik)])
+        xlim([min(alphaLik),max(alphaLik)]);
         % set(gca,'XTickLabel',num2str(alpha1'))
         
         L = get(gca,'XLim');
-        set(gca,'XTick',linspace(L(1),L(2),lalpha))
-        set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , 12);
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , 12);
         
-        set(gca,'XDir','reverse')
-        xlabel('Level of trimmming')
-        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex')
-        legend(legendGroups)
-        legend('hide')
-        if j==p
-            legend('show')
-            clickableMultiLegend(h)
+        set(gca,'XDir','reverse','XGrid','on');
+        xlabel('Level of trimmming', 'fontsize' , 14);
+        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'fontsize' , 16);
+        legend(legendGroups, 'fontsize' , 10);
+        legend('hide');
+        if j==1
+            legend('show');
+            clickableMultiLegend(h, 'fontsize' , 10);
         end
+        axtoolbar('Visible','off');
+        axis('manual');
     end
-    sgtitle('Monitor estimated regression coefficients')
+    sgtitle(tit , 'fontsize' , 18 , 'FontWeight', 'normal');
 end
 
+    
 %% Monitor group size
 namej='Siz';
+tit = 'Tclustreg monitoring plot -- Group size';
+
 d=find(strcmp(namej,name));
 if d>0
     % Monitoring of group size
     figure('Name',namej,'Visible','on');
     h=plot(alphaLik(:),out.Nopt');
     % set the colors using the order in clrdef
-    set(h,{'Color'},cellstr(clrdef(1:k)'))
+    set(h,{'Color'},cellstr(clrdef(1:k)'));
     
-    xlim([min(alphaLik),max(alphaLik)])
+    xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
     
     lalpha=length(alphaLik);
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha))
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)))
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , 12);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , 12);
     
-    set(gca,'XDir','reverse')
-    title('Monitor group size')
-    xlabel('Level of trimmming')
-    legend(legendGroups)
-    legend('show')
-    clickableMultiLegend(h)
+    set(gca,'XDir','reverse');
+    xlabel('Level of trimmming', 'fontsize' , 14);
+    legend(legendGroups);
+    legend('show');
+    clickableMultiLegend(h, 'fontsize' , 10);
     
+    title(tit,'fontsize' , 18 , 'FontWeight', 'normal');
+
 end
 
     function c = cmapFS(m,cstart,cend)
-        %cmapFS creates a colormap of m RGB rows, with a gradient from cstart to cend
-        mm = (cend-cstart)/m;
-        R = (cstart(1):mm(1):cend(1))';
-        G = (cstart(2):mm(2):cend(2))';
-        B = (cstart(3):mm(3):cend(3))';
-        c = [R ,G ,B];
+        %cmapFS creates a colormap of m RGB rows, with a gradient from
+        %cstart to cend
+        mm = (cend-cstart)/(m-1);
+        R  = (cstart(1):mm(1):cend(1))';
+        G  = (cstart(2):mm(2):cend(2))';
+        B  = (cstart(3):mm(3):cend(3))';
+        c  = [R ,G ,B];
     end
 
 end
