@@ -1409,9 +1409,9 @@ if d>0
     axtoolbar('Visible','off');
     
     clickableMultiLegend(h1,legendGroups);
-    hl2 = clickableMultiLegend(h2,legendGroups); 
+    hl2 = clickableMultiLegend(h2,legendGroups);
     set(hl2,'visible','off');
-
+    
     sgtitle(tit, 'fontsize' , 18 , 'FontWeight', 'normal');
 end
 
@@ -1419,18 +1419,27 @@ end
 %% Plot scatter with all regression lines (hyperplanes)
 namej = 'ScatterWithRegLines';
 alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
-tit = {['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
-        num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
-        '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']};
+tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
+    num2str(restrfact) '\quad \alpha_{Lik}=' alpha1range ...
+    '\quad \alpha_{\Sigma_X}=' num2str(alphaX) '$']};
 
-%clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
-%ccc = cmapFS(lalpha,FSColors.red.RGB);
-    
+% Colormaps used to give a gradient to the lines obtained for different
+% \alpha values. Colormap follows our color rotation standard:
+% clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+clrdefmap = zeros(lalpha,3,6);
+clrdefmap(:,:,1) = cmapFS(10,FSColors.blue.RGB,FSColors.blueish.RGB);
+clrdefmap(:,:,2) = cmapFS(10,FSColors.black.RGB,FSColors.greysh.RGB);
+clrdefmap(:,:,3) = cmapFS(10,FSColors.magenta.RGB,FSColors.purplish.RGB);
+clrdefmap(:,:,4) = cmapFS(10,FSColors.green.RGB,FSColors.greenish.RGB);
+clrdefmap(:,:,5) = cmapFS(10,FSColors.cyan.RGB,FSColors.lightblue.RGB);
+clrdefmap(:,:,6) = cmapFS(10,FSColors.red.RGB,FSColors.reddish.RGB);
+clrdefmap=repmat(clrdefmap,1,1,4);
+
 d=find(strcmp(namej,name));
 if d>0
     
     idx = IDX(:,1); % used for rotating colors in the plots
-
+    
     intercept=1;
     if p-intercept < 2
         % The following plots are for the bi-variate case (i.e. v=1)
@@ -1454,13 +1463,9 @@ if d>0
             if intercept==1
                 
                 for jjj=1:lalpha
-                    %   if jjj==1
                     gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
                         'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdef(jj)); %#ok<NASGU>
-%                     gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
-%                         'DisplayName',[group_label ' fit' ],...
-%                         'Color',ccc(jj,:)); %#ok<NASGU>
+                        'Color',clrdefmap(jjj,:,jj));  %#ok<NASGU> clrdef(jj)
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
                 
@@ -1469,7 +1474,7 @@ if d>0
                 for jjj=1:lalpha
                     gr=plot(vv,Beta(jj,1,jjj)*vv,...
                         'DisplayName',[group_label ' fit' ],...
-                        'Color',clrdef(jj)); %#ok<NASGU>
+                        'Color',clrdefmap(jjj,:,jj)); %#ok<NASGU> clrdef(jj)
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
             end
@@ -1570,13 +1575,15 @@ if d>0
             
         end
     end
-
+    
     title(tit , 'interpreter' , 'LaTex', 'fontsize' , 18);
     axtoolbar('Visible','off');
 end
 
 %% Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
+tit0 = 'Tclustreg monitoring plot -- allocation';
+
 if d>0
     
     % Monitoring of allocation
@@ -1604,30 +1611,6 @@ if d>0
             nc=4;
     end
     
-    %     % Monitoring of allocation
-    %     if  lalphasel==1
-    %         nr=1;
-    %         nc=1;
-    %     elseif lalphasel==2
-    %         nr=2;
-    %         nc=1;
-    %     elseif lalphasel<=4
-    %         nr=2;
-    %         nc=2;
-    %     elseif lalphasel<=6
-    %         nr=3;
-    %         nc=2;
-    %     elseif lalphasel<=9
-    %         nr=3;
-    %         nc=3;
-    %     elseif lalphasel<=12
-    %         nr=3;
-    %         nc=4;
-    %     else
-    %         nr=4;
-    %         nc=4;
-    %     end
-    
     resup=1;
     figure('Name',['Monitoring allocation #' int2str(resup)])
     
@@ -1644,7 +1627,6 @@ if d>0
         else
             subplot(nr,nc,jk)
         end
-        jk=jk+1;
         
         idxselj=IDX(:,alphasel(j));
         % Check if inside idxselj there are 1st or 2nd level trimmed units
@@ -1697,31 +1679,38 @@ if d>0
             ylabel('y')
             
             clickableMultiLegend(hh)
-            if jk>2
+            if jk>1
                 legend hide
             end
             axis manual
             alphajtxt=num2str(alphaLik(alphasel(j)));
-            title(['$\alpha=$' alphajtxt 'Var. explained=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex')
+            title(['$\alpha=$' alphajtxt 'Var. explained=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , 14)
             
         elseif p==2
             hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
             
-            xlabel('x1')
-            ylabel('y')
+            if jk>nc*(nr-1)
+                xlabel('x1');
+            end
+            if ~ismember(jk,1:nr+1:nc*nr)
+                ylabel('');
+            end
             
             clickableMultiLegend(hh)
-            if jk>2
+            if jk>1
                 legend hide
             end
             axis manual
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'fontsize' , 14)
         else
             % Univariate case: plot the histogram
             histFS(y,10,idxselj,[],[],clrdefj)
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex')
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'fontsize' , 14)
         end
+        jk=jk+1;
     end
+    sgtitle(tit0, 'fontsize' , 18 , 'FontWeight', 'normal');
+    
 end
 
 %% Monitoring of beta regression coefficients (standardized)
@@ -1808,6 +1797,15 @@ if d>0
     clickableMultiLegend(h)
     
 end
+
+    function c = cmapFS(m,cstart,cend)
+        %cmapFS creates a colormap of m RGB rows, with a gradient from cstart to cend
+        mm = (cend-cstart)/m;
+        R = (cstart(1):mm(1):cend(1))';
+        G = (cstart(2):mm(2):cend(2))';
+        B = (cstart(3):mm(3):cend(3))';
+        c = [R ,G ,B];
+    end
 
 end
 %FScategory:CLUS-RobClaMULT
