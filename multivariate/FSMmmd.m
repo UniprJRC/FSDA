@@ -120,6 +120,7 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
     % the 4 observations which fell the smallest
     % number of times outside the robust bivariate ellipses and with the
     % lowest Mahalanobis Distance.
+    rng('default')
     n=200;
     v=3;
     m0=4;

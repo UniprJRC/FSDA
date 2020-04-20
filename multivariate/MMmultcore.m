@@ -152,7 +152,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [out]=Smult(Ycont);
-    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale)
+    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale);
 %}
 
 %{
@@ -167,7 +167,7 @@ function out = MMmultcore(Y,loc0,shape0,auxscale,varargin)
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
     [out]=Smult(Ycont,'plots',1);
-    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale,'plots',1,'nocheck',1)
+    outMM=MMmultcore(Ycont,out.loc,out.shape,out.scale,'plots',1,'nocheck',1);
 %}
 
 %% Beginning of code

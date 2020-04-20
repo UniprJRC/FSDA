@@ -40,8 +40,10 @@ jobs:
       inputs:
         path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
         artifact: Test-$(categoryName)
+
     - task: PublishCodeCoverageResults@1
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: 'Cobertura'
         summaryFileLocation: '**/coverage-*.xml'
+

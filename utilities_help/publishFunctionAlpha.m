@@ -113,7 +113,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
     InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
     'examples' 'utilities' 'utilities_stat'};
     ExclDir={'privateFS'  'datasets'};
-    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
+    list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
     out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
     cd(fileparts(which('docsearchFS.m')))
     % Create HTML file containing alphabetical list of functions
@@ -122,7 +122,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
     FileWithFullPath=which('docsearchFS.m');
     [pathFSDAstr]=fileparts(FileWithFullPath);
     fsep=filesep;
-    outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.html'];
+    outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.html'];
     web(outputOFHtmlHelpFile,'-browser');
 %}
 

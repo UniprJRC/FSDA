@@ -135,7 +135,7 @@ function hf = wedgeplot(RES,varargin)
     % t=10, t=11, ..., t=T-10.
     model.lshift=10;
     out=LTSts(y,'model',model);
-    wedgeplot(out,'transpose',true,'extradata',[y out.yhat])  
+    wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);  
 %}
 
 %{
@@ -178,7 +178,7 @@ function hf = wedgeplot(RES,varargin)
     [out, varargout]=LTSts(y,'model',model,'nsamp',500,...
         'lts',lts,'h',h,'plots',0,'msg',0);
     % Create the double wedge plot.
-    wedgeplot(out)
+    wedgeplot(out);
 %}
 
 %{
@@ -223,7 +223,7 @@ function hf = wedgeplot(RES,varargin)
     % Remember to remove the last column of the matrix of the residuals
     % obtained for each level shift position if you want to avoid the
     % top orange band (just execute RES(:,64)=[] before line 258).
-    wedgeplot(out,'transpose',true,'extradata',[y out.yhat])
+    wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);
 %}
 
 %{
