@@ -197,7 +197,7 @@ function tclustICplot(IC,varargin)
     % groups which have labels respectively equal to 1, 2 and 3.
     UnitsSameGroup=[15 30 69];
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-    tclustICplot(out)
+    tclustICplot(out);
 
 %}
 
@@ -235,7 +235,7 @@ function tclustICplot(IC,varargin)
     Y=load('geyser2.txt');
     UnitsSameGroup=[15 30 69];
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-    tclustICplot(out,'whichIC','ALL')
+    tclustICplot(out,'whichIC','ALL');
 %}
 
 %{
@@ -245,7 +245,7 @@ function tclustICplot(IC,varargin)
     Y=load('geyser2.txt');
     UnitsSameGroup=[15 30 69];
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-    tclustICplot(out,'databrush',1)
+    tclustICplot(out,'databrush',1);
 %}
 
 %{
@@ -267,7 +267,7 @@ function tclustICplot(IC,varargin)
     Y=load('geyser2.txt');
     UnitsSameGroup=[15 30 69];
     out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-    tclustICplot(out,'databrush',databrush)
+    tclustICplot(out,'databrush',databrush);
 %}
 
 

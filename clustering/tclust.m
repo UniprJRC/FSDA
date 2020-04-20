@@ -545,12 +545,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     Y=load('M5data.txt');
     % plot(Y(:,1),Y(:,2),'o')
     % Scatter plot matrix with univariate boxplot on the main diagonal
-    spmplot(Y(:,1:2),Y(:,3),[],'box')
+    spmplot(Y(:,1:2),Y(:,3),[],'box');
 
-    out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1)
-    out=tclust(Y(:,1:2),3,0,10,'nsamp',100,'plots',1)
-    out=tclust(Y(:,1:2),3,0.1,1,'nsamp',1000,'plots',1,'equalweights',1)
-    out=tclust(Y(:,1:2),3,0.1,1000,'nsamp',100,'plots',1)
+    out=tclust(Y(:,1:2),3,0,1000,'nsamp',100,'plots',1);
+    out=tclust(Y(:,1:2),3,0,10,'nsamp',100,'plots',1);
+    out=tclust(Y(:,1:2),3,0.1,1,'nsamp',1000,'plots',1,'equalweights',1);
+    out=tclust(Y(:,1:2),3,0.1,1000,'nsamp',100,'plots',1);
 
     cascade
 %}
@@ -570,8 +570,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     
     close all
     Y=load('structurednoise.txt');
-    out=tclust(Y(:,1:2),2,0.1,100,'plots',1)
-    out=tclust(Y(:,1:2),5,0.15,1,'plots',1)
+    out=tclust(Y(:,1:2),2,0.1,100,'plots',1);
+    out=tclust(Y(:,1:2),5,0.15,1,'plots',1);
     cascade
 %}
 
@@ -584,8 +584,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     %                rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
     close all
     Y=load('mixture100.txt');
-    out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
-    out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1)
+    out=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1);
+    out=tclust(Y(:,1:2),3,0.05,1,'refsteps',20,'plots',1);
     cascade
 %}
 
@@ -594,15 +594,15 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     close all
     Y=load('mixture100.txt');
     % Traditional tclust
-    out1=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1)
+    out1=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1);
     title('Traditional tclust','interpreter','LaTex','FontSize',18);
     % tclust with mixture models (selection of untrimmed units according to
     % likelihood contributions
-    out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1)
+    out2=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',1);
     title('tclust with mixture models (likelihood contributions)','interpreter','LaTex','FontSize',18);
     % Tclust with mixture models (selection of untrimmed units according to
     % densities weighted by estimates of the probability of the components)
-    out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2)
+    out3=tclust(Y(:,1:2),3,0.05,1000,'refsteps',20,'plots',1,'mixt',2);
     title('tclust with mixture models (probability of the components)','interpreter','LaTex','FontSize',18);
     cascade
 %}
@@ -630,7 +630,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 
     close all
     Y=[Y1;Y2;Y3;Y4;Y5];
-    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1)
+    out=tclust(Y,5,0.05,1.3,'refsteps',20,'plots',1);
 %}
 
 %{
@@ -731,14 +731,14 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     close all
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
-    out=tclust(Y,3,0.01,20,'restrtype','deter','refsteps',20,'plots',1)
+    out=tclust(Y,3,0.01,20,'restrtype','deter','refsteps',20,'plots',1);
 %}
 
 %{
     % tclust applied to the Geyser data imposing determinant restriciton.
     close all
     Y=load('geyser2.txt');
-    out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1)
+    out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);
 %}
 
 %% Beginning of code 

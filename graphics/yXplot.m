@@ -518,7 +518,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     plo=struct;
     plo.label=cellstr(RowLabelsMatrixY);
     % add labels for units inside vector seluni
-    yXplot(y,X,'selunit',seluni,'plo',plo)
+    yXplot(y,X,'selunit',seluni,'plo',plo);
 %}
 
 %{
@@ -593,7 +593,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=FSReda(y,X,out.bs);
     selunit=[2 5 20 23 35 45];
     yXplot(out,'selunit',selunit,'selstep',[20 22 27 36],...
-            'databrush',{'persist','off','selectionmode' 'Rect'})
+            'databrush',{'persist','off','selectionmode' 'Rect'});
     %   After brushing the resfwdplot automatically appears and the labels
     % are put for units contained in vector selunit in steps [20 22 27
     % 36] of the search
@@ -615,7 +615,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
-           'databrush',{'persist','off','selectionmode' 'Rect'})
+           'databrush',{'persist','off','selectionmode' 'Rect'});
 
 %}
 %
@@ -653,7 +653,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',1)
     %   An equivalent statement is
-    yXplot(out,'databrush',{'selectionmode' 'Rect'})
+    yXplot(out,'databrush',{'selectionmode' 'Rect'});
 %}
 
 %{
@@ -668,7 +668,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})
+    yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'});
 %}
 
 %{
@@ -682,7 +682,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    yXplot(out,'databrush',{'selectionmode' 'Brush'})
+    yXplot(out,'databrush',{'selectionmode' 'Brush'});
 %}
 
 %{
@@ -696,7 +696,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})
+    yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'});
 %}
 
 %{
@@ -712,7 +712,8 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     y(sel)=y(sel)+2;
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
-    yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})
+    yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'
+    'RemoveLabels' 'off'});
 %}
 
 
@@ -736,7 +737,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
-                            'Label' 'on' 'RemoveLabels' 'off'})
+                            'Label' 'on' 'RemoveLabels' 'off'});
 %}
 
 %{
@@ -753,7 +754,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-                            'Label' 'off' 'RemoveLabels' 'on'})
+                            'Label' 'off' 'RemoveLabels' 'on'});
 %}
 
 
@@ -774,7 +775,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-         'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'})
+         'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'});
 %}
 
 %{
@@ -791,7 +792,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     [out]=LXS(y,X,'nsamp',1000);
     [out]=FSReda(y,X,out.bs);
     yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-                            'labeladd' '1'})
+                            'labeladd' '1'});
 %}
 
 %{
@@ -829,7 +830,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
     % In this case datatooltip will display the rowname and not the default
     % string row...
     out.label=cellstr(Model);
-    yXplot(out,'datatooltip',1)
+    yXplot(out,'datatooltip',1);
 %}
 
 %% Beginning of code

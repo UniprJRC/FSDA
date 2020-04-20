@@ -316,7 +316,7 @@ function out=corrNominal(N, varargin)
     x25=[2*ones(n25,1) 5*ones(n25,1)];
     % X original data matrix
     X=[x11; x12; x13; x14; x15; x21; x22; x23; x24; x25];
-    out=corrNominal(X,'datamatrix',true)
+    out=corrNominal(X,'datamatrix',true):
 %}
 
 

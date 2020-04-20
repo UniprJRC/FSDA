@@ -112,17 +112,6 @@ function y=triu2vec(A,k)
 %}
 
 %{
-    % Extract the elements on and above the main diagonal. 
-    % The input is a square matrix of order 5.
-    A=magic(5);
-    disp('Input matrix A')
-    disp(A)
-    disp('Extract the elements on and above diagonal of matrix A in a vector')
-    y=triu2vec(A);
-    disp(y)
-%}
-
-%{
     % Find linear indexes.
     % Finds the linear indexes of the elements on and above the main diagonal of a
     % square matrix of order 5
