@@ -1044,18 +1044,4 @@ end % end of loop over the nsamp subsets
 %%  END OF RANDOM STARTS
 
 
-chkExistence=exist('sigma2opt','var');
-if chkExistence==0
-    sigma2opt=NaN;
-    nopt=NaN;
-    postprobopt=NaN;
-    muXopt=NaN;
-    sigmaXopt=NaN;
-    % vopt
-    subsetopt=NaN;
-    idxopt=NaN;
-    webeta=NaN;
-    webetaopt=NaN;
-    cstepopt=NaN;
-end
 end

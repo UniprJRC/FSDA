@@ -628,15 +628,15 @@ if typeIC>0
 end
 
 if typeIC==2 || typeIC==3
-    MIXMIX=NaN(length(kk),length(ccsigmay));
+    MIXMIX=zeros(length(kk),length(ccsigmay));
 end
 
 if typeIC==1 || typeIC==3
-    MIXCLA=NaN(length(kk),length(ccsigmay));
+    MIXCLA=zeros(length(kk),length(ccsigmay));
 end
 
 if typeIC==0 || typeIC==3
-    CLACLA=NaN(length(kk),length(ccsigmay));
+    CLACLA=zeros(length(kk),length(ccsigmay));
     IDXCLA=cell(length(kk),length(ccsigmay));
 end
 
@@ -675,7 +675,7 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         gRandNumbForNini=RandNumbForNini;
     end
     
-    % pctRunOnAll warning('on')
+    
     parfor (c=1:length(ccsigmay) , numpool)
         % for c=1:length(ccsigmay)
         % columns = restr
@@ -688,39 +688,26 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
                 'plots',0,'msg',0,'mixt',2, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
                 'RandNumbForNini',gRandNumbForNini);
-            
-            if ~isstruct(outMixt)
-                warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
-                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(c)'])
-            else
-                IDXMIX{k,c}=outMixt.idx;
-                if typeIC==2 || typeIC==3
-                    MIXMIX(k,c)=outMixt.MIXMIX;
-                end
-                if typeIC==1 || typeIC==3
-                    MIXCLA(k,c)=outMixt.MIXCLA;
-                end
+            % 'reftol',reftol,'cshape',cshape,'restrtype',restr,
+            IDXMIX{k,c}=outMixt.idx;
+            if typeIC==2 || typeIC==3
+                MIXMIX(k,c)=outMixt.MIXMIX;
+            end
+            if typeIC==1 || typeIC==3
+                MIXCLA(k,c)=outMixt.MIXCLA;
             end
         end
         
-        
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
-            outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
-                'nsamp',Cnsamp,...
-                'plots',0,'msg',0, ...
-                'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini);
-            
-            if ~isstruct(outCla)
-                warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
-                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(c)'])
-                IDXCLA{k,c}=NaN(n,1);
-                
-            else
-                CLACLA(k,c)=outCla.CLACLA;
-                IDXCLA{k,c}=outCla.idx;
-            end
+                outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
+                    'nsamp',Cnsamp,...
+                    'plots',0,'msg',0, ...
+                    'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
+                    'RandNumbForNini',gRandNumbForNini);
+            % 'reftol',reftol,'cshape',cshape,'restrtype',restr,
+            CLACLA(k,c)=outCla.CLACLA;
+            IDXCLA{k,c}=outCla.idx;
         end
     end
     if msg==1
