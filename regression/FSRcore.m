@@ -120,9 +120,9 @@ function [out]=FSRcore(INP,model,options)
 %               FSR.m, FSRH.m or FSRB.m.
 %                 Data Types - struct
 %
-%     weak:     Indicator to use a different decision rule to detect 
-%               the signal and flag outliers. false (default) | true. 
-%               If weak==false default FSRcore values are used, 
+%     weak:     Indicator to use a different decision rule to detect
+%               the signal and flag outliers. false (default) | true.
+%               If weak==false default FSRcore values are used,
 %               if weak==true 'stronger' quantiles are used  as a
 %               decision rule to trim outliers and VIOM outliers
 %				are the ones entering the Search after the first signal.
@@ -167,7 +167,7 @@ function [out]=FSRcore(INP,model,options)
 % out.VIOMout = m x 1 vector containing the list of the units declared as
 %               VIOM outliers or NaN if they are not present.
 %               Present only if weak == true.
-% out.ListCl =  (n-m-k) x 1 vector of non-outlying units. 
+% out.ListCl =  (n-m-k) x 1 vector of non-outlying units.
 %               Present only if weak == true.
 %
 % More About:
@@ -205,7 +205,11 @@ Un      = INP.Un;
 bb      = INP.bb;
 Bcoeff  = INP.Bcoeff;
 S2      = INP.S2;
-weak    = INP.weak;
+if strcmp(fieldnames(INP),'weak')
+    weak    = INP.weak;
+else
+    weak=false;
+end
 
 % Set the intercept
 if strcmp(model,'ts')
@@ -849,9 +853,9 @@ if signal==1 || signal==2
             % Compute theoretical envelopes based on tr observations
             if weak == false
                 gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
-            else 
+            else
                 % use a stronger decision rule to flag outliers (useful in presence of VIOMs)
-                gmin1=FSRenvmdr(tr,p,'prob',[0.999999;0.9999999; 0.01; 0.5],'init',init);            
+                gmin1=FSRenvmdr(tr,p,'prob',[0.999999;0.9999999; 0.01; 0.5],'init',init);
             end
             
             for ii=(i-1):size(gmin1,1)
