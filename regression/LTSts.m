@@ -635,7 +635,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     % Model with linear trend, two harmonics for seasonal component and
-    % varying amplitude using a linear trend.
+    % varying amplitude using a linear trend (1).
     % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
@@ -673,7 +673,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     % Model with linear trend, six harmonics for seasonal component and
-    % varying amplitude using a linear trend).
+    % varying amplitude using a linear trend (2).
     % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
     y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan
