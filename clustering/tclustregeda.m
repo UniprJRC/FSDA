@@ -1392,9 +1392,17 @@ if d>0
                 'HorizontalAlignment','center', ...
                 'fontsize' , matrixFont+4 , 'interpreter','none');
             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
-            col=repmat({'b'},n1,1);
-            col(indredcolor)={'r'};
+            %col=repmat({'b'},n1,1);
+            %col(indredcolor)={'r'};
+            %col=repmat({FSColors.darkgrey.RGB},n1,1); 
+            %col(indredcolor)={FSColors.purplish.RGB};
+            col=repmat({[0.4660 0.6740 0.1880]},n1,1);
+            col(indredcolor)={[0.6350 0.0780 0.1840]};
+            st=repmat({'normal'},n1,1);
+            st(indredcolor)={'normal'};
+            
             set(h,{'Color'},col);
+            set(h,{'FontWeight'},st);
         else
             % classes associated to units
             ipos = find(IDtt(:,j)>0); 
@@ -1438,7 +1446,7 @@ if d>0
     end
 
     pan('off');
-    axtoolbar('Visible','off');
+    axtoolbar(gca,'Visible','off');
 
 end
 
