@@ -293,13 +293,13 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %         out.muXopt= k-by-p matrix containing cluster centroid
 %                       locations. Robust estimate of final centroids of
-%                       the groups. This output is present just if input
+%                       the groups. This output is present only if input
 %                       option alphaX is 1.
 %
 %         out.sigmaXopt= p-by-p-by-k array containing estimated constrained
 %                       covariance covariance matrices of the explanatory
 %                       variables for the k groups. This output is present
-%                       just if input option alphaX is 1.
+%                       only if input option alphaX is 1.
 %
 %         out.cstepopt= scalar containing the concentration step where the
 %                       objective function was the largest. This is useful
@@ -309,7 +309,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %         out.subsetopt= scalar containing the subset id where the
 %                       objective function was the largest.
 %
-%             wbetaopt = n-by-1 dycotomic vector indicating if in the
+%          out.wbetaopt = n-by-1 dycotomic vector indicating if in the
 %                       optimal solution a unit was thinned (0) or retained
 %                       (1). This option is valid when wtrim = 3 or
 %                       wtrim.wtype_beta = 'Z'.
@@ -340,20 +340,23 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %          out.MIXMIX = BIC which uses parameters estimated using the
 %                       mixture loglikelihood and the maximized mixture
 %                       likelihood as goodness of fit measure.
-%                       Remark: this output is present just if input option
+%                       Remark: this output is present only if input option
 %                       mixt is >0.
 %
 %          out.MIXCLA = BIC which uses the classification likelihood based on
 %                       parameters estimated using the mixture likelihood
 %                       (In some books this quantity is called ICL).
-%                       Remark: this output is present just if input option
+%                       This output is present only if input option
 %                       mixt is >0.
 %
 %          out.CLACLA = BIC which uses the classification likelihood based on
 %                       parameters estimated using the classification likelihood.
-%                       Remark: this output is present just if input option
+%                       Remark: this output is present only if input option
 %                       mixt is =0.
 %
+%           out.obj   = scalar containing value of the objective function.
+%
+%          out.class = 'tclustreg'.
 %
 %  Optional Output:
 %
@@ -694,7 +697,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 
     % In this case we use a fixed level of trimming
     alphaXfixed=0.02;
-    [out2LT]=tclustreg(y,X,k,restrfact,alphaLik,alphaXfixed,...
+    % Return in matrix X subsets used.
+    [out,C]=tclustreg(y,X,k,restrfact,alphaLik,alphaXfixed,...
         'mixt',0,'plots',1,'msg',0,'nsamp',nsamp);
     title('Fixed second level trimming')
     disp('CWM model and adaptive second level trimming')
@@ -1246,9 +1250,8 @@ end
 out.siz=tabulateFS(idxopt(:,1));
 
 %postprobopt = posterior probabilities in the optimal cstep
-if mixt == 2
-    out.postprobopt     = postprobopt;
-end
+
+out.postprobopt     = postprobopt;
 
 % Store the indices in varargout
 if nargout==2
@@ -1342,7 +1345,7 @@ if plots
         fh = figure('Name',[plot_type , ' plot'],'NumberTitle','off','Visible','on');
         gca(fh);
         hold on;
-                
+        
         for jj = 1:k
             group_label = ['Group ' num2str(jj)];
             

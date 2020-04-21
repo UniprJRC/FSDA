@@ -383,7 +383,22 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       7th col = relative squared Euclidean distance between
 %                           two consecutive $\hat \Sigma_X$.
 %
-% out.unitplot = Matrix containing information about the
+%            out.MU  =  3D array of size k-by-(p-1)-by-length(alphaLik) containing
+%                       the monitoring of the X centroids for each value of
+%                       alphaLik. out.MU(:,:,1), refers to alphaLik(1) ...,
+%                       out.MU(:,:,end) refers to alphaLik(end). First row in
+%                       each slice refers to group 1, second row refers to
+%                       group 2 ... This field is present only if input
+%                       option alphaX is 1.
+%
+%         out.SIGMA  =  cell of length length(alphaLik) containing in element
+%                       j, with j=1, 2, ...,  length(alphaLik), the 3D array
+%                       of size (p-1)-by-(p-1)-by-k containing the k (constrained)
+%                       estimated covariance matrices of X associated with
+%                       alphaLik(j). This field is present only if input
+%                       option alphaX is 1.
+%
+% out.UnitsTrmOrChgCla = Matrix containing information about the
 %                       units (n1) which were trimmed or changed classification
 %                       at least once in the forward search. The size of
 %                       out.UnitsTrmOrChgCla is n1-by-length(alphaLik)+1;
@@ -393,6 +408,10 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                       3rd col = allocation of the n1 units in step alphaLik(2)
 %                       ...
 %                       last col = allocation of the n1 units in step alphaLik(end)
+%
+%   out.Postprob      = Posterior probabilities. 3D array of size
+%                       n-by-k-length(alphaLik) containing the monitoring
+%                       of posterior probabilities.
 %
 %     out.units= structure containing the following fields:
 %                       units.UnitsTrmOrChgCla=units trimmed at least onece
@@ -405,9 +424,6 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                           (i.e. all those which have always been trimmed by
 %                           first level or second level).
 %
-%              out.y  = original response y.
-%
-%              out.X  = original X matrix.
 %
 %  Optional Output:
 %
@@ -1130,7 +1146,7 @@ plotall={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
 
 clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 symdef = '+sd^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
-linedef = {'-','--',':','-.'};
+% linedef = {'-','--',':','-.'};
 
 
 col1stLevelTrimmedUnits='r';
@@ -1702,7 +1718,7 @@ if d>0
         % Remark: it is necessary to sort idx because in this way idx=-2 (if present) is
         % the first symbol, idx=-1 is the second ....
         [~,indsor]=sort(idx);
-        [H,AX,BigAx]=yXplot(y(indsor),X(indsor,:),group(indsor),plo);
+        [~,AX,~]=yXplot(y(indsor),X(indsor,:),group(indsor),plo);
         set(gcf, 'Tag' , 'Trimmed units');
         % Dimension of Beta is k-by-p-by-length(alpha)
         for j = 1:length(AX)
