@@ -21,6 +21,7 @@ warning('off')
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 [filesWithProblems,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false,'msg',false);
+FilesIncludedAll= FilesIncluded;
 warning('on')
 disp(filesWithProblems)
 %% Category to test
@@ -194,6 +195,7 @@ end
 
 
 cd(testpath);
+import matlab.unittest.plugins.CodeCoveragePlugin;
 
 % Create test suite of all tests in current folder
 suite = testsuite(pwd);
@@ -204,9 +206,17 @@ runner = matlab.unittest.TestRunner.withTextOutput();
 % Add a plugin to produce a JUnit-style test report
 runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
 
+% Get file paths of source code being tested
+filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
+% Indicate where the Cobertura coverage report should be created
+covFile = matlab.unittest.plugins.codecoverage.CoberturaFormat(['coverage-' cat2test '-report.xml']);
+% Add the CodeCoveragePlugin
+runner.addPlugin(matlab.unittest.plugins.CodeCoveragePlugin.forFile(filePaths, 'Producing', covFile));
+
 % Run the test suite
 runner.run(suite);
 
+%%
 
 %cd(testpath);
 %testResults = runtests([FSDAroot '/' testpath]);

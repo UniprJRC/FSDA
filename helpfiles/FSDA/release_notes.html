@@ -111,14 +111,14 @@ document.write(divsbefore);</script>
 			<td style="vertical-align: top;">
 			<p class="p5">&nbsp;</p>
 			<p class="p5">ROBUST REGRESSION</p>
-			<p class="p5">A new set of routines for minimum density power 
-			divergence estimators have been added (<a href="mdpd.html">mdpd</a>, 
+			<p class="p5">New set of routines for minimum density power 
+			divergence estimators (<a href="mdpd.html">mdpd</a>, 
 			<a href="mdpdR.html">mdpdR</a>, <a href="mdpdReda.html">mdpdReda</a>, 
 			<a href="PDrho.html">PDrho</a>, <a href="PDpsi.html">PDpsi</a>, 
 			<a href="PDwei.html">PDwei</a>, <a href="PDpsider.html">PDpsider</a>, 
 			<a href="PDpsix.html">PDpsix</a>, <a href="PDbdp.html">PDbdp</a>, 
-			<a href="PDeff.html">PDeff</a>, <a href="PDc.html">PDc</a> (for more 
-			details see <a href="https://www.mdpi.com/1099-4300/22/4/399">
+			<a href="PDeff.html">PDeff</a>, <a href="PDc.html">PDc</a> ), discussed in 
+			<a href="https://www.mdpi.com/1099-4300/22/4/399">
 			https://www.mdpi.com/1099-4300/22/4/399</a>) </p>
 			<p class="p5">New function <a href="simulateLM.html">simulateLM</a> 
 			to simulate linear regression data with prespecified value of R2, 
@@ -133,13 +133,13 @@ using MLE or Restricted MLE (REMLE). </p>
 			<p class="p5">Improved function <a href="tclustregIC.html">tclustregIC</a> 
 			which enables to compute the BIC (and other information criteria) 
 			for different values of restriction factors and different number of 
-			groups in presence of classification or mixture likelihood and 
+			groups, for classification or mixture likelihood and 
 			regression clustering. </p>
 			<p class="p5">Modified function <a href="tclustICsol.html">
 			tclustICsol</a> now accepts input from <a href="tclustregIC.html">
 			tclustregIC</a> to show the yXplot of the best solutions.</p>
 			<p class="p5">New function <a href="ctlcurves.html">ctlcurves</a> 
-			(with confidence bands) to select the appropriate number of groups.</p>
+			to select the appropriate number of groups in robust clustering.</p>
 			<p class="p5">New function mdrrsplot which plots the random starts 
 			trajectories and enables to brush them. The companion function
 			<a href="mmdrsplot.html">mmdrsplot</a> referred to multivariate 
@@ -154,21 +154,27 @@ using MLE or Restricted MLE (REMLE). </p>
 			et al. 2020</a>).</p>
 			<p class="p5">DOCUMENTATION</p>
 			<p class="p5">Improved menu for the automatic installation of the 
-			FSDA html help files</p>
+			FSDA html help files.</p>
 			<p class="p1">UTILITIES</p>
 			<p class="p1">New function <a href="exactcdf.html">exactcdf</a> for 
 			finding the exact cdf of each element in a vector x with respect to 
 			the empirical distribution, represented by another vector.</p>
+			
+			<p class="p1">New functions <a href="twdpdf.html">twdpdf</a> and
+			<a href="twdrnd.html">twdrnd</a> to compute the pdf of the Tweedie
+			distribution and generate random numbers from it.</p>
 			<p class="p1">&nbsp;</p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">From this release we 
-			support old 
-			releases up to 2015a.<br><br>Functions PoolPrepare.m and PoolClose.m 
-			which were necessary to cope with different version of the first 
-			releases of parallel computing toolbox have been removed.<br><br>tclustregcore.m and tcluscore.m (the core part which computes the EM 
-			algorithm for each subset which&nbsp; is extracted) have been 
-			created. These two functions are not intended to be called directly 
-			by the user.<br><br>From this release we support older releases up 
+			<td style="vertical-align: top; width: 20%;">We stop supporting
+			releases before 2015a.<br><br>Functions PoolPrepare.m and PoolClose.m 
+			removed (not necessary with the latest
+			releases of parallel computing toolbox).<br><br>
+			Cleaner code for tclust and tclultreg functions now available; 
+			the core part which computes the EM 
+			algorithm for each subset which is extracted, is now
+			in tclustregcore.m and tcluscore.m; 
+			these two functions are internal and therefore undocumented.
+			<br><br>From this release we support older releases up 
 			to 2015a (however about 85% of the FSDA still runs with older 
 			versions of MATLAB up to 2012A). </td>
 			<td class="auto-style1" style="vertical-align: top;">Mathworks 
