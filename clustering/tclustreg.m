@@ -703,7 +703,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 
 %% Beginning of code
 % Control variables, tolerances and internal flags
-warning('off');
+% warning('off');
 
 %monitors evolution of parameters in refining steps
 monitor = 0;
@@ -1173,315 +1173,318 @@ end
 
 %%  END OF RANDOM STARTS
 
-
-%% Apply consistency factor based on the variance of the truncated normal distribution.
-
-% hh = number of non trimmed observations, after first and second level trimming
-hh = sum(nopt);
-
-% vt = variance of the truncated normal distribution
-% 1-hh/n is the trimming percentage
-vt = norminv(0.5*(1+hh/n));
-
-if hh<n
-    factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
-    % Apply the asymptotic consistency factor to the preliminary squared scale estimate
-    sigma2opt_corr = sigma2opt*factor;
-    % Apply small sample correction factor of Pison et al.
-    sigma2opt_corr = sigma2opt_corr*corfactorRAW(1,n,hh/n);
+if isnan(sigma2opt)
+    warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
+    out=nan;
 else
-    sigma2opt_corr = sigma2opt;
-end
-
-%%  Set the output structure
-
-out                     = struct;
-out.class               = 'tclustreg';
-%cstepopt =             = cstep with maximum obj
-out.cstepopt            = cstepopt;
-out.subsetopt           = subsetopt;
-%   bopt                = regression parameters
-out.bopt                = bopt;
-%   sigmaopt0           = estimated group variances
-out.sigma2opt           = sigma2opt;
-%   sigma2opt_corr      = estimated group variances corrected with  asymptotic
-%                         consistency factor and small sample correction factor
-out.sigma2opt_corr      = sigma2opt_corr;
-out.wbetaopt            = webetaopt;
-
-if wtype_beta==5
-    %TO BE IMPLEMENTED
-    %out.w4trimopt_ovj_5 = w4trimopt_obj_5;
-end
-
-%CWM
-if cwm==1
-    %out.muXopt= k-by-p matrix containing cluster centroid locations.
-    out.muXopt           = muXopt';
-    %out.sigmaXopt= p-by-p-by-k array containing estimated constrained
-    %covariance covariance matrices of the explanatory variables for the k
-    %groups.
-    out.sigmaXopt        = sigmaXopt;
-end
-
-%   obj = value of the target function
-out.obj                  = vopt;
-if monitor
-    out.obj_all          = obj_all; %#ok<UNRCH>
-    out.Beta_all         = Beta_all;
-end
-
-out.C=C;
-
-%in tandem thinning it is necessary to save information about retained
-%units (idxopt) as well as thinned units.
-if wtype_beta == 4
-    out.idx               = zeros(length(Xori),1);
-    out.idx(id_unthinned) = idxopt;
-else
-    out.idx               = idxopt;
-end
-
-% frequency distribution of the allocations
-out.siz=tabulateFS(idxopt(:,1));
-
-%postprobopt = posterior probabilities in the optimal cstep
-if mixt == 2
-    out.postprobopt     = postprobopt;
-end
-
-% Store the indices in varargout
-if nargout==2
-    varargout           = {C};
-end
-
-%% Compute INFORMATION CRITERIA
-
-% Discriminant functions for the assignments
-if equalweights == 1
-    for jj = 1:k
-        ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
-        if cwm==1
-            ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
-        end
+    %% Apply consistency factor based on the variance of the truncated normal distribution.
+    
+    % hh = number of non trimmed observations, after first and second level trimming
+    hh = sum(nopt);
+    
+    % vt = variance of the truncated normal distribution
+    % 1-hh/n is the trimming percentage
+    vt = norminv(0.5*(1+hh/n));
+    
+    if hh<n
+        factor = 1/sqrt(1-2*(n/hh)*vt.*normpdf(vt));
+        % Apply the asymptotic consistency factor to the preliminary squared scale estimate
+        sigma2opt_corr = sigma2opt*factor;
+        % Apply small sample correction factor of Pison et al.
+        sigma2opt_corr = sigma2opt_corr*corfactorRAW(1,n,hh/n);
+    else
+        sigma2opt_corr = sigma2opt;
     end
-else
-    for jj = 1:k
-        ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
-        if cwm==1
-            ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
-        end
+    
+    %%  Set the output structure
+    
+    out                     = struct;
+    out.class               = 'tclustreg';
+    %cstepopt =             = cstep with maximum obj
+    out.cstepopt            = cstepopt;
+    out.subsetopt           = subsetopt;
+    %   bopt                = regression parameters
+    out.bopt                = bopt;
+    %   sigmaopt0           = estimated group variances
+    out.sigma2opt           = sigma2opt;
+    %   sigma2opt_corr      = estimated group variances corrected with  asymptotic
+    %                         consistency factor and small sample correction factor
+    out.sigma2opt_corr      = sigma2opt_corr;
+    out.wbetaopt            = webetaopt;
+    
+    if wtype_beta==5
+        %TO BE IMPLEMENTED
+        %out.w4trimopt_ovj_5 = w4trimopt_obj_5;
     end
-end
-
-% Now remove the rows which refer to first, or second level trimmed units
-% or thinned units
-
-delunits=false(n,1);
-delunits(idxopt(:,end)<0)=true;
-delunits(webeta==0)=true;
-
-ll(delunits,:)=[];
-
-if mixt>=1
-    [NlogLmixt]=estepFS(ll);
-    % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
-    % Note that if there was convergence NlogLmixt should be exactly equal to
-    % -vopt
-    NlogLmixt = -NlogLmixt;
-end
-
-loglik= max(ll,[],2);
-
-
-% NlogL is the negative of the CLASSIFICATION LOG-LIKELIHOOD  of the
-% untrimmed units
-% NlogL=-sum(max(ll(untrimmed units,[],2));
-% Note that if there was convergence NlogL should be exactly equal to
-% -vopt
-NlogL =-sum(loglik);
-
-
-logh=log(h);
-
-if mixt>0
-    % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
-    % and the maximized mixture likelihood as goodness of fit measure (New BIC)
-    MIXMIX  = 2*NlogLmixt +nParam*logh;
     
-    % MIXCLA = BIC which uses the classification likelihood based on
-    % parameters estimated using the mixture likelihood (New ICL)
-    MIXCLA  = 2*NlogL +nParam*logh;
+    %CWM
+    if cwm==1
+        %out.muXopt= k-by-p matrix containing cluster centroid locations.
+        out.muXopt           = muXopt';
+        %out.sigmaXopt= p-by-p-by-k array containing estimated constrained
+        %covariance covariance matrices of the explanatory variables for the k
+        %groups.
+        out.sigmaXopt        = sigmaXopt;
+    end
     
-    out.MIXMIX=MIXMIX;
-    out.MIXCLA=MIXCLA;
-else
-    % CLACLA = BIC which uses parameters estimated using the classification
-    % likelihood and the maximized classification likelihood as goodness of fit
-    % measure (New New)
-    CLACLA  = 2*NlogL +nParam*logh;
+    %   obj = value of the target function
+    out.obj                  = vopt;
+    if monitor
+        out.obj_all          = obj_all; %#ok<UNRCH>
+        out.Beta_all         = Beta_all;
+    end
     
-    out.CLACLA=CLACLA;
-end
-
-
-%% Generate plots
-
-if plots
+    out.C=C;
     
-    plot_type = out.class;
+    %in tandem thinning it is necessary to save information about retained
+    %units (idxopt) as well as thinned units.
+    if wtype_beta == 4
+        out.idx               = zeros(length(Xori),1);
+        out.idx(id_unthinned) = idxopt;
+    else
+        out.idx               = idxopt;
+    end
     
-    % this is just for rotating colors in the plots
-    clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
-    symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
+    % frequency distribution of the allocations
+    out.siz=tabulateFS(idxopt(:,1));
     
-    % The following plots are for the bi-variate case (i.e. v=1)
-    if p-intercept < 2
-        
-        % initialize figure
-        fh = figure('Name',[plot_type , ' plot'],'NumberTitle','off','Visible','on');
-        gca(fh);
-        hold on;
-                
+    %postprobopt = posterior probabilities in the optimal cstep
+    if mixt == 2
+        out.postprobopt     = postprobopt;
+    end
+    
+    % Store the indices in varargout
+    if nargout==2
+        varargout           = {C};
+    end
+    
+    %% Compute INFORMATION CRITERIA
+    
+    % Discriminant functions for the assignments
+    if equalweights == 1
         for jj = 1:k
-            group_label = ['Group ' num2str(jj)];
-            
-            % plot of the good units allocated to the current group.
-            % Indices are taken after the second level trimming.
-            % Trimmed points are not plotted by group.
-            if wtype_beta==3
-                ucg = find(out.idx(:,end)==jj & webetaopt > 0);
-            elseif wtype_beta==4
-                ucg = find(idxopt==jj);
-            else
-                ucg = find(out.idx(:,1)==jj);
+            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+            if cwm==1
+                ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
             end
-            % misteriously text does not show a legend. This is why
-            % we add a (ficticious) plot instruction with white symbols
-            plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
-            text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
-                'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
-                'HorizontalAlignment','center','VerticalAlignment','middle',...
-                'Color',clrdef(jj), 'fontsize' , 12);
-            
-            % plot regression lines
-            vv = [min(X(:,end)) max(X(:,end))];
-            if intercept==1
-                plot(vv,bopt(1,jj)+bopt(2,jj)*vv,'DisplayName',[group_label ' fit' ],...
-                    'Color',clrdef(jj));
-            elseif intercept==0
-                plot(vv,bopt(:,jj)*vv,'DisplayName',[group_label ' fit' ],...
-                    'Color',clrdef(jj));
+        end
+    else
+        for jj = 1:k
+            ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+            if cwm==1
+                ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
             end
+        end
+    end
+    
+    % Now remove the rows which refer to first, or second level trimmed units
+    % or thinned units
+    
+    delunits=false(n,1);
+    delunits(idxopt(:,end)<0)=true;
+    delunits(webeta==0)=true;
+    
+    ll(delunits,:)=[];
+    
+    if mixt>=1
+        [NlogLmixt]=estepFS(ll);
+        % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
+        % Note that if there was convergence NlogLmixt should be exactly equal to
+        % -vopt
+        NlogLmixt = -NlogLmixt;
+    end
+    
+    loglik= max(ll,[],2);
+    
+    
+    % NlogL is the negative of the CLASSIFICATION LOG-LIKELIHOOD  of the
+    % untrimmed units
+    % NlogL=-sum(max(ll(untrimmed units,[],2));
+    % Note that if there was convergence NlogL should be exactly equal to
+    % -vopt
+    NlogL =-sum(loglik);
+    
+    
+    logh=log(h);
+    
+    if mixt>0
+        % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
+        % and the maximized mixture likelihood as goodness of fit measure (New BIC)
+        MIXMIX  = 2*NlogLmixt +nParam*logh;
+        
+        % MIXCLA = BIC which uses the classification likelihood based on
+        % parameters estimated using the mixture likelihood (New ICL)
+        MIXCLA  = 2*NlogL +nParam*logh;
+        
+        out.MIXMIX=MIXMIX;
+        out.MIXCLA=MIXCLA;
+    else
+        % CLACLA = BIC which uses parameters estimated using the classification
+        % likelihood and the maximized classification likelihood as goodness of fit
+        % measure (New New)
+        CLACLA  = 2*NlogL +nParam*logh;
+        
+        out.CLACLA=CLACLA;
+    end
+    
+    
+    %% Generate plots
+    
+    if plots
+        
+        plot_type = out.class;
+        
+        % this is just for rotating colors in the plots
+        clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
+        symdef = '+*d^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
+        
+        % The following plots are for the bi-variate case (i.e. v=1)
+        if p-intercept < 2
             
-            if wtype_beta == 3
-                %plot the thinned (not trimmed) units
-                if jj == k
-                    thinned_nt_trimmed = webetaopt;
-                    thinned_nt_trimmed([ones(n,1) ;ones(n,1)]) = -12;
-                    ucg = find(thinned_nt_trimmed == 0);
-                    plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
-                        'DisplayName',['thinned units (' num2str(length(ucg)) ')' ]);
+            % initialize figure
+            fh = figure('Name',[plot_type , ' plot'],'NumberTitle','off','Visible','on');
+            gca(fh);
+            hold on;
+            
+            for jj = 1:k
+                group_label = ['Group ' num2str(jj)];
+                
+                % plot of the good units allocated to the current group.
+                % Indices are taken after the second level trimming.
+                % Trimmed points are not plotted by group.
+                if wtype_beta==3
+                    ucg = find(out.idx(:,end)==jj & webetaopt > 0);
+                elseif wtype_beta==4
+                    ucg = find(idxopt==jj);
+                else
+                    ucg = find(out.idx(:,1)==jj);
+                end
+                % misteriously text does not show a legend. This is why
+                % we add a (ficticious) plot instruction with white symbols
+                plot(X(ucg,end),y(ucg),'.w','DisplayName',[group_label ' (' num2str(length(ucg)) ' units)']);
+                text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
+                    'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
+                    'HorizontalAlignment','center','VerticalAlignment','middle',...
+                    'Color',clrdef(jj), 'fontsize' , 12);
+                
+                % plot regression lines
+                vv = [min(X(:,end)) max(X(:,end))];
+                if intercept==1
+                    plot(vv,bopt(1,jj)+bopt(2,jj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj));
+                elseif intercept==0
+                    plot(vv,bopt(:,jj)*vv,'DisplayName',[group_label ' fit' ],...
+                        'Color',clrdef(jj));
+                end
+                
+                if wtype_beta == 3
+                    %plot the thinned (not trimmed) units
+                    if jj == k
+                        thinned_nt_trimmed = webetaopt;
+                        thinned_nt_trimmed([ones(n,1) ;ones(n,1)]) = -12;
+                        ucg = find(thinned_nt_trimmed == 0);
+                        plot(X(ucg,end),y(ucg),symdef(jj),'color',clrdef(k+1),...
+                            'DisplayName',['thinned units (' num2str(length(ucg)) ')' ]);
+                    end
                 end
             end
+            
+            % Plot the outliers (trimmed points)
+            if wtype_beta==3
+                ucg = find(out.idx(:,end)==-1);
+            elseif wtype_beta==4
+                ucg = find(idxopt==-1);
+            else
+                ucg = find(out.idx(:,1)==-1);
+            end
+            plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
+                'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
+            
+            % Second level trimming points
+            if wtype_beta==3
+                ucg = find(out.idx(:,end)==-2);
+            elseif wtype_beta==4
+                ucg = find(idxopt==-2);
+            else
+                ucg = find(out.idx(:,1)==-2);
+            end
+            
+            plot(X(ucg,end),y(ucg),'*','color','c',...
+                'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
+            
+            if wtype_beta == 4
+                % in case of tandem thinning, plot the thinned points
+                plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
+                    'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
+            end
+            
+            % Position the legends and make them clickable. For some reason
+            % clickableMultiLegend does not set properly the FontSize: to be fixed.
+            lh=legend('show','Location','best');
+            legstr = get(lh,'String');
+            clickableMultiLegend(legstr,'Location','best','interpreter' , 'LaTex', 'fontsize' , 10);
+            
+            axis('manual');
+            
+            % control of the axis limits
+            xmin = min(X(:,end)); xmax = max(X(:,end));
+            ymin = min(y); ymax = max(y);
+            deltax = (xmax - xmin) / 10;
+            deltay = (ymax - ymin) / 10;
+            
+            xlim([xmin-deltax,xmax+deltax]);
+            ylim([ymin-deltay,ymax+deltay]);
+            
+        else % In this case p > 2. A standard spmplot is used.
+            
+            if intercept
+                YY = [X(:,2:end),y];
+            else
+                YY = [X,y];
+            end
+            
+            % axis labels
+            nameY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
+            nameY = [nameY ; 'y'];
+            nameY = nameY';
+            plo=struct;
+            plo.nameY=nameY;
+            plo.sym = [symdef(1:k) , 'o' ];
+            plo.clr = [clrdef(1:k) , 'r' ];
+            if sum(idxopt(:,end)==-2)>0
+                plo.sym = [plo.sym , 's'];
+                plo.clr = [plo.clr , 'r'];
+            end
+            
+            % group names in the legend
+            group = cell(n,1);
+            group(idxopt(:,end)==-1) = {'Trimmed units'};
+            group(idxopt(:,end)==-2) = {'Trimmed units level 2'};
+            for iii = 1:k
+                group(idxopt==iii) = {['Group ' num2str(iii)]};
+            end
+            
+            % scatterplot
+            spmplot(YY,group,plo,'hist');
+            
         end
         
-        % Plot the outliers (trimmed points)
-        if wtype_beta==3
-            ucg = find(out.idx(:,end)==-1);
-        elseif wtype_beta==4
-            ucg = find(idxopt==-1);
-        else
-            ucg = find(out.idx(:,1)==-1);
+        % Title, reporting labels for beta coefficients
+        betacoeff=sprintf('%0.3f; ',out.bopt(end,:));
+        if wtype_beta ~= 3
+            betacoeff=betacoeff(1:end-2); % remove the last
         end
-        plot(X(ucg,end),y(ucg),'o','color','r','MarkerSize',8,...
-            'DisplayName',['Trimmed units 1st (' num2str(length(ucg)) ')']);
-        
-        % Second level trimming points
-        if wtype_beta==3
-            ucg = find(out.idx(:,end)==-2);
-        elseif wtype_beta==4
-            ucg = find(idxopt==-2);
-        else
-            ucg = find(out.idx(:,1)==-2);
-        end
-        
-        plot(X(ucg,end),y(ucg),'*','color','c',...
-            'DisplayName',['Trimmed units 2nd (' num2str(length(ucg)) ')']);
-        
-        if wtype_beta == 4
-            % in case of tandem thinning, plot the thinned points
-            plot(Xori(~Wt4,end),yori(~Wt4),symdef(k+1),'color',clrdef(k+1),...
-                'DisplayName',['Thinned units (' num2str(length(Wt4) - sum(Wt4)) ')']);
-        end
-        
-        % Position the legends and make them clickable. For some reason
-        % clickableMultiLegend does not set properly the FontSize: to be fixed.
-        lh=legend('show','Location','best');
-        legstr = get(lh,'String');
-        clickableMultiLegend(legstr,'Location','best','interpreter' , 'LaTex', 'fontsize' , 10);
-        
-        axis('manual');
-        
-        % control of the axis limits
-        xmin = min(X(:,end)); xmax = max(X(:,end));
-        ymin = min(y); ymax = max(y);
-        deltax = (xmax - xmin) / 10;
-        deltay = (ymax - ymin) / 10;
-        
-        xlim([xmin-deltax,xmax+deltax]);
-        ylim([ymin-deltay,ymax+deltay]);
-        
-    else % In this case p > 2. A standard spmplot is used.
-        
-        if intercept
-            YY = [X(:,2:end),y];
-        else
-            YY = [X,y];
-        end
-        
-        % axis labels
-        nameY = cellstr([repmat('X',size(YY,2)-1,1) , num2str((1:size(YY,2)-1)')]);
-        nameY = [nameY ; 'y'];
-        nameY = nameY';
-        plo=struct;
-        plo.nameY=nameY;
-        plo.sym = [symdef(1:k) , 'o' ];
-        plo.clr = [clrdef(1:k) , 'r' ];
-        if sum(idxopt(:,end)==-2)>0
-            plo.sym = [plo.sym , 's'];
-            plo.clr = [plo.clr , 'r'];
-        end
-        
-        % group names in the legend
-        group = cell(n,1);
-        group(idxopt(:,end)==-1) = {'Trimmed units'};
-        group(idxopt(:,end)==-2) = {'Trimmed units level 2'};
-        for iii = 1:k
-            group(idxopt==iii) = {['Group ' num2str(iii)]};
-        end
-        
-        % scatterplot
-        spmplot(YY,group,plo,'hist');
+        title({['$ wtrim_{beta}=' num2str(wtype_beta) ...
+            '\quad wtrim_{obj}=' num2str(wtype_obj) ...
+            '\quad mixt=' num2str(mixt) , ...
+            '  \quad c='  num2str(restrfact) ...
+            '\quad \alpha_{Lik}=' num2str(alphaLik) ...
+            '\quad \alpha_X=' num2str(alphaX) '$'] , ...
+            ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
+            'interpreter' , 'LaTex', 'fontsize' , 14);
         
     end
-    
-    % Title, reporting labels for beta coefficients
-    betacoeff=sprintf('%0.3f; ',out.bopt(end,:));
-    if wtype_beta ~= 3
-        betacoeff=betacoeff(1:end-2); % remove the last
-    end
-    title({['$ wtrim_{beta}=' num2str(wtype_beta) ...
-        '\quad wtrim_{obj}=' num2str(wtype_obj) ...
-        '\quad mixt=' num2str(mixt) , ...
-        '  \quad c='  num2str(restrfact) ...
-        '\quad \alpha_{Lik}=' num2str(alphaLik) ...
-        '\quad \alpha_X=' num2str(alphaX) '$'] , ...
-        ['$ obj=' num2str(out.obj) '\quad b=(' betacoeff ') $']} , ...
-        'interpreter' , 'LaTex', 'fontsize' , 14);
-    
 end
-
 
 %% _SUB-FUNCTIONS_
 
