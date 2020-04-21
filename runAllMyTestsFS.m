@@ -207,7 +207,7 @@ runner = matlab.unittest.TestRunner.withTextOutput();
 runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
 
 % Get file paths of source code being tested
-filePaths = fullfile(FilesIncludedAll(:,9), FilesIncludedAll(:,1));
+filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
 % Indicate where the Cobertura coverage report should be created
 covFile = matlab.unittest.plugins.codecoverage.CoberturaFormat(['coverage-' cat2test '-report.xml']);
 % Add the CodeCoveragePlugin

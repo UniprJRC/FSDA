@@ -35,15 +35,14 @@ jobs:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/test-*.xml'  
-    - task: PublishPipelineArtifact@1
-      condition: always()
-      inputs:
-        path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
-        artifact: Test-$(categoryName)
-
     - task: PublishCodeCoverageResults@1
       condition: succeededOrFailed()
       inputs:
         codeCoverageTool: 'Cobertura'
         summaryFileLocation: '**/coverage-*.xml'
+    - task: PublishPipelineArtifact@1
+      condition: always()
+      inputs:
+        path: $(System.DefaultWorkingDirectory)/tests-$(categoryName)
+        artifact: Test-$(categoryName)
 
