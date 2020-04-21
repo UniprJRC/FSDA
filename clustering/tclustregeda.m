@@ -1351,8 +1351,12 @@ symbseq = {'$\clubsuit$' , '$\diamondsuit$' , '$\heartsuit$' , ...
 
 d=find(strcmp(namej,name));
 if d>0
-    for criterion = 1:3
+    
+    % permutation criterion
+    criterion = 0; % default is 0
     switch criterion
+        case 0 
+            IDtt = IDt; 
         case 1
             IDtt = topkrows(IDt,size(IDt,1),2:size(IDt,2),'descend');
         case 2
@@ -1365,48 +1369,26 @@ if d>0
         otherwise
             IDtt = IDt;
     end
-    hf=figure('Name',namej,'Visible','on');
     
+    % generate figure
+    hf=figure('Name',namej,'Visible','on');
     sz = size(IDtt);
     if sz(1)>30
         newpos = get(hf,'Position');
         set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
     end
     
-    xlim([0 k1+1])
-    ylim([0 n1+1])
+    % x and y limits
+    xlim([0 k1+1]);
+    ylim([0 n1+1]);
     set(gca,'XTick',0:k1+1, 'fontsize' , xyTickFontSize);
-    
-%     for j=1:k1
-%         strj=cellstr(num2str(IDtt(:,j)));
-%         % Empty spaces for trimmed units
-%         strj(strcmp(strj,'-1'))={''};
-%         
-%         % set colors red for trimmed units; blue for those which changed
-%         % classification
-%         h=text(j*onex,seqIDs,strj,'HorizontalAlignment','right', 'fontsize' , matrixFont);
-%         if j==1
-%             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
-%             col=repmat({'b'},n1,1);
-%             col(indredcolor)={'r'};
-%             set(h,{'Color'},col)
-%         end
-%     end
-%         % set colors red for trimmed units; blue for those which changed
-%         % classification
-%         h=text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , matrixFont,'interpreter','latex');
-%         if j==1
-%             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
-%             col=repmat({'b'},n1,1);
-%             col(indredcolor)={'r'};
-%             set(h,{'Color'},col)
-%         end
 
+    % fill matrix
     for j=1:k1
         if j==1
             % unit number
             strj=cellstr(num2str(IDtt(:,j)));
-            h = text(j*onex,seqIDs,strj,...
+            h = text(onex-(mod(seqIDs,2)*0.5),seqIDs,strj,...
                 'HorizontalAlignment','center', ...
                 'fontsize' , matrixFont+4 , 'interpreter','none');
             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
@@ -1421,8 +1403,11 @@ if d>0
             strj(ipos) = cellstr(symbseq(abs(IDtt(ipos,j))));
             % Empty spaces for trimmed units
             strj(ineg) = {''}; 
-            text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , matrixFont,'interpreter','latex');
-        end
+            hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , matrixFont,'interpreter','latex');
+            colorsG = cellstr(repmat('w',size(strj)));
+            colorsG(ipos) = cellstr(clrdef(abs(IDtt(ipos,j)))');
+            set(hg,{'Color'},colorsG);
+        end 
         
     end
         
@@ -1436,14 +1421,12 @@ if d>0
     xlabel({'Trimming level'}, 'fontsize' , xyLabelSize);
     ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'fontsize' , xyLabelSize);
     
-    if criterion ==1
     % Group indication in title 
     un=unique(IDtt(:,2:end));
     un=un(un>0);
-    Gleg = strcat('G' , string(num2cell(un)) ,  ' = ' , symbseq(un)'); 
+    Gleg = strcat('G' , string(num2cell(un)) ,  '=' , symbseq(un)'); 
     tit1(size(tit1,2)+1) = cellstr(strjoin(Gleg));
     tit2(size(tit2,2)+1) = cellstr(strjoin(Gleg));
-    end
     
     % Add title
     if ~isempty(unitsNeverAssigned)
@@ -1452,7 +1435,6 @@ if d>0
         title(tit1 , 'fontsize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
     else
         title(tit2 , 'fontsize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
-    end
     end
 
     pan('off');
