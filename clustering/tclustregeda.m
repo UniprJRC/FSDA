@@ -475,7 +475,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     % tclustreg of contaminated X data using all default options.
     % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
     % The dataset presents two parallel components without contamination.
-    X  = load('X.txt'); X = load('algae.txt');
+    X  = load('X.txt');
     y = X(:,end);
     X =X(:,1:end-1);
     % Contaminate the first 4 units
@@ -487,15 +487,14 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     % Value of trimming
     alphaLik = 0.10:-0.01:0;
     % cwm
-    alphaX = 0.2%1;
+    alphaX = 1;
     out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);
 %}
 
 %{
     %% tclustreg with a noise variable and personalized plots.
     % Use the X data of the previous example.
-    close all;
-    clear all;
+    %  set(0,'DefaultFigureWindowStyle','docked')
     X  = load('X.txt');
     y = X(:,end);
     rng(100)
@@ -510,14 +509,14 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     alphaLik = [0.10 0.06 0.03 0];
     % cwm
     alphaX = 1;
-    % Personalize plots. Just show the gscatter plot.
-    % In this case there is more than one explanatory variable therefore PLS
-    % regression (adding the dummies for the classified units) is performed.
-    % In the gscatter plots the percentage of variance explained by the first
-    % linear combination of the X variables is given in the title.
+    % Personalize plots. Just show the gscatter plot. In this case given
+    % that there is more than one explanatory variable  PLS regression
+    % (adding the dummies for the classified units) is performed. In the
+    % gscatter plots the percentage of variance explained by the first
+    % linear combination of the X variables is given in the title of each
+    % panel of the gscatter plot.
     plots=struct;
     plots.name={'gscatter'};
-
     out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);
 %}
 
@@ -841,8 +840,18 @@ end
 
 IDX     = zeros(n,lalpha);
 
-MU      = zeros(k,p-1,lalpha);
+% Check for the existence of the X space
+% p is number of explanatory variables including intercept (if present)
+if ((p-1 > 0 && intercept==0) || (p>1 && intercept==1)) && cwm==1
+    existXspace=true;
+else
+    existXspace=false;
+end
+
+% Note that Mu and SIGMA are meaningful just if existXspace=true;
+MU      = zeros(k,p-intercept,lalpha);
 SIGMA   = cell(lalpha,1);
+
 Beta    = zeros(k,p,lalpha);
 Nopt    = zeros(k,lalpha);
 Sigma2y = zeros(k,lalpha);
@@ -854,8 +863,8 @@ Postprob=zeros(n,k,lalpha);
 msgrs=0;
 
 parfor (j=1:lalpha, numpool)
-    
     % for j=1:lalpha
+    
     h = floor(n*(1-alphaLik(j)));
     
     %%  RANDOM STARTS
@@ -870,8 +879,12 @@ parfor (j=1:lalpha, numpool)
     IDX(:,j)    = idxopt;
     Beta(:,:,j) = bopt';
     Nopt(:,j)   = nopt;
-    MU(:,:,j)   = muXopt;
-    SIGMA{j}    = sigmaXopt;
+    
+    if existXspace == true
+        MU(:,:,j)   = muXopt;
+        SIGMA{j}    = sigmaXopt;
+    end
+    
     Vopt(j)     = vopt;
     Postprob(:,:,j) = postprobopt;
     
@@ -913,11 +926,13 @@ if ~isempty(UnitsSameGroup)
     idxtmp(trimmed) = 0;
     [IDXnew1, OldNewIndexes]=ClusterRelabel({idxtmp}, UnitsSameGroup);
     
-    % MUold1 is k-by-p (rows refer to groups)
-    % Mu is k-by-p-length(alpha)
-    MUold1      = MU(:,:,1);
-    % Sigmaold1 is pxpxk
-    SIGMAold1   = SIGMA{1};
+    if existXspace == true
+        % MUold1 is k-by-p (rows refer to groups)
+        % Mu is k-by-p-length(alpha)
+        MUold1      = MU(:,:,1);
+        % Sigmaold1 is pxpxk
+        SIGMAold1   = SIGMA{1};
+    end
     
     Betaold1    = Beta(:,:,1);
     Sigma2yold1 = Sigma2y(:,1);
@@ -965,8 +980,11 @@ if ~isempty(UnitsSameGroup)
     IDX(trimmed1,1) = -1;
     IDX(trimmed2,1) = -2;
     
-    MU(:,:,1)       = MUold1;
-    SIGMA{1}        = SIGMAold1;
+    if existXspace == true
+        MU(:,:,1)       = MUold1;
+        SIGMA{1}        = SIGMAold1;
+    end
+    
     Beta(:,:,1)     = Betaold1;
     Sigma2y(:,1)    = Sigma2yold1;
     Sigma2yc(:,1)   = Sigma2ycold1;
@@ -981,16 +999,20 @@ for j=2:lalpha
     newlab=zeros(k,1);
     mindist=newlab;
     for ii=1:k
-        % centroid of group ii for previous alpha value
+        % muii= regression coefficients of group ii for previous alpha value
         muii=Beta(ii,:,j-1);
-        % MU(:,:,j) =matrix of centroids for current alpha value
         
-        %if verMatlab==true;
+        % Beta(:,:,j) =matrix of regression coefficients for current alpha value
         muij=bsxfun(@minus,muii,Beta(:,:,j));
-        %else
-        %    muij=muii-MU(:,:,j);
-        %end
         
+        % It is better to consider relative changes in the coefficients
+        % mu_ij is a matrix of size kxp which will contain in row i, i=1, 2, ..., k
+        % (\beta_previoustrimming-\beta_currenttrimming)/\beta_previoustrimming
+        % We will then take the sum of squares of the elements of each row
+        muij = bsxfun(@rdivide, muij, muii);
+        
+        % For example if indmin is equal to 2 it means that probabbly
+        % previous labelled group ii now has ben labelled indmin
         [mind,indmin]=min(sum(muij.^2,2));
         newlab(ii)=indmin;
         mindist(ii)=mind;
@@ -999,9 +1021,17 @@ for j=2:lalpha
     [maxmindist,indmaxdist] =max(mindist);
     maxdist(j)=maxmindist;
     
+    % If newlab k=3 and newlab is 2 3 1 it means that previous group 1 now
+    % has been labelled group 2, previous group 3 now has been labelled
+    % group 3 and previous group 3 now has been labelled group 1.
+    % Therfore if isequal(sort(newlab),seqk) relabelling is easy
     if isequal(sort(newlab),seqk)
-        MU(:,:,j)=MU(newlab,:,j);
-        SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+        
+        if existXspace == true
+            MU(:,:,j)=MU(newlab,:,j);
+            SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+        end
+        
         Beta(:,:,j)=Beta(newlab,:,j);
         Sigma2y(:,j)=Sigma2y(newlab,j);
         Sigma2yc(:,j)=Sigma2yc(newlab,j);
@@ -1011,18 +1041,31 @@ for j=2:lalpha
             IDX(IDXold(:,j)==newlab(r),j)=r;
         end
     else
-        newlab(indmaxdist)=setdiff(seqk,newlab);
-        disp(['Preliminary relabelling not possible when alpha=' num2str(alphaLik(j))])
-        if isequal(sort(newlab),seqk)
-            MU(:,:,j)=MU(newlab,:,j);
-            SIGMA(j)= {SIGMA{j}(:,:,newlab)};
-            Beta(:,:,j)=Beta(newlab,:,j);
-            Sigma2y(:,j)=Sigma2y(newlab,j);
-            Sigma2yc(:,j)=Sigma2yc(newlab,j);
-            Postprob(:,:,j)=Postprob(:,newlab,j);
+        % In this case new1 contains the labels which never appeared inside
+        % newlab. To this label we assign the maximum distance and check is
+        % this time sequal(sort(newlab),seqk), that is we check whether
+        % vector sort(newlab) of length k contain the numbers 1, 2, ..., k
+        % if length(newl) two labels do not have the corerspondence
+        % therefore automatic relabelling is not possible.
+        newl=setdiff(seqk,newlab);
+        if length(newl)==1
+            newlab(indmaxdist)=newl;
             
-            for r=1:k
-                IDX(IDXold(:,j)==newlab(r),j)=r;
+            if isequal(sort(newlab),seqk)
+                if existXspace == true
+                    MU(:,:,j)=MU(newlab,:,j);
+                    SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+                end
+                Beta(:,:,j)=Beta(newlab,:,j);
+                Sigma2y(:,j)=Sigma2y(newlab,j);
+                Sigma2yc(:,j)=Sigma2yc(newlab,j);
+                Postprob(:,:,j)=Postprob(:,newlab,j);
+                
+                for r=1:k
+                    IDX(IDXold(:,j)==newlab(r),j)=r;
+                end
+            else
+                disp(['Automatic relabelling not possible when alpha=' num2str(alphaLik(j))])
             end
         else
             disp(['Automatic relabelling not possible when alpha=' num2str(alphaLik(j))])
@@ -1195,13 +1238,17 @@ for j=2:lalpha
     % sigma2c
     Amon(j-1,5)=sum(sum( (Sigma2yc(:,j)-Sigma2yc(:,j-1)).^2, 2))/ sum(sum( (Sigma2yc(:,j-1)).^2, 2));
     
-    % Compute and store squared euclidean distance between consecutive
-    % centroids
-    Amon(j-1,6)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2)) / sum(sum( (MU(:,:,j-1)).^2, 2));
-    
-    % Compute and store squared euclidean distance between consecutive
-    % covariance matrices (all elements of cov matrices are considered)
-    Amon(j-1,7)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)))/ sum(sum(sum((SIGMA{j-1}).^2,2)));
+    if existXspace == true
+        % Compute and store squared euclidean distance between consecutive
+        % centroids
+        Amon(j-1,6)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2)) / sum(sum( (MU(:,:,j-1)).^2, 2));
+        
+        % Compute and store squared euclidean distance between consecutive
+        % covariance matrices (all elements of cov matrices are considered)
+        Amon(j-1,7)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)))/ sum(sum(sum((SIGMA{j-1}).^2,2)));
+    else
+        Amon(j-1,6:7)=[NaN NaN];
+    end
 end
 out.Amon=Amon;
 
@@ -1263,7 +1310,7 @@ if d>0
     plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
         '$\hat \mu_X$' '$\hat \Sigma_X$'};
     
-    if alphaX==1
+    if existXspace == true
         nr=3;
         nc=2;
     else
@@ -1545,7 +1592,6 @@ if d>0
     
     idx = IDX(:,1); % used for rotating colors in the plots
     
-    intercept=1;
     if p-intercept < 2
         % The following plots are for the bi-variate case (i.e. v=1)
         
@@ -1734,6 +1780,11 @@ if d>0
         set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
     end
     
+    if p-intercept>1
+        XLmon=zeros(p+k-1,lalphasel);
+        XLmonW=zeros(p+k-1,lalphasel);
+    end
+    
     jk=1;
     for j=1:lalphasel
         
@@ -1766,7 +1817,7 @@ if d>0
             symdefj=symdef;
         end
         
-        if p > 2
+        if p-intercept>1 % More than one explanatory variable (excluding intercept)
             % In this case PLS regression is used.
             % In order to take into account group structure k-1 dummy
             % variables are added to matrix X. Of course trimmed units for
@@ -1783,8 +1834,10 @@ if d>0
             Xsel0   = Xext(idxgt0,:);
             Xsel1   = Xext(~idxgt0,:);
             mXsel0  = mean(Xsel0);
-            [~,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
-            % [XL,yl,XS0,YS0,beta,PCTVAR,MSE,stats] = plsregress(Xsel0,ysel0,1);
+            % [~,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
+            [XL,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
+            XLmon(:,j)=XL;
+            XLmonW(:,j)=stats.W;
             
             % Find best predictor for non trimmed (XS0) and trimmed units
             XS1     = zeros(n,1);
@@ -1814,7 +1867,7 @@ if d>0
             alphajtxt=num2str(alphaLik(alphasel(j)));
             title(['$\alpha$=' alphajtxt ' -- Var.Expl.=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , subtitleSize)
             
-        elseif p==2
+        elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
             hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
             
             if jk>nc*(nr-1)
@@ -1839,6 +1892,12 @@ if d>0
     end
     sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal');
     
+    if p-intercept>1
+        % Undocumented store variable importance in presence of more than
+        % one explanatory variable
+        out.XLmon=XLmon;
+        out.XLmonW=XLmonW;
+    end
 end
 
 %% Monitoring of beta regression coefficients (standardized)
@@ -1919,7 +1978,7 @@ if d>0
     sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
 end
 
-    
+
 %% Monitor group size
 namej='Siz';
 tit = {'Tclustreg monitoring plot' , 'Group size'};
