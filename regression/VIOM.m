@@ -25,8 +25,9 @@ function [out] = VIOM(y,X,dw,varargin)
 % Optional input arguments:
 %
 %   intercept:  Indicator for constant term. Boolean.
-%               If true, a model with constant term will be fitted (default),
+%               If true, a model with constant term will be fitted,
 %               else no constant term will be included.
+%               true (default) | false.
 %               Example - 'intercept',false
 %               Data Types - boolean
 %   mult:       Indicator for joint weights estimate. Boolean.
@@ -116,7 +117,6 @@ function [out] = VIOM(y,X,dw,varargin)
     p=3;
     randn('state', 123456);
     X=randn(n,p);
-    X=[ones(n,1), randn(n,p)];
     y=randn(n,1);
     y(1:5)=y(1:5)*2;
     [out]=VIOM(y,X,1:5,'cook',1,'intercept',0);
@@ -167,17 +167,11 @@ if nargin>3
     % Check if user options are valid options
     chkoptions(options,UserOptions)
     
-    
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
-    intercept = options.intercept;
-    if intercept == false
-        X = X(:, 2:end);
-        [~, p] = size(X);
-    end
     mult = options.mult;
     trsh = options.trsh;
     trim = options.trim;
@@ -311,12 +305,13 @@ if any(~isnan(dww) & ~isnan(dw))
         % enforce possible solution
         if sum(t.^2 <= 1) > 0
             warning('FSDA:VIOM:PossibleWrongCandidates','In estimating single weights some units got a weight=1');
-            cand=dw(t.^2 <= 100);
+            cand=dw(t.^2 <= 1);
             for i=1:length(cand)
-                warning('FSDA:VIOM:PossibleWrongCandidates','t^2<1 in VIOM for unit: %s, ', string(i));
+                    j = cand(i);
+                    warning('FSDA:VIOM:PossibleWrongCandidates','t^2<1 in VIOM for unit: %s, ', string(j));
             end
             
-            % boo = boolean vector which selects just the elemetns of dw in which t.^2 > 1
+            % boo = boolean vector which selects just the elements of dw in which t.^2 > 1
             boo=t.^2 > 1;
             t = t(boo);
             h = h(boo);
@@ -363,12 +358,14 @@ if any(~isnan(dww) & ~isnan(dw))
         %         % [TBA: WLS update using general Sherman formula]
         %         beta = (X'*W*X)\X'*W*y;
         
-        % WLS update using general Sherman formula
+        % WLS update 
         w1=sqrt(w);
         Xw=bsxfun(@times,X,w1);
         yw=y.*w1;
         beta=Xw\yw;
         % beta = inv(X'W*X)*X'W*y where W=w*ones(1,k)
+        %
+        % TBA: using general Sherman formula
     end
     
 else
