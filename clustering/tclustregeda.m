@@ -1351,7 +1351,7 @@ symbseq = {'$\clubsuit$' , '$\diamondsuit$' , '$\heartsuit$' , ...
 
 d=find(strcmp(namej,name));
 if d>0
-    for criterion = 1:3;
+    for criterion = 1:3
     switch criterion
         case 1
             IDtt = topkrows(IDt,size(IDt,1),2:size(IDt,2),'descend');
