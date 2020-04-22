@@ -62,7 +62,7 @@ function pdf = twdpdf(x,alpha,theta,delta)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('twdrnd')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('twdpdf')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2019-02-01 15:26:55 #$: Date of the last commit
 %
