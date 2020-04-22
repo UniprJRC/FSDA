@@ -498,7 +498,7 @@ function [out]=FSR(y,X,varargin)
 %}
 
 %{
-    %% Example to detect both VIOM and MSOM outliers using weak==true.
+    %% Example to detect both VIOM and MSOM outliers using weak=true.
     % loyalty data
     data = importdata('loyalty.mat');
     y = data.data(:,end);
