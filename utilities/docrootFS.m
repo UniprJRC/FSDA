@@ -40,7 +40,9 @@ if str2double(a.Version)>7.14
         drawnow; pause(0.05);
         if isequal(answer,'Copy files')
             installHelpFiles();
-            web([docrootFS '/FSDA/index.html'])
+            if ~exist('docr','var')
+                docr=docroot;
+            end
             return
         end
         import com.mathworks.mlwidgets.html.HTMLRenderer;
