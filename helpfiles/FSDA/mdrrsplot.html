@@ -14,7 +14,11 @@ X  = load('X.txt');
 y = X(:,end);
 X =X(:,1:end-1);    
 [out]=FSRmdrrs(y,X,'bsbsteps',0);
-mdrrsplot(out);</pre></div></div><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
+mdrrsplot(out);</pre></div></div><pre class="codeoutput">  0%[&gt;                                                  ]
+Starting parallel pool (parpool) using the 'local' profile 
+100%[===================================================]
+Total time required by the multiple start monitoring: 79.5265 seconds
+</pre><a href='http://rosa.unipr.it/fsda/mdrrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mdrrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mdrrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p>
      tclustreg of contaminated X data using all default options.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
 % The dataset presents two parallel components without contamination.
 X  = load('X.txt');
@@ -41,7 +45,7 @@ y=loyalty(:,4);
 X=loyalty(:,1:3);
 [out]=FSRmdrrs(y,X);
 %In this case the resuperimposed envelope is based on n-2 observations
-mdrplot(out,'envm',length(out.y)-2);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+mdrrsplot(out,'envm',length(out.y)-2);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
     Example of the use of function mdrplot with option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('loyalty.txt','loyalty');
 y=loyalty(:,4);
 X=loyalty(:,1:3);

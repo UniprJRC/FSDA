@@ -19,9 +19,9 @@ kk=10;
 ycont = y;
 ycont(1:kk)=ycont(1:kk)+7;
 [outS]=Sreg(ycont,X);
-outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.74 seconds 
+out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.96 seconds 
 
-outMM = 
+out = 
 
   struct with fields:
 
@@ -33,7 +33,7 @@ outMM =
       conflev: 0.9750
       rhofunc: 'bisquare'
 
-</pre><a href='http://rosa.unipr.it/fsda/MMregcore.html#Example_2'><img vspace="5" hspace="5" src="images\MMregcore_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/MMregcore.html#Example_2'><img vspace="5" hspace="5" src="images\MMregcore_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\MMregcore_02.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighting the residuals with a rho function.</li></span></a></span></h3><div class="collapse"><p>
      Determine, e.g., an S estimate and extract the required arguments for the MM estimate.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% This time use a Tukey biweight for S estimation and HA rho function
 % for MM loop 
 n=200;
@@ -132,7 +132,7 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_rhofuncparam" class="clearfix"></div><h3 id="input_argument_namevalue_rhofuncparam" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>rhofuncparam</code> &#8212;Additional parameters for the specified rho function.</span></a><span class="example_desc">scalar | vector.</span></span></h3><div class="collapse">	<p><p>For hyperbolic rho function it is possible to set up the
                value of k = sup CVC (the default value of k is 4.5).</p> <p>
                For Hampel rho function it is possible to define parameters
-               a, b and c (the default values are a=2, b=4, c=8)
+               a, b and c (the default values are a=2, b=4, c=8).</p><p> 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5 
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
                  no check is performed on matrix y and matrix X. Notice
@@ -159,8 +159,9 @@ max(abs([out.beta-outMM.beta]))</pre></div></div></p></div></div></div></d
                    for the specified rho function which have been
                    used. For hyperbolic rho function the value of
                    k =sup CVC. For Hampel rho function the parameters
-                   a, b and c.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y. The field is present if option 
-                   yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present if option 
+                   a, b and c. This field is present only if rhofunc is
+                   'hampel' or 'hyperbolic'.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>response vector y. The field is present only if option 
+                   yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>data matrix X. The field is present only if option 
                    yxsave is set to 1.</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'MMreg'</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
  It does iterative reweighted least squares (IRWLS) steps from "initial
  beta" (b0) keeping the estimate of the scale (auxscale) fixed.</p> <p>
