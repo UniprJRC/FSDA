@@ -269,8 +269,8 @@ function [out]=FSR(y,X,varargin)
 %
 %     weak:     Indicator to use a different decision rule to detect 
 %               the signal and flag outliers. false (default) | true. 
-%               If weak==false default FSRcore values are used, 
-%               if weak==true 'stronger' quantiles are used  as a
+%               If weak=false default FSRcore values are used, 
+%               if weak=true 'stronger' quantiles are used  as a
 %               decision rule to trim outliers and VIOM outliers
 %				are the ones entering the Search after the first signal.
 %               Example - 'weak',true
@@ -317,9 +317,9 @@ function [out]=FSR(y,X,varargin)
 % out.class  =  'FSR'.
 % out.VIOMout = m x 1 vector containing the list of the units declared as
 %               VIOM outliers or NaN if they are not present.
-%               Present only if weak == true.
-% out.ListCl  = (n-m-k) x 1 vector of non-outlying units. 
-%               Present only if weak == true.
+%               This field is present only if weak = true.
+% out.ListCl  = (n-m) x 1 vector of non-outlying units. 
+%               This field is present only if weak = true.
 %
 % See also: FSReda, LXS.m
 %
