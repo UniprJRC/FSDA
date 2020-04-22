@@ -956,7 +956,8 @@ if signal==1 || signal==2
                     
                     % add X label again to the last plot
                     getaxes=get(figure1,'Children');
-                    getaxes=getaxes(end);
+                    % getaxes=getaxes(end);
+                    getaxes=findobj(getaxes,'-property','XTickLabel');
                     set(gca,'XTickLabel',get(getaxes,'XTick'))
                     xlabel('Subset size m');
                     
