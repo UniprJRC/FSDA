@@ -373,6 +373,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       2nd col = standard errors;
 %                       3rd col = t-statistics;
 %                       4th col = p values.
+%          out.Btable = same thing out.B but n table format.
 %               out.h = The number of observations that have determined the
 %                       initial LTS estimator, i.e. the value of h.
 %              out.bs = Vector containing the units with the smallest p+k
@@ -452,6 +453,7 @@ function [out, varargout] = LTSts(y,varargin)
 %        out.outliers = vector containing the list of the units declared
 %                       as outliers using confidence level specified in
 %                       input scalar conflev.
+%   out.outliersPval  =  p-value of the units declared as outliers.
 %         out.singsub = Number of subsets wihtout full rank. Notice that if
 %                       this number is greater than 0.1*(number of
 %                       subsamples) a warning is produced on the screen
@@ -470,6 +472,14 @@ function [out, varargout] = LTSts(y,varargin)
 %                           & = & \eta(x_i,\hat \beta)+ e_i  \\
 %                           & = & \hat \eta_i + e_i
 %                       \end{eqnarray}
+% out.LastHarmonicPval = combined p value for the two coefficients of the
+%                        last harmonic (this p value comes from an F test).
+% out.LastHarmonicPval = combined p value for the two coefficients of the
+%                        last harmonic (this p value comes from an F test).
+% out.LevelShiftPval  =  p value of the level shift which takes into
+%                       account (this pvalue comes from Bonferronization to
+%                       take it account that if you impose a level shift,
+%                       this component is always found).
 %            out.y    = response vector y.
 %            out.X    = data matrix X containing trend, seasonal, expl
 %                       (with autoregressive component) and
@@ -1096,7 +1106,7 @@ dispresultsdef=false;
 options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,...
     'bdp',bdpdef,'plots',0,'model',modeldef,...
     'conflev',0.975,'msg',1,'yxsave',0,...
-    'SmallSampleCor',2,...
+    'SmallSampleCor',2,'nocheck',0,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
     'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
     'dispresults',dispresultsdef);
@@ -2125,7 +2135,7 @@ out.outliers = seq(outliers);
 
 %decomment the following two lines to get outlier pvalues
 p_all = normcdf(-abs(stdres));
-out.outliers_pvalues = p_all(outliers);
+out.outliersPval = p_all(outliers);
 
 % Store robust estimate of s
 out.scale = s0;
