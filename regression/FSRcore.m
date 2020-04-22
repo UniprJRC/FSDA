@@ -205,7 +205,7 @@ Un      = INP.Un;
 bb      = INP.bb;
 Bcoeff  = INP.Bcoeff;
 S2      = INP.S2;
-if strcmp(fieldnames(INP),'weak')
+if max(strcmp('weak',fieldnames(INP)))==1
     weak    = INP.weak;
 else
     weak=false;
