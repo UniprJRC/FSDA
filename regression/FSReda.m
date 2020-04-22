@@ -422,7 +422,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 
 %{
     %% Example to compute REML single weights for the units excluded
-    % from the search at each step using wREML==true
+    % from the search at each step using wREML=true.
     data = importdata('loyalty.mat');
     y = data.data(:,end);
     X = data.data(:,1);
@@ -431,12 +431,12 @@ function [out] = FSReda(y,X,bsb,varargin)
     yla = 'Amount spent (in €)';
     n = size(X, 1);
     p = size(X, 2);
-    % FSReda
-    [out]=LXS(y,X,'nsamp',1000);
-    [sol_FS] = FSReda(y, X, out.bs, 'intercept', 0, 'wREML', true);
+    % LXS and FSReda
+    [outLXS]=LXS(y,X,'nsamp',1000);
+    [out] = FSReda(y, X, outLXS.bs, 'intercept', 0, 'wREML', true);
     % plot solution overwriting the RES output for simplicity
-    sol_FS.RES = sol_FS.w;
-    resfwdplot(sol_FS);
+    out.RES = out.w;
+    resfwdplot(out);
     ylabel('REML weights FS');
 %}
 
