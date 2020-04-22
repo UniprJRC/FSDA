@@ -4,7 +4,8 @@
      Personalized initial subset (small n). Create an initial subset with
      the 4 observations which fell the smallest
      number of times outside the robust bivariate ellipses and with the
-     lowest Mahalanobis Distance.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
+     lowest Mahalanobis Distance.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+n=200;
 v=3;
 m0=4;
 randn('state',123456);

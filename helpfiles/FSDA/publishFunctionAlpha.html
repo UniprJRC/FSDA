@@ -6,7 +6,7 @@ FSDAroot=FullPath(1:end-length(FileName)-3);
 InclDir={'graphics' 'regression' 'multivariate' 'clustering' 'combinatorial' ...
 'examples' 'utilities' 'utilities_stat'};
 ExclDir={'privateFS'  'datasets'};
-list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir)
+list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 out=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory','force',false);
 cd(fileparts(which('docsearchFS.m')))
 % Create HTML file containing alphabetical list of functions
@@ -15,7 +15,7 @@ fstring=publishFunctionAlpha(out);
 FileWithFullPath=which('docsearchFS.m');
 [pathFSDAstr]=fileparts(FileWithFullPath);
 fsep=filesep;
-outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA\function-alpha.html'];
+outputOFHtmlHelpFile=[FSDAroot fsep 'helpfiles' fsep 'FSDA' fsep 'function-alpha.html'];
 web(outputOFHtmlHelpFile,'-browser');</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Creation of txt file.</li></span></a></span></h3><div class="collapse"><p>
      File function-alpha.txt is created which contains, the
      names of the files (separated by commas), inside
