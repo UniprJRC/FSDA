@@ -505,6 +505,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     % cwm
     alphaX = 1;
     out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);
+
 %}
 
 %{
