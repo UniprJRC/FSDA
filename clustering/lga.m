@@ -59,6 +59,8 @@ function out = lga(X,k,varargin)
 %                   out.k = the number of clusters to be found.
 %               out.biter = the biter setting used.
 %               out.niter = the niter setting used.
+%               out.alpha = level of trimming. Added for consistency with
+%                           rlga. In this case out.alpha=0; 
 %               out.class = 'lga'.
 %
 % See also: rlga.m
