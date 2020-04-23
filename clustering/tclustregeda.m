@@ -488,8 +488,8 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Examples:
 
 %{
-    % tclustreg of contaminated X data using all default options.
-    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
+    % tclustregeda of contaminated X data using all default options.
+    % The X data have been introduced by Gordaliza, Garcia-Escudero and Mayo-Iscar (2013).
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
     y = X(:,end);
@@ -508,7 +508,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %}
 
 %{
-    %% tclustreg with a noise variable and personalized plots.
+    %% tclustregeda with a noise variable and personalized plots.
     % Use the X data of the previous example.
     %  set(0,'DefaultFigureWindowStyle','docked')
     X  = load('X.txt');
@@ -537,7 +537,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %}
 
 %{
-    % Example with multiple explanatory variables, using yXplot
+    % tclustregeda: example with multiple explanatory variables, with yXplot.
     X  = load('X.txt');
     y = X(:,end);
     rng(100)
