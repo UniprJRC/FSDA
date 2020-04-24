@@ -1,5 +1,5 @@
 function brushedUnits=mdrrsplot(out,varargin)
-%mdrrsplot plots the trajectory of minimum deletion residual from random starts 
+%mdrrsplot plots the trajectory of minimum deletion residual from random starts
 %
 %<a href="matlab: docsearchFS('mdrrsplot')">Link to the help function</a>
 %
@@ -13,8 +13,10 @@ function brushedUnits=mdrrsplot(out,varargin)
 %               The first
 %               column of mdr must contain the fwd search index
 %               This matrix can be created using function FSRmdrrs
-% out.mdrrs   =   matrix containing the order of entry of each unit
-%               (necessary if datatooltip is true or databrush is not empty)
+% out.BBrs   =  3D array of size n-by-n-(init)-by-nsimul containing units
+%               forming subset for each random start.
+%               This field is necessary if datatooltip is true or databrush
+%               is not empty.
 %     out.y   =   a vector containing the response (necessary only if
 %               option databrush is not empty)
 %     out.X   =   a matrix containing the explanatory variables
@@ -200,7 +202,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X,'bsbsteps',0);
     mdrrsplot(out);
 %}
@@ -212,7 +214,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X,'bsbsteps',0);
     mdrrsplot(out,'quant',[0.99;0.9999]);
 %}
@@ -272,7 +274,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Example where databrush is a structure and option labeladd is used
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X,'bsbsteps',0);
     databrush=struct
     databrush.selectionmode='Lasso'
@@ -285,7 +287,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     %Example of the use of option databrush using brush mode
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.selectionmode='Brush'
@@ -297,9 +299,13 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Example of the use of persistent non cumulative brush. Every time a
     % brushing action is performed previous highlights are removed but the
     % labels are not removed from the scatterplot matrix.
+    % If persist is 'off' after each selection, all trajectories except
+    % those selected in the current iteration are plotted in
+    % greysh color. If persist is 'on' after each selection, trajectories
+    % never selected in any iteration are plotted in greysh color.
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.persist='off'
@@ -312,10 +318,14 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Interactive_example
     % Example of the use of persistent cumulative brush. Every time a
     % brushing action is performed current highlights are added to
-    % previous highlights
+    % previous highlights. 
+    % If persist is 'off' after each selection, all trajectories except
+    % those selected in the current iteration are plotted in
+    % greysh color. If persist is 'on' after each selection, trajectories
+    % never selected in any iteration are plotted in greysh color.
     X  = load('X.txt');
     y = X(:,end);
-    X =X(:,1:end-1);    
+    X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X);
     databrush=struct
     databrush.persist='on';
@@ -811,8 +821,12 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % search whose value of  mmd is equal to selysteps(1) at step selxsteps(1)
                 seleUnitjboo(abs(mdr(selxsteps(1)-init+1,2:end)-selysteps(1))<1e-10,j)=true;
                 
-                % selTraj contains the true indexes of the selected trajectories
+                % selTraj contains the reverse indexes of the selected trajectories
                 % using the ordering in which they are stored inside the figure
+                % For examples if selTraj =[ 6 14 ] and there are 15
+                % trajectrories 6 means 10 and 14 means 2. Note that a is
+                % not out.mmdrs but changes in every iteration becase
+                % selected trajectories are put on top.
                 selTraj=find(abs(a(selxsteps(1)-init+1,:)-selysteps(1))<1e-10);
                 
                 % disp('Indexes of the selected trajectories as they are stored inside the plot')
@@ -823,6 +837,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % correspondence of the selected trajectories for all
                 % brushing
                 seleTracumboo(selTraj)=true;
+                su=sum(seleTracumboo);
                 
                 % Now find the units belonging to subset at step selxsteps(1) for
                 % random start number searchtoExtr
@@ -838,9 +853,28 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % nbrush= complete set of brushed units in the last selection
             nbrush=brushj(brushj>0);
             
-            % Set new colors and new line style for the unselected trajectories
-            set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
-            set(htraj(~seleTracumboo),'LineStyle',':');
+            if strcmp(persist,'on')
+                % Set new colors and new line style for the
+                % trajectories never selected in any iteration
+                % Set new colors and new line style for the unselected trajectories
+                set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTracumboo),'LineStyle',':');
+            else
+                % Set new colors and new line style for the
+                % trajectories not selcted in the current iteration
+                set(htraj(~seleTrajboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTrajboo),'LineStyle',':');
+            end
+            
+            % seleTracumboo contains the trajectories which have been
+            % selected at least once. Note that selected trajectories are
+            % always put on the first columns of matrix a where
+            % a is defined as
+            % htraj = findall(gca(hmin),'tag',tagstat);
+            % a=get(htraj,'Ydata');
+            % a=cell2mat(a)';
+            seleTracumboo=false(ntrajectories,1);
+            seleTracumboo(1:su)=true;
             
             % Set the color of selected trajectories
             set(htraj(seleTrajboo),'Color',clr(ij+1));

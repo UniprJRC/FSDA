@@ -125,6 +125,19 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               Example - 'threshlevoutX',5
 %               Data Types - double
 %
+% internationaltrade = criterion for updating subset. Boolean.
+%               If internationaltrade is true (default is false) residuals
+%               which have large of the final column of X (generally
+%               quantity) are reduced. Note that this guarantees that
+%               leverge units which have a large value of  X will tend to
+%               stay in the subset. This option is particularly useful in
+%               the context of itnernational trade data where we using
+%               regress value (value=price*Q) on quantity (Q). In other
+%               words, we use the residuals as if we were regressing y/X
+%               (that is price) on the vector of ones.
+%               Example - 'internationaltrade',true
+%               Data Types - boolean
+%
 %
 % Output:
 %
@@ -461,8 +474,11 @@ else
     % bsbstepdef = [initdef 100:100:100*floor(n/100)];
 end
 
+internationaltrade=false;
+
 options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
-    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,'threshlevoutX',[]);
+    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,...
+    'threshlevoutX',[],'internationaltrade',internationaltrade);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -529,6 +545,11 @@ constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
 nocheck=options.nocheck;
+internationaltrade=options.internationaltrade;
+
+if internationaltrade == true
+    weight=(X(:,end).^2);
+end
 
 threshlevoutX=options.threshlevoutX;
 
@@ -716,7 +737,7 @@ else
                     % Store minimum deletion residual in matrix mdr
                     % selmdr=sortrows(ord,1);
                     selmdr=min(ord(:,1));
-
+                    
                     if S2(mm-init1+1,2)==0
                         warning('FSDA:FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
                     else
@@ -738,9 +759,18 @@ else
             if ~isempty(constr) && mm<n-length(constr)
                 r(constr,2)=Inf;
             end
-            % ord=sortrows(r,2);
-            % [~,ord]=sort(r(:,2)./(X(:,end).^2));
-              [~,ord]=sort(r(:,2));
+            
+            % If internationaltrade is true residuals which have large of
+            % the final column of X (generally quantity) are reduced. Note
+            % that this guarantees that leverge units which have a large
+            % value of  X will tend to stay in the subset.
+            % In other words, we use the residuals as if we were regressing
+            % y/X (that is price) on the vector of ones.
+            if internationaltrade==false
+                [~,ord]=sort(r(:,2));
+            else
+                [~,ord]=sort(r(:,2)./weight);
+            end
             
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
