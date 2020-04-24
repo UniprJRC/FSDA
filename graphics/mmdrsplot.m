@@ -15,7 +15,7 @@ function brushedUnits=mmdrsplot(out,varargin)
 %               This matrix can be created using function FSMmmdrs.
 %
 % out.BBrs   =  3D array of size n-by-n-(init)-by-nsimul containing units
-%               forming subset for rach random start.
+%               forming subset for each random start.
 %               This field is necessary if datatooltip is true or databrush
 %               is not empty.
 %
@@ -290,20 +290,6 @@ function brushedUnits=mmdrsplot(out,varargin)
     mmdrsplot(out,'databrush',1);
 %}
 
-%{
-    % Interactive_example
-    % Example of the use of option databrush.
-    % Selected units are also highlighted in the malfwdplot.
-    load('swiss_banknotes');
-    Y=swiss_banknotes.data;
-
-    out=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
-    outEDA=FSMeda(Y,1:10,'init',20,'scaled',1);
-    malfwdplot(outEDA)
-    databrush=struct;
-    databrush.persist='on';
-    mmdrsplot(out,'databrush',databrush)
-%}
 
 %{
     % Interactive_example
@@ -333,6 +319,25 @@ function brushedUnits=mmdrsplot(out,varargin)
     disp('The decrease after the peak in the trajectories of mmd is due to the masking effect.')
     mmdrsplot(out,'databrush',1)
    
+%}
+
+%{
+    % Interactive_example
+    % Example of the use of option databrush.
+    % Selected units are also highlighted in the malfwdplot.
+    load('swiss_banknotes');
+    Y=swiss_banknotes.data;
+
+    out=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
+    outEDA=FSMeda(Y,1:10,'init',20,'scaled',1);
+    malfwdplot(outEDA)
+    databrush=struct;
+    % If persist is 'off' after each selection, all trajectories except
+    % those selected in the current iteration are plotted in
+    % greysh color. If persist is 'on' after each selection, trajectories
+    % never selected in any iteration are plotted in greysh color.
+    databrush.persist='on';
+    mmdrsplot(out,'databrush',databrush)
 %}
 
 %% Beginning of code
@@ -622,7 +627,7 @@ if ~isempty(options.datatooltip)
         
         % datacursormode on;
         hdt = datacursormode;
-        set(hdt,'Enable','on'); % DDD
+        set(hdt,'Enable','on'); 
         % If options.datatooltip is not a struct then use our default options
         if ~isstruct(options.datatooltip)
             set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
@@ -650,13 +655,6 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     
     
     if isstruct(options.databrush)
-        
-        %         % If option Label is 'on' then matrix Un is added to UserData
-        %         d=max(strcmp('Label',fieldnames(databrush)));
-        %         if d==1 && strcmp(databrush.Label,'on')
-        %             set(gcf,'UserData',Un)
-        %         end
-        
         
         cv=[fieldnames(databrush) struct2cell(databrush)]';
         
@@ -809,8 +807,12 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % search whose value of  mmd is equal to selysteps(1) at step selxsteps(1)
                 seleUnitjboo(abs(mmdrs(selxsteps(1)-init+1,2:end)-selysteps(1))<1e-10,j)=true;
                 
-                % selTraj contains the true indexes of the selected trajectories
+                % selTraj contains the reverse indexes of the selected trajectories
                 % using the ordering in which they are stored inside the figure
+                % For examples if selTraj =[ 6 14 ] and there are 15
+                % trajectrories 6 means 10 and 14 means 2. Note that a is
+                % not out.mmdrs but changes in every iteration becase
+                % selected trajectories are put on top.
                 selTraj=find(abs(a(selxsteps(1)-init+1,:)-selysteps(1))<1e-10);
                 
                 % disp('Indexes of the selected trajectories as they are stored inside the plot')
@@ -821,6 +823,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 % correspondence of the selected trajectories for all
                 % brushing
                 seleTracumboo(selTraj)=true;
+                su=sum(seleTracumboo);
                 
                 % Now find the units belonging to subset at step selxsteps(1) for
                 % random start number searchtoExtr
@@ -836,9 +839,28 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % nbrush= complete set of brushed units in the last selection
             nbrush=brushj(brushj>0);
             
-            % Set new colors and new line style for the unselected trajectories
-            set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
-            set(htraj(~seleTracumboo),'LineStyle',':');
+            
+            if strcmp(persist,'on')
+                % Set new colors and new line style for the
+                % trajectories never selected in any iteration
+                set(htraj(~seleTracumboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTracumboo),'LineStyle',':');
+            else
+                % Set new colors and new line style for the
+                % trajectories not selcted in the current iteration
+                set(htraj(~seleTrajboo),'Color',FSColors.greysh.RGB);
+                set(htraj(~seleTrajboo),'LineStyle',':');
+            end
+            
+            % seleTracumboo contains the trajectories which have been
+            % selected at least once. Note that selected trajectories are
+            % always put on the first columns of matrix a where
+            % a is defined as
+            % htraj = findall(gca(hmin),'tag',tagstat);
+            % a=get(htraj,'Ydata');
+            % a=cell2mat(a)';
+            seleTracumboo=false(ntrajectories,1);
+            seleTracumboo(1:su)=true;
             
             % Set the color of selected trajectories
             set(htraj(seleTrajboo),'Color',clr(ij+1));

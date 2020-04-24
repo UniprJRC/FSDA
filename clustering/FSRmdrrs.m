@@ -132,6 +132,19 @@ function out=FSRmdrrs(y,X,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
+% internationaltrade = criterion for updating subset. Boolean.
+%               If internationaltrade is true (default is false) residuals
+%               which have large of the final column of X (generally
+%               quantity) are reduced. Note that this guarantees that
+%               leverge units which have a large value of  X will tend to
+%               stay in the subset. This option is particularly useful in
+%               the context of itnernational trade data where we using
+%               regress value (value=price*Q) on quantity (Q). In other
+%               words, we use the residuals as if we were regressing y/X
+%               (that is price) on the vector of ones.
+%               Example - 'internationaltrade',true
+%               Data Types - boolean
+%
 %  Remark:      The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -398,10 +411,12 @@ else
     bsbstepdef = [initdef 100:100:100*floor(n/100)];
 end
 
+internationaltrade=false;
+
 nsimuldef = 200; % nsimuldef = default number of random starts
 options   = struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
     'constr','','nsimul',nsimuldef,'numpool',numpool, 'cleanpool', false, ...
-    'bsbsteps',bsbstepdef);
+    'bsbsteps',bsbstepdef,'internationaltrade',internationaltrade);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -429,6 +444,7 @@ nsimul      = options.nsimul;
 cleanpool   = options.cleanpool;
 numpool     = options.numpool;
 bsbsteps    = options.bsbsteps;
+internationaltrade=options.internationaltrade;
 
 if numpool < 1
     numpool = 1;
@@ -476,7 +492,8 @@ end
 parfor (j = 1:nsimul , numpool)
 % for j = 1:nsimul
     [mdr,~,BB] = FSRmdr(y,X,0,'init',init,'intercept',intercept,...
-        'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps);
+        'nocheck',1,'msg',0,'constr',constr,'bsbsteps',bsbsteps,...
+        'internationaltrade',internationaltrade);
     if size(mdr,2)>1
         % Store units forming subset at each step
         BBrs(:,:,j) = BB;

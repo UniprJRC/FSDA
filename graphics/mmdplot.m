@@ -308,7 +308,7 @@ function mmdplot(out,varargin)
 
 %{
     % Interactive_example
-    %Example of the use of brush using brush mode.  
+    % Example of the use of brush using brush mode.  
     Y=load('head.txt');
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
@@ -323,9 +323,9 @@ function mmdplot(out,varargin)
 
 %{
     % Interactive_example
-    %Example of the use of persistent non cumulative brush.     
-    %Every time a
-    %brushing action is performed previous highlightments are removed
+    % Example of the use of persistent non cumulative brush.     
+    % Every time a brushing action is performed previous highlights are
+    % removed.
     Y=load('head.txt');
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
@@ -341,10 +341,9 @@ function mmdplot(out,varargin)
 
 %{
     % Interactive_example
-    %Example of the use of persistent cumulative brush.     
-    % Every time a
-    %brushing action is performed current highlightments are added to
-    %previous highlightments
+    % Example of the use of persistent cumulative brush.     
+    % Every time a brushing action is performed current highlights are
+    % added to previous highlights
     Y=load('head.txt');
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
