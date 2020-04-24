@@ -9,10 +9,10 @@
 *.m text eol=crlf
 #*.mlx text eol=crlf
 *.txt text eol=crlf
+*.html text=eol=crlf
 
 # Declare special files 
 *.js text=auto
-*.html text=auto
 *.xlm text=auto
 *.css text=auto
 
