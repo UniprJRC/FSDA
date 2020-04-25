@@ -267,6 +267,14 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'bsbmfullrank',1
 %               Data Types - double
 %
+%     weak:     Indicator to use a different decision rule to detect 
+%               the signal and flag outliers. false (default) | true. 
+%               If weak=false default FSRcore values are used, 
+%               if weak=true 'stronger' quantiles are used  as a
+%               decision rule to trim outliers and VIOM outliers
+%				are the ones entering the Search after the first signal.
+%               Example - 'weak',true
+%               Data Types - boolean
 %
 % Output:
 %
@@ -307,6 +315,11 @@ function [out]=FSR(y,X,varargin)
 %               steps. out.constr is a vector which contains the list of
 %               units which produced a singular X matrix
 % out.class  =  'FSR'.
+% out.VIOMout = m x 1 vector containing the list of the units declared as
+%               VIOM outliers or NaN if they are not present.
+%               This field is present only if weak = true.
+% out.ListCl  = (n-m) x 1 vector of non-outlying units. 
+%               This field is present only if weak = true.
 %
 % See also: FSReda, LXS.m
 %
@@ -484,6 +497,35 @@ function [out]=FSR(y,X,varargin)
     title('FS with bound on the leverage')
 %}
 
+%{
+    %% Example to detect both VIOM and MSOM outliers using weak=true.
+    % loyalty data
+    data = importdata('loyalty.mat');
+    y = data.data(:,end);
+    X = data.data(:,1);
+    xla = 'Number of visits';
+    yla = 'Amount spent (in €)';
+    n = size(X,1);
+    % run FSR to detect a weaker signal indicating VIOM
+    FSRoutw = FSR(y, X, 'intercept', 0, ...
+        'init', floor(n/2)-1, 'msg', 0, 'plots', 1, 'weak', true);
+    trim_FSR = FSRoutw.outliers;
+    down_FSR = FSRoutw.VIOMout;
+    clean_FSR = FSRoutw.ListCl;
+    % plotting
+    figure
+    plot(X(clean_FSR, :), y(clean_FSR), 'b.', 'MarkerSize', 15, 'DisplayName', 'clean');
+    hold on
+    plot(X(trim_FSR, :), y(trim_FSR), 'r.', 'MarkerSize', 15, 'DisplayName', 'MSOM');
+    plot(X(down_FSR, :), y(down_FSR), 'g.', 'MarkerSize', 15, 'DisplayName', 'VIOM');
+    clb = clickableMultiLegend(gca, 'Location', 'northeast');
+    set(clb,'FontSize',12);
+    xlabel(xla); 
+    ylabel(yla); 
+    box
+    cascade
+%}
+
 %% Beginning of code
 
 % Input parameters checking
@@ -515,7 +557,7 @@ options=struct('h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1,'threshoutX','');
+    'bsbmfullrank',1,'threshoutX','','weak',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -550,6 +592,7 @@ end
 msg=options.msg;
 threshoutX=options.threshoutX;
 intercept = options.intercept;
+weak = options.weak;
 
 if isempty(threshoutX)
     bonflevoutX=[];
@@ -712,6 +755,7 @@ INP.Un=Un;
 INP.bb=bb;
 INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
+INP.weak = weak;
 %% Call core function which computes exceedances to thresholds of mdr
 [out]=FSRcore(INP,'',options);
 

@@ -247,7 +247,7 @@ function out  = tclustICsol(IC,varargin)
 %                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
 %                   64, 128].
 %
-% See also: tclustIC, tclust, tclustICreg, tclustreg, carbikeplot
+% See also: tclustIC, tclust, tclustregIC, tclustreg, carbikeplot
 %
 % References:
 %

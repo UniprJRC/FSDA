@@ -211,7 +211,7 @@ end
 if msg==false
     Display='none';
 else
-    Display='iter';
+    Display='onlyMismatches';
 end
 FilesWithProblems=cell(1000,6);
 OUT=cell(size(InputCell,1),1);

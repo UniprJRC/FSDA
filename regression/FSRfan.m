@@ -236,6 +236,12 @@ function [out]=FSRfan(y,X,varargin)
 % Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
 % diagnostic transformations in regression, "Chemometrics and Intelligent
 % Laboratory Systems", Vol. 60, pp. 87-100.
+% Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
+% transformations for profit-and-loss data, Journal of the Royal
+% Statistical Society, Series C, "Applied Statistics",
+% https://doi.org/10.1111/rssc.12389
+% Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
+% Transformation: Review and Extensions, "Statistical Science", in press.
 %
 % Copyright 2008-2019.
 % Written by FSDA team

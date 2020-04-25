@@ -119,7 +119,7 @@ function smo = supsmu(x,y,varargin)
 %
 %
 %
-%<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('supsmu')">Link to the help function</a>
 %
 %$LastChangedDate:: 2018-09-17 19:38:55 #$: Date of the last commit
 
