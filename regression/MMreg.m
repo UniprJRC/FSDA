@@ -495,7 +495,7 @@ conflev=options.conflev;
 
 outIRW = MMregcore(y,X,bs,ss,'eff',eff,'effshape',effshape,...
     'rhofunc',rhofuncMM,'rhofuncparam',rhofuncparamMM,...
-    'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',plots,'nocheck',1,'msg',msg);
+    'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',plots,'nocheck',1);
 
 
 out = struct;

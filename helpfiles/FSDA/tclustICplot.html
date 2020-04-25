@@ -11,12 +11,12 @@
 % groups which have labels respectively equal to 1, 2 and 3.
 UnitsSameGroup=[15 30 69];
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out)</pre></div></div><pre class="codeoutput">k=1
+tclustICplot(out);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
 k=5
-</pre><a href='http://rosa.unipr.it/fsda/tclustICplot.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICplot_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
+</pre><a href='http://rosa.unipr.it/fsda/tclustICplot.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
        Gives the user the possibility of clicking on the different points
        and have information about
        1) value of k which has been selected
@@ -38,12 +38,12 @@ out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSam
 tclustICplot(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Simultaneous datatooltip with all 3 plots (MIXMIX, MIXCLA and CLACLA).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out,'whichIC','ALL')</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+tclustICplot(out,'whichIC','ALL');</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
      databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Use all default options for databrush (brush just once)
 Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out,'databrush',1)</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
+tclustICplot(out,'databrush',1);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
      Repeated databrushing from the ICplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% enable repeated brushing and show boxplots of groups inside diag of spm
 databrush=struct;
 % Set the shape of the brush
@@ -60,7 +60,7 @@ databrush.dispopt='box';
 Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out,'databrush',databrush)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
+tclustICplot(out,'databrush',databrush);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>matrix of size length(kk)-times
                    length(cc) containinig the values of the penalized
                    classification likelihood (CLA).</p> <p>

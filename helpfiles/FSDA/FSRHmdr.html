@@ -4,29 +4,17 @@ y=XX(:,2);
 X=XX(:,1);
 X=X./max(X);
 Z=log(X);
-mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=58
-Number of units which entered=11
-Warning: interchange greater than 10 when m=194
-Number of units which entered=12
-Warning: interchange greater than 10 when m=195
-Number of units which entered=11
-Warning: interchange greater than 10 when m=197
-Number of units which entered=12
-Warning: interchange greater than 10 when m=215
+mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=17
+Number of units which entered=15
+Warning: interchange greater than 10 when m=440
+Number of units which entered=33
+Warning: interchange greater than 10 when m=499
+Number of units which entered=21
+Warning: interchange greater than 10 when m=502
+Number of units which entered=13
+Warning: interchange greater than 10 when m=507
 Number of units which entered=19
-Warning: interchange greater than 10 when m=216
-Number of units which entered=23
-Warning: interchange greater than 10 when m=217
-Number of units which entered=12
-Warning: interchange greater than 10 when m=482
-Number of units which entered=26
-Warning: interchange greater than 10 when m=483
-Number of units which entered=11
-Warning: interchange greater than 10 when m=484
-Number of units which entered=12
-Warning: interchange greater than 10 when m=485
-Number of units which entered=12
-Warning: interchange greater than 10 when m=486
+Warning: interchange greater than 10 when m=509
 Number of units which entered=11
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHmdr with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the search initialization.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');

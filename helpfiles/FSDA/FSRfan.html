@@ -10,19 +10,19 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.03 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 17.9%
 Total estimated time to complete LMS:  0.02 seconds 
 ------------------------------
+Warning: Number of subsets without full rank equal to 17.9%
+Total estimated time to complete LMS:  0.01 seconds 
+------------------------------
 Warning: Number of subsets without full rank equal to 15.2%
-Total estimated time to complete LMS:  0.12 seconds 
+Total estimated time to complete LMS:  0.13 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.01 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 17.9%
 </pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
@@ -79,25 +79,25 @@ namey =
 
     'Sales'
 
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 m=100
 m=200
 m=300
 m=400
 m=500
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 m=100
 m=200
 m=300
 m=400
 m=500
-Total estimated time to complete LMS:  0.05 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 m=100
 m=200
 m=300
 m=400
 m=500
-Total estimated time to complete LMS:  0.04 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
 m=100
 m=200
 m=300
@@ -117,34 +117,34 @@ X=XX(:,1:end-1);
 fanplot(outBC,'titl','Box Cox');
 fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
 disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.92 seconds 
+disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.42 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.34 seconds 
+Total estimated time to complete LMS:  0.16 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.23 seconds 
+Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.26 seconds 
+Total estimated time to complete LMS:  0.17 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.21 seconds 
+Total estimated time to complete LMS:  0.16 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.21 seconds 
+Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.61 seconds 
+Total estimated time to complete LMS:  0.15 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.37 seconds 
+Total estimated time to complete LMS:  0.16 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.23 seconds 
+Total estimated time to complete LMS:  0.17 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.36 seconds 
+Total estimated time to complete LMS:  0.16 seconds 
 ------------------------------
 Warning: Number of subsets without full rank equal to 16.3305%
 Maximum difference in absolute value
@@ -362,4 +362,8 @@ R2 of the model in the wrong (inverse) scale
                input option intercept was missing or equal to 1)</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
  Analysis", Springer Verlag, New York.</p></div><div><p>Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
  diagnostic transformations in regression, "Chemometrics and Intelligent
- Laboratory Systems", Vol. 60, pp. 87-100.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
+ Laboratory Systems", Vol. 60, pp. 87-100.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
+ transformations for profit-and-loss data, Journal of the Royal
+ Statistical Society, Series C, "Applied Statistics",
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
+ Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Score.html" itemprop="url"><span itemprop="name"><code>Score</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJ.html" itemprop="url"><span itemprop="name"><code>ScoreYJ</code></span></a></span> | <span itemprop="seealso"><a href="ScoreYJpn.html" itemprop="url"><span itemprop="name"><code>ScoreYJpn</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

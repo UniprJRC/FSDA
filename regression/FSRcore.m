@@ -120,6 +120,15 @@ function [out]=FSRcore(INP,model,options)
 %               FSR.m, FSRH.m or FSRB.m.
 %                 Data Types - struct
 %
+%     weak:     Indicator to use a different decision rule to detect
+%               the signal and flag outliers. false (default) | true.
+%               If weak==false default FSRcore values are used,
+%               if weak==true 'stronger' quantiles are used  as a
+%               decision rule to trim outliers and VIOM outliers
+%				are the ones entering the Search after the first signal.
+%               Example - 'weak',true
+%               Data Types - boolean
+%
 % Optional input arguments:
 %
 % Output:
@@ -155,6 +164,11 @@ function [out]=FSRcore(INP,model,options)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
+% out.VIOMout = m x 1 vector containing the list of the units declared as
+%               VIOM outliers or NaN if they are not present.
+%               Present only if weak == true.
+% out.ListCl =  (n-m-k) x 1 vector of non-outlying units.
+%               Present only if weak == true.
 %
 % More About:
 %
@@ -191,6 +205,11 @@ Un      = INP.Un;
 bb      = INP.bb;
 Bcoeff  = INP.Bcoeff;
 S2      = INP.S2;
+if max(strcmp('weak',fieldnames(INP)))==1
+    weak    = INP.weak;
+else
+    weak=false;
+end
 
 % Set the intercept
 if strcmp(model,'ts')
@@ -832,7 +851,12 @@ if signal==1 || signal==2
         % Notice that mdr(i,1) = m dagger
         for tr=(mdag-1):(n)
             % Compute theoretical envelopes based on tr observations
-            gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
+            if weak == false
+                gmin1=FSRenvmdr(tr,p,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
+            else
+                % use a stronger decision rule to flag outliers (useful in presence of VIOMs)
+                gmin1=FSRenvmdr(tr,p,'prob',[0.999999;0.9999999; 0.01; 0.5],'init',init);
+            end
             
             for ii=(i-1):size(gmin1,1)
                 
@@ -932,7 +956,8 @@ if signal==1 || signal==2
                     
                     % add X label again to the last plot
                     getaxes=get(figure1,'Children');
-                    getaxes=getaxes(end);
+                    % getaxes=getaxes(end);
+                    getaxes=findobj(getaxes,'-property','XTickLabel');
                     set(gca,'XTickLabel',get(getaxes,'XTick'))
                     xlabel('Subset size m');
                     
@@ -1541,6 +1566,18 @@ elseif strcmp(model,'ts')
 end
 out.scale=scale;
 
+if weak == true
+    if exist('mdag', 'var') == 1
+        out.mdag = mdag;
+        out.ListCl = seq(~isnan(bb(:,end-(n-mdag))));
+        out.scale = sqrt(S2(end-(n-mdag),2));
+        out.VIOMout = setdiff(1:n, [out.ListCl, ListOut]);
+    else
+        out.mdag = n;
+        out.ListCl = 1:n;
+        out.VIOMout = NaN;
+    end
+end
 
 
 %% Callback functions used to "pin" quantile labels and vertical line to axes.

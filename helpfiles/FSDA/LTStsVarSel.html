@@ -8,8 +8,8 @@
  estimated model parameter, starting from an over-parametrized model. The
  model parameters are re-estimated with LTSts at each step, until all the
  p-values are below a given threshold. Then, the output is a reduced time
- series model with significant parameters only.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>run LTStsVarSel with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>run LTStsVarSel starting from a specific over-parametrized model.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel starting from over-parametrized model with autoregressive components.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>,<a class="intrnllnk" href="#outputarg_msgstr"><code> msgstr</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel with default options and return warning messages.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% data model
-model=struct;
+ series model with significant parameters only.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>)</code></span>run LTStsVarSel with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>=LTStsVarSel(<a class="intrnllnk" href="#inputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>run LTStsVarSel starting from a specific over-parametrized model.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel starting from over-parametrized model with autoregressive components.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="LTStsVarSel.html#Example_4">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_reduced_est"><code>reduced_est</code></a>,<a class="intrnllnk" href="#outputarg_reduced_model"><code> reduced_model</code></a>,<a class="intrnllnk" href="#outputarg_msgstr"><code> msgstr</code></a>]=LTStsVarSel(___)</code></span>run LTStsVarSel with default options and return warning messages.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel with all default options.</li></span></a></span></h3><div class="collapse"><p>
+     data model<div class="programlisting"><div class="codeinput"><pre class="matlab-code">model=struct;
 model.trend=1;                  % linear trend
 model.trendb=[0 1];             % parameters of the linear trend
 model.s=12;                     % monthly time series
@@ -18,6 +18,7 @@ model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
 model.lshiftb=100;              % level shift amplitude
 model.lshift= 30;               % level shift amplitude
 model.signal2noiseratio = 100;  % signal to noise
+rng('default')
 n = 100;                        % sample size
 tmp = rand(n,1);
 model.X = tmp.*[1:n]';          % a extra covariate
@@ -30,7 +31,18 @@ rng(1);
 % optional: add a FS step to the LTSts estimator
 % outFS = FSRts(out_sim.y,'model',out_model_0);
 % To be fixed: 'Non existent user option found-&gt; '    'ARp'</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>run LTStsVarSel starting from a specific over-parametrized model.</li></span></a></span></h3><div class="collapse"><p>
-    n = 100;                         sample size<div class="programlisting"><div class="codeinput"><pre class="matlab-code">tmp = rand(n,1);
+     sample size<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 100;                       
+tmp = rand(n,1);
+% data model
+model=struct;
+model.trend=1;                  % linear trend
+model.trendb=[0 1];             % parameters of the linear trend
+model.s=12;                     % monthly time series
+model.seasonal=1;               % 1 harmonic with linear trend
+model.seasonalb=[10 10];        % parameter for one harmonic with linear trend
+model.lshiftb=100;              % level shift amplitude
+model.lshift= 30;               % level shift amplitude
+model.signal2noiseratio = 100;  % signal to noise
 model.X = tmp.*[1:n]';          % a extra covariate
 model.Xb = 1;                   % beta coefficient of the covariate
 out_sim=simulateTS(n,'plots',1,'model',model);

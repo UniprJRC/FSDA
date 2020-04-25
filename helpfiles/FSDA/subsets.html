@@ -4,11 +4,11 @@ C =
 
   5&times;3 int8 matrix
 
-    1   19   37
-    9   12   71
-   53   56   62
-   38   42   95
-    2   39   53
+    20    43    84
+    12    46   100
+    15    85    92
+    10    69    86
+    36    46    90
 
 </pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Use information on the number of combinations to speed up generation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(100,3);
@@ -17,11 +17,11 @@ C =
 
   5&times;3 int8 matrix
 
-   17   22   23
-   24   71   74
-   25   54   58
-    6   25   44
-    9   34   53
+   35   37   47
+   80   89   91
+   18   41   84
+   10   12   71
+   10   12   42
 
 </pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Create a matrix with the indexes of 5 subsets when n=100, p=3.</li></span></a></span></h3><div class="collapse"><p>
         Also inform about the time taken for the operation.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ncomb = bc(1000,5);
@@ -130,7 +130,7 @@ disp(tab);
     0.0007    0.0225    0.2262    0.7505
 
 Frequencies of the 0 to p successes in the p weighted drawns (subsets output):
-    0.0008    0.0234    0.2308    0.7450
+    0.0008    0.0239    0.2260    0.7493
 
 </pre><a href='http://rosa.unipr.it/fsda/subsets.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\subsets_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Weighted sampling without replacement, with negative weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear all; close all;
 n = 200;
@@ -176,23 +176,19 @@ sample = 1, concentration step = 7
 sample = 1, concentration step = 8
 sample = 1, concentration step = 9
 sample = 1, concentration step = 10
-sample = 1, concentration step = 11
 sample = 42, concentration step = 9
 sample = 42, concentration step = 10
-sample = 42, concentration step = 11
-Total estimated time to complete tclustreg: 11.78 seconds 
+Total estimated time to complete tclustreg: 22.80 seconds 
 sample = 58, concentration step = 7
 sample = 58, concentration step = 8
 sample = 58, concentration step = 9
 sample = 58, concentration step = 10
-sample = 58, concentration step = 11
 sample = 134, concentration step = 5
 sample = 134, concentration step = 6
 sample = 134, concentration step = 7
 sample = 134, concentration step = 8
 sample = 134, concentration step = 9
 sample = 134, concentration step = 10
-sample = 134, concentration step = 11
 sample = 157, concentration step = 4
 sample = 157, concentration step = 5
 sample = 157, concentration step = 6
@@ -200,9 +196,7 @@ sample = 157, concentration step = 7
 sample = 157, concentration step = 8
 sample = 157, concentration step = 9
 sample = 157, concentration step = 10
-sample = 157, concentration step = 11
 sample = 190, concentration step = 10
-sample = 190, concentration step = 11
 sample = 256, concentration step = 3
 sample = 256, concentration step = 4
 sample = 256, concentration step = 5
@@ -211,7 +205,6 @@ sample = 256, concentration step = 7
 sample = 256, concentration step = 8
 sample = 256, concentration step = 9
 sample = 256, concentration step = 10
-sample = 256, concentration step = 11
 </pre><a href='http://rosa.unipr.it/fsda/subsets.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\subsets_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_nsamp" class="clearfix"> </div> <h3 id="input_argument_nsamp" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>nsamp</code> &#8212; Number of subsamples which have to be extracted. </span>  </a><span class="example_desc">Scalar;
                if nsamp=0 all subsets will be extracted; they will be (n
                choose p).</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; Number of observations of the dataset. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_p" class="clearfix"> </div> <h3 id="input_argument_p" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>p</code> &#8212; Size of the subsets. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>In regression with p

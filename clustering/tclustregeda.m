@@ -488,8 +488,8 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Examples:
 
 %{
-    % tclustregeda of contaminated X data using all default options.
-    % The X data have been introduced by Gordaliza, Garcia-Escudero and Mayo-Iscar (2013).
+    % tclustreg of contaminated X data using all default options.
+    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
     % The dataset presents two parallel components without contamination.
     X  = load('X.txt');
     y = X(:,end);
@@ -505,11 +505,10 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
     % cwm
     alphaX = 1;
     out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX);
-
 %}
 
 %{
-    %% tclustregeda with a noise variable and personalized plots.
+    %% tclustreg with a noise variable and personalized plots.
     % Use the X data of the previous example.
     %  set(0,'DefaultFigureWindowStyle','docked')
     X  = load('X.txt');
@@ -538,7 +537,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %}
 
 %{
-    % tclustregeda: example with multiple explanatory variables, with yXplot.
+    % Example with multiple explanatory variables, using yXplot
     X  = load('X.txt');
     y = X(:,end);
     rng(100)
@@ -1147,8 +1146,8 @@ plotall={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
 
 clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 symdef = '+sd^v><phos+*d^v><phos+*d^v><phos+*d^v><phos';
-linedef = {'-','--',':','-.'};
-linedef=repmat(linedef,1,5);
+% linedef = {'-','--',':','-.'};
+
 
 col1stLevelTrimmedUnits='r';
 sym1stLevelTrimmedUnits='o';
@@ -1359,12 +1358,12 @@ end
 %% 2 Monitoring stability of classification (units plot)
 
 namej='UnitsTrmOrChgCla';
-tit1 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple' , 'Above the horizontal line unit never classified'};
-tit2 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in purple'};
+tit1 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in red' , 'Above the horizontal line unit never classified'};
+tit2 = {'Tclustreg monitoring plot' , 'Stability of classification - changes in red'};
 
 symbseq = {'$\clubsuit$' , '$\diamondsuit$' , '$\heartsuit$' , ...
-    '$\spadesuit$' , '$\circ$' , '$\bullet$' , ...
-    '$\nabla$' , '$\o$' , '$\copyright$' , '$*$' , '$+$'};
+           '$\spadesuit$' , '$\circ$' , '$\bullet$' , ...
+           '$\nabla$' , '$\o$' , '$\copyright$' , '$*$' , '$+$'};
 
 d=find(strcmp(namej,name));
 if d>0
@@ -1372,8 +1371,8 @@ if d>0
     % permutation criterion
     criterion = 0; % default is 0
     switch criterion
-        case 0
-            IDtt = IDt;
+        case 0 
+            IDtt = IDt; 
         case 1
             IDtt = topkrows(IDt,size(IDt,1),2:size(IDt,2),'descend');
         case 2
@@ -1390,8 +1389,7 @@ if d>0
     % generate figure
     hf=figure('Name',namej,'Visible','on');
     sz = size(IDtt);
-    thsz = 50;
-    if sz(1)>thsz
+    if sz(1)>30
         newpos = get(hf,'Position');
         set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
     end
@@ -1400,25 +1398,19 @@ if d>0
     xlim([0 k1+1]);
     ylim([0 n1+1]);
     set(gca,'XTick',0:k1+1, 'fontsize' , xyTickFontSize);
-    
+
     % fill matrix
     for j=1:k1
         if j==1
             % unit number
             strj=cellstr(num2str(IDtt(:,j)));
-            if sz(1)>thsz
-                xpos = onex-(mod(seqIDs,2)*0.5);
-            else
-                xpos = onex;
-            end
-            h = text(xpos,seqIDs,strj,...
+            h = text(onex-(mod(seqIDs,2)*0.5),seqIDs,strj,...
                 'HorizontalAlignment','center', ...
                 'fontsize' , matrixFont+4 , 'interpreter','none');
-            
             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
             %col=repmat({'b'},n1,1);
             %col(indredcolor)={'r'};
-            %col=repmat({FSColors.darkgrey.RGB},n1,1);
+            %col=repmat({FSColors.darkgrey.RGB},n1,1); 
             %col(indredcolor)={FSColors.purplish.RGB};
             col=repmat({[0.4660 0.6740 0.1880]},n1,1);
             col(indredcolor)={[0.6350 0.0780 0.1840]};
@@ -1429,20 +1421,20 @@ if d>0
             set(h,{'FontWeight'},st);
         else
             % classes associated to units
-            ipos = find(IDtt(:,j)>0);
+            ipos = find(IDtt(:,j)>0); 
             ineg = IDtt(:,j)<=0;
             strj = cell(size(strj));
             strj(ipos) = cellstr(symbseq(abs(IDtt(ipos,j))));
             % Empty spaces for trimmed units
-            strj(ineg) = {''};
+            strj(ineg) = {''}; 
             hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , matrixFont,'interpreter','latex');
             colorsG = cellstr(repmat('w',size(strj)));
             colorsG(ipos) = cellstr(clrdef(abs(IDtt(ipos,j)))');
             set(hg,{'Color'},colorsG);
-        end
+        end 
         
     end
-    
+        
     alpha1str=num2str(alphaLik(:));
     newxtcklab=cell(k1+2,1);
     newxtcklab([1:2 k1+2])={''};
@@ -1453,10 +1445,10 @@ if d>0
     xlabel({'Trimming level'}, 'fontsize' , xyLabelSize);
     ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'fontsize' , xyLabelSize);
     
-    % Group indication in title
+    % Group indication in title 
     un=unique(IDtt(:,2:end));
     un=un(un>0);
-    Gleg = strcat('G' , string(num2cell(un)) ,  '=' , symbseq(un)');
+    Gleg = strcat('G' , string(num2cell(un)) ,  '=' , symbseq(un)'); 
     tit1(size(tit1,2)+1) = cellstr(strjoin(Gleg));
     tit2(size(tit2,2)+1) = cellstr(strjoin(Gleg));
     
@@ -1468,10 +1460,10 @@ if d>0
     else
         title(tit2 , 'fontsize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
     end
-    
+
     pan('off');
     axtoolbar(gca,'Visible','off');
-    
+
 end
 
 
@@ -1498,7 +1490,7 @@ if d>0
     parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
     ylim([-0.05 1.05]);
     xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
+    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize); 
     set(legend,'Location','best');
     axtoolbar('Visible','off');
     
@@ -1508,7 +1500,7 @@ if d>0
     
     parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
     ylim([-0.05 1.05]);
-    xlabel('Level of trimming','FontSize',xyLabelSize);
+    xlabel('Level of trimming','FontSize',xyLabelSize); 
     ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
     set(legend,'Location','best');
     % Add the label of the units whose final post prob is intermediate
@@ -1551,7 +1543,6 @@ if d>0
     h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
     % set the colors using the order in clrdef
     set(h1,{'Color'},cellstr(clrdef(1:k)'))
-    set(h1,{'LineStyle'},linedef(1:k)');%DDD
     
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
@@ -1571,7 +1562,6 @@ if d>0
     h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
     % set the colors using the order in clrdef
     set(h2,{'Color'},cellstr(clrdef(1:k)'));
-    set(h2,{'LineStyle'},linedef(1:k)');%DDD
     
     xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
@@ -1613,7 +1603,6 @@ if d>0
         
         % initialize figure
         figure('Name',namej,'Visible','on');
-        
         hold on;
         
         % plot regression lines
@@ -1634,8 +1623,7 @@ if d>0
                     gr=plot(vv,Beta(jj,1,jjj)+Beta(jj,2,jjj)*vv,...
                         'DisplayName',[group_label ' fit' ],...
                         'Color',clrdefmap(jjj,:,jj),...
-                        'LineWidth',plotLineWidthGrad,...
-                        'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
+                        'LineWidth',plotLineWidthGrad);  %#ok<NASGU> clrdef(jj)
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
                 
@@ -1645,8 +1633,7 @@ if d>0
                     gr=plot(vv,Beta(jj,1,jjj)*vv,...
                         'DisplayName',[group_label ' fit' ],...
                         'Color',clrdefmap(jjj,:,jj),...
-                        'LineWidth',plotLineWidthGrad,...
-                        'LineStyle',linedef{jj});  %#ok<NASGU> clrdef(jj)
+                        'LineWidth',plotLineWidthGrad); %#ok<NASGU> clrdef(jj)
                 end
                 eval(['hRegLines(' num2str(jj) ')=gr;']);
             end
@@ -1726,7 +1713,7 @@ if d>0
         end
         group(idx==-1) = {'Trimmed units'};
         group(idx==-2) = {'Trimmed units level 2'};
-        
+
         % yXplot
         % Remark: it is necessary to sort idx because in this way idx=-2 (if present) is
         % the first symbol, idx=-1 is the second ....
@@ -1745,22 +1732,20 @@ if d>0
                 for jj=1:length(alphaLik)
                     hline=refline([Beta(i,j+1,jj) Beta(i,1,jj)]);
                     %hline.Color=clrdef(i);
-                    hline.Color=clrdefmap(jj,:,i);
-                    hline.LineStyle=linedef{i};%DDD
+                    hline.Color=flipud(clrdefmap(jj,:,i));
                 end
             end
             
         end
     end
-    sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-    axtoolbar('Visible','off');
     
+    sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'LaTex');
+    axtoolbar('Visible','off');
 end
 
 %% Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
-tit0 = {'Tclustreg monitoring plot -- allocation of units' , ...
-    'Variance Explained $\cal{V}$, for different trimming levels $\alpha$'};
+tit0 = 'Tclustreg monitoring plot -- allocation of units';
 
 if d>0
     
@@ -1871,11 +1856,11 @@ if d>0
             
             if jk>nc*(nr-1)
                 xlabel('PLS predictor', 'fontsize' , xyLabelSize);
-            else
+            else 
                 xlabel(' ');
             end
             if ismember(jk,1:nc:nc*nr)
-                ylabel('y', 'fontsize' , xyLabelSize);
+                ylabel('y', 'fontsize' , xyLabelSize); 
             else
                 ylabel(' ');
             end
@@ -1886,7 +1871,7 @@ if d>0
             end
             axis manual
             alphajtxt=num2str(alphaLik(alphasel(j)));
-            title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , subtitleSize)
+            title(['$\alpha$=' alphajtxt ' -- Var.Expl.=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , subtitleSize)
             
         elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
             hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
@@ -1895,7 +1880,7 @@ if d>0
                 xlabel('x1', 'fontsize' , xyLabelSize);
             end
             if ~ismember(jk,1:nc:nc*nr)
-                ylabel('', 'fontsize' , xyLabelSize);
+                ylabel('', 'fontsize' , xyLabelSize); 
             end
             
             clickableMultiLegend(hh, 'fontsize' , legengSize)
@@ -1911,7 +1896,7 @@ if d>0
         end
         jk=jk+1;
     end
-    sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'LaTex');
+    sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal');
     
     if p-intercept>1
         % Undocumented store variable importance in presence of more than
@@ -1971,7 +1956,6 @@ if d>0
         h=plot(alphaLik(:),squeeze(Betast(:,j,:))','LineWidth',plotLineWidth);
         % set the colors using the order in clrdef
         set(h,{'Color'},cellstr(clrdef(1:k)'));
-        set(h,{'LineStyle'},linedef(1:k)');
         
         xlim([min(alphaLik),max(alphaLik)]);
         % set(gca,'XTickLabel',num2str(alpha1'))
@@ -2012,7 +1996,6 @@ if d>0
     h=plot(alphaLik(:),out.Nopt','LineWidth',plotLineWidth);
     % set the colors using the order in clrdef
     set(h,{'Color'},cellstr(clrdef(1:k)'));
-    set(h,{'LineStyle'},linedef(1:k)');
     
     xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
@@ -2029,7 +2012,7 @@ if d>0
     clickableMultiLegend(h, 'fontsize' , legengSize);
     
     title(tit,'fontsize' , titleSize , 'FontWeight', 'normal');
-    
+
 end
 
     function c = cmapFS(m,cstart,cend)
