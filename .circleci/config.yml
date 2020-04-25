@@ -132,6 +132,19 @@ jobs:
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
 
+ "tclustMULT":
+   build:
+   environment: 
+     - CATEGORY_TO_TEST: "tclustMULT"
+   machine:
+      image: ubuntu-1604:201903-01
+   steps:
+      - checkout
+      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
+      - run:  
+          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
+          no_output_timeout: 60m 
+
 workflows:
   version: 2
   build:
@@ -146,6 +159,7 @@ workflows:
       - "regression-clustering"
       - "mixsim"
       - "utilities"
+      - "tclustMULT"
 
 
 

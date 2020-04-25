@@ -22,6 +22,8 @@ jobs:
           categoryName: 'mixsim'
         utilities:
           categoryName: 'utilities'
+        tclustMULT:
+          categoryName: 'tclustMULT'
   pool:
       vmImage: 'Ubuntu 16.04'
   variables:
