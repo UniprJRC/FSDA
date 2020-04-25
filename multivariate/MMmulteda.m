@@ -168,13 +168,11 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %                   location for each value of eff
 %         out.Shape= v-by-v-by-length(eff) 3D array  containing robust
 %                   estimate of the shape for each value of eff. Remark det|shape|=1
-%         out.Scale= length(eff) vector. Robust estimate of the scale for
-%                    each value of eff
+%         out.scale= scalar. Robust estimate of the scale for
+%                    each value of eff (scale is kept fixed).
 %         out.Cov  = v-by-v-by-length(eff) 3D array  containing robust estimate of
 %                    Note that  out.scale(i)^2 * out.shape(:,:,i) = robust estimate of
 %                   covariance matrix
-%           out.bs = (v+1) x 1 vector containing the units forming best subset
-%                    associated with MM estimate of location.
 %           out.MAL= n x length(eff) matrix containing the estimates of the robust
 %                       Mahalanobis distances (in squared units) for each
 %                       value of eff
@@ -185,9 +183,6 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %      out.Weights = n x length(eff) matrix containing the weights for each
 %                       value of eff
 %      out.conflev = Confidence level that was used to declare outliers
-%      out.singsub = Number of subsets without full rank. Notice that
-%                    out.singsub > 0.1*(number of subsamples) produces a
-%                    warning
 %           out.eff= vector which contains the values of efficiency which have
 %                       been used
 %            out.Y = Data matrix Y.
@@ -230,11 +225,11 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %{
     %% MMmult with optional arguments.
     Y = load('geyser.txt');
-    [out1]=MMmulteda(Y,'conflev',0.99,'plots',1);
+    [out]=MMmulteda(Y,'conflev',0.99,'plots',1);
 %}
 
 %{
-    % MMmulteda with exctracted subsamples.
+    % MMmulteda with extracted subsamples in second output argument C.
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     Y=Y(1:100,:);
@@ -385,9 +380,10 @@ end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 out.Loc     = Loc;         % robust estimate of location
 out.Shape   = Shape;       % robust estimate of shape matrix
-out.cov     = Covar;       % robust estimate of covariance matrix
+out.Cov     = Covar;       % robust estimate of covariance matrix
 out.Weights = Weights;
 out.MAL=MAL;
+out.Outliers=Outliers;
 out.Y = Y;
 out.eff=eff;
 out.scale=auxscale;

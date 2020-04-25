@@ -65,11 +65,12 @@ for i=1:size(InputCell,1)
     NameInputFile=InputCell{i,6};
     PurposeInputFile=InputCell{i,7};
     NameOutputFile=[NameInputFile '.html'];
-    try
         DescrRef=OUT{i};
-    catch
-        dd=1;
+    
+    if isempty(DescrRef)
+        error('FSDA:CreateFSDApointerFiles:WrongFile',['Input File: ' NameInputFile ' has not been parsed by publishFS'])
     end
+    
     [fileID,errMsg] = fopen([dirpathj filesep NameOutputFile],'w');
     if fileID < 0
         error(message('MATLAB:filebrowser:MakeContentsFileOpenError', errMsg))
@@ -101,7 +102,7 @@ else
 end
 
 try
-   
+    
     if ~isempty(Description)
         DescriptionHTML=['<h2>Description</h2>'  ...
             '<P>' Description '</P>'];
