@@ -45,9 +45,22 @@ elseif strcmp(cat2test,'multivariate')
     boo=~cellfun(@isempty,str) & cellfun(@isempty,strnot1);
     
 elseif strcmp(cat2test,'multivariate-clustering')
+    % multivariate clustering excluding tclust*
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
-    boo=~cellfun(@isempty,str);
+    booMULT=~cellfun(@isempty,str);
     
+     str=regexp(FilesIncluded(:,1),'tclust*');
+    booTCLUST=~cellfun(@isempty,str);
+    boo=booMULT & ~booTCLUST;
+    
+elseif strcmp(cat2test,'tclustMULT')
+    % multivariate clustering just tclust*
+    str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
+    booMULT=~cellfun(@isempty,str);
+         str=regexp(FilesIncluded(:,1),'tclust*');
+    booTCLUST=~cellfun(@isempty,str);
+    boo=booMULT & booTCLUST;
+
 elseif strcmp(cat2test,'regression-clustering')
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
     boo=~cellfun(@isempty,str);
@@ -155,36 +168,36 @@ for i=1:nfiles
             %file1ID=fopen('tempfile.m','w');
             fprintf(file1ID,'%s',Exif);
             fclose('all');
-            try
-                if perf==1
-                    outp=runperf('tempfile.m');
-                    MeanS=outp.sampleSummary.Mean;
-                    FindNaN=isnan(MeanS);
-                    MeanS=MeanS(~FindNaN);
-                    TotSummary{ij,'MeanTime'}= MeanS;
-                    
-                    MedianS=outp.sampleSummary.Median;
-                    MedianS=MedianS(~FindNaN);
-                    TotSummary{ij,'MedianTime'}= MedianS;
-                    
-                    % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
-                    TotSummary(ij,'TestActivity')={outp.TestActivity};
-                else
-                    %tic
-                    %outp=runtests(filename2open);
-                    %time=toc;
-                    %TotSummary{ij,'MeanTime'}=time;
-                end
-%                 TotSummary(ij,'Code')=Ex(1,3);
-%                 TotSummary(ij,'FileName')=FilesIncluded(i,1);
-%                 TotSummary(ij,'Category')=FilesIncluded(i,8);
-%                 TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-                ij=ij+1;
-            catch
-                disp(['Error on example ' num2str(iEx)])
-                disp(['Name of the file: '  FilesIncluded{i,1}])
-                warning('Stop here')
-            end
+%             try
+%                 if perf==1
+%                     outp=runperf('tempfile.m');
+%                     MeanS=outp.sampleSummary.Mean;
+%                     FindNaN=isnan(MeanS);
+%                     MeanS=MeanS(~FindNaN);
+%                     TotSummary{ij,'MeanTime'}= MeanS;
+%                     
+%                     MedianS=outp.sampleSummary.Median;
+%                     MedianS=MedianS(~FindNaN);
+%                     TotSummary{ij,'MedianTime'}= MedianS;
+%                     
+%                     % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
+%                     TotSummary(ij,'TestActivity')={outp.TestActivity};
+%                 else
+%                     %tic
+%                     %outp=runtests(filename2open);
+%                     %time=toc;
+%                     %TotSummary{ij,'MeanTime'}=time;
+%                 end
+% %                 TotSummary(ij,'Code')=Ex(1,3);
+% %                 TotSummary(ij,'FileName')=FilesIncluded(i,1);
+% %                 TotSummary(ij,'Category')=FilesIncluded(i,8);
+% %                 TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
+%                 ij=ij+1;
+%             catch
+%                 disp(['Error on example ' num2str(iEx)])
+%                 disp(['Name of the file: '  FilesIncluded{i,1}])
+%                 warning('FSDA:regressB:WrongInputFilet','Stop here')
+%             end
         else
             disp('Interactive example')
         end
