@@ -91,7 +91,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %               For hyperbolic rho function it is possible to set up the
 %               value of k = sup CVC (the default value of k is 4.5).
 %               For Hampel rho function it is possible to define parameters
-%               a, b and c (the default values are a=2, b=4, c=8). 
+%               a, b and c (the default values are a=2, b=4, c=8)
 %                 Example - 'rhofuncparam',5 
 %                 Data Types - single | double
 %
@@ -137,11 +137,10 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                   for the specified rho function which have been
 %                   used. For hyperbolic rho function the value of
 %                   k =sup CVC. For Hampel rho function the parameters
-%                   a, b and c. This field is present only if rhofunc is
-%                   'hampel' or 'hyperbolic'.
-%     out.y       = response vector y. The field is present only if option 
+%                   a, b and c. 
+%     out.y       = response vector y. The field is present if option 
 %                   yxsave is set to 1.
-%     out.X       = data matrix X. The field is present only if option 
+%     out.X       = data matrix X. The field is present if option 
 %                   yxsave is set to 1.
 %     out.class   = 'MMreg'
 %
@@ -206,7 +205,7 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
     ycont = y;
     ycont(1:kk)=ycont(1:kk)+7;
     [outS]=Sreg(ycont,X);
-    out=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)
+    outMM=MMregcore(ycont,X,outS.beta,outS.scale,'plots',1)
 %}
 
 %{
@@ -275,7 +274,7 @@ options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
     'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
     'rhofunc',rhofuncdef,'rhofuncparam','',...
     'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
-    'plots',0,'nocheck',0,'yxsave',0,'intercept',1);
+    'plots',0,'nocheck',0,'yxsave',0,'intercept',1,'msg',1);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -300,6 +299,7 @@ effshape= options.effshape; % nominal efficiency refers to shape or location
 refsteps= options.refsteps; % maximum refining iterations
 reftol  = options.reftol;   % tolerance for refining iterations covergence
 rhofunc = options.rhofunc;  % String which specifies the function to use to weight the residuals
+msg     = options.msg;      %#ok<NASGU>  msg option may be used in the future
   
 psifunc=struct;
 
