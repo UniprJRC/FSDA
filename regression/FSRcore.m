@@ -164,9 +164,9 @@ function [out]=FSRcore(INP,model,options)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
-% out.VIOMout = m x 1 vector containing the list of the units declared as
-%               VIOM outliers or NaN if they are not present.
-%               Present only if weak == true.
+% out.outliersVIOM = m x 1 vector containing the list of the units declared as
+%                    VIOM outliers or NaN if they are not present.
+%                    Present only if weak == true.
 % out.ListCl =  (n-m-k) x 1 vector of non-outlying units.
 %               Present only if weak == true.
 %
@@ -1571,7 +1571,7 @@ if weak == true
         out.mdag = mdag;
         out.ListCl = seq(~isnan(bb(:,end-(n-mdag))));
         out.scale = sqrt(S2(end-(n-mdag),2));
-        out.VIOMout = setdiff(1:n, [out.ListCl, ListOut]);
+        out.outliersVIOM = setdiff(1:n, [out.ListCl, ListOut]);
     else
         out.mdag = n;
         out.ListCl = 1:n;
