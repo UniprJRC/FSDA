@@ -71,6 +71,7 @@ list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Crete personalized contents file for main folder of FSDA
 % and required subfolders.
 force=false;
+
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 disp('List of files which have been excluded (with path)')
 disp(FilesExcluded(:,[1 9]))

@@ -78,7 +78,8 @@ X=[(-40:39)' X];
 y=X(:,end);
 X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',[0.01 0.5 0.99])</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Personalized LineWidth and CandleWidth.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
+qu=[0.01 0.5 0.99];
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'quant',qu);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Personalized LineWidth and CandleWidth.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
 X=[(-40:39)' X];
 y=X(:,end);
@@ -86,7 +87,7 @@ X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
 LineWidth=2;
 CandleWidth=0.03;
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth)</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (1).</li></span></a></span></h3><div class="collapse"><p>
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'LineWidth',LineWidth,'CandleWidth',CandleWidth);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (1).</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[0.3 0.1] the central part of the search
      goes from m=round(n*0.7)=56 to m=round(n*0.9)=72 and the final part
      of the search goes from m=73 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
@@ -95,7 +96,7 @@ X=[(-40:39)' X];
 y=X(:,end);
 X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1])</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (2).</li></span></a></span></h3><div class="collapse"><p>
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.3 0.1]);</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as fraction (2).</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[0.36 0.06] the central part of the search
      goes from m=round(n*0.64)=51 to m=round(n*0.94)=75 and the final part of the search goes from
      m=76 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
@@ -104,7 +105,7 @@ X=[(-40:39)' X];
 y=X(:,end);
 X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06])</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as integers.</li></span></a></span></h3><div class="collapse"><p>
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[0.36 0.06]);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Input fin_step supplied as integers.</li></span></a></span></h3><div class="collapse"><p>
      For example when fin_step=[20 5] the central part of the search
      goes from m=n-20=61 to m=n-5=75 and the final part of the search goes from
      m=76 to m=80.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% It is worthwhile to notice that independently on how fin_step is
@@ -119,7 +120,7 @@ X=[(-40:39)' X];
 y=X(:,end);
 X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5],'CandleWidth',0.01)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variables.</p> <p>
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'fin_step',[25 5], 'CandleWidth',0.01);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the

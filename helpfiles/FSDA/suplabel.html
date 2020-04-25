@@ -21,7 +21,7 @@ subplot(2,1,1);
 plot((1:10).^2)
 subplot(2,1,2);
 plot((1:10).^3)
-suplabel('Population growth','y')</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example with 6 panels.</li></span></a></span></h3><div class="collapse"><p>
+suplabel('Population growth','y');</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example with 6 panels.</li></span></a></span></h3><div class="collapse"><p>
      The three panels of the left have a common xlabel, ylabel and
      right ylabel<div class="programlisting"><div class="codeinput"><pre class="matlab-code">figure
 subplot(3,2,1);
@@ -31,9 +31,9 @@ plot((1:10).^2)
 subplot(3,2,5);
 plot((1:10).^2)
 possuperaxes=[0.1 0.1 0.35 0.8];
-suplabel('Population growth','y',possuperaxes)
-suplabel('Right label','yy',possuperaxes)
-suplabel('Years','x',possuperaxes)
+suplabel('Population growth','y',possuperaxes);
+suplabel('Right label','yy',possuperaxes);
+suplabel('Years','x',possuperaxes);
 % The three panels of the right have a common xlabel, ylabel and
 % right ylabel
 subplot(3,2,2);
@@ -43,16 +43,16 @@ plot((1:10).^2)
 subplot(3,2,6);
 plot((1:10).^2)
 possuperaxes=[0.55 0.1 0.3 0.8];
-suplabel('Population growth 2','y',possuperaxes)
-suplabel('Right label','yy',possuperaxes)
-suplabel('Months','x',possuperaxes)</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of suplabel with output arguments.</li></span></a></span></h3><div class="collapse"><p>
+suplabel('Population growth 2','y',possuperaxes);
+suplabel('Right label','yy',possuperaxes);
+suplabel('Months','x',possuperaxes);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of suplabel with output arguments.</li></span></a></span></h3><div class="collapse"><p>
      A label is added to the spmplot on the x axis<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
 plo=struct;
 plo.nameY={'SL','SW','PL','PW'};
 spmplot(meas,species,plo,'hist');
 % insert text 'any string' as x label
 % and return both the handle to the axis (inside haxis) and the handle to the label (inside hlabel).
-[haxis,hlabel]=suplabel('Title added to the x axis')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Call to subplot using as text a cell array of strings.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">figure
+[haxis,hlabel]=suplabel('Title added to the x axis');</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Call to subplot using as text a cell array of strings.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">figure
 subplot(3,2,1);
 plot((1:10).^2)
 subplot(3,2,3);

@@ -93,7 +93,7 @@ plot(Bols(:,1),Bols(:,j))
 xlabel('Subset size m');
 ylabel(['b' num2str(j-2)]);
 end
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.20 seconds 
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.15 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRmdr_02.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt');
@@ -113,7 +113,7 @@ else
 % sum(~isnan(BB(:,2))) is 60
 disp(sum(~isnan(BB(:,1))))
 disp(sum(~isnan(BB(:,2))))
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.29 seconds 
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.22 seconds 
     30
 
     60
@@ -146,7 +146,7 @@ subplot(2,1,2)
 out2=FSRmdr(yall,Xall,bs,'plots',1,'threshlevoutX',10);
 ylim(xylim(3:4));
 ylabel('mdr')
-title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
 </pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSRmdr_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
@@ -209,7 +209,7 @@ title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre cla
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_constr" class="clearfix"></div><h3 id="input_argument_namevalue_constr" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>constr</code> &#8212;Constrained search.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>r x 1 vector which contains the
                list of units which are forced to join the search in the
-               last r steps. The default is constr=''.</p> <p> 
+               last r steps. The default is constr=''.</p> <p>
                 No constraint is imposed
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'constr',[1:10] forces the first 10 units to join
 </code>               the subset in the last 10 steps</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bsbmfullrank" class="clearfix"></div><h3 id="input_argument_namevalue_bsbmfullrank" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bsbmfullrank</code> &#8212;What to do in case subset at step m (say bsbm) produces a
@@ -305,7 +305,7 @@ title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre cla
                \begin{equation}
                r_i^*(m^*)  = \frac{y_{i} - x_{i}^T\hat{\beta}(m^*)} {
                \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}  = \frac{e_{i}(m^*)} {
-               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}}, 
+               \sqrt{s^2(m^*)\{1 + h_i(m^*)\}}},
                \end{equation}
                where $h_i(m^*) = x_i^T\{X(m^*)^TX(m^*)\}^{-1}x_i$;  the leverage
                of each observation depends on $S^{(m)}_*$. Let the observation

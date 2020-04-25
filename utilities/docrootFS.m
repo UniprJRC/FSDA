@@ -40,26 +40,15 @@ if str2double(a.Version)>7.14
         drawnow; pause(0.05);
         if isequal(answer,'Copy files')
             installHelpFiles();
-            web([docrootFS '/FSDA/index.html'])
+            if ~exist('docr','var')
+                docr=docroot;
+            end
+            return
+        else
+            docr='http://rosa.unipr.it/';
             return
         end
-        import com.mathworks.mlwidgets.html.HTMLRenderer;
-        % create component
-        r = HTMLRenderer;
-        % set the text to display
-        % r.setHtmlText(['<html> <a href="' msg4 '">Getting started</a></html>']);
-        r.setHtmlText(['<html> <a href="' msg4 '">Getting started</a></html>']);
-        % make sure the component is opaque
-        r.setOpaque(true);
-        % add the component
-        
-        % Characteristics of the  box which contains hypertextual link
-        % warning('off')
-        %[left, bottom, width, height]
-        % javacomponent(r, [120 49 200 300], h);
-        % warning('on')
-        
-        error('FSDA:docrootFS:wrongSetUp','Please read warning above and take appropriate action!')
+
     else
         
     end
@@ -80,19 +69,19 @@ else
 end
 
 end
-
-function d=mydialog(msg)
-% Dimensione overall dialogue box
-d = dialog('Resize','on','Position',[300 300 580 400],'Name','FSDA warning message');
-
-uicontrol('Parent',d,...
-    'Style','text',...
-    'Position',[20 50 530 325],...
-    'String',msg,'FontSize',11);
-
-% Dimension of the buttom close
-uicontrol('Parent',d,...
-    'Position',[135 20 70 25],...
-    'String','Close',...
-    'Callback','delete(gcf)');
-end
+% 
+% function d=mydialog(msg)
+% % Dimensione overall dialogue box
+% d = dialog('Resize','on','Position',[300 300 580 400],'Name','FSDA warning message');
+% 
+% uicontrol('Parent',d,...
+%     'Style','text',...
+%     'Position',[20 50 530 325],...
+%     'String',msg,'FontSize',11);
+% 
+% % Dimension of the buttom close
+% uicontrol('Parent',d,...
+%     'Position',[135 20 70 25],...
+%     'String','Close',...
+%     'Callback','delete(gcf)');
+% end

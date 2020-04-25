@@ -43,7 +43,7 @@
 %   kdebiv              - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                  - UTISTAT         - 2020 Feb 18
 %   logmvnpdfFS         - Produces log of Multivariate normal probability density function (pdf)                                                          - UTISTAT         - 2020 Feb 18
 %   mahalFS             - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                      - UTISTAT         - 2020 Feb 05
-%   mdpd                - Computes Minimum Distance Power Divergence statistics                                                                           - UTISTAT         - 2020 Feb 07
+%   mdpd                - Computes Minimum Distance Power Divergence statistics                                                                           - UTISTAT         - 2020 Apr 21
 %   Mscale              - Finds the M estimator of the scale                                                                                              - UTISTAT         - 2020 Feb 20
 %   mtR                 - Generates the same random numbers produced by R software with Mersenne Twister mt19937ar                                        - UTISTAT         - 2020 Feb 18
 %   ncpci               - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                - UTISTAT         - 2020 Feb 05
@@ -52,7 +52,7 @@
 %   normYJ              - Computes (normalized) Yeo-Johnson transformation                                                                                - UTISTAT         - 2020 Feb 05
 %   OPTbdp              - Finds the constant c associated to the supplied breakdown point                                                                 - UTISTAT         - 2020 Jan 29
 %   OPTc                - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                     - UTISTAT         - 2020 Feb 20
-%   OPTeff              - Finds the constant c which is associated to the requested efficiency                                                            - UTISTAT         - 2020 Feb 18
+%   OPTeff              - Finds the constant c which is associated to the requested efficiency                                                            - UTISTAT         - 2020 Apr 21
 %   OPTpsi              - Computes psi function (derivative of rho function) for optimal weight function                                                  - UTISTAT         - 2020 Jan 29
 %   OPTpsider           - Computes derivative of psi function (second derivative of rho function) for optimal weight function                             - UTISTAT         - 2020 Jan 29
 %   OPTpsix             - Computes psi function (derivative of rho function) times x                                                                      - UTISTAT         - 2020 Jan 29
@@ -62,7 +62,7 @@
 %   PDc                 - Computes breakdown point and efficiency associated with tuning constant alpha for minimum power divergence estimator            - UTISTAT         - 2020 Feb 07
 %   PDeff               - Finds the constant alpha which is associated to the requested efficiency for minimum power divergence estimator                 - UTISTAT         - 2020 Feb 11
 %   PDpsi               - Computes psi function (derivative of rho function) for minimum density power divergence estimator                               - UTISTAT         - 2020 Feb 07
-%   PDpsider            - Computes derivative of psi function (second derivative of rho function) for minimum power divergence estimator                  - UTISTAT         - 2020 Feb 07
+%   PDpsider            - Computes derivative of psi function (second derivative of rho function) for minimum power divergence estimator                  - UTISTAT         - 2020 Apr 03
 %   PDpsix              - Computes psi function (derivative of rho function) times x for minimum density power divergence estimator                       - UTISTAT         - 2020 Feb 07
 %   PDrho               - Computes rho function for minimum density power divergence estimator                                                            - UTISTAT         - 2020 Feb 07
 %   PDwei               - Computes weight function psi(u)/u for  for minimum density power divergence estimator                                           - UTISTAT         - 2020 Feb 07
@@ -71,7 +71,7 @@
 %   qqplotFS            - Qqplot of studentized residuals with envelopes                                                                                  - VIS-Reg         - 2020 Feb 05
 %   RandIndexFS         - Calculates Rand type Indices to compare two partitions                                                                          - UTISTAT         - 2020 Feb 18
 %   RKbdp               - Finds the constants c associated to the supplied breakdown point and asymptotic rejection point                                 - UTISTAT         - 2020 Jan 29
-%   RKeff               - Finds the constants c and M which are associated to the requested efficiency and ARP                                            - UTISTAT         - 2020 Feb 20
+%   RKeff               - Finds the constants c and M which are associated to the requested efficiency and ARP                                            - UTISTAT         - 2020 Apr 21
 %   RKpsi               - Computes psi function for Rocke (translated Tukey's) biweight                                                                   - UTISTAT         - 2020 Jan 29
 %   RKpsider            - Computes derivative of psi function (second derivative of rho function) for Rocke (translated Tukey's) biweight                 - UTISTAT         - 2020 Jan 29
 %   RKpsix              - Computes psi function times x for Rocke (translated Tukey's) biweight                                                           - UTISTAT         - 2020 Jan 29
@@ -88,9 +88,11 @@
 %   TBpsix              - Computes psi function (derivative of rho function) times x for Tukey's biweight                                                 - UTISTAT         - 2020 Jan 29
 %   TBrho               - Computes rho function for Tukey's biweight                                                                                      - UTISTAT         - 2020 Jan 29
 %   TBwei               - Computes weight function psi(u)/u for Tukey's biweight                                                                          - UTISTAT         - 2020 Jan 29
+%   twdpdf              - Computes the probability density function of the Tweedie distribution                                                           - UTISTAT         - 2020 Apr 22
+%   twdrnd              - Generates random variates from the Tweedie distribution                                                                         - UTISTAT         - 2020 Apr 21
 %   vervaatrnd          - Simulates random variates from the Vervaat perpetuity distribution                                                              - UTISTAT         - 2020 Jan 29
 %   vervaatsim          - Returns a Vervaat perpetuity                                                                                                    - UTISTAT         - 2020 Jan 29
 %   vervaatxdf          - Returns the pdf and cdf of a Vervaat perpetuity                                                                                 - UTISTAT         - 2020 Feb 05
-%   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT         - 2020 Feb 20
+%   winsor              - Returns a winsorized copy of input                                                                                              - UTISTAT         - 2020 Apr 21
 %   WNChygepdf          - Returns Wallenius' non-central hypergeometric probability density values                                                        - UTISTAT         - 2020 Jan 29
 %   wthin               - Thins a uni/bi-dimensional dataset                                                                                              - UTISTAT         - 2020 Feb 18

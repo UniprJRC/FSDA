@@ -45,7 +45,10 @@ n=100000;
 [y,X]=simulateLM(n,'R2',R2,'beta',beta);
 out=fitlm(X,y);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Sim study.</li></span></a></span></h3><div class="collapse"><p>
      Compare the distribution of values of R2 with data generated from 
-     Normal with those generated from Student T with 5 degrees of freedom.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">nsimul=1000;
+     Normal with those generated from Student T with 5 degrees of freedom.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Set value of R2.
+R2=0.92;
+beta=[3; 4; 5; 2; 7];
+nsimul=1000;
 R2all=zeros(nsimul,2);
 n=100;
 df=5;

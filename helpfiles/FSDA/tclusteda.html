@@ -152,9 +152,9 @@ plots.ylimy=ylimy;
                since observations (rows) with missing or infinite values will
                automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_k" class="clearfix"> </div> <h3 id="input_argument_k" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>k</code> &#8212; Number of groups. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Scalar which specifies the number of groups.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_alpha" class="clearfix"> </div> <h3 id="input_argument_alpha" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>alpha</code> &#8212; trimming level to monitor. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Vector which specifies the
                values of trimming levels which have to be considered.</p> <p>
-               alpha is a vector which contains decresing elements which
+               alpha is a vector which contains decreasing elements which
                lie in the interval 0 and 0.5.</p> <p>
-               For example is alpha=[0.1 0.05 0] tclusteda considers these 3
+               For example if alpha=[0.1 0.05 0] tclusteda considers these 3
                values of trimming level.</p><p>
                If alpha=0 tclusteda reduces to traditional model
                based or mixture clustering (mclust): see Matlab function

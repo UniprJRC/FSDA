@@ -66,9 +66,12 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 % Yeo, I.K. and Johnson, R. (2000), A new family of power
 % transformations to improve normality or symmetry, "Biometrika", Vol. 87,
 % pp. 954-959.
-% Atkinson, A.C. and Riani, M. (2018), Extensions of the score test,
-% Submitted.
-%
+% Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
+% transformations for profit-and-loss data, Journal of the Royal
+% Statistical Society, Series C, "Applied Statistics",
+% https://doi.org/10.1111/rssc.12389
+% Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
+% Transformation: Review and Extensions, "Statistical Science", in press.
 %
 % Copyright 2008-2019.
 % Written by FSDA team
