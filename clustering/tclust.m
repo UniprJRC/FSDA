@@ -228,10 +228,11 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               on the screen.
 %               If msg=0 nothing is displayed on the screen.
 %               If msg=1 (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               or the number of subsets in which there was no convergence.
+%               on the screen about estimated time to compute the
+%               estimator.
 %               If msg=2 detailed messages are displayed. For example the
-%               information at iteration level.
+%               information at iteration level, and or the number of
+%               subsets in which there was no convergence.
 %                   Example - 'msg',1
 %                   Data Types - single | double
 %
