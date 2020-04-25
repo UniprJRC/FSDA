@@ -193,7 +193,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 %               input option intercept was missing or equal to 1)
 %  out.class =  'FSReda'.
 %  
-%   out.w =     Singularly optimal REML weights for the units excluded
+%   out.wREML = Singularly optimal REML weights for the units excluded
 %               for the search at each step. 
 %               Present only if wREML == true.
 %               n x (n-init+1) = matrix containing the monitoring of
