@@ -85,6 +85,7 @@ function out = lga(X,k,varargin)
 %
 %{
     %% lga with all default options. 
+    rng('default')
     rng(123); % this leads to ROSS = 7.2172;
     X=load('X.txt');
     out=lga(X,3);
