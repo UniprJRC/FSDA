@@ -509,8 +509,8 @@ function [out]=FSR(y,X,varargin)
     % run FSR to detect a weaker signal indicating VIOM
     FSRoutw = FSR(y, X, 'intercept', 0, ...
         'init', floor(n/2)-1, 'msg', 0, 'plots', 1, 'weak', true);
-    trim_FSR = FSRoutw.outliers;
-    down_FSR = FSRoutw.VIOMout;
+    trim_FSR =  FSRoutw.outliers;
+    down_FSR =  FSRoutw.outliersVIOM;
     clean_FSR = FSRoutw.ListCl;
     % plotting
     figure
