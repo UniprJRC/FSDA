@@ -147,7 +147,7 @@ function [y, X] = simulateLM(n,varargin)
     % Normal with those generated from Student T with 5 degrees of freedom.
     % Set value of R2.
     R2=0.92;
-    beta=[3; 4; 5; 2; 7];
+    beta=[3; 4; 5; 2; 7; 2; 3];
     nsimul=1000;
     R2all=zeros(nsimul,2);
     n=100;
@@ -299,6 +299,9 @@ if ~isempty(UserOptions)
         error('FSDA:mvnrnd:BadCovariance2DSymPos','WrongSigma');
     end
     lXpars=length(distribXpars);
+    
+    
+    if ischar(distribX)
     if lXpars==1
         X = random(distribX,distribXpars,n,nexpl);
     elseif lXpars==2
@@ -310,6 +313,21 @@ if ~isempty(UserOptions)
     end
     % Generate the X in such a way their corr is SigmaX
     X=X*T;
+    else
+        % In this case the user has directly supplied matrix X.
+        % Make sure that the size of X is n-by-nexpl
+        X=distribX;
+        [nchk,nexplchk]=size(X);
+         if nchk~=n
+            error('FSDA:simulateLM:WrongOpt',['supplied matrix X must have  '  ...
+                num2str(n) ' rows']);
+         end
+         if nexpl~=nexplchk
+            error('FSDA:simulateLM:WrongOpt',['supplied matrix X must have '  ...
+                num2str(nexpl) ' columns']);
+         end
+    end
+    
     
     lypars=length(distribypars);
     if lypars==1
@@ -322,13 +340,16 @@ if ~isempty(UserOptions)
         err = random(distriby,distribypars(1),distribypars(2),distribypars(3),distribypars(4),n,1);
     end
     
+    p=nexpl+intercept;
+    
     % Divide by std and multyply by a small sample correction factor.
-    err=sqrt((n)/(n-p))*err/std(err,1);
+     err=sqrt((n)/(n-p))*err/std(err,1);
+    % err=err/std(err,1);
     
     if R2>0
         % Find var(\epsilon) which produces a value of R2 centered around
         % the one which has been requested.
-        vareps=(beta'*SigmaX*beta)*((1 - R2)/R2);
+        vareps=(intercept+beta'*SigmaX*beta)*((1 - R2)/R2);
         
         y=intercept+X*beta(:)+err*sqrt(vareps);
     else
