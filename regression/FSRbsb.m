@@ -304,6 +304,13 @@ nocheck=options.nocheck;
 
 %% Initialise key matrices
 
+zeron1=false(n,1);
+
+% Initialization of the n x 1 Boolean vector which contains a true in
+% correspondence of the units belonging to subset in each step
+bsbT=zeron1;
+bsbT(bsb)=true;
+
 % sequence from 1 to n.
 seq = (1:n)';
 
@@ -314,6 +321,9 @@ r = [seq zeros(n,1)];
 % If n is very large, the step of the search is printed every 100 step
 % seq100 is linked to printing
 seq100 = 100*(1:1:ceil(n/100));
+seq100boo=false(n,1);
+seq100boo(seq100)=true;
+
 
 bsbsteps=options.bsbsteps;
 % Matrix BB will contain the units forming subset in each step (or in
@@ -340,6 +350,10 @@ else
     BB = NaN(n,length(bsbsteps),'single');
 end
 
+boobsbsteps=false(n,1);
+boobsbsteps(bsbsteps)=true;
+
+
 %  UN is a Matrix whose 2nd column:11th col contains the unit(s) just
 %  included.
 Un = cat(2 , (init+1:n)' , NaN(n-init,10));
@@ -361,14 +375,18 @@ else
     for mm = ini0:n
         % if n>200 show every 100 steps the fwd search index
         if n>200 && msg==1
-            if length(intersect(mm,seq100))==1
+            
+            if  seq100boo(mm) == true
+                % OLD CODE if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
         
         % Store units belonging to the subset
         if (mm>=init)
-            if intersect(mm,bsbsteps)==mm
+            if boobsbsteps(mm)==true
+                % OLD CODE
+                % intersect(mm,bsbsteps)==mm
                 BB(bsb,ij)=bsb;
                 ij=ij+1;
             end
@@ -378,53 +396,61 @@ else
         if nocheck==1
             NoRankProblem=true;
         else
-            NoRankProblem=(rank(Xb) == p);
+            rankXb=rank(Xb);
+            NoRankProblem=(rankXb == p);
         end
         
         if NoRankProblem  % rank is ok
-            if rank(Xb)==p  % full rank matrix Xb
-                b = Xb\yb;
-                blast=b;
-            else
-                b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
-                warning('FSR:FSRbsb','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
-            end
+            b = Xb\yb;
+            blast=b;
+        else
+            b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
+            warning('FSDA:FSRbsb:NoFullRank','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+        end
+        
+        % e= vector of residual for all units using b estimated using subset
+        e=y-X*b;
+        
+        r(:,2)=e.^2;
+        
+        if mm<n
             
-            % e= vector of residual for all units using b estimated using subset
-            e=y-X*b;
+            % store units forming old subset in vector oldbsb
+            oldbsbT=bsbT;
             
-            r(:,2)=e.^2;
+            % order the r_i and include the smallest among the units forming
+            % the group of potential outliers
+            % ord=sortrows(r,2);
+            [~,ord]=sort(r(:,2));
             
-            if mm<n
+            % bsb= units forming the new subset
+            bsb=ord(1:(mm+1),1);
+            
+            bsbT=zeron1;
+            bsbT(bsb)=true;
+            
+            
+            Xb=X(bsb,:);  % subset of X
+            yb=y(bsb);    % subset of y
+            
+            if mm>=init
                 
-                % store units forming old subset in vector oldbsb
-                oldbsb=bsb;
+                % unit = vector containing units which just entered subset;
+                % unit=setdiff(bsb,oldbsb);
+                % new instruction to find unit
+                unit=seq(bsbT & ~oldbsbT);
                 
-                % order the r_i and include the smallest among the units forming
-                % the group of potential outliers
-                % ord=sortrows(r,2);
-                [~,ord]=sort(r(:,2));
-                
-                % bsb= units forming the new subset
-                bsb=ord(1:(mm+1),1);
-                
-                Xb=X(bsb,:);  % subset of X
-                yb=y(bsb);    % subset of y
-                
-                if mm>=init
-                    unit=setdiff(bsb,oldbsb);
-                    % If the interchange involves more than 10 units, store only the
-                    % first 10.
-                    if (size(unit,2)<=10)
-                        Un(mm-init+1,2:(size(unit,1)+1)) = unit;
-                    else
-                        disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-                        Un(mm-init+1,2:end) = unit(1:10)';
-                    end
+                % If the interchange involves more than 10 units, store only the
+                % first 10.
+                if (size(unit,2)<=10)
+                    Un(mm-init+1,2:(size(unit,1)+1)) = unit;
+                else
+                    disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                    Un(mm-init+1,2:end) = unit(1:10)';
                 end
             end
         end
-    end  % no rank
+    end
     plots=options.plots;
     if plots==1
         % Create the 'monitoring units plot'

@@ -561,11 +561,19 @@ end
 
 %% Initialise key matrices
 
+zeron1=false(n,1);
+
+% Initialization of the n x 1 Boolean vector which contains a true in
+% correspondence of the units belonging to subset in each step
+bsbT=zeron1;
+bsbT(bsb)=true;
+
 % sequence from 1 to n.
 seq=(1:n)';
 
 % the set complementary to bsb.
-ncl=setdiff(seq,bsb);
+% ncl=setdiff(seq,bsb);
+ncl=seq(~bsbT);
 
 % The second column of matrix R will contain the OLS residuals at each step
 % of the search
@@ -602,6 +610,8 @@ else
     BB = NaN(n,length(bsbsteps));
     %   BB = NaN(n, sum(bsbsteps>=init1));
 end
+boobsbsteps=false(n,1);
+boobsbsteps(bsbsteps)=true;
 
 % ij = index which is linked with the columns of matrix BB. During the
 % search every time a subset is stored inside matrix BB ij increases by one
@@ -691,7 +701,9 @@ else
         
         if (mm>=init1)
             % Store units belonging to the subset
-            if intersect(mm,bsbsteps)==mm
+            if boobsbsteps(mm)==true
+                % OLD CODE
+                % intersect(mm,bsbsteps)==mm
                 BB(bsb,ij)=bsb;
                 ij=ij+1;
             end
@@ -703,8 +715,11 @@ else
                 Sb=(resBSB)'*(resBSB)/(mm-p);
                 S2(mm-init1+1,2)=Sb;
                 % Store R2
-                S2(mm-init1+1,3)=1-var(resBSB)/var(yb);
+                % S2(mm-init1+1,3)=1-var(resBSB)/var(yb);
+                ybtilde=yb-sum(yb)/mm;
+                S2(mm-init1+1,3)=1-(resBSB'*resBSB)/(ybtilde'*ybtilde);
                 
+                    
                 if mm<n
                     mAm=Xb'*Xb;
                     
@@ -750,7 +765,7 @@ else
         if mm<n
             
             % store units forming old subset in vector oldbsb
-            oldbsb=bsb;
+            oldbsbT=bsbT;
             
             % order the r_i
             
@@ -775,11 +790,19 @@ else
             % bsb= units forming the new  subset
             bsb=ord(1:(mm+1),1);
             
+            bsbT=zeron1;
+            bsbT(bsb)=true;
+            
+            
             Xb=X(bsb,:);  % subset of X
             yb=y(bsb);    % subset of y
             
             if mm>=init1
-                unit=setdiff(bsb,oldbsb);
+                
+                % unit = vector containing units which just entered subset;
+                % unit=setdiff(bsb,oldbsb);
+                % new instruction to find unit
+                unit=seq(bsbT & ~oldbsbT);
                 
                 % If the interchange involves more than 10 units, store only the
                 % first 10.
