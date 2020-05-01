@@ -1,3 +1,4 @@
+[![View FSDA on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda)
 
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
 [![Build Status](https://travis-ci.com/UniprJRC/FSDA.svg?branch=master)](https://travis-ci.com/UniprJRC/FSDA)
