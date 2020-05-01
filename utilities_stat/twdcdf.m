@@ -71,6 +71,8 @@ function cdf = twdcdf(x,alpha,theta,delta)
 %{
         % Estimating the empirical CDF passing from the integral of the pdf. 
         % Data taken from example by Barabesi et. al (2016).
+        clear all
+        close all
         n = 500;
         pMushrooms = [-0.0936 , 1.27 *10^(-6)  , 0.6145];
         param1 = pMushrooms;
@@ -82,12 +84,12 @@ function cdf = twdcdf(x,alpha,theta,delta)
         figure;
         subplot(2,1,1);
         plot(x,pdf,'r.');
-        title([tit1 ' - Tweedie PDF']);
+        title([tit1 ' - Tweedie PDF'],'interpreter','latex','Fontsize',16);
 
         cdf = twdcdf(x,al,th,de);
         subplot(2,1,2);
         plot(x,cdf,'b.');
-        title([tit1 ' - Tweedie CDF']);
+        title([tit1 ' - Tweedie CDF, found by integrating the PDF'],'interpreter','latex','Fontsize',16);
         
 %}
 
@@ -98,7 +100,15 @@ function cdf = twdcdf(x,alpha,theta,delta)
     % y = vector specifying points for which CDF and PDF has to be evaluated.  
 
     % The CDF is evaluated using the data in the vector x above, 
-    % at the points in y given by:
+    % at the points in y.
+
+    close all
+    clear all
+
+    n = 500;
+    param1 = [-0.0936 , 1.27 *10^(-6)  , 0.6145];
+    al = param1(1) ; th = param1(2) ; de = param1(3) ;
+    x = twdrnd(al,th,de,n);
     y  = linspace(0,max(x));
 
     ny = length(y);
@@ -117,26 +127,26 @@ function cdf = twdcdf(x,alpha,theta,delta)
         F(i) = p/(p + q);   % Calulating Probability
     end
     plot(y,F,'o');
-    title('CDF by definition');
 
-%}
+    % Now a faster and more compact version of the previous definition
 
-%{
-    % Estimating the empirical CDF by its definition. 
-    % This is a faster and more compact version of the previous definition
-
-    x  = unique(x); % in principle duplicates should be removed
-    nx = length(x);
-    y  = linspace(0,max(x));
-    ny = length(y);
-    sump = sum(x<=y , 1);
+    x1  = unique(x); % in principle duplicates should be removed
+    nx = length(x1);
+    y1  = linspace(0,max(x1));
+    ny = length(y1);
+    sump = sum(x1<=y1 , 1);
     FF = sump/nx;
     hold on;
-    plot(y,FF,'-')
-    title('CDF by definition - compact');
+    plot(y1,FF,'-r')
+
+    legend('CDF using loops' , 'CDF using vectorization');
+
+    title({'CDF computed using definition' , '$F(x) = (\sum (I(X<=x)))/(n)$'},'interpreter','latex','Fontsize',16);
 
     % both definitions above are along the matlab fiunction cdfplot(x)
+
 %}
+
 
 f= @(x) twdpdf(x,alpha,theta,delta);
 cdf = zeros(size(x));
