@@ -43,4 +43,5 @@
 *.mlpkginstall binary
 *.mn binary
 # Reclassify HTML files as MATLAB files
-*.html linguist-language=MATLAB
+*.html -linguist-detectable 
+*.xml  -linguist-detectable 
