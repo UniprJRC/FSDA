@@ -1,5 +1,7 @@
+![GitHub top language](https://img.shields.io/github/languages/top/UniprJRC/FSDA)
 [![View FSDA on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/UniprJRC/FSDA)](https://github.com/UniprJRC/FSDA/releases/latest)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/UniprJRC/FSDA)
 
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
 [![Build Status](https://travis-ci.com/UniprJRC/FSDA.svg?branch=master)](https://travis-ci.com/UniprJRC/FSDA)
