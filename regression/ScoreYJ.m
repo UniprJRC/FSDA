@@ -18,7 +18,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -28,7 +28,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %
 %           la  :transformation parameter. Vector. It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
-%                 score test. 
+%                 score test.
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                 is the five most common values of lambda
 %               Example - 'la',[0 0.5]
@@ -179,60 +179,88 @@ if Likopt==1
 end
 
 % value related to the Jacobian
-G=exp(sum(  sign(y) .* log(abs(y)+1)   )/n   );
-logG=log(G);
-
 nonnegs = y >= 0;
 negs = ~nonnegs;
+ynonnegs=y(nonnegs);
+ynegs=y(negs);
+
+logG=sum(  sign(y) .* log(abs(y)+1)   )/n;
+vneg=-ynegs+1;
+vpos=ynonnegs+1;
+logvpos=log(vpos);
+logvneg=log(vneg);
+G=exp(logG);
 
 % loop over the values of \lambda
 for i=1:lla
     z=y; % Initialized z and w
     w=y;
     
+    lai=la(i);
+    Glaminus1=G^(lai-1);
+    
+    
     % Define transformed and constructed variable
     % transformation for non negative values
-    if abs(la(i))>1e-8  % if la is different from 0
-        k= (1/la(i)+logG);
-        q=la(i)*G^(la(i)-1);
-        z(nonnegs)=((y(nonnegs)+1).^la(i)-1)/(la(i)*G^(la(i)-1));
-        w(nonnegs)=(  ((y(nonnegs)+1).^la(i))  .*(log(y(nonnegs)+1)-k)    +k) /q;
+    % Compute transformed values and constructed variables depending on lambda
+    % transformation for non negative values
+    if abs(lai)>1e-8  % if la is different from 0
+        q=lai*Glaminus1;
+        % vposlai=vpos.^lai;
+        vposlai=exp(lai*logvpos);
+        znonnegs=(vposlai-1)/q;
+        z(nonnegs)=znonnegs;
+        k= (1/lai+logG);
+        w(nonnegs)=(  vposlai  .*(logvpos-k)    +k) /q;
     else % if la is equal to 0
-        z(nonnegs)=G*log(y(nonnegs)+1);
-        w(nonnegs)=G*log(y(nonnegs)+1).*(log(y(nonnegs)+1)/2-logG);
+        znonnegs=G*logvpos;
+        z(nonnegs)=znonnegs;
+        w(nonnegs)=znonnegs.*(logvpos/2-logG);
     end
     
-    % Transformation for negative values
-    if   abs(la(i)-2)>1e-8 % la not equal 2
-        v=-y(negs)+1;
-        k=logG-1/(2-la(i));
-        q=(2-la(i))* (G^(la(i)-1));
-        z(negs)=-(v.^(2-la(i))  -1)  /(  (2-la(i))*G^(la(i)-1) );
-        w(negs)=(   v.^(2-la(i)) .*  (log(v)+k)   -k  )/q;
-    else
-        v=-y(negs)+1;
-        logv=log(v);
-        z(negs)=-log(-y(negs)+1)/G;
-        w(negs)=logv.*(logG+logv/2)/G;
+    % Transformation and constructed variables for negative values
+    if   abs(lai-2)>1e-8 % la not equal 2
+        twomlambdai=2-lai;
+        % vnegtwomlambdai=vneg.^twomlambdai;
+        vnegtwomlambdai=exp(twomlambdai*logvneg);
+        qneg=twomlambdai* Glaminus1;
+        znegs=(1-vnegtwomlambdai )  /qneg;
+        z(negs)=znegs;
+        
+        k=logG-1/twomlambdai;
+        w(negs)=(  vnegtwomlambdai .*  (logvneg+k)   -k  )/qneg;
+        
+    else  % la equals 2
+        znegs=-logvneg/G;
+        z(negs)=znegs;
+        
+        w(negs)=logvneg.*(logvneg/2+logG)/G;
     end
     
-    % Define augmented X matrix
+    % Compute residual sum of squares for null (reduced) model
+    betaR=X\z;
+    residualsR = z - X*betaR;
+    % Sum of squares of residuals
+    SSeR = norm(residualsR)^2;
+    
+    
+    % Define augmented X matrix for overall constructed variable
     Xw=[X w];
-    [Q,R] = qr(Xw,0);
-    beta = R\(Q'*z);
+    
+    % New code
+    beta=Xw\z;
     residuals = z - Xw*beta;
     % Sum of squares of residuals
-    sse = norm(residuals)^2;
-    % Compute t stat for constructed added variable
-    ri = R\eye(p+1);
-    xtxi = ri*ri';
-    se = sqrt(diag(xtxi*sse/(n-p-1)));
-    Sc(i) = -beta(end)/se(end);
+    SSe = norm(residuals)^2;
+    Ftestnum=(SSeR-SSe);
+    Ftestden=SSe/(n-p-1);
+    Ftest=Ftestnum/Ftestden;
+    Sc(i)=-sign(beta(end))*sqrt(Ftest);
     
     % Store the value of the likelihood for the model which also contains
     % the constructed variable
     if Likopt==1
-        Lik(i)=-n*log(sse/n);
+        Lik(i)=-n*log(SSe/n);
     end
 end
 
