@@ -33,7 +33,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %
 % Copyright 2008-2019.
 % Written by FSDA team
-%$LastChangedDate::                      $: Date of the last commit
+% $LastChangedDate:                      $: Date of the last commit
 
 
 %{
