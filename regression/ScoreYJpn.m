@@ -4,6 +4,27 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('ScoreYJpn')">Link to the help function</a>
 %
+% The transformations for negative and positive responses were determined
+% by Yeo and Johnson (2000) by imposing the smoothness condition that the
+% second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
+% some authors, for example Weisberg (2005), query the physical
+% interpretability of this constraint which is oftern violated in data
+% analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
+% Yeo-Johnson transformation to allow two values of the transformations
+% parameter: λN for negative observations and λP for non-negative ones.
+% ScoreYJpn computes:
+% 1) the t test associated with the constructed variable computed assuming
+% a different transformation for positive observations keeping the value of
+% the transformation parameter for negative observations fixed. In short we
+% call this test, "test for positive observations".
+% 2) the t test associated with the constructed variable computed assuming
+% a different transformation for negative observations keeping the value of
+% the transformation parameter for positive observations fixed. In short we
+% call this test, "test for negative observations". 
+% 3) the F test for the joint presence of the two constructed variables
+% described in points 1) and 2.
+%
+%
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
@@ -19,7 +40,7 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -47,17 +68,19 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %
 %  The output consists of a structure 'outSC' containing the following fields:
 %
-%        outSC.Score =    score test. Matrix. 
-%                            Matrix of size length(lambda)-by-2  which
+%        outSC.Score =    score test. Matrix.
+%                            Matrix of size length(lambda)-by-3  which
 %                            contains the value of the score test for each
 %                            value of lambda specfied in optional input
 %                            parameter la. The first column refers to the
-%                            test for positive observations while the
+%                            test for positive observations, the
 %                            second column refers to the test for negative
-%                            observations. If la is not specified, the
-%                            number of rows of outSc.Score is equal to 5
-%                            and will contain the values of the score test
-%                            for the 5 most common values of lambda.
+%                            observations and the third column refers to
+%                            the F test for the joint presence of the two
+%                            constructed variables. If la is not specified,
+%                            the number of rows of outSc.Score is equal to
+%                            5 and will contain the values of the score
+%                            test for the 5 most common values of lambda.
 %
 % See also: FSRfan, Score, ScoreYJ
 %
@@ -225,9 +248,9 @@ lla=length(la);
 Sc=NaN(lla,2);
 wini=NaN(n,1);
 
-    % The identity matrix of size p+1 can be
-    % computed once and for all
-    eyep1=eye(p+1);
+% The identity matrix of size p+1 can be
+% computed once and for all
+% eyep1=eye(p+1);
 
 % loop over the values of \lambda
 for i=1:lla
@@ -272,41 +295,96 @@ for i=1:lla
         wpos(negs)=- znegs*logGpos;
         wneg(negs)=logvneg.*(logvneg/2 +logGneg)/ G;
     end
-   
+    
+    % Compute residual sum of squares for null (reduced) model
+    betaR=X\z;
+    residualsR = z - X*betaR;
+    % Sum of squares of residuals
+    SSeR = norm(residualsR)^2;
+    
     % if vpos is empty all the observations are negative
-    if ~isempty(vpos)
+    vposboo=~isempty(vpos);
+    if vposboo == true
         % Define augmented X matrix
         Xw=[X wpos];
-        [Q,R] = qr(Xw,0);
-        beta = R\(Q'*z);
+        
+        % OLD slow code
+        %         [Q,R] = qr(Xw,0);
+        %         beta = R\(Q'*z);
+        %         residuals = z - Xw*beta;
+        %         % Sum of squares of residuals
+        %         sse = norm(residuals)^2;
+        %         % Compute t stat for constructed added variable
+        %         ri = R\eyep1;
+        %         xtxi = ri*ri';
+        %         se = sqrt(diag(xtxi*sse/(n-p-1)));
+        %         Sc(i,1) = -beta(end)/se(end);
+        
+        % New code
+        beta=Xw\z;
         residuals = z - Xw*beta;
         % Sum of squares of residuals
-        sse = norm(residuals)^2;
-        % Compute t stat for constructed added variable
-        ri = R\eyep1;
-        xtxi = ri*ri';
-        se = sqrt(diag(xtxi*sse/(n-p-1)));
-        Sc(i,1) = -beta(end)/se(end);
+        SSe = norm(residuals)^2;
+        Ftestnum=(SSeR-SSe);
+        Ftestden=SSe/(n-p-1);
+        Ftest=Ftestnum/Ftestden;
+        Sc(i,1)=-sign(beta(end))*sqrt(Ftest);
     else
         Sc(i,1) =NaN;
     end
     
     % if vneg is empty all the observations are negative
-    if ~isempty(vneg)
+    vnegboo=~isempty(vneg);
+    if vnegboo==true
         % Define augmented X matrix
         Xw=[X wneg];
-        [Q,R] = qr(Xw,0);
-        beta = R\(Q'*z);
+        
+        % OLD slow code
+        %         [Q,R] = qr(Xw,0);
+        %         beta = R\(Q'*z);
+        %         residuals = z - Xw*beta;
+        %         % Sum of squares of residuals
+        %         sse = norm(residuals)^2;
+        %         % Compute t stat for constructed added variable
+        %         ri = R\eyep1;
+        %         xtxi = ri*ri';
+        %         se = sqrt(diag(xtxi*sse/(n-p-1)));
+        %         Sc(i,2) = -beta(end)/se(end);
+        
+        % New code
+        beta = Xw\z;
         residuals = z - Xw*beta;
         % Sum of squares of residuals
-        sse = norm(residuals)^2;
-        % Compute t stat for constructed added variable
-        ri = R\eyep1;
-        xtxi = ri*ri';
-        se = sqrt(diag(xtxi*sse/(n-p-1)));
-        Sc(i,2) = -beta(end)/se(end);
+        SSe = norm(residuals)^2;
+        Ftestnum=(SSeR-SSe);
+        Ftestden=SSe/(n-p-1);
+        Ftest=Ftestnum/Ftestden;
+        Sc(i,2)=-sign(beta(end))*sqrt(Ftest);
     else
         Sc(i,2)=NaN;
+    end
+    
+    % Compute the F test for the joint presence of both constructed
+    % variables
+    if vposboo==true && vnegboo==true
+        % Compute residual sum of squares for full model
+        Xww=[X wpos wneg];
+        betaF=Xww\z;
+        
+        residualsF = z - Xww*betaF;
+        % Sum of squares of residuals
+        SSeF = norm(residualsF)^2;
+        
+        Ftestnum=(SSeR-SSeF)/2;
+        Ftestden=SSeF/(n-p-2);
+        Ftest=Ftestnum/Ftestden;
+        Sc(i,3)=Ftest;
+    elseif vposboo==true
+        % If there are just positive observations F test is the square of
+        % the t test for positive
+        Sc(i,3)=Sc(i,1)^2;
+    else % in this case there are just negative observations
+        Sc(i,3)=Sc(i,2)^2;
     end
     
 end
