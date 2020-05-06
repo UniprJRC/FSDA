@@ -281,10 +281,10 @@ function plotopt=malfwdplot(out,varargin)
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option 
-%                   (databrush is a scalar or a structure) enables the user  
-%                   to select a set of trajectories in the current plot and 
-%                   to see them highlighted in the scatter plot matrix (spm). 
+%                   is done. The activation of this option
+%                   (databrush is a scalar or a structure) enables the user
+%                   to select a set of trajectories in the current plot and
+%                   to see them highlighted in the scatter plot matrix (spm).
 %                   If spm does not exist it is automatically created. In
 %                   addition, brushed units are automatically highlighted
 %                   in the minimum MD plot if it is already open. Please,
@@ -877,7 +877,7 @@ function plotopt=malfwdplot(out,varargin)
 %   single option (options.interact) in future versions of the toolbox.
 %
 
-%% Beginning of code 
+%% Beginning of code
 
 % Initialization
 
@@ -1696,113 +1696,117 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             group(nbrush)=ij+1;
             unigroup=unique(group);
             
-            % nbrush= vector which contains the brushed steps selstesp=
-            % vector which will contain the steps in which the brushed
-            % units enter the search Given nbrush, find selstesp
-            % selsteps=zeros(n,11);
-            selsteps=zeros(n,size(Un,2));
-            ii=0;
-            for i=1:length(nbrush)
-                idx = find(Un(:,2:end) == nbrush(i));
-                
-                % Find the required row(s) of matrix Un
-                row = ind2sub(size(Un(:,2:end)),idx);
-                % when isempty(row) is true the selected unit entered the
-                % subset at step before Un(1,:), that is before the first
-                % step which has been monitored
-                if ~isempty(row)
-                    % Note that mod(row,size(Un,1)) is used rather than
-                    % Un(row,:) because the unit could have entered the
-                    % subset together with other units (i.e. could be in a
-                    % column  of matrix Un different from the second).
-                    % Finally note that the expression row-1e-12 is
-                    % necessary otherwise when row is= size(Un,1) then
-                    % mod(row-1e-12,size(Un,1))is equal to zero
-                    selsteps(ii+1:ii+length(row),:)=Un(ceil(mod(row-1e-12,size(Un,1))),:);
-                    ii=ii+length(row);
-                end
-            end
-            
-            selsteps=sortrows(selsteps(1:ii,:),1);
-            % m1 contains the indexes of the unique steps;
-            [~, m1]=unique(selsteps(:,1));
-            selsteps=selsteps(m1,:);
-            % Remark: selsteps=unique(selsteps,'rows') does not seem to
-            % work
-            
-            disp('Steps of entry of brushed units');
-            disp(selsteps);
-            
-            %% - highlight brushed units also in the minimum MD, if it is open
-            
-            h=findobj('-depth',1,'Tag','pl_mmd');
-            
-            if (~isempty(h))
-                % Remove unnecessary rows from vector selsteps -1 is
-                % necessary because we are considering minimum outside
-                selsteps=selsteps(:,1)-1;
-                
-                % make figure which contains mdr become the current figure
-                figure(h);
-                
-                % Condition || but==0 if but=0 then it is necessary to
-                % remove previous highlightments (even if persist='on')
-                if strcmp(persist,'off') || but==0
-                    % If set of values has already been highlighted in the
-                    % mmd plot, remove it
-                    a=findobj(h,'Tag','brush_mmd');
-                    delete(a);
+            % ~isempty(Un) means that input structure out comes from a fwd
+            % search estimator.
+            if ~isempty(Un)
+                % nbrush= vector which contains the brushed steps selstesp=
+                % vector which will contain the steps in which the brushed
+                % units enter the search Given nbrush, find selstesp
+                % selsteps=zeros(n,11);
+                selsteps=zeros(n,size(Un,2));
+                ii=0;
+                for i=1:length(nbrush)
+                    idx = find(Un(:,2:end) == nbrush(i));
                     
-                    % Remove the yellow selection in this plot if present
-                    a=findobj(gcf,'Tag','selected');
-                    delete(a);
+                    % Find the required row(s) of matrix Un
+                    row = ind2sub(size(Un(:,2:end)),idx);
+                    % when isempty(row) is true the selected unit entered the
+                    % subset at step before Un(1,:), that is before the first
+                    % step which has been monitored
+                    if ~isempty(row)
+                        % Note that mod(row,size(Un,1)) is used rather than
+                        % Un(row,:) because the unit could have entered the
+                        % subset together with other units (i.e. could be in a
+                        % column  of matrix Un different from the second).
+                        % Finally note that the expression row-1e-12 is
+                        % necessary otherwise when row is= size(Un,1) then
+                        % mod(row-1e-12,size(Un,1))is equal to zero
+                        selsteps(ii+1:ii+length(row),:)=Un(ceil(mod(row-1e-12,size(Un,1))),:);
+                        ii=ii+length(row);
+                    end
                 end
                 
-                % get the x and y coordinates of mdr
-                a=findobj(h,'tag','data_mmd');
-                xdata=get(a,'Xdata'); % x coordinates of mmd (steps)
-                ydata=get(a,'ydata'); % y coordinates of mmd (values)
+                selsteps=sortrows(selsteps(1:ii,:),1);
+                % m1 contains the indexes of the unique steps;
+                [~, m1]=unique(selsteps(:,1));
+                selsteps=selsteps(m1,:);
+                % Remark: selsteps=unique(selsteps,'rows') does not seem to
+                % work
                 
-                [~, ~, ib]=intersect(selsteps, xdata);
-                % Stack together x and y coordinates
-                xx=[xdata; ydata];
+                disp('Steps of entry of brushed units');
+                disp(selsteps);
                 
-                % Just in case the first step of mmd is selected remove it
-                % because we also consider ib-1
-                ib=ib(ib>1);
-                % For each of the brushed units extract coordinates of mmd
-                % referred to the step before their entry and the step
-                % before
-                xxsel=xx(:,[ib-1 ib])';
-                % Sort all steps
-                xxselr=sortrows(xxsel,1);
-                % xxlim=length(nbrush);
-                xxlim=length(ib);
-                % Reshape previous matrix in such a way that the first
-                % length(nbrush) columns refer to the steps which have to
-                % be plotted and the remining columns refer to their
-                % corresponding values of mdr
-                xy=reshape(xxselr,2,2*xxlim);
-                % Add to the previous matrix a row of missing values This
-                % operation is necessary if the steps are not contiguous
-                xy=cat(1,xy,NaN*zeros(1,2*xxlim));
+                %% - highlight brushed units also in the minimum MD, if it is open
                 
-                % Reshape the set of x and y coordinates in two column
-                % vectors Note the NaN between the steps which are not
-                % consecutive
-                xcoord=reshape(xy(:,1:xxlim),3*xxlim,1);
-                ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
-                hold('on');
-                if strcmp('on',persist)
-                    % If necessary it isalso possible to specify a line
-                    % style for the brushed steps
-                    % 'LineStyle',stypebrushed{ij},
-                    plot(gca,xcoord,ycoord,'LineWidth',1.5,'color',ColorOrd(ij,:),'tag','brush_mdr');
-                    set(gca,'Position',[0.1 0.1 0.85 0.85])
-                else
-                    plot(gca,xcoord,ycoord,'LineWidth',1.5,'color',ColorOrd(1,:),'tag','brush_mdr');
+                h=findobj('-depth',1,'Tag','pl_mmd');
+                
+                if (~isempty(h))
+                    % Remove unnecessary rows from vector selsteps -1 is
+                    % necessary because we are considering minimum outside
+                    selsteps=selsteps(:,1)-1;
+                    
+                    % make figure which contains mdr become the current figure
+                    figure(h);
+                    
+                    % Condition || but==0 if but=0 then it is necessary to
+                    % remove previous highlightments (even if persist='on')
+                    if strcmp(persist,'off') || but==0
+                        % If set of values has already been highlighted in the
+                        % mmd plot, remove it
+                        a=findobj(h,'Tag','brush_mmd');
+                        delete(a);
+                        
+                        % Remove the yellow selection in this plot if present
+                        a=findobj(gcf,'Tag','selected');
+                        delete(a);
+                    end
+                    
+                    % get the x and y coordinates of mdr
+                    a=findobj(h,'tag','data_mmd');
+                    xdata=get(a,'Xdata'); % x coordinates of mmd (steps)
+                    ydata=get(a,'ydata'); % y coordinates of mmd (values)
+                    
+                    [~, ~, ib]=intersect(selsteps, xdata);
+                    % Stack together x and y coordinates
+                    xx=[xdata; ydata];
+                    
+                    % Just in case the first step of mmd is selected remove it
+                    % because we also consider ib-1
+                    ib=ib(ib>1);
+                    % For each of the brushed units extract coordinates of mmd
+                    % referred to the step before their entry and the step
+                    % before
+                    xxsel=xx(:,[ib-1 ib])';
+                    % Sort all steps
+                    xxselr=sortrows(xxsel,1);
+                    % xxlim=length(nbrush);
+                    xxlim=length(ib);
+                    % Reshape previous matrix in such a way that the first
+                    % length(nbrush) columns refer to the steps which have to
+                    % be plotted and the remining columns refer to their
+                    % corresponding values of mdr
+                    xy=reshape(xxselr,2,2*xxlim);
+                    % Add to the previous matrix a row of missing values This
+                    % operation is necessary if the steps are not contiguous
+                    xy=cat(1,xy,NaN*zeros(1,2*xxlim));
+                    
+                    % Reshape the set of x and y coordinates in two column
+                    % vectors Note the NaN between the steps which are not
+                    % consecutive
+                    xcoord=reshape(xy(:,1:xxlim),3*xxlim,1);
+                    ycoord=reshape(xy(:,xxlim+1:end),3*xxlim,1);
+                    hold('on');
+                    if strcmp('on',persist)
+                        % If necessary it isalso possible to specify a line
+                        % style for the brushed steps
+                        % 'LineStyle',stypebrushed{ij},
+                        plot(gca,xcoord,ycoord,'LineWidth',1.5,'color',ColorOrd(ij,:),'tag','brush_mdr');
+                        set(gca,'Position',[0.1 0.1 0.85 0.85])
+                    else
+                        plot(gca,xcoord,ycoord,'LineWidth',1.5,'color',ColorOrd(1,:),'tag','brush_mdr');
+                    end
+                    hold('off');
                 end
-                hold('off');
             end
             
             %% - display the spm with the corresponding groups of units highlighted
