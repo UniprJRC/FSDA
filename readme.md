@@ -3,12 +3,15 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/UniprJRC/FSDA)](https://github.com/UniprJRC/FSDA/releases/latest)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/UniprJRC/FSDA)
 
+[![Documentation](https://img.shields.io/badge/HTML-documentation in Mathworks style-brown.svg)](http://rosa.unipr.it/FSDA/guide.html/) |
+
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
 [![Build Status](https://travis-ci.com/UniprJRC/FSDA.svg?branch=master)](https://travis-ci.com/UniprJRC/FSDA)
 [![CircleCI](https://circleci.com/gh/UniprJRC/FSDA.svg?style=svg)](https://circleci.com/gh/UniprJRC/FSDA)
 [![Build Status](https://dev.azure.com/aldocorbellini0395/FSDA/_apis/build/status/UniprJRC.FSDA%20(1)?branchName=master)](https://dev.azure.com/aldocorbellini0395/FSDA/_build/latest?definitionId=2&branchName=master)
 
 [![GitHub contributors](https://img.shields.io/github/contributors/UniprJRC/FSDA)](https://github.com/UniprJRC/FSDA/graphs/contributors)
+
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
