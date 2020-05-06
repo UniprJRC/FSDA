@@ -15,7 +15,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %             as the comma-separated pair consisting of 'outputDir' and the
 %             full path. You must specify the full path as a string, for
 %             example 'C:\PublishedOutput'.
-%             The default value, '', specifies the (FSDA root)\helpfiles\FSDA
+%             The default value, ' ', specifies the (FSDA root)\helpfiles\FSDA
 %             path.
 %             Remark - outputDir must be a valid path.
 %             Example - 'outputDir','C:'
@@ -33,7 +33,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %
 % Copyright 2008-2019.
 % Written by FSDA team
-%$LastChangedDate::                      $: Date of the last commit
+% $LastChangedDate:                      $ Date of the last commit
 
 
 %{

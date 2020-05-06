@@ -224,7 +224,6 @@ function Y = twdrnd(alpha,theta,delta,n)
     t = twdrnd(al,th,de,n);
     histogram(h5,t,bins);
     title(h5,tit5);
-
 %}
 
 %% Beginning of code
