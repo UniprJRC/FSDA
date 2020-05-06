@@ -3,7 +3,8 @@
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/UniprJRC/FSDA)](https://github.com/UniprJRC/FSDA/releases/latest)
 ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/UniprJRC/FSDA)
 
-[![Documentation](https://img.shields.io/badge/HTML-documentation in Mathworks style-brown.svg)](http://rosa.unipr.it/FSDA/guide.html/) |
+
+[![Documentation](https://img.shields.io/badge/HTML_Documentation-Mathworks_style-red.svg)](http://rosa.unipr.it/FSDA/guide.html/) 
 
 [![HitCount](http://hits.dwyl.io/UniprJRC/FSDA.svg)](http://hits.dwyl.io/UniprJRC/FSDA)
 [![Build Status](https://travis-ci.com/UniprJRC/FSDA.svg?branch=master)](https://travis-ci.com/UniprJRC/FSDA)
