@@ -67,7 +67,7 @@ function [out]=FSRfan(y,X,varargin)
 %
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
-%                   (default), 'YJ' or 'YJpn'.
+%                   (default), 'YJ', 'YJpn' or 'YJall'.
 %                   The Box-Cox family of power transformations equals
 %                   $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
 %                   and $\log(y)$ if $\lambda = 0$.
@@ -81,6 +81,10 @@ function [out]=FSRfan(y,X,varargin)
 %                   this case it is also possible to monitor (in the output
 %                   arguments out.Scorep and out.Scoren) the score test
 %                   respectively for positive and negative observations.
+%                   If family is 'YJall', it is also possible to monitor
+%                   the joint F test for the presence of the two
+%                   constructed variables for positive and negative
+%                   observations.
 %                   Example - 'family','YJ'
 %                   Data Types - char
 %
@@ -195,7 +199,7 @@ function [out]=FSRfan(y,X,varargin)
 %               end col = value of the (positive) score test in each step
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
-%               family is 'YJpn'
+%               family is 'YJpn' or 'YJall'.
 % out.Scoren  = (n-init) x length(la)+1 matrix containing the values of the
 %               score test for positive observations for each value of the
 %               transformation parameter:
@@ -206,7 +210,21 @@ function [out]=FSRfan(y,X,varargin)
 %               end col = value of the (negative) score test in each step
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
-%               family is 'YJpn'
+%               family is 'YJpn' or 'YJall'.
+% out.Scoreb  = (n-init) x length(la)+1 matrix containing the values of the
+%               score test for the joint presence of both constructed
+%               variables (associated with positive and negative
+%               observations) for each value of the transformation
+%               parameter.  In this case the reference distribution is the
+%               $F$ with 2 and subset_size-p degrees of freedom.
+%               1st col = fwd search index (subset_size);
+%               2nd col = value of the score test in each step
+%               of the fwd search for la(1);
+%               ...........
+%               end col = value of the score test in each step
+%               of the fwd search for la(end).
+%               Note that this output is present only if input option
+%               family is 'YJall'
 %  out.la     = vector containing the values of lambda for which fan plot
 %               is constructed
 %  out.bs     = matrix of size p x length(la) containing the units forming
@@ -412,6 +430,31 @@ function [out]=FSRfan(y,X,varargin)
     title('Extended fan plot')
 %}
 
+%{
+    %% Example of monitoring all score tests (also the F test).
+    rng('default')
+    rng(1000)
+    close all
+    n=200;
+
+    X=randn(n,3);
+    beta=[ 1; 1; 1];
+    sig=0.5;
+    y=X*beta+sig*randn(n,1);
+
+    % Find the data to transform
+    la=0;
+    ytra=normYJ(y,[],la,'inverse',true);
+    if any(isnan(ytra))
+        disp('response with missing values')
+    end
+
+    la=[ -0.1 0 0.1];
+    % In this case  family is YJall
+    out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',0);
+    
+%}    
+    
 %% Beginning of code
 
 % Input parameters checking
@@ -475,9 +518,11 @@ elseif strcmp(family,'YJ')
     BoxCox=0;
 elseif strcmp(family,'YJpn')
     BoxCox=-1;
+elseif strcmp(family,'YJall')
+    BoxCox=-2;
 else
     warning('FSDA:FSRfan:WrongFamily','Transformation family which has been chosen is not supported')
-    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YJ or YJpn')
+    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YJ or YJpn or YJall')
 end
 
 % Specify where to send the output of the current procedure if options plot
@@ -527,7 +572,12 @@ Sco=[((init):n)'  NaN(n-init+1,lla)];
 if BoxCox==-1
     Scop=Sco;
     Scon=Sco;
+elseif BoxCox==-2
+    Scop=Sco;
+    Scon=Sco;
+    Scob=Sco;
 end
+
 
 % The second column of matrix r will contain the OLS residuals at each step
 % of the forward search
@@ -593,21 +643,32 @@ for i=1:lla
                 if BoxCox==1
                     % Compute and store the value of the score test
                     [outSC]=Score(yb,Xb,'la',la(i),'nocheck',1);
-                else
+                    % Store score test for the units belonging to subset
+                    Sco(mm-init+1,i+1)=outSC.Score;
+                    
+                elseif BoxCox==0
                     % Compute and store the value of the score test using Yeo
-                    % and Johnson transformation
+                    % and Johnson transformation (just the global test)
                     [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
-                    if BoxCox==-1
-                        [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
-                    end
+                    % Store score test for the units belonging to subset
+                    Sco(mm-init+1,i+1)=outSC.Score;
+                    
+                else % in this case BoxCox==-1 || BoxCox==-2
+                    %[outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
+                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
+                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
+                    [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'nocheck',1);
                 end
                 
-                % Store S2 for the units belonging to subset
-                Sco(mm-init+1,i+1)=outSC.Score;
-                if BoxCox==-1
-                    Scop(mm-init+1,i+1)=outSCpn.Score(1,1);
-                    Scon(mm-init+1,i+1)=outSCpn.Score(1,2);
+                if BoxCox<=-1
+                    Sco(mm-init+1,i+1)=outSCpn.Score(1,1);
+                    Scop(mm-init+1,i+1)=outSCpn.Score(1,2);
+                    Scon(mm-init+1,i+1)=outSCpn.Score(1,3);
                 end
+                if BoxCox==-2
+                    Scob(mm-init+1,i+1)=outSCpn.Score(1,4);
+                end
+                
             end
             
             if nocheck==1
@@ -690,28 +751,33 @@ out.X=X;
 if BoxCox==-1
     out.Scorep=Scop;
     out.Scoren=Scon;
+elseif BoxCox==-2
+    out.Scorep=Scop;
+    out.Scoren=Scon;
+    out.Scoreb=Scob;
 end
 
 if plo==1
-    
-    % plot the lines associated with the score test lwd = line width of the
-    % trajectories which contain the score test
-    lwd=options.lwd;
-    plot1=plot(Sco(:,1),Sco(:,2:end),'LineWidth',lwd);
     
     % Specify the line type for the units inside vector units
     slin={'-';'--';':';'-.'};
     slin=repmat(slin,ceil(lla/4),1);
     
     % Specify the color for the trajectories
-    ColorOrd=[{[0 0 1]}; {[0 0 0]}; {[1 0 0]};{[0 1 1]}; {[1 0 1]}; {[1 1 0]}; {[0 1 0]}; ];
+    ColorOrd=[{[0 0 1]}; {[1 0 0]}; {[1 0 1]}; {[1 1 0]}; {[0 1 0]}; {[0 1 1]}];
     ColorOrd=repmat(ColorOrd,4,1);
+    
+    
+    % plot the lines associated with the score test lwd = line width of the
+    % trajectories which contain the score test
+    lwd=options.lwd;
+    plot1=plot(Sco(:,1),Sco(:,2:end),'LineWidth',lwd);
     
     set(plot1,{'Color'}, ColorOrd(1:lla,:));
     
     set(plot1,{'LineStyle'},slin(1:lla));
     
-    if BoxCox == -1
+    if BoxCox <= -1
         hold('on')
         plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
         set(plotp,{'LineStyle'},{'--'});
@@ -791,9 +857,67 @@ if plo==1
     SizeAxesNum=options.SizeAxesNum;
     set(gca,'FontSize',SizeAxesNum)
     box on
-    hold('on')
-    %   plot(Sco(:,1),Scop(:,2:end),'LineWidth',lwd,'LineStyle','--','Color','r');
-    %  plot(Sco(:,1),Scon(:,2:end),'LineWidth',lwd,'LineStyle','--','Color','r');
+    
+    
+    if BoxCox == -2
+        figure
+        plot1=plot(Scob(:,1),Scob(:,2:end),'LineWidth',lwd);
+        set(plot1,{'Color'}, ColorOrd(1:lla,:));
+        
+        set(plot1,{'LineStyle'},slin(1:lla));
+        text(n*ones(lla,1),Scob(end,2:end)',num2str(la));
+        
+        % Confidence bands lwdenv = line width of the curves associated with
+        % the envelopes
+        lwdenv=options.lwdenv;
+        quant=conflev;
+        
+        % Compute and superimpose envelopes based on the F distribution
+        EnvF=[Scob(:,1) zeros(size(Scob,1),length(quant))];
+        
+        for i=1:size(Scob,1)
+            ast=finv(quant,2,Scob(i,1)-p);
+            EnvF(i,2:end)=ast;
+        end
+        
+        line(EnvF(:,1),EnvF(:,2:end),'LineStyle','-','Color','r','LineWidth',lwdenv);
+        
+        % Add text associated with the envelopes which have been used
+        % text(repmat(n,length(quant),1),EnvF(end,2:end)',num2str(quant'));
+        
+        % Main title of the plot and labels for the axes
+        labx=options.labx;
+        laby=options.laby;
+        
+        
+        title('F test for both constructed variables');
+        
+        % FontSize = font size of the axes labels
+        FontSize =options.FontSize;
+        
+        % Add to the plot the labels for values of la Add the horizontal lines
+        % representing asymptotic confidence bands
+        xlabel(labx,'Fontsize',FontSize);
+        ylabel(laby,'Fontsize',FontSize);
+        
+        % FontSizeAxesNum = font size for the axes numbers
+        SizeAxesNum=options.SizeAxesNum;
+        set(gca,'FontSize',SizeAxesNum)
+        box on
+        
+        if isempty(ylimy)
+            
+            % Use default limits for y axis
+            ylim1=0;
+            ylim2=min(20,max(max(Scob(:,2:end))));
+            ylim([ylim1 ylim2]);
+        else
+            
+            % Use limits specified by the user
+            ylim(ylimy);
+        end
+    end
+    
 end
 
 end
