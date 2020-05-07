@@ -1,4 +1,4 @@
-function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt]...
+function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt,Beta_all, obj_all]...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
     seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag)
 
@@ -9,6 +9,14 @@ function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt
 %$LastChangedDate::                      $: Date of the last commit
 
 %% Beginning of code
+
+% Groups with less than skipthin_th units are not considered for thinning
+skipthin_th = 50;
+
+%monitors evolution of parameters in refining steps (just in case of
+%intercept through the origin and one regression coefficient)
+monitor = 0;
+
 
 [n,p]=size(X);
 sigma2ini = ones(1,k);
@@ -66,14 +74,16 @@ nopt       = zeros(1,k);
 % postprob = (nxk) matrix of posterior probabilities of the obtimal subset
 postprobopt = zeros(n,k);
 
-% Groups with less than skipthin_th units are not considered for thinning
-skipthin_th = 50;
-
-%monitors evolution of parameters in refining steps
-monitor = 0;
+if monitor == 1
+    Beta_all   = NaN(k,refsteps,nselected);
+    obj_all    = NaN(nselected, refsteps);
+else
+    Beta_all=[];
+    obj_all =[];
+end
 
 % penalized objective function
-% penal_obj = 0;
+penal_obj = 0;
 
 % current and best objective function values
 vopt = -1e+20;
@@ -158,7 +168,7 @@ for i =1:nselected
             itermax=itermax+1;
         end
         if itermax ==1000
-            error('FSDA:tclustregcore:WrongInput','Initialization of the group proportions failed')
+            error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
         end
         niini=niin;
     else
@@ -376,7 +386,7 @@ for i =1:nselected
                         elseif strcmp(wtype_obj,'wZ')
                             weobj(groupj) = pretain .* Zt;
                         else
-                            error('FSDA:tclustreg:WrongInput','wtype_obj option not correct')
+                            error('wtype_obj option not correct')
                         end
                         % pretain: the retention probabilities are based on
                         % the predicted values (yhat) estimated at the
@@ -405,7 +415,7 @@ for i =1:nselected
                     elseif strcmp(wtype_obj,'wZ')
                         weobj(groupj) = medianweights;
                     else
-                        error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
+                        error('wtype_obj option not correct')
                     end
                     
                 end
@@ -448,7 +458,7 @@ for i =1:nselected
                             weobj(ijj) = ones(length(sum(ijj)),1);
                             
                         else
-                            error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
+                            error('wtype_obj option not correct')
                         end
                         % count the thinned observations
                         % nthinned = nthinned + sum(Wt == 0);
@@ -471,8 +481,8 @@ for i =1:nselected
             case 6 % TO BE IMPLEMENTED
                 
         end
-        if monitor
-            Beta_all(1:k,cstep) = Beta'; %#ok<UNRCH>
+        if monitor == 1
+            Beta_all(1:k,cstep) = Beta';
         end
         
         % Mean of the weights must be 1.
@@ -880,11 +890,6 @@ for i =1:nselected
                         sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj).*weobj(:)) ;
                     %sum_dens(jj,cstep) = sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)));
                     
-                    if monitor
-                        postprob_all(:,cstep,jj) = postprob(:,jj); %#ok<UNRCH>
-                        weobj_all(:,cstep) = weobj';
-                    end
-                    
                     
                     % equalweights = 0: proportions are set equal to the group sizes.
                 else
@@ -935,21 +940,18 @@ for i =1:nselected
             obj = estepFS(log_lh);
         end
         
-%         if penal_obj == 1
-%             % penalized term (to be corrected)
-%             ptermAIC = 2*nParam/mean_wbeta;
-%             %Penalization of objective function
-%             obj = 2*obj - ptermAIC;
-%         end
-        if monitor
+        if penal_obj == 1
+            % penalized term (to be corrected)
+            ptermAIC = 2*nParam/mean_wbeta;
+            %Penalization of objective function
+            obj = 2*obj - ptermAIC;
+        end
+        if monitor ==1
             %obj_all = (nselected x refsteps) vector containing the obj values
             %of all subsets and all concentration steps.
-            %obj_all(i,cstep) = obj;
-            obj_all(i,cstep) = obj; %#ok<UNRCH>
-            %obj_all_new(i,cstep) = obj/(sum(weobj_new));
+            obj_all(i,cstep) = obj;
+            
             Beta_all(1:k,cstep) = Beta;
-            %weobj_all(i,cstep) = sum(weobj>0);
-            %sigma2ini_all(cstep,:)=sigma2ini;
         end
         
         

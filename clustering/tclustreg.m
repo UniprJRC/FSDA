@@ -709,9 +709,6 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Control variables, tolerances and internal flags
 % warning('off');
 
-%monitors evolution of parameters in refining steps
-monitor = 0;
-
 
 %% Input parameters checking
 
@@ -1144,14 +1141,6 @@ ll        = zeros(n,k);
 % sigma2ini = ones(1,k);
 
 
-%obj_all: used to monitor the objective function during the refining steps.
-if monitor
-    obj_all = NaN(nselected,refsteps); %#ok<UNRCH>
-    %indmax_all = NaN(n,refsteps,nselected);
-    %beta_all   = NaN(k,refsteps,nselected);
-end
-
-
 %%% - Find NParam penalty term to use inside AIC and BIC
 
 % Add paramters referred to sigma2 restrictions
@@ -1171,7 +1160,7 @@ end
 % [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,cstepopt,vopt,subsetopt,idxopt,webeta,webetaopt]...
 %     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
 %     seqk,zigzag,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj);
-[bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt]...
+[bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt, Beta_all, obj_all] ...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
     seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
 
@@ -1233,8 +1222,9 @@ else
     
     %   obj = value of the target function
     out.obj                  = vopt;
-    if monitor
-        out.obj_all          = obj_all; %#ok<UNRCH>
+    
+     if ~isempty(Beta_all)
+        out.obj_all          = obj_all; 
         out.Beta_all         = Beta_all;
     end
     
