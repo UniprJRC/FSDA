@@ -1,9 +1,9 @@
 ---
 name: Feature request
 about: Suggest an idea for this project
-title: ''
-labels: ''
-assignees: ''
+title: 'e.g. regression'
+labels: 'e.g. implement Wilkinson notation to call routines'
+assignees: 'FSDA group'
 
 ---
 
