@@ -1,5 +1,5 @@
 function [y, X] = simulateLM(n,varargin)
-%Simulate linear regression data
+%simulateLM simulates linear regression data with prespecified values of statistical indexes.
 %
 %<a href="matlab: docsearchFS('simulateLM')">Link to the help function</a>
 %

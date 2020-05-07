@@ -1,5 +1,5 @@
 function [ypred, yci] = predci(X,beta,Sigma,mse,dfe,alpha,sim,pred,hasintercept)
-%preci computes prediction intervals in the linear regression model
+%predci computes prediction intervals in the linear regression model
 %
 %  Required input arguments:
 %

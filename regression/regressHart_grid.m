@@ -1,5 +1,5 @@
 function [out] = regressHart_grid(y,X,Z,varargin)
-%grid search to find minimum for ART model
+%regressHart_grid performs a grid search to find minimum for ART heteroskedatic model
 %
 %<a href="matlab: docsearch('regressHart_grid')">Link to the help function</a>
 %

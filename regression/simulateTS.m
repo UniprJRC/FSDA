@@ -1,5 +1,5 @@
 function [out] = simulateTS(T,varargin)
-%Simulate a time series with trend, time varying seasonal, level shift and irregular component
+%simulateTS simulates a time series with trend, time varying seasonal, level shift and irregular component
 %
 %<a href="matlab: docsearchFS('simulateTS')">Link to the help function</a>
 %
