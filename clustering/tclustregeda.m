@@ -598,12 +598,12 @@ end
 
 % checks on alpha1 (alphaLik) and alpha2 (alphaX)
 if min(alphaLik) < 0 || max(alphaLik)>0.5
-    error('FSDA:tclustreg:error','error must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
+    error('FSDA:tclustregeda:error','error must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
 
 % checks on cwm, which decides if clusterwise regression has to be used
 if alphaX < 0 || alphaX >1
-    error('FSDA:tclustreg:WrongAlphaX','alphaX must a scalar in the interval [0 1]')
+    error('FSDA:tclustregeda:WrongAlphaX','alphaX must a scalar in the interval [0 1]')
 elseif alphaX==1
     cwm = 1;
 else
@@ -650,17 +650,17 @@ if nargin>6
              figure;plot(Xori,yori,'.'); hold on ; text(Xori(nsamp(:)),yori(nsamp(:)),'X');
              figure;plot(Xori,yori,'.'); hold on ; text(X(C(:)),y(C(:)),'X');
             %}
-            if sum(chknwtrim)>0 && ~isstruct(cell2mat(varargin(find(chknwtrim)+1)))
-                if cell2mat(varargin(find(chknwtrim)+1))== 4
-                    for f=1:size(C,1)*size(C,2)
-                        if Wt4(C(f)) == 0
-                            [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
-                        else
-                            C(f) = sum(Wt4(1:C(f)));
-                        end
-                    end
-                end
-            end
+%             if sum(chknwtrim)>0 && ~isstruct(cell2mat(varargin(find(chknwtrim)+1)))
+%                 if cell2mat(varargin(find(chknwtrim)+1))== 4
+%                     for f=1:size(C,1)*size(C,2)
+%                         if Wt4(C(f)) == 0
+%                             [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
+%                         else
+%                             C(f) = sum(Wt4(1:C(f)));
+%                         end
+%                     end
+%                 end
+%             end
             
         else
             % If nsamp is a scalar it simply contains the number of subsets
