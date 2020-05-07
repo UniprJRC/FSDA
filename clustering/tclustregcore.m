@@ -73,7 +73,7 @@ skipthin_th = 50;
 monitor = 0;
 
 % penalized objective function
-penal_obj = 0;
+% penal_obj = 0;
 
 % current and best objective function values
 vopt = -1e+20;
@@ -158,7 +158,7 @@ for i =1:nselected
             itermax=itermax+1;
         end
         if itermax ==1000
-            error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
+            error('FSDA:tclustregcore:WrongInput','Initialization of the group proportions failed')
         end
         niini=niin;
     else
@@ -376,7 +376,7 @@ for i =1:nselected
                         elseif strcmp(wtype_obj,'wZ')
                             weobj(groupj) = pretain .* Zt;
                         else
-                            error('wtype_obj option not correct')
+                            error('FSDA:tclustreg:WrongInput','wtype_obj option not correct')
                         end
                         % pretain: the retention probabilities are based on
                         % the predicted values (yhat) estimated at the
@@ -405,7 +405,7 @@ for i =1:nselected
                     elseif strcmp(wtype_obj,'wZ')
                         weobj(groupj) = medianweights;
                     else
-                        error('wtype_obj option not correct')
+                        error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
                     end
                     
                 end
@@ -448,7 +448,7 @@ for i =1:nselected
                             weobj(ijj) = ones(length(sum(ijj)),1);
                             
                         else
-                            error('wtype_obj option not correct')
+                            error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
                         end
                         % count the thinned observations
                         % nthinned = nthinned + sum(Wt == 0);
@@ -935,12 +935,12 @@ for i =1:nselected
             obj = estepFS(log_lh);
         end
         
-        if penal_obj == 1
-            % penalized term (to be corrected)
-            ptermAIC = 2*nParam/mean_wbeta;
-            %Penalization of objective function
-            obj = 2*obj - ptermAIC;
-        end
+%         if penal_obj == 1
+%             % penalized term (to be corrected)
+%             ptermAIC = 2*nParam/mean_wbeta;
+%             %Penalization of objective function
+%             obj = 2*obj - ptermAIC;
+%         end
         if monitor
             %obj_all = (nselected x refsteps) vector containing the obj values
             %of all subsets and all concentration steps.
