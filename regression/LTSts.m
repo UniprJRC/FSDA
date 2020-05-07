@@ -767,7 +767,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %{
     % Contaminated time series with downward level shift.
-    % Model with linear trend, six harmonics for seasonal component and
+    % Model with linear trend, three harmonics for seasonal component and
     % varying amplitude using a linear trend).
     % Load airline data.
     %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -792,9 +792,9 @@ function [out, varargout] = LTSts(y,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=106;
-    model.lshift=13;
-    out=LTSts(yLS,'model',model);
+    model.seasonal=103;
+    model.lshift=25;
+    out=LTSts(yLS,'model',model,'msg',0);
 
     close all
     % Plot real and fitted values
@@ -802,8 +802,8 @@ function [out, varargout] = LTSts(y,varargin)
     hold('on')
     plot(out.yhat,'r--','Linewidth',1.5)
     legend({'Real values','Fitted values'},'Location','SouthEast','interpreter','LaTeX','FontSize',14)
-    % Using the notation of the paper RPRH: A=1, B=6, G=1 and $\delta_1>0$.
-    str=strcat('A=1, B=6, G=1, $\delta_2=',num2str(out.posLS),'$');
+    % Using the notation of the paper RPRH: A=1, B=3, G=1 and $\delta_1>0$.
+    str=strcat('A=1, B=3, G=1, $\delta_2=',num2str(out.posLS),'$');
     numpar = {'model parameters:' , str};
     title(gca,numpar,'interpreter','LaTeX','FontSize',16);
 %}
@@ -829,7 +829,7 @@ function [out, varargout] = LTSts(y,varargin)
 
     y=(y(:));
     y1=log(y);
-    % Model with linear trend, six harmonics for seasonal component and
+    % Model with linear trend, two harmonics for seasonal component and
     % varying amplitude using a linear trend).
     model=struct;
     model.trend=1;              % linear trend
