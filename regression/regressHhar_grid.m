@@ -1,5 +1,5 @@
 function [out] = regressHhar_grid(y,X,Z,varargin)
-%grid search to find minimum for ART model
+%regressHhar_grid performs a grid search to find minimum for Harvey heteroskedatic model
 %
 %
 %<a href="matlab: docsearch('regressHhar_grid')">Link to the help function</a>
