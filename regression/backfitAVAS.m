@@ -1,6 +1,8 @@
 function [newtX, rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq)
-% Backfitting algorithm (inner loop) inside avas function
-
+%backfitAVAS contains the backfitting algorithm (inner loop) inside avas function
+%
+% This funtion is not intended to be called directly
+%
 % Copyright 2008-2019.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
