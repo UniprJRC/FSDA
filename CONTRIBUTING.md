@@ -77,7 +77,7 @@ The FSDA documentation can be found in the supplementary software section of MAT
 
 ![](http://rosa.unipr.it/FSDA/demos/FSDAentrypage.jpg)
 
-Note that this documentation has been automatically created from the .m code files therefore there is a one to one correspondence between what is in the .m file and what is in the associated .html file. See our function [publishFS.m](http://rosa.unipr.it/FSDA/publishFS.html) for further details and section below [Generate the documentation of your own FSDA functions](generate-the-documentation-of-your-own-FSDA-functions)
+Note that this documentation has been automatically created from the .m code files therefore there is a one to one correspondence between what is in the .m file and what is in the associated .html file. See our function [publishFS.m](http://rosa.unipr.it/FSDA/publishFS.html) for further details and section below [Generate the documentation of your own FSDA functions](#generate-the-documentation-of-your-own-FSDA-functions)
 
 Documentation contributions of any size are welcome! Feel free to file a PR even if you're just rewording a sentence to be more clear, or fixing a spelling mistake!
 
@@ -108,9 +108,7 @@ The .m function publishFSallFiles calls routine publishFS for the list of files 
 
 ## Contribute Code
 
-We like code commits a lot! They're super handy, and they keep the project going and doing the work it needs to do to be useful to others.
-
-Code contributions of just about any size are acceptable!
+We like code commits a lot! They're super handy, and they keep the project going and doing the work it needs to do to be useful to others. Code contributions of just about any size are acceptable!
 
 The main difference between code contributions and documentation contributions is that contributing code requires inclusion of relevant tests for the code being added or changed. Contributions without accompanying tests will be held off until a test is added, unless the maintainers consider the specific tests to be either impossible, or way too much of a burden for such a contribution.
 
