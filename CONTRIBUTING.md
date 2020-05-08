@@ -156,7 +156,7 @@ Label | Apply When | Notes
 
 ## Running unit tests
 
-There are two ways to run FSDA unit tests (ALDO).
+After any pull request from a branch or any modification of a file in the code section, a testing session on Travis, CircleCI and Azure Pipelines is automatically triggered unless the comment section of the commit directive contains string "[skip ci]".
 
 
 ## Join the Project Team
