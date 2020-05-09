@@ -12,24 +12,32 @@
 
 [![GitHub contributors](https://img.shields.io/github/contributors/UniprJRC/FSDA)](https://github.com/UniprJRC/FSDA/graphs/contributors)
 
+# Flexible Robust Statistics Data Analysis
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
+  <p align="center">
+  <img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="390">
+  </p>
 
-Flexible Robust Statistics Data Analysis
-------------------------------------------
 
 FSDA Toolbox™ provides statisticians, engineers, scientists, researchers, financial analysts with a comprehensive set of tools to assess and understand their data. Flexible Statistics Data Analysis Toolbox™ software includes functions and interactive tools for analyzing and modeling data, learning and teaching statistics.
 
-The Flexible Statistics Data Analysis Toolbox™ supports a set of routines to develop robust and efficient analysis of complex data sets, ensuring an output unaffected by anomalies or deviations from model assumptions. 
+The Flexible Statistics Data Analysis Toolbox™ supports a set of routines to develop robust and efficient analysis of complex data sets (multivariate, regression, clustering, ...), ensuring an output unaffected by anomalies or deviations from model assumptions. 
 
 In addition, it offers a rich set interactive graphical tools which enable us to explore the connection in the various features of the different forward plots.
 
 All Flexible Statistics Data Analysis Toolbox™ functions are written in the open MATLAB® language. This means that you can inspect the algorithms, modify the source code, and create your own custom functions.
 
 
-FSDA
-----------------------------------------------
+ For the details about the functions present in FSDA you can browse the categorial and alphabetical list of functions of the toolbox inside MATLAB (once FSDA is installed) or at the web addresses 
+ http://rosa.unipr.it/FSDA/function-cate.html and http://rosa.unipr.it/FSDA/function-alpha.html
+
+
+
+
+#### FSDA
+
 * Is especially useful in detecting in data potential anomalies (outliers), even when they occur in groups.
 Can be used to identify sub-groups in heterogeneous data.
 * Extends functionalities in key statistical domains requiring robust analysis (cluster analysis, discriminant analysis, model selection, data transformation).
@@ -41,21 +49,23 @@ FSDA is developed for wide applicability. For its capacity to address problems f
 
 For more information see the Wiki page at https://github.com/UniprJRC/FSDA/wiki
 
-Ways to familiarize with the FSDA toolbox 
---------------------------------------------------------------------------
+#### Ways to familiarize with the FSDA toolbox 
+
 
 * Run the examples contained in files examples_regression.m or examples_multivariate.m or examples_categorical.m.  Notice that all examples are organized in cells
+* Run the tutorials in the FSDA Matlab help pages. 
+  For a preview see http://rosa.unipr.it/FSDA/examples.html
+  <p align="center">
+  <img src="http://rosa.unipr.it/FSDA/demos/examples.jpg" width="290">
+  </p>
 
-* Run the tutorials in the FSDA Matlab help pages. For a preview see
-http://rosa.unipr.it/FSDA/examples.html
 
 * Watch the videos in the Examples section of the FSDA Matlab help pages 
 For a preview see http://rosa.unipr.it/fsda_video.html
 
 * Read section "Introduction to robust statistics" or 
 	"Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see http://rosa.unipr.it/FSDA/tutorials.html
+   <p align="center">
+   <img src="http://rosa.unipr.it/FSDA/demos/tutorials.jpg" width="290">
+   </p>
 
-
-
-* Browse the categorial and alphabetical list of functions of the toolbox inside MATLAB (once FSDA is installed) or at the web addresses 
- http://rosa.unipr.it/FSDA/function-cate.html and http://rosa.unipr.it/FSDA/function-alpha.html
