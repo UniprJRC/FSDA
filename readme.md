@@ -17,7 +17,7 @@
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
 <p align="center">
-<img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="800">
+<a href="http://rosa.unipr.it/FSDA/examples.html"><img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="800"></a>
 </p>
 
 
