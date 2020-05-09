@@ -53,7 +53,7 @@ For more information see the Wiki page at https://github.com/UniprJRC/FSDA/wiki
 
 
 * Run the examples contained in files examples_regression.m or examples_multivariate.m or examples_categorical.m.  Notice that all examples are organized in cells
-* Run the tutorials in the FSDA Matlab help pages. 
+* Run the GUIs in the FSDA Matlab help pages. 
   For a preview see http://rosa.unipr.it/FSDA/examples.html
   <p align="center">
  <a href="http://rosa.unipr.it/FSDA/examples.html"><img src="http://rosa.unipr.it/FSDA/demos/examples.jpg" width="760"></a>
