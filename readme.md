@@ -16,9 +16,9 @@
 
 This project hosts the source code to the [original MATLAB FileExchange project](https://www.mathworks.com/matlabcentral/fileexchange/72999-fsda) and is place of active development.
 
-  <p align="center">
-  <img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="390">
-  </p>
+<p align="center">
+<img src="http://rosa.unipr.it/FSDA/demos/index.jpg" width="800">
+</p>
 
 
 FSDA Toolbox™ provides statisticians, engineers, scientists, researchers, financial analysts with a comprehensive set of tools to assess and understand their data. Flexible Statistics Data Analysis Toolbox™ software includes functions and interactive tools for analyzing and modeling data, learning and teaching statistics.
@@ -56,16 +56,15 @@ For more information see the Wiki page at https://github.com/UniprJRC/FSDA/wiki
 * Run the tutorials in the FSDA Matlab help pages. 
   For a preview see http://rosa.unipr.it/FSDA/examples.html
   <p align="center">
-  <img src="http://rosa.unipr.it/FSDA/demos/examples.jpg" width="290">
+  <img src="http://rosa.unipr.it/FSDA/demos/examples.jpg" width="760">
   </p>
 
 
 * Watch the videos in the Examples section of the FSDA Matlab help pages 
 For a preview see http://rosa.unipr.it/fsda_video.html
 
-* Read section "Introduction to robust statistics" or 
-	"Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see http://rosa.unipr.it/FSDA/tutorials.html
+* Read section "Introduction to robust statistics" or "Technical introduction to Robust Statistics" in the FSDA Matlab help pages. For a preview see http://rosa.unipr.it/FSDA/tutorials.html
    <p align="center">
-   <img src="http://rosa.unipr.it/FSDA/demos/tutorials.jpg" width="290">
+   <img src="http://rosa.unipr.it/FSDA/demos/tutorials.jpg" width="760">
    </p>
 
