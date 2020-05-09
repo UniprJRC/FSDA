@@ -64,7 +64,7 @@ Once it's filed the FSDA team will [label the issue](#label-issues).
 
 ## Project Setup
 
-So you wanna contribute some code! That's great! This project uses GitHub Pull Requests (PR) to manage contributions, so [read up on how to fork a GitHub project and file a PR](https://guides.github.com/activities/forking) if you've never done it before.
+So you want to contribute some code! That's great! This project uses GitHub Pull Requests (PR) to manage contributions, so [read up on how to fork a GitHub project and file a PR](https://guides.github.com/activities/forking) if you've never done it before.
 
 If this seems like a lot or you aren't able to do all this setup, you might also be able to [edit the files directly](https://help.github.com/articles/editing-files-in-another-user-s-repository/) without having to do any of this setup. Yes, [even code](#contribute-code).
 
