@@ -1,4 +1,4 @@
-function fanplot(out,varargin)
+function brushedUnits=fanplot(out,varargin)
 %fanplot plots the fan plot for transformation in linear regression
 %
 %<a href="matlab: docsearchFS('fanplot')">Link to the help function</a>
@@ -206,9 +206,16 @@ function fanplot(out,varargin)
 %                   Example - 'tag','pl_mycov'
 %                   Data Types - char
 %
-% Output:
+%  Output:
 %
-% See also:
+% brushedUnits  : brushed units. Vector. Vector containing the list of the
+%                 units which are inside subset in the trajectories which
+%                 have been brushed using option databrush. If option
+%                 databrush has not been used brushedUnits will be an empty
+%                 value.
+%
+%
+% See also: FSRfan
 %
 % References:
 %
@@ -370,6 +377,7 @@ function fanplot(out,varargin)
 
 
 %% Beginning of code
+brushedUnits=[];
 
 close(findobj('type','figure','Tag','pl_yX'));
 close(findobj('type','figure','Tag','pl_resfwd'));
@@ -1183,6 +1191,7 @@ if (~isempty(options.databrush) || iscell(options.databrush))
             end % close condition associated with persist 'on' or persist 'off'
         end % close condition associated with sely
     end % close brushing loop
+        brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = fanplotLbl(~,event_obj,out)
