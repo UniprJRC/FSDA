@@ -37,11 +37,9 @@ jobs:
       inputs:
         testResultsFormat: 'JUnit'
         testResultsFiles: '**/test-*.xml'  
-    - task: PublishCodeCoverageResults@1
-      condition: succeededOrFailed()
-      inputs:
-        codeCoverageTool: 'Cobertura'
-        summaryFileLocation: '**/coverage-*.xml'
+    - script: |
+        bash <(curl -s https://codecov.io/bash)
+      displayName: 'Upload to codecov.io'
     - task: PublishPipelineArtifact@1
       condition: always()
       inputs:
