@@ -49,7 +49,7 @@ elseif strcmp(cat2test,'multivariate-clustering')
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
     booMULT=~cellfun(@isempty,str);
     
-     str=regexp(FilesIncluded(:,1),'tclust*');
+    str=regexp(FilesIncluded(:,1),'tclust*');
     booTCLUST=~cellfun(@isempty,str);
     boo=booMULT & ~booTCLUST;
     
@@ -57,10 +57,10 @@ elseif strcmp(cat2test,'tclustMULT')
     % multivariate clustering just tclust*
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
     booMULT=~cellfun(@isempty,str);
-         str=regexp(FilesIncluded(:,1),'tclust*');
+    str=regexp(FilesIncluded(:,1),'tclust*');
     booTCLUST=~cellfun(@isempty,str);
     boo=booMULT & booTCLUST;
-
+    
 elseif strcmp(cat2test,'regression-clustering')
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
     boo=~cellfun(@isempty,str);
@@ -135,16 +135,16 @@ mkdir(testpath);
 
 
 for i=1:nfiles
-    clc
-    disp(['Filename ' FilesIncluded{i,1}])
-    disp(['Executing file ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
+    
+    % disp(['Filename ' FilesIncluded{i,1}])
+    disp(['File ' FilesIncluded{i,1} '  Number  ' num2str(i) ' of ' num2str(nfiles)])
     
     Ex=OUT{i,1}.Ex;
     
     Extra=OUT{i,1}.ExtraEx;
     Excomb=[Ex;Extra];
     for iEx=1:size(Excomb,1)
-        disp(['Running example number ' num2str(iEx)  ' of '   num2str(size(Excomb,1)) '  File: '  FilesIncluded{i,1}]);
+        disp(['Writing to file  example number ' num2str(iEx)  ' of '   num2str(size(Excomb,1)) '  contained in file: '  FilesIncluded{i,1}]);
         
         close all
         Exi=Excomb{iEx,3};
@@ -168,36 +168,6 @@ for i=1:nfiles
             %file1ID=fopen('tempfile.m','w');
             fprintf(file1ID,'%s',Exif);
             fclose('all');
-%             try
-%                 if perf==1
-%                     outp=runperf('tempfile.m');
-%                     MeanS=outp.sampleSummary.Mean;
-%                     FindNaN=isnan(MeanS);
-%                     MeanS=MeanS(~FindNaN);
-%                     TotSummary{ij,'MeanTime'}= MeanS;
-%                     
-%                     MedianS=outp.sampleSummary.Median;
-%                     MedianS=MedianS(~FindNaN);
-%                     TotSummary{ij,'MedianTime'}= MedianS;
-%                     
-%                     % TotSummary{ij,'MedianTime'}= outp.sampleSummary.Median;
-%                     TotSummary(ij,'TestActivity')={outp.TestActivity};
-%                 else
-%                     %tic
-%                     %outp=runtests(filename2open);
-%                     %time=toc;
-%                     %TotSummary{ij,'MeanTime'}=time;
-%                 end
-% %                 TotSummary(ij,'Code')=Ex(1,3);
-% %                 TotSummary(ij,'FileName')=FilesIncluded(i,1);
-% %                 TotSummary(ij,'Category')=FilesIncluded(i,8);
-% %                 TotSummary(ij,'Identifier')={['Ex' num2str(iEx)]};
-%                 ij=ij+1;
-%             catch
-%                 disp(['Error on example ' num2str(iEx)])
-%                 disp(['Name of the file: '  FilesIncluded{i,1}])
-%                 warning('FSDA:regressB:WrongInputFilet','Stop here')
-%             end
         else
             disp('Interactive example')
         end
@@ -210,24 +180,45 @@ end
 cd(testpath);
 import matlab.unittest.plugins.CodeCoveragePlugin;
 
-% Create test suite of all tests in current folder
+
+% Clear last warning
+lastwarn('');
+warn1 = lastwarn;
+
 suite = testsuite(pwd);
 
-% Create a TestRunner
-runner = matlab.unittest.TestRunner.withTextOutput();
+warn2 = lastwarn;
+if ~strcmp(warn1, warn2)
+    disp(warn2)
+    error('FSDA:runAllMyTestsFS:WrongExample','A warning occurred during test suite creation!')
+end
 
-% Add a plugin to produce a JUnit-style test report
-runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
-
-% Get file paths of source code being tested
-filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
-% Indicate where the Cobertura coverage report should be created
-covFile = matlab.unittest.plugins.codecoverage.CoberturaFormat(['coverage-' cat2test '-report.xml']);
-% Add the CodeCoveragePlugin
-runner.addPlugin(matlab.unittest.plugins.CodeCoveragePlugin.forFile(filePaths, 'Producing', covFile));
-
-% Run the test suite
-runner.run(suite);
+if perf==false
+    
+    % Create a TestRunner
+    runner = matlab.unittest.TestRunner.withTextOutput();
+    
+    % Add a plugin to produce a JUnit-style test report
+    runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
+    
+    % Get file paths of source code being tested
+    filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
+    % Indicate where the Cobertura coverage report should be created
+    covFile = matlab.unittest.plugins.codecoverage.CoberturaFormat(['coverage-' cat2test '-report.xml']);
+    % Add the CodeCoveragePlugin
+    runner.addPlugin(matlab.unittest.plugins.CodeCoveragePlugin.forFile(filePaths, 'Producing', covFile));
+    
+    % Run the test suite
+    disp('Run the test suite')
+    runner.run(suite);
+    
+else
+    import matlab.perftest.TimeExperiment
+    experiment = TimeExperiment.limitingSamplingError('NumWarmups',1,...
+        'MaxSamples',4,'RelativeMarginOfError',0.08,'ConfidenceLevel',0.97);
+    resultsTE = run(experiment,suite);
+    
+end
 
 %%
 
@@ -240,7 +231,7 @@ runner.run(suite);
 % TotSummary1=TotSummary(1:ij-1,:);
 % disp(TotSummary1)
 % cfol=pwd
-% FSDAroot 
+% FSDAroot
 % filename = [FSDAroot '/test-results/' cat2test '_test.xlsx'];
 % writetable(TotSummary1,filename,'Sheet',1,'Range','A1');
 
