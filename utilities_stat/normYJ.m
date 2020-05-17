@@ -47,7 +47,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %             2-lambda for y negative.
 %
 %
-% See also normBoxCox
+% See also normBoxCox, normYJpn
 %
 % References:
 %
@@ -134,15 +134,15 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 v=size(Y,2);
 
 if nargin<1
-    error('FSDA:normBoxCox:missingInputs','Input data matrix is missing');
+    error('FSDA:normYJ:missingInputs','Input data matrix is missing');
 end
 
 if nargin<2
-    error('FSDA:normBoxCox:missingInputs','Vector ColtoTra which specifies which variables to transform is missing');
+    error('FSDA:normYJ:missingInputs','Vector ColtoTra which specifies which variables to transform is missing');
 end
 
 if nargin<3
-    error('FSDA:normBoxCox:missingInputs','Vector la which specifies how to transforme the variables is missing');
+    error('FSDA:normYJ:missingInputs','Vector la which specifies how to transforme the variables is missing');
 end
 
 if isempty(ColtoTra) && length(la)==v
@@ -159,7 +159,7 @@ if nargin>2
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:normBoxCox:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:normYJ:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
