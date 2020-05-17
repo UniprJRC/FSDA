@@ -50,7 +50,7 @@ function brushedUnits=fanplot(out,varargin)
 %                   order to have information about the unit selected, the
 %                   step in which the unit enters the search and the
 %                   associated label. If datatooltip is a structure, it is
-%                   possible to control the aspect of the data cursor 
+%                   possible to control the aspect of the data cursor
 %                   (see function datacursormode for more details or the
 %                   examples below). The default options of the structure
 %                   are DisplayStyle='Window' and SnapToDataVertex='on'.
@@ -65,7 +65,7 @@ function brushedUnits=fanplot(out,varargin)
 %                   current plot and to see them highlighted in the y|X
 %                   plot (notice that if the plot y|X does not exist it is
 %                   automatically created). In addition, brushed units can
-%                   be highlighted in the other following plots 
+%                   be highlighted in the other following plots
 %                   (only if they are already open): monitoring residual plot
 %                   monitoring leverage plot maximum studentized residual
 %                   $s^2$ and $R^2$ Cook distance and modified Cook
@@ -160,7 +160,7 @@ function brushedUnits=fanplot(out,varargin)
 %                   Data Types - double
 %
 %       lwd     :   Linewidth. Scalar. Scalar which controls linewidth of
-%                   the curves which contain the score test. 
+%                   the curves which contain the score test.
 %                   Default line width=2.
 %                   Example - 'lwd',2
 %                   Data Types - double
@@ -491,8 +491,8 @@ if (~isempty(h))
     axes;
 else
     figure;
-    set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
 end
+set(gcf,'Name',['Fanplot for lambda=' mat2str(out.la) ]);
 
 la=out.la;
 lla=length(la);
