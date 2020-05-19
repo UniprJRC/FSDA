@@ -337,7 +337,8 @@ else
     
     for kk = k:-1:1
         
-        x=find(pascalM(1:n-kk,kk+1) > N_kk , 1);
+        %x=find(pascalM(1:n-kk,kk+1) > N_kk , 1);
+        x=(pascalM(1:n-kk,kk+1) > N_kk);
         
         if isempty(x) % || x1==n-kk
             maxx=n-1;
