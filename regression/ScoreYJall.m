@@ -93,7 +93,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %                   output to the command window).
 %               Example - 'usefmin',true
 %               Data Types - boolean or struct
-%        
+%
 %
 %       nocheck : Check input arguments. Scalar.
 %               If nocheck is equal to 1 no check is performed on
@@ -131,7 +131,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %                            estimate of $\lambda_P$ and $\lambda_N$.  This
 %                            output is present only if input option
 %                            scoremle is true.
-%                            
+%
 %
 % See also: FSRfan, Score, ScoreYJ, ScoreYjpn, fanBIC
 %
@@ -159,9 +159,9 @@ function [outSC]=ScoreYJall(y,X,varargin)
 
 
 %{
-    %% Ex in which positive and negative observations require the same lambda.
+        %% Ex in which positive and negative observations require the same lambda.
     rng('default')
-    rng(1)
+    rng(100)
     n=100;
     y=randn(n,1);
     % Transform the value to find out if we can recover the true value of
@@ -170,20 +170,21 @@ function [outSC]=ScoreYJall(y,X,varargin)
     ytra=normYJ(y,[],la,'inverse',true);
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJ(ytra,X,'intercept',0);
-    [outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+    [outSC]=ScoreYJall(ytra,X,'intercept',0);
     la=[-1 -0.5 0 0.5 1]';
-    disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
-    % Comment: if we consider the 5 most common values of lambda
-    % the value of the score test when lambda=0.5 is the only one which is not
+    Sco=[la outSC.Score];
+    Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','Ftest'});
+    disp(Scotable)
+    % Comment: if we consider the 5 most common values of lambda the value
+    % of the score test when lambda=0.5 is the only one which is not
     % significant. Both values of the score test for positive and negative
-    % observations confirm that this value of the transformation parameter is
-    % OK for both sides of the distribution.
+    % observations and the Ftest confirm that this value of the
+    % transformation parameter is OK for both sides of the distribution.
 %}
 
 %{
     %% Ex in which positive and negative observation require different lambdas.
-    rng(1000)
+    rng(2000)
     n=100;
     y=randn(n,1);
     % Tranform in a different way positive and negative values
@@ -195,46 +196,24 @@ function [outSC]=ScoreYJall(y,X,varargin)
 
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJ(ytra,X,'intercept',0);
-    [outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+    % also compute lik. ratio test based on MLE of laP and laN
+    scoremle=true;
+    [outSC]=ScoreYJall(ytra,X,'intercept',0,'scoremle',scoremle);
     la=[-1 -0.5 0 0.5 1]';
-    disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
+    Sco=[la outSC.Score];
+    Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','FtestPN' 'FtestLR'});
+    disp(Scotable)
     % Comment: if we consider the 5 most common values of lambda
     % the value of the score test when lambda=0.5 is the only one which is not
     % significant. However when lambda=0.5 the score test for negative
-    % observations is highly significant. The difference between the test for
-    % positive and the test for negative is 2.7597+0.7744=3.5341, which is very
+    % observations is highly significant. 
+    disp('Difference between the test for positive and the test for negative')  
+    disp(abs(Scotable{4,3}-Scotable{4,4})), 
+    % which is very
     % large. This indicates that the two tails need a different value of the
     % transformation parameter.
 %}
 
-%{
-    % Extended score with all default options for the wool data.
-    % Load the wool data.
-    XX=load('wool.txt');
-    y=XX(:,end);
-    X=XX(:,1:end-1);
-    % Score test using the five most common values of lambda.
-    % In this case (given that all observations are positive the extended
-    % score test for positive observations reduces to the standard score test
-    % while that for negative is equal to NaN.
-    [outSc]=ScoreYJpn(y,X);
-%}
-
-
-%{
-    % Extended score test using Darwin data given by Yeo and Yohnson.
-     y=[6.1, -8.4, 1.0, 2.0, 0.7, 2.9, 3.5, 5.1, 1.8, 3.6, 7.0, 3.0, 9.3, 7.5 -6.0]';
-     n=length(y);
-     X=ones(n,1);
-     % Score and extended score test in the grid of lambda 1, 1.1, ..., 2
-     la=[1:0.1:2];
-     % Given that there are no explanatory variables the test must be
-     % called with intercept 0
-     outpn=ScoreYJpn(y,X,'intercept',0,'la',la);
-     out=ScoreYJ(y,X,'intercept',0,'la',la);
-     disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])
-%}
 
 
 
@@ -303,12 +282,15 @@ G=exp(logG);
 % 2nd col = t test for pos
 % 3rd col = t test for neg
 % 4th col = F test for both
-% 5th col = Lik. ratio test for both
+% 5th col = Lik. ratio test for both (if input option scoremle is true)
 %  for the values of \lambda specified in vector la
 lla=length(la);
-Sc=NaN(lla,5);
 wini=NaN(n,1);
-
+if scoremle == true
+    Sc=NaN(lla,5);
+else
+    Sc=NaN(lla,4);
+end
 
 % The identity matrix of size p+1 can be
 % computed once and for all
@@ -475,20 +457,11 @@ for i=1:lla
         Sc(i,4)=Sc(i,3)^2;
     end
     
-    
-    if scoremle == true 
-        if isempty(SSElaMLE)
-            % compute the exact score test based on lik. ratio
-            Likrat=ScoreYJmle(y,X,'la',lai,'sseReducedModel',SSeR,'usefmin',usefmin,'nocheck',1);
-            Sc(i,5)=Likrat.Score;
-            laMLE=Likrat.laMLE;
-            SSElaMLE=Likrat.SSE;
-        else
-            Ftestnum=(SSeR-SSElaMLE)/2;
-            Ftestden=SSElaMLE/(n-p-2);
-            Ftest=Ftestnum/Ftestden;
-            Sc(i,5)=Ftest;
-        end
+    if scoremle == true
+        % compute the exact score test based on lik. ratio
+        Likrat=ScoreYJmle(y,X,'la',lai,'sseReducedModel',SSeR,'usefmin',usefmin,'nocheck',1);
+        Sc(i,5)=Likrat.Score;
+        laMLE=Likrat.laMLE;
     end
 end
 
