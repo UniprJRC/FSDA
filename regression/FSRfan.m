@@ -3,6 +3,37 @@ function [out]=FSRfan(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('FSRfan')">Link to the help function</a>
 %
+% The transformations for negative and positive responses were determined
+% by Yeo and Johnson (2000) by imposing the smoothness condition that the
+% second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
+% some authors, for example Weisberg (2005), query the physical
+% interpretability of this constraint which is oftern violated in data
+% analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
+% Yeo-Johnson transformation to allow two values of the transformations
+% parameter: $\lambda_N$ for negative observations and $\lambda_P$ for
+% non-negative ones.
+% FSRfan monitors:
+% 1) the t test associated with the constructed variable computed assuming
+% the same transformation parameter for positive and negative observations
+% fixed. In short we call this test, "global score test for positive
+% observations".
+% 2) the t test associated with the constructed variable computed assuming
+% a different transformation for positive observations keeping the value of
+% the transformation parameter for negative observations fixed. In short we
+% call this test, "test for positive observations".
+% 3) the t test associated with the constructed variable computed assuming
+% a different transformation for negative observations keeping the value of
+% the transformation parameter for positive observations fixed. In short we
+% call this test, "test for negative observations". 
+% 4) the F test for the joint presence of the two constructed variables
+% described in points 2) and 3.
+% 4) the F likelihood ratio test based on the MLE of $\lambda_P$ and
+% $\lambda_N$. In this case the residual sum of squares of the null model
+% bsaed on a single trasnformation parameter $\lambda$ is compared with the
+% residual sum of squares of the model based on data transformed data using
+% MLE of $\lambda_P$ and $\lambda_N$.
+%
+%
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. A vector with n elements that
@@ -51,10 +82,15 @@ function [out]=FSRfan(y,X,varargin)
 %
 %       nsamp   :   Number of subsamples which will be extracted to find
 %                   the robust estimator. Scalar.
-%                   If nsamp=0 all subsets will be
-%                   extracted. They will be (n choose p). Remark: if the
-%                   number of all possible subset is <1000 the default is
-%                   to extract all subsets otherwise just 1000.
+%                   If nsamp=0 all subsets will be extracted. They will be
+%                   (n choose p). Remark: if the number of all possible
+%                   subset is <1000 the default is to extract all subsets
+%                   otherwise just 1000. If nsamp is a matrix of size
+%                   r-by-p, it contains in the rows the subsets which sill
+%                   have to be extracted. For example, if p=3 and nsamp=[ 2
+%                   4 9; 23 45 49; 90 34 1]; the first subset is made up of
+%                   units [2 4 9], the second subset of units [23 45 49]
+%                   and the third subset of units [90 34 1];
 %                   Example - 'nsamp',1000
 %                   Data Types - double
 %
@@ -217,7 +253,7 @@ function [out]=FSRfan(y,X,varargin)
 %
 %         out:   structure which contains the following fields
 %
-%  out.Score  = (n-init) x length(la)+1 matrix containing the values of the
+%  out.Score  = (n-init+1) x length(la)+1 matrix containing the values of the
 %               score test for each value of the transformation parameter:
 %               1st col = fwd search index;
 %               2nd col = value of the score test in each step of the
@@ -225,7 +261,7 @@ function [out]=FSRfan(y,X,varargin)
 %               ...........
 %               end col = value of the score test in each step of the fwd
 %               search for la(end).
-%  out.Scorep = (n-init) x length(la)+1 matrix containing the values of the
+%  out.Scorep = (n-init+1) x length(la)+1 matrix containing the values of the
 %               score test for positive observations for each value of the
 %               transformation parameter.
 %               1st col = fwd search index;
@@ -236,7 +272,7 @@ function [out]=FSRfan(y,X,varargin)
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
 %               family is 'YJpn' or 'YJall'.
-% out.Scoren  = (n-init) x length(la)+1 matrix containing the values of the
+% out.Scoren  = (n-init+1) x length(la)+1 matrix containing the values of the
 %               score test for positive observations for each value of the
 %               transformation parameter:
 %               1st col = fwd search index;
@@ -247,7 +283,7 @@ function [out]=FSRfan(y,X,varargin)
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
 %               family is 'YJpn' or 'YJall'.
-% out.Scoreb  = (n-init) x length(la)+1 matrix containing the values of the
+% out.Scoreb  = (n-init+1) x length(la)+1 matrix containing the values of the
 %               score test for the joint presence of both constructed
 %               variables (associated with positive and negative
 %               observations) for each value of the transformation
@@ -261,7 +297,7 @@ function [out]=FSRfan(y,X,varargin)
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
 %               family is 'YJall'
-% out.Scoremle  = (n-init) x length(la)+1 matrix containing the values of the
+% out.Scoremle  = (n-init+1) x length(la)+1 matrix containing the values of the
 %               (score) likelihood ratio test for the joint presence of both constructed
 %               variables (associated with positive and negative
 %               observations) for each value of the transformation
@@ -274,7 +310,22 @@ function [out]=FSRfan(y,X,varargin)
 %               end col = value of the score test in each step
 %               of the fwd search for la(end).
 %               Note that this output is present only if input option
-%               scoremle is 'true'
+%               scoremle is true
+%    out.laMLE = (n-init+1) x 2*length(la)+1 matrix containing the values of the
+%               maximum ikelihood estimate of laP and laN. 
+%               Columns 2:3 are associated with  the search which has
+%               ordered the data using to la(1);
+%               .........
+%               Columns 2*length(la):2*length(la)+1 are associated with
+%               the search which has ordered the data using to
+%               la(length(la)).
+%               Note that out.laMLE(end,2)=out.laMLE(end,2)=...=out.laMLE(end,2*length(la))
+%               because all these variables contain the MLE of laP based on
+%               all the observations. Similarly notice that
+%               out.laMLE(end,3)=out.laMLE(end,5)=...=out.laMLE(end,2*length(la)+1)
+%               because all these variables contain the MLE of laN based on
+%               all the observations. This output is present only if input
+%               option scoremle is true.
 %  out.la     = vector containing the values of lambda for which fan plot
 %               is constructed
 %  out.bs     = matrix of size p x length(la) containing the units forming
@@ -579,13 +630,13 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     options=struct('la',la,'h',h,...
-    'nsamp',nsamp,'lms',lms,'plots',plo,'init',init,'conflev',conflev,...
-    'titl',titl,'labx',labx,...
-    'laby',laby,'xlimx',xlimx,'ylimy',ylimy,'lwd',lwd,...
-    'lwdenv',lwdenv,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,...
-    'tag',tag,'intercept',intercept,'msg',msg,'nocheck',nocheck,'family',family,...
-    'scoremle',scoremle,'usefmin',usefmin);
-
+        'nsamp',nsamp,'lms',lms,'plots',plo,'init',init,'conflev',conflev,...
+        'titl',titl,'labx',labx,...
+        'laby',laby,'xlimx',xlimx,'ylimy',ylimy,'lwd',lwd,...
+        'lwdenv',lwdenv,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,...
+        'tag',tag,'intercept',intercept,'msg',msg,'nocheck',nocheck,'family',family,...
+        'scoremle',scoremle,'usefmin',usefmin);
+    
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
         error('FSDA:FSRfan:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -612,15 +663,15 @@ if ~isempty(UserOptions)
     scoremle=options.scoremle;
     usefmin=options.usefmin;
     tag=options.tag;
-la=options.la;
-init=options.init;
+    la=options.la;
+    init=options.init;
     lwd=options.lwd;
     lwdenv=options.lwdenv;
     conflev=options.conflev;
     labx=options.labx;
     laby=options.laby;
     titl=options.titl;
-
+    
 end
 
 if strcmp(family,'BoxCox')
@@ -703,6 +754,11 @@ seq100=100*(1:1:ceil(n/100));
 
 binit=zeros(p,lla);
 
+% Preextract subsample once and for all for all values of lambda;
+if lla>1
+     [nsamp] = subsets(nsamp,n,p);
+end
+
 % loop over the values of \lambda
 for i=1:lla
     
@@ -773,18 +829,13 @@ for i=1:lla
                     % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
                     %                     if i==1
                     if mm==init
-                       clear cachedlahatPreviousStep
+                        clear cachedlahatPreviousStep
                     end
                     
                     [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'scoremle',scoremle,'nocheck',1,'usefmin',usefmin);
                     if scoremle == true
                         laMLE(mm-init+1,i*2:i*2+1)=outSCpn.laMLE;
                     end
-                    %                        SSElaMLE(mm-init+1,2)=outSCpn.SSElaMLE;
-                    %                     else
-                    %                             [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'scoremle',scoremle,...
-                    %                         'nocheck',1,'SSElaMLE',SSElaMLE(mm-init+1,2));
-                    %                     end
                 end
                 
                 if BoxCox<=-1
