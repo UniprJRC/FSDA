@@ -908,8 +908,9 @@ for i=1:lla
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;
                     else
-                        % ALSO INCLUDE VALUE OF LAMBDA
-                        disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                        if msg==1
+                            disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
+                        end
                         Unlai(mm-init+1,2:end)=unit(1:10);
                     end
                 end
