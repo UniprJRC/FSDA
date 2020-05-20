@@ -288,7 +288,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %% Beginning of code
 
 % We cache the MATLAB memory information for better performance.
-persistent cachedsys; %#ok<PSET>
+persistent cachedsys 
 
 seq=1:n;
 
@@ -379,6 +379,7 @@ else
                 sys = cachedsys;
             else
                 [~,sys]=memory;
+                cachedsys=sys;
             end
             if sys.PhysicalMemory.Available > 2*8*n^2
                 pascalM=pascal(n);
