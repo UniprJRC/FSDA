@@ -197,8 +197,8 @@ for i=1:lla
     w=y;
     
     lai=la(i);
-    Glaminus1=G^(lai-1);
-    
+    % Glaminus1=G^(lai-1);
+    Glaminus1=exp((lai-1)*logG);
     
     % Define transformed and constructed variable
     % transformation for non negative values
@@ -233,7 +233,6 @@ for i=1:lla
     else  % la equals 2
         znegs=-logvneg/G;
         z(negs)=znegs;
-        
         w(negs)=logvneg.*(logvneg/2+logG)/G;
     end
     
