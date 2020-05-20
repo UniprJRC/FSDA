@@ -24,7 +24,7 @@ function [out]=FSRfan(y,X,varargin)
 % 3) the t test associated with the constructed variable computed assuming
 % a different transformation for negative observations keeping the value of
 % the transformation parameter for positive observations fixed. In short we
-% call this test, "test for negative observations". 
+% call this test, "test for negative observations".
 % 4) the F test for the joint presence of the two constructed variables
 % described in points 2) and 3.
 % 4) the F likelihood ratio test based on the MLE of $\lambda_P$ and
@@ -312,7 +312,7 @@ function [out]=FSRfan(y,X,varargin)
 %               Note that this output is present only if input option
 %               scoremle is true
 %    out.laMLE = (n-init+1) x 2*length(la)+1 matrix containing the values of the
-%               maximum ikelihood estimate of laP and laN. 
+%               maximum ikelihood estimate of laP and laN.
 %               Columns 2:3 are associated with  the search which has
 %               ordered the data using to la(1);
 %               .........
@@ -709,6 +709,7 @@ if  init <p+1
 end
 
 
+
 %% Start of the forward search
 zeron1=false(n,1);
 
@@ -750,13 +751,16 @@ r=[seq zeros(n,1)];
 
 % If n is very large, the step of the search is printed every 100 step
 % seq100 is linked to printing
-seq100=100*(1:1:ceil(n/100));
+seq100 = 1000*(1:1:ceil(n/1000));
+seq100boo=false(n,1);
+seq100boo(seq100)=true;
+
 
 binit=zeros(p,lla);
 
 % Preextract subsample once and for all for all values of lambda;
 if lla>1
-     [nsamp] = subsets(nsamp,n,p);
+    [nsamp] = subsets(nsamp,n,p);
 end
 
 % loop over the values of \lambda
@@ -801,11 +805,10 @@ for i=1:lla
         % FS loop will not be performed
     else
         for mm=ini0:n
-            % if n>200 show every 100 steps the fwd search index
-            if msg==1 && n>200
-                if length(intersect(mm,seq100))==1
-                    disp(['m=' int2str(mm)]);
-                end
+            % if n>1000 show every 100 steps the fwd search index
+            if  msg==1 && seq100boo(mm) == true
+                % OLD CODE if length(intersect(mm,seq100))==1
+                disp(['m=' int2str(mm)]);
             end
             
             
