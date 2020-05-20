@@ -5,7 +5,8 @@ function [out]=fanBIC(outFSRfan,varargin)
 %
 % Required input arguments:
 %
-%  outFSRfan :  Structure created with function FSRfant. Structure. Structure containing the following fields
+%  outFSRfan :  Structure created with function FSRfan. Structure. 
+%               Structure containing the following fields
 %outFSRfan.Score  =  (n-init) x length(la)+1 matrix:
 %               1st col = fwd search index;
 %               2nd col = value of the score test in each step
@@ -74,11 +75,11 @@ function [out]=fanBIC(outFSRfan,varargin)
 %               Data Types - double
 %
 %       plots   :  Plot on the screen. Scalar.
-%                   If plots=1 a two panel plot will be produced.
-%                   The top panel contains the BIC for the various values
-%                   of lambda while the bottom panel contains the fraction
-%                   of obseravtions in agreement with the different values
-%                   of lambda.
+%                   If plots=1 a three panel plot will be produced.
+%                   The left panel contains the BIC for the various values
+%                   of lambda, the right panel the smoothness index, while
+%                   the bottom panel the fraction of obseravtions in
+%                   agreement with the different values of lambda.
 %                   Example - 'plots',1
 %                   Data Types - double
 %
@@ -164,7 +165,7 @@ function [out]=fanBIC(outFSRfan,varargin)
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
-    % la = vector contanining the grid of values to use for the 
+    % la = vector contanining the grid of values to use for the
     % transformation parameter
     la=-1:0.1:1;
     [outFSRfan]=FSRfan(y,X,'la',la,'msg',0,'plots',0);
@@ -180,9 +181,8 @@ nla=length(la);
 X=outFSRfan.X;
 y=outFSRfan.y;
 bs=outFSRfan.bs;
-[n,p]=size(X);
-Xwithintercept=[ones(n,1) X];
-pwithintercept=p+1;
+[n,pwithintercept]=size(X);
+
 seq=1:n;
 logn=log(n);
 % Divide central part from final part of the search
@@ -253,8 +253,9 @@ nonnegs=y>=0;
 SumLogY=sum( log(   (1 + abs(y)).^(2 * nonnegs - 1)) );
 
 % Initialize matrix BIC
-% Value of BIC for each value of la
-BIC=[la(:) zeros(nla,1)];
+% 2nd col = value of BIC for each value of la
+% 3rd col = smoothness index (the larger the better)
+BIC=[la(:) zeros(nla,2)];
 
 for j=1:nla
     Scolaj=abs(Sco(:,j+1));
@@ -320,7 +321,7 @@ for j=1:nla
     % logJ = log of the Jacobian
     logJ=(la(j)-1)*SumLogY;
     yb=ytraj(BBla(:,j)==2);
-    Xb=Xwithintercept(BBla(:,j)==2,:);
+    Xb=X(BBla(:,j)==2,:);
     b=Xb\yb;
     e=yb-Xb*b;
     sigma2hat=(e'*e)/hh;
@@ -334,11 +335,17 @@ for j=1:nla
     
     BIC(j,2)=2*(-0.5*n*log(factor*sigma2hat)+logJ)-(pwithintercept+1+n-hh)*logn;
     
+    % Compute smoothness index
+    boo=Sco(:,1)<=hh;
+    BIC(j,3)=1/(mean(Scolaj(boo))*factor);
 end
 
-% Find best value of lambda
+% Find best value of lambda according to BIC
 [~,imax]=max(BIC(:,2));
 labest=la(imax);
+
+% Find best value of lambda according to smoothness index
+[~,imaxSI]=max(BIC(:,3));
 
 
 if plots == 1
@@ -353,10 +360,11 @@ if plots == 1
     end
     set(gcf,'Name',['BIC for lambda=' mat2str(outFSRfan.la) ]);
     
-    nr=1;
+    nr=4;
     nc=2;
-    subplot(nr,nc,1)
     
+    % Panel on the left
+    subplot(nr,nc,[1 3 5])
     plot(BIC(:,1),BIC(:,2),'-ok')
     if length(la)<=6
         set(gca,'XTick',BIC(:,1));
@@ -373,21 +381,41 @@ if plots == 1
         set(gca,'XTickLabelRotation',90)
     end
     
-    subplot(nr,nc,2)
-    hold('on')
-    bar(la, mmstop(:,2)/n)
-    bar(la, mmstop(:,3)/n,'r')
-    ylim([min(mmstop(:,3))/n-0.02 1])
+    % Panel on the right
+    subplot(nr,nc,[2 4 6])
+    plot(BIC(:,1),BIC(:,3),'-ok')
     if length(la)<=6
         set(gca,'XTick',BIC(:,1));
     else
         set(gca,'XTick',BIC(1:2:length(la),1));
     end
+    ylabel('Smoothnes  index')
+    xlabel('\lambda')
+    hold('on')
+    
+    plot(BIC(imaxSI,1),BIC(imaxSI,3),'o','MarkerFaceColor','b')
+    xlim([-0.1+BIC(1,1),BIC(end,1)+0.1])
+    set(gca,'Xgrid','on')
+    if length(la)>6
+        set(gca,'XTickLabelRotation',90)
+    end
+    
+    % Bottom panel
+    subplot(nr,nc,[7 8])
+    hold('on')
+    bar(la, mmstop(:,2)/n)
+    bar(la, mmstop(:,3)/n,'r')
+    ylim([min(mmstop(:,3))/n-0.02 1])
+    set(gca,'XTick',BIC(:,1));
+    %     else
+    %         set(gca,'XTick',BIC(1:2:length(la),1));
+    %     end
     xlabel('\lambda')
     if length(la)>6
         set(gca,'XTickLabelRotation',90)
     end
     hold('off')
+    
     
     % tag the figure
     set(gcf,'Tag',tag)
