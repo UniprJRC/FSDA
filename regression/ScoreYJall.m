@@ -276,7 +276,6 @@ if nargin>2
     usefmin=options.usefmin;
     % SSElaMLE = residual sum of squares of the regression model based on
     % MLE of laPos and laNeg
-    SSElaMLE=options.SSElaMLE;
 end
 
 
