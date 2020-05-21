@@ -5,7 +5,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %
 % Required input arguments:
 %
-%  outFSRfan :  Structure created with function FSRfan. Structure. 
+%  outFSRfan :  Structure created with function FSRfan. Structure.
 %               Structure containing the following fields
 %outFSRfan.Score  =  (n-init) x length(la)+1 matrix:
 %               1st col = fwd search index;
@@ -190,7 +190,7 @@ istep = n-floor(13*sqrt(n/200));
 
 init=floor(n*0.6);
 conflev=0.9999;
-bonflev=0;
+bonflev='';
 family='YJ';
 plots=1;
 tag='pl_fanBIC';
@@ -297,12 +297,10 @@ for j=1:nla
     end
     n1=length(good);
     ini=min([round(n1*0.8) n1-6]);
-    if bonflev==0
-        [~,newbsbj]=intersect(good,bs(:,j));
-        outl=FSR(ytraj(good),X(good,:),'nocheck',1,'plots',0,'msg',0,'init',ini,'lms',newbsbj);
-    else
-        outl=FSR(ytraj(good),X(good,:),'bonflev',0.8,'nocheck',1,'plots',1,'msg',0,'init',ini);
-    end
+    
+    % Subsequent outlier detection
+    [~,newbsbj]=intersect(good,bs(:,j));
+    outl=FSR(ytraj(good),X(good,:),'nocheck',1,'bonflev',bonflev,'plots',0,'msg',0,'init',ini,'lms',newbsbj);
     
     LowerEnv=FSRenvmdr(n1,size(X,2)+1,'init',ini);
     % If the value of mdr is always below the lower envelope
