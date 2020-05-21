@@ -150,18 +150,29 @@ Sc=zeros(lla,1);
 Lik=Sc;
 
 % Geometric mean of the observations
-G=exp(mean(log(y)));
+logy=log(y);
+G=exp(sum(logy)/n);
+logG=log(G);
 
 % loop over the values of \lambda
 for i=1:lla
-  
+  lai=la(i);
     % Define transformed and constructed variable
-    if abs(la(i))<1e-8
-        z=G*log(y);
-        w=G*log(y).*(log(y)/2-log(G));
+    if abs(lai)<1e-8
+        z=G*logy;
+        w=G*logy.*(logy/2-logG);
     else
-        z=(y.^la(i)-1)/(la(i)*G^(la(i)-1));
-        w=(y.^la(i).*log(y)-(y.^la(i)-1)*(1/la(i)+log(G)))/(la(i)*G^(la(i)-1));
+        % laiGlaim1=lai*G^(lai-1);
+        laiGlaim1 =lai*exp((lai-1)*logG); 
+        % ylai=y.^lai;
+        ylai=exp(lai*logy);
+        ylaim1=ylai-1;
+        z=ylaim1/laiGlaim1;
+        w=(ylai.*logy-ylaim1*(1/lai+logG))/laiGlaim1;
+        
+        % OLD slow code
+        % z=(y.^la(i)-1)/(la(i)*G^(la(i)-1));
+        % w=(y.^la(i).*log(y)-(y.^la(i)-1)*(1/la(i)+log(G)))/(la(i)*G^(la(i)-1));
     end
     
     % Define augmented X matrix

@@ -287,6 +287,9 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 
 %% Beginning of code
 
+% We cache the MATLAB memory information for better performance.
+persistent cachedsys 
+
 seq=1:n;
 
 if nargin<4 || isempty(ncomb)
@@ -372,7 +375,12 @@ else
         % The Pascal triangle can be used only if there is enough memory.
         % Unfortunately, the memory check works only in PC platforms.
         if ispc % ispc returns a logical: no need to specify ispc == true
-            [~,sys]=memory;
+            if ~isempty(cachedsys)
+                sys = cachedsys;
+            else
+                [~,sys]=memory;
+                cachedsys=sys;
+            end
             if sys.PhysicalMemory.Available > 2*8*n^2
                 pascalM=pascal(n);
                 usepascal=1;
