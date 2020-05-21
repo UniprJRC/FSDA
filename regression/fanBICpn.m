@@ -292,6 +292,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %{
     % Example of the use of options fraciniFSR and plots.
     % Balance sheets data.
+
     XX=load('Balancesheets.txt');
     % Define X and y
     y=XX(:,6);
@@ -301,7 +302,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
     % negative observations must have the same tramsformation parameter.
-    labest=outini.labest;
+    laini=outini.labest;
     % Compute test for positive and test for negative using labest
     indexlabest=find(laini==outini.labest);
     % Find initial subset to initialize the search.
