@@ -431,16 +431,23 @@ end
 ytra=y;
 Exc=zeros(length(laposcand)*length(lanegcand),9);
 BBlacell=cell(length(laposcand)*length(lanegcand),1);
+
+Excnegj=zeros(length(lanegcand),9);
+BBlacellj=cell(length(lanegcand),1);
+    ynegs=y(negs);
+ynonnegs=y(~negs);
 ij=1;
+llanegcand=length(lanegcand);
 for jjpos=1:length(laposcand)
     laposj=laposcand(jjpos);
-    ytra(~negs)=normYJ(y(~negs),[],laposj,'inverse',false,'Jacobian',false);
+    ytra(~negs)=normYJ(ynonnegs,[],laposj,'inverse',false,'Jacobian',false);
     
-    for jjneg=1:length(lanegcand)
+    parfor jjneg=1:llanegcand
         lanegj=lanegcand(jjneg);
-        ytra(negs)=normYJ(y(negs),[],lanegj,'inverse',false,'Jacobian',false);
-        close all
-        [outtest]=FSRfan(ytra,Xwithintercept,'plots',0,'init',init,'nsamp',nsamp,'la',1,...
+        ytra1=ytra;
+        ytra1(negs)=normYJ(ynegs,[],lanegj,'inverse',false,'Jacobian',false);
+        
+        [outtest]=FSRfan(ytra1,Xwithintercept,'plots',0,'init',init,'nsamp',nsamp,'la',1,...
             'msg',0,'family','YJall','conflev',conflev,'scoremle',scoremle,'nocheck',1);
         
         if msg==1
@@ -453,10 +460,10 @@ for jjpos=1:length(laposcand)
         end
         Sco=[outtest.Score outtest.Scorep(:,2) outtest.Scoren(:,2) outtest.Scoreb(:,2)];
         % Exceedance on the global Score test
-        [mmTest,BBla] = fanBICpncore(ytra,Xwithintercept,Sco,bonflev,outtest.bs,init,conflev,fraciniFSR);
+        [mmTest,BBla] = fanBICpncore(ytra1,Xwithintercept,Sco,bonflev,outtest.bs,init,conflev,fraciniFSR);
         
         % Store BBla
-        BBlacell{ij}=BBla;
+        BBlacellj{jjneg}=BBla;
         
         % vt = variance of the truncated normal distribution
         % 1-hh/n is the trimming percentage
@@ -472,7 +479,7 @@ for jjpos=1:length(laposcand)
         
         % Store value of R2 in the step before the entry of the
         % first outlier
-        yb=ytra(BBla==2);
+        yb=ytra1(BBla==2);
         Xb=Xwithintercept(BBla==2,:);
         b=Xb\yb;
         e=yb-Xb*b;
@@ -511,9 +518,12 @@ for jjpos=1:length(laposcand)
         SmoIndexW=1./(tPNdiffMeanW*t0diffMeanW*(factor.^2));
         
         
-        Exc(ij,1:9)=[laposj lanegj mmTest(1:2)' BIC SmoIndex SmoIndexW R2c  R2];
-        ij=ij+1;
+        Excnegj(jjneg,:)=[laposj lanegj mmTest(1:2)' BIC SmoIndex SmoIndexW R2c  R2];
+        % ij=ij+1;
     end
+    Exc(ij:ij+llanegcand-1,:)=Excnegj;
+    BBlacell(ij:ij+llanegcand-1)=BBlacellj;
+    ij=ij+llanegcand;
 end
 
 % Set to NaN the combination of values of laP and laN which are not
