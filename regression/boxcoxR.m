@@ -13,7 +13,7 @@ function out=boxcoxR(y,X, varargin)
 %               -(n/2) \log( (y(\lambda)-X\beta(\lambda))'(y(\lambda)-X\beta(\lambda))/n) +\log J
 %               \]
 %               where  $y(\lambda)$ is the vector of transformed
-%               observations using Box Cox family,  Yeo and Johnson 
+%               observations using Box Cox family,  Yeo and Johnson
 %               or extended Yao and Johnson family
 %               \[
 %               \beta(\lambda) = (X'X)^{-1} X' y(\lambda)
@@ -46,7 +46,7 @@ function out=boxcoxR(y,X, varargin)
 %
 % Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -101,23 +101,23 @@ function out=boxcoxR(y,X, varargin)
 %               Example - 'laseq',[-1:0.001;0.7]
 %               Data Types - double
 %
-%          laseqPos : Transformation for positive observations. 
+%          laseqPos : Transformation for positive observations.
 %                  Vector. Vector
 %                  which contains the sequence of values of lambda which
-%                  are used to transform positive observations when 
+%                  are used to transform positive observations when
 %                  family 'YJpn'. The default value of laseqPos
 %                  is -2:0.01:2. This optional input parameter is ignored
 %                  if family is 'BoxCox' or 'YJ'
 %               Example - 'laseqPos',[-1:0.001;0.7]
 %               Data Types - double
 %
-%          laseqNeg : Transformation for negative observations. 
+%          laseqNeg : Transformation for negative observations.
 %                  Vector. Vector
 %                  which contains the sequence of values of lambda which
-%                  are used to transform negative observations when 
+%                  are used to transform negative observations when
 %                  family 'YJpn'. The default value of laseqNeg
 %                  is -2:0.01:2. This optional input is ignored if family
-%                  is 'BoxCox' or 'YJ' 
+%                  is 'BoxCox' or 'YJ'
 %               Example - 'laseqNeg',[-1:0.001;0.7]
 %               Data Types - double
 %
@@ -130,6 +130,31 @@ function out=boxcoxR(y,X, varargin)
 %               a contour plot is produced.
 %               Example - 'plots',true
 %               Data Types - boolean
+%
+%    usefmin :  use solver to find MLE of lambda. Boolean or struct.
+%               This option applies just if family is YJpn. If usefimin is
+%               true or usefmin is a struct, in case of family YJpn, it is
+%               possible to use MATLAB solvers fminsearch or fminunc to
+%               find the maximum likelihood estimates of $\lambda_P$ and
+%               $\lambda_N$. The default value of usefmin is false that is
+%               solver is not used and the likelihood is evaluated at the
+%               points laseqPos and laseqNeg.
+%               If usefmin is a structure it may contain the following
+%               fields:
+%               usefmin.MaxIter = Maximum number of iterations (default is 1000).
+%               usefmin.TolX   = Termination tolerance for the parameters
+%                   (default is 1e-7).
+%               usefmin.solver = name of the solver. Possible values are
+%                   'fminsearch' (default) and 'fminunc'. fminunc needs the
+%                   optimization toolbox.
+%               usefmin.displayLevel = amount of information displayed by
+%                   the algorithm. possible values are 'off' (displays no
+%                   information, this is the default), 'final' (displays
+%                   just the final output) and 'iter' (displays iterative
+%                   output to the command window).
+%               Example - 'usefmin',true
+%               Data Types - boolean or struct
+%
 %
 % Output:
 %
@@ -150,11 +175,21 @@ function out=boxcoxR(y,X, varargin)
 %               'BoxCox' or 'YJ'.
 % out.LogLik   = matrix containing the value of the profile loglikelihood for each
 %               value in laseq or laseqPos and laseqNeg. The dimension of
-%               out.LogLik is laseq-by-2 if family is 'BoxCox' or 'YJ'. In
+%               out.LogLik is length(laseq)-by-2 if family is 'BoxCox' or 'YJ'. In
 %               this case the first column contains the values of laseq and
 %               the second column the values of the profile log lik. If
 %               family is 'YJ' the dimension of out.LogLik is
-%               length(laseqPos)-by-length(laseqNeg).
+%               length(laseqPos)-by-length(laseqNeg) if input option
+%               usefmin is false (default) else it a 9-by-9 matrix
+%               containing the value of the likelihood in correspondence of
+%               the points -2:0.5:2. Note that if usefmin is true solver is
+%               used to find MLE of laPos and laNeg therefore likelihood is
+%               computed for the 81 value just to find a preliminary
+%               estimate of laPos and laNeg for the solver.
+% out.exitflag =  flag which informs about convergence. exitflag =0
+%                 implies normal convergence, else no convergence has been
+%                 obtained. This ouptut is present only if input option
+%                 usefmin is true or struct and family is YJpn.
 %
 %
 %
@@ -248,8 +283,47 @@ function out=boxcoxR(y,X, varargin)
     % have to transformed, negative observations have to be transformed using
     % lambda=0. For more details see Atkinson Riani and Corbellini (2020)
 %}
-    
+
+%{
+    %% Ex of the use of option usefmin.
+    rng(500)
+    % Generate regression data
+    [yori,X]=simulateLM(100,'R2',0.95);
+    % Transform in a different way positive and negative values
+    laPos=0.2;
+    laNeg=0.8;
+    y=normYJpn(yori,[],[laPos laNeg],'inverse',true);
+    % Use solver to find MLE of laPos and laNeg
+    usefmin=struct;
+    % specify maximum number of iterations
+    usefmin.MaxIter=100;
+    out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
+    disp('MLE of laPos and laNeg')
+    disp(out.lahat)
+%}
+
+%{
+    %% Another example of the use of option usefmin.
+    % In this example we specify as solver to use fminunc
+    rng(1000)
+    % Generate regression data
+    [yori,X]=simulateLM(100,'R2',0.6);
+    % Transform in a different way positive and negative values
+    laPos=0.4;
+    laNeg=-0.9;
+    y=normYJpn(yori,[],[laPos laNeg],'inverse',true);
+    % Use solver to find MLE of laPos and laNeg
+    usefmin=struct;
+    % specify maximum number of iterations
+    usefmin.MaxIter=100;
+    usefmin.solver='fminunc';
+    out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
+    disp('MLE of laPos and laNeg')
+    disp(out.lahat)
+%}
+
 %% Beginning of code
+persistent cachedlahatPreviousStep;
 
 nnargin=nargin;
 vvarargin=varargin;
@@ -266,12 +340,15 @@ laseqNeg = -2:0.01:2; % laseqPos;
 plots=0;
 family='BoxCox';
 conflev=0.95;
+usefmin=false;
+
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
     
     options=struct('family',family,'plots',0,'laseq',laseq,'nocheck',0,...
-        'intercept',1,'conflev',conflev,'laseqPos',laseqPos,'laseqNeg',laseqNeg);
+        'intercept',1,'conflev',conflev,'laseqPos',laseqPos,...
+        'laseqNeg',laseqNeg,'usefmin',usefmin);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -293,6 +370,7 @@ if nargin > 2
     conflev=options.conflev;
     laseqPos=options.laseqPos;
     laseqNeg=options.laseqNeg;
+    usefmin=options.usefmin;
 end
 
 
@@ -305,6 +383,41 @@ elseif strcmp(family,'YJ')
 elseif strcmp(family,'YJpn')
     BoxCoxTra=3;
     
+    MaxIter      = 1000;
+    TolX         = 1e-6;
+    typemin      = 1;
+    displayLevel = 'off'; % no display during iterations
+    
+    if isstruct(usefmin)
+        useOptim=true;
+        if isfield(usefmin,'MaxIter') == true
+            MaxIter=usefmin.MaxIter;
+        end
+        
+        if isfield(usefmin,'TolX') == true
+            TolX=usefmin.TolX;
+        end
+        
+        if  isfield(usefmin,'solver') == true
+            solver=usefmin.solver;
+            if strcmp(solver,'fminsearch')==1
+                typemin=1;
+            elseif strcmp(solver,'fminunc')==1
+                typemin=2;
+            else
+                error('FSDA:boxcoxR:WrongInptOption',['solver in input structure' ...
+                    ' usefmin can only be ''fminsearch'' or  ''fminunc'''])
+            end
+        end
+        if isfield(usefmin,'displayLevel') == true
+            displayLevel=usefmin.displayLevel;
+        end
+        
+    elseif islogical(usefmin)
+        useOptim=usefmin;
+    else
+        error('FSDA:boxcoxR:WrongType','Input option usefmin must be lofical or struct')
+    end
 else
     warning('FSDA:boxcoxR:WrongFamily','Transformation family which has been chosen is not supported')
     error('FSDA:boxcoxR:WrongFamily','Supported values are BoxCox or YeoJohnson')
@@ -335,7 +448,7 @@ if BoxCoxTra == 1
     
     % Add the extra check on vector y
     if min(y)<0
-        error('FSDA:Score:ynegative','BoxCox family cannot be computed because min(y) is smaller than 0. Please use Yeo-Johnson family')
+        error('FSDA:boxcoxR:ynegative','BoxCox family cannot be computed because min(y) is smaller than 0. Please use Yeo-Johnson family')
     end
     
     SumLogY=sum(log(y));
@@ -360,6 +473,7 @@ if BoxCoxTra == 1
     
 elseif BoxCoxTra ==2
     
+    
     LogLik=[laseq(:) zeros(length(laseq),1)];
     ij=0;
     
@@ -381,60 +495,79 @@ elseif BoxCoxTra ==2
         LogLik(ij,2)=-0.5*n*log(sigma2hat)+logJ;
     end
     
-elseif BoxCoxTra ==3
-    LogLik=zeros(length(laseqPos),length(laseqNeg));
+elseif BoxCoxTra ==3 % This is the case of two values of lambda
     
     nonnegs=y>=0;
     negs=~nonnegs;
-    
     ynonnegs=y(nonnegs);
     ynegs=y(negs);
-    SumLogYp=sum(log(ynonnegs+1));
-    SumLogYn=sum(-log(-ynegs+1));
-    
-    ijlaPos=0;
-    for laPos=laseqPos
-        ijlaPos=ijlaPos+1;
-        ijlaNeg=0;
-        ytra=y;
-        % Yeo and Johnson transformation for positive observations (without the Jacobian)
-        % YJ transformation is the Box-Cox transformation of
-        % y+1 for nonnegative values of y
-        % ytra(nonnegs)=normYJ(y(nonnegs),1,laPos,'Jacobian',false);
-        if laPos ~=0
-            ytra(nonnegs)= ((y(nonnegs)+1).^laPos-1)/laPos;
-        else
-            ytra(nonnegs)= log(y(nonnegs)+1);
-        end
+    logynonnegsp1=log(ynonnegs+1); 
+    log1mynegs=log(1-ynegs);
+    SumLogYp=sum(logynonnegsp1);
+    SumLogYn=sum(-log1mynegs);
+    % cachedlahatPreviousStep=[];
+    % if useOptim==true redefine laseqPos and laseqNeg in order to find
+    % a rough value for the optmization
+    if useOptim==true && isempty(cachedlahatPreviousStep)
+        maxL=2;
+        laseqPos=-maxL:0.5:maxL;
+        laseqNeg=-maxL:0.5:maxL;
         
+        LogLik=zeros(length(laseqPos),length(laseqNeg));
         
-        for laNeg=laseqNeg
-            ijlaNeg=ijlaNeg+1;
-            
-            % Yeo and Johnson transformation for negative values (without the Jacobian)
+        ijlaPos=0;
+        for laPos=laseqPos
+            ijlaPos=ijlaPos+1;
+            ijlaNeg=0;
+            ytra=y;
+            % Yeo and Johnson transformation for positive observations (without the Jacobian)
             % YJ transformation is the Box-Cox transformation of
-            %  |y|+1 with parameter 2-lambda for y negative.
-            % ytra(negs)=normYJ(y(negs),1,laNeg,'Jacobian',false);
-            if 2-laNeg~=0
-               % Slower version
-               % ytra(negs) = - ((-y(negs)+1).^(2-laNeg)-1)/(2-laNeg);
-               % Faster version
-                ytra(negs)= -( exp( (2-laNeg)* log(-y(negs)+1)) -1)/(2-laNeg);
+            % y+1 for nonnegative values of y
+            % ytra(nonnegs)=normYJ(y(nonnegs),1,laPos,'Jacobian',false);
+            if laPos ~=0
+                ytra(nonnegs)= ((y(nonnegs)+1).^laPos-1)/laPos;
             else
-                ytra(negs) = -log(-y(negs)+1);
+                ytra(nonnegs)= log(y(nonnegs)+1);
             end
             
-            % Residual sum of squares using y(lambda) divided by n
-            sigma2hat=ytra'*A*ytra/n;
             
-            % logJ = log of the Jacobian
-            logJ=(laPos-1)*SumLogYp +(laNeg-1)*SumLogYn;
-            
-            %  Value of Profile Log likelihood
-            LogLik(ijlaPos,ijlaNeg)=-0.5*n*log(sigma2hat)+logJ;
+            for laNeg=laseqNeg
+                ijlaNeg=ijlaNeg+1;
+                
+                % Yeo and Johnson transformation for negative values (without the Jacobian)
+                % YJ transformation is the Box-Cox transformation of
+                %  |y|+1 with parameter 2-lambda for y negative.
+                % ytra(negs)=normYJ(y(negs),1,laNeg,'Jacobian',false);
+                if 2-laNeg~=0
+                    % Slower version
+                    % ytra(negs) = - ((-y(negs)+1).^(2-laNeg)-1)/(2-laNeg);
+                    % Faster version
+                    ytra(negs)= -( exp( (2-laNeg)* log(-y(negs)+1)) -1)/(2-laNeg);
+                else
+                    ytra(negs) = -log(-y(negs)+1);
+                end
+                
+                % logJ = log of the Jacobian
+                logJ=(laPos-1)*SumLogYp +(laNeg-1)*SumLogYn;
+                
+                % Residual sum of squares using y(lambda) divided by n
+                sigma2hat=ytra'*A*ytra/n;
+                
+                %  Value of Profile Log likelihood
+                LogLik(ijlaPos,ijlaNeg)=-0.5*n*log(sigma2hat)+logJ;
+                
+                % Alternative implementation using normalized transformed
+                % observations (z(lambda))
+                % ytra1=ytra/((exp(logJ))^(1/n));
+                % sigma2hat1=ytra1'*A*ytra1/n;
+                % LogLik(ijlaPos,ijlaNeg)=-0.5*n*log(sigma2hat1);
+            end
         end
+    else
+        LogLik=[];
     end
 end
+
 
 out=struct;
 
@@ -478,15 +611,16 @@ if BoxCoxTra <=2
         stext=sprintf('%2.0f%% confidence interval for \\lambda',round(100*(conflev)));
         title(stext)
     end
-else
+else % This is the case of 2 values of lambda
     
-    % Find row and column index of max of LogLik
-    [row, col] = find(ismember(LogLik, max(LogLik(:))));
-    % (approximate) MLE of lambda
-    lahat=[laseqPos(row), laseqNeg(col)];
-    
-    % Store MLE of lambda
-    out.lahat=lahat;
+    if isempty(cachedlahatPreviousStep)
+        % Find row and column index of max of LogLik
+        [row, col] = find(ismember(LogLik, max(LogLik(:))));
+        % (approximate) MLE of lambda
+        lahat=[laseqPos(row(1)), laseqNeg(col(1))];
+    else
+        lahat=cachedlahatPreviousStep;
+    end
     
     if plots==1
         [Xlapos,Ylaneg] = meshgrid(laseqNeg,laseqPos);
@@ -497,13 +631,78 @@ else
         title(['$\hat \lambda_P=' num2str(lahat(1)) ', \hat \lambda_N=' num2str(lahat(2)) '$'] ,...
             'Interpreter','latex','FontSize',14)
     end
+    
+    % Start the minimization
+    if useOptim==true
+        
+        
+        nlinfitOptions=statset('Display',displayLevel,'MaxIter',MaxIter,'TolX',TolX);
+        
+        
+        % theta0=lahat+1e-3*randn(1,2);
+        theta0=lahat;
+        likfminOneParameter = @(laBoth)likfmin(laBoth, y, A, SumLogYp, SumLogYn, nonnegs, negs, n, logynonnegsp1, log1mynegs);
+        if typemin == 1
+            [lahatfinal,~,exitflag]  = ...
+                fminsearch(likfminOneParameter,theta0,nlinfitOptions);
+        else
+            [lahatfinal,~,exitflag] = ...
+                fminunc(likfminOneParameter,theta0,nlinfitOptions);
+        end
+        % Put in cache the value of lahatfinal and store it
+        cachedlahatPreviousStep=lahatfinal;
+        % Store MLE of lambda
+        out.lahat=lahatfinal;
+        out.exitflag=exitflag;
+    else
+        % Store MLE of lambda
+        out.lahat=lahat;
+    end
 end
 
 % Store profile Log lik
 out.LogLik=LogLik;
+
+
+
+% likfmin = Objective function to call with fminunc or fminsearch
+
+
 end
 
 
+function objyhat=likfmin(laBoth, y, A, SumLogYp, SumLogYn, nonnegs, negs, n, logynonnegsp1, log1mynegs)
 
+laPos=laBoth(1);
+laNeg=laBoth(2);
+ytra=y;
+% Yeo and Johnson transformation for positive observations (without the Jacobian)
+if laPos ~=0
+    % ytra(nonnegs)= ((ynonnegs+1).^laPos-1)/laPos;
+    % ytra(nonnegs)= (exp(laPos*log(ynonnegs+1))-1)/laPos;
+    ytra(nonnegs)= (exp(laPos*logynonnegsp1)-1)/laPos;
+else
+    % ytra(nonnegs)= log(ynonnegs+1);
+    ytra(nonnegs)= logynonnegsp1;
+end
 
+% Yeo and Johnson transformation for negative values (without the Jacobian)
+if 2-laNeg~=0
+    % ytra(negs)= -( exp( (2-laNeg)* log(-ynegs+1)) -1)/(2-laNeg);
+    ytra(negs)= -( exp((2-laNeg)*log1mynegs) -1)/(2-laNeg);
+else
+    % ytra(negs) = -log(-ynegs+1);
+    ytra(negs) = -log1mynegs;
+end
 
+% logJ = log of the Jacobian
+logJ=(laPos-1)*SumLogYp +(laNeg-1)*SumLogYn;
+
+% Residual sum of squares using y(lambda) divided by n
+% sigma2hat=ytra'*A*ytra/n;
+sigma2hat=sum(ytra.*(A*ytra))/n;
+%  Value of objective function to minimize (negative log likelihood)
+objyhat=0.5*n*log(sigma2hat)-logJ;
+end
+
+%FScategory:REG-Transformations

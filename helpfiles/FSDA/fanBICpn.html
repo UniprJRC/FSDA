@@ -1,0 +1,262 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"><head><title>fanBICpn</title><meta content="refpage" name="chunktype"><meta content="function:fanBICpn" itemprop="refentity" name="refentity"><meta content="text/javascript" http-equiv="Content-Script-Type"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="fanBICpn uses the output of FSRfan called with input option family 'YJpn' to choose la_P and la_N." itemprop="description" name="description" /><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><script type="text/x-mathjax-config">MathJax.Hub.Config({extensions: ["tex2jax.js"],jax: ["input/TeX","output/HTML-CSS"],menuSettings: {zoom: "Double-Click", zscale: "300"},tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},MathMenu: {showRenderer: false},"HTML-CSS": {availableFonts: ["TeX"],preferredFont: "TeX",imageFont: null}});</script><script type="text/javascript" src="includesFS/Mathjax/MathJax.js"></script><script src="includesFS/matlab-highlighter.min.js"></script><link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css"><script type="text/javascript" src="includesFS/jquery-latest.js"></script><script>$(document).ready(function(){      $("#divtop").load("includesFS/top.html");      $("#divbottom").load("includesFS/bottom.html");});</script><link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/site6_lg.css" rel="stylesheet" media="screen and (min-width: 1200px)"></link><link href="../includes/product/css/site6_md.css" rel="stylesheet" media="screen and (min-width: 992px) and (max-width: 1199px)"></link><link href="../includes/product/css/site6_sm+xs.css" rel="stylesheet" media="screen and (max-width: 991px)"></link><link href="../includes/product/css/site6_sm.css" rel="stylesheet" media="screen and (min-width: 768px) and (max-width: 991px)"></link><link href="../includes/product/css/site6_xs.css" rel="stylesheet" media="screen and (max-width: 767px)"></link><link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css"></link><script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script><script src="../includes/product/scripts/docscripts.js"></script><script src="../includes/shared/scripts/docscripts_rn.js"></script><script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script><script src="../includes/shared/scripts/jquery.highlight.js"></script><script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script><script src="../includes/product/scripts/global.js"></script><script src="includesFS/bottom.js" type="text/javascript"></script><script src="../includes/product/scripts/underscore-min.js"></script><script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script><script src="../includes/product/scripts/suggest.js" type="text/javascript"></script><script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script><script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script><!-- the following line should be kept this way only --><link href="includesFS/doc_center.css" rel="stylesheet" type="text/css"></link><link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css"><link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css"></head><body  onload="highlightMATLABCode();" id="responsive_offcanvas">  <div id="doc_header_spacer" class="header"></div><div class="sticky_header_container includes_subnav"><div class="section_header level_3"><div class="container-fluid"><div class="row" id="mobile_search_row"><div class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7" id="mobile_search"><div class="search_nested_content_container"><form id="docsearch_form" name="docsearch_form" method="get" data-release="R2017a" data-language="en" action="../templates/searchresults.html"><div class="input-group tokenized_search_field"><label class="sr-only">Search Help</label><input type="text" class="form-control conjoined_search" autocomplete="off" name="qdoc" placeholder="Search Help" id="docsearch"><div class="input-group-btn"><button type="submit" name="submitsearch" id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" tabindex="-1"></button></div></div></form></div><button class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div><div class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5" id="section_header_title"><div class="section_header_content"><div class="section_header_title"><h1><a href="../documentation-center.html">Documentation</a></h1></div></div></div><div class="visible-xs" id="search_actuator"><button class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search" aria-expanded="false" aria-controls="mobile_search"></button></div></div><!--END.CLASS row--> </div><!--END.CLASS container-fluid--> </div><!--END.CLASS section_header level_3--><div class="horizontal_nav"><div class="horizontal_nav_container"><div class="offcanvas_actuator" data-toggle="offcanvas" data-target="#sidebar" id="nav_toggle"><button type="button" class="btn"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span></button><span class="offcanvas_actuator_label"></span><span class="offcanvas_actuator_close"></span> </div><div class="offcanvas_horizontal_nav"><div class="container-fluid"><div class="row"><div class="col-md-12 hidden-xs hidden-sm"></div></div></div></div></div></div></div><!--END.CLASS sticky_header_container--><div class="row-offcanvas row-offcanvas-left"><div id="sidebar" class="sidebar-offcanvas" role="navigation"><nav class="offcanvas_nav" role="navigation"><ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict"><li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb"> <a href="../documentation-center.html" itemprop="url"> <span itemprop="title">All Products</span></a></li></ul><ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict"><li class="product"><a href="index.html">Flexible Statistics and Data Analysis (FSDA)</a><div class="dropdown"> <span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown"> </span><ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu"><li role="presentation"> <a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li><li role="presentation"> <a href="function-alpha.html" role="menuitem" tabindex="-1"> Functions and Other Reference</a></li><li role="presentation"> <a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1"> Release Notes</a></li><li role="presentation"> <a href="tutorials.html" role="menuitem" tabindex="-1"> Tutorials</a></li></ul></div></li></ul><ul xmlns:atict="http://www.arbortext.com/namespace/atict" class="nav_disambiguation"> <li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a> </li> <li><a href="function-cate.html" itemprop="url">Functions</a></li></ul><!-- --><ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">  <li class="nav_scrollspy_function"> <a href="#responsive_offcanvas">fanBICpn</a></li> <li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li><li><a class="intrnllnk" href="#syntax">Syntax</a></li><li><a class="intrnllnk" href="#Description">Description</a></li><li><a class="intrnllnk" href="#Examples">Examples</a><ul><li><a class="intrnllnk" href="#Example_1">Example of use of FSRfanBICpn with all default options.</a></li><li><a class="intrnllnk" href="#Example_2">Example of the use of option laRangeAndStep.</a></li></ul></li><li><a class="intrnllnk" href="#ExtraExamples">Extra Examples</a><ul><li><a class="intrnllnk" href="#ExtraExample_1">Example of the use of options fraciniFSR and plots.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_outFSRfan">outFSRfan</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_laRangeAndStep">laRangeAndStep</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_conflev">conflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_fraciniFSR">fraciniFSR</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_init">init</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_bonflev">bonflev</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_scoremle">scoremle</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nsamp">nsamp</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_msg">msg</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_plots">plots</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">fanBICpn</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">fanBICpn uses the output of FSRfan called with input option family 'YJpn' to choose la_P and la_N</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">out=fanBICpn(outFSRfan)</code><span class="syntax_example"><a class="intrnllnk" href="fanBICpn.html#Example_1">example</a></span></li><li><code class="synopsis">out=fanBICpn(outFSRfan,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="fanBICpn.html#Example_2">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="fanBICpn.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=fanBICpn(<a class="intrnllnk" href="#inputarg_outFSRfan"><code>outFSRfan</code></a>)</code></span>Example of use of FSRfanBICpn with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="fanBICpn.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=fanBICpn(<a class="intrnllnk" href="#inputarg_outFSRfan"><code>outFSRfan</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of option laRangeAndStep.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of FSRfanBICpn with all default options.</li></span></a></span></h3><div class="collapse"><p>
+     Load the Investment funds data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">YY=load('fondi_large.txt');
+y=YY(:,2);
+X=YY(:,[1 3]);
+yXplot(y,X);
+n=length(y);
+[outFSRfan]=FSRfan(y,X,'plots',0,'init',round(n*0.3),'nsamp',10000,'la',[0 0.25 0.5 0.75 1 1.25],'msg',0,'family','YJ');
+[outini]=fanBIC(outFSRfan,'plots',0);
+% labest is the best value imposing the constraint that positive and
+% negative observations must have the same tramsformation parameter.
+labest=outini.labest;
+% Compute test for positive and test for negative using labest
+[outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0);
+% Check if two different transformations are needed for positive and negative values
+out=fanBICpn(outFSRfanpn);</pre></div></div><pre class="codeoutput">Analyzing la_P=0.75 and la_N=0
+Analyzing la_P=0.75 and la_N=0.25
+Analyzing la_P=0.75 and la_N=0.5
+Analyzing la_P=0.75 and la_N=0.75
+Analyzing la_P=1 and la_N=0
+Analyzing la_P=1 and la_N=0.25
+Analyzing la_P=1 and la_N=0.5
+Analyzing la_P=1 and la_N=0.75
+Analyzing la_P=1.25 and la_N=0
+Analyzing la_P=1.25 and la_N=0.25
+Analyzing la_P=1.25 and la_N=0.5
+Analyzing la_P=1.25 and la_N=0.75
+Analyzing la_P=1.5 and la_N=0
+Analyzing la_P=1.5 and la_N=0.25
+Analyzing la_P=1.5 and la_N=0.5
+Analyzing la_P=1.5 and la_N=0.75
+</pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#Example_1'><img vspace="5" hspace="5" src="images\fanBICpn_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\fanBICpn_02.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_03.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option laRangeAndStep.</li></span></a></span></h3><div class="collapse"><p>
+     Use simulated data from Atkinson Riani and Corbellini (2020)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10)
+n=1000;
+p=3;
+kk=200;
+X=randn(n,p);
+beta=[ 1; 1; 1]*0.3;
+sig=0.5;
+eta=X*beta;
+init=6;
+lapos=1.5;
+laneg=0;
+y=eta+sig*randn(n,1);
+% Data contamination
+y(1:kk)=y(1:kk)-1.9;
+ypos=y&gt;0;
+ytra=y;
+ytra(ypos)=normYJ(y(ypos),[],lapos,'inverse',true,'Jacobian',false);
+ytra(~ypos)=normYJ(y(~ypos),[],laneg,'inverse',true,'Jacobian',false);
+y=ytra;
+% Initial fan plot
+outFSRfan=FSRfan(y,X,'la',[0.5 0.75 1 1.25 1.5],'family','YJ','plots',0,'init',init,'msg',0);
+% Find best value of lambda according to BIC
+% (same value of lambda for positive and negative observations).
+[outUniqueLambda]=fanBIC(outFSRfan,'plots',0);
+BIC=outUniqueLambda.BIC;
+labest=outUniqueLambda.labest;
+% Check if two different transformations are needed for positive and negative values
+[outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest);
+% option laRangeAndStep
+laRangeAndStep=[1.5 0.25 0.5];
+out=fanBICpn(outFSRfanpn,'laRangeAndStep',laRangeAndStep);</pre></div></div><pre class="codeoutput">Analyzing la_P=1.5 and la_N=0
+Analyzing la_P=1.5 and la_N=0.25
+Analyzing la_P=1.5 and la_N=0.5
+Analyzing la_P=1.5 and la_N=0.75
+Analyzing la_P=1.5 and la_N=1
+Analyzing la_P=1.5 and la_N=1.25
+Analyzing la_P=1.5 and la_N=1.5
+Analyzing la_P=1.75 and la_N=0
+Analyzing la_P=1.75 and la_N=0.25
+Analyzing la_P=1.75 and la_N=0.5
+Analyzing la_P=1.75 and la_N=0.75
+Analyzing la_P=1.75 and la_N=1
+Analyzing la_P=1.75 and la_N=1.25
+Analyzing la_P=1.75 and la_N=1.5
+Analyzing la_P=2 and la_N=0
+Analyzing la_P=2 and la_N=0.25
+Analyzing la_P=2 and la_N=0.5
+Analyzing la_P=2 and la_N=0.75
+Analyzing la_P=2 and la_N=1
+Analyzing la_P=2 and la_N=1.25
+Analyzing la_P=2 and la_N=1.5
+</pre><a href='http://rosa.unipr.it/fsda/fanBICpn.html#Example_2'><img vspace="5" hspace="5" src="images\fanBICpn_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\fanBICpn_06.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_07.png" alt=""> <img vspace="5" hspace="5" src="images\fanBICpn_08.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of options fraciniFSR and plots.</li></span></a></span></h3><div class="collapse"><p>
+     Balance sheets data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('Balancesheets.txt');
+% Define X and y
+y=XX(:,6);
+X=XX(:,1:5);
+n=length(y);
+[outFSRfan]=FSRfan(y,X,'plots',1,'init',round(n*0.3),'nsamp',5000,'la',[0 0.25 0.5 0.75 1 1.25],'msg',0,'family','YJ');
+[outini]=fanBIC(outFSRfan,'plots',0);
+% labest is the best value imposing the constraint that positive and
+% negative observations must have the same tramsformation parameter.
+labest=outini.labest;
+% Compute test for positive and test for negative using labest
+indexlabest=find(laini==outini.labest);
+% Find initial subset to initialize the search.
+lms=outFSRfan.bs(:,indexlabest);
+[outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0,'lms',lms);
+% Check if two different transformations are needed for positive and negative values
+% Start monitoring the exceedances in the subset in agreement with a
+% transformation from 90 per cent.
+fraciniFSR=0.90;
+% option plots (just show the BIC and the smoothness index plot).
+plots=struct;
+plots.name={'BIC','SmoIndex'}; 
+nsamp=2000;
+out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outFSRfan" class="clearfix"> </div> <h3 id="input_argument_outFSRfan" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outFSRfan</code> &#8212; Structure created with function FSRfan. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>Structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>(n-init) x length(la)+1 matrix:</p> <p>
+               1st col = fwd search index;</p><p>
+               2nd col = value of the score test in each step
+               of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scorep</code></td><td><p><p>(n-init) x 2 matrix containing the values of the
+               score test for positive observations for each value of the
+               transformation parameter.</p> <p>
+               1st col = fwd search index;</p><p>
+               2nd col = value of the (positive) score test in each step
+               of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scoren</code></td><td><p><p>(n-init) x 2 matrix containing the values of the
+               score test for positive observations for each value of the
+               transformation parameter:</p> <p>
+               1st col = fwd search index;</p><p>
+               2nd col = value of the (negative) score test in each step
+               of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scoreb</code></td><td><p><p>(n-init) x 2+1 matrix containing the values of the
+               score test for the joint presence of both constructed
+               variables (associated with positive and negative
+               observations) for each value of the transformation
+               parameter.  In this case the reference distribution is the
+               $F$ with 2 and subset_size-p degrees of freedom.</p> <p>
+               1st col = fwd search index (subset_size);</p><p>
+               2nd col = value of the score test in each step
+               of the fwd search for la;</p></p></td></tr><tr valign="top"><td><code>Scoremle</code></td><td><p><p>(n-init) x 2 matrix containing the values of the
+               (score) likelihood ratio test for the joint presence of
+               both constructed variables (associated with positive and
+               negative observations) for each value of the transformation
+               parameter.  In this case the reference distribution is the
+               $F$ with 2 and subset_size-p degrees of freedom.</p> <p>
+               1st col = fwd search index (subset_size);</p> <p>
+               2nd col = value of the score test in each step of the fwd search for la;</p><p>
+               outFSRfan.Scoremle is present only if FSRfan has been
+               called with input option scoremle set to true.</p></p></td></tr><tr valign="top"><td><code>la</code></td><td><p>scalar containing the value of lambda for which FSRfan
+               was computed.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p>matrix of size p x 1 containing the units forming
+               the initial subset for lambda.</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>a vector containing the response</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>a matrix containing the explanatory variables.</p> <p>
+                        Note that this matrix includes the column of ones.</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'laRangeAndStep',[1 0.2 1.2]
+</code>,<code> 'conflev',[0.999]
+</code>,<code> 'fraciniFSR',0.85
+</code>,<code> 'init',100 starts monitoring from step m=100
+</code>,<code> 'bonflev',0.99
+</code>,<code> 'scoremle',true
+</code>,<code> 'nsamp',1000
+</code>,<code> 'msg',1
+</code>,<code> 'plots', 1
+</code></code></span></div><div class="expandableContent"><div id="inputarg_laRangeAndStep" class="clearfix"></div><h3 id="input_argument_namevalue_laRangeAndStep" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>laRangeAndStep</code> &#8212;values of laP and laN to explore.</span></a><span class="example_desc">vector of length 3.</span></span></h3><div class="collapse">	<p><p>The grid search for laP and laN is done in the grid
+                  outFSRfan.la(1)-laRangeAndStep(1):laRangeAndStep(2):outFSRfan.la(1)+laRangeAndStep(3).</p> <p>
+                  For example, If laRangeAndStep(1)=0.8,  laRangeAndStep(2) is 0.1 and
+                  laRangeAndStep(3)=0.6 and input parameter outFSRfan.la(1)=0.5, the
+                  grid search for laP and laN is done in the grid
+                  (0.5-0.8):0.1:(0.5+0.6). The default value for
+                  laRangeAndStep is [0.75 0.25 0.75].</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'laRangeAndStep',[1 0.2 1.2]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Confidence level
+                   to evaluate the exceedances in hte fanplot.</p> <p>
+                   Default confidence level is 0.9999 that is signals are
+                   considered when there is an exceedance for confidence
+                   level for at least 3 consecutive times.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.999]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_fraciniFSR" class="clearfix"></div><h3 id="input_argument_namevalue_fraciniFSR" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>fraciniFSR</code> &#8212;fraction of observations to initialize search for outlier detection.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>After exceedance procedure based on the score
+                   test a subset of obverations in agreement with a
+                   transformation is found. On this subset we perform
+                   outlier detection using FSR. fraciniFSR specifies the
+                   fraction of observations to start monitoring
+                   exceedances of the minimum deletion residuals. The
+                   default value of fraciniFSR is 0.8.</p> <p> 
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'fraciniFSR',0.85
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Step to start monitoring exceedances.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It specifies the initial
+                 subset size to start monitoring exceedances of the
+                 fanplot. If init is not specified it set equal
+                 to round(n*0.6):</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bonflev" class="clearfix"></div><h3 id="input_argument_namevalue_bonflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bonflev</code> &#8212;Signal to use to identify outliers.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Option to be
+                used if the distribution of the data is
+                 strongly non normal and, thus, the general signal
+                 detection rule based on consecutive exceedances cannot be
+                 used. In this case bonflev can be:</p> <p>
+                 - a scalar smaller than 1 which specifies the confidence
+                   level for a signal and a stopping rule based on the
+                   comparison of the minimum MD with a
+                   Bonferroni bound. For example if bonflev=0.99 the
+                   procedure stops when the trajectory exceeds for the
+                   first time the 99% bonferroni bound.</p> <p>
+                 - A scalar value greater than 1. In this case the
+                   procedure stops when the residual trajectory exceeds
+                   for the first time this value.</p> <p>
+                 Default value is '', which means to rely on general rules
+                 based on consecutive exceedances.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'bonflev',0.99
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_scoremle" class="clearfix"></div><h3 id="input_argument_namevalue_scoremle" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scoremle</code> &#8212;likelihood ratio test for the two different transformation
+                parameters $\lambda_P$ and $\lambda_N$.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If
+                scoremle is true and field Scoremle is present in input
+                structure outFSRfan is present we check exceedance of the
+               threshold according to according to likelihood
+               ratio test else we check exceedance of the threshold
+               according to outFSRfan.Scoreb.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scoremle',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;Number of subsamples to extract.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Number of subsamples which will be extracted in order to find
+                   initial subset for each candidate value of lambda.</p> <p>
+                   If nsamp=0 all subsets will be
+                   extracted. They will be (n choose p). Remark: if the
+                   number of all possible subset is &lt;1000 the default is
+                   to extract all subsets otherwise just 1000.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>It controls whether
+                 to display or not messages on the screen
+                 If msg==1 (default) messages are displayed on the screen about
+                   values or la_P and la_N which are being analyzed.</p> <p>
+                 else no message is displayed on the screen.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_plots" class="clearfix"></div><h3 id="input_argument_namevalue_plots" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plots</code> &#8212;Plot on the screen.</span></a><span class="example_desc">scalar structure.</span></span></h3><div class="collapse">	<p><p>Case 1: plots option used as scalar.</p> <p>
+               - If plots=0, plots are not generated.</p> <p>
+               - If plots=1 (default), 4 heatmaps are shown on the screen.</p> <p>
+                 The first plot ("BIC") shows the values of BIC, the secon
+                 ("SmoIndex") shows the values of the smoothness index,
+                 the third ('Obs') the number of observations in agreement
+                 with the transformation excluding the outliers and the
+                 fourth ('R2c') the final value of R2 (corrected for truncation).</p> <p>
+
+               Case 2: plots option used as struct.</p> <p>
+                 If plots is a structure it may contain the following fields:</p><p>
+         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>name</code></td><td><p><p>cell array of strings which enables to
+                   specify which plot to display.</p> <p>
+                   plots.name={'Obs'; 'BIC'; 'SmoIndex'; 'R2c'};</p> <p>
+                   is exactly equivalent to plots=1
+                   For the explanation of the above plots see plots=1.</p> <p>
+                   If plots.name=={ 'Obs'; 'BIC'; 'SmoIndex'; 'R2c';...</p> <p>
+                                   'ObsWithOut'; 'SmoIndexW'; 'R2'}; or
+                   plots.name={'all'};</p><p>
+                   it is also possible to view the heatmap referred to the
+                   number of obserations in agreement with transformation
+                   before outlier detection ('ObsWithOut') the weighted
+                   version of the smoothed index ('SmoIndexW') and the
+                   orginal value of R2 before correction for truncation.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots', 1
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double | struct</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Summary</code></td><td><p><p>k-by-9 table where k is the number of values of laPosxlaNeg which have been considered.</p> <p>
+              out.Summary contains the following information:</p> <p>
+              1st column= value of laPos (trasnforamtion for positive
+              values of y);</p> <p>
+              2nd column= value of laNeg (trasnforamtion for negative
+              values of y);</p> <p>
+              3rd col = number of obseravtions in agreement with the
+              transformation before outlier detection;</p> <p>
+              4th col = number of obseravtions in agreement with the
+              transformation after outlier detection;</p> <p>
+              5th col = value of BIC;</p> <p>
+              6th col = value of the smoothness index;</p> <p>
+              7th col = value of the smoothness index weighted;</p> <p>
+              8th col = value of R2 based on observations in agreement
+                   with transformation after outlier detection.</p><p>
+              9th col = value of R2 corrected for elliptical trunction.</p></p></td></tr><tr valign="top"><td><code>labestBIC</code></td><td><p>vector of length 2 containing best values of laP and laN
+              according to BIC.</p></td></tr><tr valign="top"><td><code>labestSMO</code></td><td><p>vector of length 2 containing best values of laP and laN
+              according to smoothness index.</p></td></tr><tr valign="top"><td><code>ty</code></td><td><p>transformed response accordint to out.labestBIC.</p></td></tr><tr valign="top"><td><code>rsq</code></td><td><p>the multiple R-squared value for the transformed values</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>n x 1 vector containing the original y values.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>n x p matrix containing the original X matrix.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+ Analysis", Springer Verlag, New York.</p></div><div><p>Atkinson, A.C. and Riani, M. (2002a), Tests in the fan plot for robust,
+ diagnostic transformations in regression, "Chemometrics and Intelligent
+ Laboratory Systems", Vol. 60, pp. 87-100.</p></div><div><p>Atkinson, A.C. Riani, M., Corbellini A. (2019), The analysis of
+ transformations for profit-and-loss data, Journal of the Royal
+ Statistical Society, Series C, "Applied Statistics",
+ <a href="https://doi.org/10.1111/rssc.12389">https://doi.org/10.1111/rssc.12389</a></p></div><div><p>Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
+ Transformation: Review and Extensions, "Statistical Science", in press.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSRfan.html" itemprop="url"><span itemprop="name"><code>FSRfan</code></span></a></span> | <span itemprop="seealso"><a href="fanBIC.html" itemprop="url"><span itemprop="name"><code>fanBIC</code></span></a></span> | <span itemprop="seealso"><a href="fanplot.html" itemprop="url"><span itemprop="name"><code>fanplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

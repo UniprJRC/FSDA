@@ -337,13 +337,16 @@ else
     
     for kk = k:-1:1
         
-        x=find(pascalM(1:n-kk,kk+1) > N_kk , 1);
+        % istruction find faster than logical extraction
+         x=find(pascalM(1:n-kk,kk+1) > N_kk , 1);
+        % seqnmkk=1:n-kk;
+        % x=seqnmkk(pascalM(seqnmkk,kk+1) > N_kk);
         
         if isempty(x) % || x1==n-kk
             maxx=n-1;
             calls=calls+maxx-kk+1;
         else
-            maxx = x+kk-2;
+            maxx = x(1)+kk-2;
             calls=calls+maxx-kk+2;
         end
         
