@@ -95,9 +95,14 @@ function [out]=FSRfan(y,X,varargin)
 %                   Data Types - double
 %
 %       lms     :   Criterion to use to find the initlal
-%                 subset to initialize the search. Scalar.
-%                   If lms=1 (default) Least Median of Squares is
-%                   computed, else Least trimmed of Squares is computed.
+%                 subset to initialize the search. Scalar or Vector.
+%                 If lms=1 (default) Least Median of Squares is
+%                 computed, else Least trimmed of Squares is computed.
+%                 If, lms is matrix with size
+%                 p-1+intercept-by-length(la) it contains in column
+%                 j=1,..., lenght(la) the list of units forming the initial
+%                 subset for the search associated with la(j). In this last
+%                 case previous input option nsamp is ignored.
 %                 Example - 'lms',1
 %                 Data Types - double
 %
@@ -779,12 +784,18 @@ for i=1:lla
     
     % Find initial subset to initialize the search using as y transformed
     % vector z
-    [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
-    bsb=out.bs;
-    
-    % Store information about the units forming subset for each value of
-    % lambda
-    binit(:,i)=out.bs';
+    if size(lms,1)==1
+        [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
+        bsb=out.bs;
+        % Store information about the units forming subset for each value of
+        % lambda
+        binit(:,i)=bsb';
+    else
+        bsb=lms(:,i);
+        % Store information about the units forming subset for each value of
+        % lambda
+        binit(:,i)=bsb;
+    end
     
     bsbT(bsb)=true;
     
