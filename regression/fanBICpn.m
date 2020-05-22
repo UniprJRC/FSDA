@@ -301,7 +301,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
     % negative observations must have the same tramsformation parameter.
-    labest=outini.labest;
+    laini=outini.labest;
     % Compute test for positive and test for negative using labest
     indexlabest=find(laini==outini.labest);
     % Find initial subset to initialize the search.
@@ -322,7 +322,18 @@ function [out]=fanBICpn(outFSRfan, varargin)
 
 %% Beginning of code
 
-%parpool('threads');
+
+% 9.8 is MATLAB 2020a where  parpool('threads') was first introduced
+numbertotest = 9.8;
+MLver=verLessThanFS(numbertotest);
+
+
+pp = gcp('nocreate');
+if MLver == true &&  isempty(pp)
+    parpool('local');
+elseif MLver == false && isempty(pp)
+    parpool('threads');
+end
  
 Xwithintercept=outFSRfan.X;
 [n,pwithintercept]=size(Xwithintercept);
