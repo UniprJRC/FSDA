@@ -292,7 +292,6 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %{
     % Example of the use of options fraciniFSR and plots.
     % Balance sheets data.
-
     XX=load('Balancesheets.txt');
     % Define X and y
     y=XX(:,6);
@@ -302,7 +301,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
     % negative observations must have the same tramsformation parameter.
-    laini=outini.labest;
+    labest=outini.labest;
     % Compute test for positive and test for negative using labest
     indexlabest=find(laini==outini.labest);
     % Find initial subset to initialize the search.
@@ -322,6 +321,9 @@ function [out]=fanBICpn(outFSRfan, varargin)
 
 
 %% Beginning of code
+
+%parpool('threads');
+ 
 Xwithintercept=outFSRfan.X;
 [n,pwithintercept]=size(Xwithintercept);
 
@@ -444,6 +446,7 @@ for jjpos=1:length(laposcand)
     ytra(~negs)=normYJ(ynonnegs,[],laposj,'inverse',false,'Jacobian',false);
     
     parfor jjneg=1:llanegcand
+        corrfactor1=corrfactor;
         lanegj=lanegcand(jjneg);
         ytra1=ytra;
         ytra1(negs)=normYJ(ynegs,[],lanegj,'inverse',false,'Jacobian',false);
@@ -501,7 +504,7 @@ for jjpos=1:length(laposcand)
         
         boo=Scopn(:,1)<=hh;
         ScopnSel=Scopn(boo,:);
-        corrfactorSel=corrfactor(boo);
+        corrfactorSel=corrfactor1(boo);
         tPNdiff=abs(ScopnSel(:,2)-ScopnSel(:,3));
         
         tPNdiffMean=mean(tPNdiff);
