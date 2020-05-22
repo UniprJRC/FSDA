@@ -1,4 +1,4 @@
-function y = randsampleFS(n,k,method,after2011b)
+function y = randsampleFS(n,k,method)
 %randsampleFS generates a random sample of k elements from the integers 1 to n (k<=n)
 %
 %<a href="matlab: docsearchFS('randsampleFS')">Link to the help function</a>
@@ -24,13 +24,6 @@ function y = randsampleFS(n,k,method,after2011b)
 %            Example - randsampleFS(100,10,2)
 %            Data Types - single|double
 %
-%after2011b: MATLAB version flag. Logical. Indicates if the MATLAB version 
-%            in use is later than R2012a (7.14). Used to speed up
-%            computations in function subsets and, more in general, in
-%            simulation experiments which use randsampleFS intensively.
-%            Example - randsampleFS(100,10,2,true) or
-%            randsampleFS(100,10,2,~verLessThan('MATLAB','7.14'))
-%            Data Types - logical
 %
 %   Output:
 %
@@ -153,9 +146,7 @@ function y = randsampleFS(n,k,method,after2011b)
 % For the sake of computational efficiency, we just check the latest
 % To pass the argument, use:
 % after2012a = ~verLessThan('MATLAB','7.14');
-if nargin < 4 
-    after2011b = ~verLessThan('MATLAB','7.14');
-end
+
 
 % choose the default sampling method
 if nargin < 3 || isempty(method)
@@ -180,14 +171,9 @@ switch method
     case 0
         
         % Extract a random sample of k integers between 1 and n.
-        if after2011b % it is a logical: no need to specify before714 == true
+     
             y = randperm(n,k);
-        else
-            % In Matlab 2011b and older, input parameter k was not supported.
-            % This solution is clearly less efficient for k much smaller than n.
-            rp = randperm(n);
-            y = rp(1:k);
-        end
+        
         
     case 1
         

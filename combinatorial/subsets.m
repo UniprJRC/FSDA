@@ -314,7 +314,7 @@ end
 
 % this check is used in combination of randsampleFS, for computational
 % efficiency
-after2011b = ~verLessThan('MATLAB','7.14');
+
 
 %% Combinatorial part to extract the subsamples
 % Key combinatorial variables used:
@@ -347,10 +347,10 @@ if nsamp==0 || ncomb <= Tcomb
             % The weight of a p-subset is the product of the weights of the units
             % in the sample
             Cw = prod(method(C),2);
-            rndsi=randsampleFS(ncomb,nsamp,Cw,after2011b);
+            rndsi=randsampleFS(ncomb,nsamp,Cw);
         else
             % Extract without replacement nsamp elements from ncomb
-            rndsi=randsampleFS(ncomb,nsamp,method,after2011b); % METHOD: it was set to 2
+            rndsi=randsampleFS(ncomb,nsamp,method); % METHOD: it was set to 2
         end
         C = C(rndsi,:);
     end
@@ -370,7 +370,7 @@ else
     if ncomb>Tcomb && ncomb<T2comb
         
         % Extract without replacement nsamp elements from ncomb
-        rndsi=randsampleFS(ncomb,nsamp,0,after2011b); % METHOD: it was set to 2
+        rndsi=randsampleFS(ncomb,nsamp,0); % METHOD: it was set to 2
         
         % The Pascal triangle can be used only if there is enough memory.
         % Unfortunately, the memory check works only in PC platforms.
@@ -407,7 +407,7 @@ else
                 s=lexunrank(n,p,rndsi(i));
             end
         else
-            s=randsampleFS(n,p,method,after2011b);
+            s=randsampleFS(n,p,method);
         end
         C(i,:)=s;
         
