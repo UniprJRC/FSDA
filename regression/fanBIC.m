@@ -429,13 +429,12 @@ if plots == 1
     % tag the figure
     set(gcf,'Tag',tag)
     
-end
-
-titl=['Best \lambda='  num2str(la(imax)) '. Number of cleaned obs.='  num2str(mmstop(imax,3))];
-if verLessThanFS(9.5)
-    suplabel(titl,'t');
-else
-    sgtitle(titl)
+    titl=['Best \lambda='  num2str(la(imax)) '. Number of cleaned obs.='  num2str(mmstop(imax,3))];
+    if verLessThanFS(9.5)
+        suplabel(titl,'t');
+    else
+        sgtitle(titl)
+    end
 end
 
 out=struct;
