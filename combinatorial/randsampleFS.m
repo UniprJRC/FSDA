@@ -38,20 +38,20 @@ function y = randsampleFS(n,k,method)
 %   The method=0 uses MATLAB function randperm. In old MATLAB releases
 %   randperm was slower than FSDA function shuffling, which is used in
 %   method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
-%   50% slower).  
+%   50% slower).
 %
 %   If method=1 the approach depends on the population and sample sizes:
 %   - if $n < 1000$ and $k < n/(10 + 0.007n)$, that is if the population is
 %     relatively small and the desired sample is small compared to the
 %     population, we repeatedly sample with replacement until there are k
 %     unique values;
-%   - otherwise, we do a random permutation of the population and return  
-%     the first k elements. 
+%   - otherwise, we do a random permutation of the population and return
+%     the first k elements.
 %   The threshold $k < n/(10 + 0.007n)$ has been determined by simulation
 %   under MATLAB R2016b. Before, the threshold was $n < 4*k$.
 %
 %   If method=2 systematic sampling is used, where the starting point is
-%   random and the step is also random. 
+%   random and the step is also random.
 %
 %   If method=3 random sampling is based on the old but well known Linear
 %   Congruential Generator (LCG) method. In this case there is no guarantee
@@ -139,7 +139,7 @@ function y = randsampleFS(n,k,method)
 %% Beginning of code
 
 % randsampleFS needs to check the MATLAB version in use in order to:
-% - decide the sempling method to use, and
+% - decide the sampling method to use, and
 % - use properly the optional parameter of randperm.
 % In the first case  the release to check is R2012a, i.e. 7.14
 % In the second case the release to check is R2011b, i.e. 7.13
@@ -150,13 +150,7 @@ function y = randsampleFS(n,k,method)
 
 % choose the default sampling method
 if nargin < 3 || isempty(method)
-    if after2011b
-        method=0;
-    else 
-        % in older releases we use systematic sampling because randperm
-        % function (used for method = 0) was extremely inefficient
-        method=2;
-    end
+    method=0;
 end
 
 % Weighted Sampling Without Replacement
@@ -171,9 +165,7 @@ switch method
     case 0
         
         % Extract a random sample of k integers between 1 and n.
-     
-            y = randperm(n,k);
-        
+        y = randperm(n,k);
         
     case 1
         
@@ -187,13 +179,13 @@ switch method
             % this or the shuffling approach was n < 4*k. The new threshold has
             % been determined by simulation (with MATLAB R2016b) for n in the
             % interval [100 1000].
-
+            
             mindiff = 0;
             while mindiff == 0
                 y = randi(n, 1 , k);
                 mindiff = min(diff(sort(y)));
             end
-
+            
         else
             
             % This is the FSDA alternative to MATLAB function randsample, to

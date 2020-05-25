@@ -290,20 +290,21 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %}
 
 %{
-    % Example of the use of options fraciniFSR and plots.
+    %% Example of the use of options fraciniFSR and plots.
     % Balance sheets data.
     XX=load('Balancesheets.txt');
     % Define X and y
     y=XX(:,6);
     X=XX(:,1:5);
     n=length(y);
-    [outFSRfan]=FSRfan(y,X,'plots',1,'init',round(n*0.3),'nsamp',5000,'la',[0 0.25 0.5 0.75 1 1.25],'msg',0,'family','YJ');
+    la=[0 0.25 0.5 0.75 1 1.25];
+    [outFSRfan]=FSRfan(y,X,'plots',1,'init',round(n*0.3),'nsamp',5000,'la',la,'msg',0,'family','YJ');
     [outini]=fanBIC(outFSRfan,'plots',0);
     % labest is the best value imposing the constraint that positive and
     % negative observations must have the same tramsformation parameter.
-    laini=outini.labest;
+    labest=outini.labest;
     % Compute test for positive and test for negative using labest
-    indexlabest=find(laini==outini.labest);
+    indexlabest=find(labest==la);
     % Find initial subset to initialize the search.
     lms=outFSRfan.bs(:,indexlabest);
     [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest,'plots',0,'lms',lms);

@@ -173,19 +173,29 @@ function out=boxcoxR(y,X, varargin)
 %               approximation using confidence level specified in input
 %               option conflev. This argument is present only if family is
 %               'BoxCox' or 'YJ'.
-% out.LogLik   = matrix containing the value of the profile loglikelihood for each
-%               value in laseq or laseqPos and laseqNeg. The dimension of
-%               out.LogLik is length(laseq)-by-2 if family is 'BoxCox' or 'YJ'. In
-%               this case the first column contains the values of laseq and
-%               the second column the values of the profile log lik. If
-%               family is 'YJ' the dimension of out.LogLik is
-%               length(laseqPos)-by-length(laseqNeg) if input option
-%               usefmin is false (default) else it a 9-by-9 matrix
-%               containing the value of the likelihood in correspondence of
-%               the points -2:0.5:2. Note that if usefmin is true solver is
-%               used to find MLE of laPos and laNeg therefore likelihood is
-%               computed for the 81 value just to find a preliminary
-%               estimate of laPos and laNeg for the solver.
+% out.LogLik   = matrix containing the value of the profile loglikelihood
+%               for each value in laseq or laseqPos and laseqNeg. The
+%               dimension of out.LogLik is length(laseq)-by-2 if family is
+%               BoxCox' or 'YJ'. In this case the first column contains
+%               the values of laseq and the second column the values of the
+%               profile log
+%               lik. If family is 'YJpn' the dimension of out.LogLik is:
+%               * length(laseqPos)-by-length(laseqNeg) if input option
+%               usefmin is false (default), that is if maximization routine
+%               is not called.
+%               * 9-by-9 matrix  containing the value of the likelihood in
+%               correspondence of the points -2:0.5:2 if input option
+%               usefmin is true and boxcoxR is called for the first time.
+%               In order to find MLE of laPos and laNeg, likelihood is
+%               computed for the 81 value in the meshgrid -2:0.5:2 just to
+%               find a preliminary estimate of laPos and laNeg for the
+%               solver.
+%               * empty value if input option usefmin is true and the solver
+%               has used the cached version of lambda to initialize the
+%               optimization routine. If you wish that the maximization
+%               does not use the cached version of lambda execute
+%               instruction clear boxcoxR before calling it.
+%
 % out.exitflag =  flag which informs about convergence. exitflag =0
 %                 implies normal convergence, else no convergence has been
 %                 obtained. This ouptut is present only if input option
@@ -203,10 +213,12 @@ function out=boxcoxR(y,X, varargin)
 % Journal of the Royal Statistical Society, Vol. 26, pp. 211-252.
 % Yeo, I.K and Johnson, R. (2000), A new family of power transformations to
 % improve normality or symmetry, "Biometrika", Vol. 87, pp. 954-959.
-% Atkinson, A.C., Riani, M. and Corbellini C. (2020), The Analysis of
+% Atkinson, A.C., Riani, M. and Corbellini C. (2019), The Analysis of
 % Transformations for Profit and Loss Data, "Journal of the Royal
 % Statistical Society. Series C: Applied Statistics",
 % https://doi.org/10.1111/rssc.12389 [ARC]
+% Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
+% Transformation: Review and Extensions, "Statistical Science", in press.
 %
 % Acknowledgements:
 %
@@ -285,7 +297,7 @@ function out=boxcoxR(y,X, varargin)
 %}
 
 %{
-    %% Ex of the use of option usefmin.
+   %% Ex of the use of option usefmin.
     rng(500)
     % Generate regression data
     [yori,X]=simulateLM(100,'R2',0.95);
@@ -297,6 +309,13 @@ function out=boxcoxR(y,X, varargin)
     usefmin=struct;
     % specify maximum number of iterations
     usefmin.MaxIter=100;
+    % Function boxcoxR initializes the optimization routine with the value
+    % of lambda from the last call of the optmization routine. This trick
+    % is very useful during the forward search when we use in step m+1 as
+    % initial guess of laP and laN the final estimate of laP and laN in
+    % step m.
+    % The instruction below clear persisten variables in function boxcoxR
+    clear boxcoxR
     out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
     disp('MLE of laPos and laNeg')
     disp(out.lahat)
@@ -320,6 +339,32 @@ function out=boxcoxR(y,X, varargin)
     out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
     disp('MLE of laPos and laNeg')
     disp(out.lahat)
+%}
+
+%{
+    %% Ex using simulated contaminated data.
+    rng(10000)
+    % Generate X and y data
+    n=200;
+    X=randn(n,3);
+    beta=[ 1; 1; 1];
+    sig=0.5;
+    ytrue=X*beta+sig*randn(n,1);
+    % Contaminate response
+    ycont=ytrue;
+    ycont(21:40)=ycont(21:40)+4;
+    % Use two different values for laP and laN
+    lapos=0.5;
+    laneg=0;
+    ytra=normYJpn(ytrue,[],[lapos laneg],'inverse',true,'Jacobian',false);
+    yconttra=normYJpn(ycont,[],[lapos laneg],'inverse',true,'Jacobian',false);
+    % In this example the true values of laP and laN are 0.5 and 0 however due
+    % to contamination the MLE of lambda laP because very close to 0.
+    % This wrongly suggests a unique value of lambda.
+    subplot(2,1,1)
+    out=boxcoxR(ytra,X,'family','YJpn','plots',1);
+    subplot(2,1,2)
+    outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);
 %}
 
 %% Beginning of code
@@ -501,17 +546,26 @@ elseif BoxCoxTra ==3 % This is the case of two values of lambda
     negs=~nonnegs;
     ynonnegs=y(nonnegs);
     ynegs=y(negs);
-    logynonnegsp1=log(ynonnegs+1); 
+    logynonnegsp1=log(ynonnegs+1);
     log1mynegs=log(1-ynegs);
     SumLogYp=sum(logynonnegsp1);
     SumLogYn=sum(-log1mynegs);
     % cachedlahatPreviousStep=[];
-    % if useOptim==true redefine laseqPos and laseqNeg in order to find
-    % a rough value for the optmization
-    if useOptim==true && isempty(cachedlahatPreviousStep)
-        maxL=2;
-        laseqPos=-maxL:0.5:maxL;
-        laseqNeg=-maxL:0.5:maxL;
+    
+    % If computeLogLikUsingGrid is true compute the likelihood using a grid of
+    % values of laseqPos and laseqNeg
+    OptimTruePreviousLambdaFalse=useOptim==true && isempty(cachedlahatPreviousStep);
+    computeLogLikUsingGrid=OptimTruePreviousLambdaFalse || useOptim==false;
+    
+    if computeLogLikUsingGrid == true
+        % if useOptim==true and the previous estimater of lambda  has not been cached
+        % redefine laseqPos and laseqNeg in order to find
+        % a rough initial estimate of lambda for the optmization
+        if OptimTruePreviousLambdaFalse
+            maxL=2;
+            laseqPos=-maxL:0.5:maxL;
+            laseqNeg=-maxL:0.5:maxL;
+        end
         
         LogLik=zeros(length(laseqPos),length(laseqNeg));
         
@@ -525,9 +579,12 @@ elseif BoxCoxTra ==3 % This is the case of two values of lambda
             % y+1 for nonnegative values of y
             % ytra(nonnegs)=normYJ(y(nonnegs),1,laPos,'Jacobian',false);
             if laPos ~=0
-                ytra(nonnegs)= ((y(nonnegs)+1).^laPos-1)/laPos;
+                % ytra(nonnegs)= ((ynonnegs+1).^laPos-1)/laPos;
+                % ytra(nonnegs)= (laPos*log(ynonnegs+1) -1)/laPos;
+                ytra(nonnegs)= (exp(laPos*logynonnegsp1)-1)/laPos;
             else
-                ytra(nonnegs)= log(y(nonnegs)+1);
+                % ytra(nonnegs)= log(ynonnegs+1);
+                ytra(nonnegs)= logynonnegsp1;
             end
             
             
@@ -538,20 +595,27 @@ elseif BoxCoxTra ==3 % This is the case of two values of lambda
                 % YJ transformation is the Box-Cox transformation of
                 %  |y|+1 with parameter 2-lambda for y negative.
                 % ytra(negs)=normYJ(y(negs),1,laNeg,'Jacobian',false);
-                if 2-laNeg~=0
+                laNegm2=laNeg-2;
+                if laNegm2~=0
                     % Slower version
                     % ytra(negs) = - ((-y(negs)+1).^(2-laNeg)-1)/(2-laNeg);
                     % Faster version
-                    ytra(negs)= -( exp( (2-laNeg)* log(-y(negs)+1)) -1)/(2-laNeg);
+                    % ytra(negs)= -( exp( (2-laNeg)* log(-ynegs+1)) -1)/(2-laNeg);
+                    % Even faster version
+                    % ytra(negs)= -( exp((2-laNeg)* log1mynegs) -1 )/(2-laNeg);
+                    % Even, even  faster version
+                    ytra(negs)= ( exp(-laNegm2* log1mynegs) -1 )/laNegm2;
                 else
-                    ytra(negs) = -log(-y(negs)+1);
+                    % ytra(negs) = -log(-ynegs+1);
+                    ytra(negs) = -log1mynegs;
                 end
                 
                 % logJ = log of the Jacobian
                 logJ=(laPos-1)*SumLogYp +(laNeg-1)*SumLogYn;
                 
                 % Residual sum of squares using y(lambda) divided by n
-                sigma2hat=ytra'*A*ytra/n;
+                  sigma2hat=ytra'*A*ytra/n;
+                % sigma2hat=sum(ytra.*(A*ytra))/n;
                 
                 %  Value of Profile Log likelihood
                 LogLik(ijlaPos,ijlaNeg)=-0.5*n*log(sigma2hat)+logJ;
@@ -613,31 +677,33 @@ if BoxCoxTra <=2
     end
 else % This is the case of 2 values of lambda
     
-    if isempty(cachedlahatPreviousStep)
+    if computeLogLikUsingGrid == true
         % Find row and column index of max of LogLik
         [row, col] = find(ismember(LogLik, max(LogLik(:))));
         % (approximate) MLE of lambda
         lahat=[laseqPos(row(1)), laseqNeg(col(1))];
+        
+        % Show the contour plot of the loglikelihood
+        if plots==1
+            [Xlapos,Ylaneg] = meshgrid(laseqNeg,laseqPos);
+            contour(Xlapos,Ylaneg,LogLik); % ,'ShowText','on')
+            xlabel('\lambda_N')
+            ylabel('\lambda_P')
+            text(laseqNeg(col),laseqPos(row),'x')
+            title(['$\hat \lambda_P=' num2str(lahat(1)) ', \hat \lambda_N=' num2str(lahat(2)) '$'] ,...
+                'Interpreter','latex','FontSize',14)
+        end
+        
     else
         lahat=cachedlahatPreviousStep;
     end
     
-    if plots==1
-        [Xlapos,Ylaneg] = meshgrid(laseqNeg,laseqPos);
-        contour(Xlapos,Ylaneg,LogLik); % ,'ShowText','on')
-        xlabel('\lambda_N')
-        ylabel('\lambda_P')
-        text(laseqNeg(col),laseqPos(row),'x')
-        title(['$\hat \lambda_P=' num2str(lahat(1)) ', \hat \lambda_N=' num2str(lahat(2)) '$'] ,...
-            'Interpreter','latex','FontSize',14)
-    end
+    
     
     % Start the minimization
     if useOptim==true
         
-        
         nlinfitOptions=statset('Display',displayLevel,'MaxIter',MaxIter,'TolX',TolX);
-        
         
         % theta0=lahat+1e-3*randn(1,2);
         theta0=lahat;
@@ -663,14 +729,10 @@ end
 % Store profile Log lik
 out.LogLik=LogLik;
 
-
-
-% likfmin = Objective function to call with fminunc or fminsearch
-
-
 end
 
 
+% likfmin = Objective function to call with fminunc or fminsearch when useOptim==true
 function objyhat=likfmin(laBoth, y, A, SumLogYp, SumLogYn, nonnegs, negs, n, logynonnegsp1, log1mynegs)
 
 laPos=laBoth(1);

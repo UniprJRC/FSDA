@@ -328,7 +328,7 @@ for i=1:lla
     end
     
     % Transformation and constructed variables for negative values
-    if   abs(lai-2)>1e-8 % la not equal 2
+    if   abs(twomlambdai)>1e-8 % la not equal 2
         % vnegtwomlambdai=vneg.^twomlambdai;
         vnegtwomlambdai=exp(twomlambdai*logvneg);
         qneg=twomlambdai* Glaminus1;
