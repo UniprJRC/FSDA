@@ -33,7 +33,8 @@ function [out]=fanBIC(outFSRfan,varargin)
 %                   Example - 'conflev',[0.999]
 %                   Data Types - double
 %
-%       init    : Step to start monitoring exceedances. Scalar. It specifies the initial
+%       init    : Step to start monitoring exceedances. Scalar.
+%                 It specifies the initial
 %                 subset size to start monitoring exceedances of the
 %                 fanplot. If init is not specified it set equal
 %                 to round(n*0.6):
@@ -75,11 +76,12 @@ function [out]=fanBIC(outFSRfan,varargin)
 %               Data Types - double
 %
 %       plots   :  Plot on the screen. Scalar.
-%                   If plots=1 a three panel plot will be produced.
-%                   The left panel contains the BIC for the various values
-%                   of lambda, the right panel the smoothness index, while
-%                   the bottom panel the fraction of obseravtions in
-%                   agreement with the different values of lambda.
+%                   If plots=1 a three panel plot will be produced. The
+%                   left panel contains the BIC for the various values of
+%                   lambda, the right panel the index of agreement with
+%                   MLE, while the bottom panel the fraction of
+%                   observations in agreement with the different values of
+%                   lambda.
 %                   Example - 'plots',1
 %                   Data Types - double
 %
@@ -90,7 +92,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %                   specified by the user, then the output of the new plot
 %                   overwrites the existing one in the same window else a
 %                   new window is created.
-%                   Example - 'tag','pl_mycov'
+%                   Example - 'tag','pl_myfanBIC'
 %                   Data Types - char
 %
 %
@@ -100,8 +102,17 @@ function [out]=fanBIC(outFSRfan,varargin)
 %
 %         out:   structure which contains the following fields
 %
-% out.BIC  = length(la)-by-2 matrix containing in the first column the
-%             values of lambda and in the second column the value of BIC.
+% out.BIC  = length(la)-by-3 matrix containing in the first column the
+%             values of lambda, in the second column the values of BIC and
+%             in the third column the values of the "Agreement index". The
+%             agreement index is the reciprocal of the mean of the absolute
+%             values of the score test computed in the interval init:h. The
+%             default value of init is n*0.6 (see input option init) and h
+%             is the number of clean observations in agreement with a
+%             particular transformation. h is contained in the third column
+%             of out.mmstop. The value of the index is rescaled with the
+%             variance of the truncated normal distribution, in order to
+%             give more weight to the searches with larger values of h.
 % out.mmstop  = length(la)-by-3 matrix containing in the first column the
 %             values of lambda, in the second column the number of units in
 %             agreement with the different values of lambda and in the
@@ -254,7 +265,7 @@ SumLogY=sum( log(   (1 + abs(y)).^(2 * nonnegs - 1)) );
 
 % Initialize matrix BIC
 % 2nd col = value of BIC for each value of la
-% 3rd col = smoothness index (the larger the better)
+% 3rd col = agreement index (the larger the better)
 BIC=[la(:) zeros(nla,2)];
 
 for j=1:nla
@@ -333,7 +344,7 @@ for j=1:nla
     
     BIC(j,2)=2*(-0.5*n*log(factor*sigma2hat)+logJ)-(pwithintercept+1+n-hh)*logn;
     
-    % Compute smoothness index
+    % Compute the "Agreement index"
     boo=Sco(:,1)<=hh;
     BIC(j,3)=1/(mean(Scolaj(boo))*factor);
 end
@@ -342,7 +353,7 @@ end
 [~,imax]=max(BIC(:,2));
 labest=la(imax);
 
-% Find best value of lambda according to smoothness index
+% Find best value of lambda according to "Agreement index"
 [~,imaxSI]=max(BIC(:,3));
 
 
@@ -387,7 +398,7 @@ if plots == 1
     else
         set(gca,'XTick',BIC(1:2:length(la),1));
     end
-    ylabel('Smoothnes  index')
+    ylabel('Agreement  index')
     xlabel('\lambda')
     hold('on')
     
@@ -418,13 +429,12 @@ if plots == 1
     % tag the figure
     set(gcf,'Tag',tag)
     
-end
-
-titl=['Best \lambda='  num2str(la(imax)) '. Number of cleaned obs.='  num2str(mmstop(imax,3))];
-if verLessThanFS(9.5)
-    suplabel(titl,'t');
-else
-    sgtitle(titl)
+    titl=['Best \lambda='  num2str(la(imax)) '. Number of cleaned obs.='  num2str(mmstop(imax,3))];
+    if verLessThanFS(9.5)
+        suplabel(titl,'t');
+    else
+        sgtitle(titl)
+    end
 end
 
 out=struct;

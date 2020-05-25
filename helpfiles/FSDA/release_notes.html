@@ -107,6 +107,69 @@ document.write(divsbefore);</script>
 			</tr>
 		</thead>
 		<tr>
+			<td style="vertical-align: top;"><strong>V8.0 (R2020b)</strong></td>
+			<td style="vertical-align: top;">
+			<p class="p5">&nbsp;</p>
+			<p class="p5">TRANFORMATIONS IN REGRESSION</p>
+			<p class="p5">The transformations for negative and positive 
+			responses were determined<br>by Yeo and Johnson (2000) by imposing 
+			the smoothness condition that the<br>second derivative of 
+			zYJ(lambda) with respect to y be smooth at y = 0. However<br>some 
+			authors, for example Weisberg (2005), query the physical<br>
+			interpretability of this constraint which is oftern violated in data<br>
+			analysis. Accordingly, Atkinson et al (2019) and (2020) extend the<br>
+			Yeo-Johnson transformation to allow two values of the 
+			transformations<br>parameter: lambdaN for negative observations and 
+			lambdaP for non-negative ones.<br>ScoreYJall computes:<br>1) the 
+			global t test associated with the constructed variable for<br>
+			lambda=lambdaP=lambdaN. <br>2) the t test associated with the 
+			constructed variable computed assuming<br>a different transformation 
+			for positive observations keeping the value of<br>the transformation 
+			parameter for negative observations fixed. In short we<br>call this 
+			test, &quot;test for positive observations&quot;.<br>3) the t test associated 
+			with the constructed variable computed assuming<br>a different 
+			transformation for negative observations keeping the value of<br>the 
+			transformation parameter for positive observations fixed. In short 
+			we<br>call this test, &quot;test for negative observations&quot;. <br>4) the F 
+			test for the joint presence of the two constructed variables<br>
+			described in points 2) and 3.</p>
+			<p class="p5">5) the F test based on the maximum liklihood estimate 
+			of lambdaP and lambdaN</p>
+			<p class="p5">New function <a href="ScoreYJall.html">ScoreYJall</a> 
+			which computes the score tests described in points 1)-5) above.</p>
+			<p class="p1">New function <a href="ScoreYJmle.html">scoreYJmle</a>&nbsp; 
+			which computes, in the case of extended Yeo and Johnson 
+			transformation, the likelihood ratio test of H0: lamabdaP=lamabdaP0 
+			and lamabdaN=lambdaNeg0.</p>
+			<p class="p5">Added option usefmin in funtion&nbsp; <a href="boxcoxR.html">boxcoxR</a>. 
+			This option uses the solver (fminsearch or fminunc) to find MLE of 
+			the two transformation parameters for extended Yeo and Johnson 
+			family (<a href="https://rss.onlinelibrary.wiley.com/doi/abs/10.1111/rssc.12389">Atkinson 
+			et al. 2020</a>).</p>
+			<p class="p1">&nbsp;</p>
+			<p class="p1">New function <a href="fanBIC.html">fanBIC</a> which 
+			takes in input the output of FSRfan and using BIC and smoothness 
+			index enables to automatically choose in an effcieint and robust 
+			way, the best value of the transformation parameter.</p>
+			<p class="p1">New function <a href="fanBICpn.html">fanBICpn</a> 
+			which enables to automatically choose the best values of the 
+			transformation parameters for positive and negative observations</p>
+			<p class="p5">New function <a href="normYJpn.html">normYJpn</a> which extends the companion 
+			functions normBoxCox and normYJ to the case of extended Yeo and 
+			Johnson transformation.</p>
+			<p class="p1">DATASETS</p>
+			<p class="p1">New dataset balancesheets added in the
+			<a href="datasets_reg.html">datasets regression section</a></p>
+			</td>
+			<td style="vertical-align: top; width: 20%;">We stop supporting
+			releases before 2015b.<br><br> <br>Functions FSRfan, Score</td>
+			<td class="auto-style1" style="vertical-align: top;">Mathworks 
+			search engine in our HTML web pages in version 2020a does not work 
+			anylonger.<br>To search for FSDA function it is necessary to use the 
+			supplemental software search engine.<br><br><br><br><br></td>
+			<td style="vertical-align: top;">April &nbsp;2020</td>
+		</tr>
+		<tr>
 			<td style="vertical-align: top;"><strong>V8.0 (R2020a)</strong></td>
 			<td style="vertical-align: top;">
 			<p class="p5">&nbsp;</p>
