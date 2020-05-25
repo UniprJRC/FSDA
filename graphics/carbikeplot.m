@@ -295,6 +295,7 @@ ivalid = find(area>0);
 colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(numel(ivalid),1)]),2);
 set(hr(ivalid),{'facecolor'},colormapres);
 set(gca,'FontSize',16)
+box('on');
 h=gcf;
 end
 %FScategory:VIS-Clu
