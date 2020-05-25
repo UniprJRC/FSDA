@@ -99,13 +99,13 @@ function h  = carbikeplot(RelSol,varargin)
 %
 %
 %
-% See also: tclustICsol, tclustIC, tclust, tclustregIC, tclustreg, 
+% See also: tclustIC, tclust, tclustICsol
 %
 % References:
 %
 % Cerioli, A. Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani, M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 %
 %
@@ -149,7 +149,7 @@ function h  = carbikeplot(RelSol,varargin)
     NumberOfBestSolutions=9;
     [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',NumberOfBestSolutions,'ThreshRandIndex',ThreshRandIndex);
     % Car-bike plot to show what are the most relevant solutions
-    carbikeplot(outCLACLA);
+    carbikeplot(outCLACLA)
 
 %}
 
@@ -162,7 +162,7 @@ function h  = carbikeplot(RelSol,varargin)
     disp('Best solutions using MIXMIX')
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',6);
     % Produce the car-bike plot
-    carbikeplot(outMIXMIX);
+    carbikeplot(outMIXMIX)
 %}
 
 
@@ -256,6 +256,8 @@ set(axes1,'XtickLabel',legstr)
 
 numsol=size(ICbs,1);
 
+area = zeros(1,numsol);
+hr   = zeros(1,numsol);
 for i=1:numsol
     if strcmp(ICbs{i,end},'true') || SpuriousSolutions == true
         kbest=ICbs{i,1};
@@ -277,16 +279,21 @@ for i=1:numsol
             maxindstablec=find(cc==max(ICbs{i,4}));
         end
         
-        rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)+eps],'facecolor','c');
+        area(i) = ((maxindc-minindc)*(0.5*(1- i/numsol))) / (numsol*maxindc);
+        hr(i)   = rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)+eps],'facecolor','w','Curvature',[0.2 0.2]);
         rectangle('position',[cbest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
         rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps eps],'facecolor','w');
         
         soltruen=sum(strcmp(ICbs(1:i,end),'true'));
         
-        text(cbest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',16,'VerticalAlignment','middle');
+        text(cbest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',15,'VerticalAlignment','middle');
     end
 end
+A = rescaleFS(nanmean(abs(area),1),1,0);
+ivalid = find(area>0);
+colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(numel(ivalid),1)]),2);
+set(hr(ivalid),{'facecolor'},colormapres);
 set(gca,'FontSize',16)
 h=gcf;
 end
