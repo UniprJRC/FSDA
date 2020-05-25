@@ -322,18 +322,19 @@ function [out]=fanBICpn(outFSRfan, varargin)
 
 %% Beginning of code
 
-
+% fopen() not being supported by localthreads prevent us
+% from using this code
 % 9.8 is MATLAB 2020a where  parpool('threads') was first introduced
-numbertotest = 9.8;
-MLver=verLessThanFS(numbertotest);
-
-
-pp = gcp('nocreate');
-if MLver == true &&  isempty(pp)
-    parpool('local');
-elseif MLver == false && isempty(pp)
-    parpool('threads');
-end
+% numbertotest = 9.8;
+% MLver=verLessThanFS(numbertotest);
+% 
+% 
+% pp = gcp('nocreate');
+% if MLver == true &&  isempty(pp)
+%     parpool('local');
+% elseif MLver == false && isempty(pp)
+%     parpool('threads');
+% end
  
 Xwithintercept=outFSRfan.X;
 [n,pwithintercept]=size(Xwithintercept);
