@@ -1,2 +1,2 @@
-MATLAB statistics toolbox
-MATLAB optimization toolbox
+statistics_toolbox==7.1
+optimization_toolbox==2.3
