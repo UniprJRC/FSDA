@@ -83,7 +83,20 @@ function aceplot(out,varargin)
     aceplot(out)
 %}
 
-%
+%{
+    % Example of use of option highlight.
+    load('illnessx07.txt');
+    y=illnessx07(:,4);
+    X=illnessx07(:,2:3);
+    p=size(X,2);
+    ycont=y;
+    listout=[17 53 30];
+    ycont(listout)=1; 
+    l=[4*ones(p,1); 1];
+    outAC= ace(ycont,X,'l',l);
+    aceplot(outAC,'highlight',listout)
+%}
+
 %% Beginning of code
 
 highlight=[];
