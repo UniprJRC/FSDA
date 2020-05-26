@@ -1,2 +1,2 @@
-statistics_toolbox==7.1
-optimization_toolbox==2.3
+Statistics_and_Machine_Learning_Toolbox >8.0
+
