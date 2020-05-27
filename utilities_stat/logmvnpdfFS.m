@@ -110,20 +110,6 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %}
 
 %{
-    % Example of the use of option msg.
-    n=20000;
-    v=2;
-    X=randn(n,v);
-    mu = [1 -1]; Sigma = [.9 .4; .4 .3];
-    msg=0;
-    X0=X;
-    eyed=eye(v);
-    y = logmvnpdfFS(X,mu,Sigma,X0,eyed,n,v,msg);
-    %  enables to control the display of the error message on the cov matrix
-
-%}
-
-%{
     %% TIME COMPARISON USING TIC TOC.
     % In the examples below we compare the speed of the different solutions
     % logmvnpdfFS with mex function and logmvnpdfFS without mex function
@@ -317,12 +303,31 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
     end
 %}
 
+%{
+    % Example of the use of option msg 0.
+    n=20000;
+    v=2;
+    X=randn(n,v);
+    mu = [1 -1]; Sigma = [.9 1; 1 .3];
+    msg=0;
+    X0=X;
+    eyed=eye(v);
+    y = logmvnpdfFS(X,mu,Sigma,X0,eyed,n,v,msg);
+    % y is -Inf but no warning is shown.
+%}
 
-
-%
-% See also mvnpdf
-%
-
+%{
+    % Example of the use of option msg 1.
+    n=20000;
+    v=2;
+    X=randn(n,v);
+    mu = [1 -1]; Sigma = [.9 1; 1 .3];
+    msg=1;
+    X0=X;
+    eyed=eye(v);
+    y = logmvnpdfFS(X,mu,Sigma,X0,eyed,n,v,msg);
+    %  y is -Inf and warning is shown.
+%}
 
 %% Beginning  of code.
 % callmex is a Boolean which is equal to true if the mex file exists

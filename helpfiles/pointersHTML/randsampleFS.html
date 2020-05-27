@@ -2,20 +2,20 @@
    The method=0 uses MATLAB function randperm. In old MATLAB releases
    randperm was slower than FSDA function shuffling, which is used in
    method 1 (for example, in R2009a - MATLAB 7.8 - randperm was at least
-   50 slower).  
+   50 slower).
 
    If method=1 the approach depends on the population and sample sizes:
    - if $n &lt; 1000$ and $k &lt; n/(10 + 0.007n)$, that is if the population is
      relatively small and the desired sample is small compared to the
      population, we repeatedly sample with replacement until there are k
      unique values;
-   - otherwise, we do a random permutation of the population and return  
-     the first k elements. 
+   - otherwise, we do a random permutation of the population and return
+     the first k elements.
    The threshold $k &lt; n/(10 + 0.007n)$ has been determined by simulation
    under MATLAB R2016b. Before, the threshold was $n &lt; 4*k$.
 
    If method=2 systematic sampling is used, where the starting point is
-   random and the step is also random. 
+   random and the step is also random.
 
    If method=3 random sampling is based on the old but well known Linear
    Congruential Generator (LCG) method. In this case there is no guarantee

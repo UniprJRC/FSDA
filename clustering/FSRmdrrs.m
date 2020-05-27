@@ -132,7 +132,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
-% internationaltrade = criterion for updating subset. Boolean.
+% internationaltrade : criterion for updating subset. Boolean.
 %               If internationaltrade is true (default is false) residuals
 %               which have large of the final column of X (generally
 %               quantity) are reduced. Note that this guarantees that

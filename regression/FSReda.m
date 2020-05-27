@@ -435,7 +435,7 @@ function [out] = FSReda(y,X,bsb,varargin)
     [outLXS]=LXS(y,X,'nsamp',1000);
     [out] = FSReda(y, X, outLXS.bs, 'intercept', 0, 'wREML', true);
     % plot solution overwriting the RES output for simplicity
-    out.RES = out.w;
+    out.RES = out.wREML;
     resfwdplot(out);
     ylabel('REML weights FS');
 %}
@@ -908,7 +908,7 @@ out.X=X;
 if wREML == true
 	wt = wt(:, 2:end);
 	wt(:, end+1) = 1;
-	out.w = wt;
+	out.wREML = wt;
 end
 out.class='FSReda';
 end

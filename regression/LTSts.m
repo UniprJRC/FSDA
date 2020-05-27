@@ -1003,9 +1003,7 @@ function [out, varargout] = LTSts(y,varargin)
 %{
 
     %% Examples 4 and 5 used in the paper RPRH: trade data.
-    
     close all; clear all;
-
     % the datasets
     load('P12119085');
     load('P17049075');

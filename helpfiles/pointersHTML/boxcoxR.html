@@ -1,0 +1,17 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>boxcoxR</title> <meta content="refpage" name="chunktype"><meta content="function:boxcoxR " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="boxcoxR Finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation" itemprop="description" name="description" /><h1 itemprop="title">boxcoxR</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/boxcoxR.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/boxcoxR.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/boxcoxR.html">http://rosa.unipr.it/FSDA/boxcoxR.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: boxcoxR</em></p><P>boxcoxR</P><P>Finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation</P><h2>Description</h2><P>It computes the profile log Likelihood for a range of values of the
+ transforamtion parameter (lambda) and computes the MLE of lambda in the
+ supplied range. Supported families Box Cox, Yeo and Johnson and extended
+ Yeo and Johnson (Atkinson et al. 2020).
+
+               The profile loglikelihood is computed as:
+               \[
+               -(n/2) \log( (y(\lambda)-X\beta(\lambda))'(y(\lambda)-X\beta(\lambda))/n) +\log J
+               \]
+               where  $y(\lambda)$ is the vector of transformed
+               observations using Box Cox family,  Yeo and Johnson
+               or extended Yao and Johnson family
+               \[
+               \beta(\lambda) = (X'X)^{-1} X' y(\lambda)
+               \]
+               and $J$ is the Jacobian of the transformation,</P><h2>References</h2><P>Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
+ Analysis", Springer Verlag, New York. [see pp. 83-84]</P></html>
