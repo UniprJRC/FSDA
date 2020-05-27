@@ -15,29 +15,7 @@ y=wool(:,4);
 X=wool(:,1:3);
 % The line below shows the plot of mdr
 [out]=FSR(y,X,'nsamp',0,'plots',1);
-MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.31 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=17 because
-rmin(17,27)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=16
-Superimposition stopped because r_{min}(17,19)&gt;99% envelope
-$r_{min}(17,19)&gt;99$\% envelope
-Subsample of 18 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=9
-Summary of the exceedances
-           1          99         999        9999       99999
-           1           3           3           3           2
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRinvmdr.html#Example_2'><img vspace="5" hspace="5" src="images\FSRinvmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRinvmdr_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRinvmdr_03.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Resuperimposing envelopes.</li></span></a></span></h3><div class="collapse"><p>
+MDRinv=FSRinvmdr(out.mdr,size(X,2)+1,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Resuperimposing envelopes.</li></span></a></span></h3><div class="collapse"><p>
      Comparison of resuperimposing envelopes using mdr coordinates and normal
      coordinates again on wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);

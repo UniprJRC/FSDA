@@ -20,7 +20,7 @@
  3) the t test associated with the constructed variable computed assuming
  a different transformation for negative observations keeping the value of
  the transformation parameter for positive observations fixed. In short we
- call this test, "test for negative observations".</p> <p> 
+ call this test, "test for negative observations".</p> <p>
  4) the F test for the joint presence of the two constructed variables
  described in points 2) and 3.</p><p>
  4) the F likelihood ratio test based on the MLE of $\lambda_P$ and
@@ -38,22 +38,7 @@ X=XX(:,1:end-1);
 % In this case we use the five most common values of lambda are considered
 [out]=FSRfan(y,X);
 fanplot(out);
-%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-Total estimated time to complete LMS:  0.02 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 15.4%
-</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#Example_1'><img vspace="5" hspace="5" src="images\FSRfan_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+%The fan plot shows the log transformation is diffused throughout the data and does not depend on the presence of particular observations.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRfan with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Produce a personalized fan plot with required font sizes
      for labels and axes.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
@@ -102,36 +87,7 @@ la=[0 1/3 0.4 0.5];
 % transformation parameter seems to be the one associated with l=0.4
 % which is always the confidence bands but at the end of search, due to
 % the presence of particular observations it goes below the lower
-% rejection line.</pre></div></div><pre class="codeoutput">
-namey =
-
-    'Sales'
-
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.03 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.05 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-Total estimated time to complete LMS:  0.06 seconds 
-m=100
-m=200
-m=300
-m=400
-m=500
-</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRfan_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
+% rejection line.</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare BoxCox with Yeo and Johnson transformation.</li></span></a></span></h3><div class="collapse"><p>
      Store values of the score test statistic
      for the five most common values of $\lambda$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Produce also a fan plot and display it on the screen.
 % Common part to all examples: load wool dataset.
@@ -145,40 +101,7 @@ X=XX(:,1:end-1);
 fanplot(outBC,'titl','Box Cox');
 fanplot(outYJ,'titl','Yeo and Johnson','tag','YJ');
 disp('Maximum difference in absolute value')
-disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.18 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.16 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.15 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.21 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.15 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.16 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.16 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.15 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.19 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Total estimated time to complete LMS:  0.17 seconds 
-------------------------------
-Warning: Number of subsets without full rank equal to 16.3305%
-Maximum difference in absolute value
-    0.7564
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSRfan_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRfan_04.png" alt=""> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring of score test for positive and negative obseravations.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+disp(max(max(abs(outYJ.Score-outBC.Score))))</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring of score test for positive and negative obseravations.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(10)
 close all
 n=200;
@@ -216,15 +139,7 @@ end
 title(BigAx,'Data in the inverse scale')
 la=[ -0.5 -0.25 0];
 out=FSRfan(ytra,X,'la',la,'family','YJpn','plots',1,'init',round(n/2),'msg',0);
-title('Extended fan plot')</pre></div></div><pre class="codeoutput">Fit in the true scale
-R2 of the model in the true scale
-    0.8993
-
-Fit in the transformed scale
-R2 of the model in the wrong (inverse) scale
-    0.0471
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\FSRfan_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRfan_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRfan_07.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring all score tests (also the F test).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+title('Extended fan plot')</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of monitoring all score tests (also the F test).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(1000)
 close all
 n=200;
@@ -240,7 +155,7 @@ disp('response with missing values')
 end
 la=[ -0.1 0 0.1];
 % In this case  family is YJall
-out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\FSRfan_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison of  F test based on constructed variables with F test based on MLE.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
+out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',0);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Comparison of  F test based on constructed variables with F test based on MLE.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(100)
 close all
 n=200;
@@ -257,7 +172,7 @@ end
 la=[ -0.1 0 0.1];
 % Monitor test based on MLE using option scoremle
 scoremle= true;
-out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',false,'scoremle',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRfan.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\FSRfan_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRfan_10.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',false,'scoremle',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')
@@ -318,8 +233,13 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                    and the third subset of units [90 34 1];</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initlal
-                 subset to initialize the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
-                   computed, else Least trimmed of Squares is computed.</p> <p>
+                 subset to initialize the search.</span></a><span class="example_desc">scalar | Vector.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
+                 computed, else Least trimmed of Squares is computed.</p> <p>
+                 If, lms is matrix with size
+                 p-1+intercept-by-length(la) it contains in column
+                 j=1,..., lenght(la) the list of units forming the initial
+                 subset for the search associated with la(j). In this last
+                 case previous input option nsamp is ignored.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_family" class="clearfix"></div><h3 id="input_argument_namevalue_family" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>family</code> &#8212;string which identifies the family of transformations which
                    must be used.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>Possible values are 'BoxCox'
@@ -475,7 +395,7 @@ out=FSRfan(ytra,X,'la',la,'family','YJall','plots',1,'init',round(n/2),'msg',fal
                of the fwd search for la(end).</p><p>
                Note that this output is present only if input option
                scoremle is true</p></p></td></tr><tr valign="top"><td><code>laMLE</code></td><td><p><p>(n-init+1) x 2*length(la)+1 matrix containing the values of the
-               maximum ikelihood estimate of laP and laN.</p> <p> 
+               maximum ikelihood estimate of laP and laN.</p> <p>
                Columns 2:3 are associated with  the search which has
                ordered the data using to la(1);</p> <p>
                .........</p> <p>

@@ -6,7 +6,7 @@ subplot(2,2,j);
 plot(x,inversegampdf(x,a(j),b(j)));
 xlabel('x');
 title(['PDF with a=' num2str(a(j)) ' b=' num2str(b(j))]);
-end</pre></div></div><a href='http://rosa.unipr.it/fsda/inversegampdf.html#Example_1'><img vspace="5" hspace="5" src="images\inversegampdf_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the results using option nocheck=1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=(0:0.001:3)';
+end</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Compare the results using option nocheck=1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=(0:0.001:3)';
 a=[1,2,3,50,100,10000];
 b=[1,10,100,0.05,10,800];
 Y=zeros(length(x),length(a));
@@ -16,10 +16,7 @@ Y(i,:)   = inversegampdf(x(i),a,b);
 Ychk(i,:)= inversegampdf(x(i),a,b,1);
 end
 disp('Maximum absolute difference is:');
-disp(max(max(abs(Y-Ychk))));</pre></div></div><pre class="codeoutput">Maximum absolute difference is:
-   2.6049e-09
-
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Interpretation in Bayesian statistics.</li></span></a></span></h3><div class="collapse"><p>
+disp(max(max(abs(Y-Ychk))));</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Interpretation in Bayesian statistics.</li></span></a></span></h3><div class="collapse"><p>
       Interpretation of a inverse Gamma (conjugate) prior, used for 
       estimating the posterior distribution of the unknown variance 
       $\sigma{^2}$ of a normal $N(0,\sigma{^2})$.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% a set of values for $\sigma^2$
@@ -51,7 +48,7 @@ plot(x,inversegampdf(x,a(j),b(j)));
 hold on;
 xlabel('x (\sigma^2)');
 end
-title('PDF with a=[1, 2, 4] and b=[1, 1, 1]');</pre></div></div><a href='http://rosa.unipr.it/fsda/inversegampdf.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\inversegampdf_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Value at which the pdf must be evaluated. </span>  </a><span class="example_desc">Scalar, vector or matrix 3D array of the same size of x and
+title('PDF with a=[1, 2, 4] and b=[1, 1, 1]');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Value at which the pdf must be evaluated. </span>  </a><span class="example_desc">Scalar, vector or matrix 3D array of the same size of x and
                b.</span></span></h3> <div class="collapse"> <p><p>A scalar input functions as a constant matrix of the
                same size as the other input.</p> <p>
                See "More About:" for details about the inverse gamma

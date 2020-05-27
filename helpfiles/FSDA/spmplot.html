@@ -41,7 +41,7 @@ spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contour');
 figure
 spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','contourf');
 set(gcf,'Tag','newTag')
-cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#Example_3'><img vspace="5" hspace="5" src="images\spmplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\spmplot_02.png" alt=""> <img vspace="5" hspace="5" src="images\spmplot_03.png" alt=""> <img vspace="5" hspace="5" src="images\spmplot_04.png" alt=""> </a></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay and undock.</li></span></a></span></h3><div class="collapse"><p>
+cascade</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and specifying overlay and undock.</li></span></a></span></h3><div class="collapse"><p>
      The latter argument requires to change the tag of the scatterplot
      matrix not to delete.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% This example uses a matrix of logicals to set the undocked panels
 load fisheriris;
@@ -54,7 +54,7 @@ cascade
 close all;
 figure
 spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay','boxplotb','undock',[1,3;2,4]);
-cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#Example_4'><img vspace="5" hspace="5" src="images\spmplot_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\spmplot_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and additional options for
+cascade</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Call of spmplot with name/value pairs and additional options for
      overlay, specifying densities just for one group.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Iris data: scatter plot matrix with univariate boxplots on the main
 % diagonal.
 close all
@@ -66,7 +66,7 @@ over.type = 'contourf';
 over.include = logical([1 0 0]);
 over.cmap = summer;
 figure
-spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);</pre></div></div><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\spmplot_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Iris data: scatter plot matrix with univariate boxplots on the main
+spmplot(meas,'group',species,'plo',plo,'dispopt','box','overlay',over);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Iris data: scatter plot matrix with univariate boxplots on the main
      diagonal and personalized options for symbols, colors, symbol
      size and no legend.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
 load fisheriris;
@@ -190,7 +190,7 @@ figure
 % matrix once selected. Option labeladd '1' inside databrush enables to add
 % the labels of the selected units in the linked malfwdplot
 spmplot(out,'databrush',{'persist','on','selectionmode' 'Rect', ...
-'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist')</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
+'Label' 'on' 'RemoveLabels' 'off'  'labeladd','1'},'dispopt','hist');</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
      First input argument is a structure.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 n=100;
 v=3;
@@ -217,7 +217,7 @@ seluni=[10 30];
 Y =randn(n,p);
 Y(seluni,:)=Y(seluni,:)+2;
 % add labels for units inside vector seluni
-spmplot(Y,'selunit',seluni)</pre></div></div></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Second  example of the use of options selunit when first input argument is a 2D array.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(Y,'selunit',seluni);</pre></div></div></p></div></div><div id="Extraexample_11" class="example_module expandableContent"><div id="ExtraExample_11"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Second  example of the use of options selunit when first input argument is a 2D array.</li></span></a></span></h3><div class="collapse"><p>
        In this case the row names
        are contained inside input argument plo.label<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load carsmall
@@ -233,7 +233,7 @@ seluni=[10 30];
 plo=struct;
 plo.label=cellstr(RowLabelsMatrixY);
 % add labels for units inside vector seluni
-spmplot(Y,'selunit',seluni,'plo',plo)</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Option datatooltip combined with rownames.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(Y,'selunit',seluni,'plo',plo);</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Option datatooltip combined with rownames.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of option datatooltip.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% First input argument is a structure.
 close all
 load carsmall
@@ -260,19 +260,10 @@ figure
 plo=struct;
 plo.labeladd='1';
 plo.clr = 'b';
-spmplot(out,'datatooltip',1,'plo',plo)
+spmplot(out,'datatooltip',1,'plo',plo);
 % The units which are already labelled in each panel of the scatter
 % plot matrix are those which in the search had a Mahalanobis distance
-% greater than 2.5. Note that the labelling is controlled by option seleunit.</pre></div></div><pre class="codeoutput">
-ans = 
-
-  3&times;3 graphics array:
-
-    Graphics    Line        Line    
-    Line        Graphics    Line    
-    Line        Line        Graphics
-
-</pre><a href='http://rosa.unipr.it/fsda/spmplot.html#ExtraExample_12'><img vspace="5" hspace="5" src="images\spmplot_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
+% greater than 2.5. Note that the labelling is controlled by option seleunit.</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
        Example of the use of options selstep and selunit combined with databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   selunit is passed as a character.
 %   It produces a scatter plot matrix in which labels are put for units
 %   which have a Mahalanobis distance greater than str2num(selunit). When a set of
@@ -294,7 +285,7 @@ fre=sortrows(fre,4);
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',0); 
 spmplot(out,'selstep',[60 80],'selunit','10',...
-'databrush',{'persist','off','selectionmode' 'Rect'})</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
+'databrush',{'persist','off','selectionmode' 'Rect'});</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of options selstep and selunit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   selunit is passed as a numeric vector.
 %   It produces a scatter plot matrix in which labels are put for units
 %   selunit. When a set of
@@ -316,7 +307,7 @@ fre=sortrows(fre,4);
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',0); 
 spmplot(out,'selstep',[60 80],'selunit',1:5,...
-'databrush',{'persist','off','selectionmode' 'Rect'})</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
+'databrush',{'persist','off','selectionmode' 'Rect'});</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 4.</i>
        Example of the use of options selstep and selunit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   selunit is passed as a cell array of length 2.
 %   It produces a scatter plot matrix in which labels are put for units
 %   which have a min MD &gt; selunit{1} and max MD &lt;selunit{2}. When a set of
@@ -338,7 +329,7 @@ fre=sortrows(fre,4);
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',0);
 spmplot(out,'selstep',[60 80],'selunit',{'1.2' '1.6'},...
-'databrush',{'persist','off','selectionmode' 'Rect'})</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array) containing n observations on v variables
+'databrush',{'persist','off','selectionmode' 'Rect'});</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; data matrix (2D array) containing n observations on v variables
          or a structure 'out' coming from function FSMeda. </span>  </a><span class="example_desc">Matrix or
          struct.</span></span></h3> <div class="collapse"> <p><p>If Y is a 2D array, varargin can be either a sequence of name/value
      pairs, detailed below, or one of the following explicit assignments:</p> <p>

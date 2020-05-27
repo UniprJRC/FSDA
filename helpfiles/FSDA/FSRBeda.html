@@ -4,7 +4,7 @@
 n=size(hprice,1);
 y=hprice(:,1);
 X=hprice(:,2:5);
-[out]=FSRBeda(y,X)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRBeda with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
+[out]=FSRBeda(y,X);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRBeda with optional arguments.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
 % setup parameters
 n=size(hprice,1);
 y=hprice(:,1);
@@ -31,7 +31,7 @@ R(4,4)=.6;
 R(5,5)=.6;
 R=inv(R);
 bayes.R=R;
-[out]=FSRBeda(y,X,'bayes',bayes)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2.</li></span></a></span></h3><div class="collapse"><p>
+[out]=FSRBeda(y,X,'bayes',bayes);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2.</li></span></a></span></h3><div class="collapse"><p>
      Plot posterior estimates of beta and sigma2 in the interval (subset size) [20 125].<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In this example for the house price data we monitor the forward plots
 % of the parameters of the linear model adding 95% and 99% HPD
 % regions. The first 8 panels refer to the elements of $\beta_1$
@@ -133,33 +133,7 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; forward plots in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
---------------------------------------------------
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=511 because
-rmin(511,546)&gt;99.99% and rmin(510,546)&gt;99.99% and rmin(512,546)&gt;99.99%
-rmin(511,546)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=510
-Superimposition stopped because r_{min}(512,529)&gt;99.9% envelope
-Subsample of 528 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=18
-Summary of the exceedances
-           1          99         999        9999       99999
-          10          64          48          38          29
-
-m=100
-m=200
-m=300
-m=400
-m=500
-</pre><a href='http://rosa.unipr.it/fsda/FSRBeda.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRBeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2 in the last steps.</li></span></a></span></h3><div class="collapse"><p>
+']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Plot posterior estimates of beta and sigma2 in the last steps.</li></span></a></span></h3><div class="collapse"><p>
      Plot posterior estimates of beta and sigma2 in the interval (subset size) [250 n+1].<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In this example for the house price data we monitor the forward plots
 % of the parameters of the linear model adding 95% and 99% HPD
 % regions. The first 8 panels refer to the elements of $\beta_1$
@@ -219,15 +193,15 @@ plot(out.beta1(:,1),out.beta1(:,j+1)','LineStyle',linst{1},'LineWidth',lwd,'Colo
 % Add the horizontal line which corresponds to prior values
 xL = get(my_subplot,'XLim');
 line(xL,[beta0(j) beta0(j)],'Color','r','LineWidth',lwd);
-% Add vertical line in correspondence of the step prior to the
-% entry of the first outlier
-line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 % Set ylim
 ylimU=max([out.beta1HPD(:,4,j); beta0(j)]);
 ylimL=min([out.beta1HPD(:,3,j); beta0(j)]);
 ylim([ylimL ylimU])
 % Set xlim
 xlim([xlimL xlimU]);
+% Add vertical line in correspondence of the step prior to the
+% entry of the first outlier
+line([dout; dout],[ylimL; ylimU],'Color','r','LineWidth',lwd);
 ylabel(['$\hat{\beta_' num2str(j-1) '}$'],'Interpreter','LaTeX','FontSize',20,'rot',-360);
 set(gca,'FontSize',FontSize);
 if j&gt;4
@@ -262,33 +236,7 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; forward plots in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
---------------------------------------------------
--------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=511 because
-rmin(511,546)&gt;99.99% and rmin(510,546)&gt;99.99% and rmin(512,546)&gt;99.99%
-rmin(511,546)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=510
-Superimposition stopped because r_{min}(512,529)&gt;99.9% envelope
-Subsample of 528 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=18
-Summary of the exceedances
-           1          99         999        9999       99999
-          10          64          48          38          29
-
-m=100
-m=200
-m=300
-m=400
-m=500
-</pre><a href='http://rosa.unipr.it/fsda/FSRBeda.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRBeda_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Plot of HPDI for BankProfit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');
+']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Plot of HPDI for BankProfit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');
 R=load('BankProfitR.txt');
 X=XX(:,1:end-1);
 y=XX(:,end);
@@ -387,7 +335,7 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Bank profit data; forward plots in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']  of HPD regions for \beta and \sigma^2'],'t')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
+']  of HPD regions for \beta and \sigma^2'],'t');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
                computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')

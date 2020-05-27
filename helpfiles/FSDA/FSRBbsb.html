@@ -46,7 +46,7 @@ R(4,4)=.6;
 R(5,5)=.6;
 R=inv(R);
 [~,Un,BB]=FSRBmdr(y,X,beta0, R, tau0, n0);
-[Unchk,BBchk]=FSRBbsb(y,X,beta0,R,tau0,n0,'plots',1,'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRBbsb.html#Example_2'><img vspace="5" hspace="5" src="images\FSRBbsb_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare units belonging to subsets.</li></span></a></span></h3><div class="collapse"><p>
+[Unchk,BBchk]=FSRBbsb(y,X,beta0,R,tau0,n0,'plots',1,'msg',0);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Compare units belonging to subsets.</li></span></a></span></h3><div class="collapse"><p>
      Test procedures FSRBmdr and FSRBbsb to find out whether they produce
      the same results in terms of units belonging to subset<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hprice.txt;
 % setup parameters

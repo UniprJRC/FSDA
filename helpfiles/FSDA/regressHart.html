@@ -14,13 +14,7 @@ OLS=regstats(y,X,'linear',whichstats);
 disp('Ordinary Least Squares Estimates')
 LSest=[OLS.tstat.beta OLS.tstat.se OLS.tstat.t OLS.tstat.pval];
 disp(LSest)
-out=regressHart(y,X,Loadfactor);</pre></div></div><pre class="codeoutput">Ordinary Least Squares Estimates
-    9.1382    0.2451   37.2887    0.0000
-    0.9261    0.0323   28.6681    0.0000
-    0.0291    0.0123    2.3688    0.0201
-    0.4101    0.0188   21.8037    0.0000
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHart with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+out=regressHart(y,X,Loadfactor);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHart with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Estimate a multiplicative heteroscedastic model and print the
      estimates of regression and scedastic parameters together with LM, LR
      and Wald test<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('TableF61_Greene');

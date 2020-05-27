@@ -9,41 +9,7 @@ plot(X,y,'o')
 fs=14;
 ylabel('Value','FontSize',fs)
 xlabel('Quantity','FontSize',fs)
-out=FSRH(y,X,Z);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.10 seconds 
-Warning: interchange greater than 10 when m=17
-Number of units which entered=11
-Warning: interchange greater than 10 when m=18
-Number of units which entered=17
-Warning: interchange greater than 10 when m=440
-Number of units which entered=33
-Warning: interchange greater than 10 when m=499
-Number of units which entered=21
-Warning: interchange greater than 10 when m=502
-Number of units which entered=13
-Warning: interchange greater than 10 when m=507
-Number of units which entered=19
-Warning: interchange greater than 10 when m=509
-Number of units which entered=11
--------------------------
-Signal detection loop
-Signal is in penultimate step of the search
-rmin(1098,1100)&gt;99.9%
-rmin(1098,1100)&gt;99% at final step: Bonferroni signal in the final part of the search.
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=1097
-Superimposition stopped because r_{min}(1098,1099)&gt;99% envelope
-$r_{min}(1098,1099)&gt;99$\% envelope
-----------------------------
-Final output
-Number of units declared as outliers=2
-Summary of the exceedances
-           1          99         999        9999       99999
-          79          10           2           2           2
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRH.html#Example_1'><img vspace="5" hspace="5" src="images\FSRH_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRH_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRH_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRH with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+out=FSRH(y,X,Z);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRH with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the search initialization and controlling the y scale in
      plot. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);

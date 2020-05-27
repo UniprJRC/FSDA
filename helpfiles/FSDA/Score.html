@@ -6,12 +6,7 @@ X=XX(:,1:end-1);
 [outSC]=Score(y,X);
 disp('Values of the score test')
 disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})  
-disp(outSC.Score')</pre></div></div><pre class="codeoutput">Values of the score test
-    {'la=-1'}    {'la=-0.5'}    {'la=0'}    {'la=0.5'}    {'la=1'}
-
-   17.7059    7.4927   -0.9122   -9.5511  -18.5576
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Score with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+disp(outSC.Score')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Score with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Loyalty cards data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('loyalty.txt');
 y=loyalty(:,4);
 X=loyalty(:,1:3);
