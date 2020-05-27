@@ -108,14 +108,7 @@ seluni=[10 30];
 plo=struct;
 plo.label=cellstr(RowLabelsMatrixY);
 % add labels for units inside vector seluni
-yXplot(y,X,'selunit',seluni,'plo',plo)</pre></div></div><pre class="codeoutput">
-ans = 
-
-  1&times;2 Line array:
-
-    Line    Line
-
-</pre><a href='http://rosa.unipr.it/fsda/yXplot.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\yXplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+yXplot(y,X,'selunit',seluni,'plo',plo);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=3;
 X=randn(n,p);
 y=100+randn(n,1);
@@ -165,7 +158,7 @@ y(sel)=y(sel)+2;
 [out]=FSReda(y,X,out.bs);
 selunit=[2 5 20 23 35 45];
 yXplot(out,'selunit',selunit,'selstep',[20 22 27 36],...
-'databrush',{'persist','off','selectionmode' 'Rect'})
+'databrush',{'persist','off','selectionmode' 'Rect'});
 %   After brushing the resfwdplot automatically appears and the labels
 % are put for units contained in vector selunit in steps [20 22 27
 % 36] of the search</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
@@ -182,7 +175,7 @@ y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'selstep',[40 21 80],'selunit','1.5',...
-'databrush',{'persist','off','selectionmode' 'Rect'})</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
+'databrush',{'persist','off','selectionmode' 'Rect'});</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
        Example of the use of option selunit (notice that in this
        case selunit is a cell array of strings.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Highlight only the trajectories which in at least one step of the
 %   search had a value smaller than -3 or greater than 2 and label
@@ -208,7 +201,7 @@ y(sel)=y(sel)+2;
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'databrush',1)
 %   An equivalent statement is
-yXplot(out,'databrush',{'selectionmode' 'Rect'})</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
+yXplot(out,'databrush',{'selectionmode' 'Rect'});</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
        Example of the use of brush using a rectangular selection tool and
        a cyan colour.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=2;
@@ -218,7 +211,7 @@ sel=51:100;
 y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
-yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'})</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
+yXplot(out,'databrush',{'selectionmode' 'Rect' 'FlagColor' 'c'});</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 6.</i>
       Example of the use of brush using multiple selection circular tools.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=2;
 X=randn(n,p);
@@ -227,7 +220,7 @@ sel=51:100;
 y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
-yXplot(out,'databrush',{'selectionmode' 'Brush'})</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
+yXplot(out,'databrush',{'selectionmode' 'Brush'});</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 7.</i>
        Example of the use of brush using lasso selection tool and fleur pointer.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=2;
 X=randn(n,p);
@@ -236,7 +229,7 @@ sel=51:100;
 y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
-yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'})</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
+yXplot(out,'databrush',{'selectionmode' 'lasso','Pointer','fleur'});</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 8.</i>
        Example of the use of rectangular brush.</li></span></a></span></h3><div class="collapse"><p> Superimposed labels for
        the brushed units and persistent labels in the yXplot which has been
        brushed<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
@@ -247,7 +240,8 @@ sel=51:100;
 y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
-yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on' 'RemoveLabels' 'off'})</pre></div></div></p></div></div><div id="Extraexample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
+yXplot(out,'databrush',{'selectionmode' 'Rect' 'Label' 'on'
+'RemoveLabels' 'off'});</pre></div></div></p></div></div><div id="Extraexample_16" class="example_module expandableContent"><div id="ExtraExample_16"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 9.</i>
      Example of persistent cumulative brushing (with persist off).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   All previous examples used a non persistent brushing (that is brushing
 %   could be done only once). The examples below use persistent brushing
 %   (that is brushing can be done multiple times)
@@ -265,7 +259,7 @@ y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'databrush',{'selectionmode','Rect','persist' 'off' ...
-'Label' 'on' 'RemoveLabels' 'off'})</pre></div></div></p></div></div><div id="Extraexample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
+'Label' 'on' 'RemoveLabels' 'off'});</pre></div></div></p></div></div><div id="Extraexample_17" class="example_module expandableContent"><div id="ExtraExample_17"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 10.</i>
      Example of persistent cumulative brushing (with persist on).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Every time a brushing action is performed
 %   current highlightments are added to previous highlightments
 n=100;
@@ -277,7 +271,7 @@ y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-'Label' 'off' 'RemoveLabels' 'on'})</pre></div></div></p></div></div><div id="Extraexample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
+'Label' 'off' 'RemoveLabels' 'on'});</pre></div></div></p></div></div><div id="Extraexample_18" class="example_module expandableContent"><div id="ExtraExample_18"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 11.</i>
      Example of persistent cumulative brushing.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The options are 'persist' 'on'  labeladd '1' 'Label' 'on' 'RemoveLabels' 'off'.
 %  Now option labeladd '1'. In this case the row numbers of the
 %  selected units are displayed in the monitoring residuals plot
@@ -292,7 +286,7 @@ y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'})</pre></div></div></p></div></div><div id="Extraexample_19" class="example_module expandableContent"><div id="ExtraExample_19"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
+'Label' 'on' 'RemoveLabels' 'off' 'labeladd' '1'});</pre></div></div></p></div></div><div id="Extraexample_19" class="example_module expandableContent"><div id="ExtraExample_19"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 12.</i>
      Example of persistent cumulative brushing (with persist on and labeladd '1').</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   Now option labeladd '1'. In this case the row numbers of the
 %   selected units are displayed just in the monitoring residuals plot
 n=100;
@@ -304,7 +298,7 @@ y(sel)=y(sel)+2;
 [out]=LXS(y,X,'nsamp',1000);
 [out]=FSReda(y,X,out.bs);
 yXplot(out,'databrush',{'selectionmode','Rect','persist' 'on' ...
-'labeladd' '1'})</pre></div></div></p></div></div><div id="Extraexample_20" class="example_module expandableContent"><div id="ExtraExample_20"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
+'labeladd' '1'});</pre></div></div></p></div></div><div id="Extraexample_20" class="example_module expandableContent"><div id="ExtraExample_20"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip.</li></span></a></span></h3><div class="collapse"><p>
        It gives the possibility of clicking on the different points and have
        information about the unit selected, the step of entry into the
        subset and the associated label<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
@@ -332,7 +326,7 @@ Model=Model(boo,:);
 % In this case datatooltip will display the rowname and not the default
 % string row...
 out.label=cellstr(Model);
-yXplot(out,'datatooltip',1)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable or structure containing y, X and possibly other
+yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable or structure containing y, X and possibly other
        fields to link with monitoring plots. </span>  </a><span class="example_desc">Vector or struct.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable or a
        structure containing monitoring information (see the examples).</p> <p>
        If y is a vector it can be either a row or a column vector.</p> <p>

@@ -49,22 +49,7 @@ Comb=[la outSCmle.Score(:,1) Pval];
 CombT=array2table(Comb,'VariableNames',{'la','FtestLR' 'Pvalues'});
 disp(CombT)
 disp('The test is significant for all values of lambda')
-disp('This may indicate that the data need two separate lambdas for pos and neg observations')</pre></div></div><pre class="codeoutput">     la      FtestLR     Pvalues  
-    _____    _______    __________
-
-       -1    350.59     2.1902e-45
-    -0.75    195.62     6.0722e-35
-     -0.5    106.44      2.711e-25
-    -0.25    54.822     1.0505e-16
-        0    25.305     1.3794e-09
-     0.25    9.5895     0.00015719
-      0.5    3.6966       0.028332
-     0.75    6.7847      0.0017393
-        1    21.293     2.0943e-08
-
-The test is significant for all values of lambda
-This may indicate that the data need two separate lambdas for pos and neg observations
-</pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+disp('This may indicate that the data need two separate lambdas for pos and neg observations')</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')

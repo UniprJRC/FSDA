@@ -39,7 +39,7 @@ title('alpha=1','FontSize',15);
 h2 = subplot(2,1,2);
 [outalpha0] = mdpdR(y, X, 0);
 resindexplot(outalpha0,'h',h2);
-title('alpha=0','FontSize',15);</pre></div></div><a href='http://rosa.unipr.it/fsda/mdpdR.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\mdpdR_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX2).</li></span></a></span></h3><div class="collapse"><p>
+title('alpha=0','FontSize',15);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX2).</li></span></a></span></h3><div class="collapse"><p>
      Scenario as in example 2 of Durio and Isaia (2011).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% 480 points generated according to the model
 % Y=0.5*X1+0.5*X2+eps
 % and n2 = 120 points (outliers), drawn from the model
@@ -72,8 +72,12 @@ h2 = subplot(2,1,2);
 [outalpha0] = mdpdR(y, X, 0);
 resindexplot(outalpha0,'h',h2);
 title('alpha=0','FontSize',15)
+varnames={'MLE alpha=0' 'MD alpha=1'};
+if verLessThan('matlab', '9.7.0')
+varnames=matlab.lang.makeValidName(varnames);
+end
 % Compare robust and MLE estimate
-disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX3).</li></span></a></span></h3><div class="collapse"><p>
+disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX3).</li></span></a></span></h3><div class="collapse"><p>
      Scenario as in example 3 of Durio and Isaia (2011)
      480 points generated according to the model
      Y=0.25*X1+0.25*X2+0.25*X3+0.25*X4+eps
@@ -108,7 +112,11 @@ h2=subplot(2,1,2);
 resindexplot(outalpha0,'h',h2);
 title('alpha=0','FontSize',15);
 % Compare robust and MLE estimate
-disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX4).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Compare MLE estimator with MDPD estimator (EX4).
+varnames={'MLE alpha=0' 'MD alpha=1'};
+if verLessThan('matlab', '9.7.0')
+varnames=matlab.lang.makeValidName(varnames);
+end
+disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare MLE estimator with MDPD estimator (EX4).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Compare MLE estimator with MDPD estimator (EX4).
 % Scenario as in example 4 of Durio and Isaia (2011)
 % 180 points generated according to the model
 % Y  = 0.25*X1+eps
@@ -152,7 +160,11 @@ h2=subplot(2,1,2);
 resindexplot(outalpha0,'h',h2);
 title('alpha=0','FontSize',15);
 % Compare robust and MLE estimate
-disp(table(outalpha0.beta,out.beta,'VariableNames',{'MLE alpha=0' 'MD alpha=1'}))</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MPDP applied to Forbes data.</li></span></a></span></h3><div class="collapse"><p>
+varnames={'MLE alpha=0' 'MD alpha=1'};
+if verLessThan('matlab', '9.7.0')
+varnames=matlab.lang.makeValidName(varnames);
+end
+disp(table(outalpha0.beta,out.beta,'VariableNames',varnames))</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> MPDP applied to Forbes data.</li></span></a></span></h3><div class="collapse"><p>
      Interactive_example<div class="programlisting"><div class="codeinput"><pre class="matlab-code">clearvars;close all;
 % scatterplot of data: one point looks outlying
 load('forbes.txt');
@@ -166,7 +178,7 @@ h2=subplot(2,1,2);
 % MLE estimate
 [outalpha0] = mdpdR(y, X, 0);
 resindexplot(outalpha0,'h',h2);
-title('alpha=0','FontSize',15);</pre></div></div><a href='http://rosa.unipr.it/fsda/mdpdR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\mdpdR_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>mdpdR applied to the Belgium telephone data.</li></span></a></span></h3><div class="collapse"><p>
+title('alpha=0','FontSize',15);</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>mdpdR applied to the Belgium telephone data.</li></span></a></span></h3><div class="collapse"><p>
      This dataset concerns the number of international calls from Belgium,
      taken from the Belgian Statistical Survey, published by the Ministry of
      Economy. This dataset consists in 24 observations on the following 2 variables.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Year (1950 - 1973)

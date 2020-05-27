@@ -26,7 +26,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 %Mahalanobis Distance
 fre=sortrows(fre,4);
 bs=fre(1:m0,1);
-[out]=FSMedaeasy(Ycont,bs,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMedaeasy.html#Example_2'><img vspace="5" hspace="5" src="images\FSMedaeasy_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMeda with optional arguments (centroid position monitoring).</li></span></a></span></h3><div class="collapse"><p>
+[out]=FSMedaeasy(Ycont,bs,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMeda with optional arguments (centroid position monitoring).</li></span></a></span></h3><div class="collapse"><p>
      Monitoring the minimum Mahlanobis distance and the centroid position.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% In this example the figures of minimum Mahlanobis distance are closed.
 Y=load('sixty_eighty.txt');
 G = 60*ones(140,1); 
@@ -50,13 +50,7 @@ init=2;
 bs=fre(1:init,1);
 [out]=FSMedaeasy(Y,bs,'plots',2,'init',init,'scaled',1);
 close(findobj('tag','pl_mmd'));
-title('Start carefully chosen using unibiv','Fontsize',14);</pre></div></div><pre class="codeoutput">Warning: interchange greater than 10 when m=92
-Number of units which entered=25
-Attention : init1 should be larger than v. 
-It is set to v+1.
-Warning: interchange greater than 10 when m=92
-Number of units which entered=25
-</pre><a href='http://rosa.unipr.it/fsda/FSMedaeasy.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSMedaeasy_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSMedaeasy_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSMedaeasy_04.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes')
+title('Start carefully chosen using unibiv','Fontsize',14);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example with the Swiss bank notes data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes')
 Y=swiss_banknotes.data;
 [fre]=unibiv(Y);
 %create an initial subset with the 3 observations with the lowest
@@ -64,7 +58,7 @@ Y=swiss_banknotes.data;
 fre=sortrows(fre,4);
 m0=20;
 bs=fre(1:m0,1);
-[out]=FSMedaeasy(Y,bs,'plots',1,'init',30);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMedaeasy.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSMedaeasy_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the Emilia Romagna data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('emilia2001')
+[out]=FSMedaeasy(Y,bs,'plots',1,'init',30);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the Emilia Romagna data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('emilia2001')
 Y=emilia2001.data;
 [fre]=unibiv(Y);
 %create an initial subset with the 30 observations with the lowest

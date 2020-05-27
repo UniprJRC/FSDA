@@ -17,7 +17,7 @@ ySIM=outSIM.y;
 % Estimate
 outEST=LTSts(ySIM,'model',model,'plots',1);
 % Forecast
-outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/forecastTS.html#Example_1'><img vspace="5" hspace="5" src="images\forecastTS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\forecastTS_02.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Quadratic trend and constant seasonal.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Quadratic trend and constant seasonal.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 rng(1)
 model=struct;
 model.trend=2;
@@ -33,7 +33,7 @@ ySIM=outSIM.y;
 % Estimate
 outEST=LTSts(ySIM,'model',model,'plots',1);
 % Forecast
-outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/forecastTS.html#Example_2'><img vspace="5" hspace="5" src="images\forecastTS_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\forecastTS_05.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_06.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and level shift.</li></span></a></span></h3><div class="collapse"><p>
+outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated time series with quadratic trend, fixed seasonal and level shift.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains a quadratic trend, a seasonal component with two harmonics
      no explanatory variables and a level shift in position 30 with size
@@ -57,7 +57,7 @@ ySIM=outSIM.y;
 model.lshift=5;
 outEST=LTSts(ySIM,'model',model,'plots',1,'msg',0);
 % Forecast
-outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\forecastTS_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_08.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (1).</li></span></a></span></h3><div class="collapse"><p>
+outFORE=forecastTS(outEST,'model',model,'plots',1);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (1).</li></span></a></span></h3><div class="collapse"><p>
      Load the data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan
 118  126  150  180  196  188  233  277  301  318  342  391    % Feb
@@ -87,22 +87,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 nfore=36;
 StartDate=[1949 1];
 conflev=0.999; % Wide confidence level for the forecast
-outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">         lab           bhat          se        tstat         pval    
-    _____________    _________    ________    ________    ___________
-
-    {'b_trend1' }       301.92      3.3892      89.083    3.9559e-121
-    {'b_trend2' }       2.7612    0.038653      71.435    1.5165e-108
-    {'b_cos1'   }      -2.1239      2.8813    -0.73715        0.46232
-    {'b_sin1'   }      -1.0546      1.4327    -0.73612        0.46295
-    {'b_cos2'   }    -0.094731     0.15537    -0.60971        0.54309
-    {'b_sin2'   }        1.216      1.6514     0.73635         0.4628
-    {'b_cos3'   }      0.52291     0.71389     0.73248        0.46516
-    {'b_sin3'   }     -0.17542     0.24875    -0.70518        0.48192
-    {'b_varampl'}      0.24992     0.35327     0.70743        0.48053
-    {'b_lshift' }       -225.8      4.5708     -49.402     7.0551e-88
-
-Level shift position t=21
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\forecastTS_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % In this example we estimate a model without the seasonal component
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
 y = [112  115  145  171  196  204  242  284  315  340  360  417   % Jan
@@ -131,15 +116,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 nfore=36;
 StartDate=[1949 1];
 conflev=0.999; % Wide confidence level for the forecast
-outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">        lab          bhat         se        tstat        pval   
-    ____________    _______    ________    _______    __________
-
-    {'b_trend1'}     307.43      7.2337       42.5    2.8696e-82
-    {'b_trend2'}     2.3919    0.087445     27.354    3.0083e-58
-    {'b_lshift'}    -214.71      9.7761    -21.963    2.3563e-47
-
-Level shift position t=21
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastTS_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_13.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
+outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with linear trend, time varying seasonal component, and
      level shift<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
 model=struct;
@@ -225,34 +202,7 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);
 % Note that in this case all the 120 values of Xall are supplied and
 % the number of forecasts is 20
 model.X=Xall;
-forecastTS(out,'model',model,'nfore',20)</pre></div></div><pre class="codeoutput">         lab           bhat          se        tstat         pval   
-    _____________    _________    ________    ________    __________
-
-    {'b_trend1' }       1082.5      1905.7     0.56801       0.57144
-    {'b_trend2' }        137.1      81.629      1.6796      0.096506
-    {'b_cos1'   }      -513.87      636.73    -0.80704       0.42177
-    {'b_sin1'   }        612.4      678.81     0.90216       0.36938
-    {'b_cos2'   }      -1925.1      1501.6      -1.282       0.20313
-    {'b_sin2'   }      -2776.4        2084     -1.3322       0.18615
-    {'b_AR1'    }      0.24976    0.079246      3.1517     0.0022053
-    {'b_AR2'    }      0.61635    0.077048      7.9996    4.0843e-12
-    {'b_X1'     }      -1.9556      8.8835    -0.22014       0.82626
-    {'b_varampl'}    -0.058666    0.033078     -1.7736       0.07952
-
-
-ans = 
-
-  struct with fields:
-
-          signal: [120&times;1 double]
-           trend: [120&times;1 double]
-        seasonal: [120&times;1 double]
-               X: [100&times;10 double]
-          lshift: 0
-        confband: [120&times;2 double]
-    datesnumeric: [120&times;1 double]
-
-</pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\forecastTS_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_15.png" alt=""> <img vspace="5" hspace="5" src="images\forecastTS_16.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check accuracy of forecasts.</li></span></a></span></h3><div class="collapse"><p>
+forecastTS(out,'model',model,'nfore',20)</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check accuracy of forecasts.</li></span></a></span></h3><div class="collapse"><p>
      AR(2) model with fixed seasonal<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 model=struct;
 model.trend=1;

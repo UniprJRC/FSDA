@@ -7,35 +7,17 @@
    (squared) Euclidean distances.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>)</code></span>Trimmed k-means using geyser data (1).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=tkmeans(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#inputarg_k"><code>k</code></a>,<a class="intrnllnk" href="#inputarg_alpha"><code>alpha</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Trimmed k-means using geyser data (2).</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="tkmeans.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_out"><code>out </code></a>,<a class="intrnllnk" href="#outputarg_varargout"><code> varargout</code></a>]=tkmeans(___)</code></span>Trimmed k-means using M5data and different plots.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Trimmed k-means using geyser data (1).</li></span></a></span></h3><div class="collapse"><p>
      3 groups and trimming level of 3 percent<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('geyser2.txt');
-out=tkmeans(Y,3,0.03,'plots',1)</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.69 seconds 
-
-out = 
-
-  struct with fields:
-
-       muopt: [3&times;2 double]
-          bs: [28 85 155]
-         idx: [271&times;1 double]
-         siz: [4&times;3 double]
-     weights: [0.3333 0.3333 0.3333]
-           h: 263
-           D: [271&times;3 double]
-         obj: 0.1157
-    sigmaopt: [2&times;2&times;3 double]
-     BoxTest: [1&times;1 struct]
-         emp: 0
-
-</pre><a href='http://rosa.unipr.it/fsda/tkmeans.html#Example_1'><img vspace="5" hspace="5" src="images\tkmeans_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using geyser data (2).</li></span></a></span></h3><div class="collapse"><p>
+out=tkmeans(Y,3,0.03,'plots',1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using geyser data (2).</li></span></a></span></h3><div class="collapse"><p>
      option weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('geyser2.txt');
-out=tkmeans(Y,3,0.03,'plots',1,'weights',1)</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using M5data and different plots.</li></span></a></span></h3><div class="collapse"><p>
+out=tkmeans(Y,3,0.03,'plots',1,'weights',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Trimmed k-means using M5data and different plots.</li></span></a></span></h3><div class="collapse"><p>
      Weights =1<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('M5data.txt');
 close all
-out=tkmeans(Y(:,1:2),3,0,'plots',1)
-out=tkmeans(Y(:,1:2),3,0.1,'plots','ellipse')
-out=tkmeans(Y(:,1:2),3,0.1,'plots','contour')
-out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf')
-out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb')
+out=tkmeans(Y(:,1:2),3,0,'plots',1);
+out=tkmeans(Y(:,1:2),3,0.1,'plots','ellipse');
+out=tkmeans(Y(:,1:2),3,0.1,'plots','contour');
+out=tkmeans(Y(:,1:2),3,0.1,'plots','contourf');
+out=tkmeans(Y(:,1:2),3,0.1,'plots','boxplotb');
 cascade;
 % using a structure for plots
 contOpt = struct;
@@ -54,8 +36,8 @@ cascade</pre></div></div></p></div></div></div><p> </p><div class="exampl
             noise)
     <div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('structurednoise.txt');
-out=tkmeans(Y(:,1:2),2,0.1,'plots',1)
-out=tkmeans(Y(:,1:2),5,0.15,'plots',1)
+out=tkmeans(Y(:,1:2),2,0.1,'plots',1);
+out=tkmeans(Y(:,1:2),5,0.15,'plots',1);
 cascade</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Trimmed k-means using mixture100 data.</li></span></a></span></h3><div class="collapse"><p>
      The data have been generated using the following R instructions
          set.seed (100)
@@ -64,8 +46,8 @@ cascade</pre></div></div></p></div></div><div id="Extraexample_2" class="ex
                     rmvnorm (100, c (2.5,  5), matrix (c (50, 0,  0, 50), ncol = 2)))
      <div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('mixture100.txt');
-out=tkmeans(Y(:,1:2),3,0,'plots',1)
-out=tkmeans(Y(:,1:2),2,0.05,'plots',1)
+out=tkmeans(Y(:,1:2),3,0,'plots',1);
+out=tkmeans(Y(:,1:2),2,0.05,'plots',1);
 cascade</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix containining n observations on 
            v variables.</p> <p>
            Rows of Y represent observations, and columns
