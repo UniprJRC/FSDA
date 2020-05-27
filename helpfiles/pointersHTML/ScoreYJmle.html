@@ -1,0 +1,22 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ScoreYJmle</title> <meta content="refpage" name="chunktype"><meta content="function:ScoreYJmle " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ScoreYJmle Computes the likelihood ratio test fof H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0" itemprop="description" name="description" /><h1 itemprop="title">ScoreYJmle</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/ScoreYJmle.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ScoreYJmle.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ScoreYJmle.html">http://rosa.unipr.it/FSDA/ScoreYJmle.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ScoreYJmle</em></p><P>ScoreYJmle</P><P>Computes the likelihood ratio test fof H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0</P><h2>Description</h2><P>The transformations for negative and positive responses were determined
+ by Yeo and Johnson (2000) by imposing the smoothness condition that the
+ second derivative of zYJ(λ) with respect to y be smooth at y = 0. However
+ some authors, for example Weisberg (2005), query the physical
+ interpretability of this constraint which is oftern violated in data
+ analysis. Accordingly, Atkinson et al (2019) and (2020) extend the
+ Yeo-Johnson transformation to allow two values of the transformations
+ parameter: λN for negative observations and λP for non-negative ones.
+ $\lambda$ is the transformation parameter (scalar) for all the
+ obseravtions (positive adn negative).
+ $\lambda_P$ is the transformation parameter for positive observations.
+ $\lambda_N$ is the transformation parameter for negative observations.
+ SSR is the residual sum of squares of the model which regresses
+ $z(λ)$ against X.
+ SSF is the residual sum of squares of the model which regresses
+ $z(\hat λ_{MLE})$ against $X$ where $\lambda_{MLE}$ is the vector
+ of length 2 which contains the MLE of $\lambda_P$ and $\lambda_N$
+ ScoreYJmle computes Num/Den where Num and Den are defined as follows:
+ Num=(SSR-SSF)/2  and Den=SSF/(n-p-2) where p is the number of columns of
+ matrix X (including intercept).</P><h2>References</h2><P>Yeo, I.K. and Johnson, R. (2000), A new family of power
+ transformations to improve normality or symmetry, "Biometrika", Vol. 87,
+ pp. 954-959.</P></html>
