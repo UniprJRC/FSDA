@@ -1223,8 +1223,8 @@ else
     %   obj = value of the target function
     out.obj                  = vopt;
     
-     if ~isempty(Beta_all)
-        out.obj_all          = obj_all; 
+    if ~isempty(Beta_all)
+        out.obj_all          = obj_all;
         out.Beta_all         = Beta_all;
     end
     
@@ -1243,9 +1243,7 @@ else
     out.siz=tabulateFS(idxopt(:,1));
     
     %postprobopt = posterior probabilities in the optimal cstep
-    if mixt == 2
-        out.postprobopt     = postprobopt;
-    end
+    out.postprobopt     = postprobopt;
     
     % Store the indices in varargout
     if nargout==2
