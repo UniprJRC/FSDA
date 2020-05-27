@@ -100,16 +100,24 @@ delete([FSroot fsep 'examples' fsep 'examples_MixSim.mlx'])
 
 % file pptx which explains
 delete([FSroot fsep 'utilities_help' fsep 'FlowChart.pptx'])
-delete([FSroot fsep 'calcaterra.txt'])
 
 % remove license files
 delete([FSroot fsep 'eupllicense.pdf'])
 delete([FSroot fsep 'Copyright notice.pdf'])
 
 % remove readme and installation notes files
-delete([FSroot fsep 'readme.md'])
 delete([FSroot fsep 'installationNotes.docx'])
 delete([FSroot fsep 'installationNotes.pdf'])
+
+% remove md files
+delete([FSroot fsep 'readme.md'])
+delete([FSroot fsep '4040.md'])
+delete([FSroot fsep 'CODE_OF_CONDUCT.md'])
+delete([FSroot fsep 'CONTRIBUTING.md'])
+
+delete([FSroot fsep 'requirements.txt'])
+delete([FSroot fsep 'package.json'])
+
 
 %% Add files to project
 % Add all files to the project which are inside folder FSDA
