@@ -205,7 +205,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 % rows(Y)
 [n,v]=size(Y);
 
-verLessThan2016b=verLessThan('matlab','9.1');
+verLessThan2016b=verLessThanFS(9.1);
 
 % Input parameters checking
 
