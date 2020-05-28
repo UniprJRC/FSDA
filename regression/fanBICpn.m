@@ -287,17 +287,13 @@ function [out]=fanBICpn(outFSRfan, varargin)
     [outFSRfanpn]=FSRfan(y,X,'msg',0,'family','YJpn','la',labest);
     % option laRangeAndStep
     laRangeAndStep=[1.5 0.25 0.5];
-    disp(pwd)
     out=fanBICpn(outFSRfanpn,'laRangeAndStep',laRangeAndStep);
-    disp(pwd)
 %}
 
 %{
     %% Example of the use of options fraciniFSR and plots.
     % Balance sheets data.
-    disp(pwd)
-    YY=load('fondi_large.txt');
-    XX=load('Balancesheets.txt');
+    XX=load('BalanceSheets.txt');
     % Define X and y
     y=XX(:,6);
     X=XX(:,1:5);
