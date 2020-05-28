@@ -251,6 +251,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %{
     %% Example of the use of option laRangeAndStep.
     % Use simulated data from Atkinson Riani and Corbellini (2020)
+    rng('default')
     rng(10)
     n=1000;
     p=3;
