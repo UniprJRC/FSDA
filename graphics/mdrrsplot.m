@@ -590,13 +590,14 @@ slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 if ColorTrj == 1
     fcol={'b';'g';'r';'c';'m';'y';'k'};
     fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-    iA = 1:n;
+    fcol(nsimul+1:end)=[];
+    iA = (1:nsimul)';
 else
     skip     = floor(n*0.3);
     ressum   = sum(mdr(skip:end,(2:end)),1);
     A        = rescaleFS(nanmean(abs(ressum),1),1,0);
     [B , iA] = sort(A,'descend');
-    mycols   = [zeros(n,1) , B' , ones(n,1)];
+    mycols   = [zeros(nsimul,1) , B' , ones(nsimul,1)];
     fcol     = num2cell(mycols,2);
     
     % colormap
@@ -609,7 +610,7 @@ else
 end
 
 set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
-set(plot1(iA),{'Color'},fcol(1:n));
+set(plot1(iA),{'Color'},fcol);
 
 % set the x and y axis
 xlimx=options.xlimx;
