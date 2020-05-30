@@ -129,6 +129,14 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
+%       ColorTrj:   Color of trajectories. Scalar. Scalar which controls the
+%                   color of the trajectories. Default value is 1, which
+%                   rotates the colors; ColorTrj = 0 produces a colormap
+%                   with darker color for trajectories with larger
+%                   scaled residuals.
+%                   Example - 'ColorTrj',0
+%                   Data Types - single | double
+%
 %    SizeAxesNum:   Size of axes numbers. Scalar. Scalar which controls the
 %                   fontsize of the numbers of the axes.
 %                   Default value is 10.
@@ -205,6 +213,9 @@ function brushedUnits=mdrrsplot(out,varargin)
     X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X,'bsbsteps',0);
     mdrrsplot(out);
+    % now with trajectories with colormap
+    mdrrsplot(out,'ColorTrj',0,'tag','with_cmap');
+    cascade;
 %}
 
 %{
@@ -375,7 +386,8 @@ options=struct('quant', quant,...
     'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mdrrs',...
     'datatooltip','','databrush','',...
-    'titl','','labx',labx,'laby',laby,'nameX','','namey','');
+    'titl','','labx',labx,'laby',laby,'nameX','','namey','',...
+    'ColorTrj',1);
 
 if nargin<1
     error('FSDA:mdrrsplot:missingInputs','A required input argument is missing.')
@@ -490,6 +502,9 @@ FontSize =options.FontSize;
 % FontSizeAxes = font size for the axes numbers
 SizeAxesNum=options.SizeAxesNum;
 
+% ColorTrj = trajectories color: 0 for colormap; 1 for rotation of fixed colors
+ColorTrj=options.ColorTrj;
+
 init=mdr(1,1);
 if init-p==0
     init=init+1;
@@ -550,10 +565,7 @@ for i=1:length(quant)
         if figx>1
             figx=1;
         end
-    end
-    
-    
-    
+    end 
     
     annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
         'HorizontalAlignment','center',...
@@ -563,9 +575,6 @@ for i=1:length(quant)
         'FitBoxToText','off',...
         'FontSize',FontSize);
 end
-
-
-
 
 % Write an extra message on the plot
 annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelope based on ' num2str(envm) ' obs.'],'FontSize',FontSize);
@@ -577,11 +586,30 @@ plot1=plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
 
 LineStyle={'-';'--';':';'-.'};
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-fcol={'b';'g';'r';'c';'m';'y';'k'};
-fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
 
-set(plot1,{'LineStyle'},slintyp(1:nsimul));
-set(plot1,{'Color'},fcol(1:nsimul));
+if ColorTrj == 1
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    iA = 1:n;
+else
+    skip     = floor(n*0.3);
+    ressum   = sum(mdr(skip:end,(2:end)),1);
+    A        = rescaleFS(nanmean(abs(ressum),1),1,0);
+    [B , iA] = sort(A,'descend');
+    mycols   = [zeros(n,1) , B' , ones(n,1)];
+    fcol     = num2cell(mycols,2);
+    
+    % colormap
+    %vq1 = interp1(1:n,B',1:n);
+    %mycolormap   = [zeros(n,1) , vq1' , ones(n,1)];
+    colormap(mycols);
+    c = colorbar;
+    c.Label.String = ['Sum of mdr from step ' num2str(skip) ' to n'];
+    caxis([0 1]);
+end
+
+set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
+set(plot1(iA),{'Color'},fcol(1:n));
 
 % set the x and y axis
 xlimx=options.xlimx;
