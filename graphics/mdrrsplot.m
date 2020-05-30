@@ -593,19 +593,17 @@ if ColorTrj == 1
     fcol(nsimul+1:end)=[];
     iA = (1:nsimul)';
 else
-    skip     = floor(n*0.3);
-    ressum   = sum(mdr(skip:end,(2:end)),1);
-    A        = rescaleFS(nanmean(abs(ressum),1),1,0);
-    [B , iA] = sort(A,'descend');
-    mycols   = [zeros(nsimul,1) , B' , ones(nsimul,1)];
-    fcol     = num2cell(mycols,2);
-    
-    % colormap
-    %vq1 = interp1(1:n,B',1:n);
-    %mycolormap   = [zeros(n,1) , vq1' , ones(n,1)];
-    colormap(mycols);
+    skip      = floor(n*0.3);
+    ressum    = sum(mdr(skip:end,(2:end)),1);
+    A         = rescaleFS(nanmean(abs(ressum),1),1,0);
+    [B , iA]  = sort(A,'descend');
+    mycols    = [zeros(nsimul,1) , B' , ones(nsimul,1)];
+    mycolsmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
+    fcol      = num2cell(mycols,2);
+
+    colormap(mycolsmap);
     c = colorbar;
-    c.Label.String = ['Sum of mdr from step ' num2str(skip) ' to n'];
+    c.Label.String = ['Sum of mdr between steps ' num2str(skip) ' and ' num2str(n) ', standardized'];
     caxis([0 1]);
 end
 
