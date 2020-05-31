@@ -131,9 +131,10 @@ function brushedUnits=mdrrsplot(out,varargin)
 %
 %       ColorTrj:   Color of trajectories. Scalar. Scalar which controls the
 %                   color of the trajectories. Default value is 1, which
-%                   rotates the colors; ColorTrj = 0 produces a colormap
-%                   with darker color for trajectories with larger
-%                   scaled residuals.
+%                   rotates the colors; if ColorTrj = 2, then a marker is
+%                   added every 10 steps. ColorTrj = 0 produces a colormap
+%                   with darker color for trajectories with larger scaled
+%                   residuals.
 %                   Example - 'ColorTrj',0
 %                   Data Types - single | double
 %
@@ -613,13 +614,15 @@ if ColorTrj ~= 0
         ressum   = max(mdr(skip:end,(2:end)),[],1);
         [~,ia,ic]=unique(ressum);
         seq=1:nsimul;
-        Colors={'red', 'green', 'blue', 'cyan', ...
-            'magenta', 'yellow', 'black'};
-        Markers={ 'o'  '+'  '*'  '.'  'x'};
+        %Colors={'red', 'green', 'blue', 'cyan', ...
+        %    'magenta', 'yellow', 'black'};
+        Markers = { 'o'  '+'  '*'  '.'  'x'};
+        lm      = 10; %display a marke each lm points
         for ii=1:length(ia)
             selii=seq(ic==ii);
-            set(plot1(selii),{'LineStyle'},slintyp(ii),'Marker',Markers{ii},'MarkerIndices',1:5:n); % ,'Marker',Markers{ii},'MarkerIndices',1:5:n);
-            set(plot1(selii),{'Color'},Colors(ii));
+            set(plot1(selii),{'LineStyle'},slintyp(ii),...
+                'Marker',Markers{ii},'MarkerIndices',1:lm:n); 
+            set(plot1(selii),{'Color'},fcol(ii));
         end
     end
     
