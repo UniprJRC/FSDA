@@ -211,10 +211,12 @@ function brushedUnits=mdrrsplot(out,varargin)
     X  = load('X.txt');
     y = X(:,end);
     X =X(:,1:end-1);
-    [out]=FSRmdrrs(y,X,'bsbsteps',0);
+    [out]=FSRmdrrs(y,X,'bsbsteps',0,'nsimul',300);
     mdrrsplot(out);
     % now with trajectories with colormap
     mdrrsplot(out,'ColorTrj',0,'tag','with_cmap');
+    % now with trajectories with marker sybbols
+    mdrrsplot(out,'ColorTrj',2,'tag','with_marker_symbols');
     cascade;
 %}
 
@@ -329,7 +331,7 @@ function brushedUnits=mdrrsplot(out,varargin)
     % Interactive_example
     % Example of the use of persistent cumulative brush. Every time a
     % brushing action is performed current highlights are added to
-    % previous highlights. 
+    % previous highlights.
     % If persist is 'off' after each selection, all trajectories except
     % those selected in the current iteration are plotted in
     % greysh color. If persist is 'on' after each selection, trajectories
@@ -540,28 +542,26 @@ xcoord=max([xlimx(1) init]);
 for i=1:length(quant)
     % Superimpose chosen envelopes
     if out.internationaltrade==0
-        if quant(i)==0.5
-            % Superimpose 50% envelope
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-        elseif quant(i)<=0.99
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        else
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
-        end
+        c05  = 'g';
+        c099  =  [0.2 0.8 0.4];
+        c0999 =  [0  0 0];
     else
-        if quant(i)==0.5
+        c05  = 'w';
+        c099  = 'w';
+        c0999 = 'w';
+    end
+    if quant(i)==0.5
         % Superimpose 50% envelope
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
-        elseif quant(i)<=0.99
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
-        else
-            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
-        end
+        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',c05,'tag','env');
+    elseif quant(i)<=0.99
+        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',c099,'tag','env');
+    else
+        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',c0999,'tag','env');
     end
     % [figx figy] = dsxy2figxy(gca, max([xlimx(1) init]), gmin(1,i+1));
     [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
-
+    
     if isempty(figy) || figy<0
         figy=0;
     else
@@ -605,20 +605,35 @@ if ColorTrj == 1
     fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
     fcol(nsimul+1:end)=[];
     iA = (1:nsimul)';
-else
+    
+elseif ColorTrj == 0
     skip      = floor(n*0.3);
     ressum    = sum(mdr(skip:end,(2:end)),1);
-    A         = rescaleFS(nanmean(abs(ressum),1),1,0);
+    A         = rescaleFS(ressum,1,0);
     [B , iA]  = sort(A,'descend');
     mycols    = [zeros(nsimul,1) , B' , ones(nsimul,1)];
     mycolsmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
     fcol      = num2cell(mycols,2);
-
+    
     colormap(mycolsmap);
     c = colorbar;
     c.Label.String = ['Sum of mdr from step ' num2str(skip)];
     c.FontSize = SizeAxesNum;
     caxis([0 1]);
+
+else
+    skip     = floor(n*0.3);
+    ressum   = max(mdr(skip:end,(2:end)),[],1);
+    [~,ia,ic]=unique(ressum);
+    seq=1:nsimul;
+    Colors={'red', 'green', 'blue', 'cyan', ...
+        'magenta', 'yellow', 'black'};
+    Markers={ 'o'  '+'  '*'  '.'  'x'};
+    for ii=1:length(ia)
+        selii=seq(ic==ii);
+        set(plot1(selii),{'LineStyle'},slintyp(ii),'Marker',Markers{ii},'MarkerIndices',1:5:n); % ,'Marker',Markers{ii},'MarkerIndices',1:5:n);
+        set(plot1(selii),{'Color'},Colors(ii));
+    end
 end
 
 set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
