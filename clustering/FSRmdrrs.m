@@ -64,7 +64,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
 %
-%     nsimul :  number of random starts. Scalar. The default value is200.
+%     nsimul :  number of random starts. Scalar. The default value is 200.
 %               Example - 'nsimul',300
 %               Data Types - double
 %
