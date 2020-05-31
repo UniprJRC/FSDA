@@ -600,12 +600,30 @@ plot1=plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
 LineStyle={'-';'--';':';'-.'};
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 
-if ColorTrj == 1
+% rainbow  
+if ColorTrj ~= 0
     fcol={'b';'g';'r';'c';'m';'y';'k'};
     fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
     fcol(nsimul+1:end)=[];
     iA = (1:nsimul)';
     
+    %rainvow with symbols
+    if ColorTrj == 2
+        skip     = floor(n*0.3);
+        ressum   = max(mdr(skip:end,(2:end)),[],1);
+        [~,ia,ic]=unique(ressum);
+        seq=1:nsimul;
+        Colors={'red', 'green', 'blue', 'cyan', ...
+            'magenta', 'yellow', 'black'};
+        Markers={ 'o'  '+'  '*'  '.'  'x'};
+        for ii=1:length(ia)
+            selii=seq(ic==ii);
+            set(plot1(selii),{'LineStyle'},slintyp(ii),'Marker',Markers{ii},'MarkerIndices',1:5:n); % ,'Marker',Markers{ii},'MarkerIndices',1:5:n);
+            set(plot1(selii),{'Color'},Colors(ii));
+        end
+    end
+    
+% colormap    
 elseif ColorTrj == 0
     skip      = floor(n*0.3);
     ressum    = sum(mdr(skip:end,(2:end)),1);
@@ -621,19 +639,6 @@ elseif ColorTrj == 0
     c.FontSize = SizeAxesNum;
     caxis([0 1]);
 
-else
-    skip     = floor(n*0.3);
-    ressum   = max(mdr(skip:end,(2:end)),[],1);
-    [~,ia,ic]=unique(ressum);
-    seq=1:nsimul;
-    Colors={'red', 'green', 'blue', 'cyan', ...
-        'magenta', 'yellow', 'black'};
-    Markers={ 'o'  '+'  '*'  '.'  'x'};
-    for ii=1:length(ia)
-        selii=seq(ic==ii);
-        set(plot1(selii),{'LineStyle'},slintyp(ii),'Marker',Markers{ii},'MarkerIndices',1:5:n); % ,'Marker',Markers{ii},'MarkerIndices',1:5:n);
-        set(plot1(selii),{'Color'},Colors(ii));
-    end
 end
 
 set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
