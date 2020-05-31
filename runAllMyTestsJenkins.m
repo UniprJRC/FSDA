@@ -21,8 +21,9 @@ warning('off')
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 [filesWithProblems,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false,'msg',false);
-FilesIncluded=FilesIncluded(1:10,:);
-OUT=OUT(1:10);
+selectTests=1:50;
+FilesIncluded=FilesIncluded(selectTests,:);
+OUT=OUT(selectTests);
 
 FilesIncludedAll= FilesIncluded;
 warning('on')
