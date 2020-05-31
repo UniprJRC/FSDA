@@ -335,10 +335,14 @@ function out=boxcoxR(y,X, varargin)
     usefmin=struct;
     % specify maximum number of iterations
     usefmin.MaxIter=100;
+    % Note that to specify as solver fminunc the optmization toolbox is
+    % needed.
     usefmin.solver='fminunc';
     out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
     disp('MLE of laPos and laNeg')
     disp(out.lahat)
+    % Check that the values after the optmization are as expected
+    assert(max(abs(out.lahat-[0.3166   -0.8825]))<1e-4,'Wrong values of laP and laN')
 %}
 
 %{
@@ -448,7 +452,13 @@ elseif strcmp(family,'YJpn')
             if strcmp(solver,'fminsearch')==1
                 typemin=1;
             elseif strcmp(solver,'fminunc')==1
-                typemin=2;
+                % Check if minimization toolbox is installed in current computer
+                typemin=exist('fminunc','file');
+                if typemin==0
+                    warning('FSDA:boxcoxR:OptToolNotPresent','fminunc has been chosen as optmizer but optmization toolbox is not present')
+                    warning('FSDA:boxcoxR:OptToolNotPresent','fminsearch will be used')
+                    typemin=1;
+                end
             else
                 error('FSDA:boxcoxR:WrongInptOption',['solver in input structure' ...
                     ' usefmin can only be ''fminsearch'' or  ''fminunc'''])
@@ -614,7 +624,7 @@ elseif BoxCoxTra ==3 % This is the case of two values of lambda
                 logJ=(laPos-1)*SumLogYp +(laNeg-1)*SumLogYn;
                 
                 % Residual sum of squares using y(lambda) divided by n
-                  sigma2hat=ytra'*A*ytra/n;
+                sigma2hat=ytra'*A*ytra/n;
                 % sigma2hat=sum(ytra.*(A*ytra))/n;
                 
                 %  Value of Profile Log likelihood
