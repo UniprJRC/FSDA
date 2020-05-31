@@ -539,19 +539,29 @@ sel=1:size(mdr,1)-n+envm;
 xcoord=max([xlimx(1) init]);
 for i=1:length(quant)
     % Superimpose chosen envelopes
-    if quant(i)==0.5
-        % Superimpose 50% envelope
-        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-    elseif quant(i)<=0.99
-        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+    if out.internationaltrade==0
+        if quant(i)==0.5
+            % Superimpose 50% envelope
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
+        elseif quant(i)<=0.99
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+        else
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
+        end
     else
-        line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color',[0  0 0],'tag','env');
+        if quant(i)==0.5
+        % Superimpose 50% envelope
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
+        elseif quant(i)<=0.99
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
+        else
+            line(gmin(:,1),gmin(:,i+1),'LineWidth',lwdenv,'LineStyle','--','Color','w','tag','env');
+        end
     end
-    
     % [figx figy] = dsxy2figxy(gca, max([xlimx(1) init]), gmin(1,i+1));
     [figx, figy] = dsxy2figxy(gca, xcoord,gmin(gmin(:,1)==xcoord,i+1));
     kx=0; ky=0;
-    
+
     if isempty(figy) || figy<0
         figy=0;
     else
@@ -565,19 +575,22 @@ for i=1:length(quant)
         if figx>1
             figx=1;
         end
-    end 
-    
-    annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
-        'HorizontalAlignment','center',...
-        'VerticalAlignment','middle',...
-        'EdgeColor','none',...
-        'BackgroundColor','none',...
-        'FitBoxToText','off',...
-        'FontSize',FontSize);
+    end
+    if out.internationaltrade==0
+        annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
+            'HorizontalAlignment','center',...
+            'VerticalAlignment','middle',...
+            'EdgeColor','none',...
+            'BackgroundColor','none',...
+            'FitBoxToText','off',...
+            'FontSize',FontSize);
+    end
 end
 
-% Write an extra message on the plot
-annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelope based on ' num2str(envm) ' obs.'],'FontSize',FontSize);
+if out.internationaltrade==0
+    % Write an extra message on the plot
+    annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelope based on ' num2str(envm) ' obs.'],'FontSize',FontSize);
+end
 
 tagstat='rs_data_mdr';
 % plot minimum deletion residual
@@ -603,7 +616,8 @@ else
 
     colormap(mycolsmap);
     c = colorbar;
-    c.Label.String = ['Sum of mdr between steps ' num2str(skip) ' and ' num2str(n) ', standardized'];
+    c.Label.String = ['Sum of mdr from step ' num2str(skip)];
+    c.FontSize = SizeAxesNum;
     caxis([0 1]);
 end
 

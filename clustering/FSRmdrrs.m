@@ -194,6 +194,9 @@ function out=FSRmdrrs(y,X,varargin)
 %
 %         out.X = Store original X matrix.
 %
+%         out.internationaltrade = Store input parameter internationaltrade, 
+%                necessary when calling mdrrsplot to plot  envelopes.
+%
 % See also:     mdrrsplot, FSRmdr, FSMmmdrs, FSMmmd
 %
 % References:
@@ -538,6 +541,7 @@ out.mdrrs=mdrrs;
 out.BBrs=BBrs;
 out.X=X;
 out.y=y;
+out.internationaltrade=internationaltrade;
 
 %% Plot statistic with random starts
 
