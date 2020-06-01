@@ -487,8 +487,10 @@ if numpool <= 1
     numpool = 0;
 end
 
-if msg == 1 
+if msg == 1  && numpool>0
     progbar = ProgressBar(nsimul);
+else
+    progbar=false;
 end
 
 
@@ -529,8 +531,6 @@ if msg==1
         progbar.stop;
     end
     disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
-    % Delete temporary file created by progbar
-    delete(progbar.fname)
 end
 
 % close parallel jobs if necessary (
@@ -544,7 +544,7 @@ out.mdrrs=mdrrs;
 out.BBrs=BBrs;
 out.X=X;
 out.y=y;
-
+out.internationaltrade=internationaltrade;
 %% Plot statistic with random starts
 
 if plots==1
