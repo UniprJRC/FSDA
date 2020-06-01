@@ -413,8 +413,8 @@ function out  = tclustregIC(y,X,varargin)
     X  = load('X.txt');
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    out = tclustregIC(y1,X1);
-    tclustICplot(out,'whichIC','MIXMIX')
+    out = tclustregIC(y1,X1,'plots',1);
+    tclustICplot(out,'whichIC','MIXMIX');
 %}
 
 %{
