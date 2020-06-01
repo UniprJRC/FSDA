@@ -64,7 +64,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               n. if min(bsbsteps)<init a warning message will appear on
 %               the screen.
 %
-%     nsimul :  number of random starts. Scalar. The default value is 200.
+%     nsimul :  number of random starts. Scalar. The default value is200.
 %               Example - 'nsimul',300
 %               Data Types - double
 %
@@ -193,9 +193,6 @@ function out=FSRmdrrs(y,X,varargin)
 %         out.y = Store original response.
 %
 %         out.X = Store original X matrix.
-%
-%         out.internationaltrade = Store input parameter internationaltrade, 
-%                necessary when calling mdrrsplot to plot  envelopes.
 %
 % See also:     mdrrsplot, FSRmdr, FSMmmdrs, FSMmmd
 %
@@ -403,8 +400,14 @@ vvarargin = varargin;
 % function 'feature' is undocumented; however, FSDA is automatically
 % monitored for errors and other inconsistencies at each new MATLAB
 % release).
-numpool = feature('numCores');
+ opt_toolbox= exist('gcp','file') ==2;
 
+ if opt_toolbox ==true
+ numpool = feature('numCores');
+ else
+     numpool=1;
+ end
+ 
 % Default for vector bsbsteps which indicates for which steps of the fwd
 % search units forming subset have to be saved
 initdef   = p+1;
@@ -449,9 +452,6 @@ numpool     = options.numpool;
 bsbsteps    = options.bsbsteps;
 internationaltrade=options.internationaltrade;
 
-if numpool < 1
-    numpool = 1;
-end
 
 % Initialize structures to store statistics
 if bsbsteps == 0
@@ -479,7 +479,7 @@ mdrrs = [(init:n-1)' zeros(n-init,nsimul)];
 tstart = tic;
 
 
-if numpool == 1
+if numpool <= 1
     % the following re-assignement of numpool from 1 to 0 is necessary,
     % because the 'parfor' statement with numpool = 1 opens a parallel
     % pool of 1 worker instead of reducing the iteration to a simple and
@@ -529,19 +529,21 @@ if msg==1
         progbar.stop;
     end
     disp(['Total time required by the multiple start monitoring: ' num2str(tend) ' seconds']);
+    % Delete temporary file created by progbar
+    delete(progbar.fname)
 end
 
-% close parallel jobs if necessary
-if cleanpool == true
+% close parallel jobs if necessary (
+if cleanpool == true && opt_toolbox == true
     delete(gcp);
 end
+
 
 out=struct;
 out.mdrrs=mdrrs;
 out.BBrs=BBrs;
 out.X=X;
 out.y=y;
-out.internationaltrade=internationaltrade;
 
 %% Plot statistic with random starts
 
