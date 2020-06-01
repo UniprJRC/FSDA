@@ -21,11 +21,10 @@ warning('off')
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 [filesWithProblems,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false,'msg',false);
-selectTests=1:50;
+selectTests=1:size(FilesIncluded,1);
 FilesIncluded=FilesIncluded(selectTests,:);
 OUT=OUT(selectTests);
 
-FilesIncludedAll= FilesIncluded;
 warning('on')
 disp(filesWithProblems)
 
@@ -48,7 +47,7 @@ cd(FSDAroot)
 % Use perf = true if for each example you want run runperf.m
 % Use perf = true if for each example you want run runtests.m
 perf = false;
-testpath= ['tests-Jenkins'];
+testpath= 'tests-Jenkins';
 mkdir(testpath);
 
 
