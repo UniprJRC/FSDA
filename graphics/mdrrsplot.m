@@ -601,33 +601,8 @@ plot1=plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
 LineStyle={'-';'--';':';'-.'};
 slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
 
-% rainbow  
-if ColorTrj ~= 0
-    fcol={'b';'g';'r';'c';'m';'y';'k'};
-    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-    fcol(nsimul+1:end)=[];
-    iA = (1:nsimul)';
-    
-    %rainvow with symbols
-    if ColorTrj == 2
-        skip     = floor(n*0.3);
-        ressum   = max(mdr(skip:end,(2:end)),[],1);
-        [~,ia,ic]=unique(ressum);
-        seq=1:nsimul;
-        %Colors={'red', 'green', 'blue', 'cyan', ...
-        %    'magenta', 'yellow', 'black'};
-        Markers = { 'o'  '+'  '*'  '.'  'x'};
-        lm      = 10; %display a marke each lm points
-        for ii=1:length(ia)
-            selii=seq(ic==ii);
-            set(plot1(selii),{'LineStyle'},slintyp(ii),...
-                'Marker',Markers{ii},'MarkerIndices',1:lm:n); 
-            set(plot1(selii),{'Color'},fcol(ii));
-        end
-    end
-    
-% colormap    
-elseif ColorTrj == 0
+% rainbow
+if ColorTrj == 0  % use a colormap
     skip      = floor(n*0.3);
     ressum    = sum(mdr(skip:end,(2:end)),1);
     A         = rescaleFS(ressum,1,0);
@@ -642,6 +617,28 @@ elseif ColorTrj == 0
     c.FontSize = SizeAxesNum;
     caxis([0 1]);
 
+else % ColorTrj ~= 0
+    fcol={'b';'g';'r';'c';'m';'y';'k'};
+    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
+    fcol(nsimul+1:end)=[];
+    iA = (1:nsimul)';
+    
+    % with symbols
+    if ColorTrj == 2
+        skip     = floor(n*0.3);
+        ressum   = max(mdr(skip:end,(2:end)),[],1);
+        [~,ia,ic]=unique(ressum);
+        seq=1:nsimul;
+        Markers = { 'o'  '+'  '*'  '.'  'x'};
+        lm      = 10; % each lm points there is a marker on the trajectory
+        for ii=1:length(ia)
+            selii=seq(ic==ii);
+            set(plot1(selii),{'LineStyle'},slintyp(ii),...
+                'Marker',Markers{ii},'MarkerIndices',1:lm:n);
+            set(plot1(selii),{'Color'},fcol(ii));
+        end
+    end
+    
 end
 
 set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
