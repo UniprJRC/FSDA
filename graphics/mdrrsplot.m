@@ -129,12 +129,15 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%       ColorTrj:   Color of trajectories. Scalar. Scalar which controls the
-%                   color of the trajectories. Default value is 1, which
-%                   rotates the colors; if ColorTrj = 2, then a marker is
-%                   added every 10 steps. ColorTrj = 0 produces a colormap
-%                   with darker color for trajectories with larger scaled
-%                   residuals.
+%       ColorTrj:   Color of trajectories. Scalar. Integer which controls 
+%                   the color of the trajectories. Default value is 1,
+%                   which rotates fixed colors. ColorTrj = 0 produces a
+%                   colormap proportional to sum or mdr along a relevant
+%                   part of the trajectory. ColorTrj > 1 can be used for
+%                   rotating fixed colors for the ColorTrj trajectories
+%                   with larger mdr; no more than 7 trajectories will be
+%                   considered. ColorTrj > 1 also adds a marker every
+%                   10 steps.
 %                   Example - 'ColorTrj',0
 %                   Data Types - single | double
 %
@@ -214,10 +217,16 @@ function brushedUnits=mdrrsplot(out,varargin)
     X =X(:,1:end-1);
     [out]=FSRmdrrs(y,X,'bsbsteps',0,'nsimul',300);
     mdrrsplot(out);
+    title('ColorTrj = 1 (default)','FontSize',16,'Interpreter','Latex');
     % now with trajectories with colormap
-    mdrrsplot(out,'ColorTrj',0,'tag','with_cmap');
-    % now with trajectories with marker sybbols
-    mdrrsplot(out,'ColorTrj',2,'tag','with_marker_symbols');
+    mdrrsplot(out,'ColorTrj',0,'tag','ColorTrj_0');
+    title('ColorTrj = 0 -- color gradient proportional to sum of mdr','FontSize',16,'Interpreter','Latex');
+    % now with 2 trajectories with marker symbols
+    mdrrsplot(out,'ColorTrj',2,'tag','ColorTrj_2');
+    title('ColorTrj = 2 -- highlight the 2 trj with max mdr','FontSize',16,'Interpreter','Latex');
+    % now with trajectories with marker symbols
+    mdrrsplot(out,'ColorTrj',3,'tag','ColorTrj_3');
+    title('ColorTrj = 3 -- highlight the 3 trj with max mdr','FontSize',16,'Interpreter','Latex');
     cascade;
 %}
 
@@ -386,7 +395,7 @@ laby='Minimum deletion residual';
 %% User options
 
 options=struct('quant', quant,...
-    'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',2,'lwdenv',1,...
+    'envm',n,'xlimx',xlimx,'ylimy',ylimy,'lwd',1.5,'lwdenv',1,...
     'FontSize',12,'SizeAxesNum',10,'tag','pl_mdrrs',...
     'datatooltip','','databrush','',...
     'titl','','labx',labx,'laby',laby,'nameX','','namey','',...
@@ -505,8 +514,15 @@ FontSize =options.FontSize;
 % FontSizeAxes = font size for the axes numbers
 SizeAxesNum=options.SizeAxesNum;
 
-% ColorTrj = trajectories color: 0 for colormap; 1 for rotation of fixed colors
+% ColorTrj determines the color of the trajectories
+% - ColorTrj = 0 for colormap proportional to sum or mdr along the trajectory; 
+% - ColorTrj = 1 for rotation of fixed colors;
+% - ColorTrj = 2:7 for rotation of fixed colors for the trajectories with 
+%              larger mdr (no more than 7 allowed). Markers are also added.
 ColorTrj=options.ColorTrj;
+if ColorTrj > 7
+    ColorTrj = 7;
+end
 
 init=mdr(1,1);
 if init-p==0
@@ -528,26 +544,27 @@ end
 set(h,'Name', 'Monitoring of Minimum deletion residual', 'NumberTitle', 'off');
 hold('all');
 
-
-% Theoretical envelopes for minimum deletion residual
-[gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
-
+% displays the boundary of the current axes.
 box('on');
 
-% sel= extract the elements of matrix mdr which have to be plotted
-sel=1:size(mdr,1)-n+envm;
+% Compute the theoretical envelopes for minimum deletion residual
+[gmin] = FSRenvmdr(envm,p,'prob',quant,'init',init);
 
+% sel = extract the elements of matrix mdr which have to be plotted
+sel = 1:size(mdr,1)-n+envm;
 
 % x coordinates where to put the messages about envelopes
-xcoord=max([xlimx(1) init]);
+xcoord = max([xlimx(1) init]);
 for i=1:length(quant)
-    % Superimpose chosen envelopes
+    % Superimpose chosen envelopes. Note that if internationaltrade==1 the
+    % ordering of residuals that determine the FS progression changes, and
+    % the envelopes do not apply anymore; therefore, they are not plotted.
     if out.internationaltrade==0
-        c05  = 'g';
+        c05   = 'g';
         c099  =  [0.2 0.8 0.4];
         c0999 =  [0  0 0];
     else
-        c05  = 'w';
+        c05   = 'w';
         c099  = 'w';
         c0999 = 'w';
     end
@@ -578,7 +595,8 @@ for i=1:length(quant)
         end
     end
     if out.internationaltrade==0
-        annotation(gcf,'textbox',[figx figy kx ky],'String',{[num2str(100*quant(i)) '%']},...
+        annotation(gcf,'textbox',[figx figy kx ky],...
+            'String',{[num2str(100*quant(i)) '%']},...
             'HorizontalAlignment','center',...
             'VerticalAlignment','middle',...
             'EdgeColor','none',...
@@ -590,85 +608,116 @@ end
 
 if out.internationaltrade==0
     % Write an extra message on the plot
-    annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],'EdgeColor','none','String',['Envelope based on ' num2str(envm) ' obs.'],'FontSize',FontSize);
+    annotation(gcf,'textbox',[0.2 0.8 0.1 0.1],...
+        'EdgeColor','none',...
+        'String',['Envelope based on ' num2str(envm) ' obs.'],...
+        'FontSize',FontSize);
 end
 
-tagstat='rs_data_mdr';
 % plot minimum deletion residual
-plot1=plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
-    'LineWidth',lwd);
-
-LineStyle={'-';'--';':';'-.'};
-slintyp=repmat(LineStyle,ceil(nsimul/length(LineStyle)),1);
-
-% rainbow
-if ColorTrj == 0  % use a colormap
-    skip      = floor(n*0.3);
-    ressum    = sum(mdr(skip:end,(2:end)),1);
-    A         = rescaleFS(ressum,1,0);
-    [B , iA]  = sort(A,'descend');
-    mycols    = [zeros(nsimul,1) , B' , ones(nsimul,1)];
-    mycolsmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
-    fcol      = num2cell(mycols,2);
-    
-    colormap(mycolsmap);
-    c = colorbar;
-    c.Label.String = ['Sum of mdr from step ' num2str(skip)];
-    c.FontSize = SizeAxesNum;
-    caxis([0 1]);
-
-else % ColorTrj ~= 0
-    fcol={'b';'g';'r';'c';'m';'y';'k'};
-    fcol=repmat(fcol,ceil(nsimul/length(fcol)),1);
-    fcol(nsimul+1:end)=[];
-    iA = (1:nsimul)';
-    
-    % with symbols
-    if ColorTrj == 2
-        skip     = floor(n*0.3);
-        ressum   = max(mdr(skip:end,(2:end)),[],1);
-        [~,ia,ic]=unique(ressum);
-        seq=1:nsimul;
-        Markers = { 'o'  '+'  '*'  '.'  'x'};
-        lm      = 10; % each lm points there is a marker on the trajectory
-        for ii=1:length(ia)
-            selii=seq(ic==ii);
-            set(plot1(selii),{'LineStyle'},slintyp(ii),...
-                'Marker',Markers{ii},'MarkerIndices',1:lm:n);
-            set(plot1(selii),{'Color'},fcol(ii));
-        end
-    end
-    
-end
-
-set(plot1(iA),{'LineStyle'},slintyp(1:nsimul));
-set(plot1(iA),{'Color'},fcol);
+tagstat = 'rs_data_mdr';
+plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,'LineWidth',lwd);
 
 % set the x and y axis
 xlimx=options.xlimx;
 ylimy=options.ylimy;
 xlim(xlimx);
 ylim(ylimy);
-
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
 title(titl);
+
 % Add to the plot the labels for values of la
 xlabel(labx,'Fontsize',FontSize);
 ylabel(laby,'Fontsize',FontSize);
 
 set(gca,'FontSize',SizeAxesNum)
 
-set(gca,'FontSize',SizeAxesNum)
-
 hold('off');
-
-% displays the boundary of the current axes.
-box on
 
 % include specified tag in the current plot
 set(gcf,'tag',options.tag);
+
+% %%% Managment of the rainbow %%%
+
+% skip initial part of the search for avoiding spurious peaks
+skip      = max(init,floor(n*0.33));
+        
+% markers to use each lm steps; by default markers are not used ('none')
+lm          = min(10 , floor((n-skip)/10));
+MarkerSet = {'none' ; 'o' ; '+' ; '*'  ; 'x' ; ...
+             'square' ; 'diamond' ; '.' ; '^'; 'v' ; '>' ; '<'};
+slinmkr     = repmat(MarkerSet(1),nsimul,1); 
+
+% linestyle; by default, one color per trajectory
+LinestyleSet = {'-';'--';':';'-.';'-';'--';':';'-.'};
+slinsty   = repmat(LinestyleSet,ceil(nsimul/length(LinestyleSet)),1);
+slinsty(nsimul+1:end,:)=[];
+
+% define the selected colors in RGB form
+%ColorSet={'b';'g';'r';'c';'m';'y';'k'};
+ColorSet = {FSColors.blue.RGB;...
+            FSColors.green.RGB;...
+            FSColors.red.RGB;...
+            FSColors.cyan.RGB;...
+            FSColors.magenta.RGB;...
+            FSColors.yellow.RGB;...
+            FSColors.black.RGB};
+
+switch ColorTrj
+    case 0  % use a blue colormap
+        % colors for the trajectories
+        ressum    = sum(mdr(skip:end,(2:end)),1);
+        A         = rescaleFS(ressum,1,0);
+        [B , iA]  = sort(A,'descend');
+        bgcolors  = [zeros(nsimul,1) , B' , ones(nsimul,1)];
+        fcol      = num2cell(bgcolors,2);
+        
+        % colors for the reference bar
+        bgcolmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
+        colormap(bgcolmap);
+        c = colorbar;
+        c.Label.String = ['Sum of mdr from step ' num2str(skip)];
+        c.FontSize = SizeAxesNum;
+        caxis([0 1]);
+        
+        % use only the main line style '-'
+        slinsty(2:end) = slinsty(1); 
+        
+    case 1 % color rotation if ColorTrj > 0, or more in general if ColorTrj ~= 0
+        fcol=repmat(ColorSet,ceil(nsimul/size(ColorSet,1)),1);
+        fcol(nsimul+1:end,:)=[];
+        iA = (1:nsimul)';
+        
+    otherwise % ColorTrj > 1: use colors and symbols for the main ColorTrj trajectories
+        % start with a single line style ':'
+        slinsty(2:end) = LinestyleSet(3);
+        
+        % start with a greish color for all trajectories
+        bgcolors  = repmat(FSColors.greysh.RGB,nsimul,1);
+        fcol      = num2cell(bgcolors,2);
+        
+        % find the trajectories to highlight
+        resmax    = max(mdr(skip:end,(2:end)),[],1);
+        [~,ia,ic] = unique(resmax);
+        
+        % set the trajectories
+        nmodes    = length(ia);
+        ntrj      = min(nmodes,ColorTrj);
+        seq       = 1:nsimul;        
+        for ii=nmodes:-1:(nmodes-ntrj+1) % unique returns elements in ascending sorting 
+            selii            = seq(ic==ii);
+            slinsty(selii)   = LinestyleSet(ii);            
+            fcol(selii,:)    = ColorSet(ii,:);
+            slinmkr(selii,:) = MarkerSet(ii+1);
+        end
+        iA = (1:nsimul)';
+end
+
+% set Color, Linestyle and Marker of the trajectories
+set(plot1(iA),{'LineStyle'},slinsty,{'Color'},fcol); %(1:nsimul)
+set(plot1(iA),{'Marker'},   slinmkr,'MarkerIndices',1:lm:n);
 
 % Store the handle of the mdrplot inside handle hmin
 hmin=gcf;
