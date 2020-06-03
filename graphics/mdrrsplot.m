@@ -519,9 +519,10 @@ SizeAxesNum=options.SizeAxesNum;
 % - ColorTrj = 1 for rotation of fixed colors;
 % - ColorTrj = 2:7 for rotation of fixed colors for the trajectories with 
 %              larger mdr (no more than 7 allowed). Markers are also added.
-ColorTrj=options.ColorTrj;
-if ColorTrj > 7
-    ColorTrj = 7;
+ColorTrj = options.ColorTrj;
+maxcolors = 7; % this is the number of colors set later in variable ColorSet
+if ColorTrj > maxcolors
+    ColorTrj = maxcolors;
 end
 
 init=mdr(1,1);
@@ -614,9 +615,10 @@ if out.internationaltrade==0
         'FontSize',FontSize);
 end
 
-% plot minimum deletion residual
+% plot minimum deletion residual, but make trajectories invisible
 tagstat = 'rs_data_mdr';
-plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,'LineWidth',lwd);
+plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
+               'LineWidth',0.1,'LineStyle','-','Color','w');
 
 % set the x and y axis
 xlimx=options.xlimx;
@@ -646,24 +648,28 @@ skip      = max(init,floor(n*0.33));
         
 % markers to use each lm steps; by default markers are not used ('none')
 lm          = min(10 , floor((n-skip)/10));
-MarkerSet = {'none' ; 'o' ; '+' ; '*'  ; 'x' ; ...
-             'square' ; 'diamond' ; '.' ; '^'; 'v' ; '>' ; '<'};
+MarkerSet   = {'none' ; 'o' ; '+' ; '*'  ; 'x' ; ...
+               'square' ; 'diamond' ; '.' };
 slinmkr     = repmat(MarkerSet(1),nsimul,1); 
 
 % linestyle; by default, one color per trajectory
-LinestyleSet = {'-';'--';':';'-.';'-';'--';':';'-.'};
-slinsty   = repmat(LinestyleSet,ceil(nsimul/length(LinestyleSet)),1);
+LinestyleSet  = {'-';'--';':';'-.';'-';'--';':'};
+slinsty       = repmat(LinestyleSet,ceil(nsimul/length(LinestyleSet)),1);
 slinsty(nsimul+1:end,:)=[];
 
 % define the selected colors in RGB form
 %ColorSet={'b';'g';'r';'c';'m';'y';'k'};
-ColorSet = {FSColors.blue.RGB;...
-            FSColors.green.RGB;...
+ColorSet = {FSColors.black.RGB;...
+            FSColors.blue.RGB;...
             FSColors.red.RGB;...
-            FSColors.cyan.RGB;...
             FSColors.magenta.RGB;...
+            FSColors.green.RGB;...
+            FSColors.cyan.RGB;...
             FSColors.yellow.RGB;...
-            FSColors.black.RGB};
+            };
+
+% Line width default
+slinwdt  = lwd*ones(nsimul,1);
 
 switch ColorTrj
     case 0  % use a blue colormap
@@ -685,6 +691,9 @@ switch ColorTrj
         % use only the main line style '-'
         slinsty(2:end) = slinsty(1); 
         
+        % line width a bit smaller than the standard size
+        slinwdt = slinwdt*0.5;
+        
     case 1 % color rotation if ColorTrj > 0, or more in general if ColorTrj ~= 0
         fcol=repmat(ColorSet,ceil(nsimul/size(ColorSet,1)),1);
         fcol(nsimul+1:end,:)=[];
@@ -692,32 +701,45 @@ switch ColorTrj
         
     otherwise % ColorTrj > 1: use colors and symbols for the main ColorTrj trajectories
         % start with a single line style ':'
-        slinsty(2:end) = LinestyleSet(3);
+        slinsty(1:end) = LinestyleSet(3);
         
         % start with a greish color for all trajectories
-        bgcolors  = repmat(FSColors.greysh.RGB,nsimul,1);
+        bgcolors  = repmat(FSColors.darkgrey.RGB,nsimul,1);
         fcol      = num2cell(bgcolors,2);
         
         % find the trajectories to highlight
         resmax    = max(mdr(skip:end,(2:end)),[],1);
         [~,ia,ic] = unique(resmax);
         
-        % set the trajectories
+        % keep the best 'maxcolors' indices of the modes
         nmodes    = length(ia);
-        ntrj      = min(nmodes,ColorTrj);
-        seq       = 1:nsimul;        
-        for ii=nmodes:-1:(nmodes-ntrj+1) % unique returns elements in ascending sorting 
-            selii            = seq(ic==ii);
+        ia = flipud(ia);
+        if length(ia) > maxcolors
+            ia = ia(1:maxcolors);
+        end
+        ntrj = min(length(ia),ColorTrj);
+        
+        % set the trajectories
+        seq = 1:nsimul;        
+        for ii=1:ntrj 
+            selii            = seq(ic==nmodes-ii+1);
             slinsty(selii)   = LinestyleSet(ii);            
             fcol(selii,:)    = ColorSet(ii,:);
             slinmkr(selii,:) = MarkerSet(ii+1);
         end
         iA = (1:nsimul)';
+        idarkgrey    = find(cellfun(@(x) isequal(x,FSColors.darkgrey.RGB), fcol(:), 'UniformOutput', 1));
+        inotdarkgrey = setdiff(iA,idarkgrey);
+        iA = [idarkgrey ; inotdarkgrey];
+        slinsty = slinsty(iA);
+        fcol    = fcol(iA);
+        slinmkr = slinmkr(iA);
+        slinwdt = [0.5*slinwdt(idarkgrey) ; slinwdt(inotdarkgrey)];
 end
 
 % set Color, Linestyle and Marker of the trajectories
-set(plot1(iA),{'LineStyle'},slinsty,{'Color'},fcol); %(1:nsimul)
-set(plot1(iA),{'Marker'},   slinmkr,'MarkerIndices',1:lm:n);
+set(plot1(iA),{'LineStyle'},slinsty,{'Color'},fcol,{'LineWidth'},num2cell(slinwdt)); 
+set(plot1(iA),{'Marker'}   ,slinmkr,'MarkerIndices',1:lm:length(sel));
 
 % Store the handle of the mdrplot inside handle hmin
 hmin=gcf;
