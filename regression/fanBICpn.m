@@ -631,7 +631,7 @@ if max(d)>0
     figure('Name',namej,'Visible','on');
     h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
     % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
-    title(['Smoothness index: best \lambda_P=' num2str(labestSMO(1)) ' best  \lambda_N=' num2str(labestSMO(2))])
+    title(['Agreement index: best \lambda_P=' num2str(labestSMO(1)) ' best  \lambda_N=' num2str(labestSMO(2))])
     h.XLabel= '\lambda_P';
     h.YLabel= '\lambda_N';
 end
