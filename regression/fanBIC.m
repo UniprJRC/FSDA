@@ -37,7 +37,7 @@ function [out]=fanBIC(outFSRfan,varargin)
 %                 It specifies the initial
 %                 subset size to start monitoring exceedances of the
 %                 fanplot. If init is not specified it set equal
-%                 to round(n*0.6):
+%                 to round(n*0.6).
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
