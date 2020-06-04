@@ -531,13 +531,15 @@ end
 % lwdenv = line width of the curves associated with the envelopes
 lwdenv=options.lwdenv;
 conflev=options.conflev;
-v=axis;
-quant=sqrt(chi2inv(conflev,1));
+
+rangeaxis=axis;
+quant = sqrt(chi2inv(conflev,1));
+numconflev=length(conflev);
+V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+QUANT=[[quant;quant],[ -quant;-quant]];
 % Assign to the confidence lines Tag env so that they cannot be selected
 % with options databrush
-line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv,'Tag','env');
-line([v(1),v(2)],[-quant,-quant],'color','r','LineWidth',lwdenv,'Tag','env');
-
+line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv,'Tag','env');
 
 if size(la,2)>1
     la=la';
