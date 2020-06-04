@@ -21,10 +21,11 @@ warning('off')
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');
 [filesWithProblems,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false',...
     'write2file',false,'ErrWrngSeeAlso',false,'msg',false);
-selectTests=1:size(FilesIncluded,1);
+selectTests=1:50;
 FilesIncluded=FilesIncluded(selectTests,:);
 OUT=OUT(selectTests);
 
+FilesIncludedAll= FilesIncluded;
 warning('on')
 disp(filesWithProblems)
 
@@ -32,8 +33,11 @@ disp(filesWithProblems)
 ij=1;
 nfiles=length(OUT);
 sz=[5000, 7];
-TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'double' 'double' 'cellstr' 'cellstr'},...
-    'VariableNames',{'FileName' 'Category', 'Identifier' 'MeanTime' 'MedianTime'  'Code' 'TestActivity'});
+varnames={'FileName' 'Category', 'Identifier' 'MeanTime' 'MedianTime'  'Code' 'TestActivity'};
+% TotSummary = table('Size',sz,'VariableTypes',{'cellstr' 'cellstr' 'cellstr' 'double' 'double' 'cellstr' 'cellstr'},...
+%     'VariableNames',varnames);
+
+% TotSummary = array2table(zeros(sz),'VariableNames',varnames);
 
 % [tmp]=publishFS('existFS', 'evalCode','false',...
 %     'write2file',false,'ErrWrngSeeAlso',false);
@@ -109,21 +113,24 @@ if ~strcmp(warn1, warn2)
     disp(warn2)
     error('FSDA:runAllMyTestsFS:WrongExample','A warning occurred during test suite creation!')
 end
-   
-    % Create a TestRunner
-    runner = matlab.unittest.TestRunner.withTextOutput();
-    
-    % Add a plugin to produce a JUnit-style test report
-    runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
-    
-    % Get file paths of source code being tested
-    filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
+
+% Create a TestRunner
+runner = matlab.unittest.TestRunner.withTextOutput();
+
+% Add a plugin to produce a JUnit-style test report
+runner.addPlugin(matlab.unittest.plugins.XMLPlugin.producingJUnitFormat(['test-' cat2test '-report.xml']));
+
+% Get file paths of source code being tested
+filePaths = fullfile(FilesIncluded(:,9), FilesIncluded(:,1));
+
+if verLessThanFS >9.2 % >2016b
     % Indicate where the Cobertura coverage report should be created
     covFile = matlab.unittest.plugins.codecoverage.CoberturaFormat(['coverage-' cat2test '-report.xml']);
     % Add the CodeCoveragePlugin
     runner.addPlugin(matlab.unittest.plugins.CodeCoveragePlugin.forFile(filePaths, 'Producing', covFile));
-    
-    % Run the test suite
-    disp('Run the test suite')
-    runner.run(suite);
-   
+end
+
+% Run the test suite
+disp('Run the test suite')
+runner.run(suite);
+
