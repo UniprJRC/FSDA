@@ -42,8 +42,8 @@ jobs:
       CATEGORY_TO_TEST: $(categoryName)
   timeoutInMinutes: 365 
   steps:
-    - script: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-    - script: matlab -batch "run runAllMyTestsFS.m" 
+    - task: InstallMATLAB@0 
+    - task: RunMATLABCommand@0 "run runAllMyTestsFS.m" 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
