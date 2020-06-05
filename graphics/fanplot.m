@@ -539,7 +539,7 @@ V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
 QUANT=[[quant;quant],[ -quant;-quant]];
 % Assign to the confidence lines Tag env so that they cannot be selected
 % with options databrush
-line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv,'Tag','env');
+line(V, QUANT,'LineWidth',lwdenv,'color','r','Tag','env');
 
 if size(la,2)>1
     la=la';
