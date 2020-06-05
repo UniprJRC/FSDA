@@ -2,8 +2,8 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %fanBICpn uses the output of FSRfan called with input option family 'YJpn' to choose la_P and la_N
 %
 % This function finds the best values of transformation parameter for positive and
-% negative observations in linear regression using BIC and smoothness
-% index.
+% negative observations in linear regression using BIC and agreement
+% index (AGI).
 %
 %<a href="matlab: docsearchFS('fanBICpn')">Link to the help function</a>
 %
@@ -148,7 +148,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %               - If plots=0, plots are not generated.
 %               - If plots=1 (default), 4 heatmaps are shown on the screen.
 %                 The first plot ("BIC") shows the values of BIC, the
-%                 second ("SmoIndex") shows the values of the smoothness index,
+%                 second ("AGI") shows the values of the agreement index,
 %                 the third ('Obs') the number of observations in agreement
 %                 with the transformation excluding the outliers and the
 %                 fourth ('R2c') the final value of R2 (corrected for truncation).
@@ -157,16 +157,16 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %                 If plots is a structure it may contain the following fields:
 %                 plots.name = cell array of strings which enables to
 %                   specify which plot to display.
-%                   plots.name={'Obs'; 'BIC'; 'SmoIndex'; 'R2c'};
+%                   plots.name={'Obs'; 'BIC'; 'AGI'; 'R2c'};
 %                   is exactly equivalent to plots=1
 %                   For the explanation of the above plots see plots=1.
-%                   If plots.name=={ 'Obs'; 'BIC'; 'SmoIndex'; 'R2c';...
-%                                   'ObsWithOut'; 'SmoIndexW'; 'R2'}; or
+%                   If plots.name=={ 'Obs'; 'BIC'; 'AGI'; 'R2c';...
+%                                   'ObsWithOut'; 'AGIW'; 'R2'}; or
 %                   plots.name={'all'};
 %                   it is also possible to view the heatmap referred to the
 %                   number of obserations in agreement with transformation
 %                   before outlier detection ('ObsWithOut') the weighted
-%                   version of the smoothed index ('SmoIndexW') and the
+%                   version of the agreement index ('AGIW') and the
 %                   orginal value of R2 before correction for truncation.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | struct
@@ -189,15 +189,15 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %              4th col = number of observations in agreement with the
 %              transformation after outlier detection;
 %              5th col = value of BIC;
-%              6th col = value of the smoothness index;
-%              7th col = value of the smoothness index weighted;
+%              6th col = value of the agreement index;
+%              7th col = value of the agreement index weighted;
 %              8th col = value of R2 based on observations in agreement
 %                   with transformation after outlier detection.
 %              9th col = value of R2 corrected for elliptical trunction.
 %  out.labestBIC = vector of length 2 containing best values of laP and laN
 %              according to BIC.
-%  out.labestSMO = vector of length 2 containing best values of laP and laN
-%              according to smoothness index.
+%  out.labestAGI = vector of length 2 containing best values of laP and laN
+%              according to agreement index.
 %  out.ty =    transformed response accordint to out.labestBIC.
 %     out.rsq  = the multiple R-squared value for the transformed values
 %      out.y  = n x 1 vector containing the original y values.
@@ -313,9 +313,9 @@ function [out]=fanBICpn(outFSRfan, varargin)
     % Start monitoring the exceedances in the subset in agreement with a
     % transformation from 90 per cent.
     fraciniFSR=0.90;
-    % option plots (just show the BIC and the smoothness index plot).
+    % option plots (just show the BIC and the agreement index plot).
     plots=struct;
-    plots.name={'BIC','SmoIndex'};
+    plots.name={'BIC','AGI'};
     nsamp=2000;
     out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);
 %}
@@ -532,11 +532,11 @@ for jjpos=1:length(laposcand)
         t0diffMeanW=sum(tdiff.*corrfactorSel)/sumwei;
         
         
-        SmoIndex=1./(tPNdiffMean*t0diffMean*(factor.^2));
-        SmoIndexW=1./(tPNdiffMeanW*t0diffMeanW*(factor.^2));
+        AGI=1./(tPNdiffMean*t0diffMean*(factor.^2));
+        AGIW=1./(tPNdiffMeanW*t0diffMeanW*(factor.^2));
         
         
-        Excnegj(jjneg,:)=[laposj lanegj mmTest(1:2)' BIC SmoIndex SmoIndexW R2c  R2];
+        Excnegj(jjneg,:)=[laposj lanegj mmTest(1:2)' BIC AGI AGIW R2c  R2];
         % ij=ij+1;
     end
     Exc(ij:ij+llanegcand-1,:)=Excnegj;
@@ -546,10 +546,10 @@ end
 
 % Set to NaN the combination of values of laP and laN which are not
 % admissible
-booSmoNaN=isnan(Exc(:,6));
-Exc(booSmoNaN,3:end)=NaN;
+booAgiNaN=isnan(Exc(:,6));
+Exc(booAgiNaN,3:end)=NaN;
 
-varnames={'laP';'laN';'ObsWithOut';'Obs';'BIC'; 'SmoIndex';'SmoIndexW';'R2c'; 'R2'};
+varnames={'laP';'laN';'ObsWithOut';'Obs';'BIC'; 'AGI';'AGIW';'R2c'; 'R2'};
 Exctable=array2table(Exc,'VariableNames',varnames);
 
 % poscell= intersect(find(Exctable.laP==laposj),find(Exctable.laN==lanegj));
@@ -559,11 +559,11 @@ Exctable=array2table(Exc,'VariableNames',varnames);
 [~, indmaxBIC]=max(Exctable{:,'BIC'});
 % disp('Best values of transformation parameters')
 labestBIC=Exctable{indmaxBIC,1:2};
-[~, indmaxSmo]=max(Exctable{:,'SmoIndex'});
-labestSMO=Exctable{indmaxSmo,1:2};
+[~, indmaxAGI]=max(Exctable{:,'AGI'});
+labestAGI=Exctable{indmaxAGI,1:2};
 
 % plotdef = list of the plots which are produced by default (is plots=1)
-plotdef={'Obs','BIC', 'SmoIndex','R2c'};
+plotdef={'Obs','BIC', 'AGI','R2c'};
 % plotall = list of all available plots
 plotall=varnames(3:end);
 
@@ -641,14 +641,14 @@ if max(d)>0
     
 end
 
-namej = 'SmoIndex';
+namej = 'AGI';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
     if ~verLessThanFS(9.2) % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
         % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
-        title(['Agreement index: best \lambda_P=' num2str(labestSMO(1)) ' best  \lambda_N=' num2str(labestSMO(2))])
+        title(['Agreement index: best \lambda_P=' num2str(labestAGI(1)) ' best  \lambda_N=' num2str(labestAGI(2))])
         h.XLabel= '\lambda_P';
         h.YLabel= '\lambda_N';
     else
@@ -657,16 +657,16 @@ if max(d)>0
     end
 end
 
-namej = 'SmoIndexW';
+namej = 'AGIW';
 d=strcmp(namej,name);
 if max(d)>0
-    [~, indmax]=max(Exctable{:,'SmoIndexW'});
-    labestSMOw=Exctable{indmax,1:2};
+    [~, indmax]=max(Exctable{:,'AGIW'});
+    labestAGIw=Exctable{indmax,1:2};
     
     figure('Name',namej,'Visible','on');
     if ~verLessThanFS(9.2) % >2016b
         h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-        title(['Smoothness index weighted: best \lambda_P=' num2str(labestSMOw(1)) ' best  \lambda_N=' num2str(labestSMOw(2))])
+        title(['Agreement index weighted: best \lambda_P=' num2str(labestAGIw(1)) ' best  \lambda_N=' num2str(labestAGIw(2))])
         h.XLabel= '\lambda_P';
         h.YLabel= '\lambda_N';
     else
@@ -696,7 +696,7 @@ out.Summary=Exctable;
 % out.mmstop=mmstop;
 % out.BBla=BBla;
 out.labestBIC=labestBIC;
-out.labestSMO=labestSMO;
+out.labestAGI=labestAGI;
 out.ty=normYJpn(y,1,labestBIC);
 out.rsq=Exctable{indmaxBIC,'R2'};
 out.y=y;
