@@ -430,7 +430,7 @@ elseif  strcmp(pars(3),'V')
         [V,eigunsorted]= eig(SigmaB(:,:,j));
         % Sort eigenvalues from largest to smallest and reorder the columns
         % of the matrix of eigenvectors accordingly
-        [~,ordeig]=sort(diag(eigunsorted),'desc');
+        [~,ordeig]=sort(diag(eigunsorted),'descend');
         V=V(:,ordeig);
         OMG(:,:,j)=V;
     end
