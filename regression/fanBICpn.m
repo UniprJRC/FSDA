@@ -76,14 +76,14 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %                   level for at least 3 consecutive times.
 %                   Example - 'conflev',[0.999]
 %                   Data Types - double
-%    fraciniFSR :   fraction of observations to initialize search for outlier detection. 
+%    fraciniFSR :   fraction of observations to initialize search for outlier detection.
 %                   Scalar. After exceedance procedure based on the score
 %                   test a subset of obverations in agreement with a
 %                   transformation is found. On this subset we perform
 %                   outlier detection using FSR. fraciniFSR specifies the
 %                   fraction of observations to start monitoring
 %                   exceedances of the minimum deletion residuals. The
-%                   default value of fraciniFSR is 0.8. 
+%                   default value of fraciniFSR is 0.8.
 %                   Example - 'fraciniFSR',0.85
 %                   Data Types - double
 %
@@ -147,8 +147,8 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %               Case 1: plots option used as scalar.
 %               - If plots=0, plots are not generated.
 %               - If plots=1 (default), 4 heatmaps are shown on the screen.
-%                 The first plot ("BIC") shows the values of BIC, the secon
-%                 ("SmoIndex") shows the values of the smoothness index,
+%                 The first plot ("BIC") shows the values of BIC, the
+%                 second ("SmoIndex") shows the values of the smoothness index,
 %                 the third ('Obs') the number of observations in agreement
 %                 with the transformation excluding the outliers and the
 %                 fourth ('R2c') the final value of R2 (corrected for truncation).
@@ -180,13 +180,13 @@ function [out]=fanBICpn(outFSRfan, varargin)
 %
 % out.Summary = k-by-9 table where k is the number of values of laPosxlaNeg which have been considered.
 %              out.Summary contains the following information:
-%              1st column= value of laPos (trasnforamtion for positive
+%              1st column= value of laPos (transformation for positive
 %              values of y);
-%              2nd column= value of laNeg (trasnforamtion for negative
+%              2nd column= value of laNeg (transformation for negative
 %              values of y);
-%              3rd col = number of obseravtions in agreement with the
+%              3rd col = number of observations in agreement with the
 %              transformation before outlier detection;
-%              4th col = number of obseravtions in agreement with the
+%              4th col = number of observations in agreement with the
 %              transformation after outlier detection;
 %              5th col = value of BIC;
 %              6th col = value of the smoothness index;
@@ -315,7 +315,7 @@ function [out]=fanBICpn(outFSRfan, varargin)
     fraciniFSR=0.90;
     % option plots (just show the BIC and the smoothness index plot).
     plots=struct;
-    plots.name={'BIC','SmoIndex'}; 
+    plots.name={'BIC','SmoIndex'};
     nsamp=2000;
     out=fanBICpn(outFSRfanpn,'fraciniFSR',fraciniFSR,'plots',plots,'nsamp',nsamp);
 %}
@@ -329,15 +329,15 @@ function [out]=fanBICpn(outFSRfan, varargin)
 % 9.8 is MATLAB 2020a where  parpool('threads') was first introduced
 % numbertotest = 9.8;
 % MLver=verLessThanFS(numbertotest);
-% 
-% 
+%
+%
 % pp = gcp('nocreate');
 % if MLver == true &&  isempty(pp)
 %     parpool('local');
 % elseif MLver == false && isempty(pp)
 %     parpool('threads');
 % end
- 
+
 Xwithintercept=outFSRfan.X;
 [n,pwithintercept]=size(Xwithintercept);
 
@@ -451,7 +451,7 @@ BBlacell=cell(length(laposcand)*length(lanegcand),1);
 
 Excnegj=zeros(length(lanegcand),9);
 BBlacellj=cell(length(lanegcand),1);
-    ynegs=y(negs);
+ynegs=y(negs);
 ynonnegs=y(~negs);
 ij=1;
 llanegcand=length(lanegcand);
@@ -598,10 +598,15 @@ d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
     hold('off')
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    title('Numb obs. in agreement with the different transformations')
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        title('Numb obs. in agreement with the different transformations')
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
 end
 
 
@@ -609,31 +614,47 @@ namej = 'R2';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    title('R2 not corrected')
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        title('R2 not corrected')
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
 end
 
 namej = 'R2c';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    title('R2 corrected for truncation')
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        title('R2 corrected for truncation')
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
+    
 end
 
 namej = 'SmoIndex';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
-    title(['Agreement index: best \lambda_P=' num2str(labestSMO(1)) ' best  \lambda_N=' num2str(labestSMO(2))])
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        % title('1/(|ScoP-ScoN|_c*|Sco|_c)')
+        title(['Agreement index: best \lambda_P=' num2str(labestSMO(1)) ' best  \lambda_N=' num2str(labestSMO(2))])
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
 end
 
 namej = 'SmoIndexW';
@@ -643,21 +664,30 @@ if max(d)>0
     labestSMOw=Exctable{indmax,1:2};
     
     figure('Name',namej,'Visible','on');
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    title(['Smoothness index weighted: best \lambda_P=' num2str(labestSMOw(1)) ' best  \lambda_N=' num2str(labestSMOw(2))])
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        title(['Smoothness index weighted: best \lambda_P=' num2str(labestSMOw(1)) ' best  \lambda_N=' num2str(labestSMOw(2))])
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
 end
 
 namej = 'BIC';
 d=strcmp(namej,name);
 if max(d)>0
     figure('Name',namej,'Visible','on');
-    
-    h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
-    title(['BIC: best \lambda_P=' num2str(labestBIC(1)) ' best  \lambda_N=' num2str(labestBIC(2))])
-    h.XLabel= '\lambda_P';
-    h.YLabel= '\lambda_N';
+    if ~verLessThanFS(9.2) % >2016b
+        h=heatmap(Exctable,'laP','laN','ColorVariable',namej,'MissingDataColor','w');
+        title(['BIC: best \lambda_P=' num2str(labestBIC(1)) ' best  \lambda_N=' num2str(labestBIC(2))])
+        h.XLabel= '\lambda_P';
+        h.YLabel= '\lambda_N';
+    else
+        text(0.1,0.5,'Heatmap cannot be shown in this version of MATLAB','Units','normalized')
+        text(0.1,0.3,'You need at least MATLAB 2017a','Units','normalized')
+    end
     
 end
 
