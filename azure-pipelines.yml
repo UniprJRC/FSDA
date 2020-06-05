@@ -43,7 +43,9 @@ jobs:
   timeoutInMinutes: 365 
   steps:
     - task: InstallMATLAB@0 
-    - task: RunMATLABCommand@0 "run runAllMyTestsFS.m" 
+    - task: RunMATLABCommand@0 
+      inputs:
+        command: "run runAllMyTestsFS.m" 
     - task: PublishTestResults@2
       condition: succeededOrFailed()
       inputs:
