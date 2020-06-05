@@ -4,7 +4,7 @@ function out=boxcoxR(y,X, varargin)
 %<a href="matlab: docsearchFS('boxcoxR')">Link to the help function</a>
 %
 % It computes the profile log Likelihood for a range of values of the
-% transforamtion parameter (lambda) and computes the MLE of lambda in the
+% transformation parameter (lambda) and computes the MLE of lambda in the
 % supplied range. Supported families Box Cox, Yeo and Johnson and extended
 % Yeo and Johnson (Atkinson et al. 2020).
 %
