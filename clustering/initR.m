@@ -75,7 +75,7 @@ else
     [V,eigunsorted]= eig(Sw);
     % Sort eigenvalues from largest to smallest and reorder the columns
     % of the matrix of eigenvectors accordingly
-    [~,ordeig]=sort(diag(eigunsorted),'desc');
+    [~,ordeig]=sort(diag(eigunsorted),'descend');
     V=V(:,ordeig);
     Omega2D=V;
 end
