@@ -320,7 +320,7 @@ for ii = 2:size(uniquesTab,1)
                 refText(dbquotesVect(2)+1:end)];
         catch
             disp('-------------------------------------')
-            disp("Missing qutotation mark in reference")
+            disp('Missing qutotation mark in reference')
             disp(refText)
             error('FSDA:publishBilbiography:WrongInput','Missing symbol ''"'' in the above reference');
         end
