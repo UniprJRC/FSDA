@@ -349,6 +349,8 @@ for j=1:nla
     BIC(j,3)=1/(mean(Scolaj(boo))*factor);
 end
 
+
+ 
 % Find best value of lambda according to BIC
 [~,imax]=max(BIC(:,2));
 labest=la(imax);
@@ -356,6 +358,14 @@ labest=la(imax);
 % Find best value of lambda according to "Agreement index"
 [~,imaxSI]=max(BIC(:,3));
 
+% If the two indexes produce different answers delete the values of BIC
+% for which h (number of units in agreement with transformation and without
+% outliers) is equal to init (m_M)
+if imax~=imaxSI
+    BIC(mmstop(:,2)<=init,2)=NaN;
+    [~,imax]=max(BIC(:,2));
+    labest=la(imax);
+end
 
 if plots == 1
     % Specify where to send the output of the current procedure
@@ -412,13 +422,10 @@ if plots == 1
     % Bottom panel
     subplot(nr,nc,[7 8])
     hold('on')
-    bar(la, mmstop(:,2)/n)
+    bar(la, mmstop(:,2)/n,'w')
     bar(la, mmstop(:,3)/n,'r')
     ylim([min(mmstop(:,3))/n-0.02 1])
     set(gca,'XTick',BIC(:,1));
-    %     else
-    %         set(gca,'XTick',BIC(1:2:length(la),1));
-    %     end
     xlabel('\lambda')
     if length(la)>6
         set(gca,'XTickLabelRotation',90)
