@@ -170,7 +170,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 monitoring between two consecutive values of alpha the
 %                 change in classification using ARI index (top left panel),
 %                 the relative change in beta (top right panel)
-%                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||beta_{\alpha_2}||^2
+%                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||\beta_{\alpha_2}||^2
 %                 the relative change in \sigma^2 (third panel) the
 %                 relative change in \sigma^2 corrected (fourth panel) and
 %                 if alphaX=1, the relative change in centroids (fifth
