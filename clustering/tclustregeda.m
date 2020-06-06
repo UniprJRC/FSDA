@@ -560,13 +560,13 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
-if ~verLessThan('matlab','9.5')
+if ~verLessThanFS(9.5)
     doaxtoolbar = true;
 else
     doaxtoolbar = false;
 end
 
-if ~verLessThan('matlab','9.1')
+if ~verLessThanFS(9.1)
     dolegendsize = true;
 else
     dolegendsize = false;
