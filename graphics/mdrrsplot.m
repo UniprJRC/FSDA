@@ -136,8 +136,11 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   part of the trajectory. ColorTrj > 1 can be used for
 %                   rotating fixed colors for the ColorTrj trajectories
 %                   with larger mdr; no more than 7 trajectories will be
-%                   considered. ColorTrj > 1 also adds a marker every
-%                   10 steps.
+%                   considered. ColorTrj > 1 also adds a marker every 10
+%                   steps. Note that if the largest mdr are in the final
+%                   part of the search (due to a group of outliers), the
+%                   peak is not informative and it is therefore not
+%                   considered because.
 %                   Example - 'ColorTrj',0
 %                   Data Types - single | double
 %
@@ -710,6 +713,17 @@ switch ColorTrj
         % find the trajectories to highlight
         resmax    = max(mdr(skip:end,(2:end)),[],1);
         [~,ia,ic] = unique(resmax);
+        % the next while statement is in case the max is due to a peak in
+        % the last part of the search, because of a set of outliers
+        while length(ia)==1
+            [row,col] = find(mdr(:,2:end)==resmax(1));
+            if sum(col) == nsimul*(nsimul+1)/2 %this is a double check
+                mdrtmp = mdr;
+                mdrtmp(unique(row),:)=[];
+                resmax    = max(mdrtmp(skip:end,(2:end)),[],1);
+                [~,ia,ic] = unique(resmax);
+            end
+        end
         
         % keep the best 'maxcolors' indices of the modes
         nmodes    = length(ia);
