@@ -522,7 +522,8 @@ SizeAxesNum=options.SizeAxesNum;
 % - ColorTrj = 1 for rotation of fixed colors;
 % - ColorTrj = 2:7 for rotation of fixed colors for the trajectories with 
 %              larger mdr (no more than 7 allowed). Markers are also added.
-ColorTrj = options.ColorTrj;
+ColorTrjUser = options.ColorTrj;
+ColorTrj     = ColorTrjUser;
 maxcolors = 7; % this is the number of colors set later in variable ColorSet
 if ColorTrj > maxcolors
     ColorTrj = maxcolors;
@@ -646,11 +647,19 @@ set(gcf,'tag',options.tag);
 
 % %%% Managment of the rainbow %%%
 
-% skip initial part of the search for avoiding spurious peaks
-skip      = max(init,floor(n*0.33));
-        
+% used to skip end part of FS to avoid typical peaks due to outliers
+skipafter    = round(find(mdr(:,1)==n*0.9));
+% used to skip initial part of FS to avoid spurious peaks
+skipbefore   = max(init,floor(n*0.1));
+% ia = -1; skipbefore = 1; 
+% while or(length(ia) > floor(n*0.25) , ia == -1)
+%     skipbefore = skipbefore + floor(n*0.05);
+%     resmax     = max(mdr(skipbefore:skipafter,2:end),[],1);
+%     [~,ia,~]   = unique(resmax);
+% end
+     
 % markers to use each lm steps; by default markers are not used ('none')
-lm          = min(10 , floor((n-skip)/10));
+lm          = min(10 , floor((n-skipbefore)/10));
 MarkerSet   = {'none' ; 'o' ; '+' ; '*'  ; 'x' ; ...
                'square' ; 'diamond' ; '.' };
 slinmkr     = repmat(MarkerSet(1),nsimul,1); 
@@ -677,7 +686,7 @@ slinwdt  = lwd*ones(nsimul,1);
 switch ColorTrj
     case 0  % use a blue colormap
         % colors for the trajectories
-        ressum    = sum(mdr(skip:end,(2:end)),1);
+        ressum    = sum(mdr(skipbefore:end,(2:end)),1);
         A         = rescaleFS(ressum,1,0);
         [B , iA]  = sort(A,'descend');
         bgcolors  = [zeros(nsimul,1) , B' , ones(nsimul,1)];
@@ -687,7 +696,7 @@ switch ColorTrj
         bgcolmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
         colormap(bgcolmap);
         c = colorbar;
-        c.Label.String = ['Sum of mdr from step ' num2str(skip)];
+        c.Label.String = ['Sum of mdr from step ' num2str(skipbefore)];
         c.FontSize = SizeAxesNum;
         caxis([0 1]);
         
@@ -711,7 +720,8 @@ switch ColorTrj
         fcol      = num2cell(bgcolors,2);
         
         % find the trajectories to highlight
-        resmax    = max(mdr(skip:end,(2:end)),[],1);
+        % resmax    = max(mdr(skip:end,(2:end)),[],1);
+        resmax    = max(mdr(skipbefore:skipafter,2:end),[],1);
         [~,ia,ic] = unique(resmax);
         % the next while statement is in case the max is due to a peak in
         % the last part of the search, because of a set of outliers
@@ -720,7 +730,7 @@ switch ColorTrj
             if sum(col) == nsimul*(nsimul+1)/2 %this is a double check
                 mdrtmp = mdr;
                 mdrtmp(unique(row),:)=[];
-                resmax    = max(mdrtmp(skip:end,(2:end)),[],1);
+                resmax    = max(mdrtmp(skipbefore:skipafter,(2:end)),[],1);
                 [~,ia,ic] = unique(resmax);
             end
         end
@@ -749,6 +759,10 @@ switch ColorTrj
         fcol    = fcol(iA);
         slinmkr = slinmkr(iA);
         slinwdt = [0.5*slinwdt(idarkgrey) ; slinwdt(inotdarkgrey)];
+        if ntrj < ColorTrjUser
+            disp(['Note that you asked to highlight ColorTrj = ' num2str(ColorTrjUser) ...
+                ' groups, but only ' num2str(ntrj) ' are displayed']);
+        end
 end
 
 % set Color, Linestyle and Marker of the trajectories
