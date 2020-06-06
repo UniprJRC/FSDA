@@ -138,7 +138,7 @@ function out=FSRmdrrs(y,X,varargin)
 %               quantity) are reduced. Note that this guarantees that
 %               leverge units which have a large value of  X will tend to
 %               stay in the subset. This option is particularly useful in
-%               the context of itnernational trade data where we using
+%               the context of international trade data where we 
 %               regress value (value=price*Q) on quantity (Q). In other
 %               words, we use the residuals as if we were regressing y/X
 %               (that is price) on the vector of ones.
