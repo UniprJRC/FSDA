@@ -12,8 +12,7 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
-         
-
+       
  "regressionTS":
    build:
    environment: 
@@ -65,6 +64,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/test-graphics  
          
 
  "multivariate":
