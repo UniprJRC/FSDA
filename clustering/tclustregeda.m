@@ -170,7 +170,7 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 monitoring between two consecutive values of alpha the
 %                 change in classification using ARI index (top left panel),
 %                 the relative change in beta (top right panel)
-%                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||beta_{\alpha_2}||^2
+%                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||\beta_{\alpha_2}||^2
 %                 the relative change in \sigma^2 (third panel) the
 %                 relative change in \sigma^2 corrected (fourth panel) and
 %                 if alphaX=1, the relative change in centroids (fifth
@@ -560,13 +560,13 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
-if ~verLessThan('matlab','9.5')
+if ~verLessThanFS(9.5)
     doaxtoolbar = true;
 else
     doaxtoolbar = false;
 end
 
-if ~verLessThan('matlab','9.1')
+if ~verLessThanFS(9.1)
     dolegendsize = true;
 else
     dolegendsize = false;
