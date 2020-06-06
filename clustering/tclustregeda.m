@@ -560,6 +560,17 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
+if ~verLessThan('matlab','9.5')
+    doaxtoolbar = true;
+else
+    doaxtoolbar = false;
+end
+
+if ~verLessThan('matlab','9.1')
+    dolegendsize = true;
+else
+    dolegendsize = false;
+end
 
 %% Input parameters checking
 
@@ -650,17 +661,17 @@ if nargin>6
              figure;plot(Xori,yori,'.'); hold on ; text(Xori(nsamp(:)),yori(nsamp(:)),'X');
              figure;plot(Xori,yori,'.'); hold on ; text(X(C(:)),y(C(:)),'X');
             %}
-%             if sum(chknwtrim)>0 && ~isstruct(cell2mat(varargin(find(chknwtrim)+1)))
-%                 if cell2mat(varargin(find(chknwtrim)+1))== 4
-%                     for f=1:size(C,1)*size(C,2)
-%                         if Wt4(C(f)) == 0
-%                             [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
-%                         else
-%                             C(f) = sum(Wt4(1:C(f)));
-%                         end
-%                     end
-%                 end
-%             end
+            %             if sum(chknwtrim)>0 && ~isstruct(cell2mat(varargin(find(chknwtrim)+1)))
+            %                 if cell2mat(varargin(find(chknwtrim)+1))== 4
+            %                     for f=1:size(C,1)*size(C,2)
+            %                         if Wt4(C(f)) == 0
+            %                             [~,C(f)] = min(pdist2([yori(C(f)),Xori(C(f))],[yori(Wt4),Xori(Wt4)]));
+            %                         else
+            %                             C(f) = sum(Wt4(1:C(f)));
+            %                         end
+            %                     end
+            %                 end
+            %             end
             
         else
             % If nsamp is a scalar it simply contains the number of subsets
@@ -1120,7 +1131,7 @@ xyTickFontSize      = 12;
 xxTickAngleVal      = 45;
 xyLabelSize         = 16;
 yLabelLatexSize     = 18;
-legengSize          = 14;
+legendSize          = 14;
 titleSize           = 18;
 subtitleSize        = 16;
 matrixFont          = 8;
@@ -1350,7 +1361,9 @@ if d>0
         % sigma: plots 3,4,6
         set(gca,'XDir','reverse');
         title(plotsname{j},'interpreter','latex', 'fontsize' , subtitleSize);
-        axtoolbar('Visible','off');
+        if doaxtoolbar
+            axtoolbar('Visible','off');
+        end
     end
     sgtitle(tit , 'fontsize' , titleSize);
 end
@@ -1470,7 +1483,9 @@ if d>0
     end
     
     pan('off');
-    axtoolbar(gca,'Visible','off');
+    if doaxtoolbar
+        axtoolbar(gca,'Visible','off');
+    end
     
 end
 
@@ -1500,7 +1515,9 @@ if d>0
     xlabel('Level of trimming','FontSize',xyLabelSize);
     ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
     set(legend,'Location','best');
-    axtoolbar('Visible','off');
+    if doaxtoolbar
+        axtoolbar('Visible','off');
+    end
     
     subplot(2,2,2);
     Prob1sel=Prob1(UnitsTrmOrChgCla,:);
@@ -1515,7 +1532,9 @@ if d>0
     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
         cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
-    axtoolbar('Visible','off');
+    if doaxtoolbar
+        axtoolbar('Visible','off');
+    end
     
     subplot(2,2,3)
     % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
@@ -1564,7 +1583,9 @@ if d>0
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
     ylabel('$\hat \sigma^2$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     axis('manual');
-    axtoolbar('Visible','off');
+    if doaxtoolbar
+        axtoolbar('Visible','off');
+    end
     
     % second subplot
     subplot(2,1,2);
@@ -1586,10 +1607,16 @@ if d>0
     %legend(hs2,legendGroups);
     
     axis('manual');
-    axtoolbar('Visible','off');
+    if doaxtoolbar
+        axtoolbar('Visible','off');
+    end
     
     clickableMultiLegend(h1,legendGroups);
-    hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legengSize);
+    if dolegendsize
+        hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
+    else
+        hl2 = clickableMultiLegend(h2,legendGroups);
+    end
     set(hl2,'visible','off');
     
     sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal');
@@ -1678,8 +1705,14 @@ if d>0
         
         
         % Add clickable multilegend
-        clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
-            'Location','best','interpreter' , 'LaTex', 'fontsize' , legengSize) % ,'TextColor','r');
+        if dolegendsize
+            clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+                'Location','best','interpreter' , 'LaTex', 'fontsize' , legendSize) % ,'TextColor','r');
+        else
+            clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+                'Location','best','interpreter' , 'LaTex') % ,'TextColor','r');
+            
+        end
         axis('manual');
         
         % control of the axis limits
@@ -1753,8 +1786,9 @@ if d>0
         end
     end
     sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-    axtoolbar('Visible','off');
-    
+    if doaxtoolbar
+        axtoolbar('Visible','off');
+    end
 end
 
 %% Monitoring of allocation (using gscatter)
@@ -1880,7 +1914,12 @@ if d>0
                 ylabel(' ');
             end
             
-            clickableMultiLegend(hh, 'fontsize' , legengSize)
+            if dolegendsize
+                clickableMultiLegend(hh, 'fontsize' , legendSize);
+            else
+                clickableMultiLegend(hh);
+            end
+            
             if jk>1
                 legend hide
             end
@@ -1898,7 +1937,11 @@ if d>0
                 ylabel('', 'fontsize' , xyLabelSize);
             end
             
-            clickableMultiLegend(hh, 'fontsize' , legengSize)
+            if dolegendsize
+                clickableMultiLegend(hh, 'fontsize' , legendSize);
+            else
+                clickableMultiLegend(hh);
+            end
             if jk>1
                 legend hide
             end
@@ -1988,13 +2031,19 @@ if d>0
         ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'fontsize' , yLabelLatexSize);
         xtickangle(xxTickAngleVal);
         
-        legend(legendGroups, 'fontsize' , legengSize);
+        legend(legendGroups, 'fontsize' , legendSize);
         legend('hide');
         if j==1
             legend('show');
-            clickableMultiLegend(h, 'fontsize' , legengSize);
+            if dolegendsize
+                clickableMultiLegend(h, 'fontsize' , legendSize);
+            else
+                clickableMultiLegend(h);
+            end
         end
-        axtoolbar('Visible','off');
+        if doaxtoolbar
+            axtoolbar('Visible','off');
+        end
         axis('manual');
     end
     sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
@@ -2026,8 +2075,11 @@ if d>0
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
     legend(legendGroups);
     legend('show');
-    clickableMultiLegend(h, 'fontsize' , legengSize);
-    
+    if dolegendsize
+        clickableMultiLegend(h, 'fontsize' , legendSize);
+    else
+        clickableMultiLegend(h);
+    end
     title(tit,'fontsize' , titleSize , 'FontWeight', 'normal');
     
 end
