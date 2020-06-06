@@ -243,7 +243,7 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     
     
     for j=1:K
-        [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'asc');
+        [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'ascend');
     end
     
     % Apply restriction between groups
