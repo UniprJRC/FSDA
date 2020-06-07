@@ -1,5 +1,5 @@
 function out=boxcoxR(y,X, varargin)
-%boxcoxR finds linear regression transformation parameters in the Box Cox, Yeo and Johnson families
+%boxcoxR finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation
 %
 %<a href="matlab: docsearchFS('boxcoxR')">Link to the help function</a>
 %
