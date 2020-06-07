@@ -1,94 +1,90 @@
 function out=boxcoxR(y,X, varargin)
-%boxcoxR finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation
+%boxcoxR finds linear regression transformation parameters in the Box Cox, Yeo and Johnson families
 %
 %<a href="matlab: docsearchFS('boxcoxR')">Link to the help function</a>
 %
-% It computes the profile log Likelihood for a range of values of the
-% transformation parameter (lambda) and computes the MLE of lambda in the
-% supplied range. Supported families Box Cox, Yeo and Johnson and extended
-% Yeo and Johnson (Atkinson et al. 2020).
+% The function computes the profile log Likelihood for a range of values of
+% the transformation parameter (lambda) and computes the MLE of lambda in
+% the supplied range. Supported families are Box Cox, Yeo and Johnson and
+% extended Yeo and Johnson (Atkinson et al. 2020).
 %
-%               The profile loglikelihood is computed as:
+%               The profile log-likelihood is computed as:
 %               \[
 %               -(n/2) \log( (y(\lambda)-X\beta(\lambda))'(y(\lambda)-X\beta(\lambda))/n) +\log J
 %               \]
 %               where  $y(\lambda)$ is the vector of transformed
-%               observations using Box Cox family,  Yeo and Johnson
-%               or extended Yao and Johnson family
+%               observations using Box Cox family,  Yeo and Johnson or
+%               extended Yao and Johnson family
 %               \[
 %               \beta(\lambda) = (X'X)^{-1} X' y(\lambda)
 %               \]
-%               and $J$ is the Jacobian of the transformation,
+%               and $J$ is the Jacobian of the transformation.
 %
 %  Required input arguments:
 %
 %    y:         Response variable. Vector. Response variable, specified as
 %               a vector of length n, where n is the number of
-%               observations. Each entry in y is the response for the
+%               observations. Each element of y is the response for the
 %               corresponding row of X.
 %               Missing values (NaN's) and infinite values (Inf's) are
-%               allowed, since observations (rows) with missing or infinite
-%               values will automatically be excluded from the
-%               computations.
+%               allowed, but observations (rows) with these values will
+%               automatically be excluded from the computations.
 %  X :          Predictor variables. Matrix. Matrix of explanatory
 %               variables (also called 'regressors') of dimension n x (p-1)
 %               where p denotes the number of explanatory variables
 %               including the intercept.
 %               Rows of X represent observations, and columns represent
 %               variables. By default, there is a constant term in the
-%               model, unless you explicitly remove it using input option
-%               intercept, so do not include a column of 1s in X. Missing
+%               model, unless it is explicitly removed using input option
+%               intercept; so, do not include a column of 1s in X. Missing
 %               values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations.
-%
+%               since observations (rows) with such values will
+%               automatically be excluded from the computations.
 %
 %
 % Optional input arguments:
 %
 %    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
+%                 specified as comma-separated pair consisting of
+%                 'Intercept' and either true or false, to respectively
+%                 include or remove the constant term from the model.
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
 %    family :   parametric transformation to use. String. String which
-%               identifies the family of transformations which
-%               must be used. Character. Possible values are 'BoxCox'
-%               (default), 'YJ' (Yao and Yohnson) and 'YJpn' (extended Yeo and Johnson).
+%               identifies the family of transformations which must be
+%               used. Character. Possible values are 'BoxCox' (default),
+%               'YJ' (Yao and Yohnson) and 'YJpn' (extended Yeo and
+%               Johnson).
 %               The Box-Cox family of power transformations equals
 %               $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
 %               and $\log(y)$ if $\lambda = 0$.
 %               The Yeo-Johnson (YJ) transformation is the Box-Cox
 %               transformation of $y+1$ for nonnegative values, and of
 %               $|y|+1$ with parameter 2-lambda for y negative.
-%               The extended Yeo-Johnson (YJpn) transformation is like the
-%               Yeo-Johnson but admits two values of the transformation
-%               parameters respectively for positive and negative
+%               The extended Yeo-Johnson (YJpn) transformation is like
+%               Yeo-Johnson, but admits two values of the transformation
+%               parameters, respectively for positive and negative
 %               observations.
-%               Remark. BoxCox family can be used just
-%               if input y is positive. Yeo-Johnson (and extended
-%               Yeo-Johnson family of transformations do not have this
-%               limitation).
+%               Remark. BoxCox family can be used only if input y is
+%               positive. Yeo-Johnson (and extended Yeo-Johnson family of
+%               transformations do not have this limitation).
 %               Example - 'family','YJ'
 %               Data Types - char
 %
 %       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
-%                 no check is performed on
-%                 vector y and matrix X. Notice that y and X are left
-%                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
+%                 no check is performed on vector y and matrix X. This
+%                 means that y and X are left unchanged. Note also that the
+%                 additional column of ones for the intercept is not added.
+%                 As default nocheck=0.
 %               Example - 'nocheck',1
 %               Data Types - double
 %
-%        conflev : Confidence level for lambda. Scalar.
-%                  scalar between 0 and 1 determining
-%                  confidence level for
-%                  lambda based on the asymptotic chi1^2 of
-%                  twice the loglikelihood ratio.
-%                  The default confidence level is 0.95;
+%        conflev : Confidence level for lambda. Scalar. The scalar is 
+%                  between 0 and 1 and determines the confidence level for
+%                  lambda, based on the asymptotic $chi1^2$ of twice the
+%                  loglikelihood ratio. The default conflev value is 0.95;
 %               Example - 'conflev',0.99
 %               Data Types - double
 %
@@ -102,43 +98,40 @@ function out=boxcoxR(y,X, varargin)
 %               Data Types - double
 %
 %          laseqPos : Transformation for positive observations.
-%                  Vector. Vector
-%                  which contains the sequence of values of lambda which
-%                  are used to transform positive observations when
-%                  family 'YJpn'. The default value of laseqPos
-%                  is -2:0.01:2. This optional input parameter is ignored
-%                  if family is 'BoxCox' or 'YJ'
+%                  Vector. Vector which contains the sequence of values of
+%                  lambda which are used to transform positive observations
+%                  when family 'YJpn'. The default value of laseqPos is
+%                  -2:0.01:2. This optional input parameter is ignored if
+%                  family is 'BoxCox' or 'YJ';
 %               Example - 'laseqPos',[-1:0.001;0.7]
 %               Data Types - double
 %
 %          laseqNeg : Transformation for negative observations.
-%                  Vector. Vector
-%                  which contains the sequence of values of lambda which
-%                  are used to transform negative observations when
-%                  family 'YJpn'. The default value of laseqNeg
-%                  is -2:0.01:2. This optional input is ignored if family
-%                  is 'BoxCox' or 'YJ'
+%                  Vector. Vector which contains the sequence of values of
+%                  lambda which are used to transform negative observations
+%                  when family 'YJpn'. The default value of laseqNeg is
+%                  -2:0.01:2. This optional input is ignored if family is
+%                  'BoxCox' or 'YJ';
 %               Example - 'laseqNeg',[-1:0.001;0.7]
 %               Data Types - double
 %
 %   plots  :    Profile log likelihood for lambda. Boolean.
-%               It specifies whether it is necessary to show the profile
-%               log likelihood of lambda. If plots is true, the plot of the
-%               profile loglikelihood is produced together with the
-%               requested confidence interval. The default value of prolik
-%               is false, that is no plot is produced. If family is 'YJpn',
-%               a contour plot is produced.
+%               It specifies whether to show the profile log likelihood of
+%               lambda. If plots is true, the plot of the profile
+%               loglikelihood is produced together with the requested
+%               confidence interval. The default value of prolik is false,
+%               that is no plot is produced. If family is 'YJpn', a contour
+%               plot is produced.
 %               Example - 'plots',true
 %               Data Types - boolean
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
-%               This option applies just if family is YJpn. If usefimin is
-%               true or usefmin is a struct, in case of family YJpn, it is
-%               possible to use MATLAB solvers fminsearch or fminunc to
-%               find the maximum likelihood estimates of $\lambda_P$ and
-%               $\lambda_N$. The default value of usefmin is false that is
-%               solver is not used and the likelihood is evaluated at the
-%               points laseqPos and laseqNeg.
+%               This option applies only if family is YJpn. If usefmin is
+%               true or usefmin is a struct, the maximum likelihood
+%               estimates of $\lambda_P$ and $\lambda_N$ is computed using
+%               the MATLAB solvers fminsearch or fminunc. The default value
+%               of usefmin is false, that is the likelihood is evaluated at
+%               the points laseqPos and laseqNeg without the solver.
 %               If usefmin is a structure it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
@@ -161,46 +154,44 @@ function out=boxcoxR(y,X, varargin)
 %         out:   structure which contains the following fields
 %
 % out.lahat  =  best estimate of lambda. Scalar or vector of length 2.
-%               out.lahat is a scalar if family is 'BoxCox' or
-%               'YJ' otherwise it is a vector of length 2
+%               out.lahat is a scalar if family is 'BoxCox' or 'YJ',
+%               otherwise if family is 'YJpn' it is a vector of length 2
 %               containing respectively MLE of transformation parameter for
-%               positive and negative observations if family is 'YJpn'.
-%               This is the best estimate among the values of lambda which
-%               are supplied in input vector laseq if family is 'BoxCox' or
-%               'YJ', or in input vectors laseqPos and laseqNeg, if family is
-%               'YJpn'.
+%               positive and negative observations. This is the best
+%               estimate among the values of lambda which are supplied in
+%               input vector laseq if family is 'BoxCox' or 'YJ', or in
+%               input vectors laseqPos and laseqNeg, if family is 'YJpn'.
 % out.lahatci  = confidence intervals for MLE of lambda computed using Chi2
 %               approximation using confidence level specified in input
 %               option conflev. This argument is present only if family is
 %               'BoxCox' or 'YJ'.
-% out.LogLik   = matrix containing the value of the profile loglikelihood
-%               for each value in laseq or laseqPos and laseqNeg. The
-%               dimension of out.LogLik is length(laseq)-by-2 if family is
-%               BoxCox' or 'YJ'. In this case the first column contains
+% out.LogLik   = matrix containing the value of the profile log-likelihood
+%               for each value in laseq or laseqPos and laseqNeg. If family
+%               is BoxCox' or 'YJ', the dimension of out.LogLik is
+%               length(laseq)-by-2. In this case the first column contains
 %               the values of laseq and the second column the values of the
-%               profile log
-%               lik. If family is 'YJpn' the dimension of out.LogLik is:
-%               * length(laseqPos)-by-length(laseqNeg) if input option
-%               usefmin is false (default), that is if maximization routine
-%               is not called.
-%               * 9-by-9 matrix  containing the value of the likelihood in
-%               correspondence of the points -2:0.5:2 if input option
-%               usefmin is true and boxcoxR is called for the first time.
-%               In order to find MLE of laPos and laNeg, likelihood is
-%               computed for the 81 value in the meshgrid -2:0.5:2 just to
-%               find a preliminary estimate of laPos and laNeg for the
-%               solver.
+%               profile log lik. If family is 'YJpn', the dimension of
+%               out.LogLik is:
+%               * length(laseqPos)-by-length(laseqNeg) if option usefmin is
+%                 false (default) and therefore the maximization routine is
+%                 not called.
+%               * 9-by-9 matrix containing the value of the likelihood in
+%                 correspondence of the points -2:0.5:2, if input option
+%                 usefmin is true and boxcoxR is called for the first time.
+%                 In order to find MLE of laPos and laNeg, the likelihood
+%                 is computed for the 81 values in the meshgrid -2:0.5:2 to
+%                 find a preliminary estimate of laPos and laNeg for the
+%                 solver.
 %               * empty value if input option usefmin is true and the solver
-%               has used the cached version of lambda to initialize the
-%               optimization routine. If you wish that the maximization
-%               does not use the cached version of lambda execute
-%               instruction clear boxcoxR before calling it.
+%                 has used the cached version of lambda to initialize the
+%                 optimization routine. If you prefer that the maximization
+%                 routine does not use the cached version of lambda,
+%                 execute instruction clear boxcoxR before calling it.
 %
-% out.exitflag =  flag which informs about convergence. exitflag =0
+% out.exitflag =  flag which informs about convergence. exitflag = 0
 %                 implies normal convergence, else no convergence has been
 %                 obtained. This ouptut is present only if input option
 %                 usefmin is true or struct and family is YJpn.
-%
 %
 %
 % See also Score, FSRfan
