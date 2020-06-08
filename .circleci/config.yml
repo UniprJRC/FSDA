@@ -65,7 +65,7 @@ jobs:
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
       - store_test_results:
-          path: test-graphics  
+          path: ~/test-graphics/test-graphics-report/
          
 
  "multivariate":
