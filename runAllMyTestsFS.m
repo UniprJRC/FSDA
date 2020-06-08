@@ -220,7 +220,7 @@ else
     
 end
 
-%%
+%% CircleCI 
 
 %cd(testpath);
 %testResults = runtests([FSDAroot '/' testpath]);
