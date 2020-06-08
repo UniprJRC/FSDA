@@ -12,6 +12,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-regression/test-regression-report/
        
  "regressionTS":
    build:
@@ -25,6 +27,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-regressionTS/test-regressionTS-report/
 
  "regressionLTSts":
    build:
@@ -38,6 +42,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-regressionLTSts/test-regressionLTSts-report/
 
  "regressionEXT":
    build:
@@ -51,6 +57,9 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-regressionEXT/test-regressionEXT-report/
+        
 
  "graphics":
    build:
@@ -80,6 +89,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-multivariate/test-multivariate-report/
 
  "multivariate-clustering":
    build:
@@ -93,6 +104,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-multivariate-clustering/test-multivariate-clustering-report/
 
  "regression-clustering":
    build:
@@ -106,6 +119,9 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-regression-clustering/test-regression-clustering-report/
+
 
  "mixsim":
    build:
@@ -119,6 +135,9 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-mixsim/test-mixsim-report/
+
 
  "utilities":
    build:
@@ -132,6 +151,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-utilities/test-utilities-report/
 
  "tclustMULT":
    build:
@@ -145,6 +166,8 @@ jobs:
       - run:  
           command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
           no_output_timeout: 60m 
+      - store_test_results:
+          path: ~/project/tests-tclustMULT/test-tclustMULT-report/
 
 workflows:
   version: 2
