@@ -212,6 +212,11 @@ if perf==false
     disp('Run the test suite')
     runner.run(suite);
     
+    % create a new subfolder for CircleCI
+    [status, ~, ~] = mkdir(['test-' cat2test '-report']);
+    copyfile(['test-' cat2test '-report.xml'], ['test-' cat2test '-report']);
+    
+    
 else
     import matlab.perftest.TimeExperiment
     experiment = TimeExperiment.limitingSamplingError('NumWarmups',1,...
@@ -220,7 +225,7 @@ else
     
 end
 
-%%
+%% CircleCI 
 
 %cd(testpath);
 %testResults = runtests([FSDAroot '/' testpath]);
