@@ -1224,7 +1224,7 @@ units.UnitsNeverAssigned=UnitsNeverAssigned;
 out.units=units;
 
 % String to include in the legends
-legendGroups=[repmat('Group ',k,1) num2str((1:k)')];
+legendGroups=cellstr([repmat('Group ',k,1) num2str((1:k)')]);
 
 % Amon stands for alpha monitoring.
 % Amon is the matrix of size lenght(alpha)-1-by 4 which contains for two
@@ -1626,11 +1626,8 @@ if d>0
     end
     
     clickableMultiLegend(h1,legendGroups);
-    if vafter91
-        hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
-    else
-        hl2 = clickableMultiLegend(h2,legendGroups);
-    end
+    hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
+    
     set(hl2,'visible','off');
     
     if vafter95 == true
@@ -2066,7 +2063,7 @@ if d>0
         ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'fontsize' , yLabelLatexSize);
         xtickangle(xxTickAngleVal);
         
-        legend(cellstr(legendGroups), 'fontsize' , legendSize);
+        legend(legendGroups, 'fontsize' , legendSize);
         legend('hide');
         if j==1
             legend('show');
