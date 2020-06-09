@@ -1360,14 +1360,14 @@ if d>0
             axtoolbar('Visible','off');
         end
     end
-    if vafter95 == true 
+    if vafter95 == true
         sgtitle(tit , 'fontsize' , titleSize);
     else
         a  = axes;
         t1 = title(tit2, 'fontsize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end  
+    end
     
 end
 
@@ -1541,28 +1541,32 @@ if d>0
     
     subplot(2,2,3)
     % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
-    parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
-    set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
-    xlabel('Level of trimming');
-    ylabel('Post prob. group 1 all units');
-    legend('off');
+    if vafter95
+        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 all units');
+        legend('off');
+    end
     
     subplot(2,2,4)
-    parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
-        'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
-    set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
-    xlabel('Level of trimming');
-    ylabel('Post prob. group 1 selected units');
-    legend('off');
-        
-    if vafter95 == true 
+    if vafter95
+        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 selected units');
+        legend('off');
+    end
+    
+    if vafter95 == true
         sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
     else
         a  = axes;
         t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end 
+    end
 end
 
 
@@ -1628,15 +1632,15 @@ if d>0
         hl2 = clickableMultiLegend(h2,legendGroups);
     end
     set(hl2,'visible','off');
-        
-    if vafter95 == true 
+    
+    if vafter95 == true
         sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
     else
         a  = axes;
         t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end 
+    end
 end
 
 
@@ -1802,8 +1806,8 @@ if d>0
             
         end
     end
-   
-    if vafter95 == true 
+    
+    if vafter95 == true
         sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         axtoolbar('Visible','off');
     else
@@ -1811,7 +1815,7 @@ if d>0
         t1 = title(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end 
+    end
     
 end
 
@@ -1979,14 +1983,14 @@ if d>0
         jk=jk+1;
     end
     
-    if vafter95 == true 
+    if vafter95 == true
         sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
     else
         a  = axes;
         t1 = title(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end   
+    end
     
     if p-intercept>1
         % Undocumented store variable importance in presence of more than
@@ -2079,14 +2083,14 @@ if d>0
         axis('manual');
     end
     
-    if vafter95 == true 
+    if vafter95 == true
         sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
     else
         a  = axes;
         t1 = title(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
-    end  
+    end
     
 end
 
