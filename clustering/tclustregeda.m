@@ -2066,7 +2066,7 @@ if d>0
         ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'fontsize' , yLabelLatexSize);
         xtickangle(xxTickAngleVal);
         
-        legend(legendGroups, 'fontsize' , legendSize);
+        legend(cellstr(legendGroups), 'fontsize' , legendSize);
         legend('hide');
         if j==1
             legend('show');
