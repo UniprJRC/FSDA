@@ -628,7 +628,8 @@ plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
 xlimx=options.xlimx;
 ylimy=options.ylimy;
 xlim(xlimx);
-ylim(ylimy);
+ylim(real(ylimy));
+
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
