@@ -120,6 +120,7 @@ function hf = wedgeplot(RES,varargin)
 %{
     % Double wedge plot with simulated data with linear trend and level shift.
     % No seasonal component.
+    pwd
     n=45;
     a=1;
     b=0.8;

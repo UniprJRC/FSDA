@@ -560,17 +560,12 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
-if ~verLessThanFS(9.5)
-    doaxtoolbar = true;
-else
-    doaxtoolbar = false;
-end
+verbertotest = 9.1; %R2016b
+vafter91=~verLessThanFS(verbertotest);
 
-if ~verLessThanFS(9.1)
-    dolegendsize = true;
-else
-    dolegendsize = false;
-end
+verbertotest = 9.5; %R2018b
+vafter95=~verLessThanFS(verbertotest);
+
 
 %% Input parameters checking
 
@@ -1331,7 +1326,7 @@ out.UnitsTrmOrChgCla=IDt;
 
 namej = 'monitor';
 tit   = {'Tclustreg monitoring plot' , 'Changes between two consecutive \alpha-values'};
-
+tit2  = {'Tclustreg monitoring plot -- Changes between two consecutive $\alpha$-values' , ' '};
 d=find(strcmp(namej,name));
 if d>0
     figure('Name',namej,'Visible','on');
@@ -1361,11 +1356,19 @@ if d>0
         % sigma: plots 3,4,6
         set(gca,'XDir','reverse');
         title(plotsname{j},'interpreter','latex', 'fontsize' , subtitleSize);
-        if doaxtoolbar
+        if vafter95
             axtoolbar('Visible','off');
         end
     end
-    sgtitle(tit , 'fontsize' , titleSize);
+    if vafter95 == true 
+        sgtitle(tit , 'fontsize' , titleSize);
+    else
+        a  = axes;
+        t1 = title(tit2, 'fontsize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end  
+    
 end
 
 
@@ -1483,7 +1486,7 @@ if d>0
     end
     
     pan('off');
-    if doaxtoolbar
+    if vafter95
         axtoolbar(gca,'Visible','off');
     end
     
@@ -1515,7 +1518,7 @@ if d>0
     xlabel('Level of trimming','FontSize',xyLabelSize);
     ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
     set(legend,'Location','best');
-    if doaxtoolbar
+    if vafter95
         axtoolbar('Visible','off');
     end
     
@@ -1532,7 +1535,7 @@ if d>0
     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
         cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
-    if doaxtoolbar
+    if vafter95
         axtoolbar('Visible','off');
     end
     
@@ -1551,8 +1554,15 @@ if d>0
     xlabel('Level of trimming');
     ylabel('Post prob. group 1 selected units');
     legend('off');
-    
-    sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal');
+        
+    if vafter95 == true 
+        sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
+    else
+        a  = axes;
+        t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end 
 end
 
 
@@ -1583,7 +1593,7 @@ if d>0
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
     ylabel('$\hat \sigma^2$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     axis('manual');
-    if doaxtoolbar
+    if vafter95
         axtoolbar('Visible','off');
     end
     
@@ -1607,19 +1617,26 @@ if d>0
     %legend(hs2,legendGroups);
     
     axis('manual');
-    if doaxtoolbar
+    if vafter95
         axtoolbar('Visible','off');
     end
     
     clickableMultiLegend(h1,legendGroups);
-    if dolegendsize
+    if vafter91
         hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
     else
         hl2 = clickableMultiLegend(h2,legendGroups);
     end
     set(hl2,'visible','off');
-    
-    sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal');
+        
+    if vafter95 == true 
+        sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
+    else
+        a  = axes;
+        t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end 
 end
 
 
@@ -1705,7 +1722,7 @@ if d>0
         
         
         % Add clickable multilegend
-        if dolegendsize
+        if vafter91
             clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
                 'Location','best','interpreter' , 'LaTex', 'fontsize' , legendSize) % ,'TextColor','r');
         else
@@ -1785,10 +1802,17 @@ if d>0
             
         end
     end
-    sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
-    if doaxtoolbar
+   
+    if vafter95 == true 
+        sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         axtoolbar('Visible','off');
-    end
+    else
+        a  = axes;
+        t1 = title(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end 
+    
 end
 
 %% Monitoring of allocation (using gscatter)
@@ -1914,7 +1938,7 @@ if d>0
                 ylabel(' ');
             end
             
-            if dolegendsize
+            if vafter91
                 clickableMultiLegend(hh, 'fontsize' , legendSize);
             else
                 clickableMultiLegend(hh);
@@ -1937,7 +1961,7 @@ if d>0
                 ylabel('', 'fontsize' , xyLabelSize);
             end
             
-            if dolegendsize
+            if vafter91
                 clickableMultiLegend(hh, 'fontsize' , legendSize);
             else
                 clickableMultiLegend(hh);
@@ -1954,7 +1978,15 @@ if d>0
         end
         jk=jk+1;
     end
-    sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'LaTex');
+    
+    if vafter95 == true 
+        sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+    else
+        a  = axes;
+        t1 = title(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end   
     
     if p-intercept>1
         % Undocumented store variable importance in presence of more than
@@ -2035,18 +2067,27 @@ if d>0
         legend('hide');
         if j==1
             legend('show');
-            if dolegendsize
+            if vafter91
                 clickableMultiLegend(h, 'fontsize' , legendSize);
             else
                 clickableMultiLegend(h);
             end
         end
-        if doaxtoolbar
+        if vafter95
             axtoolbar('Visible','off');
         end
         axis('manual');
     end
-    sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
+    
+    if vafter95 == true 
+        sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
+    else
+        a  = axes;
+        t1 = title(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end  
+    
 end
 
 
@@ -2075,7 +2116,7 @@ if d>0
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
     legend(legendGroups);
     legend('show');
-    if dolegendsize
+    if vafter91
         clickableMultiLegend(h, 'fontsize' , legendSize);
     else
         clickableMultiLegend(h);
