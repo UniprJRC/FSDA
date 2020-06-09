@@ -1730,9 +1730,8 @@ if d>0
             clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
                 'Location','best','interpreter' , 'LaTex', 'fontsize' , legendSize) % ,'TextColor','r');
         else
-            clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
-                'Location','best','interpreter' , 'LaTex') % ,'TextColor','r');
-            
+            legend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
+                'Location','best')
         end
         axis('manual');
         
