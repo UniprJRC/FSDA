@@ -563,8 +563,8 @@ warning('off');
 verbertotest = 9.2; %<R2017a
 vafter91=~verLessThanFS(verbertotest); % >=2016b
 
-verbertotest = 9.5; %<R2018b
-vafter95=~verLessThanFS(verbertotest); % >=2018b
+verbertotest = 9.6; %<R2019a
+vafter95=~verLessThanFS(verbertotest); % >=2019a
 
 
 %% Input parameters checking
