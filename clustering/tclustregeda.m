@@ -1595,7 +1595,7 @@ if d>0
     set(gca,'XDir','reverse','XGrid','on');
     
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
+    ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     axis('manual');
     if vafter95
         axtoolbar('Visible','off');
@@ -1617,7 +1617,7 @@ if d>0
     set(gca,'XDir','reverse','XGrid','on');
     
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_c$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
+    ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     %legend(hs2,legendGroups);
     
     axis('manual');
