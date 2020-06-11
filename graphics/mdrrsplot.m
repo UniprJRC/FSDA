@@ -628,8 +628,7 @@ plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
 xlimx=options.xlimx;
 ylimy=options.ylimy;
 xlim(xlimx);
-ylim(real(ylimy));
-
+ylim(ylimy);
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
@@ -649,9 +648,14 @@ set(gcf,'tag',options.tag);
 % %%% Managment of the rainbow %%%
 
 % used to skip end part of FS to avoid typical peaks due to outliers
-skipafter    = round(find(mdr(:,1)==n*0.9));
-% used to skip initial part of FS to avoid spurious peaks
+skipafter    = round(find(mdr(:,1)==floor(n*0.9)));
+% used to skip a fixed percentage of the initial part of FS to avoid spurious peaks
 skipbefore   = max(init,floor(n*0.1));
+
+% used to skip a the initial extreme spurious peaks outside the bands
+%skipbefore   = find(max(mdr(:,2:end),[],2) <= gmin(:,end) , 1);
+
+% this is an adaptive estimateion of the part to skip
 % ia = -1; skipbefore = 1; 
 % while or(length(ia) > floor(n*0.25) , ia == -1)
 %     skipbefore = skipbefore + floor(n*0.05);
