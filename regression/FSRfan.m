@@ -181,11 +181,11 @@ function [out]=FSRfan(y,X,varargin)
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
 %
-%       conflev :   confidence level for the bands. Scalar.
-%                   default is 0.99 that is
-%                   we plot two horizontal lines in correspondence of value
-%                   -2.58 and 2.58
-%                   Example - 'conflev',0.95
+%       conflev :   Confidence level. Scalar or vector. Confidence level
+%                   for the bands (default is 0.99, that is we plot two
+%                   horizontal lines in correspondence of value -2.58 and
+%                   2.58).
+%                   Example - 'conflev',[0.9 0.95 0.99]
 %                   Data Types - double
 %
 %       titl    :   a label for the title. Character.
@@ -1002,10 +1002,19 @@ if plo==1
     
     % Confidence bands lwdenv = line width of the curves associated with
     % the envelopes
-    v=axis;
-    quant=sqrt(chi2inv(conflev,1));
-    line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
-    line([v(1),v(2)],[-quant,-quant],'color','r','LineWidth',lwdenv);
+%     v=axis;
+%     quant=sqrt(chi2inv(conflev,1));
+%     line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
+%     line([v(1),v(2)],[-quant,-quant],'color','r','LineWidth',lwdenv);
+ 
+    rangeaxis=axis;
+quant = sqrt(chi2inv(conflev,1));
+numconflev=length(conflev);
+V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+QUANT=[[quant;quant],[ -quant;-quant]];
+line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
+ 
+    
     
     if size(la,2)>1
         la=la';
