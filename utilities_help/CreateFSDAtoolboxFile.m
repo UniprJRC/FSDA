@@ -47,8 +47,8 @@ movefile('Blank_project.prj',ProjectFileName)
 FSDAproj.Name = "FSDA (Flexible Statistics Data Analysis)";
 
 %% CLONE FROM GIT
-% Check if a subfolder FSDA exists and if not download it from github
-if exist('FSDA','dir')~=7
+% Check if a subfolder FSDA of current folder exists and if not download it from github
+if exist(fullfile([pwd filesep 'FSDA' filesep 'addFSDA2path.m']),'file')~=2
     try
         !git clone https://github.com/UniprJRC/FSDA.git
     catch
