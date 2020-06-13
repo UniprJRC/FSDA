@@ -701,7 +701,7 @@ switch ColorTrj
         bgcolmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
         colormap(bgcolmap);
         c = colorbar;
-        c.Label.String = ['Sum of mdr from step ' num2str(skipbefore)];
+        c.Label.String = ['Standardised sum of mdr from step ' num2str(skipbefore)];
         c.FontSize = SizeAxesNum;
         caxis([0 1]);
         

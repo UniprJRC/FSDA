@@ -560,11 +560,11 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % Control variables, tolerances and internal flags
 warning('off');
 
-verbertotest = 9.2; %<R2017a
-vafter91=~verLessThanFS(verbertotest); % >=2016b
+verbertotest = 9.5; % R2018b
+vafter91=~verLessThanFS(verbertotest); % >=2018b
 
-verbertotest = 9.5; %<R2018b
-vafter95=~verLessThanFS(verbertotest); % >=2018b
+verbertotest = 9.6; % R2019a
+vafter95=~verLessThanFS(verbertotest); % >=2019a
 
 
 %% Input parameters checking
@@ -1595,7 +1595,7 @@ if d>0
     set(gca,'XDir','reverse','XGrid','on');
     
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
+    ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     axis('manual');
     if vafter95
         axtoolbar('Visible','off');
@@ -1617,7 +1617,7 @@ if d>0
     set(gca,'XDir','reverse','XGrid','on');
     
     xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_c$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
+    ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
     %legend(hs2,legendGroups);
     
     axis('manual');
