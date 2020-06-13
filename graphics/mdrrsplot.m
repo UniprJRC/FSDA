@@ -129,7 +129,7 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
 %
-%       ColorTrj:   Color of trajectories. Scalar. Integer which controls 
+%       ColorTrj:   Color of trajectories. Scalar. Integer which controls
 %                   the color of the trajectories. Default value is 1,
 %                   which rotates fixed colors. ColorTrj = 0 produces a
 %                   colormap proportional to sum or mdr along a relevant
@@ -518,9 +518,9 @@ FontSize =options.FontSize;
 SizeAxesNum=options.SizeAxesNum;
 
 % ColorTrj determines the color of the trajectories
-% - ColorTrj = 0 for colormap proportional to sum or mdr along the trajectory; 
+% - ColorTrj = 0 for colormap proportional to sum or mdr along the trajectory;
 % - ColorTrj = 1 for rotation of fixed colors;
-% - ColorTrj = 2:7 for rotation of fixed colors for the trajectories with 
+% - ColorTrj = 2:7 for rotation of fixed colors for the trajectories with
 %              larger mdr (no more than 7 allowed). Markers are also added.
 ColorTrjUser = options.ColorTrj;
 ColorTrj     = ColorTrjUser;
@@ -622,13 +622,18 @@ end
 % plot minimum deletion residual, but make trajectories invisible
 tagstat = 'rs_data_mdr';
 plot1   = plot(mdr(sel,1),mdr(sel,2:end),'tag',tagstat,...
-               'LineWidth',0.1,'LineStyle','-','Color','w');
+    'LineWidth',0.1,'LineStyle','-','Color','w');
 
 % set the x and y axis
 xlimx=options.xlimx;
 ylimy=options.ylimy;
 xlim(xlimx);
-ylim(ylimy);
+if isreal(ylimy)
+    ylim(ylimy);
+else
+    p=size(out.X,2);
+    ylim([0 3*p])
+end
 labx=options.labx;
 laby=options.laby;
 titl=options.titl;
@@ -656,18 +661,18 @@ skipbefore   = max(init,floor(n*0.1));
 %skipbefore   = find(max(mdr(:,2:end),[],2) <= gmin(:,end) , 1);
 
 % this is an adaptive estimateion of the part to skip
-% ia = -1; skipbefore = 1; 
+% ia = -1; skipbefore = 1;
 % while or(length(ia) > floor(n*0.25) , ia == -1)
 %     skipbefore = skipbefore + floor(n*0.05);
 %     resmax     = max(mdr(skipbefore:skipafter,2:end),[],1);
 %     [~,ia,~]   = unique(resmax);
 % end
-     
+
 % markers to use each lm steps; by default markers are not used ('none')
 lm          = min(10 , floor((n-skipbefore)/10));
 MarkerSet   = {'none' ; 'o' ; '+' ; '*'  ; 'x' ; ...
-               'square' ; 'diamond' ; '.' };
-slinmkr     = repmat(MarkerSet(1),nsimul,1); 
+    'square' ; 'diamond' ; '.' };
+slinmkr     = repmat(MarkerSet(1),nsimul,1);
 
 % linestyle; by default, one color per trajectory
 LinestyleSet  = {'-';'--';':';'-.';'-';'--';':'};
@@ -677,13 +682,13 @@ slinsty(nsimul+1:end,:)=[];
 % define the selected colors in RGB form
 %ColorSet={'b';'g';'r';'c';'m';'y';'k'};
 ColorSet = {FSColors.black.RGB;...
-            FSColors.blue.RGB;...
-            FSColors.red.RGB;...
-            FSColors.magenta.RGB;...
-            FSColors.green.RGB;...
-            FSColors.cyan.RGB;...
-            FSColors.yellow.RGB;...
-            };
+    FSColors.blue.RGB;...
+    FSColors.red.RGB;...
+    FSColors.magenta.RGB;...
+    FSColors.green.RGB;...
+    FSColors.cyan.RGB;...
+    FSColors.yellow.RGB;...
+    };
 
 % Line width default
 slinwdt  = lwd*ones(nsimul,1);
@@ -706,7 +711,7 @@ switch ColorTrj
         caxis([0 1]);
         
         % use only the main line style '-'
-        slinsty(2:end) = slinsty(1); 
+        slinsty(2:end) = slinsty(1);
         
         % line width a bit smaller than the standard size
         slinwdt = slinwdt*0.5;
@@ -749,10 +754,10 @@ switch ColorTrj
         ntrj = min(length(ia),ColorTrj);
         
         % set the trajectories
-        seq = 1:nsimul;        
-        for ii=1:ntrj 
+        seq = 1:nsimul;
+        for ii=1:ntrj
             selii            = seq(ic==nmodes-ii+1);
-            slinsty(selii)   = LinestyleSet(ii);            
+            slinsty(selii)   = LinestyleSet(ii);
             fcol(selii,:)    = ColorSet(ii,:);
             slinmkr(selii,:) = MarkerSet(ii+1);
         end
@@ -771,7 +776,7 @@ switch ColorTrj
 end
 
 % set Color, Linestyle and Marker of the trajectories
-set(plot1(iA),{'LineStyle'},slinsty,{'Color'},fcol,{'LineWidth'},num2cell(slinwdt)); 
+set(plot1(iA),{'LineStyle'},slinsty,{'Color'},fcol,{'LineWidth'},num2cell(slinwdt));
 set(plot1(iA),{'Marker'}   ,slinmkr,'MarkerIndices',1:lm:length(sel));
 
 % Store the handle of the mdrplot inside handle hmin
