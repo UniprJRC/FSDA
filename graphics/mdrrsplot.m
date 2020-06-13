@@ -730,11 +730,13 @@ switch ColorTrj
         [~,ia,ic] = unique(resmax);
         % the next while statement is in case the max is due to a peak in
         % the last part of the search, because of a set of outliers
+        mdrtmp = mdr;
         while length(ia)==1
-            [row,col] = find(mdr(:,2:end)==resmax(1));
+            [row,col] = find(mdrtmp(:,2:end)==resmax(1));
             if sum(col) == nsimul*(nsimul+1)/2 %this is a double check
-                mdrtmp = mdr;
+                %mdrtmp = mdr;
                 mdrtmp(unique(row),:)=[];
+                skipafter = skipafter-1;
                 resmax    = max(mdrtmp(skipbefore:skipafter,(2:end)),[],1);
                 [~,ia,ic] = unique(resmax);
             end
