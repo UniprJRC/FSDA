@@ -1068,11 +1068,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % already been put at the beginning. Note that it is necessary
             % to use index ijk instead of ij because it may happen that the
             % user does selections which do not contain anything
-            if ijk==1
-                set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch-nenvel);chH(unselTraj+inlch-nenvel)])
-                ijk=ijk+1;
-            else
-                set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch);chH(unselTraj+inlch)])
+            if out.internationaltrade==0
+                if ijk==1
+                    set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch-nenvel);chH(unselTraj+inlch-nenvel)])
+                    ijk=ijk+1;
+                else
+                    set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch);chH(unselTraj+inlch)])
+                end
             end
             
             % brushcum =
