@@ -187,7 +187,8 @@ function out  = tclustregIC(y,X,varargin)
 %equalweights : cluster weights in the concentration and assignment steps.
 %               Logical. A logical value specifying whether cluster weights
 %               shall be considered in the concentration, assignment steps
-%               and computation of the likelihood.
+%               and computation of the likelihood. Default value
+%               false.
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
 %
