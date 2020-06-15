@@ -1322,6 +1322,8 @@ IDt=IDs(Alltrueselj,:);
 % IDt(IDt==-1)=[];
 out.UnitsTrmOrChgCla=IDt;
 
+alpha1str=num2str(alphaLik(:));
+
 %% 1 Monitor change of statistics between two consecutive values of alphaLik
 
 namej = 'monitor';
@@ -1459,7 +1461,6 @@ if d>0
         
     end
     
-    alpha1str=num2str(alphaLik(:));
     newxtcklab=cell(k1+2,1);
     newxtcklab([1:2 k1+2])={''};
     newxtcklab(3:k1+1)=cellstr(alpha1str);
