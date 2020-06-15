@@ -706,7 +706,7 @@ switch ColorTrj
         bgcolmap = [zeros(nsimul,1) , linspace(1,0,nsimul)',  ones(nsimul,1) ];
         colormap(bgcolmap);
         c = colorbar;
-        c.Label.String = ['Sum of mdr from step ' num2str(skipbefore)];
+        c.Label.String = ['Standardised sum of mdr from step ' num2str(skipbefore)];
         c.FontSize = SizeAxesNum;
         caxis([0 1]);
         
@@ -735,11 +735,13 @@ switch ColorTrj
         [~,ia,ic] = unique(resmax);
         % the next while statement is in case the max is due to a peak in
         % the last part of the search, because of a set of outliers
+        mdrtmp = mdr;
         while length(ia)==1
-            [row,col] = find(mdr(:,2:end)==resmax(1));
+            [row,col] = find(mdrtmp(:,2:end)==resmax(1));
             if sum(col) == nsimul*(nsimul+1)/2 %this is a double check
-                mdrtmp = mdr;
+                %mdrtmp = mdr;
                 mdrtmp(unique(row),:)=[];
+                skipafter = skipafter-1;
                 resmax    = max(mdrtmp(skipbefore:skipafter,(2:end)),[],1);
                 [~,ia,ic] = unique(resmax);
             end
@@ -1071,11 +1073,13 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % already been put at the beginning. Note that it is necessary
             % to use index ijk instead of ij because it may happen that the
             % user does selections which do not contain anything
-            if ijk==1
-                set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch-nenvel);chH(unselTraj+inlch-nenvel)])
-                ijk=ijk+1;
-            else
-                set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch);chH(unselTraj+inlch)])
+            if out.internationaltrade==0
+                if ijk==1
+                    set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch-nenvel);chH(unselTraj+inlch-nenvel)])
+                    ijk=ijk+1;
+                else
+                    set(gca,'Children',[chH(~lineindexes);chH(selTraj+inlch);chH(unselTraj+inlch)])
+                end
             end
             
             % brushcum =
