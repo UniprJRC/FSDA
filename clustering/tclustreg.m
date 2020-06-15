@@ -125,7 +125,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %               shall be considered in the concentration, assignment steps
 %               and computation of the likelihood.
 %               if equalweights = true we are (ideally) assuming equally
-%               sized groups by maximizing the likelihood
+%               sized groups by maximizing the likelihood. Default value
+%               false.
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
 %
@@ -907,7 +908,7 @@ wedef = ones(n,1);
 mixtdef = 0;
 
 % default choice for equalweight constraint
-equalweightsdef = 1;
+equalweightsdef = 0;
 
 %seqk = sequence from 1 to the number of groups
 seqk = 1:k;
