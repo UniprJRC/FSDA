@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
-  test:
+  build:
      parameters:
         categorytotest:
           type: string    
@@ -18,8 +18,11 @@ jobs:
         
 
 workflows:
-  jobs:
-   - test:
-      categorytotest: regression
-   - test:
-      categorytotest: regressionTS
+  version: 2.1
+  build_and_test:
+    jobs:
+    - build:
+        matrix:
+            parameters:
+              categorytotest: ["regression", "regressionTS"]
+       
