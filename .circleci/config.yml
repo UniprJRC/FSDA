@@ -25,8 +25,8 @@ jobs:
         - matlab/install                       # previously `wget ...`
         - matlab/run-command:                  # previously `matlab -batch ...`   
             command: "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retieved using 'var=getenv('CATEGORY_TO_TEST');'
-        - store_test_results:
-            path: ~/project/tests-<<parameter.q>>/test-<<parameter.q>>-report/
+        # - store_test_results:
+        #     path: ~/project/tests-<<parameter.q>>/test-<<parameter.q>>-report/
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
