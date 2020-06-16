@@ -2,16 +2,17 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
-  build:
-    parameters:
-      categorytotest:
-        description: category to test
-        type: string    
-    machine:
-      image: ubuntu-1604:201903-01
-    environment: 
-     - CATEGORY_TO_TEST: << parameter.categorytotest >>
-    steps:
+  << parameter.categorytotest >>
+     build:
+     parameters:
+       categorytotest:
+         description: category to test
+         type: string    
+     machine:
+       image: ubuntu-1604:201903-01
+     environment: 
+      - CATEGORY_TO_TEST: << parameter.categorytotest >>
+     steps:
       - checkout
       - matlab/install     
       - matlab/run-command:              
@@ -21,12 +22,7 @@ jobs:
         
 
 workflows:
-  all-tests:
-    jobs:
-      - build:
-          matrix:
-            parameters:
-               categorytotest: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
-
-
-
+  build:
+    matrix:
+      parameters:
+         categorytotest: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
