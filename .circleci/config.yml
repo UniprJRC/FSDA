@@ -2,34 +2,37 @@
 version: 2.1
 # Use a package of configuration called an orb.
 orbs:
-  # Declare a dependency on the welcome-orb
+  # Declare a dependency on the MATLAB-orb
   matlab: mathworks/matlab@0.1
 jobs:
+# Name the job "testing"
   testing:
+  # define some parameters to be used inside the job
      parameters:
        p:
-         default: 1
+         default: 2
          type: integer    
        q:
          default: "regression"
          type: string    
+     parallelism: << parameters.p >>    
      environment:
-       CATEGORY_TO_TEST: << parameters.q >>  
+       CATEGORY_TO_TEST: << parameters.q >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
      machine:
          image: ubuntu-1604:201903-01
      steps:
         - checkout
         - matlab/install                       # previously `wget ...`
         - matlab/run-command:                  # previously `matlab -batch ...`   
-           #command: "disp(['Hello World num. ' num2str(<< parameters.p >>) ' ' getenv('CATEGORY_TO_TEST')])"     
-           command: "run runAllMyTestsFS.m"     
+            command: "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retieved using 'var=getenv('CATEGORY_TO_TEST');'
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
   fsdatoolbox:
-    # Run the welcome/run job in its own container
+    # Run the "testing" job defined earlier in its own container
     jobs:
       - testing:
+      # Define a matrix of parameter values to be passed iteratively to the "testing" job
           matrix:
              parameters:
                   q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
