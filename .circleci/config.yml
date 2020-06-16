@@ -2,8 +2,7 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
-  << parameter.categorytotest >>
-     build:
+  build:
      parameters:
        categorytotest:
          description: category to test
@@ -11,18 +10,17 @@ jobs:
      machine:
        image: ubuntu-1604:201903-01
      environment: 
-      - CATEGORY_TO_TEST: << parameter.categorytotest >>
+       - CATEGORY_TO_TEST: << parameter.categorytotest >>
      steps:
       - checkout
       - matlab/install     
       - matlab/run-command:              
           command: "run runAllMyTestsFS.m"               
-      - store_test_results:
-        path: ~/project/tests-<< parameter.categorytotest >>/test-<< parameter.categorytotest >>-report/
         
 
 workflows:
-  build:
-    matrix:
-      parameters:
-         categorytotest: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
+    jobs:
+     - build:
+     categorytotest: regression
+     - build:
+     categorytotest: regressionTS
