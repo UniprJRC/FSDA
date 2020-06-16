@@ -17,7 +17,7 @@ jobs:
          type: string    
      parallelism: << parameters.categorytotest >>    
      environment:
-       CATEGORY_TO_TEST: << parameters.q >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
+       CATEGORY_TO_TEST: << parameters.categorytotest >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
      machine:
          image: ubuntu-1604:201903-01
      steps:
