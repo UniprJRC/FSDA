@@ -2,11 +2,10 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
-  build:
+  test:
      parameters:
-       categorytotest:
-         description: category to test
-         type: string    
+        categorytotest:
+          type: string    
      machine:
        image: ubuntu-1604:201903-01
      environment: 
@@ -19,8 +18,8 @@ jobs:
         
 
 workflows:
-    jobs:
-     - build:
-     categorytotest: regression
-     - build:
-     categorytotest: regressionTS
+  jobs:
+   - test:
+      categorytotest: regression
+   - test:
+      categorytotest: regressionTS
