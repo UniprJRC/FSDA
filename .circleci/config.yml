@@ -2,10 +2,10 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
+  parameters:
+    categorytotest:
+      type: string    
     build:
-      parameters:
-        categorytotest:
-          type: string    
       machine:
         image: ubuntu-1604:201903-01
       environment: 
