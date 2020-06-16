@@ -2,24 +2,23 @@ version: 2.1
 orbs:
   matlab: mathworks/matlab@0.1
 jobs:
-  "FSDA":
     build:
-    parameters:
-      categorytotest:
-        type: string    
-    machine:
-      image: ubuntu-1604:201903-01
-    environment: 
-      - CATEGORY_TO_TEST: << parameter.categorytotest >>
-    steps:
-     - checkout
-     - matlab/install     
-     - matlab/run-command:              
-         command: "run runAllMyTestsFS.m" 
+      parameters:
+        categorytotest:
+          type: string    
+      machine:
+        image: ubuntu-1604:201903-01
+      environment: 
+        - CATEGORY_TO_TEST: << parameter.categorytotest >>
+      steps:
+       - checkout
+       - matlab/install     
+       - matlab/run-command:              
+          command: "run runAllMyTestsFS.m" 
 
 workflows:
   build_and_test:
     jobs:
     - build:
-        categorytotest: "regression"
+        categorytotest: regression
        
