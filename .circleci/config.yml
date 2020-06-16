@@ -1,24 +1,36 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
+# Use a package of configuration called an orb.
 orbs:
+  # Declare a dependency on the welcome-orb
   matlab: mathworks/matlab@0.1
 jobs:
-  parameters:
-    categorytotest:
-      type: string    
-    build:
-      machine:
-        image: ubuntu-1604:201903-01
-      environment: 
-        - CATEGORY_TO_TEST: << parameter.categorytotest >>
-      steps:
-       - checkout
-       - matlab/install     
-       - matlab/run-command:              
-          command: "run runAllMyTestsFS.m" 
-
+  testing:
+     parameters:
+       p:
+         default: 1
+         type: integer    
+       q:
+         default: "regression"
+         type: string    
+     environment:
+       CATEGORY_TO_TEST: << parameters.q >>  
+     machine:
+         image: ubuntu-1604:201903-01
+     steps:
+        - checkout
+        - matlab/install                       # previously `wget ...`
+        - matlab/run-command:                  # previously `matlab -batch ...`   
+           #command: "disp(['Hello World num. ' num2str(<< parameters.p >>) ' ' getenv('CATEGORY_TO_TEST')])"     
+           command: "run runAllMyTestsFS.m"     
+# Orchestrate or schedule a set of jobs
 workflows:
-  build_and_test:
+  # Name the workflow "welcome"
+  fsdatoolbox:
+    # Run the welcome/run job in its own container
     jobs:
-    - build:
-        categorytotest: regression
-       
+      - testing:
+          matrix:
+             parameters:
+                  q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
+
