@@ -1,189 +1,32 @@
-version: 2
+version: 2.1
+orbs:
+  matlab: mathworks/matlab@0.1
 jobs:
- "regression":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "regression"  
-   machine:
+  build:
+    parameters:
+      categorytotest:
+        description: category to test
+        type: string    
+    machine:
       image: ubuntu-1604:201903-01
-   steps:
+    environment: 
+     - CATEGORY_TO_TEST: << parameter.categorytotest >>
+    steps:
       - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
+      - matlab/install     
+      - matlab/run-command:              
+          command: "run runAllMyTestsFS.m"               
       - store_test_results:
-          path: ~/project/tests-regression/test-regression-report/
-       
- "regressionTS":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "regressionTS"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-regressionTS/test-regressionTS-report/
-
- "regressionLTSts":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "regressionLTSts"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-regressionLTSts/test-regressionLTSts-report/
-
- "regressionEXT":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "regressionEXT"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-regressionEXT/test-regressionEXT-report/
+        path: ~/project/tests-<< parameter.categorytotest >>/test-<< parameter.categorytotest >>-report/
         
-
- "graphics":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "graphics"  
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-graphics/test-graphics-report/
-        
-
- "multivariate":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "multivariate"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-multivariate/test-multivariate-report/
-
- "multivariate-clustering":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "multivariate-clustering"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-multivariate-clustering/test-multivariate-clustering-report/
-
- "regression-clustering":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "regression-clustering"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-regression-clustering/test-regression-clustering-report/
-
-
- "mixsim":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "mixsim"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-mixsim/test-mixsim-report/
-
-
- "utilities":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "utilities"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-utilities/test-utilities-report/
-
- "tclustMULT":
-   build:
-   environment: 
-     - CATEGORY_TO_TEST: "tclustMULT"
-   machine:
-      image: ubuntu-1604:201903-01
-   steps:
-      - checkout
-      - run: wget -qO- --retry-connrefused https://storage.googleapis.com/matlabimagesus/public/install.sh | sudo -E bash
-      - run:  
-          command: matlab -batch "run runAllMyTestsFS.m"                                                                                    -
-          no_output_timeout: 60m 
-      - store_test_results:
-          path: ~/project/tests-tclustMULT/test-tclustMULT-report/
 
 workflows:
-  version: 2
-  build:
+  all-tests:
     jobs:
-      - "regression"
-      - "regressionTS"
-      - "regressionLTSts"
-      - "regressionEXT"
-      - "graphics"
-      - "multivariate"
-      - "multivariate-clustering"
-      - "regression-clustering"
-      - "mixsim"
-      - "utilities"
-      - "tclustMULT"
+      - build:
+          matrix:
+            parameters:
+               categorytotest: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
 
 
 
