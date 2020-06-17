@@ -7,7 +7,7 @@ orbs:
 jobs:
 # Name the job "testing"
   testing:
-  # define cat: parameter; used inside the jobs: to segment the tests to overcome the 50 mins limit.
+  # define q: parameter; used inside the jobs: to segment the tests to overcome the 50 minutes limit.
      parameters:
       q:
          default: "regression"
@@ -26,7 +26,7 @@ jobs:
 
 # Orchestrate or schedule a set of jobs
 workflows:
-  # Name the workflow "welcome"
+  # Name of the workflow 
   fsdatoolbox:
     # Run the "testing" job defined earlier in its own container
     jobs:
