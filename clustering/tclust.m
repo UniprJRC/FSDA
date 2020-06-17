@@ -403,7 +403,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       k$.
 %
 %          out.NlogL = Scalar. -2 log likelihood. In presence of full
-%                       convergeneve -out.NlogL/2 is equal to out.obj.
+%                       convergence -out.NlogL/2 is equal to out.obj.
 %
 %   out.equalweights  = Logical. It is true if in the clustering procedure
 %                       we (ideally) assumed equal cluster weights
