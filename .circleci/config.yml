@@ -7,26 +7,23 @@ orbs:
 jobs:
 # Name the job "testing"
   testing:
-  # define some parameters to be used inside the job
+  # define cat: parameter; used inside the jobs: to segment the tests to overcome the 50 mins limit.
      parameters:
-       p:
-         default: 1
-         type: integer    
-       q:
+      cat:
          default: "regression"
-         type: string    
-     parallelism: << parameters.p >>    
+         type: string      
      environment:
-       CATEGORY_TO_TEST: << parameters.q >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
+       CATEGORY_TO_TEST: << parameters.cat >>  # setup a parametric environment variable to be used by MATLAB testing script "runAllMyTestsFS.m"
      machine:
          image: ubuntu-1604:201903-01
      steps:
         - checkout
-        - matlab/install                       # previously `wget ...`
-        - matlab/run-command:                  # previously `matlab -batch ...`   
-            command: "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retieved using 'var=getenv('CATEGORY_TO_TEST');'
-        # - store_test_results:
-        #     path: ~/project/tests-<<parameter.q>>/test-<<parameter.q>>-report/
+        - matlab/install                        # previously `wget ...`
+        - matlab/run-command:                   # previously `matlab -batch ...`   
+            command: "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
+        - store_test_results:
+            path: ~/project/tests-<< parameter.cat >>/test-<< parameter.vat >>-report/
+            
 # Orchestrate or schedule a set of jobs
 workflows:
   # Name the workflow "welcome"
@@ -37,5 +34,5 @@ workflows:
       # Define a matrix of parameter values to be passed iteratively to the "testing" job
           matrix:
              parameters:
-                  q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
+                  cat: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
 
