@@ -241,9 +241,12 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     GAM=GAM./repmat(es,p,1);
     GAM(GAM==0)=1;
     
-    
-    for j=1:K
-        [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'ascend');
+    if sortsh==1
+        for j=1:K
+            [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'ascend');
+        end
+    else
+        GAMsor=GAM;
     end
     
     % Apply restriction between groups
