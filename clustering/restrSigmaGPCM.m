@@ -425,21 +425,23 @@ if strcmp(pars(3),'E')
         end
     end
 elseif  strcmp(pars(3),'V')
-    % Find initial (and final value for OMG)
-    for j=1:k
-        [V,eigunsorted]= eig(SigmaB(:,:,j));
-        % Sort eigenvalues from largest to smallest and reorder the columns
-        % of the matrix of eigenvectors accordingly
-        [~,ordeig]=sort(diag(eigunsorted),'descend');
-        V=V(:,ordeig);
-        OMG(:,:,j)=V;
-    end
     
     % Initialize lmd
     lmd = ones(1,k);
-    if strcmp(pars(1),'V')
-        for j=1:k
-            lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+    
+    % Find initial (and final value for OMG)
+    for j=1:k
+        [V,eigunsorted]= eig(SigmaB(:,:,j));
+        diageigunsorted=diag(eigunsorted);
+        % Sort eigenvalues from largest to smallest and reorder the columns
+        % of the matrix of eigenvectors accordingly
+        [~,ordeig]=sort(diageigunsorted,'descend');
+        V=V(:,ordeig);
+        OMG(:,:,j)=V;
+        
+        if strcmp(pars(1),'V')
+            % lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+            lmd(j) = (prod(diageigunsorted)) ^ (1 / v);
         end
     end
 else % The remaining case is when **I
@@ -460,10 +462,10 @@ else % The remaining case is when **I
 end
 
 % Immediately apply the restriction on vector lmd
-if ~isequal(lmd,ones(1,k))
-    GAM=ones(v,k);
-    [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
-end
+% if ~isequal(lmd,ones(1,k))
+%     GAM=ones(v,k);
+%     [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
+% end
 
 OMGold=OMG(:,:,1);
 GAMold=9999;
