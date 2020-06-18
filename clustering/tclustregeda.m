@@ -888,6 +888,14 @@ Postprob=zeros(n,k,lalpha);
 % Do not show messages during each execution of tclustregcore
 msgrs=0;
 
+internationaltrade=false;
+if internationaltrade==true
+    wei=X(:,end).^2/var(X(:,end))+y.^2/var(y);
+    weiForLikComputation=wei/max(wei);
+else
+    weiForLikComputation=1;
+end
+
 parfor (j=1:lalpha, numpool)
     % for j=1:lalpha
     
@@ -898,8 +906,8 @@ parfor (j=1:lalpha, numpool)
     [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
         = tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,...
         equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
-        seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
-    
+         seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
+   
     %%  END OF RANDOM STARTS
     
     IDX(:,j)    = idxopt;
