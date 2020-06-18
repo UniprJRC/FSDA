@@ -567,6 +567,8 @@ vafter91=~verLessThanFS(verbertotest); % >=2018b
 verbertotest = 9.6; % R2019a
 vafter95=~verLessThanFS(verbertotest); % >=2019a
 
+scrsz = get(groot,'ScreenSize');
+[left , bottom] = deal(scrsz(1) , scrsz(2));%
 
 %% Input parameters checking
 
@@ -1412,7 +1414,7 @@ if d>0
     thsz = 50;
     if sz(1)>thsz
         newpos = get(hf,'Position');
-        set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
+        set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
     end
     
     % x and y limits
@@ -1491,7 +1493,7 @@ if d>0
     if vafter95
         axtoolbar(gca,'Visible','off');
     end
-    
+    movegui(gcf,'south');
 end
 
 
@@ -1504,7 +1506,7 @@ d=find(strcmp(namej,name));
 if d>0
     hf = figure('Name',namej,'Visible','on');
     newpos = get(hf,'Position');
-    set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
+    set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
     
     Prob1=squeeze(Postprob(:,1,:));
     Prob1(IDXmin0)=NaN;
@@ -1569,6 +1571,7 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
+    movegui(gcf,'south');
 end
 
 
@@ -1858,7 +1861,7 @@ if d>0
     
     if biggerfig
         newpos = get(hf,'Position');
-        set(hf,'Position',[1,1,figureResize,figureResize].*newpos);
+        set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
     end
     
     if p-intercept>1
@@ -1996,6 +1999,7 @@ if d>0
         out.XLmon=XLmon;
         out.XLmonW=XLmonW;
     end
+    movegui(gcf,'south');
 end
 
 %% Monitoring of beta regression coefficients (standardized)
@@ -2040,7 +2044,7 @@ if d>0
     end
     if biggerfig
         newpos = get(hf,'Position');
-        set(hf,'Position',[1,1,1.5,1.5].*newpos);
+        set(hf,'Position',[left,bottom,1.5,1.5].*newpos);
     end
     
     for j=1:p
@@ -2089,7 +2093,7 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-    
+    movegui(gcf,'south');
 end
 
 
