@@ -1,6 +1,6 @@
 function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt,Beta_all, obj_all]...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag)
+    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei)
 
 % This function is called by tclustregeda and it is not intended to be called directly
 
@@ -168,7 +168,7 @@ for i =1:nselected
             itermax=itermax+1;
         end
         if itermax ==1000
-            error('FSDA:tclustreg:WrongInput','Initialization of the group proportions failed')
+            error('FSDA:tclustregcore:WrongInput','Initialization of the group proportions failed')
         end
         niini=niin;
     else
@@ -386,7 +386,7 @@ for i =1:nselected
                         elseif strcmp(wtype_obj,'wZ')
                             weobj(groupj) = pretain .* Zt;
                         else
-                            error('wtype_obj option not correct')
+                            error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
                         end
                         % pretain: the retention probabilities are based on
                         % the predicted values (yhat) estimated at the
@@ -415,7 +415,7 @@ for i =1:nselected
                     elseif strcmp(wtype_obj,'wZ')
                         weobj(groupj) = medianweights;
                     else
-                        error('wtype_obj option not correct')
+                        error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
                     end
                     
                 end
@@ -458,7 +458,7 @@ for i =1:nselected
                             weobj(ijj) = ones(length(sum(ijj)),1);
                             
                         else
-                            error('wtype_obj option not correct')
+                            error('FSDA:tclustregcore:WrongInput','wtype_obj option not correct')
                         end
                         % count the thinned observations
                         % nthinned = nthinned + sum(Wt == 0);
@@ -768,12 +768,15 @@ for i =1:nselected
             if nj>p+1
                 %multiple X and y for the observations weights (posterior
                 %probabilities of not trimmed and not thinned observations)
+                % sqweights=sqweights.*(X(:,end).^0.585);
                 Xw = bsxfun(@times, X, sqweights);
                 yw = y .* sqweights;
                 
                 % breg = estimate of beta of group jj from (re)weighted regression
                 % (RWLS)
                 breg = Xw\yw;
+                % outp=regressH(yw,Xw,X(:,end),'maxiter',10);
+                % breg=outp.Beta(1:end-1,1);
                 % Beta = estimate of beta of all group from (re)weighted regression
                 % (RWLS).
                 Beta(:,jj)=breg;
@@ -861,7 +864,10 @@ for i =1:nselected
             
             %loop on not-empty groups
             for jj = not_empty_g
-                
+
+                % resjj = residuals (weighted) of all units from group jj
+                                    resjj=(y-X*Beta(:,jj))./wei;
+
                 % equalweights =1: equal proportions are supplied for group sizes
                 if equalweights ==1
                     %the next if-then-else statement is an experiment to
@@ -885,9 +891,9 @@ for i =1:nselected
                     %weobj depends from the choice of the input
                     %parameter wtype_obj. The defaults is to assign to
                     %each observation weight 1.
-                    
+                   
                     obj = obj + log(1/k) +...
-                        sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*postprob(:,jj).*weobj(:)) ;
+                        sum(logmvnpdfFS(resjj,0,sigma2ini(jj)).*postprob(:,jj).*weobj(:)) ;
                     %sum_dens(jj,cstep) = sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)));
                     
                     
@@ -896,7 +902,7 @@ for i =1:nselected
                     %the objective function is computed excluding both
                     %thinned and trimmed (matrix Z)
                     obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
-                        sum(logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj)).*Z(:,jj));
+                        sum(logmvnpdfFS(resjj,0,sigma2ini(jj)).*Z(:,jj));
                 end
                 
                 %CWM
@@ -915,18 +921,22 @@ for i =1:nselected
             log_lh=NaN(n,size(not_empty_g,2));
             
             for jj = 1:k
+                
+                                % resjj = residuals (weighted) of all units from group jj
+                                    resjj=(y-X*Beta(:,jj))./wei;
+
                 % equalweights =1: proportions are set equal to the
                 % group sizes.
                 if equalweights ==1
                     log_lh(:,jj) = ...
-                        log(1/k) + (logmvnpdfFS(y -X * Beta(:,jj),0,sigma2ini(jj) ) );
+                        log(1/k) + (logmvnpdfFS(resjj,0,sigma2ini(jj) ) );
                     
                     % equalweights = 0: equal proportions are supplied for
                     % group sizes.
                 else
                     log_lh(:,jj) = ...
                         log(niini(jj)/sum(niini)) + (logmvnpdfFS(...
-                        y - X*Beta(:,jj),0,sigma2ini(jj) ) );
+                        resjj,0,sigma2ini(jj) ) );
                 end
                 %CWM
                 if cwm==1
