@@ -10,9 +10,11 @@ function S=genSigmaGPCM(v, k, modeltype)
 %            v: number of dimensions (variables). Scalar.
 %               Desired number of variables.
 %               Data Types - int16|int32|int64|single|double
+%
 %            k: number of groups (components). Scalar.
 %               Desired number of groups.
 %               Data Types - int16|int32|int64|single|double
+%
 %    modeltype: type of Gaussian Parsimonious Clustering Model. Character.
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
