@@ -357,6 +357,18 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %
 %           out.obj   = scalar containing value of the objective function.
 %
+%          out.NlogL = Scalar. -2 log classification likelihood. In
+%                       presence of full convergence -out.NlogL/2 is equal
+%                       to out.obj.
+%
+%      out.NlogLmixt = Scalar. -2 log mixture likelihood. In
+%                      presence of full convergence -out.NlogLmixt/2 is
+%                      equal to out.obj. If input parameter mixt=0 then
+%                      out.NlogLmixt is a missing value.
+%       
+%               out.h = Scalar. Number of observations that have determined the
+%                       regression coefficients (number of untrimmed units).
+%        
 %          out.class = 'tclustreg'.
 %
 %  Optional Output:
@@ -1138,23 +1150,16 @@ end
 
 % ll      = loglikelihood for each observations in each group
 ll        = zeros(n,k);
-% sigma2ini= varainces deviation of each group
+% sigma2ini= variances deviation of each group
 % sigma2ini = ones(1,k);
 
 
-%%% - Find NParam penalty term to use inside AIC and BIC
-
-% Add paramters referred to sigma2 restrictions
-
-npar=p*k;
-if equalweights==false      %to be generalized for equalweights==true
-    npar=npar +(k-1);
-end
-nParam=npar+ (k-1)*(1-1/restrfact) +1;
-
-
-if cwm==1
-    nParam=nParam+ 0.5*p*(p-1)*k + (p*k-1)*(1-1/restrfactX) +1;
+internationaltrade=false;
+if internationaltrade==true
+    wei=X(:,end).^2/var(X(:,end))+y.^2/var(y);
+    weiForLikComputation=wei/max(wei);
+else
+    weiForLikComputation=1;
 end
 
 %%  RANDOM STARTS
@@ -1163,9 +1168,11 @@ end
 %     seqk,zigzag,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj);
 [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt, Beta_all, obj_all] ...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag);
+    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
 
 %%  END OF RANDOM STARTS
+
+
 
 if isnan(sigma2opt)
     warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
@@ -1252,18 +1259,36 @@ else
     end
     
     %% Compute INFORMATION CRITERIA
-    
-    % Discriminant functions for the assignments
+  
+    %%% - Find NParam penalty term to use inside AIC and BIC
+
+% Add paramters referred to sigma2 restrictions
+% parameters associated to beta coefficients 
+npar=(p+(n-hh))*k;
+
+if equalweights==false      %to be generalized for equalweights==true
+    npar=npar +(k-1);
+end
+nParam=npar+ (k-1)*(1-1/restrfact) +1;
+
+if cwm==1
+    p1=p-intercept;
+    nParam=nParam+ 0.5*p1*(p1-1)*k + (p1*k-1)*(1-1/restrfactX) +1;
+end
+
+
+    % Discriminant functions for the assignments (use values of sigma2
+    % corrected with Tallis
     if equalweights == 1
         for jj = 1:k
-            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+            ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt_corr(jj));
             if cwm==1
                 ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
             end
         end
     else
         for jj = 1:k
-            ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt(jj));
+            ll(:,jj) = log((nopt(jj)/sum(nopt))) + logmvnpdfFS(y-X*bopt(:,jj),0,sigma2opt_corr(jj));
             if cwm==1
                 ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muXopt(jj,:),sigmaXopt(:,:,jj));
             end
@@ -1298,26 +1323,37 @@ else
     NlogL =-sum(loglik);
     
     
-    logh=log(h);
+    
+    logn=log(n);
+    out.h=h;
     
     if mixt>0
         % MIXMIX = BIC which uses parameters estimated using the mixture loglikelihood
         % and the maximized mixture likelihood as goodness of fit measure (New BIC)
-        MIXMIX  = 2*NlogLmixt +nParam*logh;
+        MIXMIX  = 2*NlogLmixt +nParam*logn;
         
         % MIXCLA = BIC which uses the classification likelihood based on
         % parameters estimated using the mixture likelihood (New ICL)
-        MIXCLA  = 2*NlogL +nParam*logh;
+        MIXCLA  = 2*NlogL +nParam*logn;
         
         out.MIXMIX=MIXMIX;
         out.MIXCLA=MIXCLA;
+        
+        % Store 2 times negative log likelihood for mixt and classification 
+        out.NlogL=2*NlogL;
+        out.NlogLmixt=2*NlogLmixt;
     else
         % CLACLA = BIC which uses parameters estimated using the classification
         % likelihood and the maximized classification likelihood as goodness of fit
         % measure (New New)
-        CLACLA  = 2*NlogL +nParam*logh;
+        CLACLA  = 2*NlogL +nParam*logn;
         
         out.CLACLA=CLACLA;
+        
+         % Store 2 times negative log likelihood for mixt and classification 
+        out.NlogL=NlogL;
+        out.NlogLmixt=[];
+
     end
     
     
