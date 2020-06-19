@@ -86,6 +86,29 @@ if exist(folder_to_remove,'dir') ==7
     rmdir(folder_to_remove,'s')
 end
 
+% remove subfolder .git
+folder_to_remove=[FSroot fsep '.git'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
+
+% remove subfolder .github
+folder_to_remove=[FSroot fsep '.github'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
+
+% remove subfolder .github
+folder_to_remove=[FSroot fsep '.circleci'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
+
+% remove subfolder .Univ
+folder_to_remove=[FSroot fsep 'Univ'];
+if exist(folder_to_remove,'dir') ==7
+    rmdir(folder_to_remove,'s')
+end
 
 %% REMOVE UNNECESSARY FILES
 
@@ -111,7 +134,7 @@ delete([FSroot fsep 'installationNotes.pdf'])
 
 % remove md files
 delete([FSroot fsep 'readme.md'])
-delete([FSroot fsep '4040.md'])
+delete([FSroot fsep '404.md'])
 delete([FSroot fsep 'CODE_OF_CONDUCT.md'])
 delete([FSroot fsep 'CONTRIBUTING.md'])
 
