@@ -194,10 +194,13 @@ for i=1:length(seqCAT)
     ini=regexp(fstring,letterINI);
     
     assert(~isempty(ini),['Category: ' letterINI ' not found'])
+    % pick the 2nd instance of the Category anchor because the 1st is in
+    % the navigation left panel
+    ini=ini(2);
     if strcmp(letterINI,'GUI')
         ini=ini(1);
     else
-        assert(length(ini)==1,['Category: ' letterINI 'is duplicated'])
+        assert(length(ini)==1,['Category: ' letterINI ' is duplicated'])
     end
     
     fin=regexp(fstring,letterFIN);

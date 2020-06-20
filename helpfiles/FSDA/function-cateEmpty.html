@@ -1,258 +1,483 @@
 <!DOCTYPE HTML>
-<html itemscope="" itemtype="http://www.mathworks.com/help/schema/MathWorksDocPage" xmlns="http://www.w3.org/1999/xhtml">
+<html itemscope="" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-    <script src="includesFS/headJS.js" type="text/javascript"></script>
-    <script src="includesFS/OnThisPagefcate.js" type="text/javascript"></script>
-    <!--headJS loads all required javascripts-->
-    <script type="text/javascript">
-        document.write(headJS);
-    </script>
-    <!--Insert title of the page-->
-    <title>Flexible Statistics and Data Analysis Toolbox 
+<title>Flexible Statistics and Data Analysis Toolbox 
     Functions - - By Category</title>
+<meta content="refpage" name="chunktype">
+<meta content="function:existFS" itemprop="refentity" name="refentity">
+<meta content="text/javascript" http-equiv="Content-Script-Type">
+<meta content="fcn" itemprop="pagetype" name="toctype">
+<meta content="ref/function" itemprop="infotype" name="infotype" />
+<meta content="Check if file exists and puts answer in a cached persistent variable." itemprop="description" name="description" />
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<meta content="IE=EmulateIE7" http-equiv="X-UA-Compatible" />
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+extensions: ["tex2jax.js"],
+jax: ["input/TeX","output/HTML-CSS"],
+menuSettings: {zoom: "Double-Click", zscale: "300"},
+tex2jax: {inlineMath: [["$","$"],["\\(","\\)"]]},
+MathMenu: {showRenderer: false},
+"HTML-CSS": {
+availableFonts: ["TeX"],
+preferredFont: "TeX",
+imageFont: null
+}
+});
+</script>
+<script src="includesFS/Mathjax/MathJax.js" type="text/javascript"></script>
+<script src="includesFS/matlab-highlighter.min.js"></script>
+<link href="includesFS/matlab-highlighter.css" rel="stylesheet" type="text/css">
+<script src="includesFS/jquery-latest.js" type="text/javascript"></script>
+<script>
+// $(document).ready(function(){
+//       $("#divtop").load("includesFS/top.html");
+//       $("#divbottom").load("includesFS/bottom.html");
+// });
+</script>
+<link href="../includes/product/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+</link>
+<link href="../includes/product/css/site6.css" rel="stylesheet" type="text/css">
+</link>
+<link href="../includes/product/css/site6_lg.css" media="screen and (min-width: 1200px)" rel="stylesheet">
+</link>
+<link href="../includes/product/css/site6_md.css" media="screen and (min-width: 992px) and (max-width: 1199px)" rel="stylesheet">
+</link>
+<link href="../includes/product/css/site6_sm+xs.css" media="screen and (max-width: 991px)" rel="stylesheet">
+</link>
+<link href="../includes/product/css/site6_sm.css" media="screen and (min-width: 768px) and (max-width: 991px)" rel="stylesheet">
+</link>
+<link href="../includes/product/css/site6_xs.css" media="screen and (max-width: 767px)" rel="stylesheet">
+</link>
+<link href="../includes/product/css/site6_offcanvas.css" rel="stylesheet" type="text/css">
+</link>
+<script src="../includes/shared/scripts/l10n.js" type="text/javascript"></script>
+<script src="../includes/product/scripts/docscripts.js"></script>
+<script src="../includes/shared/scripts/docscripts_rn.js"></script>
+<script src="../includes/shared/scripts/mw.imageanimation.js" type="text/javascript"></script>
+<script src="../includes/shared/scripts/jquery.highlight.js"></script>
+<script src="../includes/product/scripts/bootstrap.min.js" type="text/javascript"></script>
+<script src="../includes/product/scripts/global.js"></script>
+<script src="includesFS/bottom.js" type="text/javascript"></script>
+<script src="../includes/product/scripts/underscore-min.js"></script>
+<script src="../includes/shared/scripts/f1help.js" type="text/javascript"></script>
+<script src="../includes/product/scripts/suggest.js" type="text/javascript"></script>
+<script src="../includes/shared/scripts/helpservices.js" type="text/javascript"></script>
+<script src="../includes/product/scripts/jquery/jquery.mobile.custom.min.js"></script>
+<!-- the following line should be kept this way only -->
+<link href="includesFS/doc_center.css" rel="stylesheet" type="text/css">
+</link>
+<link href="../includes/product/css/doc_center_installed.css" rel="stylesheet" type="text/css">
+<link href="../includes/product/css/doc_center_print.css" media="print" rel="stylesheet" type="text/css">
 </head>
-<!--Beginning of body-->
-<body id="responsive_offcanvas">
+
+<body id="responsive_offcanvas" onload="highlightMATLABCode();">
 
 <div id="doc_header_spacer" class="header">
 </div>
-<!--Include serch engine-->
-<script type="text/javascript">
-    document.write(engine);
-</script>
-<!--Include left bar menu-->
+<div class="sticky_header_container includes_subnav">
+	<div class="section_header level_3">
+		<div class="container-fluid">
+			<div id="mobile_search_row" class="row">
+				<div id="mobile_search" class="col-xs-12 col-sm-6 col-sm-push-6 col-md-5 col-md-push-7">
+					<div class="search_nested_content_container">
+						<form id="docsearch_form" action="../templates/searchresults.html" data-language="en" data-release="R2017a" method="get" name="docsearch_form">
+							<div class="input-group tokenized_search_field">
+								<label class="sr-only">Search Help</label>
+								<input id="docsearch" autocomplete="off" class="form-control conjoined_search" name="qdoc" placeholder="Search Help" type="text">
+								<div class="input-group-btn">
+									<button id="submitsearch" class="btn icon-search btn_search_adjacent btn_search icon_16" name="submitsearch" tabindex="-1" type="submit">
+									</button></div>
+							</div>
+						</form>
+					</div>
+					<button aria-controls="mobile_search" aria-expanded="false" class="btn icon-remove btn_search pull-right icon_32 visible-xs" data-toggle="collapse" href="#mobile_search">
+					</button></div>
+				<div id="section_header_title" class="col-sm-6 col-sm-pull-6 col-md-7 col-md-pull-5">
+					<div class="section_header_content">
+						<div class="section_header_title">
+							<h1><a href="../documentation-center.html">Documentation</a></h1>
+						</div>
+					</div>
+				</div>
+				<div id="search_actuator" class="visible-xs">
+					<button aria-controls="mobile_search" aria-expanded="false" class="btn icon-search btn_search pull-right icon_16" data-toggle="collapse" href="#mobile_search">
+					</button></div>
+			</div>
+			<!--END.CLASS row--></div>
+		<!--END.CLASS container-fluid--></div>
+	<!--END.CLASS section_header level_3-->
+	<div class="horizontal_nav">
+		<div class="horizontal_nav_container">
+			<div id="nav_toggle" class="offcanvas_actuator" data-target="#sidebar" data-toggle="offcanvas">
+				<button class="btn" type="button"><span class="sr-only">Toggle navigation</span><span class="icon-menu icon_24"></span>
+				</button><span class="offcanvas_actuator_label"></span>
+				<span class="offcanvas_actuator_close"></span></div>
+			<div class="offcanvas_horizontal_nav">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12 hidden-xs hidden-sm">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--END.CLASS sticky_header_container-->
 <div class="row-offcanvas row-offcanvas-left">
-    <script type="text/javascript">
-        document.write(lbarSimple);
-    </script>
-    <script type="text/javascript">
-        document.write(fcate);
-    </script>
-    </nav>
-    <script src="includesFS/offcanvas.js"></script>
-</div>
-<script type="text/javascript">
-    document.write(divsbefore);
-</script>
-<h1 class="r2016a" itemprop="title">Flexible Statistics and Data Analysis Toolbox 
-Functions - - By Category</h1>
-<div class="row">
-    <div class="col-xs-12 col-sm-6 col-sm-offset-1 col-lg-5 col-lg-offset-3">
-        <div class="btn-group btn-group-justified add_margin_20">
-            <a class="btn btn-default" href="function-alpha.html">Alphabetical List</a>
-        <span class="btn btn_primary">By Category</span> </div>
-    </div>
-</div>
-<!--BEGOFROBUSTREGRESSION-->
-<h2 id="REG">Robust regression analysis and transformations</h2>
-<h3 id="REG-Regression">Robust regression</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-    </div>
-</div>
-<h3 id="REG-Transformations">Robust transformations</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="REG-ModelSelection">Robust model selection</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="REG-Bayes">Robust Bayesian regression</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="REG-Hetero">Robust heteroskedastic regression</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<!--ENDOFROBUSTREGRESSION-->
-<p></p>
-<!--BEGDOFMULTIVARIATEANALYIS-->
-<h2 id="MULT">Robust multivariate analysis and transformations</h2>
-<h3 id="MULT-Multivariate">Robust multivariate analysis</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-    </div>
-</div>
-<h3 id="MULT-Transformations">Robust transformations</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="MULT-Categorical">Categorical data analysis</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
+	<div id="sidebar" class="sidebar-offcanvas" role="navigation">
+		<nav class="offcanvas_nav" role="navigation">
+			<ul class="nav_breadcrumb" xmlns:atict="http://www.arbortext.com/namespace/atict">
+				<li itemprop="breadcrumb" itemscope="" itemtype="http://www.data-vocabulary.org/Breadcrumb">
+				<a href="../documentation-center.html" itemprop="url">
+				<span itemprop="title">All Products</span></a></li>
+			</ul>
+			<ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict">
+				<li class="product"><a href="index.html">Flexible Statistics and 
+				Data Analysis (FSDA)</a>
+				<div class="dropdown">
+					<span id="dropdownMenu1" class="icon-arrow-down icon_16" data-toggle="dropdown">
+					</span>
+					<ul aria-labelledby="dropdownMenu1" class="dropdown-menu dropdown-menu-right" role="menu">
+						<li role="presentation">
+						<a href="examples.html" role="menuitem" tabindex="-1">Examples</a></li>
+						<li role="presentation">
+						<a href="function-alpha.html" role="menuitem" tabindex="-1">
+						Functions and Other Reference</a></li>
+						<li role="presentation">
+						<a href="release_notes.html?s_cid=doc_flyout" role="menuitem" tabindex="-1">
+						Release Notes</a></li>
+						<li role="presentation">
+						<a href="tutorials.html" role="menuitem" tabindex="-1">Tutorials</a></li>
+					</ul>
+				</div>
+				</li>
+			</ul>
+			<ul class="nav_disambiguation" xmlns:atict="http://www.arbortext.com/namespace/atict">
+				<li><a href="index.html">Flexible Statistics and Data Analysis Toolbox</a>
+				</li>
+				<li><a href="function-cate.html" itemprop="url">Functions</a></li>
+			</ul>
+			
+			
+			
+			
+			<!-- -->
+			<ul class="nav_scrollspy nav" xmlns:atict="http://www.arbortext.com/namespace/atict">
+				<li class="nav_scrollspy_function">
+				<a href="#responsive_offcanvas">Functions by Category</a></li>
+				<li id="SSPY810-refentry" class="nav_scrollspy_title">On this page</li>
+			
+			
+
+				<li><a class='intrnllnk' href='#REG'>Robust regression analysis and transformations</a>
+					<ul>
+					<li><a class='intrnllnk' href='#REG-Regression'>Robust regression</a></li>
+					<li><a class='intrnllnk' href='#REG-Transformations'>Robust transformations</a></li>
+					<li><a class='intrnllnk' href='#REG-ModelSelection'>Robust model selection</a></li>
+					<li><a class='intrnllnk' href='#REG-Bayes'>Robust Bayesian regression</a></li>
+					<li><a class='intrnllnk' href='#REG-Hetero'>Robust heteroskedastic regression</a></li>
+				</ul>
+				</li>
+
+
+				<li><a class="intrnllnk" href="#MULT">Robust multivariate analysis and transformations</a>
+					<ul>
+						<li><a class='intrnllnk' href='#MULT-Multivariate'>Robust multivariate Analysis</a></li>
+						<li><a class='intrnllnk' href='#MULT-Transformations'>Robust transformations</a></li>
+						<li><a class='intrnllnk' href='#MULT-Categorical'>Categorical data analysis</a></li>
+					</ul>
+					</li>
+
+				<li><a class="intrnllnk" href="#CLUS">Robust clustering</a>
+				<ul>
+					<li><a class='intrnllnk' href='#CLUS-MixSim'>MixSim</a></li>
+					<li><a class='intrnllnk' href='#CLUS-RobClaREG'>Robust clustering in regression</a></li>
+					<li><a class='intrnllnk' href='#CLUS-RobClaMULT'>Robust clustering in multivariate analysis</a></li>
+				</ul>
+				</li>
+
+				<li><a class="intrnllnk" href="#VIS">Dynamic Visualization</a> 
+					<ul>
+						<li><a class='intrnllnk' href='#VIS-Reg'>Dynamic visualization in regression</a></li>
+						<li><a class='intrnllnk' href='#VIS-Mult'>Dynamic visualization in multivariate analysis</a></li>
+						<li><a class='intrnllnk' href='#VIS-Clu'>Dynamic visualization in clustering</a></li>
+					</ul>
+					</li>
+
+
+				<li><a class="intrnllnk" href="#GUI">Guis</a> </li>
+
+
+				<li><a class="intrnllnk" href="#UTI">Utilities</a> <ul>
+			<li><a class='intrnllnk' href='#UTISTAT'>Statistical utilities</a></li>
+			<li><a class='intrnllnk' href='#UTIGEN'>General utilities</a></li>
+			<li><a class='intrnllnk' href='#UTICOMB'>Combinatorial routines</a></li>
+			<li><a class='intrnllnk' href='#UTIHELP'>Automatic creation of HTML help</a></li>
+		</ul>
+		</li>
+
+
+			</ul>
+		</nav>
+		
+		
+		
+		
+		<script src="../includes/product/scripts/offcanvas.js"></script>
+	</div>
+	<div id="divtop">
+	</div>
+	<div class="site_container site_toc_closed">
+		<div class="page_container">
+			<div class="content_frame">
+				<div id="content_container" class="content_container">
+					<section id="doc_center_content">
+						<div class="function_ref">
+							<div itemprop="content">
+								<h1 class="r2016a" itemprop="title">Flexible Statistics 
+								and Data Analysis Toolbox Functions - - By Category</h1>
+								<div class="row">
+									<div class="col-xs-12 col-sm-6 col-sm-offset-1 col-lg-5 col-lg-offset-3">
+										<div class="btn-group btn-group-justified add_margin_20">
+											<a class="btn btn-default" href="function-alpha.html">
+											Alphabetical List</a>
+											<span class="btn btn_primary">By Category</span>
+										</div>
+									</div>
+								</div>
+								<!--BEGOFROBUSTREGRESSION-->
+								<h2 id="REG">Robust regression analysis and transformations</h2>
+								<h3 id="REG-Regression">Robust regression</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+
+						
+
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+									</div>
+								</div>
+								<h3 id="REG-Transformations">Robust transformations</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="REG-ModelSelection">Robust model selection</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="REG-Bayes">Robust Bayesian regression</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="REG-Hetero">Robust heteroskedastic regression</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFROBUSTREGRESSION-->
+								<p></p>
+								<!--BEGDOFMULTIVARIATEANALYIS-->
+								<h2 id="MULT">Robust multivariate analysis and transformations</h2>
+								<h3 id="MULT-Multivariate">Robust multivariate analysis</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+									</div>
+								</div>
+								<h3 id="MULT-Transformations">Robust transformations</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="MULT-Categorical">Categorical data analysis</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFMULTIVARIATEANALYIS-->
+								<p></p>
+								<!--BEGOFCLUSTERING-->
+								<h2 id="CLUS">Robust clustering</h2>
+								<h3 id="CLUS-MixSim">MixSim</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+									</div>
+								</div>
+								<h3 id="CLUS-RobClaREG">Robust clustering in regression</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+									</div>
+								</div>
+								<h3 id="CLUS-RobClaMULT">Robust clustering in multivariate 
+								analysis</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFCLUSTERING-->
+								<p></p>
+								<!--BEGOFVISUALIZATION-->
+								<h2 id="VIS">Dynamic Visualization</h2>
+								<h3 id="VIS-Reg">Dynamic visualization in regression</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+									</div>
+								</div>
+								<h3 id="VIS-Mult">Dynamic visualization in multivariate 
+								analysis</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="VIS-Clu">Dynamic visualization in clustering</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFVISUALIZATION-->
+								<p></p>
+								<!--BEGOFGUI-->
+								<h2 id="GUI">Guis</h2>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFGUI-->
+								<p></p>
+								<!--BEGFUTI-->
+								<h2 id="UTI">Utilities</h2>
+								<h3 id="UTISTAT">Statistical utilities</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="UTIGEN">General utilities</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="UTICOMB">Combinatorial utilities</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<h3 id="UTIHELP">Utilities to create HTML help files</h3>
+								<div class="doc_functionsgroup_container">
+									<div class="doc_function_block">
+										<table border="0" cellpadding="0" cellspacing="0">
+											HTMLTEXT
+										</table>
+									</div>
+								</div>
+								<!--ENDOFUTI-->
+								<!-- -->
+								<!-- -->
+								<!--END OF FSDA TEXT-->
+								<!--Include divs after FSDA text-->
+								
+								
+							</div>
+</section>
+</div> 
+	</div>
+		</div>
+			</div>
+
+								<!--END.CLASS body_trail_container-->
+								<!--close row-offcanvas--></div>
+							<!--close class="row-offcanvas row-offcanvas-left" -->
+							<p>&nbsp;</p>
+						</div>
+					</section>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
-<!--ENDOFMULTIVARIATEANALYIS-->
-<p></p>
-<!--BEGOFCLUSTERING-->
-<h2 id="CLUS">Robust clustering</h2>
-<h3 id="CLUS-MixSim">MixSim</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-    </div>
-</div>
-<h3 id="CLUS-RobClaREG">Robust clustering in regression</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-    </div>
-</div>
-<h3 id="CLUS-RobClaMULT">Robust clustering in multivariate analysis</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<!--ENDOFCLUSTERING-->
-<p></p>
-<!--BEGOFVISUALIZATION-->
-<h2 id="VIS">Dynamic Visualization</h2>
-<h3 id="VIS-Reg">Dynamic visualization in regression</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-    </div>
-</div>
-<h3 id="VIS-Mult">Dynamic visualization in multivariate analysis</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="VIS-Clu">Dynamic visualization in clustering</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<!--ENDOFVISUALIZATION-->
-<p></p>
-<!--BEGOFGUI-->
-<h2 id="GUI">Guis</h2>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<!--ENDOFGUI-->
-<p></p>
-<!--BEGFUTI-->
-<h2 id="UTI">Utilities</h2>
-<h3 id="UTISTAT">Statistical utilities</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="UTIGEN">General utilities</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="UTICOMB">Combinatorial utilities</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<h3 id="UTIHELP">Utilities to create HTML help files</h3>
-<div class="doc_functionsgroup_container">
-    <div class="doc_function_block">
-        <table border="0" cellpadding="0" cellspacing="0">
-            HTMLTEXT
-        </table>
-    </div>
-</div>
-<!--ENDOFUTI-->
-<!-- -->
-<!-- -->
-<!--END OF FSDA TEXT-->
-<!--Include divs after FSDA text-->
-<script language="javaScript" type="text/javascript">
-    document.write(divsafter);
-</script>
-<!--Include fixed text at the bottom of the page-->
-<script language="javaScript" type="text/javascript">
-    document.write(barra);
-</script>
-<!--END.CLASS body_trail_container-->
-<!--close row-offcanvas--></div>
-<!--close class="row-offcanvas row-offcanvas-left" -->
-<p>&nbsp;</p>
+<h2 id="SeeAlso">See Also</h2>
+<ul>
+	<li><code class="synopsis">out=ace(y,X)</code><span class="syntax_example"><a class="intrnllnk" href="ace.html#Example_1">example</a></span></li>
+	<li><code class="synopsis">out=ace(y,X,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="ace.html#Example_2">example</a></span></li>
+	</ul>
+
 
 </body>
 
