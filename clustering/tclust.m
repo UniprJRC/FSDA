@@ -34,7 +34,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               else if alpha is an integer greater than 1 clustering is
 %               based on h=n-floor(alpha);
 %
-%  restrfactor: Restriction factor. Scalar. Positive scalar which
+%  restrfactor: Restriction factor. Scalar or struct. Positive scalar which
 %               constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
 %               group scatters. On the other hand a value of 1 specifies the
@@ -402,7 +402,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                       option equalweights is set to 0, then $\pi_j'=1$, $j=1, ...,
 %                       k$.
 %
-%          out.NlogL = Scalar. -2 log likelihood. In presence of full
+%          out.NlogL = Scalar. -2 classification log likelihood. In presence of full
 %                       convergence -out.NlogL/2 is equal to out.obj.
 %
 %   out.equalweights  = Logical. It is true if in the clustering procedure
@@ -742,7 +742,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 nnargin=nargin;
@@ -754,7 +754,7 @@ Y = chkinputM(Y,nnargin,vvarargin);
 callmex=existFS('DfM');
 % verLess2016b is true if current version is smaller than 2016b
 verLess2016b=verLessThanFS(9.1);
-  
+
 
 % User options
 % startv1def = default value of startv1 =1, initialization using covariance
@@ -883,10 +883,9 @@ else
     h=fix(n*(1-alpha));
 end
 
-% restrnum=1 implies eigenvalue restriction
-restrnum=1;
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
 cshape=10^10;
+
 
 options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
     'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
@@ -929,7 +928,15 @@ if nargin > 4
     elseif  options.nsamp<0
         error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
     end
+end
+
+% is restrfactor is a struct then restriction is GPCM
+if isstruct(restrfactor)
+    restrnum=3;
+    restrGPCM=true;
     
+else
+    restrGPCM=false;
     % Check restriction factor
     if restrfactor<1
         disp('Restriction factor smaller than 1. It is set to 1 (maximum contraint==>spherical groups)');
@@ -940,7 +947,7 @@ if nargin > 4
     % Default restriction is the one based on the eigenvalues
     % restrnum=1 ==> restriction on the eigenvalues
     % restrnum=2 ==> restriction on the determinants
-    % restrnum=3 ==> restriction on both
+    % restrnum=3 ==> restriction using GPCM
     
     restr=options.restrtype;
     if strcmp(restr,'eigen')
@@ -949,12 +956,11 @@ if nargin > 4
         restrnum=2;
         cshape=options.cshape;
         restrfactor=[restrfactor cshape];
-        
     else
         error('FSDA:tclust:Wrongrestr','Wrong restriction');
     end
-    
 end
+
 
 % Default values for the optional
 % parameters are set inside structure 'options'
@@ -1125,34 +1131,48 @@ for i=1:nselected
             % lines above are a faster solution for instruction below
             % sigmaini(:,:,j)=cov(Y(selj,:));
             
-            % Eigenvalue eigenvector decomposition for group j
-            [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-            % Store eigenvectors and eigenvalues of group j
-            U(:,:,j)=Uj;
-            Lambda_vk(:,j)=diag(Lambdaj);
+            if restrGPCM == false
+                % Eigenvalue eigenvector decomposition for group j
+                [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                % Store eigenvectors and eigenvalues of group j
+                U(:,:,j)=Uj;
+                Lambda_vk(:,j)=diag(Lambdaj);
+            end
         end
         
-        Lambda_vk(Lambda_vk<0)=0;
+        
         
         if restrnum==1
+            Lambda_vk(Lambda_vk<0)=0;
             
             % Restriction on the eigenvalue
             autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             
-        else
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the eigenvalues
+            for j=1:k
+                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
+        elseif restrnum==2
+            Lambda_vk(Lambda_vk<0)=0;
             % Restrictions on the determinants
             autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-        end
-        
-        
-        % Covariance matrices are reconstructed keeping into account the
-        % constraints on the eigenvalues
-        for j=1:k
-            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
             
-            % Alternative code: in principle more efficient but slower
-            % because diag is a built in function
-            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints on the determinants
+            for j=1:k
+                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
+        elseif restrnum==3
+            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor);
         end
         
     else
@@ -1313,16 +1333,20 @@ for i=1:nselected
                     end
                     sigmaini(:,:,j) = (Ytric' * Ytric) / niini(j);
                     
-                    % Eigenvalue eigenvector decomposition for group j
-                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                    
-                    % Store eigenvectors and eigenvalues of group j
-                    U(:,:,j)=Uj;
-                    Lambda_vk(:,j)=diag(Lambdaj);
+                    if restrGPCM == false
+                        % Eigenvalue eigenvector decomposition for group j
+                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                        
+                        % Store eigenvectors and eigenvalues of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(:,j)=diag(Lambdaj);
+                    end
                 else
                     sigmaini(:,:,j)=ey;
-                    U(:,:,j)=ey;
-                    Lambda_vk(:,j)=onev1;
+                    if restrGPCM == false
+                        U(:,:,j)=ey;
+                        Lambda_vk(:,j)=onev1;
+                    end
                 end
                 
             else  % This is the "crisp assignment" setting
@@ -1369,19 +1393,22 @@ for i=1:nselected
                     
                     sigmaini(:,:,j) = (Ytrij' * Ytrij) / niini(j);
                     
-                    % Eigenvalue eigenvector decomposition for group j
-                    [Uj,Lambdaj] = eig(sigmaini(:,:,j));
-                    % Store eigenvectors and eigenvalues of group j
-                    U(:,:,j)=Uj;
-                    Lambda_vk(:,j)=diag(Lambdaj);
-                    
+                    if restrGPCM == false
+                        % Eigenvalue eigenvector decomposition for group j
+                        [Uj,Lambdaj] = eig(sigmaini(:,:,j));
+                        % Store eigenvectors and eigenvalues of group j
+                        U(:,:,j)=Uj;
+                        Lambda_vk(:,j)=diag(Lambdaj);
+                    end
                 else
                     sigmaini(:,:,j)=ey;
-                    U(:,:,j)=ey;
-                    if restrnum==1
-                        Lambda_vk(:,j)=onev1;
-                    else
-                        Lambda_vk(j)=1;
+                    if restrGPCM == false
+                        U(:,:,j)=ey;
+                        if restrnum==1
+                            Lambda_vk(:,j)=onev1;
+                        else
+                            Lambda_vk(j)=1;
+                        end
                     end
                 end
                 
@@ -1392,41 +1419,44 @@ for i=1:nselected
         % Lambda_vk is a v-by-k  matrix whose jth column contains the
         % unrestricted eigenvalues of cov. matrix of group j   j=1, ..., k
         % The row below is just to avoid numerical problems
-        Lambda_vk(Lambda_vk<0)=0;
         if restrnum==1
+            Lambda_vk(Lambda_vk<0)=0;
             autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             
-            
         elseif restrnum==2
+            Lambda_vk(Lambda_vk<0)=0;
             % Restriction on the determinants
             autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
         end
         
-        % Covariance matrices are reconstructed keeping into account the
-        % constraints of the eigenvalues
-        for j=1:k
-            sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+        if restrGPCM == false
+            % Covariance matrices are reconstructed keeping into account the
+            % constraints of the eigenvalues
+            for j=1:k
+                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                
+                % Alternative code: in principle more efficient but slower
+                % because diag is a built in function
+                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            end
             
-            % Alternative code: in principle more efficient but slower
-            % because diag is a built in function
-            % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+            % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
+            % Note that the implementation below uses mex function mtimes
+            %         autov=(autovalues(:)');
+            %         if userepmat==1
+            %             autov1=repmat(autov,v,1,1);
+            %             ULambda=U.*reshape(autov1,v,v,k);
+            %         else
+            %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
+            %         end
+            %         sigmainichk=mtimesx(ULambda,U,'T');
+            
+            
+            % Alternative code based on gpuArrary
+            % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
+        else
+            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor);
         end
-        
-        % BELOW THERE IS AN ALTERNATIVE WAY OF FINDING sigmaini without the loop
-        % Note that the implementation below uses mex function mtimes
-        %         autov=(autovalues(:)');
-        %         if userepmat==1
-        %             autov1=repmat(autov,v,1,1);
-        %             ULambda=U.*reshape(autov1,v,v,k);
-        %         else
-        %             ULambda=reshape(bsxfun(@times,reshape(U,v,v*k),autov),v,v,k);
-        %         end
-        %         sigmainichk=mtimesx(ULambda,U,'T');
-        
-        
-        % Alternative code based on gpuArrary
-        % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
-        
         % Calculus of the objective function (E-step)
         % oldobj=obj;
         obj = 0;
@@ -1713,24 +1743,25 @@ for j=1:k
     if nopt(j)>v
         covj=cov(Y(selj,:));
         covunrestr(:,:,j)=covj;
-        % disp(['group' num2str(j) num2str(covj)])
-        %         try
-        [~,values] = eigs(covj);
-        %         catch
-        %             jj=100;
-        %         end
-        
-        if v>1
-            values=sort(diag(values));
-            eigun=values./values(1);
-            % maximum value of r is v-1
-            r=sum(eigun(2:end)>=restrfactor(1));
-            %
-            constr(j)=r;
-        else
-            constr(j)=0;
+        if restrGPCM==false
+            % disp(['group' num2str(j) num2str(covj)])
+            %         try
+            [~,values] = eigs(covj);
+            %         catch
+            %             jj=100;
+            %         end
+            
+            if v>1
+                values=sort(diag(values));
+                eigun=values./values(1);
+                % maximum value of r is v-1
+                r=sum(eigun(2:end)>=restrfactor(1));
+                %
+                constr(j)=r;
+            else
+                constr(j)=0;
+            end
         end
-        
     else
     end
     
@@ -1811,8 +1842,43 @@ end
 
 %% Compute INFORMATION CRITERIA
 
-% nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
-nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*(1-1/restrfactor(1)) +1;
+if restrGPCM==false
+    % nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
+    nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*(1-1/restrfactor(1)) +1;
+else
+    modeltype=restrfactor.pars;
+    if strcmp(modeltype,'EII')
+        nParam=npar+1;
+    elseif strcmp(modeltype,'VII')
+        nParam=npar+k;
+    elseif strcmp(modeltype,'EEI')
+        nParam=npar+v;
+    elseif strcmp(modeltype,'VEI')
+        nParam=npar+k+v-1;
+    elseif strcmp(modeltype,'EVI')
+        nParam=npar+1+k*(v-1);
+    elseif strcmp(modeltype,'VVI')
+        nParam=npar+k*v;
+    elseif strcmp(modeltype,'EEE')
+        nParam=npar+0.5*v*(v+1);
+    elseif strcmp(modeltype,'VEE')
+        nParam=npar+k+v-1+0.5*v*(v-1);
+    elseif strcmp(modeltype,'EVE')
+        nParam=npar+1+k*(v-1)+0.5*v*(v-1);
+    elseif strcmp(modeltype,'EEV')
+        nParam=npar+v+0.5*k*v*(v-1);
+    elseif strcmp(modeltype,'VVE')
+        nParam=npar+k*v+0.5*v*(v-1);
+    elseif strcmp(modeltype,'VEV')
+        nParam=npar+k+v-1+0.5*k*v*(v-1);
+    elseif strcmp(modeltype,'EVV')
+        nParam=npar+1+k*(v-1) +0.5*k*v*(v-1);
+    elseif strcmp(modeltype,'VVV')
+        nParam=npar+0.5*k*v*(v+1);
+    else
+        error('FSDA:tclust:WrongModel','Wrong model for cov matrices, must be one of the 14 GPCM');
+    end
+end
 
 logh=log(h);
 
@@ -1957,8 +2023,14 @@ if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % 
         
     end
     
+    
     % add title
-    str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
+    if restrGPCM==false
+        str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
+    else
+        str=restrfactor.pars;
+        % str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$','GPCM');
+    end
     title(str,'Interpreter','Latex'); % , 'fontsize', 14
     
 elseif isscalar(plots) && plots == 0
