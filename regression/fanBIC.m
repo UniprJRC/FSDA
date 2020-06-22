@@ -358,11 +358,11 @@ labest=la(imax);
 % Find best value of lambda according to "Agreement index"
 [~,imaxSI]=max(BIC(:,3));
 
-% If the two indexes produce different answers delete the values of BIC
-% for which h (number of units in agreement with transformation and without
-% outliers) is equal to init (m_M)
+% If the two indexes produce different answers delete the values of BIC and
+% agreement index for which h (number of units in agreement with
+% transformation and without outliers) is equal to init (m_M)
 if imax~=imaxSI
-    BIC(mmstop(:,2)<=init,2)=NaN;
+    BIC(mmstop(:,2)<=init,2:3)=NaN;
     [~,imax]=max(BIC(:,2));
     labest=la(imax);
 end
