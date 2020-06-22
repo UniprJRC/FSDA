@@ -1250,8 +1250,8 @@ end
 % Create a figure to host the gplotmatrix or clear the existing one
 h=findobj('-depth',1,'tag',tag);
 if (~isempty(h))
-    clf(h);
-    figure(h);
+    clf(h(1));
+    figure(h(1));
     axes;
 else
     h=figure;
