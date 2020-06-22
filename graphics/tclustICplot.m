@@ -121,8 +121,8 @@ function tclustICplot(IC,varargin)
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
 %                   If databrush is an empty value (default), no brushing
-%                   is done. The activation of this option 
-%                   (databrush is a scalar or a structure) enables the user  
+%                   is done. The activation of this option
+%                   (databrush is a scalar or a structure) enables the user
 %                   to select a set of values of IC in the current plot and
 %                   to see the corresponding classification highlighted in
 %                   the scatter plot matrix (spm). If spm does not exist it
@@ -302,7 +302,7 @@ if nargin>1
         WrongOptions=UserOptions(inpchk==0);
         if ~isempty(WrongOptions)
             disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-            error('FSDA:tclustBICsol:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+            error('FSDA:tclustICplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
         end
     end
     
@@ -321,9 +321,24 @@ end
 
 % Extract the values of k (number of groups)
 kk=IC.kk;
-% Extract the values of c (number of components)
+% Extract the values of c (number of restriction factors)
 cc=IC.cc;
-lcc=length(cc);
+alphaLik=IC.alpha;
+
+if length(cc) >1 && length(alphaLik)==1
+    cORalpha=cc;
+    cloop=true;
+    lab='c=';
+elseif length(cc) ==1 && length(alphaLik)>1
+    cORalpha=alphaLik;
+    cloop=false;
+    lab='\alpha=';
+else
+    error('FSDA:tclustICplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+end
+
+lcc=length(cORalpha);
+
 
 % set line width of the trajectories of BIC
 LineWidth=1;
@@ -336,11 +351,8 @@ slintyp=repmat(slintyp,ceil(lcc/length(slintyp)),1);
 % Define legend entries
 a=cell(lcc,1);
 a(:)={'c='};
-if isrow(cc)
-    legstr=strcat(a, cellstr(num2str(cc')));
-else
-    legstr=strcat(a, cellstr(num2str(cc')));
-end
+legstr=strcat(a, cellstr(num2str(cORalpha(:))));
+
 xkk=0:(1/(length(kk)-1)):1;
 
 
@@ -391,11 +403,11 @@ if typeIC==0 || typeIC==3
     plot1CLACLA=plot(kk',IC.CLACLA,'LineWidth',LineWidth);
     title('CLACLA')
     % Add labels for the bet value of c for each k
-    cmin=zeros(length(cc),1);
+    cmin=zeros(lcc,1);
     for j=1:length(kk)
         [~,posj]=min(IC.CLACLA(j,:));
-        cmin(j)=cc(posj);
-        text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+        cmin(j)=cORalpha(posj);
+        text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
     end
     
     % Set line type and markers
@@ -420,11 +432,11 @@ if typeIC==2 || typeIC==3
     plot1MIXMIX=plot(kk',IC.MIXMIX,'LineWidth',LineWidth);
     title('MIXMIX')
     % Add labels for the bet value of c for each k
-    cmin=zeros(length(cc),1);
+    cmin=zeros(lcc,1);
     for j=1:length(kk)
         [~,posj]=min(IC.MIXMIX(j,:));
-        cmin(j)=cc(posj);
-        text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+        cmin(j)=cORalpha(posj);
+        text(xkk(j),0.98,[lab  num2str(cmin(j))],'Units','Normalized')
     end
     % Set line type and markers
     set(plot1MIXMIX,{'LineStyle'},slintyp(1:lcc));
@@ -448,11 +460,11 @@ if typeIC==1 || typeIC==3
     title('MIXCLA')
     
     % Add labels for the best value of c for each k
-    cmin=zeros(length(cc),1);
+    cmin=zeros(lcc,1);
     for j=1:length(kk)
         [~,posj]=min(IC.MIXCLA(j,:));
-        cmin(j)=cc(posj);
-        text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+        cmin(j)=cORalpha(posj);
+        text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
     end
     % Set line type and markers
     set(plot1MIXCLA,{'LineStyle'},slintyp(1:lcc));
@@ -531,18 +543,38 @@ if ~isempty(databrush) || isstruct(databrush)
     else
         set(gcf,'Tag',tag);
     end
-    
-    Y=IC.Y;
+    if isfield(IC,'Y')
+        multivar=true;
+        Y=IC.Y;
+    elseif  isfield(IC,'y') && isfield(IC,'X')
+        y=IC.y;
+        X=IC.X;
+        
+        if size(X,2)>1
+            intcolumn = find(max(X,[],1)-min(X,[],1) == 0);
+            if ~isempty(intcolumn)
+                X(:,intcolumn)=[];
+            end
+        end
+        
+        multivar=false;
+    else
+        error('FSDA:tclustICplot:InvalidArg','Input struct must contain fields ''Y'' oe fields ''y'' and ''X''')
+    end
     
     if isstruct(databrush)
         
-        % Choose what to put on the main diagonal of the spm
-        d=find(strcmp('dispopt',fieldnames(databrush)),1);
-        if  isempty(d)
-            dispopt='hist';
+        if multivar == true
+            % Choose what to put on the main diagonal of the spm
+            d=find(strcmp('dispopt',fieldnames(databrush)),1);
+            if  isempty(d)
+                dispopt='hist';
+            else
+                dispopt=databrush.dispopt;
+                databrush=rmfield(databrush,'dispopt');
+                fdatabrush=fieldnames(databrush);
+            end
         else
-            dispopt=databrush.dispopt;
-            databrush=rmfield(databrush,'dispopt');
             fdatabrush=fieldnames(databrush);
         end
         
@@ -560,23 +592,42 @@ if ~isempty(databrush) || isstruct(databrush)
         dispopt='hist';
     end
     
-    % sele={sele{:} 'Tag' options.tag}; OLD inefficient code
-    % MMMMMM
-    % sele=[sele 'Tag' {options.tag}];
-    
-    
-    % Set the labels of the axes in the spmplot which shows the brushed solutions.
-    d=find(strcmp('nameY',fieldnames(IC)),1);
-    if  isempty(d)
-        v=size(Y,2);
-        p1=1:v;
-        nameY=cellstr(num2str(p1','y%d'));
+    if multivar==true
+        % Set the labels of the axes in the spmplot which shows the brushed solutions.
+        d=find(strcmp('nameY',fieldnames(IC)),1);
+        if  isempty(d)
+            v=size(Y,2);
+            p1=1:v;
+            nameY=cellstr(num2str(p1','y%d'));
+        else
+            nameY=IC.nameY;
+        end
+        
+        plo=struct;
+        plo.nameY=nameY;
+        
     else
-        nameY=IC.nameY;
+        % Set the labels of the axes in the spmplot which shows the brushed solutions.
+        d=find(strcmp('nameX',fieldnames(IC)),1);
+        if  isempty(d)
+            v=size(X,2);
+            p1=1:v;
+            nameX=cellstr(num2str(p1','X%d'));
+        else
+            nameX=IC.nameX;
+        end
+        
+        d=find(strcmp('namey',fieldnames(IC)),1);
+        if  isempty(d)
+            namey='y';
+        else
+            namey=IC.namey;
+        end
+        
+        plo=struct;
+        plo.nameX=nameX;
+        plo.namey=namey;
     end
-    
-    plo=struct;
-    plo.nameY=nameY;
     
     % some local variables
     but=0; brushcum=[]; ij=1;
@@ -647,12 +698,20 @@ if ~isempty(databrush) || isstruct(databrush)
                 % It is necessary to put inside the tag the word group in
                 % order to let spmplot understand that we are not dearling
                 % with brushed units but simply with groups.
-                figure('Tag','pl_spm');
-                set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
-                % tabulate(IDX{Iwithk,Jwithc})
-                spmplot(Y,cellstr(num2str(IDX{Iwithk,Jwithc})),plo,dispopt);
-                % spmplot(Y,IDX{Iwithk,Jwithc},plo)
-                title([whichIC '=' num2str(bic(r),'%10.2f') ', k='  num2str(kk(Iwithk))    ' c=' num2str(cc(Jwithc) )])
+                if multivar==true
+                    figure('Tag','pl_spm');
+                    set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
+                    % tabulate(IDX{Iwithk,Jwithc})
+                    spmplot(Y,cellstr(num2str(IDX{Iwithk,Jwithc})),plo,dispopt);
+                    % spmplot(Y,IDX{Iwithk,Jwithc},plo)
+                else
+                    figure('Tag','pl_yX');
+                    set(gcf,'WindowStyle',get(plot1,'WindowStyle'));
+                    % tabulate(IDX{Iwithk,Jwithc})
+                    yXplot(y,X,cellstr(num2str(IDX{Iwithk,Jwithc})),plo);
+                end
+                title([whichIC '=' num2str(bic(r),'%10.2f') ', k='  num2str(kk(Iwithk)) ' '  lab num2str(cORalpha(Jwithc) )])
+                
             end
             
             %% - check condition to exit from the brush mode
@@ -682,10 +741,19 @@ if ~isempty(databrush) || isstruct(databrush)
                 % - the standard MATLAB function to be executed on figure
                 %   close is recovered
                 set(gcf,'CloseRequestFcn','closereq');
-                Open_spm = findobj(0, 'type', 'figure','tag','pl_spm');
+                if multivar == true
+                    Open_spm = findobj(0, 'type', 'figure','tag','pl_spm');
+                else
+                    Open_spm = findobj(0, 'type', 'figure','tag','pl_yX');
+                end
+                
                 Open_mal = findobj(0, 'type', 'figure','tag','pl_IC');
                 if isempty(Open_mal)  % User closed the main brushing window
-                    if ~isempty(Open_spm), delete(Open_spm); end % spmplot is deleted
+                    if ~isempty(Open_spm) 
+                        delete(Open_spm); 
+                        % just in case Open_spm has length greater than 1
+                        Open_spm=Open_spm(1);
+                    end % spmplot  (yXplot) is deleted
                     delete(get(0,'CurrentFigure')); % deletes Figure if still one left open
                 end
                 
@@ -817,9 +885,13 @@ end
             % output_txt is what it is shown on the screen
             output_txt(1,1) = {[ titl ' equal to: ',num2str(y1,4)]};
             
-            % Add information about k and c
-            % investigation
-            output_txt{2,1} = ['k= ' num2str(x1) ', c=' num2str(IC.cc(col))];
+            if cloop== true
+                % Add information about k and c
+                output_txt{2,1} = ['k= ' num2str(x1) ', c=' num2str(IC.cc(col))];
+            else
+                % Add information about k and alpha
+                output_txt{2,1} = ['k= ' num2str(x1) ', alpha=' num2str(IC.alphaLik(col))];
+            end
             
             
             output_txt{3,1} = 'Classification';
