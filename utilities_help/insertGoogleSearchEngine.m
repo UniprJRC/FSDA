@@ -27,7 +27,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 %
 %    FilesWithProblems : cell containing the list of files which have not
 %                       been found and/or could not be processed. If all
-%                       files inside InputCell could be processed, 
+%                       files inside InputCell could be processed,
 %                       FilesWithProblems is empty.
 %
 %
@@ -37,7 +37,7 @@ function FilesWithProblems=insertGoogleSearchEngine(InputCell,varargin)
 
 
 %{
-    % For an example of the use of this function 
+    % For an example of the use of this function
     % see file CreateFSDAhelpFiles.m
 %}
 
@@ -114,6 +114,10 @@ if fid > 1
     strInsert='web';
     
     idxStart=strfind(fstring, letterINI);
+    if isempty(idxStart)
+        error('FSDA:insertGoogleSearchEngine:StringNotFound','string includesFS/headJS.js not found in input file');
+    end
+    
     offsetINI=length(letterINI);
     
     fstring=[fstring(1:idxStart+offsetINI-4) strInsert fstring(idxStart+offsetINI-3:end)];
