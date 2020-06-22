@@ -608,6 +608,7 @@ if nargin > 2
     RandNumbForNini=options.RandNumbForNini;
 end
 
+
 if strcmp(whichIC,'ALL')
     typeIC=3;
 elseif strcmp(whichIC,'MIXMIX')
@@ -623,35 +624,57 @@ end
 
 % Default values for the optional
 % parameters are set inside structure 'options'
-
-if typeIC>0
-    IDXMIX=cell(length(kk),length(ccsigmay));
-end
-
-if typeIC==2 || typeIC==3
-    MIXMIX=NaN(length(kk),length(ccsigmay));
-end
-
-if typeIC==1 || typeIC==3
-    MIXCLA=NaN(length(kk),length(ccsigmay));
-end
-
-if typeIC==0 || typeIC==3
-    CLACLA=NaN(length(kk),length(ccsigmay));
-    IDXCLA=cell(length(kk),length(ccsigmay));
-end
-
+lccsigmay=length(ccsigmay);
+lkk=length(kk);
+lalphaLik=length(alphaLik);
 
 % Prepare rownames and colsnames for table which will contain
 % in the rows the number of groups and in the columsn the values of c
-rownamesIC=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
+rownamesIC=strcat(cellstr(repmat('k=',lkk,1)), cellstr(num2str(kk')));
 rownamesIC=regexprep(rownamesIC,' ','');
-colnamesIC=strcat(cellstr(repmat('c_',length(ccsigmay),1)), cellstr(num2str(ccsigmay')));
-colnamesIC=regexprep(colnamesIC,' ','');
+
+ccsigmay=ccsigmay(:);
+alphaLik=alphaLik(:);
+
+if lccsigmay>1 && lalphaLik ==1
+    colnamesIC=strcat(cellstr(repmat('c_',lccsigmay,1)), cellstr(num2str(ccsigmay)));
+    colnamesIC=regexprep(colnamesIC,' ','');
+    cloop=true;
+    lcc=lccsigmay;
+    lab='c=';
+    cORalpha=ccsigmay;
+elseif  lccsigmay==1 && lalphaLik >1
+    colnamesIC=strcat(cellstr(repmat('a_',lalphaLik,1)), cellstr(num2str(alphaLik)));
+    colnamesIC=regexprep(colnamesIC,' ','');
+    cloop=false;
+    lcc=lalphaLik;
+    lab='\alpha=';
+    cORalpha=alphaLik;
+else
+    error('FSDA:tclustregIC:WrongInput','alphaLik and cc cannot have length greater than one both')
+end
+
+if typeIC>0
+    IDXMIX=cell(lkk,lccsigmay);
+end
+
+if typeIC==2 || typeIC==3
+    MIXMIX=NaN(lkk,lccsigmay);
+end
+
+if typeIC==1 || typeIC==3
+    MIXCLA=NaN(lkk,lccsigmay);
+end
+
+if typeIC==0 || typeIC==3
+    CLACLA=NaN(lkk,lccsigmay);
+    IDXCLA=cell(lkk,lccsigmay);
+end
+
 
 %% Preapare the pool (if required)
 
-for k=1:length(kk)  % loop for different values of k (number of groups)
+for k=1:lkk  % loop for different values of k (number of groups)
     
     seqk=kk(k);
     
@@ -676,15 +699,24 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
         gRandNumbForNini=RandNumbForNini;
     end
     
+    
     % pctRunOnAll warning('on')
-    parfor (c=1:length(ccsigmay) , numpool)
-        % for c=1:length(ccsigmay)
-        % columns = restr
-        % rows = number of groups
-        % tclust using mixtures
-        restrfactor=[ccsigmay(c);ccSigmaX];
+    parfor (cORa=1:lcc , numpool)
+        % for cORa=1:lcc
+        
+        if cloop==true
+            % columns = restr
+            % rows = number of groups
+            % tclust using mixtures
+            restrfactor=[ccsigmay(cORa);ccSigmaX];
+            alpha=alphaLik;
+        else
+            restrfactor=[ccsigmay;ccSigmaX];
+            alpha=alphaLik(cORa);
+        end
+        
         if typeIC>0
-            outMixt=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
+            outMixt=tclustreg(y,X,seqk,restrfactor,alpha,alphaX,...
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0,'mixt',2, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
@@ -692,22 +724,25 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
             
             if ~isstruct(outMixt)
                 warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
-                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(c)'])
+                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(cORa)'])
             else
-                IDXMIX{k,c}=outMixt.idx;
+                IDXMIX{k,cORa}=outMixt.idx;
+                
                 if typeIC==2 || typeIC==3
-                    MIXMIX(k,c)=outMixt.MIXMIX;
+                    MIXMIX(k,cORa)=outMixt.MIXMIX;
                 end
+                
                 if typeIC==1 || typeIC==3
-                    MIXCLA(k,c)=outMixt.MIXCLA;
+                    MIXCLA(k,cORa)=outMixt.MIXCLA;
                 end
+                
             end
         end
         
         
         if typeIC==0 || typeIC==3
             % tclust using classification likelihood
-            outCla=tclustreg(y,X,seqk,restrfactor,alphaLik,alphaX,...
+            outCla=tclustreg(y,X,seqk,restrfactor,alpha,alphaX,...
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
@@ -715,12 +750,12 @@ for k=1:length(kk)  % loop for different values of k (number of groups)
             
             if ~isstruct(outCla)
                 warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
-                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(c)'])
-                IDXCLA{k,c}=NaN(n,1);
+                warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(cORa)'])
+                IDXCLA{k,cORa}=NaN(n,1);
                 
             else
-                CLACLA(k,c)=outCla.CLACLA;
-                IDXCLA{k,c}=outCla.idx;
+                CLACLA(k,cORa)=outCla.CLACLA;
+                IDXCLA{k,cORa}=outCla.idx;
             end
         end
     end
@@ -741,21 +776,25 @@ if plots==1
     LineWidth=1;
     % Define marker type
     styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
-    lcc=length(ccsigmay);
     styp=repmat(styp,ceil(n/lcc),1);
     % Define line type
     slintyp={'-';'--';':';'-.'};
     slintyp=repmat(slintyp,ceil(n/lcc),1);
     % Define legend entries
-    a=cell(length(ccsigmay),1);
-    a(:)={'c='};
-    if isrow(ccsigmay)
-        legstr=strcat(a, cellstr(num2str(ccsigmay')));
+    a=cell(lcc,1);
+    
+    if cloop==true
+        a(:)={'c='};
     else
-        legstr=strcat(a, cellstr(num2str(ccsigmay')));
+        a(:)={'\alpha='};
     end
+    legstr=strcat(a, cellstr(num2str(cORalpha)));
+    
+    
     xkk=0:(1/(length(kk)-1)):1;
 end
+
+cmin=zeros(lcc,1);
 
 % CLACLA
 if typeIC==0 || typeIC==3
@@ -777,12 +816,12 @@ if typeIC==0 || typeIC==3
         figure
         plot1=plot(kk',out.CLACLA,'LineWidth',LineWidth);
         title('CLACLA')
-        % Add labels for the bet value of c for each k
-        cmin=zeros(length(ccsigmay),1);
+        % Add labels for the best value of cORa for each k
+        
         for j=1:length(kk)
             [~,posj]=min(out.CLACLA(j,:));
-            cmin(j)=ccsigmay(posj);
-            text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+            cmin(j)=cORalpha(posj);
+            text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
         end
         
         % Set line type and markers
@@ -816,12 +855,11 @@ if typeIC==2 || typeIC==3
         figure
         plot1=plot(kk',out.MIXMIX,'LineWidth',LineWidth);
         title('MIXMIX')
-        % Add labels for the bet value of c for each k
-        cmin=zeros(length(ccsigmay),1);
+        % Add labels for the best value of cORa for each k
         for j=1:length(kk)
             [~,posj]=min(out.MIXMIX(j,:));
-            cmin(j)=ccsigmay(posj);
-            text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+            cmin(j)=cORalpha(posj);
+            text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
         end
         
         % Set line type and markers
@@ -847,11 +885,11 @@ if typeIC==1 || typeIC==3
         title('MIXCLA')
         
         % Add labels for the best value of c for each k
-        cmin=zeros(length(ccsigmay),1);
+        cmin=zeros(lcc,1);
         for j=1:length(kk)
             [~,posj]=min(out.MIXCLA(j,:));
-            cmin(j)=ccsigmay(posj);
-            text(xkk(j),0.98,['c=' num2str(cmin(j))],'Units','Normalized')
+            cmin(j)=cORalpha(posj);
+            text(xkk(j),0.98,[lab num2str(cmin(j))],'Units','Normalized')
         end
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
@@ -863,16 +901,19 @@ if typeIC==1 || typeIC==3
 end
 
 if plots==1
-    disp('The labels of c in the top part of the plot denote the values of c for which IC is minimum')
+    if cloop== true
+        disp('The labels of c in the top part of the plot denote the values of c for which IC is minimum')
+    else
+        disp('The labels of alpha in the top part of the plot denote the values of alphac for which IC is minimum')
+    end
 end
-
 % Store vectors kk and ccsigmay, ccsigmaX inside output structure out
 out.kk=kk;
-out.cc=ccsigmay;
+out.cc=ccsigmay';
 out.ccSigmaX=ccSigmaX;
 
 % Store trimming level which has been used
-out.alphaLik=alphaLik;
+out.alphaLik=alphaLik';
 % Store original matrix
 out.y=y;
 out.X=X;
