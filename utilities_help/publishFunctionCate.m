@@ -196,7 +196,7 @@ for i=1:length(seqCAT)
     assert(~isempty(ini),['Category: ' letterINI ' not found'])
     % pick the 2nd instance of the Category anchor because the 1st is in
     % the navigation left panel
-    ini=ini(2);
+    ini=ini(1);
     if strcmp(letterINI,'GUI')
         ini=ini(1);
     else
