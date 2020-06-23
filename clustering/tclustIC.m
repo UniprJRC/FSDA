@@ -345,7 +345,7 @@ function out  = tclustIC(Y,varargin)
 %                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
 %                   64, 128].
 %
-%                out.alpha = scalar containing the trimming level which has
+%                out.alpha = scalar containing the value(s) of the trimming level which have
 %                   been used.
 %
 %                out.Y  = Original data matrix Y. The field is present if

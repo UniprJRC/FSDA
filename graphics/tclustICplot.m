@@ -46,11 +46,15 @@ function tclustICplot(IC,varargin)
 %                   argument 'whichIC' is 'MIXCLA' or 'ALL'.
 %                IC.kk = vector containing the values of k (number of
 %                   components) which have been considered.
-%                IC.cc = vector containing the values of c (values of the
+%                IC.cc = scalar or vector containing the values of c (values of the
 %                   restriction factor) which have been considered.
 %                IC.Y =  original n-times-v data matrix on which the IC
 %                   (Information criterion) has
 %                    been computed
+%                IC.alpha = scalar or vector containing the values of
+%                   trimming which have been considered. If input structure
+%                   IC comes from tclustreg, then trimming refers to first
+%                   level trimming (likelihood trimming).
 %                IC.nameY=  cell of length(size(Y,2)) containing the names
 %                   of the variables of original matrix Y
 %
