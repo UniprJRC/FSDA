@@ -108,6 +108,54 @@ if ~isempty(FilesWithProblems)
     end
 end
 
+%% STEP 2B some documentation about FSDA html help pages
+% Help pages are modular and contain portion of html code that are stored
+% in files={'headjs.js', 'engine.js','lbar.js', 'lbarsimple.js', '...'} and
+% then injected in the target html file by the document.write() JS
+% function. Any other known method would fail because these methods are not
+% synchronous! The issue here is that the html pages are fully dynamic and
+% dense of javascript methods that must be run in the exact same
+% hierarchical order and timing in which they appear in the html file.
+%
+% headJS.js, for example, contains instructions like 
+% '<script src='../includes/shared/scripts/jquery.highlight.js'></script>";'
+% which points to an '/include' folder that contains all the new and version
+% bound JS functions related to the MATLAB most recent build.
+% This is a convenient solution to keep the pages updated without changing
+% the html page code.
+%
+% headJS.js also contains all the references to subsequent JS packed html
+% code sections like {'engine.js','lbar.js', 'lbarsimple.js', '...'} that
+% are later called in the code, so all the declarations are stored in this
+% JS file and NOT inside the <body> tag of the html functions.
+% 
+% headJS.js is organised like a giant string variable as follows: headJS=
+% "<script type='text/x-mathjax-config'>"; headJS=headJS +
+% "MathJax.Hub.Config({"; 
+% that unfortunatley lowers the code readability.
+% Please note that due to the constraints of JS string concatenation, ALL
+% the instances of double quotes should be carefully removed! 
+% headJS.js is decleared like: 
+% "<script src='includesFS/headJS.js' type='text/javascript'></script>"; 
+% and then injected in the right spot like this: 
+% <script type="text/javascript">document.write(headJS);</script>
+%
+% static pages are different from regular dynamic pages and are created
+% using a template called 'template_static_page.html' that contains the
+% needed 'blueprints'.
+%
+% function_alpha.html and function_cate.html contain a JS file named
+% 'OnThisPagefcate.js' and 'OnThisPagefalpha.js' that point to a common
+% variable with the same name called by document.write(fcate); also they
+% need the 'lbarsimple.js' file unlike all the other help pages.
+%
+% The very same pages are used in the web server (ROSA), provided that a
+% file named 'headJSweb.js' is used in place of 'engine.js'. This file
+% replaces the MATLAB internal search engine with a reference to Google
+% Search which works mostly in the same way and will not need any further
+% modification of the html code.
+
+
 %% STEP 3: create alphabetical list of functions and txt file
 % rerun step 1 to regenerate FilesIncluded
 fsep=filesep;
