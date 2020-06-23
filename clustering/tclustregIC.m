@@ -378,8 +378,8 @@ function out  = tclustregIC(y,X,varargin)
 %                   otherwise it is equal to 12 if alphaX=1 and xxsigmaX
 %                   has not been specified. Finally if input option alphaX
 %                   is not equal 1 out.ccsigmaX is an empty value
-%                out.alphaLik = scalar containing the trimming level which has
-%                   been used in the likelidood.
+%                out.alpha = scalar containing the trimming level which has
+%                   been used in the likelidood (it stores the values of input alphaLik).
 %                out.alphaX = scalar containing information about
 %                   second-level trimming or constrained weighted model for X.
 %                out.X  = Original data matrix of explanatory variables.
@@ -913,7 +913,7 @@ out.cc=ccsigmay';
 out.ccSigmaX=ccSigmaX;
 
 % Store trimming level which has been used
-out.alphaLik=alphaLik';
+out.alpha=alphaLik';
 % Store original matrix
 out.y=y;
 out.X=X;
