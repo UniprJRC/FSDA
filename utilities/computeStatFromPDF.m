@@ -2,13 +2,32 @@ function out = computeStatFromPDF(Namefilepdf, sessione)
 % FSDA undocumented to compute final mark from pdf input file
 
 % second argument session can be E= estiva, or I= invernale or P =
-% primaverile
+% primaverile or M= magistrale
 
 if nargin<2
     sessione='E';
 end
 
+% extract matricola and titolo tesi
+
+% create a vote in numbers and in letters
+votenum=[0 66:110]';
+voteletters={'zero', 'sessantasei', 'sessantasette', 'sessantotto', 'sessantanove', ...
+'settanta', 'settantuno', 'settantadue', 'settantatré', 'settantaquattro', ...
+'settantacinque', 'settantasei', 'settantasette', 'settantotto', 'settantanove', ...
+'ottanta', 'ottantuno', 'ottantadue', 'ottantatré', 'ottantaquattro', ...
+'ottantacinque', 'ottantasei', 'ottantasette', 'ottantotto', 'ottantanove', ...
+'novanta', 'novantuno', 'novantadue', 'novantatré', 'novantaquattro', ...
+'novantacinque', 'novantasei', 'novantasette', 'novantotto', 'novantanove', ...
+'cento', 'centouno', 'centodue', 'centotré', 'centoquattro', 'centocinque', ...
+'centosei', 'centosette', 'centootto', 'centonove', 'centodieci'}';
+
+
+
 str = extractFileText(Namefilepdf);
+
+startmatr = strfind(str,"Matricola :");
+endmatr = startmatr+6;
 
 startnam = strfind(str,"Il Sig.");
 endnam = strfind(str,"nato il");
@@ -35,13 +54,18 @@ starti = strfind(str,"Totale base 110");
 endi = strfind(str,"Punti tesi:");
 
 tabrows=numel(starti);
-varNames = {'Corso', 'Candidato','relatore','media base 110','Num di 30/30', 'Num lodi', 'InCorso' 'Voto_110'};
-varTypes = {'string','string','string','double', 'double', 'double' 'string' 'double'};
+varNames = {'Matricola', 'Corso', 'Candidato','relatore','media base 110','Num di 30/30', 'Num lodi', 'InCorso' 'Voto_110'};
+varTypes = {'string', 'string','string','string','double', 'double', 'double' 'string' 'double'};
 
 n=numel(starti);
 laureandi=table('Size',[tabrows numel(varTypes)], 'VariableTypes',varTypes, 'VariableNames',varNames);
 jj=1;
 for j=1:n
+    
+    % matricola
+    start = startmatr(j);
+    fin = endmatr(j);
+    laureandi{j,1}=extractBetween(str,start-9,fin-20);
     
     % corso di laurea
     start = startcorso(j);
@@ -106,6 +130,9 @@ elseif strcmp(sessione,'I')
     perc=3.5;
 elseif strcmp(sessione,'P')
     perc=0;
+elseif strcmp(sessione,'M')
+    perc=0;
+    magistrale=true;
 else
     error('FSDA:computeStatFromPDF:WngIinput','Sessione deve essere E I oppure P')
 end
@@ -113,18 +140,30 @@ end
 % Premio percorso
 AddInCorso=zeros(n,1);
 AddInCorso(laureandi.InCorso=='IC')=perc;
+if magistrale == true
+    AddLodi=zeros(n,1);
+    AddLodi(laureandi.("Num lodi")==2)=0.5;
+    AddLodi(laureandi.("Num lodi")==3)=1;
+    AddLodi(laureandi.("Num lodi")==4)=1;
+    AddLodi(laureandi.("Num lodi")>=5)=1.5;    
+else
+    AddLodi=zeros(n,1);
+    AddLodi(laureandi.("Num di 30/30")==2)=1;
+    AddLodi(laureandi.("Num di 30/30")==3)=2;
+    AddLodi(laureandi.("Num di 30/30")==4)=3;
+    AddLodi(laureandi.("Num di 30/30")==5)=4;
+    AddLodi(laureandi.("Num di 30/30")>5)=5;
+end    
+    laureandi.Voto_110=laureandi.("media base 110")+AddInCorso+AddLodi;
 
-AddLodi=zeros(n,1);
-AddLodi(laureandi.("Num di 30/30")==2)=1;
-AddLodi(laureandi.("Num di 30/30")==3)=2;
-AddLodi(laureandi.("Num di 30/30")==4)=3;
-AddLodi(laureandi.("Num di 30/30")==5)=4;
-AddLodi(laureandi.("Num di 30/30")>5)=5;
 
-laureandi.Voto_110=laureandi.("media base 110")+AddInCorso+AddLodi;
+if magistrale==true
+    % write table into Excel file
+    filename = ['laureati-magistrali.xlsx'];
+else
+    filename = ['laureati-triennali.xlsx'];
+end
 
-% write table into Excel file
-filename = 'laureati.xlsx';
 writetable(laureandi,filename,'Sheet',1,'Range','A1')
 
 out=laureandi;
