@@ -28,7 +28,17 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                Data Types - char
 %                Example - 'method','comp2one'
 %
+%        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
+%                to compute the retantion probability. If cup = 1
+%                (default), no upper limit is set.
+%                Data Types - scalar
+%                Example - cup, 0.8
 %
+%      pstar  :  thinning probability. Scalar. Probability with each a unit
+%                enters in the thinning procedure. If pstar = 1 (default), all units
+%                enter in the thinning procedure.
+%                Data Types - scalar
+%                Example - cup, 0.95  
 %  Output:
 %
 %   Wt :        vector of Bernoulli weights. Vector. Contains 1 for retained
@@ -86,7 +96,11 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 
     % thinning over the predicted values
     %[Wt,pretain] = wthin([yhat ; y3], 'retainby','comp2one');
-    [Wt,pretain] = wthin(yhat, 'retainby','comp2one');
+
+    % thinning over the predicted values when specifying a thinning
+    probability pstar.
+    pstar=0.80
+    [Wt,pretain] = wthin(yhat, 'retainby','comp2one','pstar',pstar);
 
     figure;
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
@@ -200,7 +214,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % for reasons of performance options are checked only if necessary
 if nargin > 1
     
-    options     = struct('retainby','comp2one','bandwidth',0,'cup',1);
+    options     = struct('retainby','comp2one','bandwidth',0,'cup',1,'pstar',1);
     UserOptions = varargin(1:2:length(varargin));
     if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
         error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -223,9 +237,15 @@ if nargin > 1
     
     % upper limit for the pdf used to compute the retantion probability
     cup         = options.cup;
+    % probability with each a unit enters in the thinning procedure
+    pstar       = options.pstar;
     if ~isempty(UserOptions)
         if cup < 0 || cup > 1 
             cup = 1;
+        end
+        
+        if pstar < 0 || cup > 1 
+            pstar = 1;
         end
         retainby_types  = {'inverse' , 'comp2one'};
         if  isempty(retainby) || ~(ischar(retainby) && max(strcmp(retainby,retainby_types)))
@@ -256,6 +276,7 @@ else
     bandwidth = 0;
     retainby  = 0;
     cup = 1;
+    pstar = 1;
 end
 
 %% Compute the density along the predicted values
@@ -331,7 +352,6 @@ if cup < 1
     pdfecup = quantile(pdfe,cup);
     pdfe(pdfe>pdfecup)=pdfecup; 
 end
-
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.
@@ -352,9 +372,18 @@ else
     end
 end
 
+
+if pstar <1
+    C=randsampleFS(length(pdfe), round(pstar*length(pdfe)),2);
+else
+    C = 1:length(pdfe);
+end
 % Thinning: Xt is the retained vector; Wt are the indices of the retained
 % points in the original data X.
-[Xt , Wt] =  rthin(X , pretain);
+[~ , Wt_pstar] =  rthin(X(C') , pretain(C'));
+Wt= true(length(pdfe), 1); 
+Wt(C) = Wt_pstar;
+Xt = X(Wt==1);
 varargout{1} = Xt;
 
 end
