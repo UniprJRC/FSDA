@@ -174,12 +174,12 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %{
     % univariate thinning with less than 100 units.
     % As the first examp[le above, but with less than 100 units in the data.
-    x1 = randn(85,1);
+    x1 = randn(850,1);
     x2 = 8 + randn(10,1);
     x = [x1 ; x2];
-    y = 5*x + 0.9*randn(95,1);
-    b = [ones(95,1) , x] \ y;
-    yhat = [ones(95,1) , x] * b;
+    y = 5*x + 0.9*randn(860,1);
+    b = [ones(860,1) , x] \ y;
+    yhat = [ones(860,1) , x] * b;
     plot(x,y,'.',x,yhat,'--');
 
     % thinning over the predicted values
@@ -200,7 +200,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % for reasons of performance options are checked only if necessary
 if nargin > 1
     
-    options     = struct('retainby','comp2one','bandwidth',0);
+    options     = struct('retainby','comp2one','bandwidth',0,'cup',1);
     UserOptions = varargin(1:2:length(varargin));
     if ~isempty(UserOptions) && (length(varargin) ~= 2*length(UserOptions))
         error('FSDA:kdebiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
@@ -221,7 +221,12 @@ if nargin > 1
     % the bandwidth used to estimate the density
     bandwidth   = options.bandwidth;
     
+    % upper limit for the pdf used to compute the retantion probability
+    cup         = options.cup;
     if ~isempty(UserOptions)
+        if cup < 0 || cup > 1 
+            cup = 1;
+        end
         retainby_types  = {'inverse' , 'comp2one'};
         if  isempty(retainby) || ~(ischar(retainby) && max(strcmp(retainby,retainby_types)))
             retainby = 'inverse';
@@ -250,6 +255,7 @@ if nargin > 1
 else
     bandwidth = 0;
     retainby  = 0;
+    cup = 1;
 end
 
 %% Compute the density along the predicted values
@@ -319,6 +325,13 @@ varargout{3} = xout;
 % replace the zero or negative (in case of rounding problems) sampling
 % probability with a very small value
 pdfe(pdfe<10^(-15))=10^(-15);
+
+maxpdfe = max(pdfe);
+if cup < 1
+    pdfecup = quantile(pdfe,cup);
+    pdfe(pdfe>pdfecup)=pdfecup; 
+end
+
 % convert the density values into the vector of retention probabilities;
 % sampling probability should be inversely proportional to the density, but
 % different functions are possible.
@@ -326,13 +339,13 @@ if retainby == 0
     % in this case the user has not provided optional arguments and accept
     % all defaults. For performance reasons, the 'switch' statement is
     % skipped and the default 'comp2one' function is applied.
-    pretain = 1 - pdfe/max(pdfe);
+    pretain = 1 - pdfe/maxpdfe;
     % pretain = (1 ./ pdfe) / max((1 ./ pdfe));
 else
     switch retainby
         case 'comp2one'
             % complement to 1
-            pretain = 1 - pdfe/max(pdfe);
+            pretain = 1 - pdfe/maxpdfe;
         case 'inverse'
             % inverse
             pretain = (1 ./ pdfe) / max((1 ./ pdfe));
