@@ -21,7 +21,6 @@ jobs:
         - matlab/install                        # previously `wget ...`
         - matlab/run-command:                   # previously `matlab -batch ...`   
             command:  
-              set -e
               "run runAllMyTestsFS.m"    # run the testing script: the environment variable can be retrieved using 'var=getenv('CATEGORY_TO_TEST');'
         - store_test_results:
             path: ~/project/tests-<< parameters.q >>/test-<< parameters.q >>-report/
