@@ -278,6 +278,7 @@ for i =1:nselected
     %% -- CONCENTRATION STEPS
     
     indold = zeros(n,1)-1;
+    postprobold = zeros(n,k);
     mudiff=1e+15;
     cstep=0;
     while mudiff > reftol && cstep <= refsteps-1
@@ -309,9 +310,7 @@ for i =1:nselected
         %%% -- -- Posterior probabilities of all observations
         
         % Mixture likelihood model
-        if exist('postprob','var')
-            postprobold = postprob;
-        end
+
         if mixt > 0
             %E-step is run to compute the posterior probabilities of all
             %observations
