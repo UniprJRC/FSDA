@@ -37,6 +37,17 @@ short_name = FSColors.reddish.ShortName
       ShortName = '';
    end
    methods(Static)
+       % black and white
+       function c = white
+          c.RGB =  [1, 1, 1];
+          c.ShortName = 'w';
+       end
+       function c = black
+          c.RGB =  [0, 0, 0];
+          c.ShortName = 'k';
+       end
+       
+       % standard colors
        function c = yellow
           c.RGB =  [1, 1, 0];
           c.ShortName = 'y';
@@ -61,18 +72,12 @@ short_name = FSColors.reddish.ShortName
           c.RGB =  [0, 0, 1];
           c.ShortName = 'b';
        end
-       function c = white
-          c.RGB =  [1, 1, 1];
-          c.ShortName = 'w';
+       function c = brown
+          c.RGB =  [172/255, 115/255, 57/255];
+          c.ShortName = 'br';
        end
-       function c = black
-          c.RGB =  [0, 0, 0];
-          c.ShortName = 'k';
-       end
-       function c = darkgrey
-          c.RGB =  [0.6, 0.6, 0.6];
-          c.ShortName = 'dg';
-       end
+
+       % faint colors
        function c = blueish
           c.RGB =  [18/255,104/255,179/255];
           c.ShortName = 'bs';
@@ -101,6 +106,45 @@ short_name = FSColors.reddish.ShortName
           c.RGB =  [77/255,190/255,238/255];
           c.ShortName = 'ls';
        end
+       function c = lightbrown
+          c.RGB =  [223/255, 191/255, 15/255];
+          c.ShortName = 'lbr';
+       end
+       
+       % darker colors
+       function c = darkblue
+          c.RGB =  [0, 0, 128/255];
+          c.ShortName = 'db';
+       end
+       function c = darkred
+          c.RGB =  [180/255,0,0];
+          c.ShortName = 'dr';
+       end
+       function c = darkgreen
+          c.RGB =  [0,77/255,0];
+          c.ShortName = 'dg';
+       end
+       function c = darkpurpl
+          c.RGB =  [100/255,0,130/255];
+          c.ShortName = 'dp';
+       end
+       function c = darkyellow
+          c.RGB =  [204/255,204/255,0];
+          c.ShortName = 'dy';
+       end
+       function c = darkgrey
+          c.RGB =  [0.6, 0.6, 0.6];
+          c.ShortName = 'dg';
+       end
+       function c = darkbrown
+          c.RGB =  [115/255, 77/255, 38/255];
+          c.ShortName = 'dbr';
+       end
+       function c = darkcyan
+          c.RGB =  [0, 139/255, 139/255];
+          c.ShortName = 'dc';
+       end
+
    end
    
 %% REMARK: 
