@@ -906,8 +906,8 @@ parfor (j=1:lalpha, numpool)
     [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
         = tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,...
         equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
-         seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
-   
+        seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
+    
     %%  END OF RANDOM STARTS
     
     IDX(:,j)    = idxopt;
@@ -1146,13 +1146,13 @@ matrixFont          = 8;
 % \alpha values. Colormap follows our color rotation standard:
 % clrdef = 'bkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcrbkmgcr';
 clrdefmap = zeros(lalpha,3,6);
-clrdefmap(:,:,1) = flipud(cmapFS(lalpha,FSColors.blue.RGB,FSColors.blueish.RGB));
-clrdefmap(:,:,2) = flipud(cmapFS(lalpha,FSColors.black.RGB,FSColors.greysh.RGB));
-clrdefmap(:,:,3) = flipud(cmapFS(lalpha,FSColors.magenta.RGB,FSColors.purplish.RGB));
-clrdefmap(:,:,4) = flipud(cmapFS(lalpha,FSColors.green.RGB,FSColors.greenish.RGB));
-clrdefmap(:,:,5) = flipud(cmapFS(lalpha,FSColors.cyan.RGB,FSColors.lightblue.RGB));
-clrdefmap(:,:,6) = flipud(cmapFS(lalpha,FSColors.red.RGB,FSColors.reddish.RGB));
-clrdefmap=repmat(clrdefmap,1,1,4);
+clrdefmap(:,:,1) = flipud(cmapFS(FSColors.darkblue.RGB ,FSColors.blueish.RGB  ,lalpha));
+clrdefmap(:,:,2) = flipud(cmapFS(FSColors.black.RGB    ,FSColors.greysh.RGB   ,lalpha));
+clrdefmap(:,:,3) = flipud(cmapFS(FSColors.darkpurpl.RGB,FSColors.purplish.RGB ,lalpha));
+clrdefmap(:,:,4) = flipud(cmapFS(FSColors.darkgreen.RGB,FSColors.greenish.RGB ,lalpha));
+clrdefmap(:,:,5) = flipud(cmapFS(FSColors.darkcyan.RGB ,FSColors.lightblue.RGB,lalpha));
+clrdefmap(:,:,6) = flipud(cmapFS(FSColors.darkred.RGB  ,FSColors.reddish.RGB  ,lalpha));
+clrdefmap        = repmat(clrdefmap,1,1,4);
 
 % plotdef = list of the plots which are produced by default (is plots=1)
 plotdef={'monitor'; 'UnitsTrmOrChgCla'; 'PostProb'; 'Sigma';...
@@ -1798,21 +1798,16 @@ if d>0
         set(gcf, 'Tag' , 'Trimmed units');
         % Dimension of Beta is k-by-p-by-length(alpha)
         for j = 1:length(AX)
-            %add2yX(H,AX(j),BigAx,'multivarfit','2','userleg','1');%DDD
             % Make the axes of the panel with handle AX(i) the current axes.
             set(gcf,'CurrentAxes',AX(j));
-            
             for i=1:k
-                % refline slope and intercept
-                % add a line for each value of alpha1
+                % add a refline for each value of alpha1
                 for jj=1:length(alphaLik)
-                    hline=refline([Beta(i,j+1,jj) Beta(i,1,jj)]);
-                    %hline.Color=clrdef(i);
-                    hline.Color=clrdefmap(jj,:,i);
-                    hline.LineStyle=linedef{i};%DDD
+                    hline           = refline([Beta(i,j+1,jj) Beta(i,1,jj)]);
+                    hline.Color     = clrdefmap(jj,:,i);
+                    hline.LineStyle = linedef{i};
                 end
             end
-            
         end
     end
     
@@ -1926,7 +1921,6 @@ if d>0
             Xsel0   = Xext(idxgt0,:);
             Xsel1   = Xext(~idxgt0,:);
             mXsel0  = mean(Xsel0);
-            % [~,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
             [XL,~,XS0,~,~,PCTVAR,~,stats] = plsregress(Xsel0,ysel0,1);
             XLmon(:,j)=XL;
             XLmonW(:,j)=stats.W;
@@ -2139,14 +2133,45 @@ if d>0
     
 end
 
-    function c = cmapFS(m,cstart,cend)
-        %cmapFS creates a colormap of m RGB rows, with a gradient from
-        %cstart to cend
+%     function c = cmapFS(m,cstart,cend)
+%         % cmapFS creates m RGB colors, with a gradient from cstart to cend
+%         % We use intensity colors in [0 1], not proper RGB in [1 255]
+%         mm = (cend-cstart)/(m-1);
+%         iR  = (cstart(1):mm(1):cend(1))';
+%         iG  = (cstart(2):mm(2):cend(2))';
+%         iB  = (cstart(3):mm(3):cend(3))';
+%         c  = [iR ,iG ,iB];
+%     end
+
+    function cm = cmapFS(cstart,cend,m)
+        %cmapFS creates m RGB colors, with a gradient from cstart to cend
+        % We use intensity colors in [0 1], not RGB values in [1 255]. So,
+        % output cm is a matrix of m*3 elements containing the color
+        % gradient.
+        %
+        % Example:
+        %    c = cmapFS([1 0 0],[0.5 0.8 1],12);
+        %    surf(peaks)
+        %    colormap(c);
+        
+        % default number of colors in the gradient is 32.
+        if nargin < 3
+            m=32;
+        end
+        
+        % conversion in case numbers are given in the [1 255] standard
+        if max(cstart)>1 && max(cstart) <= 255
+            cstart=cstart./255;
+        end
+        if max(cend)>1 && max(cend) <= 255
+            cend=cend./255;
+        end
+        
         mm = (cend-cstart)/(m-1);
-        R  = (cstart(1):mm(1):cend(1))';
-        G  = (cstart(2):mm(2):cend(2))';
-        B  = (cstart(3):mm(3):cend(3))';
-        c  = [R ,G ,B];
+        iR  = (cstart(1):mm(1):cend(1))';
+        iG  = (cstart(2):mm(2):cend(2))';
+        iB  = (cstart(3):mm(3):cend(3))';
+        cm  = [iR ,iG ,iB];
     end
 
 end
