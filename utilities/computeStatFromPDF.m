@@ -8,6 +8,12 @@ if nargin<2
     sessione='E';
 end
 
+if nargin==2 && sessione=='M'
+    magistrale=true;
+else
+    magistrale=false;
+end
+
 % extract matricola and titolo tesi
 
 % create a vote in numbers and in letters
@@ -46,6 +52,7 @@ endrel = strfind(str, "Tipo della tesi:");
 
 starttitle = strfind(str,"Titolo tesi:");
 endtitle = strfind(str, "Primo relatore:");
+
 
 
 numtrenta = strfind(str, "30/30");
@@ -89,8 +96,12 @@ for j=1:n
         laureandi{j,7}="IC";
     end
     
-    findCL=strfind(AA,"Corso di Laurea in");
-    findCLsel= aa(findCL(end)+19:end-2);
+    findCL=strfind(AA,"Corso di Laurea");
+    if magistrale == true
+    findCLsel= aa(findCL(end)+29:end-2);
+    else
+        findCLsel= aa(findCL(end)+19:end-2);
+    end
     % findCR=regexp(findCLsel,'\n');
     findCLsel=removeExtraSpacesLF(findCLsel);
     laureandi{j,2}=string(findCLsel);
@@ -104,8 +115,27 @@ for j=1:n
     start = starttitle(j);
     fin = endtitle(j);
     tmp = extractBetween(str,start+13,fin-1);
-    retcar = regexp(tmp, '[\n]');
-    laureandi{j,4} = extractBetween(tmp,1,retcar(1));
+    % refine the search
+    % search for 'Materia' and 'Titolo ing.'
+    % if exist take the minimum
+    endtitlec1 = strfind(tmp, "Titolo Inglese della tesi:");
+    endtitlec2 = strfind(tmp, "Materia della tesi:");
+    
+    if ~isempty(endtitlec1) && ~isempty(endtitlec2)
+        fin = start+13 + min([endtitlec2 endtitlec1]);
+    elseif ~isempty(endtitlec1)
+        fin = start+13 + endtitlec1;
+    elseif ~isempty(endtitlec2)
+        fin = start+13 + endtitlec2;
+    else
+        pippo=1;
+    end
+ 
+ % solution #2 search for 3 consecutive CRLF    
+ %   retcar = regexp(tmp, '[\n]{3,}');
+ %   laureandi{j,4} = extractBetween(str,start+13,start+13+retcar(1));
+ 
+    laureandi{j,4} = extractBetween(str,start+13,fin-5);
     
     % relatore
     start = startrel(j);
@@ -139,6 +169,7 @@ for j=1:n
     
 end
 
+
 if strcmp(sessione,'E')
     perc=4;
 elseif strcmp(sessione,'I')
@@ -160,7 +191,7 @@ if magistrale == true
     AddLodi(laureandi.("Num lodi")==2)=0.5;
     AddLodi(laureandi.("Num lodi")==3)=1;
     AddLodi(laureandi.("Num lodi")==4)=1;
-    AddLodi(laureandi.("Num lodi")>=5)=1.5;    
+    AddLodi(laureandi.("Num lodi")>=5)=1.5;
 else
     AddLodi=zeros(n,1);
     AddLodi(laureandi.("Num di 30/30")==2)=1;
@@ -168,8 +199,8 @@ else
     AddLodi(laureandi.("Num di 30/30")==4)=3;
     AddLodi(laureandi.("Num di 30/30")==5)=4;
     AddLodi(laureandi.("Num di 30/30")>5)=5;
-end    
-    laureandi.Voto_110=laureandi.("media base 110")+AddInCorso+AddLodi;
+end
+laureandi.Voto_110=laureandi.("media base 110")+AddInCorso+AddLodi;
 
 
 if magistrale==true
