@@ -55,7 +55,8 @@ headJS=headJS +	"    <script src='../includes/product/scripts/global.js'></scrip
 headJS=headJS +	"<script src='includesFS/bottom.js' type='text/javascript'></script>";
 headJS=headJS +	"<script src='includesFS/lbar.js' type='text/javascript'></script>";
 headJS=headJS +	"<script src='includesFS/lbarSimple.js' type='text/javascript'></script>";
-headJS=headJS +	"<script src='includesFS/engine.js' type='text/javascript'></script>";
+headJS=headJS +	"    <!-- always be sure that engineweb.js is included on web pages and NOT engine.js that is for the local help -->";
+headJS=headJS +	"<script src='includesFS/engineweb.js' type='text/javascript'></script>";
 headJS=headJS +	"<script src='includesFS/divsbefore.js' type='text/javascript'></script>";
 headJS=headJS +	"<script src='includesFS/divsafter.js' type='text/javascript'></script>";
 headJS=headJS +	"    <script src='../includes/product/scripts/underscore-min.js'></script>";
