@@ -128,7 +128,7 @@ for j=1:n
     elseif ~isempty(endtitlec2)
         fin = start+13 + endtitlec2;
     else
-        pippo=1;
+       
     end
  
  % solution #2 search for 3 consecutive CRLF    
