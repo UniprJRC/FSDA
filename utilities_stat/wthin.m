@@ -98,7 +98,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     %[Wt,pretain] = wthin([yhat ; y3], 'retainby','comp2one');
 
     % thinning over the predicted values when specifying a thinning
-    probability pstar.
+    %probability pstar.
     pstar=0.80
     [Wt,pretain] = wthin(yhat, 'retainby','comp2one','pstar',pstar);
 
