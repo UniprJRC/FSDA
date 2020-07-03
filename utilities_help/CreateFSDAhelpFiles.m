@@ -135,7 +135,7 @@ end
 % that unfortunatley lowers the code readability.
 % Please note that due to the constraints of JS string concatenation, ALL
 % the instances of double quotes should be carefully removed! 
-% headJS.js is decleared like: 
+% headJS.js is declared like: 
 % "<script src='includesFS/headJS.js' type='text/javascript'></script>"; 
 % and then injected in the right spot like this: 
 % <script type="text/javascript">document.write(headJS);</script>
@@ -149,11 +149,11 @@ end
 % variable with the same name called by document.write(fcate); also they
 % need the 'lbarsimple.js' file unlike all the other help pages.
 %
-% The very same pages are used in the web server (ROSA), provided that a
-% file named 'headJSweb.js' is used in place of 'engine.js'. This file
-% replaces the MATLAB internal search engine with a reference to Google
-% Search which works mostly in the same way and will not need any further
-% modification of the html code.
+% The very same pages are used in the web server (ROSA
+% http://rosa.unipr.it), provided that a file named 'headJSweb.js' is used
+% in place of 'engine.js'. This file replaces the MATLAB internal search
+% engine with a reference to Google Search which works mostly in the same
+% way and will not need any further modification of the html code.
 
 
 %% STEP 3: create alphabetical list of functions and txt file
