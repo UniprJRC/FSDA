@@ -43,8 +43,62 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               (respectively spherical) clusters. The default is to apply
 %               restrfactor to eigenvalues. In order to apply restrfactor
 %               to determinants it is necessary to use optional input
-%               argument restr.
-%
+%               argument restr. If restrfactor is a struct it may contain
+%               the following fields:
+%         restrfactor.pars= type of Gaussian Parsimonious Clustering Model. Character.
+%               A 3 letter word in the set:
+%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%               'EVI','VEI','EEI','VII','EII'.
+%               The field restrfactor.pars is compulsory. All the other fields are
+%               non necessary. If they are not present they are set to
+%               their default values.
+%         restrfactor.cdet = scalar in the interval [1 Inf) which specifies the
+%               the restriction which has to be applied to the determinants.
+%               If pa.cdet=1 all determinants are forced to be equal.
+%               See section More About for additional details.
+%         restrfactor.shw = scalar in the interval [1 Inf) which specifies the
+%               the restriction which has to be applied to the elements of
+%               the shape matrices inside each group. If pa.shw=1 all diagonal
+%               elements of the shape matrix of cluster j (with j=1, ...,
+%               k) will be equal.
+%         restrfactor.shb = scalar in the interval [1 Inf) which specifies the
+%               the restriction which has to be applied to the elements of
+%               the shape matrices across each group.
+%         restrfactor.maxiterS = positive integer which specifies the maximum
+%               number of iterations to obtain the restricted shape matrix.
+%               This parameter is used by routine restrshapeGPCM. The
+%               default value of restrfactor.maxiterS is 5.
+%         restrfactor.maxiterR = positive integer which specifies the maximum
+%               number of iterations to obtain the common rotation matrix
+%               in presence of varying shape.
+%               This parameter is used by routine cpcV. The
+%               default value of restrfactor.maxiterR is 20.
+%         restrfactor.maxiterDSR = positive integer which specifies the maximum
+%               number of iterations to obtain the requested restricted
+%               determinants, shape matrices and rotation. For all
+%               parametrizations  restrfactor.maxiterDSR is set to 1 apart from for
+%               the specifications 'VVE', 'EVE' and 'VEE'. The default
+%               value of restrfactor.maxiterDSR is 20.
+%         restrfactor.tolS=tolerance to use to exit the iterative procedure for
+%               estimating the shape. Scalar. The
+%               iterative procedures stops when the relative difference of
+%               a certain output matrix is smaller than itertol in two consecutive
+%               iterations. The default value of pa.tol is 1e-12.
+%      restrfactor.zerotol = tolerance value to declare all input values equal to 0
+%               in the eigenvalues restriction routine (file restreigen.m)
+%               or in the final reconstruction of covariance matrices.
+%               The default value of zerotol is 1e-10.
+%      restrfactor.msg = boolean which if set equal to true enables to monitor
+%               the relative change of the estimates of lambda Gamma and
+%               Omega in each iteration. The defaul value of pa.msg is
+%               false, that is nothing is displayed in each iteration.
+%   restrfactor.userepmat  = scalar, which specifies whether to use implicit
+%               expansion or bsxfun.  restrfactor.userepmat =2 implies implicit
+%               expansion, pa.userepmat=1 implies use of bsxfun. The
+%               default is to use implicit expansion (faster)
+%               if verLessThanFS(9.1) is false and bsxfun if MATLAB is
+%               older than 2016b.
+%               Data Types - scalar or struct
 %  Optional input arguments:
 %
 %       nsamp : Number of subsamples to extract.
@@ -279,7 +333,8 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               implies restriction on the determinants. If restrtype is
 %               'deter' it is also possible to specify  through optional
 %               parameter cshape the constraint to apply to the shape
-%               matrices.
+%               matrices. Note that this option is ignored if input
+%               parameter restrfactor is a struct.
 %                 Example - 'restrtype','deter'
 %                 Data Types - char
 %
@@ -933,8 +988,17 @@ end
 % is restrfactor is a struct then restriction is GPCM
 if isstruct(restrfactor)
     restrnum=3;
+        optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
+        'maxiterR','','tolR','','shw','','shb','',...
+        'cdet','','zerotol','','pars','','k','','v','','tol','','msg','');
+    chkoptions(optionspa,fieldnames(restrfactor))
+    if verLess2016b ==true
+        restrfactor.userepmat=1;
+    else
+        restrfactor.userepmat=2;
+    end
     restrGPCM=true;
-    
+    nocheckpa=true;
 else
     restrGPCM=false;
     % Check restriction factor
@@ -1013,9 +1077,9 @@ end
 ll=zeros(n,k);
 obj=1e+14;
 
-% Create an identity matrix which will be used in fucntion logmvnpdfFS
+% Create an identity matrix which will be used in function logmvnpdfFS
 eyev=eye(v);
-% Create a copy of matrix Y which will be used in fucntion logmvnpdfFS
+% Create a copy of matrix Y which will be used in function logmvnpdfFS
 Y0tmp=zeros(n,v);
 
 if mixt>=1
@@ -1172,7 +1236,7 @@ for i=1:nselected
                 % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
             end
         elseif restrnum==3
-            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor);
+            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
         end
         
     else
@@ -1204,7 +1268,7 @@ for i=1:nselected
         if equalweights
             % In this case we are (ideally) assuming equally sized groups
             for j=1:k
-                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
+                ll(:,j)= logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0,callmex);
             end
         else
             
@@ -1213,7 +1277,7 @@ for i=1:nselected
             for j=1:k
                 % REMARK: we use log(niini(j)) instead of log(niini(j)/h)
                 % because h is constant
-                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0);
+                ll(:,j)= log(niini(j)/h) +  logmvnpdfFS(Y,cini(j,:),sigmaini(:,:,j),Y0tmp,eyev,n,v,0,callmex);
                 % Line above is faster but equivalent to
                 % ll(:,j)= (niini(j)/h)*mvnpdf(Y,cini(j,:),sigmaini(:,:,j));
             end
@@ -1224,7 +1288,7 @@ for i=1:nselected
             
             postprobold=postprob;
             
-            [~,postprob,disc]=estepFS(ll);
+            [~,postprob,disc]=estepFS(ll, verLess2016b);
             
             % Sort the n likelihood contributions
             % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
@@ -1290,7 +1354,7 @@ for i=1:nselected
             % covariance matrices
             
             postprobold=postprob;
-            [~,postprob]=estepFS(ll);
+            [~,postprob]=estepFS(ll, verLess2016b);
             
             postprob(qqunassigned,:)=0;
             
@@ -1307,17 +1371,17 @@ for i=1:nselected
         for j=1:k
             
             if mixt>=1
-                % Matrix cini is updated using weighted means. The weights
-                % are given by the posterior probabilities.
-                % Note that Y is used instead of Ytri because posterior
-                % probabilities for unassigned units are 0.
-                if verLess2016b ==true
-                    cini(j,:)= sum(bsxfun(@times, Y, postprob(:,j)),1)/niini(j);
-                else
-                    cini(j,:)= sum(Y.*postprob(:,j),1)/niini(j);
-                end
-                
                 if niini(j)>0
+                    % Matrix cini is updated using weighted means. The weights
+                    % are given by the posterior probabilities.
+                    % Note that Y is used instead of Ytri because posterior
+                    % probabilities for unassigned units are 0.
+                    if verLess2016b ==true
+                        cini(j,:)= sum(bsxfun(@times, Y, postprob(:,j)),1)/niini(j);
+                    else
+                        cini(j,:)= sum(Y.*postprob(:,j),1)/niini(j);
+                    end
+                    
                     if verLess2016b ==true
                         Ytric = bsxfun(@minus,Y,cini(j,:));
                     else
@@ -1455,7 +1519,7 @@ for i=1:nselected
             % Alternative code based on gpuArrary
             % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         else
-            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor);
+                sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
         end
         % Calculus of the objective function (E-step)
         % oldobj=obj;
@@ -1471,11 +1535,11 @@ for i=1:nselected
             %   log_lh(i,j) is log (Pr(point i|component j) * Prob( component j))
             
             for j=1:k
-                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0);
+                log_lh(:,j)=  log(niini(j)/h)+logmvnpdfFS(Ytri,cini(j,:),sigmaini(:,:,j),Y0tmp(1:h,:),eyev,h,v,0,callmex);
             end
             
             % obj contains the value of the log likelihood for mixture models
-            obj=estepFS(log_lh);
+            obj=estepFS(log_lh, verLess2016b);
             
         else
             
@@ -1492,7 +1556,7 @@ for i=1:nselected
                         % term which allows for different group weights
                         
                         niinij=niini(j);
-                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0));
+                        obj=obj+ niini(j)*log(niinij/h)+sum(logmvnpdfFS(Ytri(groupind==j,:),cini(j,:),sigmaini(:,:,j),Y0tmp(1:niinij,:),eyev,niinij,v,0,callmex));
                     end
                 end
             end
@@ -1601,7 +1665,7 @@ end
 if equalweights
     for j=1:k
         if any(~isnan(muopt(j,:)))
-            ll(:,j) = logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+            ll(:,j) = logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0,callmex);
         else
             % avoid the computation for empty components and assign NaN
             ll(:,j) = NaN;
@@ -1610,7 +1674,7 @@ if equalweights
 else
     for j=1:k
         if any(~isnan(muopt(j,:)))
-            ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0);
+            ll(:,j) = log(nopt(j)/h) + logmvnpdfFS(Y,muopt(j,:),sigmaopt(:,:,j),Y0tmp,eyev,n,v,0,callmex);
         else
             % avoid the computation for empty components and assign NaN
             ll(:,j) = NaN;
@@ -1624,7 +1688,7 @@ end
 % postprob n x k containing posterior probabilities
 % logpdf n x 1 vector containg the n contributions to the log
 % likelihood of mixture models
-[~,postprob,logpdf]=estepFS(ll);
+[~,postprob,logpdf]=estepFS(ll, verLess2016b);
 
 % %%%%%
 % In this part we select the untrimmed units
@@ -1675,7 +1739,7 @@ end
 
 if mixt>=1
     % Compute value of the maximized MiXTURE log likelihood
-    [NlogLmixt]=estepFS(ll(assignedmixt,:));
+    [NlogLmixt]=estepFS(ll(assignedmixt,:), verLess2016b);
     
     % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
     % Note that if there was convergence NlogL should be exactly equal to

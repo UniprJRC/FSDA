@@ -29,7 +29,19 @@ plots.type = 'contourf';
 plots.cmap = autumn;
 out=tclust(Y,3,0.1,10000,'plots',plots);
 title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
-cascade</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.90 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.72 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.58 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.76 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.47 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  0.75 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/tclust.html#Example_2'><img vspace="5" hspace="5" src="images\tclust_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=20;
 [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
 % MatrixContSubsets is a matrix containing in the rows the indexes of
@@ -49,7 +61,13 @@ title(['Restriction factor =' num2str(restrfactor)],'interpreter','LaTex','FontS
 restrfactor=1;
 out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
 title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
-cascade</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.30 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.09 seconds 
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  1.31 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclust_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
       the components is very overlapped with another one. A 10 per cent
@@ -149,7 +167,7 @@ subplot(1,3,3)
 plot(MIXCLA(:,1),MIXCLA(:,2))
 xlabel('Number of groups')
 ylabel('MIXCLA (ICL)')
-xlim([1 maxk])</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+xlim([1 maxk])</pre></div></div><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\tclust_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 n1=100;     % Generate 5 groups in 5 dimensions
 n2=80;
@@ -211,7 +229,7 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                More in detail, if 0&lt; alpha &lt;1 clustering is based on
                 h=fix(n*(1-alpha)) observations,
                else if alpha is an integer greater than 1 clustering is
-               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Positive scalar which
+               based on h=n-floor(alpha);</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_restrfactor" class="clearfix"> </div> <h3 id="input_argument_restrfactor" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>restrfactor</code> &#8212; Restriction factor. </span>  </a><span class="example_desc">Scalar or struct.</span></span></h3> <div class="collapse"> <p><p>Positive scalar which
                constrains the allowed differences
                among group scatters. Larger values imply larger differences of
                group scatters. On the other hand a value of 1 specifies the
@@ -220,7 +238,51 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                (respectively spherical) clusters. The default is to apply
                restrfactor to eigenvalues. In order to apply restrfactor
                to determinants it is necessary to use optional input
-               argument restr.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',1000
+               argument restr. If restrfactor is a struct it may contain
+               the following fields:</p> <p>
+ </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>type of Gaussian Parsimonious Clustering Model. Character.</p> <p>
+               A 3 letter word in the set:</p> <p>
+               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+               'EVI','VEI','EEI','VII','EII'.</p><p>
+               The field restrfactor.pars is compulsory. All the other fields are
+               non necessary. If they are not present they are set to
+               their default values.</p></p></td></tr><tr valign="top"><td><code>cdet</code></td><td><p><p>scalar in the interval [1 Inf) which specifies the
+               the restriction which has to be applied to the determinants.</p> <p>
+               If pa.cdet=1 all determinants are forced to be equal.</p><p>
+               See section More About for additional details.</p></p></td></tr><tr valign="top"><td><code>shw</code></td><td><p>scalar in the interval [1 Inf) which specifies the
+               the restriction which has to be applied to the elements of
+               the shape matrices inside each group. If pa.shw=1 all diagonal
+               elements of the shape matrix of cluster j (with j=1, ...,
+               k) will be equal.</p></td></tr><tr valign="top"><td><code>shb</code></td><td><p>scalar in the interval [1 Inf) which specifies the
+               the restriction which has to be applied to the elements of
+               the shape matrices across each group.</p></td></tr><tr valign="top"><td><code>maxiterS</code></td><td><p><p>positive integer which specifies the maximum
+               number of iterations to obtain the restricted shape matrix.</p> <p>
+               This parameter is used by routine restrshapeGPCM. The
+               default value of restrfactor.maxiterS is 5.</p></p></td></tr><tr valign="top"><td><code>maxiterR</code></td><td><p><p>positive integer which specifies the maximum
+               number of iterations to obtain the common rotation matrix
+               in presence of varying shape.</p> <p>
+               This parameter is used by routine cpcV. The
+               default value of restrfactor.maxiterR is 20.</p></p></td></tr><tr valign="top"><td><code>maxiterDSR</code></td><td><p>positive integer which specifies the maximum
+               number of iterations to obtain the requested restricted
+               determinants, shape matrices and rotation. For all
+               parametrizations  restrfactor.maxiterDSR is set to 1 apart from for
+               the specifications 'VVE', 'EVE' and 'VEE'. The default
+               value of restrfactor.maxiterDSR is 20.</p></td></tr><tr valign="top"><td><code>tolS</code></td><td><p>tolerance to use to exit the iterative procedure for
+               estimating the shape. Scalar. The
+               iterative procedures stops when the relative difference of
+               a certain output matrix is smaller than itertol in two consecutive
+               iterations. The default value of pa.tol is 1e-12.</p></td></tr><tr valign="top"><td><code>zerotol</code></td><td><p><p>tolerance value to declare all input values equal to 0
+               in the eigenvalues restriction routine (file restreigen.m)
+               or in the final reconstruction of covariance matrices.</p> <p>
+               The default value of zerotol is 1e-10.</p></p></td></tr><tr valign="top"><td><code>msg</code></td><td><p>boolean which if set equal to true enables to monitor
+               the relative change of the estimates of lambda Gamma and
+               Omega in each iteration. The defaul value of pa.msg is
+               false, that is nothing is displayed in each iteration.</p></td></tr><tr valign="top"><td><code>userepmat</code></td><td><p>scalar, which specifies whether to use implicit
+               expansion or bsxfun.  restrfactor.userepmat =2 implies implicit
+               expansion, pa.userepmat=1 implies use of bsxfun. The
+               default is to use implicit expansion (faster)
+               if verLessThanFS(9.1) is false and bsxfun if MATLAB is
+               older than 2016b.</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>scalar or struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'nsamp',1000
 </code>,<code> 'refsteps',10
 </code>,<code> 'reftol',1e-05
 </code>,<code> 'equalweights',true
@@ -432,7 +494,8 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                implies restriction on the determinants. If restrtype is
                'deter' it is also possible to specify  through optional
                parameter cshape the constraint to apply to the shape
-               matrices.</p><p>
+               matrices. Note that this option is ignored if input
+               parameter restrfactor is a struct.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to the shape matrices.</span></a><span class="example_desc">scalar greater |               equal 1.</span></span></h3><div class="collapse">	<p><p>This options only works is 'restrtype' is 'deter'.</p> <p>
                When restrtype is deter the default value of the "shape"
@@ -521,8 +584,8 @@ out=tclust(Y,4,0.1,10,'restrtype','deter','refsteps',20,'plots',1);</pre></div>
                        with the constraint that $\# \bigcup_{j=1}^k
                        R_j=h$. In the classification likelihood if input
                        option equalweights is set to 0, then $\pi_j'=1$, $j=1, ...,
-                       k$.</p></td></tr><tr valign="top"><td><code>NlogL</code></td><td><p>Scalar. -2 log likelihood. In presence of full
-                       convergeneve -out.NlogL/2 is equal to out.obj.</p></td></tr><tr valign="top"><td><code>equalweights</code></td><td><p>Logical. It is true if in the clustering procedure
+                       k$.</p></td></tr><tr valign="top"><td><code>NlogL</code></td><td><p>Scalar. -2 classification log likelihood. In presence of full
+                       convergence -out.NlogL/2 is equal to out.obj.</p></td></tr><tr valign="top"><td><code>equalweights</code></td><td><p>Logical. It is true if in the clustering procedure
                        we (ideally) assumed equal cluster weights
                        else it is false if we allowed for different
                        cluster sizes.</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>Scalar. Number of observations that have determined the
