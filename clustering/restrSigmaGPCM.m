@@ -1,4 +1,4 @@
-function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
+function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
 %restrSigmaGPCM computes constrained covariance matrices for the 14 GPCM specifications
 %
 %
@@ -72,7 +72,19 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa)
 %               false, that is nothing is displayed in each iteration.
 %           pa.k  = the number of groups.
 %           pa.v  = the number of variables.
+%   pa.userepmat  = scalar, which specifies whether to use implicit
+%                   expansion or bsxfun.  pa.userepmat =2 implies implicit
+%                   expansion, pa.userepmat=1 implies use of bsxfun. The
+%                   default is to use implicit expansion (faster)
+%                   if verLessThanFS(9.1) is false and bsxfun if MATLAB is
+%                   older than 2016b.
 %               Data Types - struct
+%
+%    nocheck = specify whether it is necessary to check the input fields in
+%              previous input option pa.If nocheck is
+%              false (default is true) no check is performed on input
+%              structure pa.
+%               Data Types - Boolean
 %
 %  Optional input arguments:
 %
@@ -268,16 +280,32 @@ shbdef=100;
 cdetdef=100;
 zerotoldef=1e-10;
 
+if nargin<4
+    nocheck=false;
+end
+
+
+% pa = structure containing modeltype, number of iterations .....
+fpa=fieldnames(pa);
+
+% if nocheck is false check that the fieldnames of input structure pa are
+% those specified in input structure options.
+if nocheck == false
+    options=struct('maxiterDSR',maxiterDSRdef,'tolDSR',tolDSRdef,'maxiterS',maxiterSdef,'tolS',tolSdef, ...
+        'maxiterR',maxiterRdef,'tolR',tolRdef,'shw',shwdef,'shb',shbdef,...
+        'cdet',cdetdef,'zerotol',zerotoldef,'pars','','userepmat','');
+    chkoptions(options,fpa)
+end
+
 % SigmaB = p-times-p-times-k = empirical covariance matrix
 Sigma=SigmaB;
 k=length(niini);
 v=size(Sigma,1);
 pa.v=v;
 pa.k=k;
+
 % OMG = initialize 3D array containing rotation matrices
 OMG=zeros(size(Sigma));
-
-% pa = structure containing modeltype, number of iterations .....
 
 % Tolerance associated to the maximum of the elements which have to be
 % constrained. If the maximum  is smaller than zerotol restreigen
@@ -287,8 +315,6 @@ OMG=zeros(size(Sigma));
 % zerotol it means that all n points are concentrated in k points and there
 % is a perfect fit therefore no further changes on the eigenvalues is
 % required.
-fpa=fieldnames(pa);
-
 d=max(strcmp('zerotol',fpa));
 if d==0
     pa.zerotol=zerotoldef;
@@ -298,7 +324,6 @@ zerotol=pa.zerotol;
 % pa.pars = character vector with three letters specifying the type of the
 % 14 constraints (i.e. EEE, CVVV, EVE, ...)
 pars=pa.pars;
-
 
 % Select cases in which maxiterDSR>1 and specify relative tolerance
 % EVE VEE VVE VVV VEV VVI and VEI require iterations
@@ -378,6 +403,17 @@ if d==1
     msg=pa.msg;
 else
     msg=false;
+end
+
+
+d=max(strcmp('userepmat',fpa));
+if d==0
+    verLess2016b=verLessThanFS(9.1);
+    if verLess2016b == true
+        pa.userepmat=1;
+    else
+        pa.userepmat=2;
+    end
 end
 
 %% Parameters not set by the user
@@ -461,9 +497,10 @@ else % The remaining case is when **I
     end
 end
 
+GAM=ones(v,k);
 % Immediately apply the restriction on vector lmd
 % if ~isequal(lmd,ones(1,k))
-%     GAM=ones(v,k);
+%     
 %     [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
 % end
 
@@ -510,6 +547,12 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     
     % Update GAM
     [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
+    % GAMf=GAM;
+     if pa.sortsh==1
+        for j=1:k
+            GAM(:,j)=sort(GAM(:,j),'ascend');
+        end
+     end
     
     % GAMnew = new values of matrix GAM in vectorized form
     GAMnew=GAM(:);
