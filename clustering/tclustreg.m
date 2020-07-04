@@ -734,7 +734,8 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 % Control variables, tolerances and internal flags
 % warning('off');
 
-
+% verLess2016b is true if current version is smaller than 2016b
+verLess2016b=verLessThanFS(9.1);
 %% Input parameters checking
 
 nnargin   = nargin;
@@ -1330,7 +1331,7 @@ end
     ll(delunits,:)=[];
     
     if mixt>=1
-        [NlogLmixt]=estepFS(ll);
+        [NlogLmixt]=estepFS(ll,verLess2016b);
         % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
         % Note that if there was convergence NlogLmixt should be exactly equal to
         % -vopt
