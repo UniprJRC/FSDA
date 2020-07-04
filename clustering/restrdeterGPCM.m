@@ -88,11 +88,16 @@ lmd = NaN(1,pa.k);
 %     lmd(j) = sum( diag(  diag(1./GAM(:,j)) * (OMG(:,:,j))' * SigmaB(:,:,j) * OMG(:,:,j) )) / pa.v;
 % end
 
-
+% Fancy way which avoids the loop below (it works from MATLAB 2020b)
+% MM=pagemtimes(pagemtimes(OMG,'ctranspose',SigmaB,'none'),OMG);
+% Lr=reshape(MM,pa.v*pa.v,[]);
+% D=reshape(Lr(1:(pa.v+1):end,:),pa.v,pa.k);
+% lmd=sum(D./GAM,1)/pa.v;
 for j=1:pa.k
     OMGj=OMG(:,:,j);
     lmd(j) = sum( diag(OMGj' * SigmaB(:,:,j) * OMGj)./GAM(:,j) )/ pa.v;
 end
+
 
 % Note that ((OMG(:,:,j))' * SigmaB(:,:,j) * OMG(:,:,j) computes
 % (\lambda_j^(1/p)*\Gamma_j) where \Gamma_j is the UNCONSTRAINED shape
@@ -106,7 +111,7 @@ end
 % lmdc = row vector containing the restricted determinants
 % Make sure niini is a column vector
 niini=niini(:);
-lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol);
+lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol,pa.userepmat);
 
 end
 
