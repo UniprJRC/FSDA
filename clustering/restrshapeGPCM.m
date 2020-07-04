@@ -47,6 +47,7 @@ function GAMc  = restrshapeGPCM(lmd, Omega, SigmaB, niini, pa)
 %            pa.zerotol = tolerance to decleare elements equal to 0.
 %            pa.maxiterS = maximum number of iterations in presence of
 %            varying shape matrices.
+%            pa.userepmat = scalar (if =2 implicit expansion is used)
 %                 Data Types - struct
 %
 %
@@ -118,7 +119,7 @@ if strcmp(pars(2),'E')
     % Apply the constraint shw to the diagonal elements of the pooled Gamma matrix
     % GAMpooledc is a column vector of length p which contains the diagonal
     % elements of the pooled \Gamma matrix after applying constraint shw
-    GAMpooledc = restreigen(diag(GAMpooled),1,shw,pa.zerotol);
+    GAMpooledc = restreigen(diag(GAMpooled),1,shw,pa.zerotol,pa.userepmat);
     
     % Impose the constraint that the product of the elements of vector
     % GAMpooledc is equal to 1
@@ -139,15 +140,19 @@ else % This is the case strcmp(pars(2),'V')
     shb=pa.shb;
     maxiterS=pa.maxiterS;
     zerotol=pa.zerotol;
+    
     for j=1:k
-        lamGAM(:,j) = diag( (Omega(:,:,j))' * SigmaB(:,:,j) * Omega(:,:,j) )/lmd(j);
+        Omegaj=Omega(:,:,j);
+        lamGAM(:,j) = diag( Omegaj' * SigmaB(:,:,j) * Omegaj )/lmd(j);
     end
-    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh);
+    
+    
+    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh,pa.userepmat);
 end
 
 end
 
-function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, tolS, sortsh)
+function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, tolS, sortsh, userepmat)
 % restrshapecore computes constrained Gamma (shape) matrix
 %
 % The purpose is to find the new constrained shape matrix.
@@ -211,7 +216,7 @@ lamGAMc = lamGAM;
 % shw
 % The ratio of each column of matrix lamGAMc is not greater than shw
 for j=1:K
-    lamGAMc(:,j) = restreigen(lamGAM(:,j),1,shw,zerotol);
+    lamGAMc(:,j) = restreigen(lamGAM(:,j),1,shw,zerotol,userepmat);
 end
 
 
@@ -225,6 +230,7 @@ Ord=NaN(p,K);
 GAMsor=Ord;
 GAMctr=Ord;
 GAMctrSRT=Ord;
+
 
 while ( (diffGAM > tolS) && (iter < maxiterS) )
     iter = iter + 1;
@@ -240,10 +246,14 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     % det(Gamma_j)=1
     GAM=GAM./repmat(es,p,1);
     GAM(GAM==0)=1;
-    
-    if sortsh==1
-        for j=1:K
-            [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'ascend');
+    usesor=false;
+    if usesor==true
+        if sortsh==1
+            for j=1:K
+                [GAMsor(:,j), Ord(:,j)]=sort(GAM(:,j),'ascend');
+            end
+        else
+            GAMsor=GAM;
         end
     else
         GAMsor=GAM;
@@ -254,17 +264,22 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     % The ranks of the orginal ordering of each column is store in matrix ord
     % The ratio of each row of matrix GAMc is not greater than shb
     for i=1:p
-        GAMctr(i,:) = restreigen(GAMsor(i,:), niini, shb, zerotol);
+        GAMctr(i,:) = restreigen(GAMsor(i,:), niini, shb, zerotol,userepmat);
     end
     
-    % Reconstruct the original order for each column
-    if sortsh==1
-        for j=1:K
-            GAMctrSRT(Ord(:,j),j)=GAMctr(:,j);
+    if usesor==true
+        % Reconstruct the original order for each column
+        if sortsh==1
+            for j=1:K
+                GAMctrSRT(Ord(:,j),j)=GAMctr(:,j);
+            end
+        else
+            GAMctrSRT=GAMctr;
         end
     else
         GAMctrSRT=GAMctr;
     end
+    
     lamGAMc=GAMctrSRT;
     
     % GAMold = old values of matrix Gamma in vectorized form
