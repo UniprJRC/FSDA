@@ -94,13 +94,14 @@ sigmaXopt = NaN(p-intercept,p-intercept,k);
 % index of the best concentration step
 cstepopt = 0;
 
-% use of repmat (from Release 8.2 repmat is faster than bsxfun)
-if verLessThan('matlab','8.2.0') == 1
-    userepmat=0;
-else
-    userepmat=1;
-end
+% verLess2016b is true if current version is smaller than 2016b
+verLess2016b=verLessThanFS(9.1);
 
+if verLess2016b == true
+    userepmat=1;
+else
+    userepmat=2;
+end
 
 % tolrestreigen = tolerance to use in function restreigen
 tolrestreigen=1e-08;
@@ -314,7 +315,7 @@ for i =1:nselected
         if mixt > 0
             %E-step is run to compute the posterior probabilities of all
             %observations
-            [~,postprob,~] = estepFS(ll);
+            [~,postprob,~] = estepFS(ll,verLess2016b);
             % idx: (nx1) vector indicating the group for which each observation
             % has the largest posterior probability. It takes values in  {1,
             % ... , k}; at the end of the algorithm it will take values in {1,
@@ -898,7 +899,7 @@ for i =1:nselected
             %the objective function is computed excluding both thinned
             %and trimmed.
             log_lh(idx<=0,:)=[];
-            obj = estepFS(log_lh);
+            obj = estepFS(log_lh,verLess2016b);
         end
         
         if penal_obj == 1
@@ -973,7 +974,7 @@ for i =1:nselected
                 if mixt == 2
                     postprobopt = postprob;
                 else
-                    [~,postprobopt,~] = estepFS(ll);
+                    [~,postprobopt,~] = estepFS(ll,verLess2016b);
                     postprobopt(idx<=0,:)=0;
                 end
                 
