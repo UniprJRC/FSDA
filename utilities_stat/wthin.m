@@ -38,7 +38,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                enters in the thinning procedure. If pstar = 1 (default), all units
 %                enter in the thinning procedure.
 %                Data Types - scalar
-%                Example - cup, 0.95  
+%                Example - pstar, 0.95  
 %  Output:
 %
 %   Wt :        vector of Bernoulli weights. Vector. Contains 1 for retained
@@ -98,9 +98,14 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
     %[Wt,pretain] = wthin([yhat ; y3], 'retainby','comp2one');
 
     % thinning over the predicted values when specifying a thinning
-    %probability pstar.
-    pstar=0.80
+    %probability pstar (randomized thinning).
+    pstar=0.95
     [Wt,pretain] = wthin(yhat, 'retainby','comp2one','pstar',pstar);
+   
+    % thinning over the predicted values when specifying a thinning
+    %cup (winsorized thinning).
+    cup=0.5
+    [Wt,pretain] = wthin(yhat, 'retainby','comp2one','cup',cup);
 
     figure;
     plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
