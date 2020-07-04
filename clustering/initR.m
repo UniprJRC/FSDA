@@ -44,6 +44,7 @@ lmd = NaN(1,k);
 
 if strcmp(pars(1),'V')
     for j=1:k
+        % lmd(j)=exp(log(det(SigmaB(:,:,j)))/v);
         lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
     end
 else
