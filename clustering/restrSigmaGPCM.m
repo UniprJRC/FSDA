@@ -80,10 +80,11 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
 %                   older than 2016b.
 %               Data Types - struct
 %
-%    nocheck = specify whether it is necessary to check the input fields in
-%              previous input option pa.If nocheck is
-%              false (default is true) no check is performed on input
-%              structure pa.
+%    nocheck : check in input option pa. Sboolena. Specify whether it is
+%               necessary to check the input fields in
+%               previous input option pa. If nocheck is
+%               false (default is true) no check is performed on input
+%               structure pa.
 %               Data Types - Boolean
 %
 %  Optional input arguments:
