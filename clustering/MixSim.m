@@ -497,11 +497,12 @@ end
 
 if ~islogical(sph) && ~isstruct(sph)
     error('FSDA:MixSim:Wrongsph','option sph must be a logical value or a structure')
-elseif isstruct(sph)
-    % Make sure the strcut sph has the fields p and and k
-    sph.p=v;
-    sph.K=k;
 else
+    optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
+        'maxiterR','','tolR','','shw','','shb','',...
+        'cdet','','zerotol','','pars','');
+    chkoptions(optionspa,fieldnames(sph))
+    nocheckpa=true;
 end
 
 if ~islogical(hom)
@@ -627,9 +628,10 @@ out = Q;
         % tol, lim  : parameters for ncx2mixtcdf.m which computes the probability
         %             of overlapping
         % resN      : scalar, number of resamplings allowed
-        % sph       : scalar. If sph =1 spherical covariance matrices are
-        %             generated, else covariance matrices with a
-        %             prespecified maximum eccentricity are generated
+        % sph       : scalar or struct. If sph =1 spherical covariance matrices are
+        %             generated, elseif is sph=0 covariance matrices with a
+        %             prespecified maximum eccentricity are generated. If
+        %             sph is a struct routine restrSigmaGPCM is called.
         % hom       : scalar. If hom =1 equal covariance matrices are
         %             generated
         %
@@ -747,7 +749,7 @@ out = Q;
                 
             elseif isstruct(sph)
                 % Apply the requested restrictions to Sgen
-                [Sgen]  = restrSigmaGPCM(Sgen, Pigen, sph);
+                [Sgen]  = restrSigmaGPCM(Sgen, Pigen, sph, nocheckpa);
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
@@ -1052,7 +1054,7 @@ out = Q;
                     
                 elseif isstruct(sph)
                     % Apply the requested restrictions to Sgen
-                    [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
+                    [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph, nocheckpa);
                     
                     % prepare parameters:  row 953 of file libOverlap.c
                     [li, di, const1]=ComputePars(p, k, Pigen, Mugen, Sgen);
@@ -1393,7 +1395,7 @@ out = Q;
                 Sgen=genSigmaGPCM(p, k, sph.pars);
             end
             
-            if islogical(sph) && nargin>13 && ~isempty(restrfactor) 
+            if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                 U=zeros(v,v,k);
                 S05=Sgen;
                 Sinv=Sgen;
@@ -1427,7 +1429,7 @@ out = Q;
                 
             elseif isstruct(sph)
                 % Apply the requested restrictions to Sgen
-                [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph);
+                [Sgen]  = restrSigmaGPCM(Sgen, Pigen', sph, nocheckpa);
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [liini, diini, const1ini]=ComputePars(p, k, Pigen, Mugen, Sgen);
@@ -1601,7 +1603,7 @@ out = Q;
                         %   new value of c which produces the average
                         %   requested overlap
                         
-                       if islogical(sph) && nargin>13 && ~isempty(restrfactor)
+                        if islogical(sph) && nargin>13 && ~isempty(restrfactor)
                             S05=(c^0.5)*S05;
                             Sinv=(1/c)*Sinv;
                             detS=(c^v)*detS;
