@@ -882,12 +882,13 @@ Lambda_vk=ones(v,k);
 sigmaini=zeros(v,v,k);
 U=sigmaini;
 
-verMatlab=verLessThan('matlab','8.2.0');
+% verLess2016b is true if current version is smaller than 2016b
+verLess2016b=verLessThanFS(9.1);
 
-if verMatlab ==1
-    userepmat=0;
-else
+if verLess2016b ==1
     userepmat=1;
+else
+    userepmat=2;
 end
 
 if msg == 1
