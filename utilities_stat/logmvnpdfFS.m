@@ -1,4 +1,4 @@
-function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
+function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 %logmvnpdfFS produces log of Multivariate normal probability density function (pdf)
 %
 %<a href="matlab: docsearchFS('logmvnpdfFS')">Link to the help function</a>
@@ -68,6 +68,11 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %               of Sigma is impossible -Inf output is returned.
 %                 Example - 'msg',1
 %                 Data Types - single | double
+%
+%     callmex  : call or not mex function to compute the result. Boolean.
+%               Boolean which controls whether to call or not the mex function. 
+%                 Example - 'callmex',false
+%                 Data Types - boolean
 %
 % Output:
 %
@@ -330,15 +335,14 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg)
 %}
 
 %% Beginning  of code.
-% callmex is a Boolean which is equal to true if the mex file exists
-callmex=existFS('DfM');
-% verLess2016b is a boolean which is true if current version is less then
-% 2016b
-verLess2016b=verLessThanFS(9.1);
 
 %   Note that X/Sigma ~ X*inv(Sigma) ~ mrdivide(X,Sigma) are equivalent.
 
 if nargin==3
+    % verLess2016b is a boolean which is true if current version is less then
+    % 2016b
+    verLess2016b=verLessThanFS(9.1);
+    
     if verLess2016b ==true
         % Deviations from Mu using Matlab function bsxfun.
         X0 = bsxfun(@minus,X,Mu);
@@ -350,12 +354,21 @@ if nargin==3
     eyed=eye(d);
     
 else
+    if nargin<9
+    % callmex is a Boolean which is equal to true if the mex file exists
+    callmex=existFS('DfM');
+    end
+    
     if callmex==true
         % Deviations from Mu using a mex function based on C code contained in file DfM.c
         % n = scalar, number of observations (input parameter of function DfM)
         % d = number of variables (input parameter of function DfM)
         DfM(X,Mu,X0,n,d);
     else
+        % verLess2016b is a boolean which is true if current version is less then
+        % 2016b
+        verLess2016b=verLessThanFS(9.1);
+        
         if verLess2016b ==false
             X0=X-Mu;
         else
