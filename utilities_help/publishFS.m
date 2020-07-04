@@ -2127,7 +2127,7 @@ for i=1:nTOTargin
     % Check if the input is a structure with fields. In this case it is
     % necessary to create a table
     
-    if ~isempty(strfind(listInpArgs{i,3},'tructure')) && ~isempty(strfind(descrlong,'field'))
+    if ~isempty(strfind(listInpArgs{i,3},'truct')) && ~isempty(strfind(descrlong,'field'))
         
         Datatypes=regexp(descrlong,'Data Types -','once');
         if ~isempty(Datatypes)
