@@ -218,6 +218,18 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %            Example - 'we',[0.2 0.2 0.2 0.2 0.2]
 %            Data Types - double
 %
+%        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
+%                to compute the retantion probability. If cup = 1
+%                (default), no upper limit is set.
+%                Data Types - scalar
+%                Example - cup, 0.8
+%
+%      pstar  :  thinning probability. Scalar. Probability with each a unit
+%                enters in the thinning procedure. If pstar = 1 (default), all units
+%                enter in the thinning procedure.
+%                Data Types - scalar
+%                Example - pstar, 0.95  
+%
 %       k_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of clusters for density mixtures. Scalar.
 %                    This is a guess on the number of data groups. Default
@@ -925,6 +937,12 @@ equalweightsdef = 0;
 %seqk = sequence from 1 to the number of groups
 seqk = 1:k;
 
+%cup = pdf upper limit
+cupdef = 1;
+
+%pstar = thinning probability
+pstardef = 1;
+
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
@@ -933,7 +951,7 @@ options = struct('intercept',1,'mixt',mixtdef,...
     'equalweights',equalweightsdef,...
     'RandNumbForNini','','msg',1,'plots',1,...
     'nocheck',1,'k_dens_mixt',5,'nsamp_dens_mixt',nsampdef,...
-    'refsteps_dens_mixt',refstepsdef,'method_dens_mixt','P');
+    'refsteps_dens_mixt',refstepsdef,'method_dens_mixt','P','cup',cupdef,'pstar',pstardef);
 
 if nargin > 6
     UserOptions = varargin(1:2:length(varargin));
@@ -987,6 +1005,11 @@ equalweights = options.equalweights;
 % estimation
 we         = options.we;
 
+%cup = pdf upper limit
+cup = options.cup;
+
+%pstar = thinning probability
+pstar = options.pstar;
 
 % Flag to control the type of thinning scheme for estimate beta
 % (wtype_beta) and to compute obj function (wtype_obj)
@@ -1168,7 +1191,7 @@ end
 %     seqk,zigzag,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj);
 [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt, Beta_all, obj_all] ...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
+    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation,cup,pstar);
 
 %%  END OF RANDOM STARTS
 
@@ -1235,6 +1258,7 @@ else
         out.obj_all          = obj_all;
         out.Beta_all         = Beta_all;
     end
+    %out.retained_id_all      = retained_id_all;
     
     out.C=C;
     
@@ -1243,10 +1267,11 @@ else
     if wtype_beta == 4
         out.idx               = zeros(length(Xori),1);
         out.idx(id_unthinned) = idxopt;
+        %out.retained_id = out.idx;
     else
         out.idx               = idxopt;
+        %out.retained_id = retained_idopt;
     end
-    
     % frequency distribution of the allocations
     out.siz=tabulateFS(idxopt(:,1));
     
