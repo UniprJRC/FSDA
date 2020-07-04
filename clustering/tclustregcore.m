@@ -1,6 +1,6 @@
 function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt,Beta_all, obj_all]...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei)
+    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei,cup,pstar)
 
 % This function is called by tclustregeda and it is not intended to be called directly
 
@@ -11,7 +11,7 @@ function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt
 %% Beginning of code
 
 % Groups with less than skipthin_th units are not considered for thinning
-skipthin_th = 50;
+skipthin_th = 5;
 
 %monitors evolution of parameters in refining steps (just in case of
 %intercept through the origin and one regression coefficient)
@@ -379,7 +379,7 @@ for i =1:nselected
                         Xj   = X(groupj,:);
                         yhat = Xj*Beta(:,jj);
                         % thinning
-                        [Zt , pretain]  = wthin(yhat);
+                        [Zt , pretain]  = wthin(yhat,'cup',cup,'pstar',pstar);
                         webeta(groupj) = pretain;
                         if strcmp(wtype_obj,'0')
                             weobj(groupj) = ones(sum(groupj),1);
@@ -453,8 +453,11 @@ for i =1:nselected
                         % on the component predicted values in the
                         % previous step.
                         Xj          = X(ijj,:);
+                        yj          = y(ijj,:);
                         yhat        = Xj*Beta(:,jj);
-                        [Zt , ~]    = wthin(yhat);%,'bandwidth',0.9);
+                        [Zt , ~]    = wthin(yhat,'cup',cup,'pstar',pstar);%,'bandwidth',0.9);
+                        tmp(jj,1)=sum(ijj);
+                        tmp(jj,2)=sum(Zt==0);
                         webeta(ijj) = Zt;
                         if strcmp(wtype_obj,'Z')
                             weobj(ijj) = Zt;
@@ -848,9 +851,9 @@ for i =1:nselected
                     % equalweights = 0: proportions are set equal to the group sizes.
                 else
                     %the objective function is computed excluding both
-                    %thinned and trimmed (matrix Z)
+                    %thinned and trimmed (matrix Z)                   
                     obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
-                        sum(logmvnpdfFS(resjj,0,sigma2ini(jj)).*Z(:,jj));
+                        sum(logmvnpdfFS(resjj,0,sigma2ini(jj)).*postprob(:,jj).*weobj(:));
                 end
                 
                 %CWM
@@ -963,6 +966,7 @@ for i =1:nselected
                 else
                     idxopt = idx;
                 end
+                %retained_idopt = idx;
                 % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
                 % are the posterior probabilities referring to not trimmed
                 % units and 0 to trimmed units.
@@ -980,6 +984,14 @@ for i =1:nselected
                     %sigmaXopt =  X sigma.
                     sigmaXopt = sigmaX;
                 end
+            end
+            if monitor
+                if wtype_beta==3
+                    idxopt = idx_ne0;
+                else
+                    idxopt = idx;
+                end
+                %retained_id_all(:,cstep) = idx;
             end
         end % End of zigzag if
         
@@ -1013,6 +1025,7 @@ if chkExistence==0
     % vopt
     subsetopt=NaN;
     idxopt=NaN;
+    %retained_idopt=NaN;
     webeta=NaN;
     webetaopt=NaN;
     cstepopt=NaN;
