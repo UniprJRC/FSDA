@@ -1,4 +1,4 @@
-function  [obj, varargout1, varargout2]=estepFS(log_lh)
+function  [obj, varargout1, varargout2]=estepFS(log_lh, verLess2016b)
 %estepFS performs e-step for Gaussian mixture distribution
 %
 %<a href="matlab: docsearchFS('estepFS')">Link to the help function</a>
@@ -27,7 +27,14 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh)
 %               density weighted by the component probability.
 %               log_lh = log( \pi_j \phi (y_i; \; \theta_j))
 %
-%
+% verLess2016b : bsxfun or implicit expansion. Boolean.
+%             If verLess2016b is true,
+%             bsxfun inside the procedure is used.
+%             If verLess2016b is fase, implicit expansion is used instead of
+%             bsxfun. Note that implicit expansion has been introduced only
+%             in 2017a therefore it will not work with previous releases.
+%               Example - 'userepmat',1
+%               Data Types - double%
 %  Output:
 %
 %         obj  : scalar. Value of the log likelihood (see above) of
@@ -100,7 +107,7 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh)
                 ll(:,j)= log(PI(j)) +  logmvnpdfFS(Y,MU(j,:),SIGMA(:,:,j));
             end
         % Compute posterior probabilities
-        [~,postprob]=estepFS(ll);
+        [~,postprob]=estepFS(ll,true);
 
 %}
 
@@ -108,7 +115,11 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh)
 
 maxll = max (log_lh,[],2);
 % minus maxll to avoid underflow
-post = exp(bsxfun(@minus, log_lh, maxll));
+if verLess2016b==false
+    post=exp(log_lh-maxll);
+else
+    post = exp(bsxfun(@minus, log_lh, maxll));
+end
 
 % density is a size(log_lh,1)-by-1 vector which contains the contribution
 % of each observation to the likelihood  (each element is divided by the
@@ -121,7 +132,11 @@ if nargout>1
     %normalize posteriors
     % varargout1 is a size(log_lh,1)-by-p matrix which contains posterior
     % probabilities
-    varargout1 = bsxfun(@rdivide, post, density);
+    if verLess2016b==false
+        varargout1 =post./density;
+    else
+        varargout1 = bsxfun(@rdivide, post, density);
+    end
 end
 
 % logpdf is a size(log_lh,1)-by-1 vector which contains the contributions
