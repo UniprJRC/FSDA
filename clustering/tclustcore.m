@@ -10,6 +10,11 @@ function out  = tclustcore(Y,Cini,Sigmaini,Niini,reftol,refsteps,mixt,equalweigh
 
 % callmex is a Boolean which is equal to true if the mex file exists
 callmex=existFS('DfM');
+if userepmat==1
+    verLess2016b=true;
+else
+    verLess2016b=false;
+end
 
 % tolrestreigen = tolerance to use in function restreigen
 tolrestreigen=1e-08;
@@ -104,7 +109,7 @@ for i=1:nselected
             
             postprobold=postprob;
             
-            [~,postprob,disc]=estepFS(ll);
+            [~,postprob,disc]=estepFS(ll,verLess2016b);
             
             % Sort the n likelihood contributions
             % qq contains the largest n*(1-alpha) (weighted) likelihood contributions
@@ -175,7 +180,7 @@ for i=1:nselected
             % covariance matrices
             
             postprobold=postprob;
-            [~,postprob]=estepFS(ll);
+            [~,postprob]=estepFS(ll,verLess2016b);
             
             postprob(qqunassigned,:)=0;
             
@@ -321,7 +326,7 @@ for i=1:nselected
             end
             
             % obj contains the value of the log likelihood for mixture models
-            obj=estepFS(log_lh);
+            obj=estepFS(log_lh,verLess2016b);
             
         else
             
@@ -448,7 +453,7 @@ end
 % postprob n x k containing posterior probabilities
 % logpdf n x 1 vector containg the n contributions to the log
 % likelihood of mixture models
-[~,postprob,logpdf]=estepFS(ll);
+[~,postprob,logpdf]=estepFS(ll,verLess2016b);
 
 % %%%%%
 % In this part we select the untrimmed units
@@ -499,7 +504,7 @@ end
 
 if mixt>=1
     % Compute value of the maximized MiXTURE log likelihood
-    [NlogLmixt]=estepFS(ll(assignedmixt,:));
+    [NlogLmixt]=estepFS(ll(assignedmixt,:),verLess2016b);
     
     % NlogLmixt is the negative of the maximized MIXTURE LOG-LIKELIHOOD
     % Note that if there was convergence NlogL should be exactly equal to
