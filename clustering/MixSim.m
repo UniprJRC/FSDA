@@ -497,7 +497,7 @@ end
 
 if ~islogical(sph) && ~isstruct(sph)
     error('FSDA:MixSim:Wrongsph','option sph must be a logical value or a structure')
-else
+elseif isstruct(sph)
     optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
         'maxiterR','','tolR','','shw','','shb','',...
         'cdet','','zerotol','','pars','');
