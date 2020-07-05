@@ -7,23 +7,24 @@ function h  = carbikeplot(RelSol,varargin)
 %   a structure containing the best relevant solutions) and produces the
 %   car-bike plot. This plot provides a concise summary of the best
 %   relevant solutions. This plot shows on the horizontal axis the value of
-%   $c$ and on the vertical axis the value of $k$. For each solution we
-%   draw a rectangle for the interval of values for which the solution is
-%   best and stable and a horizontal line which departs from the rectangle
-%   for the values of $c$ in which the solution is only stable. Finally,
-%   for the best value of $c$ associated to the solution, we show a circle
-%   with two numbers, the first number indicates the ranked solution among
-%   those which are not spurious and the second one the ranked number
-%   including the spurious solutions. This plot has been baptized
-%   ``car-bike'', because the first best solutions (in general 2 or 3) are
-%   generally best and stable for a large number of values of $c$ and
-%   therefore will have large rectangles. In addition, these solutions are
-%   likely to be stable for additional values of $c$ and therefore are
-%   likely to have horizontal lines departing from the rectangles (from
-%   here the name ``cars''). Finally, local minor solutions (which are
-%   associated with particular values of $c$ and $k$) do not generally
-%   present rectangles or lines and are shown with circles (from here the
-%   name ``bikes'')
+%   $c$ restriction factor (or $\alpha$ trimming level) and on the vertical
+%   axis the value of $k$. For each solution we draw a rectangle for the
+%   interval of values for which the solution is best and stable and a
+%   horizontal line which departs from the rectangle for the values of $c$
+%   in which the solution is only stable. Finally, for the best value of
+%   $c$ ($\alpha$)associated to the solution, we show a circle with two
+%   numbers, the first number indicates the ranked solution among those
+%   which are not spurious and the second one the ranked number including
+%   the spurious solutions. This plot has been baptized ``car-bike'',
+%   because the first best solutions (in general 2 or 3) are generally best
+%   and stable for a large number of values of $c$ and therefore will have
+%   large rectangles. In addition, these solutions are likely to be stable
+%   for additional values of $c$ ($\alpha$) and therefore are likely to
+%   have horizontal lines departing from the rectangles (from here the name
+%   ``cars''). Finally, local minor solutions (which are associated with
+%   particular values of $c$ ($\alpha$) and $k$) do not generally present
+%   rectangles or lines and are shown with circles (from here the name
+%   ``bikes'')
 %
 %  Required input arguments:
 %
@@ -34,8 +35,8 @@ function h  = carbikeplot(RelSol,varargin)
 %                the details of the best solutions for MIXMIX (BIC).
 %                Each row refers to a solution.  The information which is
 %                stored in the columns is as follows.
-%                1st col = scalar, value of k for which solution takes place;
-%                2nd col = scalar, value of c for which solution takes place;
+%                1st col = scalar, value of $k$ for which solution takes place;
+%                2nd col = scalar, value of $c$ ($\alpha$) for which solution takes place;
 %                3rd col = row vector of length d which contains the values
 %                   of c for which the solution is uniformly better.
 %                4th col = row vector of length d+r which contains the
@@ -80,6 +81,10 @@ function h  = carbikeplot(RelSol,varargin)
 %               it is referred to CLACLA.
 %               Remark: field out.MIXCLAbsari is present only if 'whichIC'
 %               is 'ALL' or 'whichIC' is 'CLACLA'
+%          RelSol.kk = vector containing the values of k (number of
+%                   components) which have been considered.
+%         RelSol.cc = scalar or vector containing the values of c (values of the
+%                   restriction factor) which have been considered.
 %          Data Types - struct
 %
 %  Optional input arguments:
@@ -99,7 +104,7 @@ function h  = carbikeplot(RelSol,varargin)
 %
 %
 %
-% See also: tclustIC, tclust, tclustICsol
+% See also: tclustIC, tclustregIC, tclust, tclustICsol, tclustreg
 %
 % References:
 %
@@ -212,8 +217,11 @@ end
 
 % Extract the values of k (number of groups)
 kk=RelSol.kk;
-% Extract the values of c (number of components)
+% Extract the values of c (values of restriction factor)
 cc=RelSol.cc;
+
+alpha=RelSol.alpha;
+
 
 if isfield(RelSol,'CLACLAbs')
     ICbs=RelSol.CLACLAbs;
@@ -225,8 +233,23 @@ else
     error('FSDA:carbikeplot:WrongInput','A field of input structure RelSol must be ''MIXMIXbs'' , ''MIXCLAbs'',  ''CLACLAbs''')
 end
 
+cc=cc(:);
+alpha=alpha(:);
+lccsigmay=length(cc);
+lalphaLik=length(alpha);
 
-lcc=length(cc);
+if lccsigmay>1 && lalphaLik ==1
+    cloop=true;
+    lcc=lccsigmay;
+    cORalpha=cc;
+elseif  lccsigmay==1 && lalphaLik >1
+    cloop=false;
+    lcc=lalphaLik;
+    cORalpha=sort(alpha,'ascend');
+else
+    error('FSDA:carbikeplot:WrongInput','alpha and cc cannot have length greater than one both')
+end
+
 ngroups=max(kk);
 
 % Create figure
@@ -235,21 +258,25 @@ figure1 = figure;
 % Create axes
 axes1 = axes('Parent',figure1);
 
-maxc=length(cc);
-axis([0   maxc+1 0 ngroups+1]);
+maxcOralpha=lcc;
+axis([0   maxcOralpha+1 0 ngroups+1]);
 grid off;
 set(axes1,'YTick',0:ngroups,'XTick',1:(lcc+2));
-xlabel('Restriction factor c')
+if cloop == true
+    xlabel('Restriction factor c')
+else
+    xlabel('trimming level α')
+end
 ylabel('Number of groups k')
 
 
 a=cell(lcc,1);
-a(:)={'c='};
-if isrow(cc)
-    legstr=strcat(a, cellstr(num2str(cc')));
+if cloop == true
+    a(:)={'c='};
 else
-    legstr=strcat(a, cellstr(num2str(cc)));
+    a(:)={'α='};
 end
+legstr=strcat(a, cellstr(num2str(cORalpha)));
 legstr=strrep(legstr,' ','');
 legstr=[legstr; {' '}];
 set(axes1,'XtickLabel',legstr)
@@ -261,33 +288,33 @@ hr   = zeros(1,numsol);
 for i=1:numsol
     if strcmp(ICbs{i,end},'true') || SpuriousSolutions == true
         kbest=ICbs{i,1};
-        cbest=find(cc==ICbs{i,2});
+        cORalphabest=find(cORalpha==ICbs{i,2});
         
         if isempty(ICbs{i,3})
-            minindc=cbest;
-            maxindc=cbest;
+            minindc=cORalphabest;
+            maxindc=cORalphabest;
         else
-            minindc=find(cc==min(ICbs{i,3}));
-            maxindc=find(cc==max(ICbs{i,3}));
+            minindc=find(cORalpha==min(ICbs{i,3}));
+            maxindc=find(cORalpha==max(ICbs{i,3}));
         end
         
         if isempty(ICbs{i,4})
-            minindstablec=cbest;
-            maxindstablec=cbest;
+            minindstablec=cORalphabest;
+            maxindstablec=cORalphabest;
         else
-            minindstablec=find(cc==min(ICbs{i,4}));
-            maxindstablec=find(cc==max(ICbs{i,4}));
+            minindstablec=find(cORalpha==min(ICbs{i,4}));
+            maxindstablec=find(cORalpha==max(ICbs{i,4}));
         end
         
         area(i) = ((maxindc-minindc)*(0.5*(1- i/numsol))) / (numsol*maxindc);
         hr(i)   = rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)+eps],'facecolor','w','Curvature',[0.2 0.2]);
-        rectangle('position',[cbest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
+        rectangle('position',[cORalphabest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
         rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps eps],'facecolor','w');
         
         soltruen=sum(strcmp(ICbs(1:i,end),'true'));
         
-        text(cbest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',15,'VerticalAlignment','middle');
+        text(cORalphabest,kbest+0.25,[num2str(soltruen) ',' num2str(i)],'HorizontalAlignment','center','FontSize',15,'VerticalAlignment','middle');
     end
 end
 A = rescaleFS(nanmean(abs(area),1),1,0);
@@ -296,6 +323,9 @@ colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(nume
 set(hr(ivalid),{'facecolor'},colormapres);
 set(gca,'FontSize',16)
 box('on');
+if cloop==false
+    set(gca,'XDir','reverse')
+end
 h=gcf;
 end
 %FScategory:VIS-Clu

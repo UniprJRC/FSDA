@@ -702,7 +702,7 @@ for k=1:lkk  % loop for different values of k (number of groups)
     
     % pctRunOnAll warning('on')
     parfor (cORa=1:lcc , numpool)
-        % for cORa=1:lcc
+        %     for cORa=1:lcc
         
         if cloop==true
             % columns = restr

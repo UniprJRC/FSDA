@@ -5,37 +5,42 @@ function out  = tclustICsol(IC,varargin)
 %
 %   tclustICsol takes as input the output of function tclustIC or
 %   tclustICreg (that is a series of matrices which contain the values of
-%   the information criteria BIC/ICL/CLA for different values of k and c)
-%   and extracts the first best solutions. Two solutions are considered
-%   equivalent if the value of the adjusted Rand index (or the adjusted
-%   Fowlkes and Mallows index) is above a certain threshold. For each
-%   tentative solution the program checks the adjacent values of c for
-%   which the solution is stable. A matrix with adjusted Rand indexes is
-%   given for the extracted solutions.
+%   the information criteria BIC/ICL/CLA for different values of $k$ and
+%   $c$ (or $\alpha$) and extracts the first best solutions. Two solutions
+%   are considered equivalent if the value of the adjusted Rand index (or
+%   the adjusted Fowlkes and Mallows index) is above a certain threshold.
+%   For each tentative solution the program checks the adjacent values of
+%   $c$ ($\alpha$) for which the solution is stable. A matrix with adjusted
+%   Rand indexes is given for the extracted solutions.
 %
 %  Required input arguments:
 %
 %           IC : Information criterion to use. Structure. It contains
 %                the following fields.
-%                IC.CLACLA = matrix of size length(kk)-by-length(cc)
+%                IC.CLACLA = matrix of size length(kk)-by-length(cc) or of
+%                size length(kk)-by-length(alpha)
 %                   containinig the values of the penalized
 %                   classification likelihood (CLA).
 %                   This field is linked with out.IDXCLA.
-%                IC.IDXCLA = cell of size length(kk)-by-length(cc).
+%                IC.IDXCLA = cell of size length(kk)-by-length(cc) or of
+%                   size length(kk)-by-length(alpha).
 %                   Each element of the cell is a vector of length n
 %                   containinig the assignment of each unit using the
 %                   classification model.
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA' or 'ALL'.
-%                IC.MIXMIX = matrix of size length(kk)-by-length(cc)
+%                IC.MIXMIX = matrix of size length(kk)-by-length(cc) or of
+%                   size length(kk)-by-length(alpha)
 %                   containinig the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   out.IDXMIX.
-%                IC.MIXCLA = matrix of size length(kk)-times length(cc)
+%                IC.MIXCLA = matrix of size length(kk)-times length(cc) or of
+%                   size length(kk)-by-length(alpha)
 %                   containinig the value of the ICL. This field is linked
 %                   with out.IDXMIX.
-%                IC.IDXMIX = cell of size length(kk)-times length(cc).
+%                IC.IDXMIX = cell of size length(kk)-times length(cc) or of
+%                   size length(kk)-by-length(alpha).
 %                   Each element of the cell is a vector of length n
 %                   containinig the assignment of each unit using the
 %                   mixture model.
@@ -49,6 +54,8 @@ function out  = tclustICsol(IC,varargin)
 %                   components) which have been considered.
 %                IC.cc = vector containing the values of c (values of the
 %                   restriction factor) which have been considered.
+%                IC.alpha = vector containing the values of c (values of the
+%                   trimming level) which have been considered.
 %                IC.Y =  original n-times-v data matrix on which the IC
 %                   (Information criterion) has
 %                    been computed. This input option is present only if IC
@@ -212,7 +219,7 @@ function out  = tclustICsol(IC,varargin)
 %                 interpretation of the rows and columns. The Rownames of
 %                 this table correspond to the values of k which are used
 %                 and the colNames of this table contain in a dynamic way
-%                 the two values of c which are considered. For example if
+%                 the two adjacent values of c (\alpha) which are considered. For example if
 %                 the first two values of c are c=3 and c=7, the first
 %                 column name of this table is c3_v_c7 to denote that the
 %                 entry of this column are the ARI indexes between c=3 and
@@ -243,9 +250,11 @@ function out  = tclustICsol(IC,varargin)
 %
 %          out.cc = vector containing the values of c (values of the
 %                   restriction factor) which have been considered. This
-%                   vector is equal to input optional argument cc if cc had
-%                   been specified else it is equal to [1, 2, 4, 8, 16, 32,
-%                   64, 128].
+%                   vector is equal to input argument Ic.cc.
+%
+%          out.alpha = vector containing the values of $\alpha$ (values of the
+%                   trimming level) which have been considered. This
+%                   vector is equal to input argument IC.alpha.
 %
 % See also: tclustIC, tclust, tclustregIC, tclustreg, carbikeplot
 %
@@ -403,7 +412,42 @@ kk=IC.kk;
 lkk=length(kk);
 % Extract the values of c (number of components)
 cc=IC.cc;
-lcc=length(cc);
+% Extract the values of alpha (trimming level)
+alpha=IC.alpha;
+
+
+cc=cc(:);
+alpha=alpha(:);
+lccsigmay=length(cc);
+lalphaLik=length(alpha);
+
+% Prepare rownames and colsnames for table which will contain
+% in the rows the number of groups from
+rownamesARI=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
+
+
+if lccsigmay>1 && lalphaLik ==1
+    cloop=true;
+    lcc=lccsigmay;
+    lab='c';
+    cORalpha=cc;
+elseif  lccsigmay==1 && lalphaLik >1
+    cloop=false;
+    lcc=lalphaLik;
+    lab='α';
+    cORalpha=alpha;
+else
+    error('FSDA:tclustregIC:WrongInput','alphaLik and cc cannot have length greater than one both')
+end
+
+
+lc1=lcc-1;
+cup=strcat(cellstr(repmat(lab ,lc1,1)), cellstr(num2str(cORalpha(2:end))));
+clow=strcat(cellstr(repmat(lab ,lc1,1)), cellstr(num2str(cORalpha(1:end-1))));
+cuplow=strcat(cup,repmat('_vs_',lc1,1),clow);
+colnamesARI=regexprep(cuplow,' ','');
+
+
 
 if strcmp(whichIC,'ALL')
     typeIC=3;
@@ -432,20 +476,28 @@ end
 
 for k=1:length(kk) % loop for different values of k (number of groups)
     if kk(k) ~= 1 % just do the computations or ARI or FM indexes when k is different from 1
-        for j=2:length(cc) % loop through the different values of c
+        for j=2:lcc % loop through the different values of c (alpha)
             if typeIC>0
+                idjm1=IDXMIX{k,j-1};
+                idj=IDXMIX{k,j};
+                idjm1(idjm1<0)=0;
+                idj(idj<0)=0;
                 if Rand==1
-                    ARIMIX(k,j)=RandIndexFS(IDXMIX{k,j-1},IDXMIX{k,j});
+                    ARIMIX(k,j)=RandIndexFS(idjm1,idj,0);
                 else
-                    ARIMIX(k,j)=FowlkesMallowsIndex(IDXMIX{k,j-1},IDXMIX{k,j});
+                    ARIMIX(k,j)=FowlkesMallowsIndex(idjm1,idj,0);
                 end
                 
             end
             if typeIC==0 || typeIC==3
+                idjm1=IDXCLA{k,j-1};
+                idj=IDXCLA{k,j};
+                idjm1(idjm1<0)=0;
+                idj(idj<0)=0;
                 if Rand==1
-                    ARICLA(k,j)=RandIndexFS(IDXCLA{k,j-1},IDXCLA{k,j});
+                    ARICLA(k,j)=RandIndexFS(idjm1,idj);
                 else
-                    ARICLA(k,j)=FowlkesMallowsIndex(IDXCLA{k,j-1},IDXCLA{k,j});
+                    ARICLA(k,j)=FowlkesMallowsIndex(idjm1,idj);
                 end
                 
             end
@@ -453,15 +505,6 @@ for k=1:length(kk) % loop for different values of k (number of groups)
     end
 end
 
-% Prepare rownames and colsnames for table which will contain
-% in the rows the number of groups from
-rownamesARI=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
-
-lc1=length(cc)-1;
-cup=strcat(cellstr(repmat('c',lc1,1)), cellstr(num2str(cc(2:end)')));
-clow=strcat(cellstr(repmat('c',lc1,1)), cellstr(num2str(cc(1:end-1)')));
-cuplow=strcat(cup,repmat('_vs_',lc1,1),clow);
-colnamesARI=regexprep(cuplow,' ','');
 
 
 
@@ -472,20 +515,23 @@ if max(strcmp(fIC,'Y')) == true
 elseif max(strcmp(fIC,'y')) == true && max(strcmp(fIC,'X')) == true
     mult=false;
 else
-     error('FSDA:tclustICsol:WrongIC','Input structure must contain field Y or fields y and X')
+    error('FSDA:tclustICsol:WrongIC','Input structure must contain field Y or fields y and X')
 end
 
 if typeIC==2 || typeIC==3
-    [MIXMIXbs,MIXMIXbsari]=findBestSolutions(IC.MIXMIX,ARIMIX,IC.IDXMIX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
+    [MIXMIXbs,MIXMIXbsari]=findBestSolutions(IC.MIXMIX,ARIMIX,IC.IDXMIX,kk,...
+        cORalpha,NumberOfBestSolutions,ThreshRandIndex,msg,cloop);
     out.MIXMIXbs=MIXMIXbs;
     out.MIXMIXbsari=MIXMIXbsari;
     
     % Store matrix which contains in the columns the details of the
     % classification
     if mult==true
-        MIXMIXbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots,SpuriousSolutions);
+        MIXMIXbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXMIX,MIXMIXbs,kk,...
+            cORalpha,'MIXMIX',plots,SpuriousSolutions);
     else
-        MIXMIXbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXMIX,MIXMIXbs,kk,cc,'MIXMIX',plots,SpuriousSolutions);
+        MIXMIXbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXMIX,MIXMIXbs,kk,...
+            cORalpha,'MIXMIX',plots,SpuriousSolutions,cloop);
     end
     
     out.MIXMIXbsIDX=MIXMIXbsIDX;
@@ -497,7 +543,8 @@ if typeIC==2 || typeIC==3
 end
 
 if typeIC==1 || typeIC==3
-    [MIXCLAbs,MIXCLAbsari]=findBestSolutions(IC.MIXCLA,ARIMIX,IC.IDXMIX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
+    [MIXCLAbs,MIXCLAbsari]=findBestSolutions(IC.MIXCLA,ARIMIX,IC.IDXMIX,kk,...
+        cc,NumberOfBestSolutions,ThreshRandIndex,msg,cloop);
     out.MIXCLAbs=MIXCLAbs;
     out.MIXCLAbsari=MIXCLAbsari;
     % Store matrix which contains in the columns the details of the
@@ -519,7 +566,8 @@ if typeIC==1 || typeIC==3
 end
 
 if typeIC==0 || typeIC==3
-    [CLACLAbs,CLACLAbsari]=findBestSolutions(IC.CLACLA,ARICLA,IC.IDXCLA,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg);
+    [CLACLAbs,CLACLAbsari]=findBestSolutions(IC.CLACLA,ARICLA,IC.IDXCLA,kk,...
+        cc,NumberOfBestSolutions,ThreshRandIndex,msg,cloop);
     out.CLACLAbs=CLACLAbs;
     out.CLACLAbsari=CLACLAbsari;
     % Store matrix which contains in the columns the details of the
@@ -527,7 +575,7 @@ if typeIC==0 || typeIC==3
     if mult==true
         CLACLAbsIDX=plotBestSolutionsMult(IC.Y,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots,SpuriousSolutions);
     else
-        CLACLAbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots,SpuriousSolutions);
+        CLACLAbsIDX=plotBestSolutionsReg(IC.y,IC.X,IC.IDXCLA,CLACLAbs,kk,cc,'CLACLA',plots,SpuriousSolutions,cloop);
     end
     out.CLACLAbsIDX=CLACLAbsIDX;
     out.ARICLA=ARICLA(:,2:end);
@@ -540,18 +588,21 @@ end
 % Store values of c and k which have been used
 out.cc=cc;
 out.kk=kk;
-
+out.alpha=alpha;
 end
 
 
-function [Bestsols,ARIbest]  = findBestSolutions(PENloglik,ARI,IDX,kk,cc,NumberOfBestSolutions,ThreshRandIndex,msg)
+function [Bestsols,ARIbest]  = findBestSolutions(PENloglik,ARI,IDX,kk,cOralpha,NumberOfBestSolutions,ThreshRandIndex,msg,cloop)
 % PENloglik = matrix of size length(kk)-times-length(cc) containing penalized log likelihood
 % ARI = matrix of size length(kk)-times-length(cc) containing Adjusted R
 %       indexes between two consecutive values of c for fixed k
 % IDX = cell of size length(kk)-times-length(cc) containing the indication
 %       where units have been classified for each k (rows) and c (columns)
 % kk  = vector containing values of k which have to be considered
-% cc  = vector containing values of c which have to be considered
+% cOralpha  = vector containing values of c (alpha) which have to be considered
+% msg = scalar display message about best solution
+% cloop = boolean. if cloop is true cc refers to restriction factor else to
+% trimming level
 ARI=ARI';
 
 % The rows of ARI refer to the values of c. The columns of ARI refer to k
@@ -560,12 +611,18 @@ ARI=ARI';
 % ARI(2:end,1)=1;
 
 Xcmod=PENloglik';
-lcc=length(cc);
+lcc=length(cOralpha);
 seqcc=1:lcc;
 seqkk=1:length(kk);
 Bestsols=cell(NumberOfBestSolutions,5);
 Bestsols{1,5}='true';
 endofloop=0;
+if cloop == true
+    lab='c=';
+else
+    lab='\alpha=';
+end
+
 NumberOfExistingSolutions=NumberOfBestSolutions;
 for z=1:NumberOfBestSolutions
     
@@ -583,19 +640,23 @@ for z=1:NumberOfBestSolutions
         if msg==1
             disp(['Best solution number: ' num2str(z)])
             disp(['k=' num2str(kk(minBICk))])
-            disp(['c=' num2str(cc(minBICc))])
+            disp([lab num2str(cOralpha(minBICc))])
         end
         % overall minimum is in col minBICk
         % overall minimum is in row minBICc
         Xcmod(indmin(minBICk),minBICk)=Inf;
-        cwithbestsol=nan(length(cc),1);
+        cwithbestsol=nan(length(cOralpha),1);
         cwithbestsol(minBICc)=1;
         % Store value of k in column 1 of Bestsols
         Bestsols{z,1}=kk(minBICk);
         % Store value of c in column 2 of Bestsols
-        Bestsols{z,2}=cc(minBICc);
+        Bestsols{z,2}=cOralpha(minBICc);
         if msg==1
-            disp('Find for which adjacent value of c (and fixed k) best solution extends to')
+            if cloop==true
+                disp('Find for which adjacent value of c (and fixed k) best solution extends to')
+            else
+                disp('Find for which adjacent value of \alpha (and fixed k) best solution extends to')
+            end
         end
         
         % Find overall minimum of matrix Xcmod after excluding the column
@@ -607,7 +668,7 @@ for z=1:NumberOfBestSolutions
         % minICconstr= min value of IC excluding the values involving column
         % minBICk
         minICconstr=min(min(XcmodWithoutBestk));
-        cctoadd=zeros(length(cc),1);
+        cctoadd=zeros(length(cOralpha),1);
         
         candcabove=seqcc(seqcc>minBICc);
         if ~isempty(candcabove)
@@ -638,7 +699,7 @@ for z=1:NumberOfBestSolutions
         
         cwithbestsol(cctoadd==1)=1;
         % Store the values of c associated to the best solution
-        Bestsols{z,3}=cc(cwithbestsol==1);
+        Bestsols{z,3}=cOralpha(cwithbestsol==1);
         
         % The interval of values of c for which the solution is uniformly
         % better has been found, however, now we have to make sure that we
@@ -649,12 +710,12 @@ for z=1:NumberOfBestSolutions
         
         
         if minBICk ==1
-            Bestsols{z,4}=cc;
+            Bestsols{z,4}=cOralpha;
             Xcmod(:,minBICk)=Inf;
         else
             intc=seqcc(cwithbestsol==1);
-            outc=cc(cwithbestsol~=1);
-            cctoadd=zeros(length(cc),1);
+            outc=cOralpha(cwithbestsol~=1);
+            cctoadd=zeros(length(cOralpha),1);
             
             if ~isempty(outc)
                 % candcbelow = indexes of the set of candidate values for c which are smaller than
@@ -689,7 +750,7 @@ for z=1:NumberOfBestSolutions
                     end
                 end
                 
-                Bestsols{z,4}=cc(cctoadd==1);
+                Bestsols{z,4}=cOralpha(cctoadd==1);
             end
         end
         % get out of the loop because in this case there is a new candidate
@@ -701,10 +762,10 @@ for z=1:NumberOfBestSolutions
         % certain threshold with those which have already been
         % found
         if z>1
-            idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cc==Bestsols{z,2})};
+            idxcurrentz=IDX{seqkk(kk==Bestsols{z,1}),seqcc(cOralpha==Bestsols{z,2})};
             
             for  j=1:z-1
-                idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
+                idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cOralpha==Bestsols{j,2})};
                 if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex  && strcmp(Bestsols{j,5},'true')==1
                     Bestsols{z,5}='spurious';
                     break
@@ -735,9 +796,11 @@ end
 ARIbest=zeros(NumberOfExistingSolutions,NumberOfExistingSolutions);
 for i=1:NumberOfExistingSolutions
     for  j=1:NumberOfExistingSolutions
-        idxi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
-        idxj=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cc==Bestsols{j,2})};
-        ARIbest(i,j)=RandIndexFS(idxi,idxj);
+        idxi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cOralpha==Bestsols{i,2})};
+        idxj=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cOralpha==Bestsols{j,2})};
+        idxi(idxi<0)=0;
+        idxj(idxj<0)=0;
+        ARIbest(i,j)=RandIndexFS(idxi,idxj,0);
     end
 end
 end
@@ -756,7 +819,9 @@ for i=1:nbestsol
         spmplot(Y,IDXi,1,'box');
         detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
         bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
-        Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
+        Bestsolsi3=Bestsols{i, 3};
+        Bestsolsi4=Bestsols{i,4};
+        Bestsolc=[Bestsolsi3(:); Bestsolsi4(:)];
         stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
         title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
     end
@@ -768,20 +833,28 @@ end
 end
 
 
-function IDXout=plotBestSolutionsReg(y,X,IDX,Bestsols,kk,cc,lab,plots,SpuriousSolutions)
+function IDXout=plotBestSolutionsReg(y,X,IDX,Bestsols,kk,cORalpha,lab,plots,SpuriousSolutions,cloop)
 seqkk=1:length(kk);
-seqcc=1:length(cc);
+seqcc=1:length(cORalpha);
 nbestsol=size(Bestsols,1);
 IDXout=zeros(length(y),nbestsol);
+if cloop == true
+    labe=' c=';
+else
+    labe=' α=';
+end
+
 for i=1:nbestsol
-    IDXi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cc==Bestsols{i,2})};
+    IDXi=IDX{seqkk(kk==Bestsols{i,1}),seqcc(cORalpha==Bestsols{i,2})};
     IDXout(:,i)=IDXi;
     if (plots==1 &&  SpuriousSolutions ==true) || (plots==1 && strcmp(Bestsols{i,5},'true'))
         yXplot(y,X,'group',IDXi,'tag',['pl_yX' num2str(i)]);
-        detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) ' c=' num2str(Bestsols{i,2})];
-        bestsol=[' Best in c ' num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
-        Bestsolc=[Bestsols{i, 3} Bestsols{i,4}];
-        stabsol=[' Stable in c ' num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
+        detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) labe num2str(Bestsols{i,2})];
+        bestsol=[' Best in' labe num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
+        Bestsolsi3=Bestsols{i, 3};
+        Bestsolsi4=Bestsols{i,4};
+        Bestsolc=[Bestsolsi3(:); Bestsolsi4(:)];
+        stabsol=[' Stable in ' labe  num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
         title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
     end
 end
