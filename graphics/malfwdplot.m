@@ -345,12 +345,26 @@ function plotopt=malfwdplot(out,varargin)
 %                   Example - 'msg',1
 %                   Data Types - single or double
 %
-%        conflev :  confidence interval for the horizontal bands. Vector.
-%                   It can be a vector of different confidence level values,
-%                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
-%                   the chi^2 distribution.
-%                   Example - 'conflev',0.99
-%                   Data Types - single or double
+%        conflev :  confidence interval for the horizontal bands.
+%                   Empty value, vector or struct.
+%                   If conflev is empty no confidence line is shown (this is the default).
+%                   Confidence interval is based on the chi^2 distribution.
+%                   If conflev is a numeric vector it may contain the
+%                   different confidence level values, e.g.
+%                   [0.95,0.99,0.999]. The horizontal confidence lines are
+%                   shown using red color and line width equal to 2.
+%                   If conflev is a structure it is also possible to
+%                   control the color and the width of the lines associated
+%                   with the confidence bands. If conflev is a structure it
+%                   may contain the following fields:
+%                   conflev.color= Line color, specified as an RGB triplet,
+%                       (i.e. [0.4 0.6 0.7]) a hexadecimal color code (i.e.
+%                       #FF8800), a color name (i.e. blue), or a short
+%                       name (i.e. 'b').
+%                   conflev.linewidth=scalar, line width of the confidence
+%                       lines associated with the confidence levels.
+%                   conflev.conflev = numeric vector containing the
+%                       confidence levels.
 %
 % Output:
 %
@@ -1433,15 +1447,31 @@ else
     Un=out.Un;
 end
 
-
 if ~isempty(options.conflev)
     conflev=options.conflev;
+    % Set the default values for linewidth and color of confidence bands.
+    lwdenv=2;
+    colorConfidenceBands='r';
+    
+    if isstruct(conflev)
+        if isfield(conflev,'color')
+            colorConfidenceBands=conflev.color;
+        end
+        
+        if isfield(conflev,'linewidth')
+            lwdenv=conflev.linewidth;
+        end
+        
+        if isfield(conflev,'conflev')
+            conflev=conflev.conflev;
+        end
+    end
+    
     v=size(out.Loc,2)-1;
     quant = chi2inv(conflev,v);
     rangeaxis=axis;
     V=[rangeaxis(1);rangeaxis(2)];
     QUANT=[quant;quant];
-    lwdenv=2;
     numconflev = length(conflev);
     
     % set the string legend for the confidence bands
@@ -1449,7 +1479,7 @@ if ~isempty(options.conflev)
     legendstring(:) = cellstr('% band');
     legendstring2 = strcat(num2str(((conflev)*100)'),legendstring);
     % plot the confidence bands
-    hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline','color','r');
+    hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline','color',colorConfidenceBands);
     
     % make the legend for the confidence bands clickable
     clickableMultiLegend(hline(1:numconflev),legendstring2);
@@ -1458,6 +1488,7 @@ if ~isempty(options.conflev)
     % by clicking on the legend
     axis(axis);
 end
+
 
 %% Datatooltip mode (call to function ginputFS)
 % This is to highlight trajectories of unit in the subset at given step
@@ -1629,7 +1660,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             sel=seq(cellfun('isempty',pl(1:n)));
             % nbrush = vector which contains the list of the selected units
             nbrush=setdiff(seq,sel);
-            disp('Brushed units, yvalue and X values');
+            disp('Brushed units, Y values');
             disp([nbrush out.Y(nbrush,:) ]);
             
             % if persist='off', before highlighting the new selection
