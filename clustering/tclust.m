@@ -988,7 +988,7 @@ end
 % is restrfactor is a struct then restriction is GPCM
 if isstruct(restrfactor)
     restrnum=3;
-        optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
+    optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
         'maxiterR','','tolR','','shw','','shb','',...
         'cdet','','zerotol','','pars','','k','','v','','tol','','msg','');
     chkoptions(optionspa,fieldnames(restrfactor))
@@ -1519,7 +1519,7 @@ for i=1:nselected
             % Alternative code based on gpuArrary
             % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         else
-                sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
+            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
         end
         % Calculus of the objective function (E-step)
         % oldobj=obj;
@@ -1905,43 +1905,106 @@ end
 
 
 %% Compute INFORMATION CRITERIA
-
+% add to npar the number of free covariance parameters
 if restrGPCM==false
-    % nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*((1-1/restrfactor(1))^(1-1/(v*k))) +1;
-    nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*(1-1/restrfactor(1)) +1;
+    if restrnum==1 % traditional eigenvalue restriction
+        nParam=npar+ 0.5*v*(v-1)*k + (v*k-1)*(1-1/restrfactor(1)) +1;
+    elseif restrnum==2 % determinant restriction
+        nParam=npar+ 0.5*v*(v-1)*k +(k-1)*(1-1/(restrfactor(1)^(1/v)))+1 +k*(v-1)*(1-1/restrfactor(2));
+    else
+        error('FSDA:tclust:WrongModel','Just eigenvalue and determinant restriction')
+    end
 else
     modeltype=restrfactor.pars;
     if strcmp(modeltype,'EII')
-        nParam=npar+1;
+        detpar=1;
+        shapepar=0;
+        rotpar=0;
+        % nParam=npar+1;
+        
     elseif strcmp(modeltype,'VII')
-        nParam=npar+k;
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar=0;
+        rotpar=0;
+        % nParam=npar+k;
+        
     elseif strcmp(modeltype,'EEI')
-        nParam=npar+v;
+        detpar=1;
+        shapepar=v-1;
+        rotpar=0;
+        % nParam=npar+v;
+        
     elseif strcmp(modeltype,'VEI')
-        nParam=npar+k+v-1;
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar=v-1;
+        rotpar=0;
+        % nParam=npar+k+v-1;
+        
     elseif strcmp(modeltype,'EVI')
-        nParam=npar+1+k*(v-1);
+        detpar=1;
+        rotpar=0;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        % nParam=npar+1+k*(v-1);
+        
     elseif strcmp(modeltype,'VVI')
-        nParam=npar+k*v;
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        rotpar=0;
+        % nParam=npar+k*v;
+        
     elseif strcmp(modeltype,'EEE')
-        nParam=npar+0.5*v*(v+1);
+        detpar=1;
+        shapepar= (v-1);
+        rotpar=0.5*v*(v-1);
+        % nParam=npar+0.5*v*(v+1);
+        
     elseif strcmp(modeltype,'VEE')
-        nParam=npar+k+v-1+0.5*v*(v-1);
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar= (v-1);
+        rotpar=0.5*v*(v-1);
+        % nParam=npar+k+v-1+0.5*v*(v-1);
+        
+        
     elseif strcmp(modeltype,'EVE')
-        nParam=npar+1+k*(v-1)+0.5*v*(v-1);
+        detpar=1;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        rotpar=0.5*v*(v-1);
+        % nParam=npar+1+k*(v-1)+0.5*v*(v-1);
+        
     elseif strcmp(modeltype,'EEV')
-        nParam=npar+v+0.5*k*v*(v-1);
+        detpar=1;
+        shapepar= v-1;
+        rotpar=0.5*k*v*(v-1);
+        % nParam=npar+v+0.5*k*v*(v-1);
+        
     elseif strcmp(modeltype,'VVE')
-        nParam=npar+k*v+0.5*v*(v-1);
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        rotpar=0.5*v*(v-1);
+        % nParam=npar+k*v+0.5*v*(v-1);
+        
     elseif strcmp(modeltype,'VEV')
-        nParam=npar+k+v-1+0.5*k*v*(v-1);
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar= v-1;
+        rotpar=0.5*k*v*(v-1);
+        % nParam=npar+k+v-1+0.5*k*v*(v-1);
+        
     elseif strcmp(modeltype,'EVV')
-        nParam=npar+1+k*(v-1) +0.5*k*v*(v-1);
+        detpar=1;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        rotpar=0.5*k*v*(v-1);
+        % nParam=npar+1+k*(v-1) +0.5*k*v*(v-1);
+        
     elseif strcmp(modeltype,'VVV')
-        nParam=npar+0.5*k*v*(v+1);
+        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        rotpar=0.5*k*v*(v-1);
+        %  nParam=npar+0.5*k*v*(v+1);
+        
     else
         error('FSDA:tclust:WrongModel','Wrong model for cov matrices, must be one of the 14 GPCM');
     end
+    nParam=npar+detpar+shapepar+rotpar;
 end
 
 logh=log(h);
