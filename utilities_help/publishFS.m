@@ -2439,9 +2439,15 @@ if nargout>0
         if i <nargout-1
             % Note that the endpoint must be searched from position
             % inipoint+length(listargouts{i}) of fstringsel because in
-            % order to avaoid cases in which the first output argument is
+            % order to avoid cases in which the first output argument is
             % for example ABk and the second output argument is Bk
             endpoint=inipoint+length(listargouts{i})-1+regexp(fstringsel(inipoint+length(listargouts{i}):end),[listargouts{i+1} '\s{0,7}:']);
+            if isempty(endpoint)
+                errmsg=['Error in processing output argument  ''' listargouts{i} '''\n' ...
+                    'Parser could not find output argument:  ''' listargouts{i+1} '       :''\n' ...
+                    'Endpoint for the description of output argument ''' listargouts{i} ''' not found'];
+                error('FSDA:wrongOutDescription',errmsg)
+            end
         elseif i==nargout-1
             
             if strcmp(listargouts{end},'varargout') ==0
