@@ -272,7 +272,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %       cshape :    constraint to apply to each of the shape matrices.
 %                   Scalar greater or equal than 1. This options only works
 %                   is 'restrtype' is 'deter'.
-%               When restrtype is deter the default value of the "shape" 
+%               When restrtype is deter the default value of the "shape"
 %               constraint (as defined below) applied to each group is fixed to
 %               $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
 %               affine equivariant. In other words, the decomposition or the
@@ -608,7 +608,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
     [outDet]=tclusteda(Y,k,alphavec,c,'restrtype',restrtype,'plots',plots,'nsamp',10000);
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 nnargin=nargin;
@@ -1115,13 +1115,23 @@ for j=2:lalpha
             IDX(IDXold(:,j)==newlab(r),j)=r;
         end
     else
-        newlab(indmaxdist)=setdiff(seqk,newlab);
-        disp(['Preliminary relabelling not possible when alpha=' num2str(alpha(j))])
-        if isequal(sort(newlab),seqk)
-            MU(:,:,j)=MU(newlab,:,j);
-            SIGMA(j)= {SIGMA{j}(:,:,newlab)};
-            for r=1:k
-                IDX(IDXold(:,j)==newlab(r),j)=r;
+        % In this case new1 contains the labels which never appeared inside
+        % newlab. To this label we assign the maximum distance and check is
+        % this time sequal(sort(newlab),seqk), that is we check whether
+        % vector sort(newlab) of length k contain the numbers 1, 2, ..., k
+        % if length(newl) two labels do not have the corerspondence
+        % therefore automatic relabelling is not possible.
+        newl=setdiff(seqk,newlab);
+        if length(newl)==1
+            newlab(indmaxdist)=setdiff(seqk,newl);
+            if isequal(sort(newlab),seqk)
+                MU(:,:,j)=MU(newlab,:,j);
+                SIGMA(j)= {SIGMA{j}(:,:,newlab)};
+                for r=1:k
+                    IDX(IDXold(:,j)==newlab(r),j)=r;
+                end
+            else
+                disp(['Automatic relabelling not possible when alpha=' num2str(alpha(j))])
             end
         else
             disp(['Automatic relabelling not possible when alpha=' num2str(alpha(j))])
