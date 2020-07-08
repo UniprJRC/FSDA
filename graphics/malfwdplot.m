@@ -365,6 +365,8 @@ function plotopt=malfwdplot(out,varargin)
 %                       lines associated with the confidence levels.
 %                   conflev.conflev = numeric vector containing the
 %                       confidence levels.
+%                   Example - 'conflev',[0.99 0.999]
+%                   Data Types - Empty value, vector or struct
 %
 % Output:
 %
