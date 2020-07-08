@@ -1,4 +1,3 @@
-
 function [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, X, intercept)
 % chkinputTAR makes some input parameters checking.
 %
@@ -72,42 +71,69 @@ function [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, X, intercept)
 %
 %
 % Example:
+
 %{
-%% Example 1: error - first input is not a vector.
-    
+ % Example 1: error - first input is not a vector.
     rng(10)
     n=200;
     k=3;
     X=randn(n,k);
     [out]=chkinputTAR(X);
-    
-%% Example 2: error - y and q are equal.
+%}
 
+%{
+% Example 2: error - y and q are equal.
+    rng(10)
+    n=200;
+    k=3;
+    X=randn(n,k);
     y=randn(n,1);
-    q=randn(n,1);
     [out] = chkinputTAR(y, y, X);
-    
-%% Example 3: error - no regressors in the model.
+%}
 
-    [out] = chkinputTAR(y, q, [], 'false');
-    
+%{
+    % Example 3: error - no regressors in the model.
+    rng(10)
+    n=200;
+    k=3;
+    X=randn(n,k);
+    y=randn(n,1);    [out] = chkinputTAR(y, q, [], 'false');
+%}
+
+%{
 %% Example 4: this works.
-
+    rng(10)
+    n=200;
+    k=3;
+    X=randn(n,k);
+    y=randn(n,1);
     const = 'true';
     [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, X, const);
+%}
 
-%% Example 5: this works with a warning on extra constant columns.
-%% Only the last one corresponding to the intercept is kept.
-    
+%{
+    % Example 5: this works with a warning on extra constant columns.
+    % Only the last one corresponding to the intercept is kept.
+    rng(10)
+    n=200;
+    k=3;
+    X=randn(n,k);
+    y=randn(n,1);
     XX=[X ones(n,k)];
     [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, XX, const);
-    
+%}
+
+%{
 %% Example 6: this works and rows with missing observations are removed.
-    
+     rng(10)
+    n=200;
+    k=3;
+    X=randn(n,k);
+    y=randn(n,1);
     q(3) = NaN;
     X(20) = NaN;
+    const = 'true';
     [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, X, const);
-    
 %}
 
 
@@ -126,8 +152,6 @@ elseif kk~=1
     % If y is a row vector it is transformed in a column vector.
     y=y';
 end
-
-
 
 % The second argument which is passed is q.
 if nargin<2 || isempty(q)==1

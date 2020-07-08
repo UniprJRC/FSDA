@@ -1,7 +1,5 @@
-
 function [out] = estregimeTAR(y, X)
 % estregimeTAR estimate a regression model with OLS in one of the regimes of a TAR model.
-% Depend on extendVEC.m
 %
 %<a href="matlab: docsearchFS('estregimeTAR')">Link to the help function</a>
 %
@@ -25,26 +23,26 @@ function [out] = estregimeTAR(y, X)
 %
 % out : A structure containing the following fields
 %
-%       out.beta :  Estimated parameters of the regression model. Vector. See out.covar.
-%         out.se :  Estimated heteroskedasticity-consistent (HC) standard errors. Vector.
+%       out.beta =  Estimated parameters of the regression model. Vector. See out.covar.
+%         out.se =  Estimated heteroskedasticity-consistent (HC) standard errors. Vector.
 %                   See section 'More about'.
-%      out.covar :  Estimated variance-covariance matrix. Matrix. It is the
+%      out.covar =  Estimated variance-covariance matrix. Matrix. It is the
 %                   heteroskedasticity-consistent (HC) covariance matrix. See section 'More about'.
-%    out.sigma_2 :  Estimated residual variance. Scalar.
-%       out.yhat :  Fitted values. Vector.
-%        out.res :  Residuals of the regression model. Vector.
-%        out.RSS :  Residual Sum of Squared. Scalar.
-%        out.TSS :  Total Sum of Squared. Scalar.
-%        out.R_2 :  R^2. Scalar.
-%          out.n :  Number of observations entering in the estimation. Scalar.
-%          out.k :  Number of regressors in the model left after the checks. It is the number of
+%    out.sigma_2 =  Estimated residual variance. Scalar.
+%       out.yhat =  Fitted values. Vector.
+%        out.res =  Residuals of the regression model. Vector.
+%        out.RSS =  Residual Sum of Squared. Scalar.
+%        out.TSS =  Total Sum of Squared. Scalar.
+%        out.R_2 =  R^2. Scalar.
+%          out.n =  Number of observations entering in the estimation. Scalar.
+%          out.k =  Number of regressors in the model left after the checks. It is the number of
 %                   betas to be estimated by OLS. The betas corresponding to the removed columns of X
 %                   will be set to 0 (see section 'More about'). Scalar.
-%    out.rmv_col :  Indices of columns removed from X before the model estimation. Scalar vector.
+%    out.rmv_col =  Indices of columns removed from X before the model estimation. Scalar vector.
 %                   Columns containing only zeros are removed. Then, to avoid multicollinearity, in the
 %                   case of presence of multiple non-zero constant columns, the code leave only the first
 %                   constant column (see section 'More about').
-% out.rk_warning :  Warning for skipped estimation. String. If the matrix X is singular after the
+% out.rk_warning =  Warning for skipped estimation. String. If the matrix X is singular after the
 %                   adjustments, the OLS estimation is skipped, the parameters are set to NaN and a
 %                   warning is produced.
 %
@@ -84,7 +82,7 @@ function [out] = estregimeTAR(y, X)
 % The beta values, corresponding to the removed columns of X, are set to 0.
 % The se values, corresponding to the removed columns of X, are set to NaN.
 %
-% See also extendVEC, SETARX.
+% See also extendVEC, SETARX
 %
 % Copyright 2008-2020.
 % Written by FSDA team
@@ -97,8 +95,7 @@ function [out] = estregimeTAR(y, X)
 %
 % Example:
 %{
-%% Example 1: warning - singular matrix.
-
+    % Example 1: warning - singular matrix.
     rng(10)
     n=200;
     k=3;
@@ -107,13 +104,13 @@ function [out] = estregimeTAR(y, X)
         
     X1=[X [1:200]' [1:200]'];
     [out1] = estregimeTAR(y, X1);
-    
-%% Example 2: adjustments for constant columns. Only the first non-zero
-%%   constant column is kept in the model estimation. Check beta and se values.
+%}
 
+%{
+    % Example 2: adjustments for constant columns. Only the first non-zero
+    %%   constant column is kept in the model estimation. Check beta and se values.
     X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
     [out2] = estregimeTAR(y, X2);
-   
 %}
 
 

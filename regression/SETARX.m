@@ -1,4 +1,4 @@
-function [out] = SETARX(y, p, d, varargin)
+function [out, reg, input] = SETARX(y, p, d, varargin)
 %SETARX implements Threshold autoregressive models with two regimes
 %
 % Self Exciting Threshold AutoRegressive model (SETAR) with two regimes.
@@ -80,92 +80,121 @@ function [out] = SETARX(y, p, d, varargin)
 %
 %  Output:
 %
-%  out :  A structure containing the following three substructures.
 %
-%  out.input = A substructure containing the adjusted input data obtained applying
-%              the function chkinputTAR (see sections 'Outputs' and 'More about' of chkinputTAR).
-%         out.input.y = Response without missing and infs. Vector. The new response variable, with
-%                       observations (rows) with missing or infinite values excluded.
-%         out.input.X = Predictor variables without infs and missings. Matrix. The new matrix of
-%                       explanatory variables, with missing or infinite values excluded, to be used for
-%                       the model estimation. It is the matrix [L X Z intercept] where L is the lagged
-%                       matrix n x p of y (if p > 0), X is the matrix of exogenous regressors defined
-%                       by the user, Z is the matrix of deterministic regressors and the last column
-%                       is the intercept (if any).
-%        out.input.yd = Threshold variable without missing and infs. Vector. The new threshold variable,
-%                       with observations (rows) with missing or infinite values excluded.
-%   out.input.rmv_obs = Indices of removed observations/rows (because of missings or infs). Scalar vector.
-%    out.input.y_full = Response y after adjustements by chkinputTAR BUT with observations (rows) with
-%                       missing or infinite values included.
-%    out.input.X_full = Matrix X after adjustements by chkinputTAR BUT with observations (rows) with
-%                       missing or infinite values included.
-%   out.input.yd_full = Threshold variable after adjustements by chkinputTAR BUT with observations (rows) with
-%                       missing or infinite values included.
 %
-%  out.reg = A substructure containing the results of the OLS estimation of the linear regression model
-%            (benchmark). The estimation is performed applying the function estregimeTAR (see sections
-%            'Outputs' and 'More about' of estregimeTAR).
-%         out.reg.beta =  Estimated parameters of the regression model. Vector. See out.covar.
-%           out.reg.se =  Estimated heteroskedasticity-consistent (HC) standard errors. Vector.
-%                         See section 'More about'.
-%        out.reg.covar =  Estimated variance-covariance matrix. Matrix. It is the
-%                         heteroskedasticity-consistent (HC) covariance matrix. See section 'More about'.
-%      out.reg.sigma_2 =  Estimated residual variance. Scalar.
-%         out.reg.yhat =  Fitted values. Vector.
-%          out.reg.res =  Residuals of the regression model. Vector.
-%          out.reg.RSS =  Residual Sum of Squared. Scalar.
-%          out.reg.TSS =  Total Sum of Squared. Scalar.
-%          out.reg.R_2 =  R^2. Scalar.
-%            out.reg.n =  Number of observations entering in the estimation. Scalar.
-%            out.reg.k =  Number of regressors in the model left after the checks. It is the number of
-%                         betas to be estimated by OLS. The betas corresponding to the removed columns of X
-%                         will be set to 0 (see section 'More about' of estregimeTAR). Scalar.
-%      out.reg.rmv_col =  Indices of columns removed from X before the model estimation. Scalar vector.
-%                         Columns containing only zeros are removed. Then, to avoid multicollinearity, in the
-%                         case of presence of multiple non-zero constant columns, the code leave only the first
-%                         constant column (see section 'More about' of estregimeTAR).
-%   out.reg.rk_warning =  Warning for skipped estimation. String. If the matrix X is singular after the
-%                         adjustments, the OLS estimation is skipped, the parameters are set to NaN and a
-%                         warning is produced.
-%    out.reg.yhat_full =  Fitted values of the estimated linear regression model with observations (rows) with
-%                         missing or infinite values reinserted as NaNs. This is to obtain the same length of
-%                         the initial input vector y defined by the user.
-%     out.reg.res_full = Residuals of the estimated linear regression model with observations (rows) with
-%                         missing or infinite values reinserted as NaNs. This is to obtain the same length of
-%                         the initial input vector y defined by the user.
+%       out : A structure with the results of the SETARX model estimation
+%               containing the following fields:
+%        out.regime1 =  A sub-substructure containing the results of the OLS estimation of the linear
+%                              regression model applyied to the data in
+%                              regime 1. The estimation is performed with
+%                              the function estregimeTAR.
+%                              Additional details are  in the description
+%                              of the outputs in the output structure reg.
+%        out.regime2 =  A sub-substructure containing the results of the
+%                             OLS estimation of the linear
+%                              regression model applyied to the data in
+%                              regime 2. The estimation is performed with
+%                              the function estregimeTAR (see sections
+%                              'Outputs' and 'More about' of estregimeTAR).
+%   out.rmv_col_loop =  Warnings collected for regimes 1 and 2 in the loop for the search of the
+%                      optimal threshold value. Matrix of strings of
+%                      dimension n x 2. Warnings show the indices of
+%                      columns removed from the matrix of regressors before
+%                      the model estimation. Columns containing only zeros
+%                      are removed. Then, to avoid multicollinearity, in
+%                      the case of presence of multiple non-zero constant
+%                      columns, the code leave only the first constant
+%                      column.
+%         out.thrhat =  Estimated threshold value. Scalar. It is the threshold value that minimizes
+%                              the joint RSS.
+%     out.thrvar_ord =  Index series after reorder of threshold variable yd. Vector.
+%           out.sigma_2 =  Estimated residual variance of SETARX model. Scalar.
+%           out.RSSj =  Joint Residual Sum of Squared of SETARX model. Scalar.
+%          out.yjhat =  Fitted values of SETARX model. Vector.
+%           out.resj =  Residuals of the SETARX model. Vector.
+%       out.yjhat_full = Fitted values of SETARX model with observations
+%                       (rows) with missing or infinite
+%                         values reinserted as NaNs. This is to obtain the
+%                         same length of the initial
+%                        input vector y defined by the user.
+%      out.resj_full =  Residuals of the SETARX model with observations
+%                       (rows) with missing or infinite
+%                       values reinserted as NaNs. This is to obtain the
+%                       same length of the initial input vector ydefined by
+%                       the user.
 %
-%  out.setarx = A substructure containing the result of the SETARX model estimation. The estimation is
-%               performed applying the function estregimeTAR in each regime (see sections 'Outputs' and
-%               'More about' of estregimeTAR). See section 'More about' below for an explanation about
-%               the SETARX estimation method.
-%        out.setarx.regime1 =  A sub-substructure containing the results of the OLS estimation of the linear
-%                              regression model applyied to the data in regime 1. The estimation is performed with the
-%                              function estregimeTAR (see sections 'Outputs' and 'More about' of estregimeTAR).
-%                              See also the description of the outputs in the substructure out.reg.
-%        out.setarx.regime2 =  A sub-substructure containing the results of the OLS estimation of the linear
-%                              regression model applyied to the data in regime 2. The estimation is performed with the
-%                              function estregimeTAR (see sections 'Outputs' and 'More about' of estregimeTAR).
-%                              See also the description of the outputs in the substructure out.reg.
-%   out.setarx.rmv_col_loop =  Warnings collected for regimes 1 and 2 in the loop for the search of the
-%                              optimal threshold value. Matrix of strings of dimension n x 2.
-%                              Warnings show the indices of columns removed from the matrix of regressors
-%                              before the model estimation. Columns containing only zeros are removed.
-%                              Then, to avoid multicollinearity, in the case of presence of multiple
-%                              non-zero constant columns, the code leave only the first constant column
-%                              (see section 'More about' of estregimeTAR).
-%         out.setarx.thrhat =  Estimated threshold value. Scalar. It is the threshold value that minimizes
-%                              the joint RSS (see section 'More about' for the methodology).
-%     out.setarx.thrvar_ord =  Index series after reorder of threshold variable yd. Vector.
-%           out.reg.sigma_2 =  Estimated residual variance of SETARX model. Scalar.
-%           out.setarx.RSSj =  Joint Residual Sum of Squared of SETARX model. Scalar.
-%          out.setarx.yjhat =  Fitted values of SETARX model. Vector.
-%           out.setarx.resj =  Residuals of the SETARX model. Vector.
-%     out.setarx.yjhat_full = Fitted values of SETARX model with observations (rows) with missing or infinite
-%                              values reinserted as NaNs. This is to obtain the same length of the initial
-%                              input vector y defined by the user.
-%      out.setarx.resj_full =  Residuals of the SETARX model with observations (rows) with missing or infinite
-%                              values reinserted as NaNs. This is to obtain the same length of the initial
-%                              input vector ydefined by the user.
+%    reg : A structure with the results of the OLS estimation of
+%               the linear regression model (benchmark), contanining the following fields.
+%         reg.beta =  Estimated parameters of the regression model. Vector.
+%                     See out.covar.
+%           reg.se =  Estimated heteroskedasticity-consistent (HC) standard
+%                    errors. Vector.
+%        reg.covar =  Estimated variance-covariance matrix. Matrix. It is
+%                     the heteroskedasticity-consistent (HC) covariance
+%                      matrix. See section 'More about'.
+%      reg.sigma_2 =  Estimated residual variance. Scalar.
+%         reg.yhat =  Fitted values. Vector.
+%          reg.res =  Residuals of the regression model. Vector. 
+%          reg.RSS =  Residual Sum of Squared. Scalar. 
+%          reg.TSS =  Total Sum of Squared. Scalar.
+%          reg.R_2 =  R^2. Scalar.
+%          reg.n   =  Number of observations entering in the estimation.
+%                    Scalar. 
+%           reg.k =  Number of regressors in the model left after
+%                    the checks. It is the number of
+%                    betas to be estimated by OLS. The betas
+%                    corresponding to the removed columns of X will be
+%                    set to 0 (see section 'More about' of
+%                    estregimeTAR). Scalar.
+%      reg.rmv_col =  Indices of columns removed from X before the model
+%                       estimation. Scalar or vector.
+%                         Columns containing only zeros are removed. Then,
+%                         to avoid multicollinearity, in the case of
+%                         presence of multiple non-zero constant columns,
+%                         the code leave only the first constant column
+%                         (see section 'More about' of estregimeTAR).
+%   reg.rk_warning =  Warning for skipped estimation. String. If the matrix
+%                       X is singular after the
+%                         adjustments, the OLS estimation is skipped, the
+%                         parameters are set to NaN and a warning is
+%                         produced.
+%    reg.yhat_full =  Fitted values of the estimated linear regression
+%                       model with observations (rows) with
+%                         missing or infinite values reinserted as NaNs.
+%                         This is to obtain the same length of the initial
+%                         input vector y defined by the user.
+%     reg.res_full = Residuals of the estimated linear regression model
+%                       with observations (rows) with
+%                         missing or infinite values reinserted as NaNs.
+%                         This is to obtain the same length of the initial
+%                         input vector y defined by the user.
+%
+%  input :  A structure containing the following fields.
+%         input.y = Response without missing and infs. Vector. The new
+%               response variable, with observations (rows) with missing or infinite values
+%                excluded.
+%         input.X = Predictor variables without infs and missings. Matrix.
+%                   The new matrix of explanatory variables, with missing
+%                   or infinite values excluded, to be used for the model
+%                   estimation. It is the matrix [L X Z intercept] where L
+%                   is the lagged matrix n x p of y (if p > 0), X is the
+%                   matrix of exogenous regressors defined by the user, Z
+%                   is the matrix of deterministic regressors and the last
+%                   column is the intercept (if any).
+%         input.yd = Threshold variable without missing and infs. Vector. The
+%                   new threshold variable,
+%                  with observations (rows) with missing or infinite
+%                  values excluded.
+%       input.rmv_obs = Indices of removed observations/rows (because of
+%                   missings or infs). Scalar vector.
+%    input.y_full = Response y after adjustements by chkinputTAR BUT with
+%                   observations (rows) with missing or infinite values
+%                   included.
+%    input.X_full = Matrix X after adjustements by chkinputTAR BUT with
+%                 observations (rows) with missing or infinite values included.
+%   input.yd_full = Threshold variable after adjustements by chkinputTAR BUT
+%                 with observations (rows) with
+%                 missing or infinite values included.
 %
 %  More about:
 %
@@ -204,7 +233,7 @@ function [out] = SETARX(y, p, d, varargin)
 %     \begin{equation}\label{eqn:par}
 %     \hat{\boldsymbol{\theta}}_j=\left({\mathbf{X}^*_j}^{\prime}\mathbf{X}^*_j\right)^{-1}{\mathbf{X}^*_j}^{\prime}\mathbf{y}_j\,
 %     \end{equation}
-% for $j=1,2$ where $\mathbf{X}^*_j=(\mathbf{X}_j,\mathbf{Z}_j)=(({\bf x}_{ji_1}^{\prime},...,{\bf x}_{ji_{N_j}}^{\prime})^{\prime},({\bf z}_{ji_1}^{\prime},...,{\bf z}_{ji_{N_j}}^{\prime})^{\prime})$ is the $(N_j \times (p+r))$ matrix of regressors for each regime. The variance estimates can be calculated as
+%       for $j=1,2$ where $\mathbf{X}^*_j=(\mathbf{X}_j,\mathbf{Z}_j)=(({\bf x}_{ji_1}^{\prime},...,{\bf x}_{ji_{N_j}}^{\prime})^{\prime},({\bf z}_{ji_1}^{\prime},...,{\bf z}_{ji_{N_j}}^{\prime})^{\prime})$ is the $(N_j \times (p+r))$ matrix of regressors for each regime. The variance estimates can be calculated as
 %         $\hat{\sigma}_{\varepsilon,j}={\bf r}_j^{\prime}{\bf r}_j /(N_j - (p+r))$, with ${\bf r}_j={\bf y}_j-\mathbf{X}^*_j\hat{\boldsymbol{\theta}}_j$.
 %
 %     The least square estimate of $\gamma$ is obtained by minimizing the joint residual sum of
@@ -217,7 +246,7 @@ function [out] = SETARX(y, p, d, varargin)
 % 0.05 to 0.3) of all observations
 %
 %
-% See also: estregimeTAR, chkinputTAR.
+% See also: LTSts
 %
 % References:
 %
@@ -241,7 +270,7 @@ function [out] = SETARX(y, p, d, varargin)
 % Examples:
 
 %{
-    %% Example 1: Estimation from simulated data.
+    % Example 1: Estimation from simulated data.
     %  $\beta_1=(0.7, -0.5, -0.6, 0.3, 0.3)^{\prime}$ and ...
     %  $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
     % SETAR with all the default options.
@@ -275,7 +304,7 @@ function [out] = SETARX(y, p, d, varargin)
 %}
 
 
-%% Input parameters checking
+%% Beginning of code
 
 if nargin<1 || isempty(y)==1
     error('FSDA:SETARX:MissingInputs','Input vector y not specified.');
@@ -515,15 +544,15 @@ end
 
 
 %% Structured outputs
-out=struct;
+input=struct;
 
-out.input.y = y;
-out.input.X = X;
-out.input.yd = yd;
-out.input.rmv_obs = rmv_obs;
-out.input.y_full = input_full.y;
-out.input.X_full = input_full.X;
-out.input.yd_full = input_full.q;
+input.y = y;
+input.X = X;
+input.yd = yd;
+input.rmv_obs = rmv_obs;
+input.y_full = input_full.y;
+input.X_full = input_full.X;
+input.yd_full = input_full.q;
 
 %out.reg.beta = beta;
 %out.reg.se = se;
@@ -536,22 +565,22 @@ out.input.yd_full = input_full.q;
 %out.reg.RSS = RSS;
 %out.reg.TSS = TSS;
 %out.reg.R_2 = R_2;
-out.reg = benchreg;
-out.reg.yhat_full = yhat_full;
-out.reg.res_full = res_full;
+reg = struct; % benchreg;
+reg.yhat_full = yhat_full;
+reg.res_full = res_full;
 
-out.setarx.regime1 = regime1;
-out.setarx.regime2 = regime2;
+reg.regime1 = regime1;
+reg.regime2 = regime2;
 
-out.setarx.rmv_col_loop = rmv_col_loop;
-out.setarx.thrhat = thrhat;
-out.setarx.thrvar_ord = thrvar_ord;
-out.setarx.sigmaj_2 = sigmaj_2;
-out.setarx.RSSj = minRSSj;
-out.setarx.yjhat = yjhat;
-out.setarx.resj = resj;
-out.setarx.yjhat_full = yjhat_full;
-out.setarx.resj_full = resj_full;
+out.rmv_col_loop = rmv_col_loop;
+out.thrhat = thrhat;
+out.thrvar_ord = thrvar_ord;
+out.sigmaj_2 = sigmaj_2;
+out.RSSj = minRSSj;
+out.yjhat = yjhat;
+out.resj = resj;
+out.yjhat_full = yjhat_full;
+out.resj_full = resj_full;
 
 end
 
