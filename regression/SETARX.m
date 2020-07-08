@@ -1,8 +1,5 @@
 function [out] = SETARX(y, p, d, varargin)
-
-%%%% Cambiare spiegazione in 'More about' (copia e edit da Grossi e Nan, 2019),  %%%%%%%%%%%%%%%%%%%%%%%%
-
-% SETARX(p,d) Threshold autoregressive models with two regimes
+%SETARX implements Threshold autoregressive models with two regimes
 %
 % Self Exciting Threshold AutoRegressive model (SETAR) with two regimes.
 % Estimation with Conditional Least Squares.
@@ -24,22 +21,26 @@ function [out] = SETARX(y, p, d, varargin)
 %               computations. Data type - double.
 %          p :  autoregressive order of y in regimes. Scalar. If
 %               p = 0, the AR part is not present in the regimes, so an
-%               error is given in the case 'X' and 'Z' are empty and 'intercept' is false.
+%               error is given in the case 'X' and 'Z' are empty and
+%               'intercept' is false.
 %               Data type - non negative integer.
 %          d :  lag of the threshold variable $y_{(t-d)}$. Scalar. Data
-%               type - positive integer.
+%               Data type - positive integer.
 %
 % Optional input arguments:
 %
 %       trim :  Minimum fraction of observations contained in each regime.
-%               Scalar. The trimming parameter should be set between 0.05 and 0.45.
-%               The fraction of observations to trim from tails of the threshold
-%               variable, in order to ensure a sufficient number of observations around
-%               the true threshold parameter so that it can be identified
-%               (usually set between 0.10 and 0.15). Default is 0.15.
-%               If the number of observation to be trimmed is less that the total
-%               number of regressors, an error is given.
+%               Scalar. The trimming parameter should be set between 0.05
+%               and 0.45. The fraction of observations to trim from tails
+%               of the threshold variable, in order to ensure a sufficient
+%               number of observations around the true threshold parameter
+%               so that it can be identified (usually set between 0.10 and
+%               0.15). Default is 0.15. If the number of observation to be
+%               trimmed is less that the total number of regressors, an
+%               error is given.
+%               Example - 'trim',0.10
 %               Data type - double
+%
 %  intercept :  Indicator for constant term. true (default) | false.
 %               Indicator for the constant term (intercept) in the fit,
 %               specified as the comma-separated pair consisting of
@@ -47,17 +48,21 @@ function [out] = SETARX(y, p, d, varargin)
 %               the constant term from the model.
 %               Example - 'intercept',false
 %               Data Type - boolean
+%
 %          X :  Data matrix of explanatory variables. Matrix of exogenous
-%               regressors of dimension n x k1, where k1 denotes the
-%               number of regressors excluding the intercept.
-%               Rows of X represent observations, and columns represent
-%               variables. Each entry in y is the response for the
-%               corresponding row of X. By default, there is a constant term in the
-%               model, unless you explicitly remove it using input option
-%               intercept, so do not include a column of 1s in X. Missing
-%               values (NaN's) and infinite values (Inf's) are allowed,
-%               since observations (rows) with missing or infinite values
-%               will automatically be excluded from the computations. Data Type - double
+%               regressors of dimension n x k1, where k1 denotes the number
+%               of regressors excluding the intercept. Rows of X represent
+%               observations, and columns represent variables. Each entry
+%               in y is the response for the corresponding row of X. By
+%               default, there is a constant term in the model, unless you
+%               explicitly remove it using input option intercept, so do
+%               not include a column of 1s in X. Missing values (NaN's) and
+%               infinite values (Inf's) are allowed, since observations
+%               (rows) with missing or infinite values will automatically
+%               be excluded from the computations. 
+%               Example - 'X',randn(n,k1)
+%               Data Type - double
+%
 %          Z :  Deterministic variables (including dummies). Matrix of
 %               deterministic regressors of dimension n x k2, where k2
 %               denotes the number of regressors excluding the intercept.
@@ -69,6 +74,7 @@ function [out] = SETARX(y, p, d, varargin)
 %               values (NaN's) and infinite values (Inf's) are allowed,
 %               since observations (rows) with missing or infinite values
 %               will automatically be excluded from the computations. Data
+%               Example - 'Z',randn(n,k2)
 %               Type - double
 %
 %
@@ -76,88 +82,88 @@ function [out] = SETARX(y, p, d, varargin)
 %
 %  out :  A structure containing the following three substructures.
 %
-%  out.input : A substructure containing the adjusted input data obtained applying
+%  out.input = A substructure containing the adjusted input data obtained applying
 %              the function chkinputTAR (see sections 'Outputs' and 'More about' of chkinputTAR).
-%         out.input.y : Response without missing and infs. Vector. The new response variable, with
+%         out.input.y = Response without missing and infs. Vector. The new response variable, with
 %                       observations (rows) with missing or infinite values excluded.
-%         out.input.X : Predictor variables without infs and missings. Matrix. The new matrix of
+%         out.input.X = Predictor variables without infs and missings. Matrix. The new matrix of
 %                       explanatory variables, with missing or infinite values excluded, to be used for
 %                       the model estimation. It is the matrix [L X Z intercept] where L is the lagged
 %                       matrix n x p of y (if p > 0), X is the matrix of exogenous regressors defined
 %                       by the user, Z is the matrix of deterministic regressors and the last column
 %                       is the intercept (if any).
-%        out.input.yd : Threshold variable without missing and infs. Vector. The new threshold variable,
+%        out.input.yd = Threshold variable without missing and infs. Vector. The new threshold variable,
 %                       with observations (rows) with missing or infinite values excluded.
-%   out.input.rmv_obs : Indices of removed observations/rows (because of missings or infs). Scalar vector.
-%    out.input.y_full : Response y after adjustements by chkinputTAR BUT with observations (rows) with
+%   out.input.rmv_obs = Indices of removed observations/rows (because of missings or infs). Scalar vector.
+%    out.input.y_full = Response y after adjustements by chkinputTAR BUT with observations (rows) with
 %                       missing or infinite values included.
-%    out.input.X_full : Matrix X after adjustements by chkinputTAR BUT with observations (rows) with
+%    out.input.X_full = Matrix X after adjustements by chkinputTAR BUT with observations (rows) with
 %                       missing or infinite values included.
-%   out.input.yd_full : Threshold variable after adjustements by chkinputTAR BUT with observations (rows) with
+%   out.input.yd_full = Threshold variable after adjustements by chkinputTAR BUT with observations (rows) with
 %                       missing or infinite values included.
 %
-%  out.reg : A substructure containing the results of the OLS estimation of the linear regression model
+%  out.reg = A substructure containing the results of the OLS estimation of the linear regression model
 %            (benchmark). The estimation is performed applying the function estregimeTAR (see sections
 %            'Outputs' and 'More about' of estregimeTAR).
-%         out.reg.beta :  Estimated parameters of the regression model. Vector. See out.covar.
-%           out.reg.se :  Estimated heteroskedasticity-consistent (HC) standard errors. Vector.
+%         out.reg.beta =  Estimated parameters of the regression model. Vector. See out.covar.
+%           out.reg.se =  Estimated heteroskedasticity-consistent (HC) standard errors. Vector.
 %                         See section 'More about'.
-%        out.reg.covar :  Estimated variance-covariance matrix. Matrix. It is the
+%        out.reg.covar =  Estimated variance-covariance matrix. Matrix. It is the
 %                         heteroskedasticity-consistent (HC) covariance matrix. See section 'More about'.
-%      out.reg.sigma_2 :  Estimated residual variance. Scalar.
-%         out.reg.yhat :  Fitted values. Vector.
-%          out.reg.res :  Residuals of the regression model. Vector.
-%          out.reg.RSS :  Residual Sum of Squared. Scalar.
-%          out.reg.TSS :  Total Sum of Squared. Scalar.
-%          out.reg.R_2 :  R^2. Scalar.
-%            out.reg.n :  Number of observations entering in the estimation. Scalar.
-%            out.reg.k :  Number of regressors in the model left after the checks. It is the number of
+%      out.reg.sigma_2 =  Estimated residual variance. Scalar.
+%         out.reg.yhat =  Fitted values. Vector.
+%          out.reg.res =  Residuals of the regression model. Vector.
+%          out.reg.RSS =  Residual Sum of Squared. Scalar.
+%          out.reg.TSS =  Total Sum of Squared. Scalar.
+%          out.reg.R_2 =  R^2. Scalar.
+%            out.reg.n =  Number of observations entering in the estimation. Scalar.
+%            out.reg.k =  Number of regressors in the model left after the checks. It is the number of
 %                         betas to be estimated by OLS. The betas corresponding to the removed columns of X
 %                         will be set to 0 (see section 'More about' of estregimeTAR). Scalar.
-%      out.reg.rmv_col :  Indices of columns removed from X before the model estimation. Scalar vector.
+%      out.reg.rmv_col =  Indices of columns removed from X before the model estimation. Scalar vector.
 %                         Columns containing only zeros are removed. Then, to avoid multicollinearity, in the
 %                         case of presence of multiple non-zero constant columns, the code leave only the first
 %                         constant column (see section 'More about' of estregimeTAR).
-%   out.reg.rk_warning :  Warning for skipped estimation. String. If the matrix X is singular after the
+%   out.reg.rk_warning =  Warning for skipped estimation. String. If the matrix X is singular after the
 %                         adjustments, the OLS estimation is skipped, the parameters are set to NaN and a
 %                         warning is produced.
-%    out.reg.yhat_full :  Fitted values of the estimated linear regression model with observations (rows) with
+%    out.reg.yhat_full =  Fitted values of the estimated linear regression model with observations (rows) with
 %                         missing or infinite values reinserted as NaNs. This is to obtain the same length of
 %                         the initial input vector y defined by the user.
-%     out.reg.res_full :  Residuals of the estimated linear regression model with observations (rows) with
+%     out.reg.res_full = Residuals of the estimated linear regression model with observations (rows) with
 %                         missing or infinite values reinserted as NaNs. This is to obtain the same length of
 %                         the initial input vector y defined by the user.
 %
-%  out.setarx : A substructure containing the result of the SETARX model estimation. The estimation is
+%  out.setarx = A substructure containing the result of the SETARX model estimation. The estimation is
 %               performed applying the function estregimeTAR in each regime (see sections 'Outputs' and
 %               'More about' of estregimeTAR). See section 'More about' below for an explanation about
 %               the SETARX estimation method.
-%        out.setarx.regime1 :  A sub-substructure containing the results of the OLS estimation of the linear
+%        out.setarx.regime1 =  A sub-substructure containing the results of the OLS estimation of the linear
 %                              regression model applyied to the data in regime 1. The estimation is performed with the
 %                              function estregimeTAR (see sections 'Outputs' and 'More about' of estregimeTAR).
 %                              See also the description of the outputs in the substructure out.reg.
-%        out.setarx.regime2 :  A sub-substructure containing the results of the OLS estimation of the linear
+%        out.setarx.regime2 =  A sub-substructure containing the results of the OLS estimation of the linear
 %                              regression model applyied to the data in regime 2. The estimation is performed with the
 %                              function estregimeTAR (see sections 'Outputs' and 'More about' of estregimeTAR).
 %                              See also the description of the outputs in the substructure out.reg.
-%   out.setarx.rmv_col_loop :  Warnings collected for regimes 1 and 2 in the loop for the search of the
+%   out.setarx.rmv_col_loop =  Warnings collected for regimes 1 and 2 in the loop for the search of the
 %                              optimal threshold value. Matrix of strings of dimension n x 2.
 %                              Warnings show the indices of columns removed from the matrix of regressors
 %                              before the model estimation. Columns containing only zeros are removed.
 %                              Then, to avoid multicollinearity, in the case of presence of multiple
 %                              non-zero constant columns, the code leave only the first constant column
 %                              (see section 'More about' of estregimeTAR).
-%         out.setarx.thrhat :  Estimated threshold value. Scalar. It is the threshold value that minimizes
+%         out.setarx.thrhat =  Estimated threshold value. Scalar. It is the threshold value that minimizes
 %                              the joint RSS (see section 'More about' for the methodology).
-%     out.setarx.thrvar_ord :  Index series after reorder of threshold variable yd. Vector.
-%           out.reg.sigma_2 :  Estimated residual variance of SETARX model. Scalar.
-%           out.setarx.RSSj :  Joint Residual Sum of Squared of SETARX model. Scalar.
-%          out.setarx.yjhat :  Fitted values of SETARX model. Vector.
-%           out.setarx.resj :  Residuals of the SETARX model. Vector.
-%     out.setarx.yjhat_full :  Fitted values of SETARX model with observations (rows) with missing or infinite
+%     out.setarx.thrvar_ord =  Index series after reorder of threshold variable yd. Vector.
+%           out.reg.sigma_2 =  Estimated residual variance of SETARX model. Scalar.
+%           out.setarx.RSSj =  Joint Residual Sum of Squared of SETARX model. Scalar.
+%          out.setarx.yjhat =  Fitted values of SETARX model. Vector.
+%           out.setarx.resj =  Residuals of the SETARX model. Vector.
+%     out.setarx.yjhat_full = Fitted values of SETARX model with observations (rows) with missing or infinite
 %                              values reinserted as NaNs. This is to obtain the same length of the initial
 %                              input vector y defined by the user.
-%      out.setarx.resj_full :  Residuals of the SETARX model with observations (rows) with missing or infinite
+%      out.setarx.resj_full =  Residuals of the SETARX model with observations (rows) with missing or infinite
 %                              values reinserted as NaNs. This is to obtain the same length of the initial
 %                              input vector ydefined by the user.
 %
@@ -211,7 +217,7 @@ function [out] = SETARX(y, p, d, varargin)
 % 0.05 to 0.3) of all observations
 %
 %
-% See also estregimeTAR, chkinputTAR.
+% See also: estregimeTAR, chkinputTAR.
 %
 % References:
 %
@@ -233,10 +239,11 @@ function [out] = SETARX(y, p, d, varargin)
 %$LastChangedDate:: 2020-06-09 17:55:46 $: Date of the last commit
 %
 % Examples:
-%{
-%% Example 1: Estimation from simulated data with $\beta_1=(0.7, -0.5, -0.6, 0.3, 0.3)^{\prime}$ and ...
-%% $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
 
+%{
+    %% Example 1: Estimation from simulated data.
+    %  $\beta_1=(0.7, -0.5, -0.6, 0.3, 0.3)^{\prime}$ and ...
+    %  $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
     % SETAR with all the default options.
     % Use simulated data.
     rng(10)
@@ -250,19 +257,21 @@ function [out] = SETARX(y, p, d, varargin)
     p = 2;
     d = 2;
     [out1] = SETARX(y, p ,d, 'X',X1);
-    
-%% Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.
+%}
 
+%{
+    % Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.
      X2 = [repmat(0.3,n,1) X1];
     [out2] = SETARX(y, p ,d, 'X',X2);
+%}
 
-%% Example 3: Estimation from simulated data of example 1 with an extra column as regressor, half zeros
-%% and half ones. This will produce a warning (column of zeros removed) during the loop for the 
-%% estimation of the threshold value. Check out3.setarx.rmv_col_loop.
-
-     X3 = [[repmat(0,25,1);repmat(1,25,1)] X1];
-     [out3] = SETARX(y, p ,d, 'X',X3);
-    
+%{
+    % Example 3: variant from example 1.
+    % Estimation from simulated data of example 1 with an extra column as regressor, half zeros
+    % and half ones. This will produce a warning (column of zeros removed) during the loop for the 
+    % estimation of the threshold value. Check out3.setarx.rmv_col_loop.
+    X3 = [[repmat(0,25,1);repmat(1,25,1)] X1];
+    [out3] = SETARX(y, p ,d, 'X',X3);
 %}
 
 
@@ -383,8 +392,10 @@ end
 %sigma_2 = RSS/(n-k); % Residual variance.
 
 %XXinv = inv(X'*X);
+
 %% Huber-White "Sandwich" estimator: heteroskedasticity-robust variance-covariance matrix.
 %covar = XXinv*X'*diag(res.*res.*(n/(n-k)))*X*XXinv;
+
 %% Heteroskedasticity-robust standard errors. It works also in the case of homoskedasticity.
 %se = sqrt(diag(covar));
 %%% covar_hom = XXinv.*sigma_2; % Covariance matrix. Assumption: homoskedasticity.
@@ -541,8 +552,6 @@ out.setarx.yjhat = yjhat;
 out.setarx.resj = resj;
 out.setarx.yjhat_full = yjhat_full;
 out.setarx.resj_full = resj_full;
-
-
 
 end
 
