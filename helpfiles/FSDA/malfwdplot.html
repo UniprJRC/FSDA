@@ -24,7 +24,11 @@ m0=20;
 bs=fre(1:m0,1);
 [out]=FSMeda(Y,bs,'plots',1,'init',30);
 % Produce monitoring MD plot with all the default options
-malfwdplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+malfwdplot(out)</pre></div></div><pre class="codeoutput">Warning: Support for GPU devices with Compute Capability 5.2 will be removed in
+a future MATLAB release. For more information on GPU support, see &lt;a
+href="matlab:web('http://www.mathworks.com/help/parallel-computing/gpu-support-by-release.html','-browser')"&gt;GPU
+Support by Release&lt;/a&gt;. 
+</pre><a href='http://rosa.unipr.it/fsda/malfwdplot.html#Example_1'><img vspace="5" hspace="5" src="images\malfwdplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\malfwdplot_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of some options inside structure standard.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=4;
 state1=141243498;
 randn('state', state1);
@@ -40,7 +44,7 @@ standard=struct;
 standard.LineStyle={'-';'-.';':'};
 % Specify the line width
 standard.LineWidth=0.5;
-malfwdplot(out,'standard',standard)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+malfwdplot(out,'standard',standard)</pre></div></div><a href='http://rosa.unipr.it/fsda/malfwdplot.html#Example_2'><img vspace="5" hspace="5" src="images\malfwdplot_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\malfwdplot_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of some options inside structure fground.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=4;
 state1=141243498;
 randn('state', state1);
@@ -437,7 +441,7 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
 </code>,<code> 'databrush',1
 </code>,<code> 'nameY',{'PC1', PC2, 'PC3'}
 </code>,<code> 'msg',1
-</code>,<code> 'conflev',0.99
+</code>,<code> 'conflev',[0.99 0.999]
 </code></code></span></div><div class="expandableContent"><div id="inputarg_standard" class="clearfix"></div><h3 id="input_argument_namevalue_standard" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>standard</code> &#8212;plot layout.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>Appearance of the plot
                    in terms of xlim, ylim, axes labels and their font size
                    style, color of the lines, etc.</p> <p>
@@ -687,11 +691,26 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                    the options which have been used and prints them on the
                    screen.</p><p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single or double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence interval for the horizontal bands.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It can be a vector of different confidence level values,
-                   e.g. [0.95,0.99,0.999]. Confidence interval is based on
-                   the chi^2 distribution.</p> <p>
-                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',0.99
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single or double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_plotopt" class="clearfix"></div><h3 id="output_argument_plotopt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotopt</code> &#8212;options which have been used to create the plot.</span></a><span class="example_desc">Cell array
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single or double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;confidence interval for the horizontal bands.</span></a><span class="example_desc">empty value, vector | struct.</span></span></h3><div class="collapse">	<p><p>If conflev is empty no confidence line is shown (this is the default).</p> <p>
+                   Confidence interval is based on the chi^2 distribution.</p> <p>
+                   If conflev is a numeric vector it may contain the
+                   different confidence level values, e.g.</p> <p>
+                   [0.95,0.99,0.999]. The horizontal confidence lines are
+                   shown using red color and line width equal to 2.</p> <p>
+                   If conflev is a structure it is also possible to
+                   control the color and the width of the lines associated
+                   with the confidence bands. If conflev is a structure it
+                   may contain the following fields:</p> <p>
+                   conflev.color= Line color, specified as an RGB triplet,
+                       (i.e. [0.4 0.6 0.7]) a hexadecimal color code (i.e.
+                       #FF8800), a color name (i.e. blue), or a short
+                       name (i.e. 'b').</p> <p>
+                   conflev.linewidth=scalar, line width of the confidence
+                       lines associated with the confidence levels.</p> <p>
+                   conflev.conflev = numeric vector containing the
+                       confidence levels.</p><p>
+                   </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.99 0.999]
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>sEmpty value, vector or struct</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_plotopt" class="clearfix"></div><h3 id="output_argument_plotopt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plotopt</code> &#8212;options which have been used to create the plot.</span></a><span class="example_desc">Cell array
                of strings</span></span></h3><div class="collapse"><p> Store all options which have been used to
                generate the plot inside cell plotopt.</p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Atkinson, A.C., Riani, M. and Cerioli, A. (2004), "Exploring multivariate
  data with the forward search", Springer Verlag, New York.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="resfwdplot.html" itemprop="url"><span itemprop="name"><code>resfwdplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
