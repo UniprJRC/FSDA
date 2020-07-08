@@ -25,18 +25,18 @@ function [ext] = extendVEC(x, index, value)
 % Written by FSDA team
 %
 %
+% See also:
+%
 %<a href="matlab: docsearchFS('extendVEC')">Link to the help function</a>
 %
 %$LastChangedDate:: 2020-06-09 16:58:50 #$: Date of the last commit
 %
 % Example:
 %{
-%% Example 1: Row vector extended with the inclusion of multiple elements "Inf" in the tail.
-  
+% Example 1: Row vector extended with the inclusion of multiple elements "Inf" in the tail.
   x = [1 2 3 4 5 6];
   index = [2 5 11];
   ext = extendVEC(x, index, Inf)
-
 %}
 
 
