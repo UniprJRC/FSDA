@@ -213,6 +213,12 @@ function out  = tclustregIC(y,X,varargin)
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
+%           h : the axis handle of a figure where to send the IC plot.
+%               This can be used to host the IC plot in a subplot of a
+%               complex figure formed by different panels.
+%               Example -'h',h1 where h1=subplot(2,1,1)
+%               Data Types - Axes object (supplied as a scalar)
+%
 %     numpool : number of pools for parellel computing. Scalar.
 %               If numpool > 1, the routine automatically checks if
 %               the Parallel Computing Toolbox is installed and distributes
@@ -419,16 +425,17 @@ function out  = tclustregIC(y,X,varargin)
 %}
 
 %{
-    % tclustregIC of 'X data' with optional arguments.
-    % The X data have been introduced by Gordaliza, Garcia-Escudero & Mayo-Iscar (2013).
-    % The dataset presents two parallel components without contamination.
+    %% tclustregIC of 'X data' with the handle 'h' option.
+    % The IC plot is copied into a subplot.
     X  = load('X.txt');
     y1 = X(:,end);
     X1 = X(:,1:end-1);
-    alpha1 = 0.05;
-    % Impose classification likelihood and five per cent likelihood trimming
-    out = tclustregIC(y1,X1,'whichIC','CLACLA','alphaLik',alpha1);
-    tclustICplot(out,'whichIC','CLACLA')
+    h1   = subplot(3,1,1);
+    h2   = subplot(3,1,2);
+    h3   = subplot(3,1,3);
+    out = tclustregIC(y1,X1,'whichIC','CLACLA','plots',1,'h',h1);
+    out = tclustregIC(y1,X1,'whichIC','MIXMIX','plots',1,'h',h2);
+    out = tclustregIC(y1,X1,'whichIC','MIXCLA','plots',1,'h',h3);
 %}
 
 %{
@@ -545,13 +552,14 @@ we = ones(n,1);
 
 
 options=struct('alphaLik',alphaLik,'alphaX',alphaX,'cc',ccsigmay,...
-    'ccSigmaX',ccSigmaX,'kk',kk,...
-    'whichIC',whichIC,'nsamp',nsamp,'RandNumbForNini',RandNumbForNini,...
-    'plots',plots,'nocheck',0,...
-    'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
+    'ccSigmaX',ccSigmaX,'kk',kk,'whichIC',whichIC,...
+    'nsamp',nsamp,'RandNumbForNini',RandNumbForNini,...
+    'plots',plots,'nocheck',0,'msg',msg,'Ysave',1,...
+    'refsteps',refsteps,'equalweights',equalweights,...
     'reftol',reftol,'startv1',startv1,...
     'UnitsSameGroup',UnitsSameGroup,'we',we,...
-    'numpool',numpool, 'cleanpool', cleanpool,'intercept',intercept);
+    'numpool',numpool, 'cleanpool', cleanpool,...
+    'intercept',intercept,'h','');
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -582,30 +590,25 @@ if nargin > 2
         options.(varargin{i})=varargin{i+1};
     end
     
-    
-    alphaLik=options.alphaLik;
-    alphaX=options.alphaX;
-    ccsigmay=options.cc;
-    
+    [h, plots, msg, cleanpool, numpool] = ...
+        deal(options.h, options.plots, options.msg, ...
+             options.cleanpool, options.numpool);
+
+    alphaLik = options.alphaLik;
+    alphaX   = options.alphaX;
     if alphaX==1
         ccSigmaX=options.ccSigmaX;
     end
-    
-    we=options.we;
-    kk=options.kk;
-    nsamp=options.nsamp;        % Number of subsets to extract
-    plots=options.plots;        % Plot of the resulting classification
-    equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
-    
-    refsteps=options.refsteps;
-    reftol=options.reftol;
-    msg=options.msg;            % Scalar which controls the messages displayed on the screen
-    
-    whichIC=options.whichIC;
-    cleanpool=options.cleanpool;
-    numpool=options.numpool;
-    UnitsSameGroup=options.UnitsSameGroup;
-    RandNumbForNini=options.RandNumbForNini;
+    ccsigmay     = options.cc;
+    we           = options.we;
+    kk           = options.kk;
+    nsamp        = options.nsamp;        % Number of subsets to extract
+    equalweights = options.equalweights; % Specify if assignment must take into account the size of the groups
+    refsteps     = options.refsteps;
+    reftol       = options.reftol; 
+    whichIC      = options.whichIC;
+    UnitsSameGroup  = options.UnitsSameGroup;
+    RandNumbForNini = options.RandNumbForNini;
 end
 
 
@@ -790,7 +793,6 @@ if plots==1
     end
     legstr=strcat(a, cellstr(num2str(cORalpha)));
     
-    
     xkk=0:(1/(length(kk)-1)):1;
 end
 
@@ -813,11 +815,12 @@ if typeIC==0 || typeIC==3
     out.IDXCLA=IDXCLA;
     
     if plots==1
-        figure
-        plot1=plot(kk',out.CLACLA,'LineWidth',LineWidth);
-        title('CLACLA')
-        % Add labels for the best value of cORa for each k
+        hf    = figure;
+        ax    = axes('parent',hf);
+        plot1 = plot(ax, kk',out.CLACLA,'LineWidth',LineWidth);
+        title(ax,'CLACLA');
         
+        % Add labels for the best value of cORa for each k
         for j=1:length(kk)
             [~,posj]=min(out.CLACLA(j,:));
             cmin(j)=cORalpha(posj);
@@ -827,8 +830,8 @@ if typeIC==0 || typeIC==3
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
         set(plot1,{'Marker'},styp(1:lcc))
-        xlabel('Number of groups')
-        set(gca,'xtick',kk)
+        xlabel(ax,'Number of groups')
+        set(ax,'xtick',kk)
         legend(legstr,'location','best')
     end
     
@@ -852,9 +855,11 @@ if typeIC==2 || typeIC==3
     end
     
     if plots==1
-        figure
-        plot1=plot(kk',out.MIXMIX,'LineWidth',LineWidth);
-        title('MIXMIX')
+        hf    = figure;
+        ax    = axes('parent',hf);
+        plot1 = plot(ax, kk',out.MIXMIX,'LineWidth',LineWidth);
+        title(ax,'MIXMIX');
+        
         % Add labels for the best value of cORa for each k
         for j=1:length(kk)
             [~,posj]=min(out.MIXMIX(j,:));
@@ -865,8 +870,8 @@ if typeIC==2 || typeIC==3
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
         set(plot1,{'Marker'},styp(1:lcc))
-        xlabel('Number of groups')
-        set(gca,'xtick',kk)
+        xlabel(ax,'Number of groups')
+        set(ax,'xtick',kk)
         legend(legstr,'location','best')
     end
 end
@@ -880,9 +885,10 @@ if typeIC==1 || typeIC==3
     end
     
     if plots==1
-        figure
-        plot1=plot(kk',out.MIXCLA,'LineWidth',LineWidth);
-        title('MIXCLA')
+        hf    = figure;
+        ax    = axes('parent',hf);
+        plot1 = plot(ax, kk',out.MIXCLA,'LineWidth',LineWidth);
+        title(ax,'MIXCLA');
         
         % Add labels for the best value of c for each k
         cmin=zeros(lcc,1);
@@ -894,19 +900,29 @@ if typeIC==1 || typeIC==3
         % Set line type and markers
         set(plot1,{'LineStyle'},slintyp(1:lcc));
         set(plot1,{'Marker'},styp(1:lcc))
-        xlabel('Number of groups')
-        set(gca,'xtick',kk)
+        xlabel(ax,'Number of groups')
+        set(ax,'xtick',kk)
         legend(legstr,'location','best')
     end
 end
 
 if plots==1
     if cloop== true
-        disp('The labels of c in the top part of the plot denote the values of c for which IC is minimum')
+        disp('The labels of c in the top part of the plot denote the values of c for which IC is minimum');
     else
-        disp('The labels of alpha in the top part of the plot denote the values of alphac for which IC is minimum')
+        disp('The labels of alpha in the top part of the plot denote the values of alphac for which IC is minimum');
     end
 end
+
+% copy the last figure in a plot of handle h
+if ~isempty(h)
+    % Eventually send the resindexplot into a different figure/subplot
+    axcp = copyobj(ax,ancestor(h, 'figure'));
+    set(axcp,'Position',get(h,'position'));
+    pause(0.0000001);
+    delete(hf);
+end
+
 % Store vectors kk and ccsigmay, ccsigmaX inside output structure out
 out.kk=kk;
 out.cc=ccsigmay';
