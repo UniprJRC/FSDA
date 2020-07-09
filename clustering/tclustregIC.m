@@ -914,13 +914,28 @@ if plots==1
     end
 end
 
-% copy the last figure in a plot of handle h
+% copy the (last) IC plot in a plot of handle h
 if ~isempty(h)
-    % Eventually send the resindexplot into a different figure/subplot
-    axcp = copyobj(ax,ancestor(h, 'figure'));
-    set(axcp,'Position',get(h,'position'));
-    pause(0.0000001);
-    delete(hf);
+    if strcmp(get(h,'type'),'axes')
+        % h is the handle of the subplot; 
+        % then send the ICplot into h.
+        axcp = copyobj(ax,ancestor(h, 'figure'));
+        set(axcp,'Position',get(h,'position'));
+        pause(0.0000001);
+        delete(hf);
+    elseif strcmp(get(h,'type'),'figure')
+        % h is the handle of a figure which contains at least a subplot; 
+        % then send the ICplot into the first subplot of the figure.
+        hc=get(h,'children');
+        if isempty(hc)
+            disp('Nothing copied, figure of destination is empty');
+        else
+            axcp = copyobj(ax,ancestor(hc(1), 'figure'));
+            set(axcp,'Position',get(hc(1),'position'));
+            pause(0.0000001);
+            delete(hf);
+        end
+    end
 end
 
 % Store vectors kk and ccsigmay, ccsigmaX inside output structure out
