@@ -805,6 +805,8 @@ vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
+largedata = n>1000 && v>10;
+
 % callmex is a Boolean which is equal to true if the mex file exists
 callmex=existFS('DfM');
 % verLess2016b is true if current version is smaller than 2016b
@@ -1210,7 +1212,17 @@ for i=1:nselected
             Lambda_vk(Lambda_vk<0)=0;
             
             % Restriction on the eigenvalue
-            autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            if largedata
+                autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            else
+                autovalues = restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            end
+            %{ 
+                % check if OK
+                if sum((restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))-(restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat)))>0
+                    disp('Not identical!');
+                end
+            %}
             
             % Covariance matrices are reconstructed keeping into account the
             % constraints on the eigenvalues
@@ -1485,8 +1497,17 @@ for i=1:nselected
         % The row below is just to avoid numerical problems
         if restrnum==1
             Lambda_vk(Lambda_vk<0)=0;
-            autovalues=restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-            
+            if largedata
+                autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            else
+                autovalues = restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            end
+            %{
+                % check if OK
+                if sum(restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))-(restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))>0
+                    disp('Not identical!');
+                end
+            %}
         elseif restrnum==2
             Lambda_vk(Lambda_vk<0)=0;
             % Restriction on the determinants
