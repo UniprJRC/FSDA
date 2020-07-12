@@ -1,14 +1,11 @@
 function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
-%restreigen computes eigenvalues restriction (without Dykstra algorithm)
+%restreigeneasy computes eigenvalues restriction (without Dykstra algorithm)
 %
 %<a href="matlab: docsearchFS('restreigeneasy')">Link to the help function</a>
 %
 %   restreigeneasy restricts the eigenvalues according to the constraint
-%   specified in scalar restr. This function is a readable and understandble
-%   (but slow)  version of routine restreigen. Routine restreigen is called
-%   in any concentration step of function tclust and can also be used
-%   inside function MixSim to generate groups with a prespecified level of
-%   overlapping
+%   specified in scalar restr. This function is a readable and
+%   understandble (but sometimes slower) version of routine restreigen.
 %
 %  Required input arguments:
 %
@@ -69,6 +66,55 @@ function [out]  = restreigeneasy(eigenvalues, niini, restr, tol)
 
 % Examples:
 %
+%{
+   %% Compiting time of three implementations of the eigenvalues restriction.
+
+    vmin  = 300; vmax  = 300; vstep = 1; vv = vmin:vstep:vmax;
+    kmin  = 4;   kmax  = 16;  kstep = 4; kk = kmin:kstep:kmax;
+    cycles = 1;
+
+    t=zeros(floor((vmax-vmin)/vstep),length(kk)); t_easy=t; t2_easy=t;
+    ik=0;
+    for k = kk
+        ik=ik+1;
+
+        iv=0;
+        for v=vv
+            disp(['p=',num2str(v),' - k=',num2str(k)]);
+            iv = iv+1;
+
+            eigenvalues=abs(10*randn(v,k));
+            niini=randi(1000,k,1);
+
+            t0=tic;
+            for s=1:cycles, out  = restreigen(eigenvalues,niini,1.1,1e-8);end
+            t(iv,ik) = toc(t0);
+
+            t1=tic;
+            for s=1:cycles, out1 = restreigenmemopt(eigenvalues,niini,1.1,1e-8);end
+            t_easy(iv,ik)=toc(t1);
+
+            t2=tic;
+            for s=1:cycles, out2 = restreigeneasy(eigenvalues,niini,1.1,1e-8);end
+            t2_easy(iv,ik)=toc(t2);
+
+            if sum(sum(out2-out1))>0
+                disp('Zob!');
+            end
+        end
+    end
+
+    figure;
+    vvv = 1;
+    h2=plot(1:ik,t_easy(vvv,:),'-r',1:ik,t2_easy(vvv,:),'-k',1:ik,t(vvv,:),'-b');
+    set(h2,'LineWidth',1.5);
+    legend('restreigenmemopt' , 'restreigeneasy', 'restreigen','FontSize',20);
+    xlabel('Number of groups k','FontSize',18);
+    set(gca,'Xtick',1:ik,'XtickLabel',kk,'XTickLabelRotation',45);
+    title(['Execution time for v=' num2str(vv(vvv))],'FontSize',20);
+
+%}
+
 %{
    % Example using all default options.
    % Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4

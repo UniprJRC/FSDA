@@ -1,13 +1,12 @@
-function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
-%restreigen computes eigenvalues restriction (without Dykstra algorithm)
+function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
+%restreigenmemopt computes eigenvalues restriction (without Dykstra algorithm)
 %
 %<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
 %
-%   restreigen restricts the eigenvalues according to the constraint
-%   specified in scalar restr. This function is called in every
-%   concentration step of function tclust and can also be used inside
-%   function MixSim to generate groups with a prespecified level of
-%   overlapping.
+%   restreigenmemopt, like restreigen, restricts the eigenvalues according
+%   to the constraint specified in scalar restr. This function is a version
+%   of routine restreigen that reduces the memory consumption, and
+%   sometimes is also faster.
 %
 %  Required input arguments:
 %
@@ -32,11 +31,11 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
 %               Example - 'tol',[1e-18]
 %               Data Types - double
 %
-% userepmat : use repmat, bsxfun or implicit expansion. Scalar.
+% userepmat : use repmat, bsxfun or implicit expansion. Scalar. 
 %             If userepmat is equal to 1, function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
-%             current version of MATLAB is >2013a.
+%             current version of MATLAB is >2013a. 
 %             If userepmat is 2, implicit expansion is used instead of
 %             bsxfun. Note that implicit expansion has been introduced only
 %             in 2017a therefore it will not work with previous releases.
@@ -125,7 +124,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
         % If MATLAB version is at least 2017a
         userepmat=2;
     elseif verLessThanFS(8.1) == false
-        % if MATLAB version is at least R2013b
+        % if MATLAB version is at least R2013b  
         userepmat=1;
     else
         userepmat=0;
@@ -140,7 +139,7 @@ function [out]  = restreigen(eigenvalues, niini, restr, tol, userepmat)
         niini=randi(100,[k,1]);
         tic;
         outold=restreigeneasy(eigenvalues,niini,1.1);
-        % Uncomment the line below if you want
+        % Uncomment the line below if you want 
         % outold=restreigen(eigenvalues,niini,1.1,tol,1);
         oldroutinetime=oldroutinetime+toc;
         tic;
@@ -260,15 +259,17 @@ if userepmat==2
             dltm=dvec<ed;
             dgtcm=dvec>ed*c;
             
-            ddltm=dltm.*dvec;
-            ddgtcm=dgtcm.*dvec;
+            %ddltm=dltm.*dvec;
+            %ddgtcm=dgtcm.*dvec;
+            %ddltm and ddgtcm removed to reduce space complexity
             
             rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
             
             % Do permute and reshape just once
             %         ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
             %         tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
-            ssttc=sum(permute(reshape(ddltm+ddgtcm/c,k,v,dimsor),[1 3 2]),3);
+            %ssttc=sum(permute(reshape(ddltm+ddgtcm/c,k,v,dimsor),[1 3 2]),3);
+            ssttc=sum(permute(reshape((dltm.*dvec)+(dgtcm.*dvec)/c,k,v,dimsor),[1 3 2]),3);
             
             %         % sum with a loop (less efficient)
             %             rrchk=zeros(v,dimsor);
@@ -315,36 +316,39 @@ if userepmat==2
             dvecsolmpboo=dvec<solmp;
             dlts=reshape(dvecsolmpboo,k,v,dimsor);
             
-            dlts = reshape(dlts,kv,dimsor);
-            sdlts=dlts.*solmp;
+            dlts   = reshape(dlts,kv,dimsor);
+            sdlts  = dlts.*solmp;
             sdlts  = reshape(sdlts,k,v,dimsor);
             
-            %dges = reshape(dvec>=solmp,k,v,dimsor);
-            
-            dges = reshape(~dvecsolmpboo,k,v,dimsor);
-            ddges=dges.*d;
-            
+            %dges = reshape(dvec>=solmp,k,v,dimsor);           
+            %dges = reshape(~dvecsolmpboo,k,v,dimsor);
+            %ddges=dges.*d;
+            %ddges=(reshape(~dvecsolmpboo,k,v,dimsor)).*d;
+            % dges and ddges removed to reduce space complexity
             
             % cs is c*solmp
             cs=solmp*c;
-            
-            csr=reshape(cs,1,1,dimsor);
-            
-            
-            % less efficient code to obtain csr
-            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
-            
+                        
             dveccsboo=dvec<=cs;
             dltcs = reshape(dveccsboo,k,v,dimsor);
             
             % More efficient to use not rather than the instruction below
             % dgtcs=reshape(dvec>cs,k,v,dimsor);
-            dgtcs=reshape(~dveccsboo,k,v,dimsor);
+            % dgtcs=reshape(~dveccsboo,k,v,dimsor);
+            % get rid of dgtcs to reduce space complexity
             
+            %csr=reshape(cs,1,1,dimsor);
+            % less efficient code to obtain csr
+            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
+
             % Array e contains the modified eigenvalues given a particular m
             % evaluted in correspondence of the dimsor points
             % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-            ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            % ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            % get rid of csr, ddges and dgtcs to reduce space complexity
+            ee =   sdlts ...
+                + ((reshape(~dvecsolmpboo,k,v,dimsor)).*d).*dltcs...
+                + (reshape(cs,1,1,dimsor)).*(reshape(~dveccsboo,k,v,dimsor));
             
             % Alternative way of computing oo
             % nisn=nis/n;
@@ -352,14 +356,16 @@ if userepmat==2
             
             % dmat=repmat(d,1,1,dimsor);
             % logede=log(ee)+dmat./ee;
-            logede=log(ee)+d./ee;
+            %logede=log(ee)+d./ee;
+            % logede removed to save space complexity
             % nismat=repmat(nis/n,1,1,dimsor);
             % oo=nismat.*logede;
-            oo=(nis/n).*logede;
+            %oo=(nis/n).*(log(ee)+d./ee);
+            % oo removed to save space complexity
             
             % obj is a vector of size dimsor
             %  obj=sum(sum(oo,1));
-            obj=sum(sum(oo,1),2);
+            obj=sum(sum((nis/n).*(log(ee)+d./ee),1),2);
             
             [~,indmax]=min(obj);
             
@@ -417,12 +423,16 @@ else
             rr=sum(permute(reshape(dltm+dgtcm,k,v,dimsor),[1 3 2]),3);
             
             % Matrix version of s(:,mp)=sum(d.*(d<edmp),2) for mp=1, ..., dimsor
-            ddltm=bsxfun(@times,dltm,dvec);
-            ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
+            %ddltm=bsxfun(@times,dltm,dvec);
+            %ss=sum(permute(reshape(ddltm,k,v,dimsor),[1 3 2]),3);
+            % ddltm removed to reduce space complexity
+            ss=sum(permute(reshape((bsxfun(@times,dltm,dvec)),k,v,dimsor),[1 3 2]),3);
             
             % Matrix version of t(:,mp)=sum(d.*(d>edmpc),2) for mp=1, ..., dimsor
-            ddgtcm=bsxfun(@times,dgtcm,dvec);
-            tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
+            %ddgtcm=bsxfun(@times,dgtcm,dvec);
+            %tt=sum(permute(reshape(ddgtcm,k,v,dimsor),[1 3 2]),3);
+            % ddgtcm removed to reduce space complexity
+            tt=sum(permute(reshape(bsxfun(@times,dgtcm,dvec),k,v,dimsor),[1 3 2]),3);
             
             % Vector version of
             % solmp=sum(niini/n.*(s(:,mp)+t(:,mp)/c))/(sum(niini/n.*(r(:,mp))))
@@ -453,44 +463,58 @@ else
             sdlts  = reshape(sdlts,k,v,dimsor);
             
             % d.*(d>=solmp)
-            dges = reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor);
-            ddges = bsxfun(@times,dges,d);
+            %dges = reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor);
+            %ddges = bsxfun(@times,dges,d);
+            %ddges = bsxfun(@times,reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor),d);
+            %dges and ddges removed to reduce space complexity
             
             % cs is c*solmp
             cs=solmp*c;
-            % csr is a reshaped version of cs
-            csr = reshape(ones(kv,1) * cs,k,v,dimsor);
-            % less efficient code to obtain csr
-            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
             
             % (d<=c*solmp)
-            dltcs = reshape(bsxfun(@le,dvec,cs),k,v,dimsor);
-            
+            %dltcs = reshape(bsxfun(@le,dvec,cs),k,v,dimsor);
+            % dltcs removed to reduce space complexity
             % (d>c*solmp)
-            dgtcs=reshape(bsxfun(@gt,dvec,cs),k,v,dimsor);
+            %dgtcs=reshape(bsxfun(@gt,dvec,cs),k,v,dimsor);
+            %dgtcs removed to reduce space complexity
             
+            % csr is a reshaped version of cs
+            %csr = reshape(ones(kv,1) * cs,k,v,dimsor);
+            % less efficient code to obtain csr
+            % csr = reshape(bsxfun(@times,ones(k*v,1),c*soll),k,v,dimsor);
+            % get rid of csr to reduce space complexity
+
             % Array e contains the modified eigenvalues given a particular m
             % evaluted in correspondence of the dimsor points
             % e = solmp*(d<solmp)+d.*(d>=solmp).*(d<=c*solmp)+(c*solmp)*(d>c*solmp);
-            ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            %ee=   sdlts          +ddges.*dltcs                +csr.*dgtcs;
+            ee  =  sdlts...
+                +(bsxfun(@times,reshape(bsxfun(@ge,dvec,solmp),k,v,dimsor),d)).*(reshape(bsxfun(@le,dvec,cs),k,v,dimsor))...
+                +(reshape(ones(kv,1) * cs,k,v,dimsor)).*(reshape(bsxfun(@gt,dvec,cs),k,v,dimsor));
             
             
             if userepmat ==1
                 dmat=repmat(d,[1,1,dimsor]);
-                logede=log(ee)+dmat./ee;
-                nismat=repmat(nis/n,[1,1,dimsor]);
-                oo=nismat.*logede;
+                %logede=log(ee)+dmat./ee;
+                %nismat=repmat(nis/n,[1,1,dimsor]);
+                %oo=nismat.*logede;
+                %oo=(repmat(nis/n,[1,1,dimsor])).*(log(ee)+dmat./ee);
+                % logede, nismat and oo removed to save space complexity
+                obj=sum(sum(((repmat(nis/n,[1,1,dimsor])).*(log(ee)+dmat./ee)),1),2);
             else
                 % Now find vector version of o
                 % logede=log(ee)+bsxfun(@rdivide,d,ee);
-                logede=log(ee)+bsxfun(@times,d,1./ee);
+                %logede=log(ee)+bsxfun(@times,d,1./ee);
                 % oo=nis/n.*(log(e)+d./e);
-                oo=bsxfun(@times,nis/n,logede);
+                %oo=bsxfun(@times,nis/n,logede);
+                %oo=bsxfun(@times,nis/n,(log(ee)+bsxfun(@times,d,1./ee)));
+                % logede and oo removed to save space complexity
+                obj=sum(sum((bsxfun(@times,nis/n,(log(ee)+bsxfun(@times,d,1./ee)))),1),2);
             end
             
             % obj is a vector of size dimsor
-            %  obj=sum(sum(oo,1));
-            obj=sum(sum(oo,1),2);
+            % obj=sum(sum(oo,1));
+            %obj=sum(sum(oo,1),2);
             
             [~,indmax]=min(obj);
             
