@@ -32,11 +32,11 @@ function [out]  = restreigen_easy(eigenvalues, niini, restr, tol, userepmat)
 %               Example - 'tol',[1e-18]
 %               Data Types - double
 %
-% userepmat : use repmat, bsxfun or implicit expansion. Scalar. 
+% userepmat : use repmat, bsxfun or implicit expansion. Scalar.
 %             If userepmat is equal to 1, function repmat is used instead
 %             of bsxfun inside the procedure. Remark: repmat is built in
 %             from MATLAB 2013b so it is faster to use repmat if the
-%             current version of MATLAB is >2013a. 
+%             current version of MATLAB is >2013a.
 %             If userepmat is 2, implicit expansion is used instead of
 %             bsxfun. Note that implicit expansion has been introduced only
 %             in 2017a therefore it will not work with previous releases.
@@ -125,7 +125,7 @@ function [out]  = restreigen_easy(eigenvalues, niini, restr, tol, userepmat)
         % If MATLAB version is at least 2017a
         userepmat=2;
     elseif verLessThanFS(8.1) == false
-        % if MATLAB version is at least R2013b  
+        % if MATLAB version is at least R2013b
         userepmat=1;
     else
         userepmat=0;
@@ -140,7 +140,7 @@ function [out]  = restreigen_easy(eigenvalues, niini, restr, tol, userepmat)
         niini=randi(100,[k,1]);
         tic;
         outold=restreigeneasy(eigenvalues,niini,1.1);
-        % Uncomment the line below if you want 
+        % Uncomment the line below if you want
         % outold=restreigen(eigenvalues,niini,1.1,tol,1);
         oldroutinetime=oldroutinetime+toc;
         tic;
