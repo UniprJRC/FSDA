@@ -805,7 +805,30 @@ vvarargin=varargin;
 Y = chkinputM(Y,nnargin,vvarargin);
 [n, v]=size(Y);
 
-largedata = n>1000 && v>10;
+% Eigenvalues restriction can be time demanding, depending on the (k,v)
+% combination. To minimize computing time, here we decide which
+% impementation to use: restreigen.m or restreigeneasy.m
+if v<=10
+    use_restreigen = ...
+    (k>=10 && v==1)    || ...
+    (k>=7  && v==2)    || ...
+    (k>=5  && v==3)    || ...
+    (k>=4  && v==4)    || ...
+    v>4;
+elseif v<=250
+    use_restreigen = ...
+    (k==2  && v<=250)  || ...
+    (k==3  && v<=150)  || ...
+    (k==4  && v<=130)  || ...
+    (k==5  && v<=100)  || ...
+    (k==6  && v<=90)   || ...
+    (k==7  && v<=80)   || ...
+    (k==8  && v<=70)   || ...
+    (k==9  && v<=60)   || ...
+    (k==10 && v<=50);
+else
+    use_restreigen = 0;
+end
 
 % callmex is a Boolean which is equal to true if the mex file exists
 callmex=existFS('DfM');
@@ -1206,23 +1229,15 @@ for i=1:nselected
             end
         end
         
-        
-        
         if restrnum==1
             Lambda_vk(Lambda_vk<0)=0;
             
             % Restriction on the eigenvalue
-            if largedata
+            if use_restreigen
                 autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             else
-                autovalues = restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
             end
-            %{ 
-                % check if OK
-                if sum((restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))-(restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat)))>0
-                    disp('Not identical!');
-                end
-            %}
             
             % Covariance matrices are reconstructed keeping into account the
             % constraints on the eigenvalues
@@ -1497,17 +1512,12 @@ for i=1:nselected
         % The row below is just to avoid numerical problems
         if restrnum==1
             Lambda_vk(Lambda_vk<0)=0;
-            if largedata
+            if use_restreigen
                 autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
             else
-                autovalues = restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
             end
-            %{
-                % check if OK
-                if sum(restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))-(restreigen_easy(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat))>0
-                    disp('Not identical!');
-                end
-            %}
+
         elseif restrnum==2
             Lambda_vk(Lambda_vk<0)=0;
             % Restriction on the determinants
