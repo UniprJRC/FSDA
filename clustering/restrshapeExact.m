@@ -27,7 +27,8 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
 %     shb  : across groups shape constraint. Scalar greater or equal 1.
 %           Constraint to impose among groups. For example, if shb is 5 the
 %           maximum ratio between the largest/smallest of each row of
-%           matrix GAMc will be equal to 5.
+%           matrix GAMc will be equal to 5. Note that shb must be smaller
+%           or equal than shw.
 %               Data Types - double
 %
 %
@@ -46,7 +47,7 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
 %           column j the elements on the main diagonal of shape matrix
 %           $\Gamma_j$, $j=1, 2, \ldots, k$. The elements of GAMc satisfy
 %           the following constraints:
-%           1) the product of the elements of each column is equal to 1;. 
+%           1) the product of the elements of each column is equal to 1;.
 %           2) The maximum ratio among the largest element divided by the smallest
 %           3) element of each column is equal to shw;
 %           4) The maximum ratio among the largest element divided by the smallest
@@ -83,8 +84,26 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
     assert(abs(empshb-shb)<0.1)
 %}
 
+%{
+    % Generate 100 replicates of a shape matrix.
+    shb=1.5;
+    shw=4;
+    v=5;
+    k=20;
+    for j=1:100
+        disp(j)
+        Sh=restrshapeExact(v,k, shw, shb, 2);
+        assert(abs(max(max(Sh,[],1)./min(Sh,[],1))-shw)<0.01)
+            empshb=max(max(Sh,[],2)./min(Sh,[],2));
+            assert(abs(empshb-shb)<0.1)
+    end
+%}
+
 
 %% Beginning of code
+if shw <1 || shb <1
+    error('FSDA:restrshapeExact:Wwrongconstraints','shb and shw cannot be smaller than 1');
+end
 
 if nargin<5
     % verLess2016b is true if current version is smaller than 2016b
@@ -140,7 +159,9 @@ while stoploop==false && iterouterloop<maxiter
                     condshb=true;
                 else
                     
-                    % Generate beta random numbers.
+                    % Generate beta random numbers with parameters 0.5 and
+                    % 0.5 in order to increase the probability of large
+                    % values for the ratio max/min.
                     % Generate gamma random values and take ratio of the
                     % first to the sum.
                     g1 = randg(0.5,v,1);
@@ -195,25 +216,25 @@ while stoploop==false && iterouterloop<maxiter
         GAM=GAM./repmat(lmd,v,1);
         
         if k>1
-        % Apply restriction between groups
-        % The elements of each column of GAM are sorted from largest to smallest
-        % The ranks of the orginal ordering of each column is store in matrix Ord
-        % The ratio of each row of matrix GAMc is not greater than shb
-        niini=100*rand(k,1);
-        boo=max(GAM,[],2)./min(GAM,[],2)>shb;
-        for i=1:v
-            if boo(i)==true
-                GAM(i,:) = restreigen(GAM(i,:), niini, shb, zerotol,userepmat);
+            % Apply restriction between groups
+            % The elements of each column of GAM are sorted from largest to smallest
+            % The ranks of the orginal ordering of each column is store in matrix Ord
+            % The ratio of each row of matrix GAMc is not greater than shb
+            niini=100*rand(k,1);
+            boo=max(GAM,[],2)./min(GAM,[],2)>shb;
+            for i=1:v
+                if boo(i)==true
+                    GAM(i,:) = restreigen(GAM(i,:), niini, shb, zerotol,userepmat);
+                end
             end
-        end
-        
-        lmd=(prod(GAM,1)).^onedivv;
-        GAM=GAM./repmat(lmd,v,1);
-        
-        empshb=max(max(GAM,[],2)./min(GAM,[],2));
-        diffshb=empshb-shb;
+            
+            lmd=(prod(GAM,1)).^onedivv;
+            GAM=GAM./repmat(lmd,v,1);
+            
+            empshb=max(max(GAM,[],2)./min(GAM,[],2));
+            diffshb=empshb-shb;
         else
-          diffshb=0;  
+            diffshb=0;
         end
         ratempshw=max(GAM,[],1)./min(GAM,[],1);
         empshw=max(ratempshw);
@@ -231,7 +252,7 @@ while stoploop==false && iterouterloop<maxiter
     
 end
 if iterouterloop==maxiter
-    error('FSDA:restrshapeExact:Wwrongconstraints','shb is too large in relation to shw please decrease it');
+    error('FSDA:restrshapeExact:Wwrongconstraints','shb is too large in relation to shw please decrease shb or increase shw');
 else
     %  disp(iterouterloop)
 end
@@ -239,3 +260,4 @@ end
 % disp(iterouterloop)
 GAMc=GAM;
 end
+%FScategory:CLUS-RobClaMULT
