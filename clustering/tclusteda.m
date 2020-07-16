@@ -1119,11 +1119,12 @@ for j=2:lalpha
         % newlab. To this label we assign the maximum distance and check is
         % this time sequal(sort(newlab),seqk), that is we check whether
         % vector sort(newlab) of length k contain the numbers 1, 2, ..., k
-        % if length(newl) two labels do not have the corerspondence
+        % if length(newl) two labels do not have the correspondence
         % therefore automatic relabelling is not possible.
         newl=setdiff(seqk,newlab);
-        if length(newl)==1
-            newlab(indmaxdist)=setdiff(seqk,newl);
+        notinseqk=setdiff(seqk,newl);
+        if length(newl)==1 && length(notinseqk)==1
+            newlab(indmaxdist)=notinseqk;
             if isequal(sort(newlab),seqk)
                 MU(:,:,j)=MU(newlab,:,j);
                 SIGMA(j)= {SIGMA{j}(:,:,newlab)};
