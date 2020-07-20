@@ -73,7 +73,7 @@ function [GAMc]  = restrshapeExact(k, v, shw, shb, verLess2016b)
 %
 %{
     %% restrshapeExact with all the default options.
-    % two groups and 9 variables
+    % two groups and 8 variables
     k=2;
     v=8;
     shb=20;
@@ -252,7 +252,11 @@ while stoploop==false && iterouterloop<maxiter
     
 end
 if iterouterloop==maxiter
+    if diffshw>-0.1
     error('FSDA:restrshapeExact:Wwrongconstraints','shb is too large in relation to shw please decrease shb or increase shw');
+    else
+    error('FSDA:restrshapeExact:Wwrongconstraints','shb is too small in relation to shw please increase shb or decrease shw');
+    end
 else
     %  disp(iterouterloop)
 end
