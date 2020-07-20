@@ -111,7 +111,11 @@ end
 % lmdc = row vector containing the restricted determinants
 % Make sure niini is a column vector
 niini=niini(:);
-lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol,pa.userepmat);
+if max(lmd)/min(lmd)>pa.cdet^(1/pa.v)
+    lmdc = restreigen(lmd,niini, pa.cdet^(1/pa.v),pa.zerotol,pa.userepmat);
+else
+    lmdc=lmd;
+end
 
 end
 
