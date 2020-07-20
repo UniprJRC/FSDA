@@ -1230,13 +1230,19 @@ for i=1:nselected
         end
         
         if restrnum==1
-            Lambda_vk(Lambda_vk<0)=0;
+            % Restriction on the eigenvalues
             
-            % Restriction on the eigenvalue
-            if use_restreigen
-                autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+            Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
+            
+            % Check first if the eigenvalues do not satisy the constraint 
+            if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor   
+                if use_restreigen
+                    autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                else
+                    autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                end
             else
-                autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                autovalues = Lambda_vk;
             end
             
             % Covariance matrices are reconstructed keeping into account the
@@ -1507,35 +1513,20 @@ for i=1:nselected
             
         end
         
-        % Apply restictions.
-        % Lambda_vk is a v-by-k  matrix whose jth column contains the
-        % unrestricted eigenvalues of covariance matrix of group j, with
-        % j=1,..., k.
         if restrnum==1
             % Restriction on the eigenvalues
             
-            % DDD Check first if the eigenvalues do not satisy the constraint
-            nis  = repmat(niini,1,v);
-            dnis = Lambda_vk(nis>0);
-            maxL = max(dnis);
-            minL = min(dnis);
-            if  abs(maxL/minL)>restrfactor
-                
-                Lambda_vk(Lambda_vk<0)=0;
+            Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
+            
+            % Check first if the eigenvalues do not satisy the constraint 
+            if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor   
                 if use_restreigen
                     autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
                 else
                     autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
                 end
-                
             else
-                % If all eigenvalues satisy the constraint, no further
-                % changes on the eigenvalues are required. Simply replace
-                % the 0 eigenvalues with the mean of the eigenvalues which
-                % are greater than zero.
-                if min(nis)==0
-                    Lambda_vk(nis==0)=mean(dnis);
-                end
+                 autovalues = Lambda_vk;
             end
             
         elseif restrnum==2
