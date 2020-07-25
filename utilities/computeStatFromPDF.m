@@ -28,7 +28,7 @@ end
 % 'cento', 'centouno', 'centodue', 'centotré', 'centoquattro', 'centocinque', ...
 % 'centosei', 'centosette', 'centootto', 'centonove', 'centodieci'}';
 
-
+offset=0;
 
 str = extractFileText(Namefilepdf);
 
@@ -44,7 +44,7 @@ startnaf = strfind(str,"La Sig.ra");
 endnaf = strfind(str,"nata il");
 
 startcorso = strfind(str, 'Ultimo piano di studio seguito ed anni accademici di iscrizion');
-endcorso = strfind(str, "Insegnamento In Piano ");
+endcorso = strfind(str, "Insegnamento In Piano");
 endcorso=endcorso(1:2:length(endcorso)-1);
 
 startrel = strfind(str, "Primo relatore:");
@@ -84,16 +84,21 @@ for j=1:n
     
     % corso di laurea
     start = startcorso(j);
+    try
     fin = endcorso(j);
+    
     AA=extractBetween(str,start,fin);
+    catch ME
+        pippo=0;
+    end
     %  findSlash=strfind(AA,"/");
     %    posLastSlash=findSlash(end);
     aa=AA{:};
     % Controlla se fuori corso
     if contains(aa,'FC')
-        laureandi{j,7}="FC";
+        laureandi{j,9}="FC";
     else
-        laureandi{j,7}="IC";
+        laureandi{j,9}="IC";
     end
     
     findCL=strfind(AA,"Corso di Laurea");
@@ -114,34 +119,45 @@ for j=1:n
     % titolo tesi
     start = starttitle(j);
     fin = endtitle(j);
-    tmp = extractBetween(str,start+13,fin-1);
-    % refine the search
-    % search for 'Materia' and 'Titolo ing.'
-    % if exist take the minimum
-    endtitlec1 = strfind(tmp, "Titolo Inglese della tesi:");
-    endtitlec2 = strfind(tmp, "Materia della tesi:");
-    
-    if ~isempty(endtitlec1) && ~isempty(endtitlec2)
-        fin = start+13 + min([endtitlec2 endtitlec1]);
-    elseif ~isempty(endtitlec1)
-        fin = start+13 + endtitlec1;
-    elseif ~isempty(endtitlec2)
-        fin = start+13 + endtitlec2;
-    else
-       
-    end
+     tmp = extractBetween(str,start+13,fin-1);
+%     % refine the search
+%     % search for 'Materia' and 'Titolo ing.'
+%     % if exist take the minimum
+%     endtitlec1 = strfind(tmp, "Titolo Inglese della tesi:");
+%     endtitlec2 = strfind(tmp, "Materia della tesi:");
+%     
+%     if ~isempty(endtitlec1) && ~isempty(endtitlec2)
+%         fin = start+13 + min([endtitlec2 endtitlec1]);
+%     elseif ~isempty(endtitlec1)
+%         fin = start+13 + endtitlec1;
+%     elseif ~isempty(endtitlec2)
+%         fin = start+13 + endtitlec2;
+%     else
+%        
+%     end
  
  % solution #2 search for 3 consecutive CRLF    
- %   retcar = regexp(tmp, '[\n]{3,}');
- %   laureandi{j,4} = extractBetween(str,start+13,start+13+retcar(1));
- 
-    laureandi{j,4} = extractBetween(str,start+13,fin-5);
-    
+    retcar = regexp(tmp, '[\n]{3,}');
+  try
+    laureandi{j,4} = extractBetween(str,start+13,start+13+retcar(1));
+  
+ %   laureandi{j,4} = extractBetween(str,start+13,fin(1)-5);
+    catch ME
+        laureandi{j,4}="campo sconosciuto";  
+    end
     % relatore
     start = startrel(j);
-    fin = endrel(j);
-    laureandi{j,5}=extractBetween(str,start+16,fin-4);
+    fin = endrel(j+offset);
+    if fin<start
+        offset=offset+1;
+    fin = endrel(j+offset);
+    end
     
+    try
+    laureandi{j,5}=extractBetween(str,start+16,fin-4);
+    catch ME
+      laureandi{j,5}="campo sconosciuto";
+    end
     
     % media in 110
     start = starti(j);
