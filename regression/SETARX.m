@@ -414,25 +414,6 @@ end
 
 %% Linear Regression as a benchmark
 
-%beta = X\y; % Parameter estimation with OLS.
-%yhat = X*beta; % Fitting.
-%res = y - yhat; % Residuals.
-%RSS = res'*res; % Residual Sum of Squares.
-%sigma_2 = RSS/(n-k); % Residual variance.
-
-%XXinv = inv(X'*X);
-
-%% Huber-White "Sandwich" estimator: heteroskedasticity-robust variance-covariance matrix.
-%covar = XXinv*X'*diag(res.*res.*(n/(n-k)))*X*XXinv;
-
-%% Heteroskedasticity-robust standard errors. It works also in the case of homoskedasticity.
-%se = sqrt(diag(covar));
-%%% covar_hom = XXinv.*sigma_2; % Covariance matrix. Assumption: homoskedasticity.
-%%% se_hom = sqrt(diag(covar_hom)); % Standard errors. Assumption: homoskedasticity.
-
-%TSS = sum((y - mean(y))^2); % Total Sum of Squares (variance of dependent variable).
-%R_2 = 1 - RSS/TSS; % R^2.
-
 [benchreg] = estregimeTAR(y, X); % This function estimates a linear regression.
 
 % Insert NaNs in the position of the removed observations (if any) for the full version of yhat and res.
@@ -554,24 +535,16 @@ input.y_full = input_full.y;
 input.X_full = input_full.X;
 input.yd_full = input_full.q;
 
-%out.reg.beta = beta;
-%out.reg.se = se;
-%out.reg.covar = covar;
-%out.reg.sigma_2 = sigma_2;
-%out.reg.yhat = yhat;
-%out.reg.yhat_full = yhat_full;
-%out.reg.res = res;
-%out.reg.res_full = res_full;
-%out.reg.RSS = RSS;
-%out.reg.TSS = TSS;
-%out.reg.R_2 = R_2;
-reg = struct; % benchreg;
+
+reg = benchreg;
+
 reg.yhat_full = yhat_full;
 reg.res_full = res_full;
 
-reg.regime1 = regime1;
-reg.regime2 = regime2;
+out = struct;
 
+out.regime1 = regime1;
+out.regime2 = regime2;
 out.rmv_col_loop = rmv_col_loop;
 out.thrhat = thrhat;
 out.thrvar_ord = thrvar_ord;
