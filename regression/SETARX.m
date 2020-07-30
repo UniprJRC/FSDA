@@ -5,7 +5,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 % Estimation with Conditional Least Squares.
 % Depend on estregimeTAR, chkinputTAR, extendVEC.
 %
-%
+% provaaaaaaaaaaaaaaaaaa
 %<a href="matlab: docsearchFS('SETARX')">Link to the help function</a>
 %
 %
@@ -554,6 +554,8 @@ out.yjhat = yjhat;
 out.resj = resj;
 out.yjhat_full = yjhat_full;
 out.resj_full = resj_full;
+
+
 
 end
 %FScategory:REG-Regression
