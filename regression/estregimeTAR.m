@@ -252,3 +252,4 @@ out.rmv_col = rmv_col;
 out.rk_warning = rk_warning;
 
 end
+%FScategory:REG-Regression

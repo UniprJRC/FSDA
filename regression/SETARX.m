@@ -583,4 +583,4 @@ out.yjhat_full = yjhat_full;
 out.resj_full = resj_full;
 
 end
-
+%FScategory:REG-Regression
