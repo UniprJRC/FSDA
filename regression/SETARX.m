@@ -196,7 +196,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %                 with observations (rows) with
 %                 missing or infinite values included.
 %
-%  More about:
+%  More about (fix this section):
 %
 % Given a time series $y_t$, a two-regime Self-Exciting Threshold
 % Auto Regressive model SETARX($p$,$d$) with exogenous regressors is specified as
