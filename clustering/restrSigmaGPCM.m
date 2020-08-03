@@ -243,10 +243,11 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
     %% Use function genSigmaGPCM to generate the covariance matrices.
     v=3;
     k=5;
-    S=genSigmaGPCM(v, k, 'EVI');
     pa=struct;
-    pa.pars='VVE';
+    pa.pars='EVI';
+    S=genSigmaGPCM(v, k, pa);
     niini=100*ones(1,k);
+    pa.pars='VVE';
     [SigmaNEW, lmd, OMG, GAM]  = restrSigmaGPCM(S, niini, pa);
 %}
 
@@ -421,6 +422,7 @@ end
 
 if strcmp(pars(3),'E') || strcmp(pars(3),'I')
     pa.sortsh=1;
+    GAMfc=zeros(v,k);
 else
     pa.sortsh=0;
 end
@@ -472,8 +474,8 @@ elseif  strcmp(pars(3),'V')
         diageigunsorted=diag(eigunsorted);
         % Sort eigenvalues from largest to smallest and reorder the columns
         % of the matrix of eigenvectors accordingly
-        [~,ordeig]=sort(diageigunsorted,'descend');
-        V=V(:,ordeig);
+        % [~,ordeig]=sort(diageigunsorted,'descend');
+        % V=V(:,ordeig);
         OMG(:,:,j)=V;
         
         if strcmp(pars(1),'V')
@@ -501,7 +503,7 @@ end
 GAM=ones(v,k);
 % Immediately apply the restriction on vector lmd
 % if ~isequal(lmd,ones(1,k))
-%     
+%
 %     [lmd]=restrdeterGPCM(GAM, OMG, SigmaB, niini, pa);
 % end
 
@@ -549,14 +551,16 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
     % Update GAM
     [GAM] =restrshapeGPCM(lmd, OMG, SigmaB, niini, pa);
     % GAMf=GAM;
-     if pa.sortsh==1
+    if pa.sortsh==1
         for j=1:k
-            GAM(:,j)=sort(GAM(:,j),'ascend');
+            GAMfc(:,j)=sort(GAM(:,j),'descend');
         end
-     end
+    else
+        GAMfc=GAM;
+    end
     
     % GAMnew = new values of matrix GAM in vectorized form
-    GAMnew=GAM(:);
+    GAMnew=GAMfc(:);
     % diff = (new values of GAM - old values of GAM)
     diff=GAMnew-GAMold;
     % relative sum of squares of the differences
