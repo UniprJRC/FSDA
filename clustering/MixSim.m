@@ -46,25 +46,39 @@ function [out]  = MixSim(k,v,varargin)
 %               generated.
 %               If sph is a structure it may contain the following fields.
 %               sph.pars = a 3 letter character in the set:
-%               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-%               'EVI','VEI','EEI','VII','EII' which
-%               specifies the type of Gaussian Parsimonious Clustering
-%               Model which needs to be generated. Note that this field is
-%               compulsory.
-%               sph.cdet = scalar which specifies the restriction factor
-%                          for determinants across groups. If this field is
-%                          empty or if this field is missing no contraint
-%                          is imposed among determinants.
-%               sph.shw = scalar which specifies the restriction factor for
-%                         shape matrices within each group. If this field is
-%                          empty or if this field is missing, no contraint
-%                          is imposed among the elements of each shape
-%                          matrix of a particular group.
+%                'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+%                'EVI','VEI','EEI','VII','EII' or 'VVVc' which
+%                specifies the type of Gaussian Parsimonious Clustering
+%                Model which needs to be generated.
+%               sph.exactrestriction = boolean. If sph.exactrestriction is
+%                true the covariance matrices have to be generated with the
+%                exact values of the restrictions specified in sph.cdet,
+%                sph.shw and sph.shb. For example if sph.pars='VVE' and
+%                sph.exactrestriction=true model with varying determinants,
+%                varying shape and varying rotation matrix is generated.
+%                The max ratio of the determinants is equal to sph.cdet.
+%                The maximum ratio between the shape elements in each group
+%                is sph.shw. The maximum ratio among the ordered elements
+%                across the groups is and sph.shb. On the other hand, if
+%                sph.exactrestriction is false and for example
+%                sph.pars='VVE' covariance matrices are generated assuming varying
+%                determinants, varying shape and equal rotation matrix and
+%                with ratio of determinants which satisfy the inequality
+%                constraint <= sph.cdet and shape matrices which satisfy
+%                the inequality constraints <= sph.shw and <= sph.shb.
+%              sph.cdet = scalar which specifies the restriction factor
+%                for determinants across groups. If this field is empty or
+%                if this field is missing no contraint is imposed among
+%                determinants.
+%              sph.shw = scalar which specifies the restriction factor for
+%                shape matrices within each group. If this field is empty
+%                or if this field is missing, no contraint is imposed among
+%                the elements of each shape matrix of a particular group.
 %               sph.shb = scalar which specifies the restriction factor for
-%                         shape matrices between each group. If this field is
-%                          empty or if this field is missing, no contraint
-%                          is imposed across the elements of each shape
-%                          matrix between the groups.
+%                shape matrices between each group. If this field is empty
+%                or if this field is missing, no contraint is imposed
+%                across the elements of each shape matrix between the
+%                groups.
 %               Example - 'sph',false
 %               Data Types - boolean
 %         hom : Equal Sigmas. Scalar logical.
@@ -500,7 +514,7 @@ if ~islogical(sph) && ~isstruct(sph)
 elseif isstruct(sph)
     optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
         'maxiterR','','tolR','','shw','','shb','',...
-        'cdet','','zerotol','','pars','');
+        'cdet','','zerotol','','pars','','exactrestriction','');
     chkoptions(optionspa,fieldnames(sph))
     nocheckpa=true;
 end
@@ -572,6 +586,7 @@ end
 indabovediag=triu2vec(k,1);
 
 if method == 0 || method == 1 || method == 1.5
+    % just BarOmega or just MaxOmega or just StdOmega
     emax=ecc;
     Q = OmegaClust(Omega, method, v, k, PiLow, Lbound, Ubound, ...
         emax, tol, lim, resN, sph, hom, restrfactor, Display);
@@ -712,7 +727,7 @@ out = Q;
                 % genSphSigma generates spherical covariance matrices
                 Sgen=genSphSigma(v, k, hom);
             else
-                Sgen=genSigmaGPCM(v, k, sph.pars);
+                Sgen=genSigmaGPCM(v, k, sph);
             end
             
             
@@ -748,8 +763,39 @@ out = Q;
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen, S05, Sinv, detS);
                 
             elseif isstruct(sph)
-                % Apply the requested restrictions to Sgen
-                [Sgen]  = restrSigmaGPCM(Sgen, Pigen, sph, nocheckpa);
+                exactrestr=isfield(sph,'exactrestriction')  && sph.exactrestriction==true;
+                
+                chkchk=false;
+                if chkchk==true
+                    lmd1=zeros(k,1);
+                    lmd=lmd1;
+                    Sh=zeros(v,k);
+                    Shsor=Sh;
+                    Shb=zeros(v,1);
+                    for j=1:k
+                        Sj=Sgen(:,:,j);
+                        lmd1(j)=det(Sj);
+                        lmd(j)=(lmd1(j)^(1/v))
+                        [Vj,Dj]=eig(Sj/lmd(j));
+                        
+                        Sh(:,j)=diag(Dj);
+                        Shsor(:,j)=sort(Sh(:,j));
+                    end
+                    for ii=1:v
+                        Shb(ii)=max(Shsor(ii,:))/min(Shsor(ii,:));
+                    end
+                    
+                    ratdet=abs( (max(lmd1)/min(lmd1))^(1/v)-sph.cdet^(1/v));
+                    assert(ratdet<0.01,'Requested ratio of determinants could not be found')
+                    assert(abs(max(max(Sh,[],1)./min(Sh,[],1))-sph.shw)<0.01)
+                    assert(abs(max(Shb)-sph.shb)<0.01)
+                end
+                
+                if exactrestr==false
+                    % Apply the requested restrictions to Sgen
+                    [Sgen]  = restrSigmaGPCM(Sgen, Pigen, sph, nocheckpa);
+                    % [Sgenchk, lmdchk, OMG, GAMchk]= restrSigmaGPCM(Sgen, Pigen, sph1, nocheckpa);
+                end
                 
                 % prepare parameters:  row 953 of file libOverlap.c
                 [li, di, const1]=ComputePars(v, k, Pigen, Mugen, Sgen);
@@ -1016,7 +1062,7 @@ out = Q;
                     % genSphSigma generates spherical covariance matrices
                     Sgen=genSphSigma(p, k, hom);
                 else
-                    Sgen=genSigmaGPCM(p, k, sph.pars);
+                    Sgen=genSigmaGPCM(p, k, sph);
                 end
                 
                 if islogical(sph) && nargin>13 && ~isempty(restrfactor)
@@ -1392,7 +1438,7 @@ out = Q;
                 % in MM2010 JCGS the procedure is always called using hom=0
                 Sgen=genSphSigma(p, k, hom);
             else
-                Sgen=genSigmaGPCM(p, k, sph.pars);
+                Sgen=genSigmaGPCM(p, k, sph);
             end
             
             if islogical(sph) && nargin>13 && ~isempty(restrfactor)
