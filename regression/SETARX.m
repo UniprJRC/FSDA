@@ -5,7 +5,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 % Estimation with Conditional Least Squares.
 % Depend on estregimeTAR, chkinputTAR, extendVEC.
 %
-%
+% 
 %<a href="matlab: docsearchFS('SETARX')">Link to the help function</a>
 %
 %
@@ -196,7 +196,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %                 with observations (rows) with
 %                 missing or infinite values included.
 %
-%  More about:
+%  More about (fix this section):
 %
 % Given a time series $y_t$, a two-regime Self-Exciting Threshold
 % Auto Regressive model SETARX($p$,$d$) with exogenous regressors is specified as
@@ -554,6 +554,8 @@ out.yjhat = yjhat;
 out.resj = resj;
 out.yjhat_full = yjhat_full;
 out.resj_full = resj_full;
+
+
 
 end
 %FScategory:REG-Regression
