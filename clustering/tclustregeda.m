@@ -1342,7 +1342,8 @@ tit   = {'Tclustreg monitoring plot' , 'Changes between two consecutive \alpha-v
 tit2  = {'Tclustreg monitoring plot -- Changes between two consecutive $\alpha$-values' , ' '};
 d=find(strcmp(namej,name));
 if d>0
-    figure('Name',namej,'Visible','on');
+    hf1 = figure('Name',namej,'Visible','off');
+    set(hf1,'Tag','tclusteda');
     plotsname={'ARI','$\hat \beta$','$\hat \sigma^2$','$\hat \sigma^2_c$'...
         '$\hat \mu_X$' '$\hat \Sigma_X$'};
     
@@ -1383,7 +1384,7 @@ if d>0
     end
     
 end
-
+%drawnow limitrate nocallbacks
 
 %% 2 Monitoring stability of classification (units plot)
 
@@ -1416,15 +1417,18 @@ if d>0
             IDtt = IDt;
     end
     
-    % generate figure
-    hf=figure('Name',namej,'Visible','on');
+    % Generate figure. 
+    hf2=figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+
+    % If the reclassified units are more than thsz, resize the figure
     sz = size(IDtt);
     thsz = 50;
     if sz(1)>thsz
-        newpos = get(hf,'Position');
-        set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
+        current_pos = get(hf2,'Position');
+        set(hf2,'Position',[left,bottom,figureResize,figureResize].*current_pos);
     end
-    
+    set(hf2,'Tag','tclusteda','Resize','off');
+        
     % x and y limits
     xlim([0 k1+1]);
     ylim([0 n1+1]);
@@ -1501,9 +1505,11 @@ if d>0
     if vafter95
         axtoolbar(gca,'Visible','off');
     end
-    movegui(gcf,'south');
+    %movegui(gcf,'south');
 end
-
+% this plot makes the "%drawnow limitrate nocallbacks" very time
+% consuming; better to replace it with a pause
+%pause(0.1);
 
 %% 3 Monitoring posterior probabilities
 namej = 'PostProb';
@@ -1512,9 +1518,9 @@ lw = 1;  % line width of all plots
 
 d=find(strcmp(namej,name));
 if d>0
-    hf = figure('Name',namej,'Visible','on');
-    newpos = get(hf,'Position');
-    set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
+    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+    set(hf3,'Tag','tclusteda');
+    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
     
     Prob1=squeeze(Postprob(:,1,:));
     Prob1(IDXmin0)=NaN;
@@ -1579,25 +1585,27 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-    movegui(gcf,'south');
+    %movegui(gcf,'south');
 end
+% parallelplot makes the "%drawnow limitrate nocallbacks" very time
+% consuming; better to replace it with a pause
+%pause(0.1);
 
-
-%% Monitoring  of sigma2 and sigma2corr
+%% 4 Monitoring  of sigma2 and sigma2corr
 namej = 'Sigma';
 tit   = {'Tclustreg monitoring plot' , ['Error variances for restriction factor c=' num2str(restrfact)]};
 
 d=find(strcmp(namej,name));
 if d>0
-    figure('Name',namej,'Visible','on');
+    hf4 = figure('Name',namej,'Visible','off');
+    set(hf4,'Tag','tclusteda');
     
     % first subplot
     subplot(2,1,1);
     % Sigma2y is k-by-length(alphaLik)
     h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
-    % set the colors using the order in clrdef
-    set(h1,{'Color'},cellstr(clrdef(1:k)'))
-    set(h1,{'LineStyle'},linedef(1:k)');%DDD
+    % set the colors and linestyle
+    set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)');
     
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
@@ -1617,9 +1625,8 @@ if d>0
     % second subplot
     subplot(2,1,2);
     h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
-    % set the colors using the order in clrdef
-    set(h2,{'Color'},cellstr(clrdef(1:k)'));
-    set(h2,{'LineStyle'},linedef(1:k)');%DDD
+    % set the colors and linestyle
+    set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)');
     
     xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
@@ -1638,9 +1645,8 @@ if d>0
         axtoolbar('Visible','off');
     end
     
-    clickableMultiLegend(h1,legendGroups);
+    clickableMultiLegend(h1,legendGroups); % most demanding call
     hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
-    
     set(hl2,'visible','off');
     
     if vafter95 == true
@@ -1652,9 +1658,9 @@ if d>0
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
 end
+%drawnow limitrate nocallbacks
 
-
-%% Plot scatter with all regression lines (hyperplanes)
+%% 5 Plot scatter with all regression lines (hyperplanes)
 namej = 'ScatterWithRegLines';
 alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
 tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
@@ -1670,7 +1676,8 @@ if d>0
         % The following plots are for the bi-variate case (i.e. v=1)
         
         % initialize figure
-        figure('Name',namej,'Visible','on');
+        hf5 = figure('Name',namej,'Visible','off');
+        set(hf5,'Tag','tclusteda');
         
         hold on;
         
@@ -1822,8 +1829,9 @@ if d>0
     end
     
 end
+%drawnow limitrate nocallbacks
 
-%% Monitoring of allocation (using gscatter)
+%% 6 Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
 tit0 = {'Tclustreg monitoring plot -- allocation of units' , ...
     'Variance Explained $\cal{V}$, for different trimming levels $\alpha$'};
@@ -1860,11 +1868,12 @@ if d>0
     end
     
     resup=1;
-    hf = figure('Name',['Monitoring allocation #' int2str(resup)]);
+    hf6 = figure('CreateFcn',{@movegui, 'south'},'Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
+    set(hf6,'Tag','tclusteda');
     
     if biggerfig
-        newpos = get(hf,'Position');
-        set(hf,'Position',[left,bottom,figureResize,figureResize].*newpos);
+        newpos = get(hf6,'Position');
+        set(hf6,'Position',[left,bottom,figureResize,figureResize].*newpos);
     end
     
     if p-intercept>1
@@ -1880,10 +1889,11 @@ if d>0
         if jk>16
             jk=1;
             resup=resup+1;
-            figure('Name',['Monitoring allocation #' int2str(resup)])
-            subplot(nr,nc,jk)
+            hf6b=figure('Name',['Monitoring allocation #' int2str(resup)],'Visible','off');
+            set(hf6b,'Tag','tclusteda');
+            subplot(nr,nc,jk);
         else
-            subplot(nr,nc,jk)
+            subplot(nr,nc,jk);
         end
         
         idxselj=IDX(:,alphasel(j));
@@ -1959,7 +1969,15 @@ if d>0
             title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , subtitleSize)
             
         elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
-            hh=gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
+            hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
+            % To use line function would be much faster than gscatter
+            %             iiii = unique(idxselj);
+            %             for idx=1:numel(iiii)
+            %                 props = {'LineStyle','none','Marker',symdefj(idx),'MarkerEdge',clrdefj(idx),'MarkerSize',6};
+            %                 line([X(idxselj==iiii(idx),end),X(idxselj==iiii(idx),end)],[y(idxselj==iiii(idx)),y(idxselj==iiii(idx))],...
+            %                 props{:});
+            %             end
+            %             hhh=findobj(gcf,'Type','Line');
             
             if jk>nc*(nr-1)
                 xlabel('x1', 'fontsize' , xyLabelSize);
@@ -2001,16 +2019,19 @@ if d>0
         out.XLmon=XLmon;
         out.XLmonW=XLmonW;
     end
-    movegui(gcf,'south');
+    %movegui(gcf,'south');
+    
 end
+%drawnow limitrate nocallbacks
 
-%% Monitoring of beta regression coefficients (standardized)
+%% 7 Monitoring of beta regression coefficients (standardized)
 namej='Beta';
 tit = 'Tclustreg monitoring plot -- Estimated regression coefficients';
 
 d=find(strcmp(namej,name));
 if d>0
-    hf = figure('Name',namej,'Visible','on');
+    hf7 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+    set(hf7,'Tag','tclusteda');
     
     % Dimension of Beta is k-by-p-by-length(alpha)
     % If p is 2 first column contains interecepts and second slopes
@@ -2045,8 +2066,8 @@ if d>0
             biggerfig = true;
     end
     if biggerfig
-        newpos = get(hf,'Position');
-        set(hf,'Position',[left,bottom,1.5,1.5].*newpos);
+        newpos = get(hf7,'Position');
+        set(hf7,'Position',[left,bottom,1.5,1.5].*newpos);
     end
     
     for j=1:p
@@ -2095,18 +2116,21 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-    movegui(gcf,'south');
+    %movegui(gcf,'south');
+    
 end
+%drawnow limitrate nocallbacks
 
-
-%% Monitor group size
+%% 8 Monitor group size
 namej='Siz';
 tit = {'Tclustreg monitoring plot' , 'Group size'};
 
 d=find(strcmp(namej,name));
 if d>0
     % Monitoring of group size
-    figure('Name',namej,'Visible','on');
+    hf8 = figure('Name',namej,'Visible','off');
+    set(hf8,'Tag','tclusteda');
+    
     h=plot(alphaLik(:),out.Nopt','LineWidth',plotLineWidth);
     % set the colors using the order in clrdef
     set(h,{'Color'},cellstr(clrdef(1:k)'));
@@ -2132,16 +2156,11 @@ if d>0
     title(tit,'fontsize' , titleSize , 'FontWeight', 'normal');
     
 end
+%drawnow limitrate nocallbacks
 
-%     function c = cmapFS(m,cstart,cend)
-%         % cmapFS creates m RGB colors, with a gradient from cstart to cend
-%         % We use intensity colors in [0 1], not proper RGB in [1 255]
-%         mm = (cend-cstart)/(m-1);
-%         iR  = (cstart(1):mm(1):cend(1))';
-%         iG  = (cstart(2):mm(2):cend(2))';
-%         iB  = (cstart(3):mm(3):cend(3))';
-%         c  = [iR ,iG ,iB];
-%     end
+% make all figures visible again
+set(findobj('Tag','tclusteda'),'Visible','on');
+%set(findobj('Type', 'figure'),'Visible','on');
 
     function cm = cmapFS(cstart,cend,m)
         %cmapFS creates m RGB colors, with a gradient from cstart to cend
