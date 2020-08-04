@@ -1366,30 +1366,30 @@ if d>0
         set(gca,'xticklabel',[],'XGrid','on');
         xlim([min(alphaLik),max(alphaLik)]);
         L = get(gca,'XLim');
-        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , xyTickFontSize);
+        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
         if j>nc*(nr-1)
             xtickangle(gca,xxTickAngleVal);
-            set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , xyTickFontSize);
-            xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
+            set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
+            xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
         end
         % sigma: plots 3,4,6
         set(gca,'XDir','reverse');
-        title(plotsname{j},'interpreter','latex', 'fontsize' , subtitleSize);
+        title(plotsname{j},'interpreter','latex', 'FontSize' , subtitleSize);
         if vafter95
             axtoolbar('Visible','off');
         end
     end
     if vafter95 == true
-        sgtitle(tit , 'fontsize' , titleSize);
+        sgtitle(tit , 'FontSize' , titleSize);
     else
         a  = axes;
-        t1 = title(tit2, 'fontsize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
+        t1 = title(tit2, 'FontSize' , titleSize, 'FontWeight', 'normal', 'Interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
     
 end
-%drawnow limitrate nocallbacks
+
 
 %% 2 Monitoring stability of classification (units plot)
 
@@ -1437,7 +1437,7 @@ if d>0
     % x and y limits
     xlim([0 k1+1]);
     ylim([0 n1+1]);
-    set(gca,'XTick',0:k1+1, 'fontsize' , xyTickFontSize);
+    set(gca,'XTick',0:k1+1, 'FontSize' , xyTickFontSize);
     
     % fill matrix
     for j=1:k1
@@ -1451,7 +1451,7 @@ if d>0
             end
             h = text(xpos,seqIDs,strj,...
                 'HorizontalAlignment','center', ...
-                'fontsize' , matrixFont+4 , 'interpreter','none');
+                'FontSize' , matrixFont+4 , 'interpreter','none');
             
             [~,indredcolor]=intersect(IDtt(:,1),UnitsChgCla);
             %col=repmat({'b'},n1,1);
@@ -1473,7 +1473,7 @@ if d>0
             strj(ipos) = cellstr(symbseq(abs(IDtt(ipos,j))));
             % Empty spaces for trimmed units
             strj(ineg) = {''};
-            hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'fontsize' , matrixFont,'interpreter','latex');
+            hg = text(j*onex,seqIDs,strj,'HorizontalAlignment','center', 'FontSize' , matrixFont,'interpreter','latex');
             colorsG = cellstr(repmat('w',size(strj)));
             colorsG(ipos) = cellstr(clrdef(abs(IDtt(ipos,j)))');
             set(hg,{'Color'},colorsG);
@@ -1484,11 +1484,11 @@ if d>0
     newxtcklab=cell(k1+2,1);
     newxtcklab([1:2 k1+2])={''};
     newxtcklab(3:k1+1)=cellstr(alpha1str);
-    set(gca,'xticklabels',newxtcklab, 'fontsize' , xyTickFontSize)
-    set(gca,'yticklabels','', 'fontsize' , xyTickFontSize)
+    set(gca,'xticklabels',newxtcklab, 'FontSize' , xyTickFontSize)
+    set(gca,'yticklabels','', 'FontSize' , xyTickFontSize)
     
-    xlabel({'Trimming level'}, 'fontsize' , xyLabelSize);
-    ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'fontsize' , xyLabelSize);
+    xlabel({'Trimming level'}, 'FontSize' , xyLabelSize);
+    ylabel({'Units trimmed at least once' , 'or which changed assignment'}, 'FontSize' , xyLabelSize);
     
     % Group indication in title
     un=unique(IDtt(:,2:end));
@@ -1501,9 +1501,9 @@ if d>0
     if ~isempty(unitsNeverAssigned)
         hline=refline(0,n1-length(unitsNeverAssigned)+0.5);
         hline.Color = 'm';
-        title(tit1 , 'fontsize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
+        title(tit1 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
     else
-        title(tit2 , 'fontsize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
+        title(tit2 , 'FontSize' , titleSize , 'FontWeight', 'normal','interpreter','latex');
     end
     
     pan('off');
@@ -1512,7 +1512,7 @@ if d>0
     end
     %movegui(gcf,'south');
 end
-% this plot makes the "%drawnow limitrate nocallbacks" very time
+% this plot makes the "" very time
 % consuming; better to replace it with a pause
 %pause(0.1);
 
@@ -1583,16 +1583,16 @@ if d>0
     end
     
     if vafter95 == true
-        sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
+        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
     else
         a  = axes;
-        t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
+        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
     %movegui(gcf,'south');
 end
-% parallelplot makes the "%drawnow limitrate nocallbacks" very time
+% parallelplot makes the "" very time
 % consuming; better to replace it with a pause
 %pause(0.1);
 
@@ -1610,18 +1610,18 @@ if d>0
     % Sigma2y is k-by-length(alphaLik)
     h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
     % set the colors and linestyle
-    set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)');
-    
+    set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
+
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , xyTickFontSize);
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
     set(gca,'XDir','reverse','XGrid','on');
     
-    xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
+    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+    ylabel('$\hat \sigma^2_j$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
     axis('manual');
     if vafter95
         axtoolbar('Visible','off');
@@ -1631,39 +1631,42 @@ if d>0
     subplot(2,1,2);
     h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
     % set the colors and linestyle
-    set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)');
-    
+    set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
+
     xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
     
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , xyTickFontSize);
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
     set(gca,'XDir','reverse','XGrid','on');
     
-    xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
-    ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'fontsize' , yLabelLatexSize);
-    %legend(hs2,legendGroups);
+    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
+    ylabel('$\hat \sigma^2_{cj}$','Interpreter','latex', 'FontSize' , yLabelLatexSize);
     
     axis('manual');
     if vafter95
         axtoolbar('Visible','off');
     end
     
-    clickableMultiLegend(h1,legendGroups); % most demanding call
-    hl2 = clickableMultiLegend(h2,legendGroups,'fontsize',legendSize);
-    set(hl2,'visible','off');
-    
     if vafter95 == true
-        sgtitle(tit , 'fontsize' , titleSize, 'FontWeight', 'normal');
+        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
     else
         a  = axes;
-        t1 = title(tit, 'fontsize' , titleSize, 'FontWeight', 'normal');
+        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
+    
+    % make first legend chlickable
+    if vafter91
+        clickableMultiLegend(h1, 'FontSize' , legendSize);
+    else
+        clickableMultiLegend(h1);
+    end
+        
 end
-%drawnow limitrate nocallbacks
+
 
 %% 5 Plot scatter with all regression lines (hyperplanes)
 namej = 'ScatterWithRegLines';
@@ -1727,7 +1730,7 @@ if d>0
             text(X(ucg,end),y(ucg),num2str(jj*ones(length(ucg),1)),...
                 'DisplayName',[group_label ' (' num2str(length(ucg)) ' units)'] , ...
                 'HorizontalAlignment','center','VerticalAlignment','middle',...
-                'Color',clrdef(jj), 'fontsize' , 12);
+                'Color',clrdef(jj), 'FontSize' , 12);
             eval(['hText(' num2str(jj) ')=texth;']);
         end
         
@@ -1750,7 +1753,7 @@ if d>0
         % Add clickable multilegend
         if vafter91
             clickableMultiLegend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
-                'Location','best','interpreter' , 'LaTex', 'fontsize' , legendSize) % ,'TextColor','r');
+                'Location','best','interpreter' , 'LaTex', 'FontSize' , legendSize) % ,'TextColor','r');
         else
             legend([hRegLines; hText; hunitsMinus1; hunitsMinus2],...
                 'Location','best')
@@ -1824,17 +1827,17 @@ if d>0
     end
     
     if vafter95 == true
-        sgtitle(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        sgtitle(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         axtoolbar('Visible','off');
     else
         a  = axes;
-        t1 = title(tit, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        t1 = title(tit, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
     
 end
-%drawnow limitrate nocallbacks
+
 
 %% 6 Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
@@ -1950,18 +1953,18 @@ if d>0
             hh = gscatter(XS1,y,idxselj,clrdefj,symdefj);
             
             if jk>nc*(nr-1)
-                xlabel('PLS predictor', 'fontsize' , xyLabelSize);
+                xlabel('PLS predictor', 'FontSize' , xyLabelSize);
             else
                 xlabel(' ');
             end
             if ismember(jk,1:nc:nc*nr)
-                ylabel('y', 'fontsize' , xyLabelSize);
+                ylabel('y', 'FontSize' , xyLabelSize);
             else
                 ylabel(' ');
             end
             
             if vafter91
-                clickableMultiLegend(hh, 'fontsize' , legendSize);
+                clickableMultiLegend(hh, 'FontSize' , legendSize);
             else
                 clickableMultiLegend(hh);
             end
@@ -1971,7 +1974,7 @@ if d>0
             end
             axis manual
             alphajtxt=num2str(alphaLik(alphasel(j)));
-            title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'fontsize' , subtitleSize)
+            title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'FontSize' , subtitleSize)
             
         elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
             hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
@@ -1985,14 +1988,14 @@ if d>0
             %             hhh=findobj(gcf,'Type','Line');
             
             if jk>nc*(nr-1)
-                xlabel('x1', 'fontsize' , xyLabelSize);
+                xlabel('x1', 'FontSize' , xyLabelSize);
             end
             if ~ismember(jk,1:nc:nc*nr)
-                ylabel('', 'fontsize' , xyLabelSize);
+                ylabel('', 'FontSize' , xyLabelSize);
             end
             
             if vafter91
-                clickableMultiLegend(hh, 'fontsize' , legendSize);
+                clickableMultiLegend(hh, 'FontSize' , legendSize);
             else
                 clickableMultiLegend(hh);
             end
@@ -2000,20 +2003,20 @@ if d>0
                 legend hide
             end
             axis manual
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'fontsize' , subtitleSize)
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
         else
             % Univariate case: plot the histogram
             histFS(y,10,idxselj,[],[],clrdefj)
-            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'fontsize' , subtitleSize)
+            title(['$\alpha=$' num2str(alphaLik(alphasel(j)))],'Interpreter','Latex', 'FontSize' , subtitleSize)
         end
         jk=jk+1;
     end
     
     if vafter95 == true
-        sgtitle(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        sgtitle(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
     else
         a  = axes;
-        t1 = title(tit0, 'fontsize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
+        t1 = title(tit0, 'FontSize' , titleSize , 'FontWeight', 'normal', 'interpreter' , 'latex');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
@@ -2027,7 +2030,7 @@ if d>0
     %movegui(gcf,'south');
     
 end
-%drawnow limitrate nocallbacks
+
 
 %% 7 Monitoring of beta regression coefficients (standardized)
 namej='Beta';
@@ -2086,23 +2089,22 @@ if d>0
         % set(gca,'XTickLabel',num2str(alpha1'))
         
         L = get(gca,'XLim');
-        set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , xyTickFontSize);
-        set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , xyTickFontSize);
-        
+        set(gca,'XTick',linspace(L(1),L(2),lalpha)    , 'FontSize' , xyTickFontSize);
+        set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
         set(gca,'XDir','reverse','XGrid','on');
         
         if j>nc*(nr-1)
-            xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
+            xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
         end
-        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'fontsize' , yLabelLatexSize);
+        ylabel(['$\hat \beta_' num2str(j-1) '$'],'Interpreter','latex', 'FontSize' , yLabelLatexSize);
         xtickangle(xxTickAngleVal);
         
-        legend(legendGroups, 'fontsize' , legendSize);
+        legend(legendGroups, 'FontSize' , legendSize);
         legend('hide');
         if j==1
             legend('show');
             if vafter91
-                clickableMultiLegend(h, 'fontsize' , legendSize);
+                clickableMultiLegend(h, 'FontSize' , legendSize);
             else
                 clickableMultiLegend(h);
             end
@@ -2114,17 +2116,17 @@ if d>0
     end
     
     if vafter95 == true
-        sgtitle(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
+        sgtitle(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
     else
         a  = axes;
-        t1 = title(tit , 'fontsize' , titleSize , 'FontWeight', 'normal');
+        t1 = title(tit , 'FontSize' , titleSize , 'FontWeight', 'normal');
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
     %movegui(gcf,'south');
     
 end
-%drawnow limitrate nocallbacks
+
 
 %% 8 Monitor group size
 namej='Siz';
@@ -2146,22 +2148,22 @@ if d>0
     
     lalpha=length(alphaLik);
     L = get(gca,'XLim');
-    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'fontsize' , xyTickFontSize);
-    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'fontsize' , xyTickFontSize);
+    set(gca,'XTick',linspace(L(1),L(2),lalpha), 'FontSize' , xyTickFontSize);
+    set(gca,'XTickLabel',num2str(flipud(alphaLik)), 'FontSize' , xyTickFontSize);
     
     set(gca,'XDir','reverse');
-    xlabel('Level of trimmming', 'fontsize' , xyLabelSize);
+    xlabel('Level of trimmming', 'FontSize' , xyLabelSize);
     legend(legendGroups);
     legend('show');
     if vafter91
-        clickableMultiLegend(h, 'fontsize' , legendSize);
+        clickableMultiLegend(h, 'FontSize' , legendSize);
     else
         clickableMultiLegend(h);
     end
-    title(tit,'fontsize' , titleSize , 'FontWeight', 'normal');
+    title(tit,'FontSize' , titleSize , 'FontWeight', 'normal');
     
 end
-%drawnow limitrate nocallbacks
+
 
 % make all figures visible again
 set(findobj('Tag','tclusteda'),'Visible','on');
