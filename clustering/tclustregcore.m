@@ -1,4 +1,4 @@
-function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt,Beta_all, obj_all]...
+function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt,Beta_all, obj_all]...%,retained_idopt 
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
     seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei,cup,pstar)
 
@@ -139,7 +139,9 @@ for i =1:nselected
             end
         case 2
             % monitor iteration step
-            disp(['Iteration ' num2str(i)]);
+            if msg
+                disp(['Iteration ' num2str(i)]);
+            end
     end
     
     
@@ -321,7 +323,7 @@ for i =1:nselected
             % ... , k}; at the end of the algorithm it will take values in {1,
             % ... , k,0, -1 , -2}, respectively for group assignement, thinned
             % units, first and second trimmed units.
-            [~,idx]= max(postprob,[],2);
+            [disc,idx]= max(postprob,[],2);
             
             %classification likelihood model
         else %  mixt == 0
@@ -456,6 +458,9 @@ for i =1:nselected
                         Xj          = X(ijj,:);
                         yj          = y(ijj,:);
                         yhat        = Xj*Beta(:,jj);
+                        if msg
+                            disp(['cstep= ', num2str(cstep), ', group' num2str(jj)]);
+                        end
                         [Zt , ~]    = wthin(yhat,'cup',cup,'pstar',pstar);%,'bandwidth',0.9);
                         tmp(jj,1)=sum(ijj);
                         tmp(jj,2)=sum(Zt==0);
@@ -962,11 +967,14 @@ for i =1:nselected
                     %TO BE IMPLEMENTED
                 end
                 %idxopt = (nx1) vector of {-1,-2, 1, ..., k}
-                if wtype_beta==3
-                    idxopt = idx_ne0;
-                else
-                    idxopt = idx;
-                end
+                %decomment the next lines if in idx you want the id of thinned
+                %units
+%                 if wtype_beta==3
+%                     idxopt = idx_ne0;
+%                 else
+%                     idxopt = idx;
+%                 end
+                 idxopt = idx;
                 %retained_idopt = idx;
                 % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
                 % are the posterior probabilities referring to not trimmed
@@ -986,14 +994,7 @@ for i =1:nselected
                     sigmaXopt = sigmaX;
                 end
             end
-            if monitor
-                if wtype_beta==3
-                    idxopt = idx_ne0;
-                else
-                    idxopt = idx;
-                end
-                %retained_id_all(:,cstep) = idx;
-            end
+         
         end % End of zigzag if
         
         
