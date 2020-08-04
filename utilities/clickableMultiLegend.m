@@ -124,45 +124,33 @@ function [varargout] = clickableMultiLegend(varargin)
 
 %% Beginning of code
 
-% The preample prepares the plot to speed up the legend function, which may
-% be very slow because of the call to 'drawnow'. Please report to the FSDA
-% team any potential side effect in the use of ClickableMultiLegend.
+% This preample illustrate an issue that concerns the legend function,
+% which can be very slow because of the call to 'drawnow'. Please report to
+% the FSDA team any issue that affect the use of ClickableMultiLegend,
+% which might be related to this problem.
 
-% get the axis of the plot
-ax=gca;
+% Below some guidelines to avoid the problem, which have been mainly taken
+% from http://undocumentedmatlab.com/articles/plot-performance of Yan
+% Altman. 
 
-% Force the legend to be static: this makes almost all the work for the
-% majority of the cases that may be encountered in FSDA
-% set(ax,'LegendColorbarListeners',[]);
-setappdata(ax,'LegendColorbarManualSpace',1);
-setappdata(ax,'LegendColorbarReclaimSpace',1);
+% Force the legend to be static.
+%ax=gca;
+% % set(ax,'LegendColorbarListeners',[]); This does not work anymore
+%setappdata(ax,'LegendColorbarManualSpace',1);
+%setappdata(ax,'LegendColorbarReclaimSpace',1);
 
-% DrawMode is to avoid checking which objects need to be displayed on top of
-% the others; Matlab will redraw objects following the order in which they
-% were created.
-% Clipping is to not waste time to check whether data beyond xlim/ylim need to
-% be excluded from display.
+% DrawMode is to avoid checking which objects need to be displayed on top
+% of the others; Matlab will redraw objects following the order in which
+% they were created.
+% Clipping is to not waste time to check whether data beyond xlim/ylim need
+% to be excluded from display.
 % NextPlot is to avoid many automatic checking and property reset.
-set(ax,'DrawMode','fast','Clipping','off','NextPlot','replacechildren');
+%set(ax,'DrawMode','fast','Clipping','off','NextPlot','replacechildren');
 
-% Same as above, for each single element of the plot
-hh = varargin{:};
-for i=1:size(hh,1)
-    setappdata(hh(i),'LegendColorbarManualSpace',1);
-    setappdata(hh(i),'LegendColorbarReclaimSpace',1);
-    set(hh(i),'Clipping','off');
-end
-
-% Additional intervention (to be implemented): disabling legend for
-% specific plot lines using:
+% Additional intervention: disabling legend for specific plot lines using:
 % hasbehavior(hPlotLineToDisable,'legend',false);
 
-% This intervenes directly on the way drownow is called. It will limit the
-% number of updates to 20 frames per second, skip updates if the renderer
-% is busy, and prevent callbacks from interrupting the code.
-% drawnow limitrate nocallbacks
-
-%% Make the legend cleckable
+%% Make the legend clickable
 
 % Create legend as if it was called directly
 [varargout{1:nargout(@legend)}] = legend(varargin{:});
