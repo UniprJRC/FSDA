@@ -322,10 +322,6 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %         out.subsetopt= scalar containing the subset id where the
 %                       objective function was the largest.
 %
-%          out.wbetaopt = n-by-1 dycotomic vector indicating if in the
-%                       optimal solution a unit was thinned (0) or retained
-%                       (1). This option is valid when wtrim = 3 or
-%                       wtrim.wtype_beta = 'Z'.
 %
 %            out.idx  = n-by-1 vector containing assignment of each unit to
 %                       each of the k groups. Cluster names are integer
@@ -1190,7 +1186,7 @@ end
 % [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,cstepopt,vopt,subsetopt,idxopt,webeta,webetaopt]...
 %     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
 %     seqk,zigzag,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj);
-[bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,webetaopt,cstepopt, Beta_all, obj_all] ...
+[bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt, Beta_all, obj_all] ...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
     seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation,cup,pstar);
 
@@ -1235,7 +1231,7 @@ else
     %   sigma2opt_corr      = estimated group variances corrected with  asymptotic
     %                         consistency factor and small sample correction factor
     out.sigma2opt_corr      = sigma2opt_corr;
-    out.wbetaopt            = webetaopt;
+%    out.wbetaopt            = webetaopt;
     
     if wtype_beta==5
         %TO BE IMPLEMENTED
@@ -1268,10 +1264,8 @@ else
     if wtype_beta == 4
         out.idx               = zeros(length(Xori),1);
         out.idx(id_unthinned) = idxopt;
-        %out.retained_id = out.idx;
     else
         out.idx               = idxopt;
-        %out.retained_id = retained_idopt;
     end
     % frequency distribution of the allocations
     out.siz=tabulateFS(idxopt(:,1));
