@@ -1247,7 +1247,7 @@ legendGroups=cellstr([repmat('Group ',k,1) num2str((1:k)')]);
 % 5th col = squared Euclidean distance between consecutive sigma2c
 % 6th col = squared Euclidean distance between consecutive X centroids
 % 7th col = squared Euclidean distance between consecutive X covariance matrices
-Amon=[alphaLik(2:end) zeros(lalpha-1,6)];
+Amon=[alphaLik(2:end) NaN(lalpha-1,6)];
 
 noisecluster=0;
 IDXmin0=IDX<=0;
@@ -1255,33 +1255,38 @@ IDXm=IDX;
 IDXm(IDXmin0)=0;
 for j=2:lalpha
     
-    % Compute ARI index between two consecutive alpha values
-    [ARI]=RandIndexFS(IDXm(:,j-1),IDXm(:,j),noisecluster);
-    % Store in the second column the ARI index
-    Amon(j-1,2)=ARI;
-    
-    % Compute and store squared euclidean distance between consecutive
-    % centroids
-    Amon(j-1,3)=sum(sum( (Beta(:,:,j)-Beta(:,:,j-1)).^2, 2)) / sum(sum( Beta(:,:,j-1)).^2, 2);
-    
-    % Compute and store squared euclidean distance between consecutive
-    % sigma2
-    Amon(j-1,4)=sum(sum( (Sigma2y(:,j)-Sigma2y(:,j-1)).^2, 2)) /sum(sum( (Sigma2y(:,j-1)).^2, 2));
-    
-    % Compute and store squared euclidean distance between consecutive
-    % sigma2c
-    Amon(j-1,5)=sum(sum( (Sigma2yc(:,j)-Sigma2yc(:,j-1)).^2, 2))/ sum(sum( (Sigma2yc(:,j-1)).^2, 2));
-    
-    if existXspace == true
-        % Compute and store squared euclidean distance between consecutive
-        % centroids
-        Amon(j-1,6)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2)) / sum(sum( (MU(:,:,j-1)).^2, 2));
+    % Make sure there was convergence (i.e. no missing values in
+    % IDXm(:,j-1) and IDXm(:,j)).
+    if any(isnan(IDXm(:,j-1))) || any(isnan(IDXm(:,j)))
+    else
+        % Compute ARI index between two consecutive alpha values
+        [ARI]=RandIndexFS(IDXm(:,j-1),IDXm(:,j),noisecluster);
+        % Store in the second column the ARI index
+        Amon(j-1,2)=ARI;
         
         % Compute and store squared euclidean distance between consecutive
-        % covariance matrices (all elements of cov matrices are considered)
-        Amon(j-1,7)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)))/ sum(sum(sum((SIGMA{j-1}).^2,2)));
-    else
-        Amon(j-1,6:7)=[NaN NaN];
+        % centroids
+        Amon(j-1,3)=sum(sum( (Beta(:,:,j)-Beta(:,:,j-1)).^2, 2)) / sum(sum( Beta(:,:,j-1)).^2, 2);
+        
+        % Compute and store squared euclidean distance between consecutive
+        % sigma2
+        Amon(j-1,4)=sum(sum( (Sigma2y(:,j)-Sigma2y(:,j-1)).^2, 2)) /sum(sum( (Sigma2y(:,j-1)).^2, 2));
+        
+        % Compute and store squared euclidean distance between consecutive
+        % sigma2c
+        Amon(j-1,5)=sum(sum( (Sigma2yc(:,j)-Sigma2yc(:,j-1)).^2, 2))/ sum(sum( (Sigma2yc(:,j-1)).^2, 2));
+        
+        if existXspace == true
+            % Compute and store squared euclidean distance between consecutive
+            % centroids
+            Amon(j-1,6)=sum(sum( (MU(:,:,j)-MU(:,:,j-1)).^2, 2)) / sum(sum( (MU(:,:,j-1)).^2, 2));
+            
+            % Compute and store squared euclidean distance between consecutive
+            % covariance matrices (all elements of cov matrices are considered)
+            Amon(j-1,7)=sum(sum(sum((SIGMA{j}-SIGMA{j-1}).^2,2)))/ sum(sum(sum((SIGMA{j-1}).^2,2)));
+        else
+            Amon(j-1,6:7)=[NaN NaN];
+        end
     end
 end
 out.Amon=Amon;
