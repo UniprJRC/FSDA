@@ -317,13 +317,13 @@ for i =1:nselected
         if mixt > 0
             %E-step is run to compute the posterior probabilities of all
             %observations
-            [~,postprob,~] = estepFS(ll,verLess2016b);
+            [~,postprob,disc] = estepFS(ll,verLess2016b);
             % idx: (nx1) vector indicating the group for which each observation
             % has the largest posterior probability. It takes values in  {1,
             % ... , k}; at the end of the algorithm it will take values in {1,
             % ... , k,0, -1 , -2}, respectively for group assignement, thinned
             % units, first and second trimmed units.
-            [disc,idx]= max(postprob,[],2);
+            [~,idx]= max(postprob,[],2);
             
             %classification likelihood model
         else %  mixt == 0
