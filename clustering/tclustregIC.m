@@ -592,8 +592,8 @@ if nargin > 2
     
     [h, plots, msg, cleanpool, numpool] = ...
         deal(options.h, options.plots, options.msg, ...
-             options.cleanpool, options.numpool);
-
+        options.cleanpool, options.numpool);
+    
     alphaLik = options.alphaLik;
     alphaX   = options.alphaX;
     if alphaX==1
@@ -605,7 +605,7 @@ if nargin > 2
     nsamp        = options.nsamp;        % Number of subsets to extract
     equalweights = options.equalweights; % Specify if assignment must take into account the size of the groups
     refsteps     = options.refsteps;
-    reftol       = options.reftol; 
+    reftol       = options.reftol;
     whichIC      = options.whichIC;
     UnitsSameGroup  = options.UnitsSameGroup;
     RandNumbForNini = options.RandNumbForNini;
@@ -646,13 +646,14 @@ if lccsigmay>1 && lalphaLik ==1
     lcc=lccsigmay;
     lab='c=';
     cORalpha=ccsigmay;
-elseif  lccsigmay==1 && lalphaLik >1
+elseif  lccsigmay==1 && lalphaLik >1 % loop through alpha values
     colnamesIC=strcat(cellstr(repmat('a_',lalphaLik,1)), cellstr(num2str(alphaLik)));
     colnamesIC=regexprep(colnamesIC,' ','');
     cloop=false;
     lcc=lalphaLik;
     lab='\alpha=';
     cORalpha=alphaLik;
+    % In this case restrfactor is fixed
 else
     error('FSDA:tclustregIC:WrongInput','alphaLik and cc cannot have length greater than one both')
 end
@@ -675,9 +676,8 @@ if typeIC==0 || typeIC==3
 end
 
 
-%% Preapare the pool (if required)
-
-for k=1:lkk  % loop for different values of k (number of groups)
+%%  loop for different values of k (number of groups)
+for k=1:lkk
     
     seqk=kk(k);
     
@@ -705,7 +705,7 @@ for k=1:lkk  % loop for different values of k (number of groups)
     
     % pctRunOnAll warning('on')
     parfor (cORa=1:lcc , numpool)
-        %     for cORa=1:lcc
+        % for cORa=1:lcc
         
         if cloop==true
             % columns = restr
@@ -917,14 +917,14 @@ end
 % copy the (last) IC plot in a plot of handle h
 if ~isempty(h)
     if strcmp(get(h,'type'),'axes')
-        % h is the handle of the subplot; 
+        % h is the handle of the subplot;
         % then send the ICplot into h.
         axcp = copyobj(ax,ancestor(h, 'figure'));
         set(axcp,'Position',get(h,'position'));
         pause(0.0000001);
         delete(hf);
     elseif strcmp(get(h,'type'),'figure')
-        % h is the handle of a figure which contains at least a subplot; 
+        % h is the handle of a figure which contains at least a subplot;
         % then send the ICplot into the first subplot of the figure.
         hc=get(h,'children');
         if isempty(hc)
