@@ -1,4 +1,4 @@
-function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt,Beta_all, obj_all]...%,retained_idopt 
+function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt,Beta_all, obj_all]...%,retained_idopt
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
     seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei,cup,pstar)
 
@@ -17,6 +17,8 @@ skipthin_th = 5;
 %intercept through the origin and one regression coefficient)
 monitor = 0;
 
+% Prior estep before entering concentration steps loop
+warmingup=true;
 
 [n,p]=size(X);
 sigma2ini = ones(1,k);
@@ -278,17 +280,7 @@ for i =1:nselected
         end
     end
     
-    %% -- CONCENTRATION STEPS
-    
-    indold = zeros(n,1)-1;
-    postprobold = zeros(n,k);
-    mudiff=1e+15;
-    cstep=0;
-    while mudiff > reftol && cstep <= refsteps-1
-        cstep = cstep + 1;
-        
-        
-        
+    if warmingup==true
         %%% -- Classification *E-Step* (before concentration steps):
         %%% -- -- Log-likelihood of all observations based on the estimated regression parameters
         
@@ -313,11 +305,11 @@ for i =1:nselected
         %%% -- -- Posterior probabilities of all observations
         
         % Mixture likelihood model
-
+        
         if mixt > 0
             %E-step is run to compute the posterior probabilities of all
             %observations
-            [~,postprob,disc] = estepFS(ll,verLess2016b);
+            [~,postprob] = estepFS(ll,verLess2016b);
             % idx: (nx1) vector indicating the group for which each observation
             % has the largest posterior probability. It takes values in  {1,
             % ... , k}; at the end of the algorithm it will take values in {1,
@@ -333,13 +325,77 @@ for i =1:nselected
             % At the end it will take values in {1, ... , k,0, -1 ,
             % -2}, respectively for group assignement, thinned units, first and
             % second trimmed units.
-            [disc,idx] = max(ll,[],2);
+            [~,idx] = max(ll,[],2);
             postprob = zeronk;
             for j=1:k
                 postprob(idx==j,j)=1;
             end
         end
+    end
+    
+    
+    %% -- CONCENTRATION STEPS
+    
+    indold = zeros(n,1)-1;
+    postprobold = zeros(n,k);
+    mudiff=1e+15;
+    cstep=0;
+    while mudiff > reftol && cstep <= refsteps-1
+        cstep = cstep + 1;
         
+        
+        if warmingup==false
+            %%% -- Classification *E-Step* (inside concentration steps):
+            %%% -- -- Log-likelihood of all observations based on the estimated regression parameters
+            
+            % equalweight: each group has the same weight, $1/k$.
+            if equalweights == 1
+                for jj = 1:k
+                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                    if cwm==1
+                        ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                    end
+                end
+                % the group weights (niini) are estimated
+            else
+                for jj = 1:k
+                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                    if cwm==1
+                        ll(:,jj)=ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                    end
+                end
+            end
+            
+            %%% -- -- Posterior probabilities of all observations
+            
+            % Mixture likelihood model
+            
+            if mixt > 0
+                %E-step is run to compute the posterior probabilities of all
+                %observations
+                [~,postprob,disc] = estepFS(ll,verLess2016b);
+                % idx: (nx1) vector indicating the group for which each observation
+                % has the largest posterior probability. It takes values in  {1,
+                % ... , k}; at the end of the algorithm it will take values in {1,
+                % ... , k,0, -1 , -2}, respectively for group assignement, thinned
+                % units, first and second trimmed units.
+                [~,idx]= max(postprob,[],2);
+                
+                %classification likelihood model
+            else %  mixt == 0
+                zeronk=zeros(n,k);
+                % idx: (nx1) vector indicating the group for which each observation
+                % has the largest likelihood. It takes values in  {1, ... , k};
+                % At the end it will take values in {1, ... , k,0, -1 ,
+                % -2}, respectively for group assignement, thinned units, first and
+                % second trimmed units.
+                [disc,idx] = max(ll,[],2);
+                postprob = zeronk;
+                for j=1:k
+                    postprob(idx==j,j)=1;
+                end
+            end
+        end
         
         %%% -- -- Observation weighting, according to wtrim option (*componentwise thinning* is applied here)
         
@@ -510,6 +566,65 @@ for i =1:nselected
             break
         end
         
+        
+        if warmingup==true
+            %% -- -- Classification *E-Step* (inside concentration steps)
+            
+            %%% -- -- -- Log-likelihood of all observations based on the estimated regression parameters
+            
+            % equalweight: each group has the same weight, 1/k.
+            if equalweights == 1
+                for jj = 1:k
+                    ll(:,jj) = log((1/k)) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                    if cwm==1
+                        ll(:,jj)=  ll(:,jj)+ logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                    end
+                end
+                % the group weights (niini) are estimated
+            else
+                for jj = 1:k
+                    ll(:,jj) = log((niini(jj)/sum(niini))) + logmvnpdfFS(y-X*Beta(:,jj),0,sigma2ini(jj));
+                    if cwm==1
+                        ll(:,jj)=  ll(:,jj)+logmvnpdfFS(X(:,(intercept+1):end),muX(jj,:),sigmaX(:,:,jj));
+                    end
+                end
+            end
+            
+            %%% -- -- -- Posterior probabilities of all observations
+            
+            % Mixture likelihood model
+            if mixt == 2
+                % Store previously computed posterior probabilities
+                postprobold=postprob;
+                
+                %E-step is run to compute the posterior probabilities of all
+                %observations
+                [~,postprob,disc] = estepFS(ll,verLess2016b);
+                % idx: (nx1) vector indicating the group for which each observation
+                % has the largest posterior probability. It takes values in  {1,
+                % ... , k}; at the end of the algorithm it will take values in {1,
+                % ... , k,0, -1 , -2}, respectively for group assignement, thinned
+                % units, first and second trimmed units.
+                [~,idx]= max(postprob,[],2);
+                
+                %classification likelihood model
+            else
+                
+                % idx: (nx1) vector indicating the group for which each
+                % observation has the largest log-likelihood as in point
+                % 2.1 of appendix of Garcia Escudero et al. It takes values
+                % in  {1, ... , k}; at the end of the algorithm it will
+                % take values in {1, ... , k,0, -1 , -2}, respectively for
+                % group assignement, thinned units, first and second
+                % trimmed units.
+                [disc,idx] = max(ll,[],2);
+                
+                postprob=zeronk;
+                for j=1:k
+                    postprob(idx==j,j)=1;
+                end
+            end
+        end
         
         % Assign infinite weights to thinned units so that they can
         % never be trimmed
@@ -857,7 +972,7 @@ for i =1:nselected
                     % equalweights = 0: proportions are set equal to the group sizes.
                 else
                     %the objective function is computed excluding both
-                    %thinned and trimmed (matrix Z)                   
+                    %thinned and trimmed (matrix Z)
                     obj = obj + niini(jj)*log(niini(jj)/sum(niini)) +...
                         sum(logmvnpdfFS(resjj,0,sigma2ini(jj)).*postprob(:,jj).*weobj(:));
                 end
@@ -969,12 +1084,12 @@ for i =1:nselected
                 %idxopt = (nx1) vector of {-1,-2, 1, ..., k}
                 %decomment the next lines if in idx you want the id of thinned
                 %units
-%                 if wtype_beta==3
-%                     idxopt = idx_ne0;
-%                 else
-%                     idxopt = idx;
-%                 end
-                 idxopt = idx;
+                %                 if wtype_beta==3
+                %                     idxopt = idx_ne0;
+                %                 else
+                %                     idxopt = idx;
+                %                 end
+                idxopt = idx;
                 %retained_idopt = idx;
                 % postprob = vector nxk taking values in {(0 1], 0}:, (0 1]
                 % are the posterior probabilities referring to not trimmed
@@ -994,7 +1109,7 @@ for i =1:nselected
                     sigmaXopt = sigmaX;
                 end
             end
-         
+            
         end % End of zigzag if
         
         
