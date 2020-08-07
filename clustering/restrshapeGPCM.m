@@ -101,7 +101,7 @@ k=pa.k;
 v=pa.v;
 pars=pa.pars;
 
-if strcmp(pars(2),'E')
+if strcmp(pars(2),'E') || pa.shb==1
     % In this case just restriction shw is used
     shw=pa.shw;
     
@@ -131,11 +131,11 @@ if strcmp(pars(2),'E')
     % replicate v-by-1 GAMpooledc vector k times
     GAMc=repmat(GAMc,1,k);
     
-elseif strcmp(pars(2),'I')
+elseif strcmp(pars(2),'I') || pa.shw ==1
     GAMc=ones(v,k);
     
 else % This is the case strcmp(pars(2),'V')
-    lamGAM =NaN(v,k);
+    GAM =NaN(v,k);
     shw=pa.shw;
     shb=pa.shb;
     maxiterS=pa.maxiterS;
@@ -143,16 +143,15 @@ else % This is the case strcmp(pars(2),'V')
     
     for j=1:k
         Omegaj=Omega(:,:,j);
-        lamGAM(:,j) = diag( Omegaj' * SigmaB(:,:,j) * Omegaj )/lmd(j);
+        GAM(:,j) = diag( Omegaj' * SigmaB(:,:,j) * Omegaj )/lmd(j);
     end
     
-    
-    GAMc = restrshapecore(lamGAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh,pa.userepmat);
+    GAMc = restrshapecore(GAM,niini,shw,shb,zerotol,maxiterS,pa.tolS,pa.sortsh,pa.userepmat);
 end
 
 end
 
-function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiterS, tolS, sortsh, userepmat)
+function [GAMctrSRT]  = restrshapecore(GAMini, niini, shw, shb, zerotol, maxiterS, tolS, sortsh, userepmat)
 % restrshapecore computes constrained Gamma (shape) matrix
 %
 % The purpose is to find the new constrained shape matrix.
@@ -163,13 +162,13 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %
 % Required input arguments:
 %
-% lamGAM  : matrix of size v-by-k
-%           lamGAM contains in the first column the elements on the
-%           diagonal of GAM(:,:,1)). In other words the first
+% GAMini  : matrix of size v-by-k
+%           GAMini contains in the first column the elements on the
+%           diagonal of GAM(:,:,1). In other words the first
 %           column contains the diagonal elements of matrix
 %           $\Gamma_1$
-%           lamGAM contains in the second column the elements on the
-%           diagonal of (GAM(:,:,2)). In other words the first
+%           GAMini contains in the second column the elements on the
+%           diagonal of GAM(:,:,2). In other words the first
 %           column contains the diagonal elements of matrix
 %           $\Gamma_2$
 %           .........
@@ -178,7 +177,7 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %           group. For example, if shw is 3 the ratio of each column of output
 %           matrix GAMc will not be greater than 3.
 %     shb  : scalar greater or equal 1. Constraint to impose among groups.
-%           For example, if shb is 5 the ratio of each row of output
+%           For example, if shb is 5 the ratio of each row of (sorted) output
 %           matrix GAMc will not be greater than 5.
 %  zerotol : scalar. Tolerance value to declare all input values equal to 0
 %           in the eigenvalues restriction routine (file restreigen.m).
@@ -208,15 +207,20 @@ function [GAMctrSRT]  = restrshapecore(lamGAM, niini, shw, shb, zerotol, maxiter
 %           pa.shw.
 
 %% Beginning of code
-lamGAMc = lamGAM;
+lamGAMc = GAMini;
 % Initialize GAMc = Shape matrix constrained
-[p,K] = size(lamGAM);
+[p,K] = size(GAMini);
 
 % Apply eigenvalue restriction inside each group using constraining parameter
 % shw
 % The ratio of each column of matrix lamGAMc is not greater than shw
+booeig=max(GAMini,[],1)./min(GAMini,[],1)>shw;
 for j=1:K
-    lamGAMc(:,j) = restreigen(lamGAM(:,j),1,shw,zerotol,userepmat);
+    if booeig(j)==true
+        lamGAMc(:,j) = restreigen(GAMini(:,j),1,shw,zerotol,userepmat);
+    else
+        lamGAMc(:,j) = GAMini(:,j);
+    end
 end
 
 
@@ -246,7 +250,8 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     % det(Gamma_j)=1
     GAM=GAM./repmat(es,p,1);
     GAM(GAM==0)=1;
-    usesor=false;
+    usesor=true;
+    sortsh=1;
     if usesor==true
         if sortsh==1
             for j=1:K
@@ -261,10 +266,15 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     
     % Apply restriction between groups
     % The elements of each column of GAM are sorted from largest to smallest
-    % The ranks of the orginal ordering of each column is store in matrix ord
+    % The ranks of the orginal ordering of each column is store in matrix Ord
     % The ratio of each row of matrix GAMc is not greater than shb
+    booeig=max(GAMsor,[],2)./min(GAMsor,[],2)>shb;
     for i=1:p
-        GAMctr(i,:) = restreigen(GAMsor(i,:), niini, shb, zerotol,userepmat);
+        if booeig(i)==true
+            GAMctr(i,:) = restreigen(GAMsor(i,:), niini, shb, zerotol,userepmat);
+        else
+            GAMctr(i,:) = GAMsor(i,:);
+        end
     end
     
     if usesor==true
@@ -290,5 +300,5 @@ while ( (diffGAM > tolS) && (iter < maxiterS) )
     diffGAM=diff'*diff/(GAMold'*GAMold);
     
 end
-%FScategory:CLUS-RobClaMULT
 end
+%FScategory:CLUS-RobClaMULT
