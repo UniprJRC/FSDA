@@ -275,6 +275,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
     %  $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
     % SETAR with all the default options.
     % Use simulated data.
+    rng('default')
     rng(10)
     n = 50;
     y = randn(n,1);
@@ -290,7 +291,12 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 
 %{
     % Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.
-     X2 = [repmat(0.3,n,1) X1];
+     n = 50;
+    y = randn(n,1);
+    X1 = randn(n,2);
+    X2 = [repmat(0.3,n,1) X1];
+    p = 2;
+    d = 2;
     [out2] = SETARX(y, p ,d, 'X',X2);
 %}
 
@@ -299,6 +305,11 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
     % Estimation from simulated data of example 1 with an extra column as regressor, half zeros
     % and half ones. This will produce a warning (column of zeros removed) during the loop for the 
     % estimation of the threshold value. Check out3.setarx.rmv_col_loop.
+     n = 50;
+    y = randn(n,1);
+    X1 = randn(n,2);
+    p = 2;
+    d = 2;
     X3 = [[repmat(0,25,1);repmat(1,25,1)] X1];
     [out3] = SETARX(y, p ,d, 'X',X3);
 %}
