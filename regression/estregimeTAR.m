@@ -48,7 +48,7 @@ function [out] = estregimeTAR(y, X)
 %
 % More About:
 %
-% This routines performs the following operations:
+% This routine performs the following operations:
 % 1) If y is a row vector it is transformed in a column vector.
 % 2) Checks that X is a matrix that has not more than two dimensions.
 % 3) Checks dimension consistency of X and y.
@@ -95,7 +95,8 @@ function [out] = estregimeTAR(y, X)
 %
 % Example:
 %{
-    % Example 1: warning - singular matrix.
+    %% Example 1: estregimeTAR with all default options.
+    rng('default')
     rng(10)
     n=200;
     k=3;
@@ -108,7 +109,11 @@ function [out] = estregimeTAR(y, X)
 
 %{
     % Example 2: adjustments for constant columns. Only the first non-zero
-    %%   constant column is kept in the model estimation. Check beta and se values.
+    %   constant column is kept in the model estimation. Check beta and se values.
+    n=200;
+    k=3;
+    X=randn(n,k);
+    y=randn(n,1);   
     X2 = [zeros(200,1) ones(200,1) X repmat(2,200,1)];
     [out2] = estregimeTAR(y, X2);
 %}
