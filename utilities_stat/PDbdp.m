@@ -40,7 +40,7 @@ function alpha = PDbdp(bdp)
 %
 %{
     % Find alpha given bdp.
-    % The constant alpha associated to a breakdown point of 50% in regression is 
+    % The constant alpha associated to a breakdown point of 30% in regression is 
     % alpha=1.040816326530613
     alpha=PDbdp(0.3)
 %}
