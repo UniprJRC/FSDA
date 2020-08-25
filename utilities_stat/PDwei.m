@@ -149,7 +149,10 @@ function w = PDwei(u,alpha)
 
 %% Beginning of code
 
-w = alpha * exp(- alpha *(u.^2/2));
+% normalized wights in such a way that when u=0 w=1
+w = exp(- alpha *(u.^2/2));
+% Unnormalized weights are
+% w = alpha * exp(- alpha *(u.^2/2));
 
 end
 %FScategory:UTISTAT
