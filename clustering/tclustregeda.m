@@ -1390,7 +1390,6 @@ if d>0
     
 end
 
-
 %% 2 Monitoring stability of classification (units plot)
 
 namej='UnitsTrmOrChgCla';
@@ -1513,89 +1512,89 @@ if d>0
     %movegui(gcf,'south');
 end
 
-%% 3 Monitoring posterior probabilities
-namej = 'PostProb';
-tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
-lw = 1;  % line width of all plots
-
-d=find(strcmp(namej,name));
-if d>0
-    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-    set(hf3,'Tag','tclusteda');
-    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
-    
-    Prob1=squeeze(Postprob(:,1,:));
-    Prob1(IDXmin0)=NaN;
-    
-    group=cell(n,1);
-    group(1:n)={'Units which never changed assignment'};
-    group(UnitsChgCla)={'Units which changed assignment'};
-    group(UnitsTrm)={'Trimmed units'};
-    
-    subplot(2,2,1);
-    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]); xlim manual;
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
-    legend('off');
-    %hlpc1 = legend('hide');
-    %set(legend,'Location','best');
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,2);
-    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
-    groupsel=group(UnitsTrmOrChgCla);
-    
-    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]); xlim manual;
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
-    legend('off');
-    %hlpc2 = legend('hide');
-    %set(legend,'Location','best');
-
-    % Add the label of the units whose final post prob is intermediate
-    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
-    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
-        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,3)
-    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
-    if vafter95
-        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 all units');
-        legend('off');
-    end
-    
-    subplot(2,2,4)
-    if vafter95
-        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
-            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 selected units');
-        legend('off');
-    end
-    
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
-    else
-        a  = axes;
-        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    %movegui(gcf,'south');
-end
-
-drawnow limitrate nocallbacks;
+% %% 3 Monitoring posterior probabilities
+% namej = 'PostProb';
+% tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
+% lw = 1;  % line width of all plots
+% 
+% d=find(strcmp(namej,name));
+% if d>0
+%     hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+%     set(hf3,'Tag','tclusteda');
+%     set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
+%     
+%     Prob1=squeeze(Postprob(:,1,:));
+%     Prob1(IDXmin0)=NaN;
+%     
+%     group=cell(n,1);
+%     group(1:n)={'Units which never changed assignment'};
+%     group(UnitsChgCla)={'Units which changed assignment'};
+%     group(UnitsTrm)={'Trimmed units'};
+%     
+%     subplot(2,2,1);
+%     parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+%     ylim([-0.05 1.05]); xlim manual;
+%     xlabel('Level of trimming','FontSize',xyLabelSize);
+%     ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
+%     legend('off');
+%     %hlpc1 = legend('hide');
+%     %set(legend,'Location','best');
+%     if vafter95
+%         axtoolbar('Visible','off');
+%     end
+%     
+%     subplot(2,2,2);
+%     Prob1sel=Prob1(UnitsTrmOrChgCla,:);
+%     groupsel=group(UnitsTrmOrChgCla);
+%     
+%     parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+%     ylim([-0.05 1.05]); xlim manual;
+%     xlabel('Level of trimming','FontSize',xyLabelSize);
+%     ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
+%     legend('off');
+%     %hlpc2 = legend('hide');
+%     %set(legend,'Location','best');
+% 
+%     % Add the label of the units whose final post prob is intermediate
+%     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
+%     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
+%         cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+%     if vafter95
+%         axtoolbar('Visible','off');
+%     end
+%     
+%     subplot(2,2,3)
+%     % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
+%     if vafter95
+%         parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+%         set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+%         xlabel('Level of trimming');
+%         ylabel('Post prob. group 1 all units');
+%         legend('off');
+%     end
+%     
+%     subplot(2,2,4)
+%     if vafter95
+%         parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+%             'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+%         set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
+%         xlabel('Level of trimming');
+%         ylabel('Post prob. group 1 selected units');
+%         legend('off');
+%     end
+%     
+%     if vafter95 == true
+%         sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
+%     else
+%         a  = axes;
+%         t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
+%         a.Visible = 'off'; % set(a,'Visible','off');
+%         t1.Visible = 'on'; % set(t1,'Visible','on');
+%     end
+%     %movegui(gcf,'south');
+% end
+% 
+% drawnow limitrate nocallbacks;
 
 %% 4 Monitoring  of sigma2 and sigma2corr
 namej = 'Sigma';
@@ -1667,6 +1666,9 @@ if d>0
         
 end
 
+% this follows the first plot with legend to avoid the updates of all
+% existing graphics, because of the subsequent calls to legend and drawnow.
+drawnow limitrate nocallbacks;
 
 %% 5 Plot scatter with all regression lines (hyperplanes)
 namej = 'ScatterWithRegLines';
@@ -2162,6 +2164,89 @@ if d>0
     end
     title(tit,'FontSize' , titleSize , 'FontWeight', 'normal');
     
+end
+
+
+%% 3 Monitoring posterior probabilities
+namej = 'PostProb';
+tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
+lw = 1;  % line width of all plots
+
+d=find(strcmp(namej,name));
+if d>0
+    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+    set(hf3,'Tag','tclusteda');
+    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
+    
+    Prob1=squeeze(Postprob(:,1,:));
+    Prob1(IDXmin0)=NaN;
+    
+    group=cell(n,1);
+    group(1:n)={'Units which never changed assignment'};
+    group(UnitsChgCla)={'Units which changed assignment'};
+    group(UnitsTrm)={'Trimmed units'};
+    
+    subplot(2,2,1);
+    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]); xlim manual;
+    xlabel('Level of trimming','FontSize',xyLabelSize);
+    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
+    %legend('off');
+    %hlpc1 = legend('hide');
+    set(legend,'Location','best');
+    if vafter95
+        axtoolbar('Visible','off');
+    end
+    
+    subplot(2,2,2);
+    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
+    groupsel=group(UnitsTrmOrChgCla);
+    
+    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]); xlim manual;
+    xlabel('Level of trimming','FontSize',xyLabelSize);
+    ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
+    %legend('off');
+    %hlpc2 = legend('hide');
+    set(legend,'Location','best');
+
+    % Add the label of the units whose final post prob is intermediate
+    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
+    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
+        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+    if vafter95
+        axtoolbar('Visible','off');
+    end
+    
+    subplot(2,2,3)
+    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
+    if vafter95
+        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 all units');
+        legend('off');
+    end
+    
+    subplot(2,2,4)
+    if vafter95
+        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 selected units');
+        legend('off');
+    end
+    
+    if vafter95 == true
+        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
+    else
+        a  = axes;
+        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end
+    %movegui(gcf,'south');
 end
 
 % make all figures visible again
