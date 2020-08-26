@@ -1512,9 +1512,6 @@ if d>0
     end
     %movegui(gcf,'south');
 end
-% this plot makes the "" very time
-% consuming; better to replace it with a pause
-%pause(0.1);
 
 %% 3 Monitoring posterior probabilities
 namej = 'PostProb';
@@ -1537,10 +1534,12 @@ if d>0
     
     subplot(2,2,1);
     parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]);
+    ylim([-0.05 1.05]); xlim manual;
     xlabel('Level of trimming','FontSize',xyLabelSize);
     ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
-    set(legend,'Location','best');
+    legend('off');
+    %hlpc1 = legend('hide');
+    %set(legend,'Location','best');
     if vafter95
         axtoolbar('Visible','off');
     end
@@ -1550,10 +1549,13 @@ if d>0
     groupsel=group(UnitsTrmOrChgCla);
     
     parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]);
+    ylim([-0.05 1.05]); xlim manual;
     xlabel('Level of trimming','FontSize',xyLabelSize);
     ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
-    set(legend,'Location','best');
+    legend('off');
+    %hlpc2 = legend('hide');
+    %set(legend,'Location','best');
+
     % Add the label of the units whose final post prob is intermediate
     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
@@ -1592,9 +1594,8 @@ if d>0
     end
     %movegui(gcf,'south');
 end
-% parallelplot makes the "" very time
-% consuming; better to replace it with a pause
-%pause(0.1);
+
+drawnow limitrate nocallbacks;
 
 %% 4 Monitoring  of sigma2 and sigma2corr
 namej = 'Sigma';
@@ -1657,8 +1658,7 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-    
-    % make first legend chlickable
+
     if vafter91
         clickableMultiLegend(h1, 'FontSize' , legendSize);
     else
@@ -2164,10 +2164,11 @@ if d>0
     
 end
 
-
 % make all figures visible again
 set(findobj('Tag','tclusteda'),'Visible','on');
-%set(findobj('Type', 'figure'),'Visible','on');
+
+% make heavy legends visible again
+%set([hlpc1,hlpc2],'Location','best','Visible','on');
 
     function cm = cmapFS(cstart,cend,m)
         %cmapFS creates m RGB colors, with a gradient from cstart to cend
