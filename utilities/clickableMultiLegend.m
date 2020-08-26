@@ -124,15 +124,13 @@ function [varargout] = clickableMultiLegend(varargin)
 
 %% Beginning of code
 
-% This preample illustrate an issue that concerns the legend function,
-% which can be very slow because of the call to 'drawnow'. Please report to
-% the FSDA team any issue that affect the use of ClickableMultiLegend,
-% which might be related to this problem.
-
-% Below some guidelines to avoid the problem, which have been mainly taken
-% from http://undocumentedmatlab.com/articles/plot-performance of Yan
-% Altman. 
-
+% This preample documents an issue that concerns the legend function, which
+% can be very slow because of a 'drawnow' call. Please report to the FSDA
+% team any issue that might be related to this problem.
+%
+% We report below few guidelines on the problem mainly taken from
+% http://undocumentedmatlab.com/articles/plot-performance of Yan Altman.
+%
 % Force the legend to be static.
 %ax=gca;
 % % set(ax,'LegendColorbarListeners',[]); This does not work anymore
@@ -151,6 +149,8 @@ function [varargout] = clickableMultiLegend(varargin)
 % hasbehavior(hPlotLineToDisable,'legend',false);
 
 %% Make the legend clickable
+
+xlim manual;
 
 % Create legend as if it was called directly
 [varargout{1:nargout(@legend)}] = legend(varargin{:});
