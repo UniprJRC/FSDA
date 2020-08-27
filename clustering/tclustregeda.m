@@ -1390,7 +1390,6 @@ if d>0
     
 end
 
-
 %% 2 Monitoring stability of classification (units plot)
 
 namej='UnitsTrmOrChgCla';
@@ -1512,91 +1511,8 @@ if d>0
     end
     %movegui(gcf,'south');
 end
-% this plot makes the "" very time
-% consuming; better to replace it with a pause
-%pause(0.1);
 
-%% 3 Monitoring posterior probabilities
-namej = 'PostProb';
-tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
-lw = 1;  % line width of all plots
-
-d=find(strcmp(namej,name));
-if d>0
-    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-    set(hf3,'Tag','tclusteda');
-    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
-    
-    Prob1=squeeze(Postprob(:,1,:));
-    Prob1(IDXmin0)=NaN;
-    
-    group=cell(n,1);
-    group(1:n)={'Units which never changed assignment'};
-    group(UnitsChgCla)={'Units which changed assignment'};
-    group(UnitsTrm)={'Trimmed units'};
-    
-    subplot(2,2,1);
-    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]);
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
-    set(legend,'Location','best');
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,2);
-    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
-    groupsel=group(UnitsTrmOrChgCla);
-    
-    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
-    ylim([-0.05 1.05]);
-    xlabel('Level of trimming','FontSize',xyLabelSize);
-    ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
-    set(legend,'Location','best');
-    % Add the label of the units whose final post prob is intermediate
-    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
-    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
-        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
-    if vafter95
-        axtoolbar('Visible','off');
-    end
-    
-    subplot(2,2,3)
-    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
-    if vafter95
-        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 all units');
-        legend('off');
-    end
-    
-    subplot(2,2,4)
-    if vafter95
-        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
-            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
-        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
-        xlabel('Level of trimming');
-        ylabel('Post prob. group 1 selected units');
-        legend('off');
-    end
-    
-    if vafter95 == true
-        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
-    else
-        a  = axes;
-        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
-        a.Visible = 'off'; % set(a,'Visible','off');
-        t1.Visible = 'on'; % set(t1,'Visible','on');
-    end
-    %movegui(gcf,'south');
-end
-% parallelplot makes the "" very time
-% consuming; better to replace it with a pause
-%pause(0.1);
-
-%% 4 Monitoring  of sigma2 and sigma2corr
+%% 3 Monitoring  of sigma2 and sigma2corr
 namej = 'Sigma';
 tit   = {'Tclustreg monitoring plot' , ['Error variances for restriction factor c=' num2str(restrfact)]};
 
@@ -1657,8 +1573,7 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-    
-    % make first legend chlickable
+
     if vafter91
         clickableMultiLegend(h1, 'FontSize' , legendSize);
     else
@@ -1667,8 +1582,11 @@ if d>0
         
 end
 
+% this follows the first plot with legend to avoid the updates of all
+% existing graphics, because of the subsequent calls to legend and drawnow.
+drawnow limitrate nocallbacks;
 
-%% 5 Plot scatter with all regression lines (hyperplanes)
+%% 4 Plot scatter with all regression lines (hyperplanes)
 namej = 'ScatterWithRegLines';
 alpha1range = ['[' num2str(max(alphaLik)) ' \; ' num2str(min(alphaLik)) ']' ];
 tit = {'Tclustreg monitoring plot' , ['$\quad mixt=' num2str(mixt) , '  \quad c_{\hat \sigma^2}='...
@@ -1839,7 +1757,7 @@ if d>0
 end
 
 
-%% 6 Monitoring of allocation (using gscatter)
+%% 5 Monitoring of allocation (using gscatter)
 d=find(strcmp('gscatter',name));
 tit0 = {'Tclustreg monitoring plot -- allocation of units' , ...
     'Variance Explained $\cal{V}$, for different trimming levels $\alpha$'};
@@ -2032,7 +1950,7 @@ if d>0
 end
 
 
-%% 7 Monitoring of beta regression coefficients (standardized)
+%% 6 Monitoring of beta regression coefficients (standardized)
 namej='Beta';
 tit = 'Tclustreg monitoring plot -- Estimated regression coefficients';
 
@@ -2128,7 +2046,7 @@ if d>0
 end
 
 
-%% 8 Monitor group size
+%% 7 Monitor group size
 namej='Siz';
 tit = {'Tclustreg monitoring plot' , 'Group size'};
 
@@ -2165,9 +2083,93 @@ if d>0
 end
 
 
+%% 8 (ex3) Monitoring posterior probabilities
+namej = 'PostProb';
+tit   = {'Tclustreg monitoring plot -- Posterior probabilities'};
+lw = 1;  % line width of all plots
+
+d=find(strcmp(namej,name));
+if d>0
+    hf3 = figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
+    set(hf3,'Tag','tclusteda');
+    set(hf3,'Position',[left,bottom,figureResize,figureResize].*get(hf3,'Position'));
+    
+    Prob1=squeeze(Postprob(:,1,:));
+    Prob1(IDXmin0)=NaN;
+    
+    group=cell(n,1);
+    group(1:n)={'Units which never changed assignment'};
+    group(UnitsChgCla)={'Units which changed assignment'};
+    group(UnitsTrm)={'Trimmed units'};
+    
+    subplot(2,2,1);
+    parallelcoords(Prob1,'Group',group, 'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]); xlim manual;
+    xlabel('Level of trimming','FontSize',xyLabelSize);
+    ylabel('Post prob. group 1 all units','FontSize',xyLabelSize);
+    %legend('off');
+    %hlpc1 = legend('hide');
+    set(legend,'Location','best');
+    if vafter95
+        axtoolbar('Visible','off');
+    end
+    
+    subplot(2,2,2);
+    Prob1sel=Prob1(UnitsTrmOrChgCla,:);
+    groupsel=group(UnitsTrmOrChgCla);
+    
+    parallelcoords(Prob1sel,'Group',groupsel,'Labels',alpha1str,'LineWidth',lw);
+    ylim([-0.05 1.05]); xlim manual;
+    xlabel('Level of trimming','FontSize',xyLabelSize);
+    ylabel('Post prob. group 1 selected units','FontSize',xyLabelSize);
+    %legend('off');
+    %hlpc2 = legend('hide');
+    set(legend,'Location','best');
+
+    % Add the label of the units whose final post prob is intermediate
+    unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
+    text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
+        cellstr(num2str(UnitsTrmOrChgCla(unitswithText))));
+    if vafter95
+        axtoolbar('Visible','off');
+    end
+    
+    subplot(2,2,3)
+    % Prob1table=array2table(Prob1,'VariableNames',cellstr(num2str(alphaLik)));
+    if vafter95
+        parallelplot(Prob1,'GroupData',group,'FontSize',12,'LineWidth',plotLineWidth);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)))
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 all units');
+        legend('off');
+    end
+    
+    subplot(2,2,4)
+    if vafter95
+        parallelplot(Prob1(UnitsTrmOrChgCla,:),'GroupData',group(UnitsTrmOrChgCla),...
+            'FontSize',12,'LineWidth',plotLineWidth,'LineAlpha',0.99);
+        set(gca,'CoordinateTickLabels',cellstr(num2str(alphaLik)));
+        xlabel('Level of trimming');
+        ylabel('Post prob. group 1 selected units');
+        legend('off');
+    end
+    
+    if vafter95 == true
+        sgtitle(tit , 'FontSize' , titleSize, 'FontWeight', 'normal');
+    else
+        a  = axes;
+        t1 = title(tit, 'FontSize' , titleSize, 'FontWeight', 'normal');
+        a.Visible = 'off'; % set(a,'Visible','off');
+        t1.Visible = 'on'; % set(t1,'Visible','on');
+    end
+    %movegui(gcf,'south');
+end
+
 % make all figures visible again
 set(findobj('Tag','tclusteda'),'Visible','on');
-%set(findobj('Type', 'figure'),'Visible','on');
+
+% make heavy legends visible again
+%set([hlpc1,hlpc2],'Location','best','Visible','on');
 
     function cm = cmapFS(cstart,cend,m)
         %cmapFS creates m RGB colors, with a gradient from cstart to cend
