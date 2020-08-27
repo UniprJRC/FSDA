@@ -1421,9 +1421,9 @@ if d>0
             IDtt = IDt;
     end
     
-    % Generate figure. 
+    % Generate figure.
     hf2=figure('CreateFcn',{@movegui, 'south'},'Name',namej,'Visible','off');
-
+    
     % If the reclassified units are more than thsz, resize the figure
     sz = size(IDtt);
     thsz = 50;
@@ -1432,7 +1432,7 @@ if d>0
         set(hf2,'Position',[left,bottom,figureResize,figureResize].*current_pos);
     end
     set(hf2,'Tag','tclusteda','Resize','off');
-        
+    
     % x and y limits
     xlim([0 k1+1]);
     ylim([0 n1+1]);
@@ -1527,7 +1527,7 @@ if d>0
     h1  = plot(alphaLik,Sigma2y','LineWidth',plotLineWidth);
     % set the colors and linestyle
     set(h1,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
-
+    
     xlim([min(alphaLik),max(alphaLik)])
     % set(gca,'XTickLabel',num2str(alpha1'))
     
@@ -1548,7 +1548,7 @@ if d>0
     h2  = plot(alphaLik,Sigma2yc','LineWidth',plotLineWidth);
     % set the colors and linestyle
     set(h2,{'Color'},cellstr(clrdef(1:k)'),{'LineStyle'},linedef(1:k)',{'DisplayName'},legendGroups);
-
+    
     xlim([min(alphaLik),max(alphaLik)]);
     % set(gca,'XTickLabel',num2str(alpha1'))
     
@@ -1573,13 +1573,13 @@ if d>0
         a.Visible = 'off'; % set(a,'Visible','off');
         t1.Visible = 'on'; % set(t1,'Visible','on');
     end
-
+    
     if vafter91
         clickableMultiLegend(h1, 'FontSize' , legendSize);
     else
         clickableMultiLegend(h1);
     end
-        
+    
 end
 
 % this follows the first plot with legend to avoid the updates of all
@@ -1895,7 +1895,11 @@ if d>0
             title(['$\alpha$=' alphajtxt ' - $\cal{V}$=' num2str(100*PCTVAR(2,1),3) ],'Interpreter','latex', 'FontSize' , subtitleSize)
             
         elseif p-intercept>0  % Just one explanatory variable (excluding intercept)
-            hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
+            if any(isnan(idxselj))
+                hh=scatter(X(:,end),y);
+            else
+                hh  =  gscatter(X(:,end),y,idxselj,clrdefj,symdefj);
+            end
             % To use line function would be much faster than gscatter
             %             iiii = unique(idxselj);
             %             for idx=1:numel(iiii)
@@ -2125,7 +2129,7 @@ if d>0
     %legend('off');
     %hlpc2 = legend('hide');
     set(legend,'Location','best');
-
+    
     % Add the label of the units whose final post prob is intermediate
     unitswithText=Prob1sel(:,end)>0.05 &  Prob1sel(:,end)<0.95;
     text(lalpha*ones(sum(unitswithText),1),Prob1sel(unitswithText,end),...
