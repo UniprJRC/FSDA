@@ -64,11 +64,11 @@ for j=1:k
     Sw = Sw + (niini(j) / sumniini) * (1 /lmd(j) ) * SigmaB(:,:,j);
 end
 
-maxsigma_=max(max(isnan(Sw)));
+maxsigma_=any(isnan(Sw(:))) || any(isinf(Sw(:)));
 
 % In case of missing or infinite values common rotation matrix is forced to
 % be the identity matrix
-if isnan(maxsigma_) || isinf(maxsigma_)
+if maxsigma_ == true
     Omega2D = eye(v);
 else
     % The common rotation matrix is formed by the eigenvectors of the
