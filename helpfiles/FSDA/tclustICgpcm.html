@@ -16,24 +16,7 @@ k=3
 k=4
 k=5
 The labels of in the top part of the plot denote the values of $c_{det}$ ($c_{shw}$) for which IC is minimum
-</pre><pre class="codeoutput error">Error using eig
-Input matrix contains NaN or Inf.
-
-Error in initR (line 76)
-    [V,eigunsorted]= eig(Sw);
-
-Error in restrSigmaGPCM (line 450)
-    [lmd, OMG]  = initR(SigmaB, niini, pa);
-
-Error in tclust (line 1290)
-            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
-
-Error in tclustICgpcm (line 869)
-        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',2, ...
-
-Error in tclustICgpcmtmp (line 6)
-out=tclustICgpcm(Y,pa);
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+</pre><a href='http://rosa.unipr.it/fsda/tclustICgpcm.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICgpcm_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICgpcm_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICgpcm_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 pa=struct;
 pa.pars='VVV';
 alpha=0.1;
