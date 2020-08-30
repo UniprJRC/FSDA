@@ -1014,9 +1014,20 @@ end
 if isstruct(restrfactor)
     restrnum=3;
     optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
-        'maxiterR','','tolR','','shw','','shb','',...
-        'cdet','','zerotol','','pars','','k','','v','','tol','','msg','');
+        'maxiterR','','tolR','','shw',100,'shb',50,...
+        'cdet',100,'zerotol','','pars','','k','','v','','tol','','msg','');
     chkoptions(optionspa,fieldnames(restrfactor))
+    
+    if ~isfield(restrfactor,'shw')
+        restrfactor.shw=100;
+    end
+    if ~isfield(restrfactor,'shb')
+        restrfactor.shb=50;
+    end
+    if ~isfield(restrfactor,'cdet')
+        restrfactor.cdet=100;
+    end
+    
     if verLess2016b ==true
         restrfactor.userepmat=1;
     else
