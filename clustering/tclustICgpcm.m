@@ -411,7 +411,7 @@ function out  = tclustICgpcm(Y,pa, varargin)
 %                       are integer numbers from 1 to k. 0 indicates
 %                       trimmed observations. Note that this is the
 %                       assignment which used best value of cshb;
-%          
+%
 %               out.pa = strcture containing the the gpcm parameters
 %                   (pa.pars, pa.shb, pa.shw, pa.cdet) for the best model.
 %
@@ -552,7 +552,6 @@ if nargin > 2
     
     alpha=options.alpha;
     kk=options.kk;
-    cc=options.cc;
     nsamp=options.nsamp;        % Number of subsets to extract
     plots=options.plots;        % Plot of the resulting classification
     equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
@@ -865,11 +864,9 @@ else  % MIXMIX or MIXCLA store IDXMIX
     
     for jrot=1:3
         pasel.pars=models{jrot};
-        
         outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',2, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kbest});
-        
         idxb(:,jrot)=outMixt.idx;
         
         if typeIC==2
@@ -907,15 +904,18 @@ out.pa=pasel;
 % Show refinements plots
 if plots==1
     figure
-    nr=1;
-    nc=2;
-    subplot(nr,nc,1)
-    plot(candshb,modelshb)
-    xlabel('c_{shb}')
-    ylabel('BIC to select best c_{shb}')
-    title(['Best c_{shb}=' num2str(cshbbest)])
-    
-    subplot(nr,nc,2)
+    if length(candshb)>1
+        nr=1;
+        nc=2;
+        subplot(nr,nc,1)
+        plot(candshb,modelshb)
+        xlabel('c_{shb}')
+        ylabel('BIC to select best c_{shb}')
+        title(['Best c_{shb}=' num2str(cshbbest)])
+        subplot(nr,nc,2)
+    else
+        % if cshw is <=2 there is just one point and the plot is not ahown
+    end
     plot(1:3,modelb,'o')
     xlabel('Type of rotation')
     ylabel('BIC to select best type of rotation')
