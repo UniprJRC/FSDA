@@ -29,7 +29,7 @@ function psi=TBpsi(u,c)
 % \[
 % TBpsi(u)= \left\{
 %    \begin{array}{cc}
-%  (c^2/6) u[1-(u/c)^2]^2    \mbox{if} |u/c| \leq 1 \\
+%  (c^2/6) u[1-(u/c)^2]^2   & |u/c| \leq 1 \\
 %  0                     &  |u/c|>1   \\
 % \end{array}
 %    \right.
