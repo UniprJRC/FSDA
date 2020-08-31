@@ -1,4 +1,4 @@
-function out  = tclustICgpcm(Y,pa, varargin)
+function out  = tclustICgpcm(Y, varargin)
 %tclustICgpcm computes tclust for different number of groups k and restr. factors $c_{det}$ and $c_{shw}$
 %
 %<a href="matlab: docsearchFS('tclustICgpcm')">Link to the help function</a>
@@ -23,15 +23,15 @@ function out  = tclustICgpcm(Y,pa, varargin)
 %               the computations.
 %                 Data Types -  double
 %
+%  Optional input arguments:
+%
 %      pa  : Constraints to apply and model specification. Structure.
 %            Structure containing the following fields:
 %             pa.pars= type of Gaussian Parsimonious Clustering Model. Character.
 %               A 3 letter word in the set:
 %               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
 %               'EVI','VEI','EEI','VII','EII'.
-%               The field pa.pars is compulsory. All the other fields are
-%               non necessary. If they are not present they are set to
-%               their default values.
+%               If pa is not supplied VVV model is used.
 %             pa.cdet = scalar o vector containing the values of the
 %               restriction factors for ratio of determinants which have to
 %               be tested. If pa.cdet=1 all determinants are forced to be
@@ -76,8 +76,6 @@ function out  = tclustICgpcm(Y,pa, varargin)
 %               the relative change of the estimates of lambda Gamma and
 %               Omega in each iteration. The defaul value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
-%           pa.k  = the number of groups.
-%           pa.v  = the number of variables.
 %   pa.userepmat  = scalar, which specifies whether to use implicit
 %                   expansion or bsxfun.  pa.userepmat =2 implies implicit
 %                   expansion, pa.userepmat=1 implies use of bsxfun. The
@@ -85,9 +83,6 @@ function out  = tclustICgpcm(Y,pa, varargin)
 %                   if verLessThanFS(9.1) is false and bsxfun if MATLAB is
 %                   older than 2016b.
 %               Data Types - struct
-%
-%
-%  Optional input arguments:
 %
 %           kk: number of mixture components. Integer vector. Integer
 %               vector specifying the number of mixture components
@@ -441,10 +436,12 @@ function out  = tclustICgpcm(Y,pa, varargin)
 
 %{
     %% Automatic choice of k, cdet, cshw, cshb for geyser data.
+    % Use a small number fo subsets in order to reduce execution time.
+    rng(100)
+    nsamp=20;
     Y=load('geyser2.txt');
-    pa=struct;
-    pa.pars='VVV';
-    out=tclustICgpcm(Y,pa);
+    % If no trimming is used 4 groups are found.
+    out=tclustICgpcm(Y,'nsamp',nsamp);
 %}
 
 %{
@@ -452,9 +449,11 @@ function out  = tclustICgpcm(Y,pa, varargin)
     Y=load('geyser2.txt');
     pa=struct;
     pa.pars='VVV';
+    rng(100)
+    nsamp=20;
     alpha=0.1;
     whichIC='MIXMIX';
-    outIC=tclustICgpcm(Y,pa,'alpha',alpha,'whichIC',whichIC);
+    outIC=tclustICgpcm(Y,'pa',pa,'alpha',alpha,'whichIC',whichIC);
 %}
 
 %{
@@ -473,12 +472,21 @@ function out  = tclustICgpcm(Y,pa, varargin)
     % data generation given centroids and cov matrices
     [Y,id]=simdataset(n, outg.Pi, outg.Mu, outg.S);
 
-    % Automatic choice of k
-    pa=struct;
-    pa.pars='VVV';
-    outIC=tclustICgpcm(Y,pa);
+    % Number of subsmples to extract (option nsamp) is very small
+    % thererore a great variability is allowed.
+    outIC=tclustICgpcm(Y,'nsamp',50);
 %}
 
+%{
+   % An example with input options kk pa.cdet and pa.shw.
+    Y=load('geyser2.txt');
+    nsamp=100;
+    pa=struct;
+    pa.cdet=[2 4];
+    pa.shw=[8 16 32];
+    kk=[2 3 4 6];
+    out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CLACLA','kk',kk,'nsamp',nsamp);
+%}
 
 %% Beginning of code
 
@@ -504,7 +512,7 @@ reftol=1e-5;
 equalweights=false;
 
 plots=1;
-nsamp=300;
+nsamp=500;
 alpha=0;
 kk=1:5;
 whichIC='MIXMIX';
@@ -513,8 +521,10 @@ cc=[1 2 4 8 16 32 64 128];
 cleanpool=false;
 UnitsSameGroup='';
 RandNumbForNini='';
+pa=struct;
+pa.pars='VVV';
 
-options=struct('kk',kk,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'plots',plots,'nocheck',0,...
+options=struct('pa',pa,'kk',kk,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'plots',plots,'nocheck',0,...
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
     'reftol',reftol,'startv1',startv1,...
     'UnitsSameGroup',UnitsSameGroup,'RandNumbForNini',RandNumbForNini,...
@@ -537,7 +547,7 @@ if ~isempty(UserOptions)
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:tclustIC:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:tclustICgpcm:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -549,7 +559,7 @@ if nargin > 2
         options.(varargin{i})=varargin{i+1};
     end
     
-    
+    pa=options.pa;
     alpha=options.alpha;
     kk=options.kk;
     nsamp=options.nsamp;        % Number of subsets to extract
@@ -589,6 +599,10 @@ if isfield(pa,'shw')
     ccshw=pa.shw;
 else
     ccshw=cc;
+end
+
+if ~isfield(pa,'pars')
+    pa.pars='VVV';
 end
 
 lcdet=length(ccdet);
@@ -693,22 +707,6 @@ end
 
 out=struct;
 
-if plots==1
-    %     % set line width of the trajectories of BIC
-    %     LineWidth=1;
-    %     % Define marker type
-    %     styp={'+';'o';'*';'x';'s';'d';'^';'v';'>';'<';'p';'h';'.'};
-    %     lcc=length(cc);
-    %     styp=repmat(styp,ceil(n/lcc),1);
-    %     % Define line type
-    %     slintyp={'-';'--';':';'-.'};
-    %     slintyp=repmat(slintyp,ceil(n/lcc),1);
-    %     % Define legend entries
-    %
-    %     xkk=0:(1/(length(kk)-1)):1;
-end
-
-
 % Call tclustreg with **V **E **I to decide about best rotation
 modelb=zeros(3,1);
 idxb=zeros(n,3);
@@ -765,9 +763,9 @@ if typeIC==0 % CLACLA
     for jshb=1:length(candshb)
         pasel.shb=candshb(jshb);
         
-        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',0, ...
+        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kbest});
+            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         
         modelshb(jshb)=outCla.CLACLA;
     end
@@ -789,9 +787,9 @@ if typeIC==0 % CLACLA
     for jrot=1:3
         pasel.pars=models{jrot};
         
-        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',0, ...
+        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kbest});
+            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         
         idxb(:,jrot)=outCla.idx;
         modelb(jrot)=outCla.CLACLA;
@@ -892,9 +890,9 @@ out.modelbest=models{indminrot};
 out.idxcshbbest=idxb(:,indminrot);
 % Store best classification before refining step for rotation
 if typeIC>0
-    out.idx=IDXMIX{kk==kbest,ccdet==cdetbest,ccshw==cshbbest};
+    out.idx=IDXMIX{kk==kbest,ccdet==cdetbest,ccshw==cshwbest};
 else
-    out.idx=IDXCLA{kk==kbest,ccdet==cdetbest,ccshw==cshbbest};
+    out.idx=IDXCLA{kk==kbest,ccdet==cdetbest,ccshw==cshwbest};
 end
 
 % Store best gpcm parameters
@@ -923,6 +921,13 @@ if plots==1
     xlim([1 3])
     set(gca,'XTick',1:3)
     set(gca,'XTickLabel',models);
+    
+    % Make the main BIC plot the current figure
+    plBIC=findobj('type','figure','Name','BIC');
+    if ~isempty(plBIC)
+        figure(plBIC(1))
+    end
+    
 end
 
 % Store trimming level which has been used
@@ -949,7 +954,7 @@ kbest=kk(bestk);
 BICbest=valmin;
 
 if plots==1
-    
+    figure('Name','BIC')
     % set line width of the trajectories of BIC
     LineWidth=1;
     % Define marker type
@@ -1017,8 +1022,8 @@ if plots==1
         legstrcshw=strcat(a, cellstr(num2str(cshw')));
     end
     legend(legstrcshw,'location','best');
-    
-    disp('The labels of in the top part of the plot denote the values of $c_{det}$ ($c_{shw}$) for which IC is minimum')
+    % set(plot1,'Tag','BIC')
+    disp('The labels of in the top part of Figure named BIC denote the values of $c_{det}$ ($c_{shw}$) for which IC is minimum')
     
     figure
     selIC2Dbestk=squeeze(selIC(bestk,:,:));
@@ -1028,6 +1033,7 @@ if plots==1
     title(['Heatmap for k=' num2str(kk(bestk)) '. Best c_{shw}=' ...
         num2str(cshw(bestcshw))  ', best c_{det}=' num2str(cdet(bestcdet))...
         ' min(' nameselIC ')=' num2str(BICbest,'%1.1f') ])
+    
 end
 end
 
