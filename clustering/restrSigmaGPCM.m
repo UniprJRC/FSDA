@@ -68,7 +68,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
 %               The default value of zerotol is 1e-10.
 %          pa.msg = boolean which if set equal to true enables to monitor
 %               the relative change of the estimates of lambda Gamma and
-%               Omega in each iteration. The defaul value of pa.msg is
+%               Omega in each iteration. The default value of pa.msg is
 %               false, that is nothing is displayed in each iteration.
 %           pa.k  = the number of groups.
 %           pa.v  = the number of variables.
@@ -471,7 +471,7 @@ elseif  strcmp(pars(3),'V')
     % Find initial (and final value for OMG)
     for j=1:k
         [V,eigunsorted]= eig(SigmaB(:,:,j));
-        diageigunsorted=diag(eigunsorted);
+        diageigunsorted=diag(abs(eigunsorted));
         % Sort eigenvalues from largest to smallest and reorder the columns
         % of the matrix of eigenvectors accordingly
         % [~,ordeig]=sort(diageigunsorted,'descend');
@@ -586,7 +586,7 @@ while ( (diffglob > tolDSR) && (iter < maxiterDSR) )
 end
 
 % Check if all is well
-codenonZero = max(max(GAM)) > zerotol;
+codenonZero = ~any(isnan(GAM(:))) && max(max(GAM)) > zerotol;
 
 if  codenonZero
     % Reconstruct the cov matrices using final values of lmd, OMG and GAM
