@@ -833,6 +833,9 @@ if typeIC==0 || typeIC==3
         xlabel(ax,'Number of groups')
         set(ax,'xtick',kk)
         legend(legstr,'location','best')
+        
+        set(gca,'ActivePositionProperty','outerposition','FontSize',16);
+
     end
     
 end
@@ -873,6 +876,8 @@ if typeIC==2 || typeIC==3
         xlabel(ax,'Number of groups')
         set(ax,'xtick',kk)
         legend(legstr,'location','best')
+        
+        set(gca,'ActivePositionProperty','outerposition','FontSize',16);
     end
 end
 
@@ -903,6 +908,9 @@ if typeIC==1 || typeIC==3
         xlabel(ax,'Number of groups')
         set(ax,'xtick',kk)
         legend(legstr,'location','best')
+        
+        set(gca,'ActivePositionProperty','outerposition','FontSize',16);
+
     end
 end
 
