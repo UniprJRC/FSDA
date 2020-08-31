@@ -495,9 +495,9 @@ for k=1:length(kk) % loop for different values of k (number of groups)
                 idjm1(idjm1<0)=0;
                 idj(idj<0)=0;
                 if Rand==1
-                    ARICLA(k,j)=RandIndexFS(idjm1,idj);
+                    ARICLA(k,j)=RandIndexFS(idjm1,idj,0);
                 else
-                    ARICLA(k,j)=FowlkesMallowsIndex(idjm1,idj);
+                    ARICLA(k,j)=FowlkesMallowsIndex(idjm1,idj,0);
                 end
                 
             end
@@ -766,7 +766,7 @@ for z=1:NumberOfBestSolutions
             
             for  j=1:z-1
                 idxpreviousz=IDX{seqkk(kk==Bestsols{j,1}),seqcc(cOralpha==Bestsols{j,2})};
-                if RandIndexFS(idxpreviousz,idxcurrentz)>ThreshRandIndex  && strcmp(Bestsols{j,5},'true')==1
+                if RandIndexFS(idxpreviousz,idxcurrentz,0)>ThreshRandIndex  && strcmp(Bestsols{j,5},'true')==1
                     Bestsols{z,5}='spurious';
                     break
                 else
