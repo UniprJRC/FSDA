@@ -302,7 +302,7 @@ function out  = tclustICsolGPCM(IC,varargin)
     pa.shw=[8 16 32];
     kk=[2 3 4 6];
     out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CLACLA','kk',kk,'nsamp',nsamp);
-    [outCLACLCA]=tclustICsolGPCM(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3,'Rand',0);
+    [outCLACLA]=tclustICsolGPCM(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3,'Rand',0);
 %}
 
 
@@ -377,25 +377,9 @@ ccshw=IC.ccshw;
 % Extract the values of alpha (trimming level)
 alpha=IC.alpha;
 
-ccdet=ccdet(:);
-ccshw=ccshw(:);
-
-alpha=alpha(:);
-lccsigmay=length(ccdet);
-lalphaLik=length(alpha);
-
 % Prepare rownames and colsnames for table which will contain
 % in the rows the number of groups from
 % rownamesARI=strcat(cellstr(repmat('k=',length(kk),1)), cellstr(num2str(kk')));
-
-
-if lalphaLik ==1
-    lcc=lccsigmay;
-    lab='c';
-    cORalpha=ccdet;
-else
-    error('FSDA:tclustICsolGPCM:WrongInput','alphaLik and cc cannot have length greater than one both')
-end
 
 if strcmp(whichIC,'MIXMIX')
     typeIC=2;
