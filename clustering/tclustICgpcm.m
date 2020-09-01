@@ -83,6 +83,7 @@ function out  = tclustICgpcm(Y, varargin)
 %                   if verLessThanFS(9.1) is false and bsxfun if MATLAB is
 %                   older than 2016b.
 %               Data Types - struct
+%               Example - pa=struct; pa.cdet=10;
 %
 %           kk: number of mixture components. Integer vector. Integer
 %               vector specifying the number of mixture components
