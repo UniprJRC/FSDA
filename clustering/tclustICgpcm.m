@@ -916,11 +916,11 @@ if plots==1
     else
         % if cshw is <=2 there is just one point and the plot is not ahown
     end
-    plot(1:3,modelb,'o')
+    plot(1:3,modelb,'o','LineWidth',5)
     xlabel('Type of rotation')
     ylabel('BIC to select best type of rotation')
     title(['Best rot =' typerot{indminrot}])
-    xlim([1 3])
+    xlim([0.5 3.5])
     set(gca,'XTick',1:3)
     set(gca,'XTickLabel',models);
     
