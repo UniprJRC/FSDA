@@ -839,9 +839,10 @@ seqcc=1:length(cORalpha);
 nbestsol=size(Bestsols,1);
 IDXout=zeros(length(y),nbestsol);
 if cloop == true
-    labe=' c=';
+    labe=' c = ';
 else
-    labe=' α=';
+    %labe=' α=';
+    labe=' \alpha = ';
 end
 
 for i=1:nbestsol
@@ -849,13 +850,16 @@ for i=1:nbestsol
     IDXout(:,i)=IDXi;
     if (plots==1 &&  SpuriousSolutions ==true) || (plots==1 && strcmp(Bestsols{i,5},'true'))
         yXplot(y,X,'group',IDXi,'tag',['pl_yX' num2str(i)]);
-        detsol=[lab ': solution ' num2str(i)  ': k=' num2str(Bestsols{i,1}) labe num2str(Bestsols{i,2})];
-        bestsol=[' Best in' labe num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
+        set(gca,'ActivePositionProperty','outerposition','FontSize',14);
+        detsol=['$\mbox{' lab ', solution ' num2str(i) ':} \quad k=' num2str(Bestsols{i,1}) ' \quad' labe num2str(Bestsols{i,2}) '$' ];
+        bestsol=['$\mbox{Best in} \;' labe num2str(min(Bestsols{i,3})) '-' num2str(max(Bestsols{i,3})) ];
         Bestsolsi3=Bestsols{i, 3};
         Bestsolsi4=Bestsols{i,4};
         Bestsolc=[Bestsolsi3(:); Bestsolsi4(:)];
-        stabsol=[' Stable in ' labe  num2str(min(Bestsolc)) '-' num2str(max(Bestsolc)) ];
-        title([detsol bestsol stabsol ' Sol:' Bestsols{i,5}])
+        stabsol=['\quad ; \quad \mbox{Stable in} \;' labe  num2str(min(Bestsolc)) '-' num2str(max(Bestsolc))];
+        typesol=['\quad ; \quad \mbox{Sol: ' Bestsols{i,5} '}$'];
+        tit = {detsol, [bestsol stabsol typesol]};
+        title(tit,'interpreter','latex','FontSize',16);
     end
 end
 
