@@ -474,8 +474,8 @@ function out  = tclustICgpcm(Y, varargin)
     % data generation given centroids and cov matrices
     [Y,id]=simdataset(n, outg.Pi, outg.Mu, outg.S);
 
-    % Number of subsmples to extract (option nsamp) is very small
-    % thererore a great variability is allowed.
+    % Number of subsamples to extract (option nsamp) is very small
+    % therefore a great variability is allowed.
     outIC=tclustICgpcm(Y,'nsamp',50);
 %}
 
