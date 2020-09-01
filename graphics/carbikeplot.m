@@ -265,7 +265,7 @@ set(axes1,'YTick',0:ngroups,'XTick',1:(lcc+2));
 if cloop == true
     xlabel('Restriction factor c')
 else
-    xlabel('trimming level α')
+    xlabel('trimming level \alpha') %α
 end
 ylabel('Number of groups k')
 
@@ -274,12 +274,16 @@ a=cell(lcc,1);
 if cloop == true
     a(:)={'c='};
 else
-    a(:)={'α='};
+    a(:)={'\alpha='};%'α='
 end
+
 legstr=strcat(a, cellstr(num2str(cORalpha)));
 legstr=strrep(legstr,' ','');
 legstr=[legstr; {' '}];
-set(axes1,'XtickLabel',legstr)
+set(axes1,'XtickLabel',legstr);
+if length(cORalpha)>5
+    set(axes1,'XTickLabelRotation',45);
+end
 
 numsol=size(ICbs,1);
 
@@ -321,7 +325,8 @@ A = rescaleFS(nanmean(abs(area),1),1,0);
 ivalid = find(area>0);
 colormapres = num2cell(colormap([zeros(numel(ivalid),1) , A(ivalid)' , ones(numel(ivalid),1)]),2);
 set(hr(ivalid),{'facecolor'},colormapres);
-set(gca,'FontSize',16)
+set(gca,'ActivePositionProperty','outerposition','FontSize',16);
+
 box('on');
 if cloop==false
     set(gca,'XDir','reverse')
