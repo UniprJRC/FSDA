@@ -468,7 +468,8 @@ function out  = tclustICgpcm(Y, varargin)
     v=2;
     % Imposed average overlap
     BarOmega=0.04;
-    
+    restrfact=5;
+
     outg=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
     % data generation given centroids and cov matrices
     [Y,id]=simdataset(n, outg.Pi, outg.Mu, outg.S);
