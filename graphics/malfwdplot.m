@@ -1469,7 +1469,7 @@ if ~isempty(options.conflev)
         end
     end
     
-    v=size(out.Loc,2)-1;
+    v=size(out.Loc,2);
     quant = chi2inv(conflev,v);
     rangeaxis=axis;
     V=[rangeaxis(1);rangeaxis(2)];
