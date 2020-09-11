@@ -12,7 +12,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %                   (because $di(i,j,:)=\Gamma (c \Sigma_i)^{-0.5}(\mu_i-\mu_j)$
 %                    where Gamma is the matrix of eigenvectors of
 %                    $\Sigma_{j|i}$).
-%           if $fix(i)=0$ and $fix(j)=1$,  $li(i,j,:)=c li(i,j,:)$, 
+%           if $fix(i)=0$ and $fix(j)=1$,  $li(i,j,:)=c li(i,j,:)$,
 %                    $const1(i,j)=const1(i,j)+v log(c)$
 %                   (because the eigenvalues of matrix
 %                   $\Sigma_{j|i} = (c^{0.5} \Sigma_i^{0.5}) \Sigma_j^-1
@@ -20,14 +20,14 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %                   Similarly $log |c\Sigma_i|= c log(v) + log |\Sigma_i|$.
 %           if $fix(i)=0$  and $fix(j)=0$,  $li$ and $const1$ are not changed because
 %                   $\Sigma_j|i=(c^0.5 \Sigma_i^{0.5}) (c \Sigma_j) ^-1 (c^0.5
-%                   \Sigma_i^{0.5})$, 
+%                   \Sigma_i^{0.5})$,
 %                   $const1(i,j)=log((Pi(j)/Pi(i))^2  c detS(i)/(c  det S(j)))$
 %               Data Types - single | double
 %       v  : number of variables. Scalar. Dimensionality of the data
 %           matrix.
 %               Data Types - single | double
 %       k  : number of components (groups). Scalar. Scalar associated with
-%           the number of groups. 
+%           the number of groups.
 %               Data Types - single | double
 %       li : eigenvalues of matrix $Sji=\Sigma_{j|i}$. 3D array of size
 %            k-by-k-by-v. $li(i,j,:)$ is the vector which
@@ -112,7 +112,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
 %               probabilities. More precisely, OmegaMap(i,j) is the
 %               misclassification probability with respect to cluster i,
 %               (that is conditionally on x belonging to cluster i,  which
-%               is called $w_{j|i}$) 
+%               is called $w_{j|i}$)
 %               $(i ~= j)=1, 2, ..., k$.
 %
 %    BarOmega : Average overlap. Scalar.
@@ -165,7 +165,7 @@ function [OmegaMap, BarOmega, MaxOmega, rcMax]=GetOmegaMap(c, v, k, li, di, cons
     Mu(2:3,:) = Mu(2:3,:)+10;
     %Mu(3,:) =  Mu(3,:)+2;
     %Mu(4,:) =  Mu(4,:)+3;
-    % S= 3D array of dimension p-by-p-by-k containing covariance matrices 
+    % S= 3D array of dimension p-by-p-by-k containing covariance matrices
     % of the groups
     S=zeros(p,p,k);
     for j=1:k
@@ -217,7 +217,7 @@ while ii < k
     % check if clusters ii and jj are homogeneous
     hom = 1;
     for kk=1:v
-        if abs(li(ii,jj,kk)-li(jj,ii,kk))> eps %1e-14;            
+        if abs(li(ii,jj,kk)-li(jj,ii,kk))> 1e-14 % eps %1e-14;
             hom = 0;
             break
         end
@@ -334,6 +334,9 @@ while ii < k
             
             lijne1=abs(lij-1)>toll;
             
+            if sum(lijne1)==0
+                lijne1=true(v,1);
+            end
             
             % if sum(lijne1)<v there are eigenvalues which are  = 1
             if sum(lijne1)<v
@@ -408,6 +411,10 @@ while ii < k
             lji=squeeze(li(jj,ii,:));
             dji=squeeze(di(jj,ii,:));
             ljine1=abs(lji-1)>toll;
+            
+            if sum(ljine1)==0
+                ljine1=true(v,1);
+            end
             
             if sum(ljine1)<v
                 eigeq1=1;
@@ -485,11 +492,14 @@ while ii < k
             
             
             lijne1=abs(lij-1)>toll;
-            
+            if sum(lijne1)==0
+                lijne1=true(v,1);
+            end
             % if sum(lijne1)<v there are eigenvalues which are  = 1
             if sum(lijne1)<v
                 eigeq1=1;
                 lijeq1= (~lijne1);
+                % eigeq1=0;
             else
                 eigeq1=0;
             end
@@ -555,15 +565,17 @@ while ii < k
                     ncp = zeros(sum(lijne1),1);
                     
                     t = const1(ii,jj);
-                    
-                        OmegaMap(ii,jj)=ncx2mixtcdf(t, df(1:sum(lijne1)), coef, ncp,'sigma',sigma,'lim',lim,'tol',tolncx2);
-                                
+                    OmegaMap(ii,jj)=ncx2mixtcdf(t, df(1:sum(lijne1)), coef, ncp,'sigma',sigma,'lim',lim,'tol',tolncx2);
                 end
             end
             
             lji=squeeze(li(jj,ii,:));
             dji=squeeze(di(jj,ii,:));
             ljine1=abs(lji-1)>toll;
+            
+            if sum(ljine1)==0
+                ljine1=true(v,1);
+            end
             
             if sum(ljine1)<v
                 eigeq1=1;
