@@ -131,20 +131,20 @@ ll        = zeros(n,k);
 
 for i =1:nselected
     
-    switch msg
-        case 1
-            % monitor time execution
-            if msg==1
-                if i <= tsampling
-                    tstart = tic;
-                end
-            end
-        case 2
-            % monitor iteration step
-            if msg
-                disp(['Iteration ' num2str(i)]);
-            end
-    end
+%     switch msg
+%         case 1
+%             % monitor time execution
+%             if msg==1
+%                 if i <= tsampling
+%                     tstart = tic;
+%                 end
+%             end
+%         case 2
+%             % monitor iteration step
+%             if msg
+%                 disp(['Iteration ' num2str(i)]);
+%             end
+%     end
     
     
     % ltkg = becomes 1 if a particular subset leads to less than k groups
@@ -514,9 +514,7 @@ for i =1:nselected
                         Xj          = X(ijj,:);
                         yj          = y(ijj,:);
                         yhat        = Xj*Beta(:,jj);
-                        if msg
-                            disp(['cstep= ', num2str(cstep), ', group' num2str(jj)]);
-                        end
+
                         [Zt , ~]    = wthin(yhat,'cup',cup,'pstar',pstar);%,'bandwidth',0.9);
                         tmp(jj,1)=sum(ijj);
                         tmp(jj,2)=sum(Zt==0);
@@ -1058,9 +1056,7 @@ for i =1:nselected
             
             % obj >= vopt: to check an increase in the target value.
             if obj >= vopt && sum(isnan(Beta(:))) ==0
-                if msg
-                    disp(['sample = ' num2str(i) ', concentration step = ' num2str(cstep)])
-                end
+
                 %cstepopt = cstep with the largest obj
                 cstepopt  = cstep;
                 %subsetopt = subset with the largest obj
