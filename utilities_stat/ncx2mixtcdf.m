@@ -233,14 +233,21 @@ seqa=[3.696    3.360    3.080    2.800    2.640    2.400    2.200 ...
 nrep=repmat(n,1,length(seqa));
 
 % Check input parameter values
-if min(n) < 0  ||  min(nc) < 0
+% if isempty(n) || min(n) < 0  ||  min(nc) < 0
+if  min(n) < 0  ||  min(nc) < 0
     return
 end
+
 
 lmax = max([lb;0]);
 lmin= min([0;lb]);
 
 if lmin == 0.0 && lmax == 0.0 && sigma == 0.0
+    if c>0
+        qfval =1;
+    else
+        qfval =0;
+    end
     return
 end
 
