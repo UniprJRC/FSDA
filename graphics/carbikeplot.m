@@ -104,7 +104,7 @@ function h  = carbikeplot(RelSol,varargin)
 %
 %
 %
-% See also: tclustIC, tclustregIC, tclust, tclustICsol, tclustreg
+% See also: carbikeplotGPCM, tclustIC, tclustregIC, tclust, tclustICsol, tclustreg
 %
 % References:
 %
@@ -290,7 +290,7 @@ numsol=size(ICbs,1);
 area = zeros(1,numsol);
 hr   = zeros(1,numsol);
 for i=1:numsol
-    if strcmp(ICbs{i,end},'true') || SpuriousSolutions == true
+    if strcmp(ICbs{i,5},'true') || SpuriousSolutions == true
         kbest=ICbs{i,1};
         cORalphabest=find(cORalpha==ICbs{i,2});
         
