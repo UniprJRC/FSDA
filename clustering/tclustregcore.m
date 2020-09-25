@@ -131,20 +131,20 @@ ll        = zeros(n,k);
 
 for i =1:nselected
     
-%     switch msg
-%         case 1
-%             % monitor time execution
-%             if msg==1
-%                 if i <= tsampling
-%                     tstart = tic;
-%                 end
-%             end
-%         case 2
-%             % monitor iteration step
-%             if msg
-%                 disp(['Iteration ' num2str(i)]);
-%             end
-%     end
+    switch msg
+        case 1
+            % monitor time execution
+            if msg==1
+                if i <= tsampling
+                    tstart = tic;
+                end
+            end
+        case 2
+            % monitor iteration step
+            if msg
+                disp(['Iteration ' num2str(i)]);
+            end
+    end
     
     
     % ltkg = becomes 1 if a particular subset leads to less than k groups
