@@ -616,6 +616,9 @@ for z=1:NumberOfBestSolutions
         % minICconstr= min value of IC excluding the values involving column
         % minBICk
         minICconstr=min(min(min(XcmodWithoutBestk)));
+        if isempty(minICconstr)
+            minICconstr=Inf;
+        end
         cctoadd=zeros(length(cc),1);
         
         % The rows of ARI refer to the values of cc. The columns of ARI refer to k
