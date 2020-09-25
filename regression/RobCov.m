@@ -157,7 +157,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               coefficients. covrobc checks the coefficient of variation
 %               of the derivative of function $\psi(r_i/\hat \sigma)$. If 
 %               it is greater than the threshold proposed in Salini, et
-%                al. (2019), it uses covrob2 else covrob.
+%                al. (2020), it uses covrob2 else covrob.
 %      out.q =  scalar. Correction for scale estimate (see Maronna and Yohai
 %               CSDA 2010). It is defined as
 %               \[
@@ -190,7 +190,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
 % for robust estimators. Technical report, Dept. of Applied Economics, KU
 % Leuven.
-% Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2019),
+% Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2020),
 % Covariance matrices of robust estimators in regression, submitted.
 %
 % Copyright 2008-2019.
