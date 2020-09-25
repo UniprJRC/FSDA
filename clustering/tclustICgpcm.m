@@ -454,7 +454,9 @@ function out  = tclustICgpcm(Y, varargin)
     nsamp=20;
     alpha=0.1;
     whichIC='MIXMIX';
-    outIC=tclustICgpcm(Y,'pa',pa,'alpha',alpha,'whichIC',whichIC);
+    % Just check from k=2 to k=4
+    kk=2:4;
+    outIC=tclustICgpcm(Y,'pa',pa,'alpha',alpha,'whichIC',whichIC,'kk',kk,'nsamp',nsamp);
 %}
 
 %{
