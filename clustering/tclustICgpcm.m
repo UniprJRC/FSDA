@@ -837,9 +837,9 @@ else  % MIXMIX or MIXCLA store IDXMIX
     for jshb=1:length(candshb)
         pasel.shb=candshb(jshb);
         
-        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',2, ...
+        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kbest});
+            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         if typeIC==2
             modelshb(jshb)=outMixt.MIXMIX;
         end
@@ -864,9 +864,9 @@ else  % MIXMIX or MIXCLA store IDXMIX
     
     for jrot=1:3
         pasel.pars=models{jrot};
-        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kbest},'plots',0,'msg',0,'mixt',2, ...
+        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kbest});
+            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         idxb(:,jrot)=outMixt.idx;
         
         if typeIC==2
