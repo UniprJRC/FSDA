@@ -1,12 +1,13 @@
 function h  = funnelplot(x, varargin)
-%funnelplot a funnel plot
+%funnelplot displays a funnel plot, also called funnel chart
 %
 %<a href="matlab: docsearchFS('funnelplot')">Link to the help function</a>
 %
-% Funnel charts show values across multiple stages in a process. For
-% example, you could use a funnel chart to show the number of sales
-% prospects at each stage in a sales pipeline. Typically, the values
-% decrease gradually, allowing the bars to resemble a funne.
+% Funnel charts show values across multiple stages in a process. The chart
+% displays progressively decreasing values in proportions amounting to 100
+% percent in total. For example, you could use a funnel chart to show the
+% number of sales prospects at each stage in a sales pipeline. Typically,
+% the values decrease gradually, allowing the bars to resemble a funnel.
 % This type of chart can also be useful in identifying potential problem
 % areas in an organization’s sales processes. A funnel chart is similar to
 % a stacked percent bar chart. For more details see
@@ -15,9 +16,9 @@ function h  = funnelplot(x, varargin)
 %  Required input arguments:
 %
 %           x : input data. Vector or matrix.
-%                If x is a vector, funnelplot plots one funnel plot. If x
-%                is a matrix, funnelplot plots one funnel plot for each
-%                column of x.
+%                If x is a vector, a single funnel plot is displayed.
+%                If x is a matrix, the function displays one funnel plot
+%                for each column of x.
 %          Data Types - double
 %
 %  Optional input arguments:
@@ -32,9 +33,19 @@ function h  = funnelplot(x, varargin)
 %                 Data Types - char | string | cell | single | double
 %
 %
+% Color  :   Color of the boxes. Character | RGB triplet vector. The color
+%            specified by the user. 
+%                 Example - 'Color',[0.12 0.6 0.15]
+%                 Data Types - char | array
+%
+% Title  :   Title. Character array. The title of the Funnel Plot
+%            specified by the user. 
+%                 Example - 'Title','The Funnel Plot'
+%                 Data Types - char
+%
 %  Output:
 %
-%         h:   graphics handle to the plot. Graphics handle. Graphics
+%         h:   Graphics handle to the plot. Graphics handle. Graphics
 %               handle which is produced on the screen.
 %
 %
@@ -67,7 +78,6 @@ function h  = funnelplot(x, varargin)
     funnelplot(x,'Labels',labels)
 %}
 
-
 %{
     %% funnelplot when x is a matrix.
     x=100*abs(randn(10,4));
@@ -75,6 +85,24 @@ function h  = funnelplot(x, varargin)
     labels={'A', 'B', 'C', 'D', 'E', ...
         'F', 'G' 'H', 'I' 'J'};
     funnelplot(x,'Labels',labels)
+%}
+
+%{
+    %% funnelplot with a non-default color.
+    x=100*abs(randn(10,4));
+    x=sort(x,1,'descend');
+    labels={'A', 'B', 'C', 'D', 'E', ...
+        'F', 'G' 'H', 'I' 'J'};
+    funnelplot(x,'Labels',labels,'Color',FSColors.greysh.RGB)
+%}
+
+%{
+    %% funnelplot with a title.
+    x=100*abs(randn(10,4));
+    x=sort(x,1,'descend');
+    labels={'A', 'B', 'C', 'D', 'E', ...
+        'F', 'G' 'H', 'I' 'J'};
+    funnelplot(x,'Labels',labels,'Title','A Funnel Plot')
 %}
 
 
@@ -89,19 +117,24 @@ x(x<0)=0;
 if isvector(x)
     n=length(x);
     p=1;
-    % Make sure that x is a column vector
-    x=x(:);
+    x=x(:); % Make sure that x is a column vector
 else
     [n,p]=size(x);
 end
 
-Labels=cellstr(num2str((1:n)'));
+% some settings
+space    = 0.15;   % space between rectangles
+fontsize = 14;    % font of numbers and axes
 
-options=struct('Labels',{Labels});
-
+% default options
+Labels   = cellstr(num2str((1:n)'));
+BoxColor = 'c';
+Title    = [];
+options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title);
+    
+% user options
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
-    
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -112,8 +145,8 @@ if ~isempty(UserOptions)
     % in structure options
     % Remark: the nocheck option has already been dealt by routine
     % chkinputR
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
+    inpchk = isfield(options,UserOptions);
+    WrongOptions = UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
         error('FSDA:funnelplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
@@ -124,19 +157,17 @@ if nargin>1
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
-    end
-    
-    Labels=options.Labels;
-    
+    end  
+    Labels    = options.Labels;  
+    BoxColor  = options.Color;
+    Title     = options.Title;
 end
 
-
-Labels=flipud(Labels(:));
+Labels = flipud(Labels(:));
 
 % Create figure
- figure;
-  set(gca,'YTick','','XTick','');
-
+figure;
+set(gca,'YTick','','XTick','');
 
 switch p
     case 1
@@ -154,7 +185,6 @@ switch p
     case {7,8,9}
         nr=3;
         nc=3;
-        
     case {10,11,12}
         nr=3;
         nc=4;
@@ -162,9 +192,10 @@ switch p
         nr=4;
         nc=4;
 end
-   % set(gca,'YTick','','XTick','','XTickLabel','');
 
-kk=1.05;
+% line below is to have more space for the subplots
+setappdata(gcf, 'SubplotDefaultAxesLocation',[0.11,0.05,0.795,0.85]);
+kk = 1.05;
 for j=1:p
     subplot(nr,nc,j);
     % Create axes
@@ -173,19 +204,25 @@ for j=1:p
     axis([-max(Xj)*kk  max(Xj)*kk 1.5 n+0.5]);
     grid off;
     set(gca,'YTick',1.5:(n+0.5),'XTick','');
-    ylim([0.5 n+1.3])
+    ylim([0.5 n+1.3]);
     for i=1:n
         if Xj(i)>0
-            rectangle('position',[-Xj(i) n+1-i 2*Xj(i)  1],'facecolor','c','Curvature',[0.02 0.02]);
-            text(0, n+1.5-i ,num2str(Xj(i),'%.1f'),'HorizontalAlignment','center','FontSize',15,'VerticalAlignment','middle');
+            rectangle('position',[-Xj(i) n+1-i 2*Xj(i)  1-space],...
+                'facecolor',BoxColor,'Curvature',[0.02 0.02],...
+                'AlignVertexCenters','on');
+            text(0, n+1.5-i ,num2str(Xj(i),'%.1f'),'HorizontalAlignment','center',...
+                'FontSize',fontsize,'VerticalAlignment','middle');
         end
     end
-    
     set(gca,'YTickLabel',Labels);
-    
     box('on');
 end
 
+sgtitle(Title,'FontSize',fontsize+6);
 h=gcf;
+%ActivePositionProperty   PositionConstraint
+allAxesInFigure = findall(h,'type','axes');
+set(allAxesInFigure,'ActivePositionProperty','outerposition',...
+    'FontSize',fontsize+2);
 end
 %FScategory:VIS-Clu
