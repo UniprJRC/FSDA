@@ -96,13 +96,14 @@ function [OmegaMap, BarOmega, MaxOmega, StdOmega, rcMax] = overlap(k, v, Pi, Mu,
 %%    Finding exact overlap for the Iris data.
 
     load fisheriris;
-    Y=meas;
-    Mu=grpstats(Y,species);
+    Y         = meas;
+    [Mu , SS] = grpstats(Y,species,{'mean',@cov});
+    S1        = permute(SS,[3,2,1]); % S1 should be equal to S
 
-    S=zeros(4,4,3);
-    S(:,:,1)=cov(Y(1:50,:));
-    S(:,:,2)=cov(Y(51:100,:));
-    S(:,:,3)=cov(Y(101:150,:));
+    S = zeros(4,4,3);
+    S(:,:,1) = cov(Y(1:50,:));
+    S(:,:,2) = cov(Y(51:100,:));
+    S(:,:,3) = cov(Y(101:150,:));
 
     pigen=ones(3,1)/3;
     k=3;
