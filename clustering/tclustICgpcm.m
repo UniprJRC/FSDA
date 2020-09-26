@@ -905,12 +905,19 @@ out.pa=pasel;
 
 % Show refinements plots
 if plots==1
+    
     figure
     if length(candshb)>1
         nr=1;
         nc=2;
         subplot(nr,nc,1)
+ 
+        disp('1st panel')
+        
         plot(candshb,modelshb)
+        
+        disp('end 1st panel')
+        
         xlabel('c_{shb}')
         ylabel('BIC to select best c_{shb}')
         title(['Best c_{shb}=' num2str(cshbbest)])
@@ -918,7 +925,13 @@ if plots==1
     else
         % if cshw is <=2 there is just one point and the plot is not ahown
     end
+    
+    disp('2nd panel')
+    
     plot(1:3,modelb,'o','LineWidth',5)
+    
+    disp('end 2nd panel')
+    
     xlabel('Type of rotation')
     ylabel('BIC to select best type of rotation')
     title(['Best rot =' typerot{indminrot}])
