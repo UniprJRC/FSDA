@@ -636,6 +636,7 @@ colnamesIC=regexprep(colnamesIC,' ','');
 %% Preapare the pool (if required)
 Cnsampall=cell(lkk,1);
 gRandNumbForNiniall=cell(lkk,1);
+tic;
 for k=1:lkk  % loop for different values of k (number of groups)
     
     seqk=kk(k);
@@ -704,7 +705,12 @@ for k=1:lkk  % loop for different values of k (number of groups)
     end
 end
 
+disp('end of loop')
+toc
+
 %% Close pool and show messages if required
+tic;
+
 if cleanpool==true
     delete(gcp);
 end
@@ -946,6 +952,9 @@ if plots==1
     end
     
 end
+
+disp('end of code')
+toc
 
 % Store trimming level which has been used
 out.alpha=alpha;
