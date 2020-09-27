@@ -35,5 +35,5 @@ workflows:
       # Define a matrix of parameter values to be passed iteratively to the "testing" job
           matrix:
              parameters:
-                  q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT"]
+                  q: ["regression", "regressionTS", "regressionLTSts", "regressionEXT", "graphics", "multivariate", "multivariate-clustering", "regression-clustering", "mixsim", "utilities", "tclustMULT", "tclustMULTgpcm"]
 
