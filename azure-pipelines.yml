@@ -36,6 +36,8 @@ jobs:
           categoryName: 'utilities'
         tclustMULT:
           categoryName: 'tclustMULT'
+        tclustMULTgpcm:
+          categoryName: 'tclustMULTgpcm'
   pool:
       vmImage: 'Ubuntu 16.04'
   variables:
