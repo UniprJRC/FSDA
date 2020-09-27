@@ -23,6 +23,8 @@ jobs:
     env: CATEGORY_TO_TEST=graphics
   - categoryName: "tclustMULT"
     env: CATEGORY_TO_TEST=tclustMULT
+  - categoryName: "tclustMULTgpcm"
+    env: CATEGORY_TO_TEST=tclustMULTgpcm
 dist: xenial
 install:
     - travis_wait 360

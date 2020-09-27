@@ -348,3 +348,4 @@ allAxesInFigure = findall(gcf,'type','axes');
 set(allAxesInFigure,'ActivePositionProperty','outerposition','FontSize',14);
 
 end
+%FScategory:VIS-Mult
