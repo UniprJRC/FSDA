@@ -102,6 +102,10 @@ short_name = FSColors.reddish.ShortName
           c.RGB =  [0.9, 0.9, 0.9];
           c.ShortName = 'gs';
        end
+       function c = lightgrey
+          c.RGB =  [192/255, 192/255, 192/255];
+          c.ShortName = 'lg';
+       end
        function c = lightblue
           c.RGB =  [77/255,190/255,238/255];
           c.ShortName = 'ls';
