@@ -16,8 +16,8 @@ function h  = funnelchart(x, varargin)
 %  Required input arguments:
 %
 %           x : input data. Vector or matrix.
-%                If x is a vector, a single funnel plot is displayed.
-%                If x is a matrix, the function displays one funnel plot
+%                If x is a vector, a single funnel chart is displayed.
+%                If x is a matrix, the function displays one funnel chart
 %                for each column of x.
 %          Data Types - double
 %
@@ -38,9 +38,9 @@ function h  = funnelchart(x, varargin)
 %                 Example - 'Color',[0.12 0.6 0.15]
 %                 Data Types - char | array
 %
-% Title  :   Title. Character array. The title of the Funnel Plot
+% Title  :   Title. Character array. The title of the Funnel Chart
 %            specified by the user. 
-%                 Example - 'Title','The Funnel Plot'
+%                 Example - 'Title','The Funnel Chart'
 %                 Data Types - char
 %
 %  Output:
