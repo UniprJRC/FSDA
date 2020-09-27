@@ -1,5 +1,5 @@
 function h  = funnelchart(x, varargin)
-%funnelchart displays a funnel plot, also called funnel chart
+%funnelchart displays a funnel chart
 %
 %<a href="matlab: docsearchFS('funnelchart')">Link to the help function</a>
 %
