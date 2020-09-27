@@ -1,9 +1,7 @@
 function h = waterfallchart(Y,varargin)
 %waterfallchart creates a waterfall chart
 %
-%
 %<a href="matlab: docsearchFS('waterfallchart')">Link to the help function</a>
-%
 %
 % A waterfall chart is a form of data visualization that helps in
 % understanding the cumulative effect of sequentially introduced positive
@@ -11,8 +9,8 @@ function h = waterfallchart(Y,varargin)
 % category based. The waterfall chart is also known as a flying bricks
 % chart or Mario chart due to the apparent suspension of columns (bricks)
 % in mid-air. Often in finance, it will be referred to as a bridge.
-% Waterfall chart. For more details
-% see https://en.wikipedia.org/wiki/Waterfall_chart
+% Waterfall chart. For more details see
+% https://en.wikipedia.org/wiki/Waterfall_chart
 %
 %  Required input arguments:
 %
@@ -120,7 +118,7 @@ function h = waterfallchart(Y,varargin)
         'Gross Income' 'Wages' 'Marketing advertising' 'Insurance bank charges' ...
         'Operating income' 'Taxes' 'Net income'};
     BarWidth=0.8;
-    waterfallchart(X,'SetAsTotal',SetAsTotal,'Labels',Labels,'ShowConnectorLines',false,'BarWidth',Barwidth);
+    waterfallchart(X,'SetAsTotal',SetAsTotal,'Labels',Labels,'ShowConnectorLines',false,'BarWidth',BarWidth);
 %}
 
 %{
@@ -178,10 +176,10 @@ function h = waterfallchart(Y,varargin)
 
 ShowConnectorLines = true;
 SetAsTotal = '';
-BarWidth = 0.5;
-Labels = '';
-titl='';
-DisplayValueOnTopOfPatches=false;
+Labels     = '';
+titl       = '';
+BarWidth   = 0.5;
+DisplayValueOnTopOfPatches = false;
 
 options=struct('ShowConnectorLines',ShowConnectorLines,...
     'SetAsTotal',SetAsTotal,'BarWidth',BarWidth,'Labels',Labels,...
@@ -194,10 +192,9 @@ if ~isempty(UserOptions)
         error('FSDA:waterfallchart:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
-    % Check if all the specified optional arguments were present
-    % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
+    % Check if all the specified optional arguments were present in
+    % structure options Remark: the nocheck option has already been dealt
+    % by routine chkinputR
     inpchk=isfield(options,UserOptions);
     WrongOptions=UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
@@ -205,30 +202,30 @@ if ~isempty(UserOptions)
         error('FSDA:waterfallchart:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
     
-    % Write in structure 'options' the options chosen by the user
+    % Write in structure 'options' the choices of the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
     
-    ShowConnectorLines=options.ShowConnectorLines;
-    SetAsTotal=options.SetAsTotal;
-    BarWidth=options.BarWidth;
-    Labels=options.Labels;
-    titl=options.titl;
-    DisplayValueOnTopOfPatches=options.DisplayValueOnTopOfPatches;
+    ShowConnectorLines  = options.ShowConnectorLines;
+    SetAsTotal          = options.SetAsTotal;
+    BarWidth            = options.BarWidth;
+    Labels              = options.Labels;
+    titl                = options.titl;
+    DisplayValueOnTopOfPatches = options.DisplayValueOnTopOfPatches;
 end
 
 % transform SetAsTotal from logical to numbers from 1 to n which identify
 % the elements which have to be set as total
 if islogical(SetAsTotal)
-    seq=1:length(SetAsTotal);
-    SetAsTotal=seq(SetAsTotal);
+    seq        = 1:length(SetAsTotal);
+    SetAsTotal = seq(SetAsTotal);
 end
 
 if istable(Y)
-    Labels=Y.Properties.RowNames;
-    titl=Y.Properties.VariableNames;
-    Y=Y{:,1};
+    Labels = Y.Properties.RowNames;
+    titl   = Y.Properties.VariableNames;
+    Y      = Y{:,1};
 else
     if ~isvector(Y)
         error('FSDA:waterfallchart:WrgInput','Y must be a vector or a table')
@@ -236,10 +233,9 @@ else
 end
 
 % make sure that Y is a column vector
-Y=Y(:)';
+Y = Y(:)';
 Ywithborders = [0 Y 0];
-n=length(Ywithborders);
-
+n = length(Ywithborders);
 
 % colum j of x refers to the x coordinates of the j-th patch vertices
 % the four elements of x respectively refer to
@@ -253,13 +249,12 @@ horizontalWidthBars = [-BarWidth/2; -BarWidth/2; BarWidth/2; BarWidth/2];
 x = bsxfun(@plus, x, horizontalWidthBars);
 
 ycoordlower = 1:n-1;
-yoordupper = 2:n;
-% Build 4-by-length(Y)+1 matrix y
-% which will contain the vertical coordinates of the patches
+yoordupper  = 2:n;
+% Build 4-by-length(Y)+1 matrix y which will contain the vertical
+% coordinates of the patches
 y = Ywithborders([ycoordlower;yoordupper;yoordupper;ycoordlower]);
 
-% Make ssure that the elements of SetAsTotal are integers in the interval
-% 1:n-2
+% Make ssure that the elements of SetAsTotal are integers in 1:n-2
 if max(SetAsTotal)>n-2
     error('FSDA:waterfallchart:WrgInput',['max(SetasTotal)must be ' num2str(n-2)])
 elseif min(SetAsTotal)<1
@@ -268,12 +263,12 @@ else
 end
 
 % Set the upper coordinated of the columns just after SetAsTotal
-y(2:3,SetAsTotal+1)=y([1 4],SetAsTotal+1)+y(2:3,SetAsTotal+1);
+y(2:3,SetAsTotal+1) = y([1 4],SetAsTotal+1) + y(2:3,SetAsTotal+1);
 
 % For subtotals the lower y coordinate are 0
-y([1 4],SetAsTotal)=0;
+y([1 4],SetAsTotal) = 0;
 
-notsel=setdiff(1:size(x,2),[SetAsTotal SetAsTotal+1]);
+notsel = setdiff(1:size(x,2),[SetAsTotal SetAsTotal+1]);
 % Set the coordinates of the columns defined by notsel
 for j=1:length(notsel)
     jj=notsel(j);
@@ -283,35 +278,30 @@ for j=1:length(notsel)
     end
 end
 
-y(2,SetAsTotal)=Ywithborders(SetAsTotal+1);
-y(3,SetAsTotal)=Ywithborders(SetAsTotal+1);
+y(2,SetAsTotal) = Ywithborders(SetAsTotal+1);
+y(3,SetAsTotal) = Ywithborders(SetAsTotal+1);
 
 x=x(:,1:end-1);
 y=y(:,1:end-1);
 
-
-% Gray color for the bars which are set as totals
-% Color (211/255) is light gray
-% dark gray is 168/255 while silver is
-% 192/255
-lightgray=211/255;
-h=gobjects(3,1);
-
+% Gray color for the bars which are set as totals Color (211/255) is light
+% gray dark gray is 168/255 while silver is 192/255
+%lightgray = (211/255)*ones(1,3); 
+lightgrey = FSColors.lightgrey.RGB; 
+h         = gobjects(3,1);
 
 if ~isempty(SetAsTotal)
-    h(1)=patch(x(:,SetAsTotal),y(:,SetAsTotal),lightgray*ones(1,3));
+    h(1) = patch(x(:,SetAsTotal),y(:,SetAsTotal),lightgrey);
     if DisplayValueOnTopOfPatches == true
-        xtips2 = h(1).XData(1,:);
-        ytips2 = h(1).YData(2,:);
+        xtips2  = h(1).XData(1,:);
+        ytips2  = h(1).YData(2,:);
         labels2 = string(ytips2);
         text(xtips2,ytips2,labels2,'HorizontalAlignment','left',...
             'VerticalAlignment','bottom')
     end
 end
-notSetAsTotal=setdiff(1:size(x,2),SetAsTotal);
-
-pos=Y(notSetAsTotal)>0;
-
+notSetAsTotal = setdiff(1:size(x,2),SetAsTotal);
+pos = Y(notSetAsTotal)>0;
 if max(pos)>0
     % green color for positive values
     h(2)=patch(x(:,notSetAsTotal(pos)),y(:,notSetAsTotal(pos)),'g');
@@ -328,8 +318,8 @@ if max(~pos)>0
     % red color for negative values
     h(3)=patch(x(:,notSetAsTotal(~pos)),y(:,notSetAsTotal(~pos)),'r');
     if DisplayValueOnTopOfPatches == true
-        xtips2 = h(3).XData(1,:);
-        ytips2 = h(3).YData(1,:);
+        xtips2  = h(3).XData(1,:);
+        ytips2  = h(3).YData(1,:);
         labels2 = string(ytips2);
         text(xtips2,ytips2,labels2,'HorizontalAlignment','left',...
             'VerticalAlignment','bottom')
@@ -338,13 +328,23 @@ end
 
 if ShowConnectorLines==true
     xcoo=[x(3,1:end-1); x(3,1:end-1)+BarWidth];
-    line(xcoo,y(2:3,1:end-1),'color',lightgray*ones(1,3));
+    line(xcoo,y(2:3,1:end-1),'color',lightgrey);
 end
 set(gca,'XTick',1:(n-2))
 
 if ~isempty(Labels)
-    set(gca,'XTickLabel',Labels,'XTickLabelRotation',90)
+    nl = max(strlength(Labels(:)));
+    if nl > 10
+        rot = 45;
+    else
+        rot = 90;
+    end
+    set(gca,'XTickLabel',Labels,'XTickLabelRotation',rot)
 end
-title(titl)
+
+title(titl,'FontSize',16);
+
+allAxesInFigure = findall(gcf,'type','axes');
+set(allAxesInFigure,'ActivePositionProperty','outerposition','FontSize',14);
 
 end
