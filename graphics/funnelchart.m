@@ -1,17 +1,17 @@
-function h  = funnelplot(x, varargin)
-%funnelplot displays a funnel plot, also called funnel chart
+function h  = funnelchart(x, varargin)
+%funnelchart displays a funnel plot, also called funnel chart
 %
-%<a href="matlab: docsearchFS('funnelplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('funnelchart')">Link to the help function</a>
 %
-% Funnel charts show values across multiple stages in a process. The chart
-% displays progressively decreasing values in proportions amounting to 100
-% percent in total. For example, you could use a funnel chart to show the
-% number of sales prospects at each stage in a sales pipeline. Typically,
-% the values decrease gradually, allowing the bars to resemble a funnel.
-% This type of chart can also be useful in identifying potential problem
-% areas in an organization’s sales processes. A funnel chart is similar to
-% a stacked percent bar chart. For more details see
-% https://en.wikipedia.org/wiki/Funnel_chart
+% Funnel charts provide a graphic representation of data values across
+% multiple stages in a process. The chart displays progressively decreasing
+% values in proportions amounting to 100 percent in total. For example, you
+% could use a funnel chart to show the number of sales prospects at each
+% stage in a sales pipeline. Typically, the values decrease gradually,
+% allowing the bars to resemble a funnel. This type of chart can also be
+% useful in identifying potential problem areas in an organization’s sales
+% processes. A funnel chart is similar to a stacked percent bar chart. For
+% more details see https://en.wikipedia.org/wiki/Funnel_chart
 %
 %  Required input arguments:
 %
@@ -58,51 +58,51 @@ function h  = funnelplot(x, varargin)
 % Copyright 2008-2019.
 % Written by FSDA team
 %
-%<a href="matlab: docsearchFS('funnelplot')">Link to the help function</a>
+%<a href="matlab: docsearchFS('funnelchart')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
 
 %{
-    %% funnelplot with all default options.
+    %% funnelchart with all default options.
     x=[500 425 200 150 100 90];
-    funnelplot(x)
+    funnelchart(x)
 %}
 
 %{
-    %% funnelplot with Labels option.
+    %% funnelchart with Labels option.
     x=[500 425 200 150 100 90];
     labels={'Prospects', 'Qualified prospects', 'Needs analysis', 'Price quotes', ...
         'Negotiations', 'Closed sales'};
-    funnelplot(x,'Labels',labels)
+    funnelchart(x,'Labels',labels)
 %}
 
 %{
-    %% funnelplot when x is a matrix.
+    %% funnelchart when x is a matrix.
     x=100*abs(randn(10,4));
     x=sort(x,1,'descend');
     labels={'A', 'B', 'C', 'D', 'E', ...
         'F', 'G' 'H', 'I' 'J'};
-    funnelplot(x,'Labels',labels)
+    funnelchart(x,'Labels',labels)
 %}
 
 %{
-    %% funnelplot with a non-default color.
+    %% funnelchart with a non-default color.
     x=100*abs(randn(10,4));
     x=sort(x,1,'descend');
     labels={'A', 'B', 'C', 'D', 'E', ...
         'F', 'G' 'H', 'I' 'J'};
-    funnelplot(x,'Labels',labels,'Color',FSColors.greysh.RGB)
+    funnelchart(x,'Labels',labels,'Color',FSColors.greysh.RGB)
 %}
 
 %{
-    %% funnelplot with a title.
+    %% funnelchart with a title.
     x=100*abs(randn(10,4));
     x=sort(x,1,'descend');
     labels={'A', 'B', 'C', 'D', 'E', ...
         'F', 'G' 'H', 'I' 'J'};
-    funnelplot(x,'Labels',labels,'Title','A Funnel Plot')
+    funnelchart(x,'Labels',labels,'Title','A Funnel Chart')
 %}
 
 
@@ -110,7 +110,7 @@ function h  = funnelplot(x, varargin)
 %% Beginning of code
 
 if ~isnumeric(x)
-    error('FSDA:carbikeplot:WrongInput','First input argument must be numeric.');
+    error('FSDA:funnelchart:WrongInput','First input argument must be numeric.');
 end
 
 x(x<0)=0;
@@ -138,7 +138,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:funnelplot:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:funnelchart:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     
     % Check if all the specified optional arguments were present
@@ -149,7 +149,7 @@ if ~isempty(UserOptions)
     WrongOptions = UserOptions(inpchk==0);
     if ~isempty(WrongOptions)
         disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:funnelplot:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        error('FSDA:funnelchart:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
     end
 end
 
@@ -219,10 +219,12 @@ for j=1:p
 end
 
 sgtitle(Title,'FontSize',fontsize+6);
+
 h=gcf;
-%ActivePositionProperty   PositionConstraint
 allAxesInFigure = findall(h,'type','axes');
-set(allAxesInFigure,'ActivePositionProperty','outerposition',...
-    'FontSize',fontsize+2);
+set(allAxesInFigure,'FontSize',fontsize+2);
+%ActivePositionProperty or  PositionConstraint
+%set(allAxesInFigure,'ActivePositionProperty','outerposition','FontSize',fontsize+2);
+
 end
 %FScategory:VIS-Clu
