@@ -59,7 +59,22 @@ elseif strcmp(cat2test,'tclustMULT')
     booMULT=~cellfun(@isempty,str);
     str=regexp(FilesIncluded(:,1),'tclust*');
     booTCLUST=~cellfun(@isempty,str);
-    boo=booMULT & booTCLUST;
+
+    str=regexp(FilesIncluded(:,1),'(gpcm)|(GPCM)*');
+    notGPCM=cellfun(@isempty,str);
+
+    boo=booMULT & booTCLUST & notGPCM;
+
+ elseif strcmp(cat2test,'tclustMULTgpcm')
+    % multivariate clustering just tclust*
+    str=regexp(FilesIncluded(:,8),'CLUS-RobClaMULT');
+    booMULT=~cellfun(@isempty,str);
+    str=regexp(FilesIncluded(:,1),'tclust*');
+    booTCLUST=~cellfun(@isempty,str);
+
+    str=regexp(FilesIncluded(:,1),'(gpcm)|(GPCM)*');
+    GPCM=~cellfun(@isempty,str);
+    boo=booMULT & booTCLUST & GPCM;   
     
 elseif strcmp(cat2test,'regression-clustering')
     str=regexp(FilesIncluded(:,8),'CLUS-RobClaREG');
