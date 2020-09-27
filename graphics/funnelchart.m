@@ -227,4 +227,4 @@ set(allAxesInFigure,'FontSize',fontsize+2);
 %set(allAxesInFigure,'ActivePositionProperty','outerposition','FontSize',fontsize+2);
 
 end
-%FScategory:VIS-Clu
+%FScategory:VIS-Mult
