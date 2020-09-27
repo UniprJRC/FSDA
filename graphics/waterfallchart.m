@@ -120,7 +120,7 @@ function h = waterfallchart(Y,varargin)
         'Gross Income' 'Wages' 'Marketing advertising' 'Insurance bank charges' ...
         'Operating income' 'Taxes' 'Net income'};
     BarWidth=0.8;
-    waterfallchart(X,'SetAsTotal',SetAsTotal,'Labels',Labels,'ShowConnectorLines',false,'BarWidth',Barwidth);
+    waterfallchart(X,'SetAsTotal',SetAsTotal,'Labels',Labels,'ShowConnectorLines',false,'BarWidth',BarWidth);
 %}
 
 %{
