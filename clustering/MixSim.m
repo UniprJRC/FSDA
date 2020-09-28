@@ -47,7 +47,7 @@ function [out]  = MixSim(k,v,varargin)
 %               If sph is a structure it may contain the following fields.
 %               sph.pars = a 3 letter character in the set:
 %                'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-%                'EVI','VEI','EEI','VII','EII' or 'VVVc' which
+%                'EVI','VEI','EEI','VII','EII' which
 %                specifies the type of Gaussian Parsimonious Clustering
 %                Model which needs to be generated.
 %               sph.exactrestriction = boolean. If sph.exactrestriction is
@@ -775,8 +775,8 @@ out = Q;
                     for j=1:k
                         Sj=Sgen(:,:,j);
                         lmd1(j)=det(Sj);
-                        lmd(j)=(lmd1(j)^(1/v))
-                        [Vj,Dj]=eig(Sj/lmd(j));
+                        lmd(j)=(lmd1(j)^(1/v));
+                        [~,Dj]=eig(Sj/lmd(j));
                         
                         Sh(:,j)=diag(Dj);
                         Shsor(:,j)=sort(Sh(:,j));
