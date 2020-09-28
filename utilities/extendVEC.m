@@ -7,9 +7,10 @@ function [ext] = extendVEC(x, index, value)
 %
 % x:        Vector to be extended. It can be either a row or a column vector.
 % index:    A vector containing the positions where to add value inside x.
-%           The index values are sorted so that the code starts to insert the element "value"
-%           from the smallest position.
-% value:    The element to insert in x for the extension. It could be a number, string, NaN, Inf, etc...
+%           The index values are sorted so that the code starts to insert
+%           the element "value" from the smallest position.
+% value:    The element to insert in x for the extension. It could be a
+%           number, string, NaN, Inf, etc...
 %
 %
 % Optional input arguments:
@@ -17,8 +18,9 @@ function [ext] = extendVEC(x, index, value)
 % Output:
 %
 % ext:  The extension of vector x with the element value inserted in the positions in index.
-%       For index > length(x), the code inserts index-length(x) elements equal to value in the tail of x.
-%       It can be either a row or a column vector, depending on input x.
+%       For index > length(x), the code inserts index-length(x) elements
+%       equal to value in the tail of x. It can be either a row or a column
+%       vector, depending on input x.
 %
 %
 % Copyright 2008-2020.
@@ -82,7 +84,7 @@ ext = x;
 if n1==1 % x is a row vector.
     for r = index
         if r == 1
-            ext = [value ext];
+            ext = [value ext]; %#ok<*AGROW>
         elseif r <= length(ext)
             ext = [ext(1:(r-1)) value ext(r:end)];
         else
