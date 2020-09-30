@@ -636,7 +636,7 @@ colnamesIC=regexprep(colnamesIC,' ','');
 %% Preapare the pool (if required)
 Cnsampall=cell(lkk,1);
 gRandNumbForNiniall=cell(lkk,1);
-tic;
+
 for k=1:lkk  % loop for different values of k (number of groups)
     
     seqk=kk(k);
@@ -705,11 +705,10 @@ for k=1:lkk  % loop for different values of k (number of groups)
     end
 end
 
-disp('end of loop')
-toc
+
 
 %% Close pool and show messages if required
-tic;
+
 
 if cleanpool==true
     delete(gcp);
@@ -918,11 +917,11 @@ if plots==1
         nc=2;
         subplot(nr,nc,1)
  
-        disp('1st panel')
+        
         
         plot(candshb,modelshb)
         
-        disp('end 1st panel')
+       
         
         xlabel('c_{shb}')
         ylabel('BIC to select best c_{shb}')
@@ -932,11 +931,11 @@ if plots==1
         % if cshw is <=2 there is just one point and the plot is not ahown
     end
     
-    disp('2nd panel')
+    
     
     plot(1:3,modelb,'o','LineWidth',5)
     
-    disp('end 2nd panel')
+    
     
     xlabel('Type of rotation')
     ylabel('BIC to select best type of rotation')
@@ -953,8 +952,8 @@ if plots==1
     
 end
 
-disp('end of code')
-toc
+
+
 
 % Store trimming level which has been used
 out.alpha=alpha;
