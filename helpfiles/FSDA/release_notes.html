@@ -107,8 +107,8 @@ document.write(divsbefore);</script>
 			</tr>
 		</thead>
 		<tr>
-			<td style="vertical-align: top;"><strong>V9.0 (R2020b prerelease)</strong></td>
-			<td style="vertical-align: top;">
+			<td style="vertical-align: top; height: 1797px;"><strong>V9.0 (R2020b)</strong></td>
+			<td style="vertical-align: top; height: 1797px;">
 			<p class="p5">&nbsp;</p>
 			<p class="p5">TRANFORMATIONS IN REGRESSION</p>
 			<p class="p5">The transformations for negative and positive 
@@ -158,21 +158,52 @@ document.write(divsbefore);</script>
 			Johnson transformation.</p>
 			<p class="p5">TIME SERIES</p>
 			<p class="p5">New function <a href="SETARX.html">SETARX</a> which implements Threshold autoregressive models with two regimes </p>
+			<p class="p5">&nbsp;</p>
+			<p class="p5">ROBUST CLUSTERING</p>
+			<p class="p5">New tools for dealing with the 14 Gaussian 
+			parsimonious clustering models (GPCM).  </p>
+			<p class="p5">&nbsp;In function <a href="genSigmaGPCM.html">
+			genSigmaGPCM</a> new option pa.exactrestriction has been added. If 
+			pa.exactrestriction is true the covariance matrices are&nbsp; 
+			generated with the exact values of the restrictions specified in 
+			pa.cdet, pa.shw and pa.swb. In function <a href="MixSim.html">MixSim</a> 
+			optional input structure sph now can be called with field&nbsp;
+			<span>sph.exactrestriction</span></p>
+			<p class="p5">In function <a href="tclust.html">tclust</a> the 
+			fourth input restrfactor can be a structure which can contain the 
+			type of Gaussian Parsimonious Clustering Model (restrfactor.pars), 
+			the <br>scalars in the interval [1 Inf) which specifies the<br>the 
+			restriction which have to be applied to the determinants 
+			(restrfactor.cdet), to the to the elements of the shape matrices 
+			inside each group (restrfactor.shw) and across groups 
+			(restrfactor.shb).</p>
+			<p class="p5">New functions <a href="tclustICgpcm.html">tclustICgpcm</a>,
+			<a href="tclustICsolGPCM.html">tclustICsolGPCM</a> and&nbsp;
+			<a href="carbikeplotGPCM.html">carbikeplotGPCM</a> which extends 
+			function <a href="tclustIC.html">tclustIC</a>,
+			<a href="tclustICsol.html">tclustICsol</a> and
+			<a href="carbikeplot.html">carbikeplot</a> to the case of the 14 
+			GPCM. </p>
+			<p class="p5">GRAPHICS</p>
+			<p class="p5">New plots <a href="waterfallchart.html">waterfallchart</a> 
+			(which implements the waterfall chart (see
+			<a href="https://en.wikipedia.org/wiki/Waterfall_chart">
+			https://en.wikipedia.org/wiki/Waterfall_chart</a>) and new function
+			<a href="funnelchart.html">funnelchart</a> which implements the 
+			funnel chart (see <br>
+			<a href="https://en.wikipedia.org/wiki/Funnel_chart">
+			https://en.wikipedia.org/wiki/Funnel_chart</a>)</p>
+			<p class="p5">&nbsp;</p>
 			<p class="p5">DATASETS</p>
 			<p class="p1">New dataset balancesheets added in the
 			<a href="datasets_reg.html">datasets regression section</a></p>
 			</td>
-			<td style="vertical-align: top; width: 20%;">We stop supporting
+			<td style="vertical-align: top; width: 20%; height: 1797px;">We stop supporting
 			releases before 2015b.<br><br> <br>Functions FSRfan, ScoreYJ and 
 			ScoreYJall made faster</td>
-			<td class="auto-style1" style="vertical-align: top;">Mathworks 
-			search engine in our HTML web pages in version 2020a does not work 
-			anylonger.<br>To search for FSDA function it is necessary to use the 
-			supplemental software search engine.<br><br>Routine fanBICpn uses 
-			routine heatmap introduced in MATLAB&nbsp; 2017a. <br><br>Routine 
-			tclustregeda to display the results uses function parallelplot 
-			introduced in Matlab 2019a.<br><br><br></td>
-			<td style="vertical-align: top;">April &nbsp;2020</td>
+			<td class="auto-style1" style="vertical-align: top; height: 1797px;">Mathworks 
+			search engine in our HTML web pages in version 2020b works again.<br><br><br><br><br></td>
+			<td style="vertical-align: top; height: 1797px;">October &nbsp;2020</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top;"><strong>V8.0 (R2020a)</strong></td>
