@@ -19,6 +19,9 @@ function out=corrNominal(N, varargin)
 %                 table (say of size I-by-J) or the original data matrix.
 %                 In this last case N=crosstab(N(:,1),N(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
+%                 If N is a data matrix (supplied as a a n-by-2 cell array
+%                 of strings, or n-by-2 array or n-by-2 table) optional
+%                 input datamatrix must be set to true.
 %
 %  Optional input arguments:
 %
@@ -87,10 +90,9 @@ function out=corrNominal(N, varargin)
 %                        column names).
 %                        This output is present just if your MATLAB
 %                        version is not<2013b.
-%        out.Chi2    =   1-by-2 vector which contains $\chi^2$ index,
-%                        and p-value.
-%         out.Phi    =   1-by-2 vector which contains index $\Phi$ index,
-%                        and p-value.  Phi is a chi-square-based measure of
+%        out.Chi2    =   scalar containing $\chi^2$ index.
+%        out.Chi2pval=   scalar containing pvalue of the $\chi^2$ index.
+%         out.Phi    =   $\Phi$ index. Phi is a chi-square-based measure of
 %                        association that involves dividing the chi-square
 %                        statistic by the sample size and taking the square
 %                        root of the result. More precisely
@@ -614,6 +616,7 @@ if verMatlab ==0
 end
 
 out.Chi2=Chi2;
+out.Chi2pval=Chi2pval;
 out.Phi=Phi;
 
 out.CramerV=[CramerV seCramerV  zCramerV  pvalCramerV];
