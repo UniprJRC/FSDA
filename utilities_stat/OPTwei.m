@@ -90,6 +90,8 @@ inds = (absx > 2*c)&(absx <= 3*c);
 x1 = u(inds);
 w(inds) = (-1.944  / c^2 + 1.728 * x1.^2 / c^4 - 0.312 * x1.^4 / c^6 + 0.016 * x1.^6 / c^8) / 3.25;
 
+% Rescaled weights so that their maximum is 1
+w=w*(3.25*c^2);
 % 0 for |x| >3c
 end
 %FScategory:UTISTAT
