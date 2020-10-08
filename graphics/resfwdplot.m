@@ -100,7 +100,7 @@ function plotopt=resfwdplot(out,varargin)
 %                       the search where to put labels for the highlighted
 %                       trajectories (units). The default is to put the
 %                       labels at the initial and final steps of the search.
-%                       flabstep='' means no label.
+%                       fground.flabstep='' means no label.
 %                   fground.LineWidth = scalar specifying line width for the
 %                       highlighted trajectories (units). Default is 1.
 %                   fground.Color = cell array of strings containing the colors to
@@ -428,7 +428,7 @@ function plotopt=resfwdplot(out,varargin)
     fground.funit=[2 5 20 23 35 45];
     % Specify the steps in which labels have to be put
     n=length(y);
-    fground.flabstep=[n/2 n*0.75 n+0.5];;
+    fground.flabstep=[n/2 n*0.75 n+0.5];
     % Specify the line width of the highlighted trajectories
     fground.LineWidth=3;
     % Produce a monitoring residuals plot in which labels are put for units
@@ -1197,6 +1197,7 @@ box on
 
 %% fground options
 if ~isempty(options.fground)
+    fgrounddef.flabstep=[x(1) x(end)];
     
     % Control the appearance of the trajectories to be highlighted
     if ~isequal(options.fground,fgrounddef)
@@ -1225,8 +1226,8 @@ if ~isempty(options.fground)
             steps = sort(unique(steps));
         end
     else
-        steps=[x(1) x(end)];
-        fground.flabstep=steps;
+        % steps=[x(1) x(end)];
+        fground.flabstep=''; % steps;
     end
     
     % fthresh= threshold to define units which have to be displayed in
