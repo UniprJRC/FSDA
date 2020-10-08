@@ -218,6 +218,7 @@ function out  = tclustICgpcm(Y, varargin)
 %               choose the best value of $c_{shb}$. The panel on the right
 %               contains the values of IC in correspondence of the cases of
 %               no rotation, equal rotation and varying rotation.
+%               The default value of plots is 0 that is no plot is shown.
 %                 Example - 'plots',1
 %                 Data Types - single | double
 %
@@ -368,7 +369,6 @@ function out  = tclustICgpcm(Y, varargin)
 %
 %                out.kbest = scalar containing optimal value of k.
 %
-
 %                out.ccshw = vector containing the values of $c_det$ (values of the
 %                   restriction factor for ratio of the shape elements
 %                   inside each group) which have been considered. This
@@ -413,7 +413,35 @@ function out  = tclustICgpcm(Y, varargin)
 %
 %                out.Y  = Original data matrix Y. The field is present if
 %                   option Ysave is set to 1.
+%             
+%             out.alpha = scalar. Level of trimming which has been used.
 %
+%           out.BICshb  = value of the information criterion for each
+%                   candidate value of $c_{shb}$. Matrix with
+%                   two columns and r rows. The first column contains the
+%                   values of candidate values of $c_{shb}$ which have been
+%                   used. Note that if max(cshb) is smaller or equal than
+%                   $cshwbest^((v-1)/v)$. The second column contains the
+%                   associated values of the information crterion. r is the
+%                   number of candidate values of cshb which have been
+%                   considered.
+%
+%          out.IDXshb  = matrix with size n-by-r which contains the
+%                   classification for each candidate value of cshb. The
+%                   number of columns of this matrix is equal to the number
+%                   of rows of out.BICshb.
+%
+%           out.BICrot  = value of the information criterion for each
+%                         type or rotation. First element refers to $I$ (no
+%                         rotation) the second element refers to $E$ (equal
+%                         rotation) and the third element refers to $V$
+%                         (varying rotation).
+%
+%          out.IDXrot  = matrix with size n-by-3 which contains the
+%                        classification for each type of rotation. First
+%                        column refers to $I$ (no rotation), the second
+%                        column refers to $E$ (equal rotation) and the
+%                        third column refers to $V$ (varying rotation).
 %
 % See also tclustIC, tclust, tclustICsol, tclustICplot, carbikeplot
 %
@@ -515,7 +543,7 @@ reftol=1e-5;
 
 equalweights=false;
 
-plots=1;
+plots=0;
 nsamp=500;
 alpha=0;
 kk=1:5;
@@ -718,7 +746,7 @@ out=struct;
 
 % Call tclustreg with **V **E **I to decide about best rotation
 modelb=zeros(3,1);
-idxb=zeros(n,3);
+IDXrot=zeros(n,3);
 models=cell(3,1);
 typerot={'I';'E';'V'};
 
@@ -768,7 +796,7 @@ if typeIC==0 % CLACLA
     % Find best estimate of cshbbest
     candshb=cc(cc<=cshwbest^((v-1)/v));
     
-    modelshb=zeros(length(candshb),1);
+    BICshb=zeros(length(candshb),1);
     for jshb=1:length(candshb)
         pasel.shb=candshb(jshb);
         
@@ -776,14 +804,16 @@ if typeIC==0 % CLACLA
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         
-        modelshb(jshb)=outCla.CLACLA;
+        BICshb(jshb)=outCla.CLACLA;
     end
     
-    [~,posminbestcshb]=min(modelshb);
+    [~,posminbestcshb]=min(BICshb);
     cshbbest=candshb(posminbestcshb);
     % Set best values of constraint across groups
     pasel.shb=cshbbest;
     
+    % End of instructions to determine best cshb
+    % Beginning of instruction to determine best type of rotation
     if cshbbest==1
         modelroot(2)='E';
     end
@@ -800,7 +830,7 @@ if typeIC==0 % CLACLA
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         
-        idxb(:,jrot)=outCla.idx;
+        IDXrot(:,jrot)=outCla.idx;
         modelb(jrot)=outCla.CLACLA;
     end
 else  % MIXMIX or MIXCLA store IDXMIX
@@ -840,7 +870,8 @@ else  % MIXMIX or MIXCLA store IDXMIX
     % Find best estimate of cshbbest
     candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
     
-    modelshb=zeros(length(candshb),1);
+    BICshb=zeros(length(candshb),1);
+    IDXshb=zeros(n,length(candshb));
     for jshb=1:length(candshb)
         pasel.shb=candshb(jshb);
         
@@ -848,14 +879,15 @@ else  % MIXMIX or MIXCLA store IDXMIX
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
         if typeIC==2
-            modelshb(jshb)=outMixt.MIXMIX;
+            BICshb(jshb)=outMixt.MIXMIX;
         end
         if typeIC==1
-            modelshb(jshb)=outMixt.MIXCLA;
+            BICshb(jshb)=outMixt.MIXCLA;
         end
+            IDXshb(:,jshb)=outMixt.idx;
     end
     
-    [~,posminbestcshb]=min(modelshb);
+    [~,posminbestcshb]=min(BICshb);
     cshbbest=candshb(posminbestcshb);
     % Set best values of constraint across groups
     pasel.shb=cshbbest;
@@ -868,13 +900,12 @@ else  % MIXMIX or MIXCLA store IDXMIX
     models{2}=[modelroot(1:2) 'E'];
     models{3}=[modelroot(1:2) 'V'];
     
-    
     for jrot=1:3
         pasel.pars=models{jrot};
         outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
             'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
             'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
-        idxb(:,jrot)=outMixt.idx;
+        IDXrot(:,jrot)=outMixt.idx;
         
         if typeIC==2
             modelb(jrot)=outMixt.MIXMIX;
@@ -896,7 +927,7 @@ out.cshbbest=cshbbest;
 out.BICbest=bestBIC;
 out.modelbest=models{indminrot};
 
-out.idxcshbbest=idxb(:,indminrot);
+out.idxcshbbest=IDXrot(:,indminrot);
 % Store best classification before refining step for rotation
 if typeIC>0
     out.idx=IDXMIX{kk==kbest,ccdet==cdetbest,ccshw==cshwbest};
@@ -916,13 +947,7 @@ if plots==1
         nr=1;
         nc=2;
         subplot(nr,nc,1)
- 
-        
-        
-        plot(candshb,modelshb)
-        
-       
-        
+        plot(candshb,BICshb)
         xlabel('c_{shb}')
         ylabel('BIC to select best c_{shb}')
         title(['Best c_{shb}=' num2str(cshbbest)])
@@ -930,13 +955,7 @@ if plots==1
     else
         % if cshw is <=2 there is just one point and the plot is not ahown
     end
-    
-    
-    
     plot(1:3,modelb,'o','LineWidth',5)
-    
-    
-    
     xlabel('Type of rotation')
     ylabel('BIC to select best type of rotation')
     title(['Best rot =' typerot{indminrot}])
@@ -959,10 +978,17 @@ end
 out.alpha=alpha;
 % Store original matrix
 out.Y=Y;
+
+
+out.BICshb=[candshb(:),BICshb];
+out.IDXshb=IDXshb;
+
+out.BICrot=modelb;
+out.IDXrot=IDXrot;
 end
 
 
-
+        
 function [kbest,cdetbest,cshwbest,BICbest]=selICplot(selIC,cdet,cshw,kk,nameselIC,plots)
 
 [valmin,posmin]=min(selIC,[],'all','linear');
