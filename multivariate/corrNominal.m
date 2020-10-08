@@ -56,7 +56,10 @@ function out=corrNominal(N, varargin)
 %               to be interpreted as a data matrix, else if the input
 %               argument is false N is treated as a contingency table. The
 %               default value of datamatrix is false, that is the procedure
-%               automatically considers N as a contingency table
+%               automatically considers N as a contingency table. In case
+%               datamatrix is true N can be a cell of size n-by-2
+%               containing the two grouping variables or a numeric array of size
+%               n-by-2 or a table of size n-by-2.
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
@@ -96,7 +99,7 @@ function out=corrNominal(N, varargin)
 %                        \]
 %                        This index lies in the interval $[0 , \sqrt{\min[(I-1),(J-1)]}$.
 %      out.CramerV   =   1 x 4 vector which contains Cramer's V index,
-%                        standard error, z test, and p-value. Cramer'V index 
+%                        standard error, z test, and p-value. Cramer'V index
 %                        is index $\Phi$ divided by its maximum. More precisely
 %                        \[
 %                        V= \sqrt{\frac{\Phi}{\min[(I-1),(J-1)]}}=\sqrt{\frac{\chi^2}{n \min[(I-1),(J-1)]}}
@@ -314,11 +317,37 @@ function out=corrNominal(N, varargin)
     x23=[2*ones(n23,1) 3*ones(n23,1)];
     x24=[2*ones(n24,1) 4*ones(n24,1)];
     x25=[2*ones(n25,1) 5*ones(n25,1)];
-    % X original data matrix
+    % X original data matrix (in this case an array)
     X=[x11; x12; x13; x14; x15; x21; x22; x23; x24; x25];
     out=corrNominal(X,'datamatrix',true);
 %}
 
+%{ 
+    % Example of option datamatrix combined with X defined as table.
+    % Initial contingency matrix (2D array).
+    N=[75   126
+        76   203
+        40   129
+        36   125
+        24   110
+        41   222
+        19   141];
+    % Labels of the contingency matrix
+    Party={'ACTIVIST DEMOCRATIC', 'DEMOCRATIC', ...
+        'SIMPATIZING DEMOCRATIC', 'INDEPENDENT', ...
+        'LIKING REPUBLICAN', 'REPUBLICAN', ...
+        'ACTIVIST REPUBLICAN'};
+    DeathPenalty={'AGAINST' 'FAVORABLE'};
+    Ntable=array2table(N,'RowNames',Party,'VariableNames',DeathPenalty);
+    % From the contingency table reconstruct the original data matrix now
+    % using FSDA function
+    % The output is a cell arrary
+    Xcell=crosstab2datamatrix(Ntable);
+    Xtable=cell2table(Xcell);
+    % call function corrNominal using first argument as input data matrix
+    % in table format and option datamatrix set to true
+    out=corrNominal(Xtable,'datamatrix',true);
+%}
 
 %% Beginning of code
 
@@ -344,7 +373,11 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    [N,~,~,labels] =crosstab(N(:,1),N(:,2));
+    if istable(N)
+        [N,~,~,labels] =crosstab(N{:,1},N{:,2});
+    else
+        [N,~,~,labels] =crosstab(N(:,1),N(:,2));
+    end
     [I,J]=size(N);
     % default labels for rows of contingency table
     Lr=labels(1:I,1);
@@ -402,7 +435,7 @@ else
     else
         % Check that the length of Lr is equal to I
         if length(Lr)~=I
-            error('Wrong length of row labels');
+            error('FSDA:CorrNominal:WrongInputOpt','Wrong length of row labels');
         end
     end
     
@@ -411,11 +444,11 @@ else
     else
         % Check that the length of Lc is equal to J
         if length(Lc)~=J
-            error('Wrong length of column labels');
+            error('FSDA:CorrNominal:WrongInputOpt','Wrong length of column labels');
         end
     end
     if verMatlab ==0
-    Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
+        Ntable=array2table(N,'RowNames',matlab.lang.makeValidName(Lr),'VariableNames',matlab.lang.makeValidName(Lc));
     end
 end
 
@@ -435,6 +468,9 @@ Ntheo=(nidot*ndotj/n);
 
 % Chi2 index
 Chi2=sum(((N(:)-Ntheo(:)).^2)./Ntheo(:));
+
+% pvalue of Chi2 test
+Chi2pval=chi2cdf(Chi2, (I-1)*(J-1),'upper');
 
 % Phi index
 Phi=sqrt(Chi2/n);
@@ -574,7 +610,7 @@ end
 out=struct;
 out.N=N;
 if verMatlab ==0
-out.Ntable=Ntable;
+    out.Ntable=Ntable;
 end
 
 out.Chi2=Chi2;
@@ -641,6 +677,8 @@ if dispresults == true
     
     disp('Chi2 index')
     disp(Chi2)
+    disp('pvalue Chi2 index')
+    disp(Chi2pval)
     disp('Phi index')
     disp(Phi)
     disp('Cramer''s V ')
