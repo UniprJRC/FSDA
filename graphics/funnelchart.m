@@ -43,6 +43,11 @@ function h  = funnelchart(x, varargin)
 %                 Example - 'Title','The Funnel Chart'
 %                 Data Types - char
 %
+%   h     :   Target axes. If you do not specify the axes the plot function
+%             uses the current axes.
+%                 Example - h,ax, where ax=subplot(3,2,5);
+%                 Data Types - axes object | graphics object
+%
 %  Output:
 %
 %         h:   Graphics handle to the plot. Graphics handle. Graphics
@@ -105,7 +110,14 @@ function h  = funnelchart(x, varargin)
     funnelchart(x,'Labels',labels,'Title','A Funnel Chart')
 %}
 
-
+%{
+    % Example of the use of option h.
+    % Create a subplot
+    ax=subplot(3,2,5);
+    % Create the funnelchart inside the axes specified by ax instead of in
+    % the current axes (gca)
+    funnelchart(rand(5,1),'h',ax)
+%}
 
 %% Beginning of code
 
@@ -130,8 +142,10 @@ fontsize = 14;    % font of numbers and axes
 Labels   = cellstr(num2str((1:n)'));
 BoxColor = 'c';
 Title    = [];
-options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title);
-    
+h='';
+options  = struct('Labels',{Labels},'Color',BoxColor,'Title',Title,'h',h);
+
+
 % user options
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -161,13 +175,21 @@ if nargin>1
     Labels    = options.Labels;  
     BoxColor  = options.Color;
     Title     = options.Title;
+    h=options.h;
 end
 
 Labels = flipud(Labels(:));
 
 % Create figure
+if isempty(h)
 figure;
-set(gca,'YTick','','XTick','');
+h=gca;
+emptyh=true;
+else
+    emptyh=false;
+end
+
+set(h,'YTick','','XTick','');
 
 switch p
     case 1
@@ -197,24 +219,26 @@ end
 setappdata(gcf, 'SubplotDefaultAxesLocation',[0.11,0.05,0.795,0.85]);
 kk = 1.05;
 for j=1:p
-    subplot(nr,nc,j);
+    if emptyh==true
+    h=subplot(nr,nc,j);
+    end
     % Create axes
     % axes1 = axes('Parent',figure1);
     Xj=x(:,j);
     axis([-max(Xj)*kk  max(Xj)*kk 1.5 n+0.5]);
     grid off;
-    set(gca,'YTick',1.5:(n+0.5),'XTick','');
+    set(h,'YTick',1.5:(n+0.5),'XTick','');
     ylim([0.5 n+1.3]);
     for i=1:n
         if Xj(i)>0
-            rectangle('position',[-Xj(i) n+1-i 2*Xj(i)  1-space],...
+            rectangle(h,'position',[-Xj(i) n+1-i 2*Xj(i)  1-space],...
                 'facecolor',BoxColor,'Curvature',[0.02 0.02],...
                 'AlignVertexCenters','on');
-            text(0, n+1.5-i ,num2str(Xj(i),'%.1f'),'HorizontalAlignment','center',...
+            text(h,0, n+1.5-i ,num2str(Xj(i),'%.1f'),'HorizontalAlignment','center',...
                 'FontSize',fontsize,'VerticalAlignment','middle');
         end
     end
-    set(gca,'YTickLabel',Labels);
+    set(h,'YTickLabel',Labels);
     box('on');
 end
 
