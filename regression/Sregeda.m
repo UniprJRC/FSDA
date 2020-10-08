@@ -50,7 +50,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               See HYPrho.m and HYPpsi.m.
 %               'hampel' uses Hampel $\rho$ and $\psi$ functions.
 %               See HArho.m and HApsi.m.
-%               'mpdp' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
+%               'mdpd' uses Minimum Density Power Divergence $\rho$ and $\psi$ functions.
 %               See PDrho.m and PDpsi.m.
 %               The default is bisquare
 %                 Example - 'rhofunc','optimal' 
