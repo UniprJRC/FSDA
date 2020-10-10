@@ -11,7 +11,7 @@ function h  = funnelchart(x, varargin)
 % allowing the bars to resemble a funnel. This type of chart can also be
 % useful in identifying potential problem areas in an organization’s sales
 % processes. A funnel chart is similar to a stacked percent bar chart. For
-% more details see https://en.wikipedia.org/wiki/Funnel_chart
+% more details see: https://en.wikipedia.org/wiki/Funnel_chart
 %
 %  Required input arguments:
 %
