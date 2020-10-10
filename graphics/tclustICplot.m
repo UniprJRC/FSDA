@@ -354,7 +354,7 @@ slintyp={'-';'--';':';'-.'};
 slintyp=repmat(slintyp,ceil(lcc/length(slintyp)),1);
 % Define legend entries
 a=cell(lcc,1);
-a(:)={'c='};
+a(:)={lab}; %  {'c='};
 legstr=strcat(a, cellstr(num2str(cORalpha(:))));
 
 xkk=0:(1/(length(kk)-1)):1;

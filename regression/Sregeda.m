@@ -41,7 +41,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               'optimal'
 %               'hyperbolic'
 %               'hampel'
-%               'mpdp'.
+%               'mddp'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho.m and TBpsi.m.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.

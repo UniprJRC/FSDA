@@ -20,7 +20,8 @@ function w = OPTwei(u,c)
 %
 %    w :         n x 1 vector which contains the optimal weights
 %                associated to the scaled residuals or Mahalanobis
-%                distances for the n units of the sample.
+%                distances for the n units of the sample. The weights are
+%                rescaled so that their maximum is 1 when u tends to 0.
 %
 %
 % More About:

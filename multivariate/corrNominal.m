@@ -35,8 +35,8 @@ function out=corrNominal(N, varargin)
 %               Data Types - Boolean
 %
 %  dispresults :  Display results on the screen. Boolean.
-%               If dispresults is true (default) it is possible to see on the
-%               screen all the summary results of the analysis.
+%               If dispresults is true (default) it is possible to see on
+%               the screen all the summary results of the analysis.
 %               Example - 'dispresults',false
 %               Data Types - Boolean
 %

@@ -107,34 +107,16 @@ document.write(divsbefore);</script>
 			</tr>
 		</thead>
 		<tr>
-			<td style="vertical-align: top; height: 1797px;"><strong>V9.0 (R2020b)</strong></td>
-			<td style="vertical-align: top; height: 1797px;">
-			<p class="p5">&nbsp;</p>
+			<td style="vertical-align: top;"><strong>V9.0 (R2020b)</strong></td>
+			<td style="vertical-align: top;">
+			<p class="p5">
 			<p class="p5">TRANFORMATIONS IN REGRESSION</p>
-			<p class="p5">The transformations for negative and positive 
-			responses were determined<br>by Yeo and Johnson (2000) by imposing 
-			the smoothness condition that the<br>second derivative of 
-			zYJ(lambda) with respect to y be smooth at y = 0. However<br>some 
-			authors, for example Weisberg (2005), query the physical<br>
-			interpretability of this constraint which is oftern violated in data<br>
-			analysis. Accordingly, Atkinson et al (2019) and (2020) extend the<br>
-			Yeo-Johnson transformation to allow two values of the 
-			transformations<br>parameter: lambdaN for negative observations and 
-			lambdaP for non-negative ones.<br>ScoreYJall computes:<br>1) the 
-			global t test associated with the constructed variable for<br>
-			lambda=lambdaP=lambdaN. <br>2) the t test associated with the 
-			constructed variable computed assuming<br>a different transformation 
-			for positive observations keeping the value of<br>the transformation 
-			parameter for negative observations fixed. In short we<br>call this 
-			test, &quot;test for positive observations&quot;.<br>3) the t test associated 
-			with the constructed variable computed assuming<br>a different 
-			transformation for negative observations keeping the value of<br>the 
-			transformation parameter for positive observations fixed. In short 
-			we<br>call this test, &quot;test for negative observations&quot;. <br>4) the F 
-			test for the joint presence of the two constructed variables<br>
-			described in points 2) and 3.</p>
-			<p class="p5">5) the F test based on the maximum liklihood estimate 
-			of lambdaP and lambdaN</p>
+			<p class="p5"> We have enriched the properties of the data transformations of the Yeo and Johnson (2000) 			for negative and positive responses, which we introduced in R2020a. More specifically, we intervened on 			the smoothness condition that the second derivative of zYJ(lambda) with respect to y be smooth at y = 0, 			along Atkinson et al (2019) and (2020), to allow two values of the transformations parameter: lambdaN 			for negative observations and lambdaP for non-negative ones. Now, function ScoreYJall computes:</p>
+			1) a global t test associated with the constructed variable for lambda=lambdaP=lambdaN.</p>
+			2) a t test for positive observations.</p>
+			3) a t test for negative observations.</p>
+			4) a F test for the joint presence of the two constructed variables described in points 2) and 3.</p>
+			5) the F test based on the maximum liklihood estimate of lambdaP and lambdaN</p>
 			<p class="p5">New function <a href="ScoreYJall.html">ScoreYJall</a> 
 			which computes the score tests described in points 1)-5) above.</p>
 			<p class="p1">New function <a href="ScoreYJmle.html">scoreYJmle</a>&nbsp; 
@@ -158,11 +140,13 @@ document.write(divsbefore);</script>
 			Johnson transformation.</p>
 			<p class="p5">TIME SERIES</p>
 			<p class="p5">New function <a href="SETARX.html">SETARX</a> which implements Threshold autoregressive models with two regimes </p>
-			<p class="p5">&nbsp;</p>
+			
+			
+			
 			<p class="p5">ROBUST CLUSTERING</p>
 			<p class="p5">New tools for dealing with the 14 Gaussian 
 			parsimonious clustering models (GPCM).  </p>
-			<p class="p5">&nbsp;In function <a href="genSigmaGPCM.html">
+			<p class="p5">In function <a href="genSigmaGPCM.html">
 			genSigmaGPCM</a> new option pa.exactrestriction has been added. If 
 			pa.exactrestriction is true the covariance matrices are&nbsp; 
 			generated with the exact values of the restrictions specified in 
@@ -179,8 +163,8 @@ document.write(divsbefore);</script>
 			(restrfactor.shb).</p>
 			<p class="p5">New functions <a href="tclustICgpcm.html">tclustICgpcm</a>,
 			<a href="tclustICsolGPCM.html">tclustICsolGPCM</a> and&nbsp;
-			<a href="carbikeplotGPCM.html">carbikeplotGPCM</a> which extends 
-			function <a href="tclustIC.html">tclustIC</a>,
+			<a href="carbikeplotGPCM.html">carbikeplotGPCM</a> which extend 
+			functions <a href="tclustIC.html">tclustIC</a>,
 			<a href="tclustICsol.html">tclustICsol</a> and
 			<a href="carbikeplot.html">carbikeplot</a> to the case of the 14 
 			GPCM. </p>
@@ -195,15 +179,24 @@ document.write(divsbefore);</script>
 			https://en.wikipedia.org/wiki/Funnel_chart</a>)</p>
 			<p class="p5">&nbsp;</p>
 			<p class="p5">DATASETS</p>
-			<p class="p1">New dataset balancesheets added in the
-			<a href="datasets_reg.html">datasets regression section</a></p>
+			<p class="p1">New datasets balancesheets and facemasks added in the
+			<a href="datasets_reg.html">datasets regression section</a>
+			and <a href="datasets_clu.html">datasets clustering section</a> respectively </p>
+			
+			
+			
+			
+			
 			</td>
-			<td style="vertical-align: top; width: 20%; height: 1797px;">We stop supporting
+			<td style="vertical-align: top; width: 20%;">We stop supporting
 			releases before 2015b.<br><br> <br>Functions FSRfan, ScoreYJ and 
 			ScoreYJall made faster</td>
-			<td class="auto-style1" style="vertical-align: top; height: 1797px;">Mathworks 
-			search engine in our HTML web pages in version 2020b works again.<br><br><br><br><br></td>
-			<td style="vertical-align: top; height: 1797px;">October &nbsp;2020</td>
+			<td class="auto-style1" style="vertical-align: top;"> 			Mathworks 
+			search engine in our HTML web pages in version 2020b works again.<br><br>Routine fanBICpn uses 
+			routine heatmap introduced in MATLAB&nbsp; 2017a. <br><br>Routine 
+			tclustregeda to display the results uses function parallelplot 
+			introduced in Matlab 2019a.<br><br><br></td>
+			<td style="vertical-align: top;">April &nbsp;2020</td>
 		</tr>
 		<tr>
 			<td style="vertical-align: top;"><strong>V8.0 (R2020a)</strong></td>

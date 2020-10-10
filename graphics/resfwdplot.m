@@ -6,7 +6,7 @@ function plotopt=resfwdplot(out,varargin)
 %
 %  Required input arguments:
 %
-%  out :  Structure containing monitoring of scaled residuals. Structure.
+%  out :  Structure containing monitoring of scaled residuals.  Structure.
 %               Structure containing the following fields.
 %   out.RES =   matrix containing the residuals monitored in each step of
 %               the forward search or any other robust procedure. Every row
