@@ -17,8 +17,8 @@ function plotopt=resfwdplot(out,varargin)
 %               is not empty).
 %     out.y  =   a vector containing the response (required only when option
 %               databrush is not empty).
-%     out.X  =   a matrix containing the explanatory variables (required only
-%               when option databrush is not empty).
+%     out.X  =   a matrix containing the explanatory variables (required
+%                only when option databrush is not empty).
 %   out.Bols =   (n-init+1) x (p+1) matrix containing the estimated beta
 %               coefficients monitored in each step of the robust procedure
 %               (required only when option databrush is not empty and

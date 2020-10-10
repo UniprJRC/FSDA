@@ -41,7 +41,7 @@ function [out , varargout] = Sregeda(y,X,varargin)
 %               'optimal'
 %               'hyperbolic'
 %               'hampel'
-%               'mddp'.
+%               'mdpd'.
 %               'bisquare' uses Tukey's $\rho$ and $\psi$ functions.
 %               See TBrho.m and TBpsi.m.
 %               'optimal' uses optimal $\rho$ and $\psi$ functions.
@@ -552,7 +552,7 @@ elseif strcmp(rhofunc,'mdpd')
     psifunc.kc1=kc;
     psifunc.class='PD';
 else
-    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mpdp''')
+    error('FSDA:Sreg:WrongRho','Specified rho function is not supported: possible values are ''bisquare'' , ''optimal'',  ''hyperbolic'', ''hampel'' ,''mdpd''')
 end
 
 XXrho=strcat(psifunc.class,'rho');
