@@ -15,7 +15,7 @@ ExclDir={'privateFS'  'datasets'};
 % Create list of folders which must have the personalized contents file
 list = findDir(FSDAroot,'InclDir',InclDir,'ExclDir',ExclDir);
 % Create personalized contents file for main folder of FSDA
-% and required subfolders.
+% and  required subfolders.
 force=false;
 warning('off')
 [FilesIncluded,FilesExcluded]=makecontentsfileFS('dirpath',list,'FilterFileContent','%FScategory:','force',force,'printOutputCell','Contents.m');

@@ -3,7 +3,7 @@ function h  = funnelchart(x, varargin)
 %
 %<a href="matlab: docsearchFS('funnelchart')">Link to the help function</a>
 %
-% Funnel charts provide a graphic representation of data values across
+% Funnel chart provides a graphic representation of data values across
 % multiple stages in a process. The chart displays progressively decreasing
 % values in proportions amounting to 100 percent in total. For example, you
 % could use a funnel chart to show the number of sales prospects at each
