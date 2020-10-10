@@ -61,8 +61,8 @@ function out=corrNominal(N, varargin)
 %               default value of datamatrix is false, that is the procedure
 %               automatically considers N as a contingency table. In case
 %               datamatrix is true N can be a cell of size n-by-2
-%               containing the two grouping variables or a numeric array of size
-%               n-by-2 or a table of size n-by-2.
+%               containing the two grouping variables or a numeric array of
+%               size n-by-2 or a table of size n-by-2.
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
