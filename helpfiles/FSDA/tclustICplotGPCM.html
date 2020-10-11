@@ -10,8 +10,12 @@
 % Make sure (whenever possible) that units 15, 30 and 69 are inside
 % groups which have labels respectively equal to 1, 2 and 3.
 UnitsSameGroup=[15 30 69];
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplotGPCM(out);</pre></div></div><pre class="codeoutput">k=1
+nsamp=50;
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
+'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp);
+tclustICplotGPCM(out);</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ...
+Connected to the parallel pool (number of workers: 8).
+k=1
 k=2
 k=3
 k=4
@@ -25,7 +29,9 @@ The labels of in the top part of Figure named BIC denote the values of $c_{det}$
        3) values of the information criterion
        4) frequency distribution of the associated classification<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+nsamp=50;
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
+'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp););
 tclustICplotGPCM(out,'datatooltip',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option datatooltip (personalized options).</li></span></a></span></h3><div class="collapse"><p>
      Gives the user the possibility of clicking on the different points
      and have information about the selected, the step of entry
@@ -35,13 +41,16 @@ tclustICplotGPCM(out,'datatooltip',1);</pre></div></div></p></div></div></d
 datatooltip.DisplayStyle = 'datatip';
 Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+nsamp=50;
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
+'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp);
 tclustICplotGPCM(out,'datatooltip',datatooltip);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
      databrushing from any of the plot which was produced.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Use all default options for databrush (brush just once)
 close all
 Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
+'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp);
 tclustICplotGPCM(out,'databrush',1);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 2.</i>
      Repeated databrushing.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% enable repeated brushing and show boxplots of groups inside diag of spm
 databrush=struct;
@@ -58,7 +67,8 @@ databrush.RemoveLabels='on';
 databrush.dispopt='box';
 Y=load('geyser2.txt');
 UnitsSameGroup=[15 30 69];
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
+'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp);
 tclustICplotGPCM(out,'databrush',databrush);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains the following fields.</p> <p>
                 IC.MIXMIX  (or IC.MIXCLA or IC.CLACLA) = 3D array of size
                    length(kk)-times-length(IC.ccdet)-times-length(IC.shw)

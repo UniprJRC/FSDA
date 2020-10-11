@@ -178,7 +178,7 @@ function tclustICplotGPCM(IC,varargin)
     UnitsSameGroup=[15 30 69];
     nsamp=50;
     out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,...
-        'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp););
+        'UnitsSameGroup',UnitsSameGroup,'nsamp',nsamp);
     tclustICplotGPCM(out,'datatooltip',1);
 %}
 
