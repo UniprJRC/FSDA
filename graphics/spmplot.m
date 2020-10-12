@@ -704,7 +704,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     spmplot(out,'datatooltip',1,'plo',plo);
     % The units which are already labelled in each panel of the scatter
     % plot matrix are those which in the search had a Mahalanobis distance
-    % greater than 2.5. Note that the labelling is controlled by option seleunit.
+    % greater than 2.5. Note that the labelling is controlled by option selunit.
 %}
 
 

@@ -211,7 +211,6 @@ function brushedUnits=mmdrsplot(out,varargin)
 
 %{
     %% Example of mmdrsplot with all the default options.
-    %Steps common to all the examples
     load('swiss_banknotes');
     Y=swiss_banknotes.data;
     [fre]=unibiv(Y);

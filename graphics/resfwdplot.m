@@ -801,7 +801,7 @@ function plotopt=resfwdplot(out,varargin)
     n=100;
     y=randn(n,1);
     X=randn(n,4);
-    [out]=Sregeda(y,X);
+    [out]=Sregeda(y,X,'nsamp',20);
     % Produce  resfwdplot
     resfwdplot(out);
 %}

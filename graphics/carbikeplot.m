@@ -142,26 +142,26 @@ function h  = carbikeplot(RelSol,varargin)
     % data generation given centroids and cov matrices
     [Y,id]=simdataset(n, out.Pi, out.Mu, out.S);
 
-    nsamp=1000;
+    nsamp=100;
 
     % Computation of information criterion
     out=tclustIC(Y,'cleanpool',false,'plots',0,'nsamp',nsamp);
 
     % Computation of the best solutions
-    % Plot first 3 best solutions using as Information criterion CLACLA
-    disp('Best 9 solutions using CLACLA')
+    % Plot first 5 best solutions using as Information criterion CLACLA
+    disp('Best 5 solutions using CLACLA')
     ThreshRandIndex=0.8;
-    NumberOfBestSolutions=9;
+    NumberOfBestSolutions=5;
     [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',NumberOfBestSolutions,'ThreshRandIndex',ThreshRandIndex);
     % Car-bike plot to show what are the most relevant solutions
     carbikeplot(outCLACLA)
-
 %}
 
 %{
     %% car-bike plot for the geyser data.
     Y=load('geyser2.txt');
-    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1);
+    nsamp=100;
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',nsamp);
 
     % Find the best solutions using as Information criterion MIXMIX
     disp('Best solutions using MIXMIX')
