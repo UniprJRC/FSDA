@@ -163,7 +163,7 @@ function h  = carbikeplotGPCM(RelSol,varargin)
     % Number of subsets to extract
     nsamp=100;
     % Computation of information criterion using MIXMIX
-    outICmixt=tclustICgpcm(Y,'plots',0,'nsamp',nsamp);
+    outICmixt=tclustICgpcm(Y,'plots',0,'nsamp',nsamp,'kk',1:4);
     % Specify number of solutions
     NumberOfBestSolutions=3;
     % Extract the best solutions using as Information criterion MIXMIX
@@ -174,7 +174,7 @@ function h  = carbikeplotGPCM(RelSol,varargin)
 %{
     %% car-bike plot for the geyser data.
     Y=load('geyser2.txt');
-    out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',100);
+    out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',100,'kk',2:4);
 
     % Find the best solutions using as Information criterion MIXMIX
     disp('Best solutions using MIXMIX')
