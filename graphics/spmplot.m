@@ -5,11 +5,11 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %
 %  Required input arguments:
 %
-%     Y : data matrix (2D array) containing n observations on v variables
+%     Y : data matrix (2D array or table) containing n observations on v variables
 %         or a structure 'out' coming from function FSMeda. Matrix or
 %         struct.
 %
-%     If Y is a 2D array, varargin can be either a sequence of name/value
+%     If Y is a 2D array or table, varargin can be either a sequence of name/value
 %     pairs, detailed below, or one of the following explicit assignments:
 %
 %       spmplot(Y,group);
@@ -92,7 +92,8 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %           both set to the empty string '' (default), and no label and
 %           no name is added to the plot.
 %
-%         If plo = 1 the names Y1,..., Yv are added to the margins of the
+%         If plo = 1 the names Y1,..., Yv or the variable names of the
+%           table are added to the margins of the
 %           the scatter plot matrix else nothing is added.
 %
 %         If plo is a structure, it is possible to control not only the
@@ -249,7 +250,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %                   DATABRUSH IS AN EMPTY VALUE.
 %                   If databrush is an empty value (default), no brushing
 %                   is done.
-%                   The activation of this option (databrush is a scalar or a cell)                    
+%                   The activation of this option (databrush is a scalar or a cell)
 %                   enables the user  to select a set of observations in
 %                   the current plot and to see them highlighted in the
 %                   malfwdplot, i.e. the plot of the trajectories of all
@@ -353,6 +354,15 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
 %$LastChangedDate::                      $: Date of the last commit
 
 % Examples:
+
+%{
+    % Call of spmplot with Y as table.
+    % In this case the VariableNames of the table are added at the margins
+    % of the plot.
+    load fisheriris;
+    meastable=array2table(meas,'VariableNames',{'SL','SW','PL','PW'});
+    spmplot(meastable)
+%}
 
 %{
     % Call of spmplot without name/value pairs.
@@ -516,7 +526,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     Y=randn(n,3);
     Ycont=Y;
     Ycont(1:5,:)=Ycont(1:5,:)+3;
-    [out]=FSM(Ycont,'plots',1); 
+    [out]=FSM(Ycont,'plots',1);
     group = zeros(n,1);
     group(out.outliers)=1;
     plo=struct;
@@ -730,7 +740,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     [fre]=unibiv(Y);
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
-    [out]=FSMeda(Y,bs,'plots',0); 
+    [out]=FSMeda(Y,bs,'plots',0);
     spmplot(out,'selstep',[60 80],'selunit','10',...
            'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
@@ -757,7 +767,7 @@ function [H,AX,BigAx] = spmplot(Y,varargin)
     [fre]=unibiv(Y);
     fre=sortrows(fre,4);
     bs=fre(1:m0,1);
-    [out]=FSMeda(Y,bs,'plots',0); 
+    [out]=FSMeda(Y,bs,'plots',0);
     spmplot(out,'selstep',[60 80],'selunit',1:5,...
            'databrush',{'persist','off','selectionmode' 'Rect'});
 %}
@@ -806,7 +816,15 @@ if ~isstruct(Y)
     % are specified in option plo.label.
     % numtext=cellstr(num2str(seq,'%d'));
     
+    % check if Y is a table.
+    if istable(Y)
+        namesFromTable=Y.Properties.VariableNames;
+        Y=Y{:,:};
+    else
+        namesFromTable='';
+    end
 else
+    namesFromTable='';
     % The first argument (Y) is a structure
     out=Y;
     % Retrieve matrix Y from the input structure
@@ -1030,7 +1048,11 @@ if isstruct(plo)
     if d>0
         nameY=plo.nameY;
     else
-        nameY=cellstr(num2str((1:v)','Y%d'));
+        if isempty(namesFromTable)
+            nameY=cellstr(num2str((1:v)','Y%d'));
+        else
+            nameY=namesFromTable;
+        end
     end
     d=find(strcmp('labeladd',fplo));
     if d>0
@@ -1115,9 +1137,17 @@ else
     end
     
     if plo==1
-        nameY = cellstr(num2str((1:v)','Y%d'));
+        if isempty(namesFromTable)
+            nameY = cellstr(num2str((1:v)','Y%d'));
+        else
+            nameY=namesFromTable;
+        end
     else
-        nameY = '';
+        if isempty(namesFromTable)
+            nameY = '';
+        else
+            nameY=namesFromTable;
+        end
     end
     labeladd='';
     
