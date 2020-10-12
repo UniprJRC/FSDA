@@ -413,7 +413,7 @@ function out  = tclustICgpcm(Y, varargin)
 %
 %                out.Y  = Original data matrix Y. The field is present if
 %                   option Ysave is set to 1.
-%             
+%
 %             out.alpha = scalar. Level of trimming which has been used.
 %
 %           out.BICshb  = value of the information criterion for each
@@ -796,6 +796,7 @@ if typeIC==0 % CLACLA
     % Find best estimate of cshbbest
     candshb=cc(cc<=cshwbest^((v-1)/v));
     
+    IDXshb=zeros(n,length(candshb));
     BICshb=zeros(length(candshb),1);
     for jshb=1:length(candshb)
         pasel.shb=candshb(jshb);
@@ -818,6 +819,8 @@ if typeIC==0 % CLACLA
         modelroot(2)='E';
     end
     
+    % End of between groups refinment for CLACLA
+    % Beginning of rotation part for CLACLA
     models{1}=[modelroot(1:2) 'I'];
     models{2}=[modelroot(1:2) 'E'];
     models{3}=[modelroot(1:2) 'V'];
@@ -884,7 +887,7 @@ else  % MIXMIX or MIXCLA store IDXMIX
         if typeIC==1
             BICshb(jshb)=outMixt.MIXCLA;
         end
-            IDXshb(:,jshb)=outMixt.idx;
+        IDXshb(:,jshb)=outMixt.idx;
     end
     
     [~,posminbestcshb]=min(BICshb);
@@ -895,6 +898,9 @@ else  % MIXMIX or MIXCLA store IDXMIX
     if cshbbest==1
         modelroot(2)='E';
     end
+    
+    % End of between groups refinment for MIXMIX (MIXCLA)
+    % Beginning of rotation part for MIXMIX (MIXCLA)
     
     models{1}=[modelroot(1:2) 'I'];
     models{2}=[modelroot(1:2) 'E'];
@@ -988,7 +994,7 @@ out.IDXrot=IDXrot;
 end
 
 
-        
+
 function [kbest,cdetbest,cshwbest,BICbest]=selICplot(selIC,cdet,cshw,kk,nameselIC,plots)
 
 [valmin,posmin]=min(selIC,[],'all','linear');
