@@ -195,7 +195,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSM:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:makecontentsfileFS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -431,8 +431,22 @@ if ~isempty(printOutputCell)
         % nm = name of the folder which will be printed in the contents filte
         [~,nm] = fileparts(dirpathmain);
         % Print in uppercase the name of the folder and then leave two lines
+        
         fprintf(fid,'%% %s%s%%%s',upper(nm), lineSep, lineSep);
+        
+        
+        fprintf(fid,'%% %s%s%%%s', 'FSDA code for any function is open and extensible. FSDA is open source software licensed ',...
+            'under the terms of the European Union Public Licence (EUPL)', lineSep, lineSep);
+        fprintf(fid,'%% %s%s%%%s', 'FSDA  is developed by the Robust Statistics Academy of University of Parma (http://rosa.unipr.it) jointly with ',...
+            'Joint Research Centre of European Commission (https://ec.europa.eu/jrc/en/about/jrc-site/ispra)', lineSep, lineSep);
+        fprintf(fid,'%% %s%s%%%s', 'The source code is also available on Github (https://uniprjrc.github.io/FSDA/) the html documentation ',...
+            'in Mathworks style can be found in the supplementary software section of MATLAB help system.', lineSep, lineSep);
+        fprintf(fid,'%% %s%s%%%s', 'A copy of the documentation can be found at the web address http://rosa.unipr.it/FSDA/guide.html', lineSep, lineSep);
+        
         % fprintf(fid,'%% Files%s', lineSep);
+        
+        fprintf(fid,['%%' lineSep]);
+        
         fprintf(fid,'%% File names, description, category and date last modified%s', lineSep);
         
         fprintf(fid,['%%' lineSep]);
