@@ -4,7 +4,7 @@ function h = scatterboxplot(x,y,varargin)
 %
 %  scatterboxplot displays a 2D scatter plot with marginal boxplots. It
 %  receives data in two vectors X and Y, and puts a univariate boxplot on
-%  the horizontal and vertical axes of the plot. x and y must be the same
+%  the horizontal and vertical axes of the plot. x and y must have the same
 %  length.
 %
 %  Required input arguments:
@@ -33,7 +33,7 @@ function h = scatterboxplot(x,y,varargin)
 %               Data Types - single | double.
 % 
 %
-%  See also scatterhist
+%  See also scatterhist, scatterhistogram
 %
 %
 % References:
@@ -42,7 +42,7 @@ function h = scatterboxplot(x,y,varargin)
 % Written by FSDA team
 %
 %
-%<a href="matlab: docsearchFS('wthin')">Link to the help page for this function</a>
+%<a href="matlab: docsearchFS('scatterboxplot')">Link to the help page for this function</a>
 %
 %$LastChangedDate:: 2019-11-19 19:15:24 #$: Date of the last commit
 %
@@ -61,7 +61,7 @@ function h = scatterboxplot(x,y,varargin)
     group(1:50)=2; scatterboxplot(randn(n,1),randn(n,1),'Group',group)
 %}
 
-%% Start calling function scatterhistogram
+%% Start calling function scatterhist
 if nargin<3
     h=scatterhist(x,y);
     group='';
@@ -92,4 +92,4 @@ axis(h(1),'auto');    % Sync axes
 hold off;
 
 end
-
+%FScategory:VIS-Mult
