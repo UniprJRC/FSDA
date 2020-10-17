@@ -100,6 +100,22 @@ function [c,A,B,d] = HYPeff(eff, v, k, traceiter)
     % See also Table 2 of HRR p. 645
 %}
 
+%{
+    % Example of use of option Find parameters for fixed efficiency and k. 
+    % Find value of c, A, B, for a nominal efficiency of 0.8427
+    % when k=4.5
+ 
+    ktuning=4.5;
+    traceiter =true;
+    [c,A,B,d]=HYPeff(0.8427,1,ktuning,traceiter);
+    % In this case
+    % c = 3.000130564905703
+    % A = 0.604298601602487
+    % B = 0.713612241773758
+    % d= 1.304379168746527
+    % See also Table 2 of HRR p. 645
+%}
+
 %% Beginning of code
 
 
