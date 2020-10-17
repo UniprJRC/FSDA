@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.toolbox" plugin-version="1.0">
-  <configuration file="D:\MATLAB\FSDAgit\FSDAprojectprogrammatically\ToolboxPackagingConfiguration.prj" location="D:\MATLAB\FSDAgit\FSDAprojectprogrammatically" name="ToolboxPackagingConfiguration" target="target.toolbox" target-name="Package Toolbox">
+  <configuration file="D:\tmp\ToolboxPackagingConfiguration.prj" location="D:\tmp" name="ToolboxPackagingConfiguration" target="target.toolbox" target-name="Package Toolbox">
     <param.appname>FSDA</param.appname>
     <param.authnamewatermark />
     <param.email />
@@ -7,17 +7,11 @@
     <param.summary />
     <param.description />
     <param.screenshot />
-    <param.version>8.1.0</param.version>
+    <param.version>1.0</param.version>
     <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
-    <param.products.name>
-      <item>Statistics and Machine Learning Toolbox</item>
-    </param.products.name>
-    <param.products.id>
-      <item>19</item>
-    </param.products.id>
-    <param.products.version>
-      <item>11.7</item>
-    </param.products.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
     <param.platforms />
     <param.guid>20669fbc-61ca-4050-bc87-575422f4c0b8</param.guid>
     <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
@@ -111,8 +105,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <param.javaclasspath.excludes />
       <param.exported.on.package />
       <param.required.addons />
-      <param.release.start />
-      <param.release.end />
       <param.release.current.only />
       <param.compatiblity.windows />
       <param.compatiblity.macos />
@@ -129,7 +121,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA</file>
     </fileset.rootdir>
     <fileset.rootfiles>
-      <file>${PROJECT_ROOT}\FSDA\.circleci</file>
       <file>${PROJECT_ROOT}\FSDA\.gitattributes</file>
       <file>${PROJECT_ROOT}\FSDA\.gitignore</file>
       <file>${PROJECT_ROOT}\FSDA\.travis.yml</file>
@@ -138,6 +129,7 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA\brushFAN.mlappinstall</file>
       <file>${PROJECT_ROOT}\FSDA\brushRES.mlappinstall</file>
       <file>${PROJECT_ROOT}\FSDA\brushROB.mlappinstall</file>
+      <file>${PROJECT_ROOT}\FSDA\builds</file>
       <file>${PROJECT_ROOT}\FSDA\clustering</file>
       <file>${PROJECT_ROOT}\FSDA\combinatorial</file>
       <file>${PROJECT_ROOT}\FSDA\Contents.m</file>
@@ -149,6 +141,7 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA\FSDAdemos</file>
       <file>${PROJECT_ROOT}\FSDA\graphics</file>
       <file>${PROJECT_ROOT}\FSDA\helpfiles</file>
+      <file>${PROJECT_ROOT}\FSDA\html</file>
       <file>${PROJECT_ROOT}\FSDA\info.xml</file>
       <file>${PROJECT_ROOT}\FSDA\installFSDA.m</file>
       <file>${PROJECT_ROOT}\FSDA\installHelpFiles.m</file>
@@ -159,7 +152,7 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <file>${PROJECT_ROOT}\FSDA\poster_FSDA.pdf</file>
       <file>${PROJECT_ROOT}\FSDA\regression</file>
       <file>${PROJECT_ROOT}\FSDA\runAllMyTestsFS.m</file>
-      <file>${PROJECT_ROOT}\FSDA\Univ</file>
+      <file>${PROJECT_ROOT}\FSDA\runAllMyTestsJenkins.m</file>
       <file>${PROJECT_ROOT}\FSDA\utilities</file>
       <file>${PROJECT_ROOT}\FSDA\utilities_help</file>
       <file>${PROJECT_ROOT}\FSDA\utilities_stat</file>
@@ -168,11 +161,11 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
     <fileset.depfun.excluded />
     <fileset.package />
     <build-deliverables>
-      <file location="${PROJECT_ROOT}" name="FSDA.mltbx" optional="false">D:\MATLAB\FSDAgit\FSDAprojectprogrammatically\FSDA.mltbx</file>
+      <file location="${PROJECT_ROOT}" name="FSDA.mltbx" optional="false">D:\tmp\FSDA.mltbx</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>C:\Program Files\MATLAB\R2020a</root>
+      <root>C:\Program Files\MATLAB\R2020b</root>
       <toolboxes>
         <toolbox name="neuralnetwork" />
       </toolboxes>
