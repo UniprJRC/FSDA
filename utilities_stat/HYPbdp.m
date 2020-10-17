@@ -143,6 +143,13 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
     table(ktun,eff)
 %}
 
+%{
+    % Example of use of option traceiter.
+    traceiter=1
+    ktuning=4.5;
+    [c,A,B,d]=HYPbdp(0.4,1,ktuning,traceiter);
+%}
+
 %% Beginning of code
 
 
