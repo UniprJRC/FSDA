@@ -1,5 +1,5 @@
 function h = scatterboxplot(x,y,varargin)
-% scatterboxplot creates scatter diagram with marginal boxplots
+%scatterboxplot creates scatter diagram with marginal boxplots
 %
 %<a href="matlab: docsearchFS('scatterboxplot')">Link to the help page for this function</a>
 %
