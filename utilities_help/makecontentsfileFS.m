@@ -422,6 +422,7 @@ Excluded=Excluded(1:iExcluded-1,:);
 out = out(sortIndex,:);
 
 if ~isempty(printOutputCell)
+    % force=true;
     dirpathmain=pwd;
     if (noContentsFlag || force == true) && ~isempty(out)
         [fid,errMsg] = fopen([dirpathmain filesep printOutputCell],'w');
@@ -432,16 +433,20 @@ if ~isempty(printOutputCell)
         [~,nm] = fileparts(dirpathmain);
         % Print in uppercase the name of the folder and then leave two lines
         
-        fprintf(fid,'%% %s%s%%%s',upper(nm), lineSep, lineSep);
+        fprintf(fid,'%%%% %s%s%%%s',upper(nm), lineSep, lineSep);
         
         
-        fprintf(fid,'%% %s%s%%%s', 'FSDA code for any function is open and extensible. FSDA is open source software licensed ',...
-            'under the terms of the European Union Public Licence (EUPL)', lineSep, lineSep);
-        fprintf(fid,'%% %s%s%%%s', 'FSDA  is developed by the Robust Statistics Academy of University of Parma (http://rosa.unipr.it) jointly with ',...
-            'Joint Research Centre of European Commission (https://ec.europa.eu/jrc/en/about/jrc-site/ispra)', lineSep, lineSep);
-        fprintf(fid,'%% %s%s%%%s', 'The source code is also available on Github (https://uniprjrc.github.io/FSDA/) the html documentation ',...
-            'in Mathworks style can be found in the supplementary software section of MATLAB help system.', lineSep, lineSep);
-        fprintf(fid,'%% %s%s%%%s', 'A copy of the documentation can be found at the web address http://rosa.unipr.it/FSDA/guide.html', lineSep, lineSep);
+        fprintf(fid,'%% FSDA code for any function is open and extensible.%s', [lineSep '%' lineSep]);
+        fprintf(fid,'%% FSDA  is developed by the Robust Statistics Academy of the University of Parma%s', lineSep);
+        fprintf(fid,'%% (http://rosa.unipr.it) jointly with the%s',lineSep);
+        fprintf(fid,'%% Joint Research Centre of European Commission%s',lineSep);
+        fprintf(fid,'%% (https://ec.europa.eu/jrc/en/about/jrc-site/ispra)%s', [lineSep '%' lineSep]);
+        fprintf(fid,'%% The source code is also available on github%s', lineSep);
+        fprintf(fid,'%% (https://uniprjrc.github.io/FSDA/)%s', [lineSep '%' lineSep]);
+        fprintf(fid,'%% The html documentation of each function in Mathworks style can be found%s', lineSep);
+        fprintf(fid,'%% in the supplementary software section of MATLAB help system.%s', lineSep);
+        fprintf(fid,'%% A copy of the documentation can also be found at the web address%s', lineSep);
+        fprintf(fid,'%% (http://rosa.unipr.it/FSDA/guide.html)%s', lineSep);
         
         % fprintf(fid,'%% Files%s', lineSep);
         
