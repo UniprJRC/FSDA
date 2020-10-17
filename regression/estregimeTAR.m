@@ -84,6 +84,9 @@ function [out] = estregimeTAR(y, X)
 %
 % See also extendVEC, SETARX
 %
+%
+% References:
+%
 % Copyright 2008-2020.
 % Written by FSDA team
 %
