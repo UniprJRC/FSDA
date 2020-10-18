@@ -107,7 +107,7 @@ function [out] = estregimeTAR(y, X)
     y=randn(n,1);
         
     X1=[X [1:200]' [1:200]'];
-    [out1] = estregimeTAR(y, X1);
+    [out] = estregimeTAR(y, X1);
 %}
 
 %{
