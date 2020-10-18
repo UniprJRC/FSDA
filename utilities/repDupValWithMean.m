@@ -49,7 +49,7 @@ function ysmo=repDupValWithMean(x,y,consec)
 %
 %
 %
-% See also: diff, accumarray, unique
+% See also: diff, accumarray
 %
 %
 % References:
