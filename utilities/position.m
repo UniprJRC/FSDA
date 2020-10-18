@@ -51,7 +51,7 @@ function position(plmain)
     position(hmain);
 %}
 %{
-    % The three plots have now an unknown tag. In this case, we assume that 
+    % The three plots have now an unknown tag. In this case, we assume that
     % the plots are not relevant and are therefore put in a non-interesting
     % screen area (top-right).
     close all
@@ -114,7 +114,10 @@ posmain = [edge,...
     scrheight * (1-fraction),...
     halfscrheight*whratio - edge,...
     scrheight * fraction];
-set(plmain,'WindowStyle','normal','OuterPosition',posmain);
+try
+    set(plmain,'WindowStyle','normal','OuterPosition',posmain);
+catch
+end
 
 %% Reposition all other figures
 
