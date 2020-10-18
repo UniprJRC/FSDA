@@ -24,7 +24,7 @@ function c = TBbdp(bdp,v)
 % See also: OPTbdp, HYPbdp, HAbdp, PDbdp
 %
 % References:
-% 
+%
 % Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
 % and Methods", Wiley, New York.
 %
@@ -42,7 +42,7 @@ function c = TBbdp(bdp,v)
 %
 %{
     % Find c given bdp.
-    % The constant c associated to a breakdown point of 50% in regression is 
+    % The constant c associated to a breakdown point of 50% in regression is
     % c=1.547644980928226
     c=TBbdp(0.5,1)
 %}
@@ -52,6 +52,15 @@ function c = TBbdp(bdp,v)
 
 % c = starting point of the iteration
 c=5;
+
+% if bdp>0.0001
+%     c=5;
+% elseif bdp>=0.00003
+%     c=270;
+% else
+%     c=350;
+% end
+
 % step = width of the dichotomic search (it decreases by half at each
 % iteration). Generally it can be smaller. A large value ensures converge
 % when bdp is very small and p is very large.
