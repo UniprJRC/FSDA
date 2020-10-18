@@ -17,9 +17,13 @@ plot(x,y,'.',x,yhat);
 % thinning over the predicted values
 %[Wt,pretain] = wthin([yhat ; y3], 'retainby','comp2one');
 % thinning over the predicted values when specifying a thinning
-probability pstar.
-pstar=0.80
+%probability pstar (randomized thinning).
+pstar=0.95
 [Wt,pretain] = wthin(yhat, 'retainby','comp2one','pstar',pstar);
+% thinning over the predicted values when specifying a thinning
+%cup (winsorized thinning).
+cup=0.5
+[Wt,pretain] = wthin(yhat, 'retainby','comp2one','cup',cup);
 figure;
 plot(x(Wt,:),y(Wt,:),'k.',x(~Wt,:),y(~Wt,:),'r.');
 drawnow;
@@ -109,7 +113,7 @@ clickableMultiLegend(['Retained: ' num2str(sum(Wt))],['Thinned:   ' num2str(sum(
                 enter in the thinning procedure.</p> <p>
                 Data Types - scalar
                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code></code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar
-                Example - cup, 0.95</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Wt" class="clearfix"></div><h3 id="output_argument_Wt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Wt</code> &#8212;vector of Bernoulli weights.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Contains 1 for retained
+                Example - pstar, 0.95</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_Wt" class="clearfix"></div><h3 id="output_argument_Wt" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Wt</code> &#8212;vector of Bernoulli weights.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> Contains 1 for retained
                units and 0 for thinned units.</p> <p>
                Data Types - single | double.</p></p></div></div><div class="expandableContent"><div id="outputarg_pretain" class="clearfix"></div><h3 id="output_argument_pretain" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>pretain</code> &#8212;vector of retention probabilities.</span></a><span class="example_desc"><code> </code>Vector</span></span></h3><div class="collapse"><p><p> These are the
                probabilities that each point in X will be retained,

@@ -95,7 +95,26 @@ resindexplot(outLMSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','confl
 h=subplot(2,2,4);
 laby='Scaled reweighted LTS residuals';
 resindexplot(outLTSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);
-% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option bonflevoutX.</li></span></a></span></h3><div class="collapse"><p>
+% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+
+h = 
+
+  Axes with properties:
+
+             XLim: [0 1]
+             YLim: [0 1]
+           XScale: 'linear'
+           YScale: 'linear'
+    GridLineStyle: '-'
+         Position: [0.1300 0.5838 0.3347 0.3412]
+            Units: 'normalized'
+
+  Use GET to show all properties
+
+Total estimated time to complete LTS:  0.03 seconds 
+Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LTS:  0.03 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/LXS.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\LXS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option bonflevoutX.</li></span></a></span></h3><div class="collapse"><p>
      In this example a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that while best LMS using all
 % default options contains some of the remote units. In order to make sure
 % that the remote units are excluded from the best LMS subset it is
@@ -125,7 +144,11 @@ plot(Xall,yall,'o')
 out=LXS(yall,Xall,'bonflevoutX',0.99);
 line(xylim(1:2),out.beta(1)+out.beta(2)*xylim(1:2))
 ylim(xylim(3:4));
-title('Fit using best subset with option bonflevoutX  not empty')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+title('Fit using best subset with option bonflevoutX  not empty')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+Total estimated time to complete LMS:  0.22 seconds 
+------------------------------
+Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to 17.1333%
+</pre><a href='http://rosa.unipr.it/fsda/LXS.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LXS_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')

@@ -7,8 +7,8 @@
    (associated with  $c_{det}$ and $c_{shw}$) which are respectively
    referred to interval of values for which the solution is best and
    stable and a horizontal line which departs from the rectangle for the
-   values of $c_det$ ($c_{shw}$) in which the solution is only stable.</p> <p>
-   Finally, for the best value of $c_det$ ($c_{shw}$) associated to the
+   values of $c_{det}$ ($c_{shw}$) in which the solution is only stable.</p> <p>
+   Finally, for the best value of $c_{det}$ ($c_{shw}$) associated to the
    solution, we show a circle with a  number indicating the ranked
    solution among those which are not spurious. This plot has been
    baptized ``car-bike'', because the first best solutions (in general 2
@@ -17,7 +17,7 @@
    are likely to be stable for additional values of $c_det$ ($c_{shw}$)
    and therefore are likely to have horizontal lines departing from the
    rectangles (from here the name ``cars''). Finally, local minor
-   solutions (which are associated with particular values of $c_det$
+   solutions (which are associated with particular values of $c_{det}$
    ($c_{shw}$) and $k$) do not generally present rectangles or lines and
    are shown with circles (from here the name ``bikes'')</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="carbikeplotGPCM.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_h"><code>h</code></a>=carbikeplotGPCM(<a class="intrnllnk" href="#inputarg_RelSol"><code>RelSol</code></a>)</code></span>Simulated data with 3 components.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="carbikeplotGPCM.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_h"><code>h</code></a>=carbikeplotGPCM(<a class="intrnllnk" href="#inputarg_RelSol"><code>RelSol</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>car-bike plot for the geyser data.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulated data with 3 components.</li></span></a></span></h3><div class="collapse"><p>
      Data generation
@@ -36,7 +36,7 @@ outMS=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
 % Number of subsets to extract
 nsamp=100;
 % Computation of information criterion using MIXMIX
-outICmixt=tclustICgpcm(Y,'plots',0,'nsamp',nsamp);
+outICmixt=tclustICgpcm(Y,'plots',0,'nsamp',nsamp,'kk',1:4);
 % Specify number of solutions
 NumberOfBestSolutions=3;
 % Extract the best solutions using as Information criterion MIXMIX
@@ -45,25 +45,22 @@ carbikeplotGPCM(outMIXMIX);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
-k=5
 </pre><a href='http://rosa.unipr.it/fsda/carbikeplotGPCM.html#Example_1'><img vspace="5" hspace="5" src="images\carbikeplotGPCM_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> car-bike plot for the geyser data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
-out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',100);
+out=tclustICgpcm(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',100,'kk',2:4);
 % Find the best solutions using as Information criterion MIXMIX
 disp('Best solutions using MIXMIX')
 [outMIXMIX]=tclustICsolGPCM(out,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',3);
 % Produce the car-bike plot
-carbikeplotGPCM(outMIXMIX)</pre></div></div><pre class="codeoutput">k=1
-k=2
+carbikeplotGPCM(outMIXMIX)</pre></div></div><pre class="codeoutput">k=2
 k=3
 k=4
-k=5
 Best solutions using MIXMIX
 
 ans = 
 
-  Figure (7) with properties:
+  Figure (2) with properties:
 
-      Number: 7
+      Number: 2
         Name: ''
        Color: [0.9400 0.9400 0.9400]
     Position: [489 343 560 420]

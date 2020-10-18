@@ -1,7 +1,7 @@
 function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
 %restreigenmemopt computes eigenvalues restriction (without Dykstra algorithm)
 %
-%<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restreigenmemopt')">Link to the help function</a>
 %
 %   restreigenmemopt, like restreigen, restricts the eigenvalues according
 %   to the constraint specified in scalar restr. This function is a version

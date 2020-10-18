@@ -1,0 +1,36 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>estregimeTAR</title> <meta content="refpage" name="chunktype"><meta content="function:estregimeTAR " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="estregimeTAR Estimate a regression model with OLS in one of the regimes of a TAR model" itemprop="description" name="description" /><h1 itemprop="title">estregimeTAR</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/estregimeTAR.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/estregimeTAR.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/estregimeTAR.html">http://rosa.unipr.it/FSDA/estregimeTAR.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: estregimeTAR</em></p><P>estregimeTAR</P><P>Estimate a regression model with OLS in one of the regimes of a TAR model</P><h2>More About</h2><P>
+ This routine performs the following operations:
+ 1) If y is a row vector it is transformed in a column vector.
+ 2) Checks that X is a matrix that has not more than two dimensions.
+ 3) Checks dimension consistency of X and y.
+ 4) Checks for missing or infinite values in X and y.
+ 5) Checks if there are constant columns in matrix X. Firstly, all
+ the 0-columns are removed (the associated regressors cannot enter
+ in the parameter estimation step). Then, to avoid multicollinearity,
+ in the case of presence of multiple non-zero constant columns, the
+ code leave only the first constant column. If using the SETARX function,
+ this corresponds to the preference order:
+  (i) autoregressive variables,
+  (ii) exogenous variables,
+  (iii) dummies.
+ The indices of all the removed columns are saved in out.rmv_col.
+ 6) Computes final values of n and k after previous operations;
+ 7) Makes sure that n&gt;=k;
+ 8) Checks the rank of X before OLS estimation: if X is singular despite the adjustments,
+ the OLS estimation is skipped with a warning and the parameters values are set to NaNs.
+ 9) Performs OLS estimation if matrix X is not singular.
+ The estimation of the covariance matrix (and standard errors) of the OLS estimator
+ $\hat{\beta} = (X^{\prime} X)^{-1}X^{\prime}y$ is made via the Huber-White "Sandwich" estimator:
+ $$\mathrm{cov}(\boldsymbol{\beta})=(\mathbf{X}^{\prime} \mathbf{X})^{-1}\mathbf{X}^{\prime} \mathbf{\Sigma} \mathbf{X}(\mathbf{X}^{\prime}
+ \mathbf{X})^{-1}.$$
+ This is a heteroskedasticity-robust variance-covariance matrix, without imposing any assumption on
+ the structure of heteroskedasticity. Assuming the indipendence of the regression errors $\mathbf{u}$,
+ the adjusted estimation of matrix $\Sigma$ is:
+ $$\hat{\mathbf{\Sigma}}= \frac{n}{n-k} \mathrm{diag}(\mathbf{u}^2).$$
+ If there is no heteroskedasticity, the robust standard errors will become just conventional
+ OLS standard errors. Thus, the robust standard errors are appropriate even under homoskedasticity.
+ 10) Extends the vectors out.beta and out.se with the extendVEC function.
+ The beta values, corresponding to the removed columns of X, are set to 0.
+ The se values, corresponding to the removed columns of X, are set to NaN.
+
+</P></html>

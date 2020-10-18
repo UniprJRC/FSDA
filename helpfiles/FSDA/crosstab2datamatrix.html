@@ -18,7 +18,18 @@ disp('Compare original contingency table and the one passing through X')
 disp('Original contingency table')
 disp(N)
 disp('Contingency table obtained using crosstab applied to reconstructed original data matrix')
-disp(crosstab(X(:,1),X(:,2)))</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option Lc.</li></span></a></span></h3><div class="collapse"><p>
+disp(crosstab(X(:,1),X(:,2)))</pre></div></div><pre class="codeoutput">Compare original contingency table and the one passing through X
+Original contingency table
+    24    23    30
+    19    43    57
+    13    33    58
+
+Contingency table obtained using crosstab applied to reconstructed original data matrix
+    24    23    30
+    19    43    57
+    13    33    58
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option Lc.</li></span></a></span></h3><div class="collapse"><p>
      In this case just the column names are supplied
      The default row labels 'r1' 'r2' 'r3' are used<div class="programlisting"><div class="codeinput"><pre class="matlab-code">N = [24 23 30; 
 19 43 57;

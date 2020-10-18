@@ -39,7 +39,9 @@ alphaX = 1;
 % panel of the gscatter plot.
 plots=struct;
 plots.name={'gscatter'};
-out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
+out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclustregeda.html#Example_2'><img vspace="5" hspace="5" src="images\tclustregeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclustregeda: example with multiple explanatory variables, with yXplot.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X  = load('X.txt');
 y = X(:,end);
 rng(100)
 X = [randn(length(y),4) X(:,1:end-1)];
@@ -161,7 +163,8 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                shall be considered in the concentration, assignment steps
                and computation of the likelihood.</p> <p>
                if equalweights = true we are (ideally) assuming equally
-               sized groups by maximizing the likelihood
+               sized groups by maximizing the likelihood. Default value
+               false.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | matrix with k*p columns.</span></span></h3><div class="collapse">	<p><p>If nsamp is a scalar it contains the number of subsamples
             which will be extracted.</p> <p>
@@ -189,7 +192,7 @@ out = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,'mixt',2,'msg',0,'plots',plot
                  monitoring between two consecutive values of alpha the
                  change in classification using ARI index (top left panel),
                  the relative change in beta (top right panel)
-                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||beta_{\alpha_2}||^2
+                 ($||\beta_{\alpha_1}-\beta_{\alpha_2}||^2/||\beta_{\alpha_2}||^2
                  the relative change in \sigma^2 (third panel) the
                  relative change in \sigma^2 corrected (fourth panel) and
                  if alphaX=1, the relative change in centroids (fifth

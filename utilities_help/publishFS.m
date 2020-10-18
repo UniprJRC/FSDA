@@ -2929,6 +2929,7 @@ for i=1:nseealso
                         cd(pathdocroot)
                         pathExtHelpFile=dir(['**/' Seealsoitem '.html']);
                         if isempty(pathExtHelpFile)
+                            cd(currentfolder)
                             error('FSDA:publishFS:WrngSeeAlso',['cannot find a reference to doc file ' Seealsoitem '.html']);
                         end
                         pathExtHelpFile=pathExtHelpFile(1).folder;

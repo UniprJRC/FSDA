@@ -305,7 +305,7 @@ numpar = {'model parameters:' , str};
 axeslast=findobj('-regexp','Tag','LTSts:ts');
 title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LTSts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -348,7 +348,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\LTSts_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
      other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -391,7 +391,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\LTSts_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
 close all; clear all;
 % the datasets
 load('P12119085');
@@ -423,7 +423,91 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
 outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
 title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
 outFRS5 = FSRts(Y5,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">         lab           bhat          se         tstat         pval   
+    _____________    _________    _________    ________    __________
+
+    {'b_trend1' }       115.27       4.5051      25.586    2.0728e-26
+    {'b_trend2' }        1.592      0.27465      5.7965    9.1326e-07
+    {'b_cos1'   }      -2.8294       3.9153    -0.72265        0.4741
+    {'b_sin1'   }      -12.419       4.6909     -2.6475      0.011543
+    {'b_cos2'   }      -9.0708       4.6584     -1.9472      0.058559
+    {'b_sin2'   }      -22.604       4.7099     -4.7992    2.2402e-05
+    {'b_varampl'}    -0.015796    0.0042445     -3.7215    0.00060896
+    {'b_lshift' }      -112.62       7.6319     -14.756    8.9213e-18
+
+Level shift position t=27
+         lab           bhat          se         tstat        pval   
+    _____________    _________    _________    _______    __________
+
+    {'b_trend1' }        55.14       3.8549     14.304    2.5537e-17
+    {'b_trend2' }      0.89673      0.19848     4.5181    5.4202e-05
+    {'b_cos1'   }       15.545       4.1497     3.7461    0.00056646
+    {'b_sin1'   }        3.612       4.2659    0.84671        0.4022
+    {'b_cos2'   }      -32.496       4.2541    -7.6387    2.4573e-09
+    {'b_sin2'   }      -16.057        4.313    -3.7229    0.00060638
+    {'b_varampl'}    -0.022594    0.0018596     -12.15    5.2846e-15
+    {'b_lshift' }      -79.413       5.6981    -13.937    6.0952e-17
+
+Level shift position t=34
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           1           2           0           0           0
+
+Level shift for t=14
+Level shift for t=15
+Level shift for t=16
+Level shift for t=17
+Level shift for t=18
+Level shift for t=19
+Level shift for t=20
+Level shift for t=21
+Level shift for t=22
+Level shift for t=23
+Level shift for t=24
+Level shift for t=25
+Level shift for t=26
+Level shift for t=27
+Level shift for t=28
+Level shift for t=29
+Level shift for t=30
+Level shift for t=31
+Level shift for t=32
+Level shift for t=33
+Level shift for t=34
+Level shift for t=35
+-------------------------
+Signal detection loop
+Sample seems homogeneous, no outlier has been found
+Summary of the exceedances
+           1          99         999        9999       99999
+           0           5           1           0           0
+
+</pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'intercept',false
 </code>,<code> 'h',round(n*0.75)

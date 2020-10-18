@@ -2,6 +2,7 @@
       $\beta_1=(0.7, -0.5, -0.6, 0.3, 0.3)^{\prime}$ and ...<div class="programlisting"><div class="codeinput"><pre class="matlab-code">%  $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
 % SETAR with all the default options.
 % Use simulated data.
+rng('default')
 rng(10)
 n = 50;
 y = randn(n,1);
@@ -12,11 +13,21 @@ y(i) = (y(i-2) &lt; 0.5)*(0.3+0.7*y(i-1)-0.5*y(i-2)-0.6*X1(i,1)+0.3*X1(i,2))+...
 end
 p = 2;
 d = 2;
-[out1] = SETARX(y, p ,d, 'X',X1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X2 = [repmat(0.3,n,1) X1];
+[out1] = SETARX(y, p ,d, 'X',X1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 50;
+y = randn(n,1);
+X1 = randn(n,2);
+X2 = [repmat(0.3,n,1) X1];
+p = 2;
+d = 2;
 [out2] = SETARX(y, p ,d, 'X',X2);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 3: variant from example 1.</li></span></a></span></h3><div class="collapse"><p>
      Estimation from simulated data of example 1 with an extra column as regressor, half zeros
      and half ones. This will produce a warning (column of zeros removed) during the loop for the 
-     estimation of the threshold value. Check out3.setarx.rmv_col_loop.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X3 = [[repmat(0,25,1);repmat(1,25,1)] X1];
+     estimation of the threshold value. Check out3.setarx.rmv_col_loop.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 50;
+y = randn(n,1);
+X1 = randn(n,2);
+p = 2;
+d = 2;
+X3 = [[repmat(0,25,1);repmat(1,25,1)] X1];
 [out3] = SETARX(y, p ,d, 'X',X3);</pre></div></div></p></div></div><div id="example_4" class="example_module expandableContent"><div id="Example_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li></li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code"></pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations.</p> <p>
@@ -137,7 +148,7 @@ d = 2;
                  with observations (rows) with
                  missing or infinite values included.</p> <p>
 
-  More about:</p> <p>
+  More about (fix this section):</p> <p>
 
  Given a time series $y_t$, a two-regime Self-Exciting Threshold
  Auto Regressive model SETARX($p$,$d$) with exogenous regressors is specified as

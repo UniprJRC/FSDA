@@ -11,7 +11,12 @@
 % groups which have labels respectively equal to 1, 2 and 3.
 UnitsSameGroup=[15 30 69];
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'UnitsSameGroup',UnitsSameGroup);
-tclustICplot(out);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
+tclustICplot(out);</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+</pre><a href='http://rosa.unipr.it/fsda/tclustICplot.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICplot_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of option datatooltip (all default options).</li></span></a></span></h3><div class="collapse"><p>
        Gives the user the possibility of clicking on the different points
        and have information about
        1) value of k which has been selected
@@ -81,10 +86,13 @@ tclustICplot(out,'databrush',databrush);</pre></div></div></p></div></div><
                 Remark 2: fields MIXCLA and IDXMIX are linked together.</p><p>
                    MIXCLA and IDXMIX are compulsory just if optional input
                    argument 'whichIC' is 'MIXCLA' or 'ALL'.</p></p></td></tr><tr valign="top"><td><code>kk</code></td><td><p>vector containing the values of k (number of
-                   components) which have been considered.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>vector containing the values of c (values of the
+                   components) which have been considered.</p></td></tr><tr valign="top"><td><code>cc</code></td><td><p>scalar or vector containing the values of c (values of the
                    restriction factor) which have been considered.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>original n-times-v data matrix on which the IC
                    (Information criterion) has
-                    been computed</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell of length(size(Y,2)) containing the names
+                    been computed</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar or vector containing the values of
+                   trimming which have been considered. If input structure
+                   IC comes from tclustreg, then trimming refers to first
+                   level trimming (likelihood trimming).</p></td></tr><tr valign="top"><td><code>nameY</code></td><td><p>cell of length(size(Y,2)) containing the names
                    of the variables of original matrix Y</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>struct</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'whichIC','ALL'
 </code>,<code> 'tag','myplot'
 </code>,<code> 'datatooltip',''
@@ -141,8 +149,8 @@ tclustICplot(out,'databrush',databrush);</pre></div></div></p></div></div><
                    below). Default values are datatooltip.DisplayStyle =
                    'Window' and datatooltip.SnapToDataVertex = 'on'.</p></p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'datatooltip',''
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>scalar double or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_databrush" class="clearfix"></div><h3 id="input_argument_namevalue_databrush" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>databrush</code> &#8212;interactive mouse brushing.</span></a><span class="example_desc">empty value, scalar | structure.</span></span></h3><div class="collapse">	<p><p>If databrush is an empty value (default), no brushing
-                   is done. The activation of this option 
-                   (databrush is a scalar or a structure) enables the user  
+                   is done. The activation of this option
+                   (databrush is a scalar or a structure) enables the user
                    to select a set of values of IC in the current plot and
                    to see the corresponding classification highlighted in
                    the scatter plot matrix (spm). If spm does not exist it

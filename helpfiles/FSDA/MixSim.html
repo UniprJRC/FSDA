@@ -3,7 +3,46 @@
 out=MixSim(3,4)
 n=200;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S);
-spmplot(X,id)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
+spmplot(X,id)</pre></div></div><pre class="codeoutput">
+out = 
+
+  struct with fields:
+
+    OmegaMap: [3&times;3 double]
+    BarOmega: 0.0876
+    MaxOmega: 0.1500
+    StdOmega: 0.0542
+        fail: 0
+          Pi: [3&times;1 double]
+          Mu: [3&times;4 double]
+           S: [4&times;4&times;3 double]
+       rcMax: [2&times;1 double]
+
+
+ans(:,:,1) =
+
+   -1.0000    4.0707    7.0707   10.0707
+    1.0707   -1.0000    8.0707   11.0707
+    2.0707    5.0707   -1.0000   12.0707
+    3.0707    6.0707    9.0707   -1.0000
+
+
+ans(:,:,2) =
+
+   -1.0000   16.0707   19.0707   22.0707
+   13.0707   -1.0000   20.0707   23.0707
+   14.0707   17.0707   -1.0000   24.0707
+   15.0707   18.0707   21.0707   -1.0000
+
+
+ans(:,:,3) =
+
+         0   28.0707   31.0707   34.0707
+   25.0707         0   32.0707   35.0707
+   26.0707   29.0707         0   36.0707
+   27.0707   30.0707   33.0707         0
+
+</pre><a href='http://rosa.unipr.it/fsda/MixSim.html#Example_1'><img vspace="5" hspace="5" src="images\MixSim_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Generate 4 groups in 5 dimensions with prefixed average and maximum overlap.</li></span></a></span></h3><div class="collapse"><p>
      Use average overlap of 0.05 and
      maximum overlap equal to 0.15.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">k=4;
 v=5;
@@ -114,22 +153,35 @@ cascade</pre></div></div></p></div></div></div></div></div><div class="re
                generated.</p> <p>
                If sph is a structure it may contain the following fields.</p><p>
        </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>pars</code></td><td><p><p>a 3 letter character in the set:</p> <p>
-               'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
-               'EVI','VEI','EEI','VII','EII' which
-               specifies the type of Gaussian Parsimonious Clustering
-               Model which needs to be generated. Note that this field is
-               compulsory.</p></p></td></tr><tr valign="top"><td><code>cdet</code></td><td><p>scalar which specifies the restriction factor
-                          for determinants across groups. If this field is
-                          empty or if this field is missing no contraint
-                          is imposed among determinants.</p></td></tr><tr valign="top"><td><code>shw</code></td><td><p>scalar which specifies the restriction factor for
-                         shape matrices within each group. If this field is
-                          empty or if this field is missing, no contraint
-                          is imposed among the elements of each shape
-                          matrix of a particular group.</p></td></tr><tr valign="top"><td><code>shb</code></td><td><p>scalar which specifies the restriction factor for
-                         shape matrices between each group. If this field is
-                          empty or if this field is missing, no contraint
-                          is imposed across the elements of each shape
-                          matrix between the groups.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'sph',false
+                'VVE','EVE','VVV','EVV','VEE','EEE','VEV','EEV','VVI',
+                'EVI','VEI','EEI','VII','EII' which
+                specifies the type of Gaussian Parsimonious Clustering
+                Model which needs to be generated.</p></p></td></tr><tr valign="top"><td><code>exactrestriction</code></td><td><p><p>boolean. If sph.exactrestriction is
+                true the covariance matrices have to be generated with the
+                exact values of the restrictions specified in sph.cdet,
+                sph.shw and sph.shb. For example if sph.pars='VVE' and
+                sph.exactrestriction=true model with varying determinants,
+                varying shape and varying rotation matrix is generated.</p> <p>
+                The max ratio of the determinants is equal to sph.cdet.</p><p>
+                The maximum ratio between the shape elements in each group
+                is sph.shw. The maximum ratio among the ordered elements
+                across the groups is and sph.shb. On the other hand, if
+                sph.exactrestriction is false and for example
+                sph.pars='VVE' covariance matrices are generated assuming varying
+                determinants, varying shape and equal rotation matrix and
+                with ratio of determinants which satisfy the inequality
+                constraint &lt;= sph.cdet and shape matrices which satisfy
+                the inequality constraints &lt;= sph.shw and &lt;= sph.shb.</p></p></td></tr><tr valign="top"><td><code>cdet</code></td><td><p>scalar which specifies the restriction factor
+                for determinants across groups. If this field is empty or
+                if this field is missing no contraint is imposed among
+                determinants.</p></td></tr><tr valign="top"><td><code>shw</code></td><td><p>scalar which specifies the restriction factor for
+                shape matrices within each group. If this field is empty
+                or if this field is missing, no contraint is imposed among
+                the elements of each shape matrix of a particular group.</p></td></tr><tr valign="top"><td><code>shb</code></td><td><p>scalar which specifies the restriction factor for
+                shape matrices between each group. If this field is empty
+                or if this field is missing, no contraint is imposed
+                across the elements of each shape matrix between the
+                groups.</p></td></tr></table></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'sph',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_hom" class="clearfix"></div><h3 id="input_argument_namevalue_hom" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>hom</code> &#8212;Equal Sigmas.</span></a><span class="example_desc">scalar logical.</span></span></h3><div class="collapse">	<p><p>Scalar boolean which specifies heterogeneous or homogeneous
                clusters. This option has an effect just if previous option
                sph is a scalar boolean.</p> <p>

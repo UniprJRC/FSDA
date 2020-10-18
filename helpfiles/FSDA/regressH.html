@@ -80,7 +80,35 @@ X=X(sel,:);
 y=y(sel);
 % Compare output from Harvey's model with the one of ART
 outHAR=regressH(y,X,[3 4],'msgiter',1,'type','har');
-outART=regressH(y,X,[3 4],'msgiter',1,'type','art');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+outART=regressH(y,X,[3 4],'msgiter',1,'type','art');</pre></div></div><pre class="codeoutput">Regression parameters beta
+Coeff.   SE     t-stat
+  -58.4537   62.1024   -0.9412
+   -0.3759    0.5500   -0.6834
+   33.3608   37.1352    0.8984
+   96.8317   31.7994    3.0451
+   -3.8016    2.6249   -1.4483
+
+Scedastic parameters gamma
+Coeff.   SE 
+   -0.0411    0.8079   -0.0508
+    5.3542    0.3750   14.2761
+   -0.5631    0.0361  -15.5883
+
+Regression parameters beta
+Coeff.   SE     t-stat
+ -247.5474   60.2924   -4.1058
+    1.4028    1.1256    1.2462
+  -39.3431   36.4158   -1.0804
+  202.2520   36.9766    5.4697
+  -12.4358    3.0899   -4.0247
+
+Scedastic parameters gamma
+Coeff.   SE 
+  -12.0901    1.0030  -12.0536
+    9.9088    0.5012   19.7707
+   -0.8809    0.0555  -15.8750
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

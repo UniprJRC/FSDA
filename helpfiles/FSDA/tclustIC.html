@@ -23,7 +23,25 @@ end
 [valmin,indk]=min(out.MIXMIX);
 [minIC,indc]=min(valmin);
 disp(['Smallest value of IC is ' num2str(minIC) ' and takes place for'])
-disp(['k=' num2str(out.kk(indk(indc))) ' and  c=' num2str(out.cc(indc))]);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
+disp(['k=' num2str(out.kk(indk(indc))) ' and  c=' num2str(out.cc(indc))]);</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+The labels of c in the top part of the plot denote the values of c for which IC is minimum
+MIXMIX (BIC)
+            c_1       c_2       c_4       c_8       c_16      c_32      c_64     c_128 
+           ______    ______    ______    ______    ______    ______    ______    ______
+
+    k=1    1475.7    1406.1    1355.4    1342.4    1342.8      1343      1343    1343.1
+    k=2    1245.5    1131.7    1039.6    981.55    950.67    943.08    943.25    943.38
+    k=3    810.31    788.98    784.84    787.93    789.65    790.51    790.93    791.15
+    k=4    812.15    800.45    804.79    803.63    800.02    799.67    800.16    799.26
+    k=5    815.93    819.29    822.69    823.62    821.51    818.13    818.99    820.41
+
+Smallest value of IC is 784.8427 and takes place for
+k=3 and  c=4
+</pre><a href='http://rosa.unipr.it/fsda/tclustIC.html#Example_1'><img vspace="5" hspace="5" src="images\tclustIC_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustIC_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustIC_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
 rng('default') % Reinitialize the random number generator to its startup configuration
 rng(20000);
 ktrue=3;
@@ -174,7 +192,7 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'reftol',1e-05
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_equalweights" class="clearfix"></div><h3 id="input_argument_namevalue_equalweights" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>equalweights</code> &#8212;cluster weights in the concentration and assignment steps.</span></a><span class="example_desc">logical.</span></span></h3><div class="collapse">	<p><p>A logical value specifying whether cluster weights
                shall be considered in the concentration, assignment steps
-               and computation of the likelihood.</p> <p>
+               and computation of the likelihood. The default value is false.</p> <p> 
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'equalweights',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>Logical</code></p></div></div><div class="expandableContent"><div id="inputarg_startv1" class="clearfix"></div><h3 id="input_argument_namevalue_startv1" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>startv1</code> &#8212;how to initialize centroids and cov matrices.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If startv1 is 1 then initial
                centroids and and covariance matrices are based on (v+1)
@@ -335,7 +353,7 @@ suplabel('BIC (MIXMIX)','t');</pre></div></div></p></div></div></div><p> <
                    restriction factor) which have been considered. This
                    vector is equal to input optional argument cc if cc had
                    been specified else it is equal to [1, 2, 4, 8, 16, 32,
-                   64, 128].</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar containing the trimming level which has
+                   64, 128].</p></td></tr><tr valign="top"><td><code>alpha</code></td><td><p>scalar containing the value(s) of the trimming level which have
                    been used.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if
                    option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained
