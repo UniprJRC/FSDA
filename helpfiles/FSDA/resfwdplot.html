@@ -45,7 +45,7 @@ fground = struct;
 fground.funit=[2 5 20 23 35 45];
 % Specify the steps in which labels have to be put
 n=length(y);
-fground.flabstep=[n/2 n*0.75 n+0.5];;
+fground.flabstep=[n/2 n*0.75 n+0.5];
 % Specify the line width of the highlighted trajectories
 fground.LineWidth=3;
 % Produce a monitoring residuals plot in which labels are put for units
@@ -306,7 +306,7 @@ standard.xvalues=400:1:(size(out.RES,2)+400-1);
 resfwdplot(out,'standard',standard);</pre></div></div></p></div></div><div id="Extraexample_21" class="example_module expandableContent"><div id="ExtraExample_21"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Monitoring residuals plot using S estimator.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 y=randn(n,1);
 X=randn(n,4);
-[out]=Sregeda(y,X);
+[out]=Sregeda(y,X,'nsamp',20);
 % Produce  resfwdplot
 resfwdplot(out);</pre></div></div></p></div></div><div id="Extraexample_22" class="example_module expandableContent"><div id="ExtraExample_22"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 16.</i>
      First example of brushing with row names.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The labels of the units appear in the resfwdplot
@@ -363,8 +363,8 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                created using function FSReda, Sregeda, MMregeda.</p></td></tr><tr valign="top"><td><code>Un</code></td><td><p>matrix containing the order of entry in the subset of each
                unit (required only when datatooltip is true or databrush
                is not empty).</p></td></tr><tr valign="top"><td><code>y</code></td><td><p>a vector containing the response (required only when option
-               databrush is not empty).</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>a matrix containing the explanatory variables (required only
-               when option databrush is not empty).</p></td></tr><tr valign="top"><td><code>Bols</code></td><td><p>(n-init+1) x (p+1) matrix containing the estimated beta
+               databrush is not empty).</p></td></tr><tr valign="top"><td><code>X</code></td><td><p>a matrix containing the explanatory variables (required
+                only when option databrush is not empty).</p></td></tr><tr valign="top"><td><code>Bols</code></td><td><p>(n-init+1) x (p+1) matrix containing the estimated beta
                coefficients monitored in each step of the robust procedure
                (required only when option databrush is not empty and
                suboption multivarfit is not empty).</p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single|double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'standard.LineWidth','1'
@@ -432,7 +432,7 @@ resfwdplot(out,'databrush',databrush,'label',RowLabelsy);</pre></div></div></p
                        the search where to put labels for the highlighted
                        trajectories (units). The default is to put the
                        labels at the initial and final steps of the search.</p> <p>
-                       flabstep='' means no label.</p></p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>scalar specifying line width for the
+                       fground.flabstep='' means no label.</p></p></td></tr><tr valign="top"><td><code>LineWidth</code></td><td><p>scalar specifying line width for the
                        highlighted trajectories (units). Default is 1.</p></td></tr><tr valign="top"><td><code>Color</code></td><td><p><p>cell array of strings containing the colors to
                        be used for the highlighted trajectories (units).</p> <p>
                        If length(scolor)==1 the same color will be used for

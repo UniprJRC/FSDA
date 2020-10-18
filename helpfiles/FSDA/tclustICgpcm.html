@@ -12,22 +12,21 @@
 nsamp=20;
 Y=load('geyser2.txt');
 % If no trimming is used 4 groups are found.
-out=tclustICgpcm(Y,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ...
-Connected to the parallel pool (number of workers: 8).
-k=1
+out=tclustICgpcm(Y,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">k=1
 k=2
 k=3
 k=4
 k=5
-The labels of in the top part of Figure named BIC denote the values of $c_{det}$ ($c_{shw}$) for which IC is minimum
-</pre><a href='http://rosa.unipr.it/fsda/tclustICgpcm.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICgpcm_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICgpcm_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICgpcm_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 pa=struct;
 pa.pars='VVV';
 rng(100)
 nsamp=20;
 alpha=0.1;
 whichIC='MIXMIX';
-outIC=tclustICgpcm(Y,'pa',pa,'alpha',alpha,'whichIC',whichIC);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p>
+% Just check from k=2 to k=4
+kk=2:4;
+outIC=tclustICgpcm(Y,'pa',pa,'alpha',alpha,'whichIC',whichIC,'kk',kk,'nsamp',nsamp);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of k in an example with 3 components and prefixed overlap.</li></span></a></span></h3><div class="collapse"><p>
     rng('default')  Reinitialize the random number generator to its startup configuration<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(20000);
 ktrue=3;
 % n = number of observations
@@ -36,11 +35,12 @@ n=150;
 v=2;
 % Imposed average overlap
 BarOmega=0.04;
+restrfact=5;
 outg=MixSim(ktrue,v,'BarOmega',BarOmega, 'restrfactor',restrfact);
 % data generation given centroids and cov matrices
 [Y,id]=simdataset(n, outg.Pi, outg.Mu, outg.S);
-% Number of subsmples to extract (option nsamp) is very small
-% thererore a great variability is allowed.
+% Number of subsamples to extract (option nsamp) is very small
+% therefore a great variability is allowed.
 outIC=tclustICgpcm(Y,'nsamp',50);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>An example with input options kk pa.</li></span></a></span></h3><div class="collapse"><p>cdet and pa.shw.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=100;
 pa=struct;
@@ -220,7 +220,8 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
                values of $c_{det}$ and $c_{shw}$. This plot enables to
                choose the best value of $c_{shb}$. The panel on the right
                contains the values of IC in correspondence of the cases of
-               no rotation, equal rotation and varying rotation.</p><p>
+               no rotation, equal rotation and varying rotation.</p> <p>
+               The default value of plots is 0 that is no plot is shown.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div><div class="expandableContent"><div id="inputarg_numpool" class="clearfix"></div><h3 id="input_argument_namevalue_numpool" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>numpool</code> &#8212;number of pools for parellel computing.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If numpool &gt; 1, the routine automatically checks if
                the Parallel Computing Toolbox is installed and distributes
@@ -351,8 +352,29 @@ out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CL
                        are integer numbers from 1 to k. 0 indicates
                        trimmed observations. Note that this is the
                        assignment which used best value of cshb;</p></td></tr><tr valign="top"><td><code>pa</code></td><td><p>strcture containing the the gpcm parameters
-                   (pa.pars, pa.shb, pa.shw, pa.cdet) for the best model.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>Original data matrix Y. The field is present if
-                   option Ysave is set to 1.</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
+                   (pa.pars, pa.shb, pa.shw, pa.cdet) for the best model.</p></td></tr><tr valign="top"><td><code>Y</code></td><td><p><p>Original data matrix Y. The field is present if
+                   option Ysave is set to 1.</p> <p>
+
+             out.alpha = scalar. Level of trimming which has been used.</p></p></td></tr><tr valign="top"><td><code>BICshb</code></td><td><p>value of the information criterion for each
+                   candidate value of $c_{shb}$. Matrix with
+                   two columns and r rows. The first column contains the
+                   values of candidate values of $c_{shb}$ which have been
+                   used. Note that if max(cshb) is smaller or equal than
+                   $cshwbest^((v-1)/v)$. The second column contains the
+                   associated values of the information crterion. r is the
+                   number of candidate values of cshb which have been
+                   considered.</p></td></tr><tr valign="top"><td><code>IDXshb</code></td><td><p>matrix with size n-by-r which contains the
+                   classification for each candidate value of cshb. The
+                   number of columns of this matrix is equal to the number
+                   of rows of out.BICshb.</p></td></tr><tr valign="top"><td><code>BICrot</code></td><td><p>value of the information criterion for each
+                         type or rotation. First element refers to $I$ (no
+                         rotation) the second element refers to $E$ (equal
+                         rotation) and the third element refers to $V$
+                         (varying rotation).</p></td></tr><tr valign="top"><td><code>IDXrot</code></td><td><p>matrix with size n-by-3 which contains the
+                        classification for each type of rotation. First
+                        column refers to $I$ (no rotation), the second
+                        column refers to $E$ (equal rotation) and the
+                        third column refers to $V$ (varying rotation).</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
  Finding the Number of Groups in Model-Based Clustering via Constrained
  Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
  <a href="https://doi.org/10.1080/10618600.2017.1390469">https://doi.org/10.1080/10618600.2017.1390469</a></p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="tclustIC.html" itemprop="url"><span itemprop="name"><code>tclustIC</code></span></a></span> | <span itemprop="seealso"><a href="tclust.html" itemprop="url"><span itemprop="name"><code>tclust</code></span></a></span> | <span itemprop="seealso"><a href="tclustICsol.html" itemprop="url"><span itemprop="name"><code>tclustICsol</code></span></a></span> | <span itemprop="seealso"><a href="tclustICplot.html" itemprop="url"><span itemprop="name"><code>tclustICplot</code></span></a></span> | <span itemprop="seealso"><a href="carbikeplot.html" itemprop="url"><span itemprop="name"><code>carbikeplot</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>

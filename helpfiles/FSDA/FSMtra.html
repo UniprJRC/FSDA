@@ -11,7 +11,7 @@ Y=baby.data(:,6:end);
 % FS based on untrasnformed data H_0:\lambda=1 for all variables
 % Plot of mle of transformation parameters with all default options
 % Compare the output with Figure 4.7 p. 167 of ARC (2004)
-[out]=FSMtra(Y,'plotsmle',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Personalized options for plotsmle.</li></span></a></span></h3><div class="collapse"><p>
+[out]=FSMtra(Y,'plotsmle',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMtra.html#Example_2'><img vspace="5" hspace="5" src="images\FSMtra_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Personalized options for plotsmle.</li></span></a></span></h3><div class="collapse"><p>
      Baby food data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('baby.mat');
 Y=baby.data(:,6:end);
 % Personalized options for plotsmle
@@ -20,7 +20,7 @@ plotsmle.LineWidth=3;
 plotsmle.LineWidthEnv=3;
 plotsmle.FontSize=14;
 plotsmle.ylim=[-0.4 0.4];
-[out]=FSMtra(Y,'plotsmle',plotsmle);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSMtra based on log transformed data.</li></span></a></span></h3><div class="collapse"><p>
+[out]=FSMtra(Y,'plotsmle',plotsmle);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMtra.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSMtra_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSMtra based on log transformed data.</li></span></a></span></h3><div class="collapse"><p>
      Baby food data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('baby.mat');
 Y=baby.data(:,6:end);
 % FS based on log trasnformed data H_0:\lambda=0 for all variables
@@ -39,7 +39,7 @@ plotsmle.ylim=[-0.4 1];
 prolik=struct;
 prolik.steps=26;
 prolik.xlim=[-1 1];
-[out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'prolik',prolik);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Swiss heads data, Example 1.</li></span></a></span></h3><div class="collapse"><p>
+[out]=FSMtra(Y,'la0',zeros(v,1),'init',11,'prolik',prolik);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMtra.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSMtra_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Swiss heads data, Example 1.</li></span></a></span></h3><div class="collapse"><p>
      FSMtra based on untransformed data $H_0:\lambda=1$ for all variables<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('head.mat');
 Y=head.data;
 [out]=FSMtra(Y,'plotsmle',1);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Swiss heads data, Example 2.</li></span></a></span></h3><div class="collapse"><p>
@@ -121,7 +121,13 @@ plotslrt.Tag=tags{ii};
 ii=ii+1;
 end
 disp(out)
-% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Emilia Romagna data, Example 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('emilia2001')
+% Compare these 4 plots with Figure 4.50 p. 207 of ARC (2004)</pre></div></div><pre class="codeoutput">    MLEtra: [23&times;2 double]
+    Exflag: [23&times;2 double]
+    LIKrat: [23&times;2 double]
+        Un: [22&times;11 double]
+     class: 'FSMtra'
+
+</pre><a href='http://rosa.unipr.it/fsda/FSMtra.html#ExtraExample_14'><img vspace="5" hspace="5" src="images\FSMtra_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSMtra_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSMtra_07.png" alt=""> </a></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Emilia Romagna data, Example 1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('emilia2001')
 Y=emilia2001.data;
 % Replace zeros with min values for variables specified in sel
 sel=[6 10 12 13 19 21];

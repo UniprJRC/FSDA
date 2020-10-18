@@ -5,7 +5,7 @@
  4) the value of the intercept term.</p> <p>
  5) the distribution to use to generate the Xs;</p><p>
  6) the distribution to use to generate the ys.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simulateLM.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_y"><code>y</code></a>=simulateLM(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>)</code></span>Use all defaul options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simulateLM.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_y"><code>y</code></a>=simulateLM(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Simulate with prefixed value of R2.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simulateLM.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_y"><code>y</code></a>,<a class="intrnllnk" href="#outputarg_X"><code> X</code></a>]=simulateLM(___)</code></span>Use prefixed correlation matrix for cov(X).</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use all defaul options.</li></span></a></span></h3><div class="collapse"><p>
-     Simulate 100 observations y and X (uncorrelated with y) using standard normal distribution.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">[y,X]=simulateLM(100,'plots',true);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulate with prefixed value of R2.</li></span></a></span></h3><div class="collapse"><p>
+     Simulate 100 observations y and X (uncorrelated with y) using standard normal distribution.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">[y,X]=simulateLM(100,'plots',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateLM.html#Example_1'><img vspace="5" hspace="5" src="images\simulateLM_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulate with prefixed value of R2.</li></span></a></span></h3><div class="collapse"><p>
      Set value of R2;<div class="programlisting"><div class="codeinput"><pre class="matlab-code">R2=0.82;
 n=10000;
 [y,X]=simulateLM(n,'R2',R2);
@@ -14,7 +14,30 @@ out=fitlm(X,y);</pre></div></div></p></div></div><div id="example_3" class=
 n=10000;
 A = gallery('moler',5,0.2);
 [y,X]=simulateLM(n,'R2',R2,'SigmaX',A);
-out=fitlm(X,y)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use prefixed values of R2, beta and intercept.</li></span></a></span></h3><div class="collapse"><p>
+out=fitlm(X,y)</pre></div></div><pre class="codeoutput">
+out = 
+
+
+Linear regression model:
+    y ~ 1 + x1 + x2 + x3 + x4 + x5
+
+Estimated Coefficients:
+                   Estimate        SE        tStat       pValue  
+                   _________    ________    _______    __________
+
+    (Intercept)    -0.076653    0.053898    -1.4222       0.15501
+    x1                1.0515    0.056414     18.638    3.0647e-76
+    x2               0.92447    0.056001     16.508    2.0145e-60
+    x3                1.0394    0.055297     18.797      1.72e-77
+    x4               0.92012    0.055248     16.654    1.8903e-61
+    x5                 1.029    0.054653     18.828    9.8022e-78
+
+
+Number of observations: 10000, Error degrees of freedom: 9994
+Root Mean Squared Error: 5.39
+R-squared: 0.253,  Adjusted R-Squared: 0.253
+F-statistic vs. constant model: 679, p-value = 0
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use prefixed values of R2, beta and intercept.</li></span></a></span></h3><div class="collapse"><p>
      Set value of R2.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">R2=0.92;
 beta=[3; 4; 5; 2; 7];
 intercept=43;

@@ -108,7 +108,7 @@ seluni=[10 30];
 plo=struct;
 plo.label=cellstr(RowLabelsMatrixY);
 % add labels for units inside vector seluni
-yXplot(y,X,'selunit',seluni,'plo',plo);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+yXplot(y,X,'selunit',seluni,'plo',plo);</pre></div></div><a href='http://rosa.unipr.it/fsda/yXplot.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\yXplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=3;
 X=randn(n,p);
 y=100+randn(n,1);
@@ -350,10 +350,8 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
 
      INPUT ARGUMENT y IS A STRUCTURE:</p> <p>
 
-       Required fields in input structure y to obtain a static plot.</p> <p>
-
-       y.y   =   a vector containing the response of length n.</p> <p>
-       y.X   =   a matrix containing the explanatory variables of size nxp.</p> <p>
+       Required fields in input structure y to obtain a static plot.</p><p>
+</p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>y</code></td><td><p>a vector containing the response of length n.</p></td></tr><tr valign="top"><td><code>X</code></td><td><p><p>a matrix containing the explanatory variables of size nxp.</p> <p>
 
                If the input structure y contains just the data matrix, a
                standard static yXplot matrix  will be created.</p> <p>
@@ -365,19 +363,15 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                precisely, with option databrush it is possible to create
                an automatic interaction with the other plots, while with
                option datatooltip it is possible to retrieve information
-               about a particular unit once selected with the mouse).</p> <p>
+               about a particular unit once selected with the mouse).</p><p>
 
-       Required fields in input structure y to enable dynamic brushing and linking.</p> <p>
-
-       y.RES =   matrix containing the residuals monitored in each
+       Required fields in input structure y to enable dynamic brushing and linking.</p></p></td></tr><tr valign="top"><td><code>RES</code></td><td><p><p>matrix containing the residuals monitored in each
                step of the forward search. Every row is associated with a
                residual (unit).</p> <p>
                This matrix can be created using function FSReda
-               (compulsory argument).</p> <p>
-       y.Un  =   matrix containing the order of entry of each unit
+               (compulsory argument).</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p>matrix containing the order of entry of each unit
                (necessary if datatooltip is true or databrush is not
-               empty).</p> <p>
-       y.label = cell of length n containing the labels of the units.</p> <p>
+               empty).</p></td></tr><tr valign="top"><td><code>label</code></td><td><p><p>cell of length n containing the labels of the units.</p> <p>
                This optional argument is used in conjuction with options
                databrush and datatooltip.</p> <p>
                When datatooltip=1, if this
@@ -389,7 +383,7 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
                will be labelled with the labels contained in y.label.</p><p>
 
            Note that the structure described above is automatically
-           generated from function FSReda</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix.  Data matrix of explanatory
+           generated from function FSReda</p></p></td></tr></table></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Matrix.  Data matrix of explanatory
        variables (also called 'regressors') of
        dimension nxp if the first argument is a vector. Rows of X
        represent observations, and columns represent variables.</p> <p>

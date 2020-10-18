@@ -2,7 +2,7 @@
    specified in scalar restr. This function is called in every
    concentration step of function tclust and can also be used inside
    function MixSim to generate groups with a prespecified level of
-   overlapping</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code> restr</code></a>)</code></span>Example using all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code>restr</code></a>,<a class="intrnllnk" href="#inputarg_tol"><code> tol</code></a>)</code></span>Second example of eigenvalue restriction.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code>restr</code></a>,<a class="intrnllnk" href="#inputarg_tol"><code>tol</code></a>,<a class="intrnllnk" href="#inputarg_userepmat"><code> userepmat</code></a>)</code></span>Compare speed.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example using all default options.</li></span></a></span></h3><div class="collapse"><p>
+   overlapping.</p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code> restr</code></a>)</code></span>Example using all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code>restr</code></a>,<a class="intrnllnk" href="#inputarg_tol"><code> tol</code></a>)</code></span>Second example of eigenvalue restriction.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="restreigen.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=restreigen(<a class="intrnllnk" href="#inputarg_eigenvalues"><code>eigenvalues</code></a>,<a class="intrnllnk" href="#inputarg_niini"><code>niini</code></a>,<a class="intrnllnk" href="#inputarg_restr"><code>restr</code></a>,<a class="intrnllnk" href="#inputarg_tol"><code>tol</code></a>,<a class="intrnllnk" href="#inputarg_userepmat"><code> userepmat</code></a>)</code></span>Compare speed.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example using all default options.</li></span></a></span></h3><div class="collapse"><p>
     Suppose v=3 and k=4 so the matrix containing the eigenvalues is 3-by-4
     First column of matrix eigenvalues contains the eigenvalues of the first group
     Second column of matrix eigenvalues contains the eigenvalues of the second group
@@ -34,7 +34,7 @@ if verLessThanFS(9.2)== false
 % If MATLAB version is at least 2017a
 userepmat=2;
 elseif verLessThanFS(8.1) == false
-% if MATLAB version is at least R2013b  
+% if MATLAB version is at least R2013b
 userepmat=1;
 else
 userepmat=0;
@@ -48,7 +48,7 @@ eigenvalues=100*abs(randn(v,k));
 niini=randi(100,[k,1]);
 tic;
 outold=restreigeneasy(eigenvalues,niini,1.1);
-% Uncomment the line below if you want 
+% Uncomment the line below if you want
 % outold=restreigen(eigenvalues,niini,1.1,tol,1);
 oldroutinetime=oldroutinetime+toc;
 tic;
@@ -74,7 +74,7 @@ disp(['Computing time of restreigen: ' num2str(newroutinetime)])</pre></div></d
 </code></p> <p class="datatypelist"><strong> Data Types: </strong><code>double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_userepmat" class="clearfix"> </div> <h3 id="input_argument_userepmat" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>userepmat</code> &#8212; use repmat, bsxfun or implicit expansion. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>If userepmat is equal to 1, function repmat is used instead
              of bsxfun inside the procedure. Remark: repmat is built in
              from MATLAB 2013b so it is faster to use repmat if the
-             current version of MATLAB is &gt;2013a.</p> <p> 
+             current version of MATLAB is &gt;2013a.</p> <p>
              If userepmat is 2, implicit expansion is used instead of
              bsxfun. Note that implicit expansion has been introduced only
              in 2017a therefore it will not work with previous releases.</p><p>

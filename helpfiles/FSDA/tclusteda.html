@@ -6,7 +6,7 @@ Y=load('geyser2.txt');
 % vector [0.10 0.05 0] is used while for the restriction factor, value c=12
 % is used
 k=3;
-[out]=tclusteda(Y,k);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring using geyser data with alpha and c specified.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+[out]=tclusteda(Y,k);</pre></div></div><a href='http://rosa.unipr.it/fsda/tclusteda.html#Example_1'><img vspace="5" hspace="5" src="images\tclusteda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclusteda_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring using geyser data with alpha and c specified.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 close all
 % alphavec= vector which contains the trimming levels to consider
 alphavec=0.10:-0.01:0;
@@ -27,7 +27,9 @@ k=3;
 % alpha
 plots=struct;
 plots.alphasel=[0.2 0.10 0.05 0.01];
-[out]=tclusteda(Y,k,alphavec,c,'plots',plots);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring geyser data with option UnitsSameGroup.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+[out]=tclusteda(Y,k,alphavec,c,'plots',plots);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclusteda.html#Example_3'><img vspace="5" hspace="5" src="images\tclusteda_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclusteda_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclusteda_05.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring geyser data with option UnitsSameGroup.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 close all
 % alphavec= vector which contains the trimming levels to consider
 alphavec=0.30:-0.10:0;
@@ -40,11 +42,15 @@ k=3;
 UnitsSameGroup=[10 12];
 % Mixture model is used
 mixt=2;
-[out]=tclusteda(Y,k,alphavec,1000,'mixt',2,'UnitsSameGroup',UnitsSameGroup);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclusteda with M5 data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+[out]=tclusteda(Y,k,alphavec,1000,'mixt',2,'UnitsSameGroup',UnitsSameGroup);</pre></div></div><pre class="codeoutput">MixLik with untrimmed units selected using h largest likelihood contributions
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclusteda.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclusteda_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclusteda_07.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> tclusteda with M5 data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('M5data.txt');
 % alphavec= vector which contains the trimming levels to consider
 alphavec=0.10:-0.02:0;
-out=tclusteda(Y(:,1:2),3,alphavec,1000,'nsamp',1000,'plots',1);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Structured noise data ex1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+out=tclusteda(Y(:,1:2),3,alphavec,1000,'nsamp',1000,'plots',1);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclusteda.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\tclusteda_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclusteda_09.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Structured noise data ex1.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 Y=load('structurednoise.txt');
 alphavec=0.20:-0.01:0;
 out=tclusteda(Y,2,alphavec,100,'plots',1);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Structured noise data ex2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -91,7 +97,9 @@ nsamp=subsets(nsamp,n,(v+1)*k);
 RandNumbForNini=rand(k,nsampscalar);
 % The allocation is shown on the space of the first two principal
 % components
-out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclusteda using determinant constraint.</li></span></a></span></h3><div class="collapse"><p>
+out=tclusteda(Y,k,[],6,'plots',1,'RandNumbForNini',RandNumbForNini,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
+100%[===================================================]
+</pre><a href='http://rosa.unipr.it/fsda/tclusteda.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\tclusteda_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclusteda_11.png" alt=""> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclusteda using determinant constraint.</li></span></a></span></h3><div class="collapse"><p>
      Search for spherical clusters.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% 5 groups and 5 variables
 rng(100,'twister')
 n1=100;
@@ -366,7 +374,7 @@ plots.ylimy=ylimy;
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'restrtype','deter'
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_cshape" class="clearfix"></div><h3 id="input_argument_namevalue_cshape" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>cshape</code> &#8212;constraint to apply to each of the shape matrices.</span></a><span class="example_desc">scalar greater | equal than 1.</span></span></h3><div class="collapse">	<p><p>This options only works
                    is 'restrtype' is 'deter'.</p> <p>
-               When restrtype is deter the default value of the "shape" 
+               When restrtype is deter the default value of the "shape"
                constraint (as defined below) applied to each group is fixed to
                $c_{shape}=10^{10}$, to ensure the procedure is (virtually)
                affine equivariant. In other words, the decomposition or the

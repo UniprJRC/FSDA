@@ -48,7 +48,7 @@ noisevars=0;
 noiseunits=3000;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from uniform')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">out = MixSim(4,2,'BarOmega',0.01);
+title('4 groups with outliers from uniform')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#Example_3'><img vspace="5" hspace="5" src="images\simdataset_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">out = MixSim(4,2,'BarOmega',0.01);
 n=300;
 noisevars=0;
 noiseunits=struct;
@@ -57,7 +57,7 @@ noiseunits.number=3000;
 noiseunits.typeout={'Chisquare5'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from $\chi^2_5$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\simdataset_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chi2 with 40 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
@@ -66,7 +66,7 @@ noiseunits.number=3000;
 noiseunits.typeout={'Chisquare40'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from $\chi^2_{40}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\simdataset_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from normal distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
@@ -75,7 +75,7 @@ noiseunits.number=3000;
 noiseunits.typeout={'normal'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from normal distribution','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\simdataset_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Student T with 5 degrees of freedom.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
@@ -84,7 +84,14 @@ noiseunits.number=3000;
 noiseunits.typeout={'T5'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from Student T with 5 degrees if freedom','Interpreter','Latex')</pre></div></div><pre class="codeoutput">Warning: it was not possible to generate 3000 outliers
+in 30000 replicates in the interval [0.16444--1.0276]
+Number of values which was possible to generate is equal to 30
+Please modify the type of outliers using option 'typeout' 
+or increase input option 'alpha'
+The value of alpha now is 0.001
+Outliers have been generated according to T5
+</pre><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simdataset_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add componentwise contamination.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars='';
 noiseunits=struct;
@@ -93,7 +100,7 @@ noiseunits.number=3000;
 noiseunits.typeout={'componentwise'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with component wise outliers','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with component wise outliers','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\simdataset_06.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers generated from Chisquare and T distribution.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
@@ -101,7 +108,7 @@ noiseunits.number=5000*ones(2,1);
 noiseunits.typeout={'Chisquare3','T20'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\simdataset_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chisquare and T distribution and use a personalized value of alpha.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=0;
 noiseunits=struct;
@@ -110,7 +117,7 @@ noiseunits.typeout={'Chisquare3','T20'};
 noiseunits.alpha=0.2;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from $\chi^2_{3}$ and $T_{20}$ and $\alpha=0.2$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\simdataset_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add outliers from Chi2 and point mass contamination and add one noise variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=struct;
 noisevars.number=1;
@@ -119,7 +126,7 @@ noiseunits.number=[100 100];
 noiseunits.typeout={'pointmass' 'Chisquare5'};
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups with outliers from $\chi^2_{5}$ and point mass $+1$ noise var','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\simdataset_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of personalized interval to generate outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noiseunits=struct;
 noiseunits.number=1000;
@@ -133,7 +140,7 @@ noisevars=struct;
 noisevars.number=1;
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
+title('4 groups with outliers from uniform using a personalized interval $+1$ noise var','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\simdataset_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_10" class="example_module expandableContent"><div id="ExtraExample_10"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of personalized interval to generate outliers (1).</li></span></a></span></h3><div class="collapse"><p>
      Generate 1000 outliers from uniform in the interval [-2 3] and
      1000 units using componentwise contamination in the interval [-2 3]<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
@@ -151,7 +158,7 @@ noisevars.distribution={'Chisquare3','T20'};
 noiseunits='';
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id,[],'box');
-title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups in 2 dims with 5 noise variables. First two from $\chi^2_{3}$ and last three from $T_{20}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_11'><img vspace="5" hspace="5" src="images\simdataset_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_12" class="example_module expandableContent"><div id="ExtraExample_12"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=struct;
 noisevars.number=[1 2];
@@ -159,7 +166,7 @@ noisevars.distribution={'Chisquare3','T2'};
 noiseunits='';
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use 'minmax' interval.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups in 2 dims with 3 noise variables. First from $\chi^2_{3}$ and last two from $T_{2}$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_12'><img vspace="5" hspace="5" src="images\simdataset_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_13" class="example_module expandableContent"><div id="ExtraExample_13"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use 'minmax' interval.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=struct;
 noisevars.number=[1 2];
@@ -168,7 +175,7 @@ noisevars.interval='minmax';
 noiseunits='';
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use a personalized interval for each variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
+title('4 groups in 2 dims with 3 noise variables with ''minimax'' interval','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_13'><img vspace="5" hspace="5" src="images\simdataset_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_14" class="example_module expandableContent"><div id="ExtraExample_14"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add 3 noise variables and use a personalized interval for each variable.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=300;
 out = MixSim(4,2,'BarOmega',0.01);
 noisevars=struct;
 noisevars.number=[1 2];
@@ -179,7 +186,7 @@ v1=sum(noisevars.number);
 noisevars.interval=[3*ones(1,v1); 10*ones(1,v1)];
 [X,id]=simdataset(n, out.Pi, out.Mu, out.S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(X,id);
-title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')</pre></div></div></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add noise to an existing dataset.</li></span></a></span></h3><div class="collapse"><p>
+title('4 groups in 2 dims with 3 noise variables with personalized interval','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_14'><img vspace="5" hspace="5" src="images\simdataset_14.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_15" class="example_module expandableContent"><div id="ExtraExample_15"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Add noise to an existing dataset.</li></span></a></span></h3><div class="collapse"><p>
       Add outliers generated from uniform distribution to the IRIS dataset<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
 Y=meas;
 Mu=grpstats(Y,species);
@@ -197,7 +204,7 @@ noiseunits.alpha=0.000001;
 % the original matrix X
 [Ywithnoise,id]=simdataset(Y, pigen, Mu, S,'noisevars',noisevars,'noiseunits',noiseunits);
 spmplot(Ywithnoise,id,[],'box');
-title('4 groups with outliers from uniform')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size or input matrix. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Scalar or matrix of
+title('4 groups with outliers from uniform')</pre></div></div><a href='http://rosa.unipr.it/fsda/simdataset.html#ExtraExample_15'><img vspace="5" hspace="5" src="images\simdataset_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size or input matrix. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>Scalar or matrix of
                size n-by-v. If n is a scalar it
                is interpreted as the sample size of the dataset which must
                be simulated. On the other hand, if n is a n-by-v it is

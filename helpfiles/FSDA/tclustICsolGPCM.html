@@ -21,13 +21,13 @@ k=5
 Best solutions using MIXMIX
   Columns 1 through 6
 
-    {[3]}    {[4]}    {7&times;1 double}    {[       1]}    {'true'    }    {[4]}
-    {[4]}    {[1]}    {8&times;1 double}    {0&times;0 double}    {'spurious'}    {[2]}
+    {[3]}    {[4]}    {1&times;7 double}    {[       1]}    {'true'    }    {[4]}
+    {[4]}    {[1]}    {1&times;8 double}    {0&times;0 double}    {'spurious'}    {[2]}
 
   Columns 7 through 8
 
-    {7&times;1 double}    {[       1]}
-    {8&times;1 double}    {0&times;0 double}
+    {1&times;7 double}    {[1]}
+    {1&times;7 double}    {[1]}
 
 </pre><a href='http://rosa.unipr.it/fsda/tclustICsolGPCM.html#Example_1'><img vspace="5" hspace="5" src="images\tclustICsolGPCM_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclustICsolGPCM_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclustICsolGPCM_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Simulated data: compare first 2 best solutions using MIXMIX and CLACLA.</li></span></a></span></h3><div class="collapse"><p>
      Data generation<div class="programlisting"><div class="codeinput"><pre class="matlab-code">restrfact=5;
@@ -64,7 +64,7 @@ pa.cdet=[2 4];
 pa.shw=[8 16 32];
 kk=[2 3 4 6];
 out=tclustICgpcm(Y,'pa',pa,'cleanpool',false,'plots',0,'alpha',0.1,'whichIC','CLACLA','kk',kk,'nsamp',nsamp);
-[outCLACLCA]=tclustICsolGPCM(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3,'Rand',0);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains
+[outCLACLA]=tclustICsolGPCM(out,'whichIC','CLACLA','plots',1,'NumberOfBestSolutions',3,'Rand',0);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_IC" class="clearfix"> </div> <h3 id="input_argument_IC" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>IC</code> &#8212; Information criterion to use. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>It contains
                 the following fields.</p> <p>
         </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>CLACLA</code></td><td><p><p>3D array of size
                    length(kk)-by-length(cdet)-by-length(cshw) containinig

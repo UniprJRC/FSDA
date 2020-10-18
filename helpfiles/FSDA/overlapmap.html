@@ -27,7 +27,9 @@ overl_1 = overlapmap(out);
 % using tkmeans for a higher number of components
 out2 = tkmeans(Y, k*4, 0.05, 'plots', 1);
 overl_2 = overlapmap(out2);
-cascade;</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  0.29 seconds 
+Total estimated time to complete trimmed k means:  0.34 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#Example_1'><img vspace="5" hspace="5" src="images\overlapmap_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\overlapmap_02.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_03.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_04.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using M5data with tclust and tkmeans, specifying an 
      initial threshold omegaStar, a colormap, and allowing for additional 
      interactive plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 rng('default') 
@@ -45,7 +47,14 @@ rng(1)
 end
 out_2 = tclust(Y(:,1:2), k*2, 0.2, 1, 'plots', 'contourf', 'Ysave', true);
 overl_2 = overlapmap(out_2, 'omegaStar', 0.0025, 'plots', 'contourf', 'userColors', summer);
-cascade;</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example using simdataset to create homogeneous and spherical clusters.</li></span></a></span></h3><div class="collapse"><p> 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means:  3.30 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 36%
+ClaLik with untrimmed units selected using crisp criterion
+Total estimated time to complete tclust:  4.59 seconds 
+Number of supplied clusters =6
+Number of estimated clusters =5
+</pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#Example_2'><img vspace="5" hspace="5" src="images\overlapmap_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\overlapmap_06.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_07.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_08.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_09.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example using simdataset to create homogeneous and spherical clusters.</li></span></a></span></h3><div class="collapse"><p> 
      This output is used as input for the overlap map and then also
      tkmeans and tclust solutions, for a higher number of components.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % Specify k cluster in v dimensions with n obs
@@ -103,7 +112,10 @@ title(str,'Interpreter','Latex');
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse'); 
 % overlap map with interctive mode
 overl = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
-cascade;</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simdataset to create homogeneous and spherical clusters 
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 43.84 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 37.3333%
+</pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\overlapmap_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\overlapmap_11.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_12.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example using simdataset to create homogeneous and spherical clusters 
      and using tkmeans.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">clear variables; close all 
 % Specify k cluster in v dimensions with n obs
 k = 10;
@@ -124,7 +136,10 @@ clickableMultiLegend(num2str((1:k)'));
 tkm = tkmeans(X, k*3, 0,'plots', 2,'Ysave',true, 'plots', 'ellipse');
 % overlap map with interctive mode
 out = overlapmap(tkm, 'omegaStar', 0.01, 'plots', 'contourf'); 
-cascade;</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_D" class="clearfix"> </div> <h3 id="input_argument_D" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>D</code> &#8212; Informations to compute the overlap matrix. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>D is a structure which can have the following fields (not
+cascade;</pre></div></div><pre class="codeoutput">Total estimated time to complete trimmed k means: 16.13 seconds 
+------------------------------
+Warning: Number of subsets without convergence equal to 36%
+</pre><a href='http://rosa.unipr.it/fsda/overlapmap.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\overlapmap_13.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\overlapmap_14.png" alt=""> <img vspace="5" hspace="5" src="images\overlapmap_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_D" class="clearfix"> </div> <h3 id="input_argument_D" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>D</code> &#8212; Informations to compute the overlap matrix. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>D is a structure which can have the following fields (not
                all of them are strictly required).</p> <p>
    
    Admissable fields for the structure D:</p><p>  

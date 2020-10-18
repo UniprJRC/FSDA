@@ -32,7 +32,21 @@ bayes.beta0=beta0;
 bayes.tau0=tau0;
 intercept=1;
 % function call
-out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
+out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)</pre></div></div><pre class="codeoutput">
+out = 
+
+  struct with fields:
+
+     ListOut: [1&times;18 double]
+    outliers: [1&times;18 double]
+         mdr: [273&times;2 double]
+          Un: [273&times;11 double]
+        nout: [2&times;5 double]
+        beta: [5&times;1 double]
+       scale: 1.4951e+04
+       class: 'FSRB'
+
+</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#Example_2'><img vspace="5" hspace="5" src="images\FSRB_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRB_02.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis with intercept).</li></span></a></span></h3><div class="collapse"><p>
      nsamp is the number of subsamples to use in the frequentist analysis of first
      year, in order to find initial subset using LMS.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 nsamp=3000;
@@ -220,7 +234,7 @@ ylabel('VALUE in 1000 euro')
 out04=FSR(y04,X04,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n04/2),'bonflev',bonflev);
 xlabel('QUANTITY in tons')
 ylabel('VALUE in 1000 euro')
-title('Frequentist - 2004');</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+title('Frequentist - 2004');</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRB_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_05.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_07.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_08.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_10.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example on Fishery dataset (analysis without the intercept).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % nsamp is the number of subsamples to use in the frequentist analysis of first
 % year, in order to find initial subset using LMS.
 nsamp=3000;
@@ -285,7 +299,7 @@ X03=Fishery2003(:,2);
 n03=length(y03);
 % Run Bayesian Forward Search for the 2nd year using the prior based on
 % the first year.
-out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');
+out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRB_11.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRB_12.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRB_14.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Outlier detection for Bank-Profit data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('BankProfit.txt');
 R=load('BankProfitR.txt');
 X=XX(:,1:end-1);
 y=XX(:,end);
@@ -343,7 +357,27 @@ set(gca,'YTickLabel','')
 end
 % Add on the plot the variable name
 text(0.75,0.1,['x' num2str(j)],'Units','normalized','FontSize',16)
-end</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+end</pre></div></div><pre class="codeoutput">Observed curve of r_min is at least 10 times greater than 99.99% envelope
+--------------------------------------------------
+-------------------------
+Signal detection loop
+Tentative signal in central part of the search: step m=1830 because
+rmin(1830,1903)&gt;99.999%
+-------------------
+Signal validation exceedance of upper envelopes
+Validated signal
+-------------------------------
+Start resuperimposing envelopes from step m=1829
+Superimposition stopped because r_{min}(1851,1859)&gt;99.9% envelope
+Subsample of 1858 units is homogeneous
+----------------------------
+Final output
+Number of units declared as outliers=45
+Summary of the exceedances
+           1          99         999        9999       99999
+         838          77          76          73          73
+
+</pre><a href='http://rosa.unipr.it/fsda/FSRB.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRB_15.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

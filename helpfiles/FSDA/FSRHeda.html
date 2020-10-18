@@ -6,7 +6,43 @@ X=XX(:,1);
 X=X./max(X);
 Z=log(X);
 [out]=LXS(y,X,'nsamp',1000);
-out1=FSRHeda(y,X,Z,out.bs);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHeda with optional argument.</li></span></a></span></h3><div class="collapse"><p>
+out1=FSRHeda(y,X,Z,out.bs);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
+Warning: interchange greater than 10 when m=26
+Warning: interchange greater than 10 when m=27
+Warning: interchange greater than 10 when m=67
+Warning: interchange greater than 10 when m=68
+Warning: interchange greater than 10 when m=69
+Warning: interchange greater than 10 when m=70
+m=100
+Warning: interchange greater than 10 when m=165
+Warning: interchange greater than 10 when m=166
+Warning: interchange greater than 10 when m=167
+Warning: interchange greater than 10 when m=168
+Warning: interchange greater than 10 when m=169
+Warning: interchange greater than 10 when m=170
+Warning: interchange greater than 10 when m=171
+Warning: interchange greater than 10 when m=172
+Warning: interchange greater than 10 when m=180
+Warning: interchange greater than 10 when m=181
+Warning: interchange greater than 10 when m=182
+Warning: interchange greater than 10 when m=183
+m=200
+Warning: interchange greater than 10 when m=225
+m=300
+m=400
+Warning: interchange greater than 10 when m=482
+Warning: interchange greater than 10 when m=483
+Warning: interchange greater than 10 when m=484
+Warning: interchange greater than 10 when m=485
+Warning: interchange greater than 10 when m=486
+m=500
+m=600
+m=700
+m=800
+m=900
+m=1000
+m=1100
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHeda with optional argument.</li></span></a></span></h3><div class="collapse"><p>
      Example of use of function FSRHeda using a random start and traditional
      t-stat monitoring.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
@@ -114,7 +150,9 @@ quant=chi2inv(0.99,2);
 v=axis;
 line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
 title('Normality test');
-xlabel('Subset size m');</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
+xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
+Warning: interchange greater than 10 when m=29
+</pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRHeda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRHeda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRHeda_03.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data
 load hprice.txt;
 n=size(hprice,1);
@@ -176,7 +214,15 @@ xlabel('Subset size m','FontSize',FontSize);
 % Add multiple title
 suplabel(['Housing data; confidence intervals of the parameters monitored in the interval ['...
 num2str(xlimL) ',' num2str(xlimU) ...
-']'],'t');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
+']'],'t');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.53 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 32.87%
+m=100
+m=200
+m=300
+m=400
+m=500
+</pre><a href='http://rosa.unipr.it/fsda/FSRHeda.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRHeda_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; A vector with n elements that contains the response variables. </span>  </a><span class="example_desc">Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite
                values will automatically be excluded from the
                computations.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')

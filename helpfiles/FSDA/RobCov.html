@@ -162,7 +162,34 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.83 seconds 
+covrob
+    0.6428   -0.0036
+   -0.0036    0.7251
+
+covrob1
+   29.6408   -0.4576
+   -0.4576   29.4429
+
+covrob2
+   29.6345   -0.1655
+   -0.1655   33.4256
+
+covrob3
+    0.2392   -0.0037
+   -0.0037    0.2376
+
+covrob4
+   1.0e-03 *
+
+    0.2844   -0.0069
+   -0.0069    0.2488
+
+covrobc
+    0.6428   -0.0036
+   -0.0036    0.7251
+
+</pre><a href='http://rosa.unipr.it/fsda/RobCov.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\RobCov_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
             of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
             columns represent variables.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaledres" class="clearfix"> </div> <h3 id="input_argument_scaledres" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaledres</code> &#8212; Scaled residuals.Vector. </span>  </a><span class="example_desc">n-times-1 vector containing scaled
              residuals $r_i/\hat \sigma$.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaleest" class="clearfix"> </div> <h3 id="input_argument_scaleest" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaleest</code> &#8212; robust estimate of the scale. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Robust estimate of
@@ -267,7 +294,7 @@ legend({'' 'LS','Robust'},'Location','Best')</pre></div></div></p></div></di
                coefficients. covrobc checks the coefficient of variation
                of the derivative of function $\psi(r_i/\hat \sigma)$. If 
                it is greater than the threshold proposed in Salini, et
-                al. (2019), it uses covrob2 else covrob.</p></td></tr><tr valign="top"><td><code>q</code></td><td><p>scalar. Correction for scale estimate (see Maronna and Yohai
+                al. (2020), it uses covrob2 else covrob.</p></td></tr><tr valign="top"><td><code>q</code></td><td><p>scalar. Correction for scale estimate (see Maronna and Yohai
                CSDA 2010). It is defined as
                \[
                q=1+\frac{p}{2n} \frac{a}{b \times c}
@@ -288,5 +315,5 @@ legend({'' 'LS','Robust'},'Location','Best')</pre></div></div></p></div></di
  robust regression for small samples, "Computational Statistics & Data
  Analysis", Vol. 55, pp. 2504-2515.</p></div><div><p>Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
  for robust estimators. Technical report, Dept. of Applied Economics, KU
- Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2019),
+ Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2020),
  Covariance matrices of robust estimators in regression, submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span> | <span itemprop="seealso"><a href="Taureg.html" itemprop="url"><span itemprop="name"><code>Taureg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
