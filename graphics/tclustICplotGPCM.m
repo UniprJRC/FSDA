@@ -1,5 +1,5 @@
 function tclustICplotGPCM(IC,varargin)
-%tclustICplotGPCM plots information criterion as a function of c and k
+%tclustICplotGPCM plots information criterion as a function of  $c_{det}$, $c_{shw}$,  $c_{shb}$ and $k$
 %
 %<a href="matlab: docsearchFS('tclustICplotGPCM')">Link to the help function</a>
 %
