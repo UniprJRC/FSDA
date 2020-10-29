@@ -13,11 +13,11 @@ function out=pcaFS(Y,varargin)
 %   4) provides guidelines about the automatic choice of the number of
 %       components;
 %   5) returns the communalities for each variable with respect to the
-%       first k principal components in table format 
+%       first k principal components in table format; 
 %   5) calls app biplotFS which enables to obtain an interactive biplot in
 %      which points, rowslabels or arrows can be shown or hidden. This app
 %      also gives the possibility of controlling the length of the arrows
-%      and the position of the row points through two interactive slier
+%      and the position of the row points through two interactive slider
 %      bars.
 %
 %  Required input arguments:
@@ -67,13 +67,14 @@ function out=pcaFS(Y,varargin)
 %                    Data Types - char
 %
 %  NumComponents : the number of components desired. Specified as a
-%                  scalar integer $k$ satisfying $0 < k \leq v$ When specified,
-%                  pcaFS returns the first $k$ columns of out.coeff and out.score.
-%                  If NumComponents is not specified the routines returns
-%                  the minimum number of components which cumulatively
-%                  enable to explain a percent of variance which is equal
-%                  to $0.95^v$. If this threshold is exceeded already by
-%                  the first PC, pcaFS still returns the first tow PCs.
+%                  scalar integer $k$ satisfying $0 < k \leq v$. When
+%                  specified, pcaFS returns the first $k$ columns of
+%                  out.coeff and out.score. If NumComponents is not
+%                  specified pcaFS returns the minimum number of components
+%                  which cumulatively enable to explain a percentage of
+%                  variance which is equal at least to $0.95^v$. If this
+%                  threshold is exceeded already by the first PC, pcaFS
+%                  still returns the first two PCs.
 %                   Example - 'NumComponents',2
 %                    Data Types - char
 %
@@ -152,8 +153,6 @@ function out=pcaFS(Y,varargin)
     % Operate on the covariance matrix.
     out=pcaFS(ingredients,'standardize',false,'biplot',false);
 %}
-
-
 
 
 %% Beginning of code
@@ -249,9 +248,9 @@ if isempty(NumComponents)
         disp('In what follows we still extract the first 2 PCs')
         NumComponents=2;
     end
-    
 end
 
+% labels of the PCs
 pcnames=cellstr(num2str((1:NumComponents)','PC%d'));
 
 V=V(:,1:NumComponents);
@@ -314,8 +313,12 @@ end
 if plots==true
     
     %% Explained variance through Pareto plot
-    figure()
-    pareto(explained(:,1),namerows)
+    figure('Name','Explaned variance')
+    [h,axesPareto]=pareto(explained(:,1),namerows);
+    % h(1) refers to the bars h(2) to the line
+    h(1).FaceColor='g';
+    linelabels = string(round(100*h(2).YData/sumla,2));
+    text(axesPareto(2),h(2).XData,h(2).YData,linelabels);
     xlabel('Principal components')
     ylabel('Explained variance (%)')
     
