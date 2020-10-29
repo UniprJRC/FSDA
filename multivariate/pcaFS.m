@@ -240,7 +240,7 @@ la=diag(La);
 sumla=sum(la);
 explained=[la 100*(la)/sumla 100*cumsum(la)/sumla];
 namerows=cellstr([repmat('PC',v,1) num2str((1:v)')]);
-namecols={'Eignvalues' 'Explained_Variance' 'Explained_Variance_cum'};
+namecols={'Eigenvalues' 'Explained_Variance' 'Explained_Variance_cum'};
 explainedT=array2table(explained,'RowNames',namerows,'VariableNames',namecols);
 if isempty(NumComponents)
     NumComponents=find(explained(:,3)>100*0.95^v,1);
