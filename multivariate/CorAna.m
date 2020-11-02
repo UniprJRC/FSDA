@@ -19,10 +19,10 @@ function out=CorAna(N, varargin)
 %  Required input arguments:
 %
 %       N    :    Contingency table (default) or n-by-2 input dataset.
-%                 Matrix or Table.
-%                 Matrix or table which contains the input contingency
-%                 table (say of size I-by-J) or the original data matrix.
-%                 In this last case N=crosstab(N(:,1),N(:,2)). As default
+%                 2D Array or Table.
+%                 2D array or table which contains the input contingency
+%                 table (say of size I-by-J) or the original data matrix X.
+%                 In this last case N=crosstab(X(:,1),X(:,2)). As default
 %                 procedure assumes that the input is a contingency table.
 %
 %  Optional input arguments:
@@ -114,7 +114,11 @@ function out=CorAna(N, varargin)
 %               be interpreted as a data matrix, else if the input argument
 %               is false N is treated as a contingency table. The default
 %               value of datamatrix is false, that is the procedure
-%               automatically considers N as a contingency table
+%               automatically considers N as a contingency table (in array
+%               or table format). If datamatrix is true, N can be an array
+%               or a table of size n-by-2. Note that if N has more than two
+%               columns correspondence analysis is based on the first two
+%               columns of N (and a warning is produced).
 %               Example - 'datamatrix',true
 %               Data Types - logical
 %
@@ -663,7 +667,14 @@ end
 % If input is a datamatrix it is necessary to construct the contingency
 % table
 if datamatrix == true
-    [N,~,~,labelsTab] =crosstab(N(:,1),N(:,2));
+    if size(N,2)>2
+        warning('FSDA:CorAna:TooManyVars','Input array or table has more than 2 columns. CorAna uses the first two');
+    end
+    if istable(N)
+        [N,~,~,labelsTab] =crosstab(N{:,1},N{:,2});
+    else
+        [N,~,~,labelsTab] =crosstab(N(:,1),N(:,2));
+    end
     [I,J]=size(N);
     % default labels for rows of contingency table
     Lr=labelsTab(1:I,1);
