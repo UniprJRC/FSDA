@@ -313,12 +313,13 @@ end
 if plots==true
     
     %% Explained variance through Pareto plot
-    figure('Name','Explaned variance')
+    figure('Name','Explained variance')
     [h,axesPareto]=pareto(explained(:,1),namerows);
     % h(1) refers to the bars h(2) to the line
     h(1).FaceColor='g';
     linelabels = string(round(100*h(2).YData/sumla,2));
-    text(axesPareto(2),h(2).XData,h(2).YData,linelabels);
+    text(axesPareto(2),h(2).XData,h(2).YData,linelabels,...
+        'Interpreter','none');
     xlabel('Principal components')
     ylabel('Explained variance (%)')
     
