@@ -187,6 +187,11 @@ builddocsearchdb([FSDAroot fsep 'helpfiles' fsep 'pointersHTML'])
 %% Copy file ToolboxPackagingConfiguration.prj into FSDAProjFolder (current folder)
 copyfile([FSDAroot fsep 'utilities_help' fsep 'ToolboxPackagingConfiguration.prj'],FSDAProjFolder)
 
+%% Publish contents file in the root inside subfolder html
+% This instruction is necessary in order to display subfolder examples in
+% Mathworks web site
+publish([FSDAroot filesep 'Contents.m'])
+
 %% Package toolbox and create file FSDA.mltbx
 outputFile ='FSDA.mltbx';
 matlab.addons.toolbox.packageToolbox('ToolboxPackagingConfiguration.prj', outputFile)
