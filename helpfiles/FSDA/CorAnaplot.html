@@ -234,7 +234,7 @@ confellipse.selRows=[2 4];
 confellipse.selCols=3;
 % Ellipse for column 3 using a Boolean vector
 confellipse.selCols=[ false false true false false];
-% confellipse.selcols={'c3'};
+% confellipse.selCols={'c3'};
 % Use the 3 methods below in order to compute the confidence ellipses for
 % the selected rows and columns of the input contingency table
 confellipse.method={'multinomial' 'bootRows' 'bootCols'};
@@ -577,15 +577,18 @@ CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);</pre></div></di
                If confellipse is a struct it may contain the following
                fields.</p> <p>
                confellipse.conflev= number in the interval (0 1) which
-                   defines the confidence level of each ellipse.</p> <p>
-               confellipse.method= cell which specifies the method(s) to use to
-                   compute confidence ellipses. Possible values are:</p> <p>
-                   {'multinomial'} = in this case the original contigencey
+                   defines the confidence level of each ellipse.  If this
+                   field is not present 90 per cent confidence ellipses are
+                   shown
+               confellipse.method= cell which specifies the method(s) to
+                   use to compute confidence ellipses. Possible values
+                   are:</p> <p>
+                   {'multinomial'} = in this case the original contingency
                    table with the active elements is taken as a reference.</p> <p>
                    Then new data tables are drawn in the following way:</p> <p>
                    $r\times c$ values are drawn from a multinomial
                    distribution with theoretical frequencies equals to
-                   $n_{ij}/n$.</p> <p>
+                   $n_{ij}/n$ where $n$ is the sample size.</p> <p>
                    {'bootRows'} = the values are bootstrapped row by row:</p> <p>
                    Given row i, $n_{i.}$ are extracted with repetition and
                    a frequency distribution is computed using classes
@@ -595,7 +598,8 @@ CorAnaplot(out,'plots',plots,'confellipse',confellipse,'h',h2);</pre></div></di
                    column. If  confellipse.method for example is
                    {'bootRows' 'bootCols'} two ellipses are drawn for each
                    point. In this case it is possible to appreciate the
-                   stability of both methods.</p> <p>
+                   stability of both methods. If this field is not
+                   present {'multinomial'} method is used.</p> <p>
                confellipse.nsimul=scalar which defines the number of
                    contingency tables which have to ge generated. The
                    default value of confellipse.nsimul is 1000. Thus
