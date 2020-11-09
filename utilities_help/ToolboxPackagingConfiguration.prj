@@ -9,9 +9,15 @@
     <param.screenshot />
     <param.version>1.0</param.version>
     <param.output>${PROJECT_ROOT}\FSDA.mltbx</param.output>
-    <param.products.name />
-    <param.products.id />
-    <param.products.version />
+    <param.products.name>
+      <item>Statistics and Machine Learning Toolbox</item>
+    </param.products.name>
+    <param.products.id>
+      <item>19</item>
+    </param.products.id>
+    <param.products.version>
+      <item>12.0</item>
+    </param.products.version>
     <param.platforms />
     <param.guid>20669fbc-61ca-4050-bc87-575422f4c0b8</param.guid>
     <param.exclude.filters>% List files contained in your toolbox folder that you would like to exclude
@@ -94,9 +100,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <param.screenshot />
       <param.version />
       <param.output />
-      <param.products.name />
-      <param.products.id />
-      <param.products.version />
       <param.platforms />
       <param.exclude.pcodedmfiles />
       <param.demosxml />
