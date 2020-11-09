@@ -241,15 +241,18 @@ function CorAnaplot(out,varargin)
 %               If confellipse is a struct it may contain the following
 %               fields.
 %               confellipse.conflev= number in the interval (0 1) which
-%                   defines the confidence level of each ellipse.
-%               confellipse.method= cell which specifies the method(s) to use to
-%                   compute confidence ellipses. Possible values are:
-%                   {'multinomial'} = in this case the original contigencey
+%                   defines the confidence level of each ellipse.  If this
+%                   field is not present 90 per cent confidence ellipses are
+%                   shown
+%               confellipse.method= cell which specifies the method(s) to
+%                   use to compute confidence ellipses. Possible values
+%                   are:
+%                   {'multinomial'} = in this case the original contingency
 %                   table with the active elements is taken as a reference.
 %                   Then new data tables are drawn in the following way:
 %                   $r\times c$ values are drawn from a multinomial
 %                   distribution with theoretical frequencies equals to
-%                   $n_{ij}/n$.
+%                   $n_{ij}/n$ where $n$ is the sample size.
 %                   {'bootRows'} = the values are bootstrapped row by row:
 %                   Given row i, $n_{i.}$ are extracted with repetition and
 %                   a frequency distribution is computed using classes
@@ -259,7 +262,8 @@ function CorAnaplot(out,varargin)
 %                   column. If  confellipse.method for example is
 %                   {'bootRows' 'bootCols'} two ellipses are drawn for each
 %                   point. In this case it is possible to appreciate the
-%                   stability of both methods.
+%                   stability of both methods. If this field is not
+%                   present {'multinomial'} method is used.
 %               confellipse.nsimul=scalar which defines the number of
 %                   contingency tables which have to ge generated. The
 %                   default value of confellipse.nsimul is 1000. Thus
@@ -623,7 +627,7 @@ function CorAnaplot(out,varargin)
     confellipse.selCols=3;
     % Ellipse for column 3 using a Boolean vector
     confellipse.selCols=[ false false true false false];
-    % confellipse.selcols={'c3'};
+    % confellipse.selCols={'c3'};
     % Use the 3 methods below in order to compute the confidence ellipses for
     % the selected rows and columns of the input contingency table
     confellipse.method={'multinomial' 'bootRows' 'bootCols'};
@@ -1635,13 +1639,13 @@ if isstruct(confellipse) || confellipse ==1
         listStrings={'multinomial', 'bootRows', 'bootCols'};
         disp(listStrings)
         error('FSDA:CorAnaplot:WrongInputOpt','Please use one of the above strings inside cell confellipse.method')
-    elseif isstruct(confellipse) && methodcount < length(confellipse.method)
+    elseif isstruct(confellipse) && methodcount < length(method)
         warning('FSDA:CorAnaplot:WrongInputOpt','Some methods specified in input cell confellipse.method are not valid')
         listStrings={'multinomial', 'bootRows', 'bootCols'};
         disp('Valid methods are')
         disp(listStrings)
         disp('Supplied methods are')
-        disp(confellipse.method)
+        disp(method)
     else
     end
     
