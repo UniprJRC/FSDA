@@ -68,7 +68,7 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
     <param.getting.started.guide>${PROJECT_ROOT}\FSDA\doc\GettingStarted.mlx</param.getting.started.guide>
     <param.matlabpath.excludes />
     <param.javaclasspath.excludes />
-    <param.exported.on.package>false</param.exported.on.package>
+    <param.exported.on.package>true</param.exported.on.package>
     <param.required.addons />
     <param.matlab.project.id>3090ae59-a1d1-45f1-8257-5ff83e883bf9</param.matlab.project.id>
     <param.matlab.project.name>FSDA (Flexible Statistics Data Analysis)</param.matlab.project.name>
@@ -103,7 +103,6 @@ ToolboxPackagingConfiguration.prj</param.exclude.filters>
       <param.registered.apps />
       <param.matlabpath.excludes />
       <param.javaclasspath.excludes />
-      <param.exported.on.package />
       <param.required.addons />
       <param.release.current.only />
       <param.compatiblity.windows />
