@@ -238,6 +238,25 @@ ylimy       = options.ylim;
 msg         = options.msg;
 bonflev     = options.bonflev;
 seq         = 1:n;
+tag         = options.tag; 
+if iscell(tag)
+    tagmdrplot=tag{1};
+    if length(tag)>1
+        tagyXplot=tag{2};
+    else
+        tagyXplot='fsr_yXplot';
+    end
+    
+    if length(tag)>2
+       tagresuperplot=tag{3};
+    else
+        tagresuperplot='fsr_resuperplot';
+    end
+else
+    tagmdrplot=tag;
+    tagyXplot='fsr_yXplot';
+    tagresuperplot='fsr_resuperplot';
+end   
 
 %% Model-related settings
 
@@ -816,6 +835,9 @@ if plo==1 || plo ==2
         stem(mdr(i,1),mdr(i,2),'LineWidth',1,...
             'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
     end
+    
+    % set tag to fsr figure;
+    set(gcf,'tag',tagmdrplot);
 end
 
 %% Part 2: envelope resuperimposition
@@ -843,6 +865,8 @@ if signal==1 || signal==2
             end
             
             figure2 = figure('PaperSize',[20.98 29.68],'Name','Resuperimposed envelopes #1');
+            set(gcf,'tag',[tagresuperplot '1']);
+
             % Create axes
             axes('Parent',figure2);
         end
@@ -977,6 +1001,8 @@ if signal==1 || signal==2
                 if jwind==nr*nc+1
                     jwind=1;
                     figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
+                    set(gcf,'tag',[tagresuperplot int2str(resup)]);
+
                     resup=resup+1;
                     % Create axes (Following line should not be necessary
                     %axes('Parent',figure2);
@@ -1046,7 +1072,7 @@ if signal==1 || signal==2
             resup=1;
             jwind=1;
             figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
-            
+            set(gcf,'tag',[tagresuperplot int2str(resup)]);
         end
         
         
@@ -1170,6 +1196,7 @@ if signal==1 || signal==2
                     jwind=1;
                     resup=resup+1;
                     figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
+            set(gcf,'tag',[tagresuperplot int2str(resup)]);
                     % Create axes (Following line should not be necessary
                     %axes('Parent',figure2);
                 end
@@ -1401,7 +1428,8 @@ if plo==1 || plo==2
         [H,AX,BigAx]=gplotmatrix(X,y,group,'br','+o',[],[],[],nameX,namey);
     end
     set(gcf,'Name','Scatter plot matrix y|X with outliers highlighted');
-    
+    set(gcf,'tag',tagyXplot);
+
     % The second condition is necessary because in the Bayesian case all
     % units can be declared as outliers
     if ndecl>0 && n-ndecl>0
