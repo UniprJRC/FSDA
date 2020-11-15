@@ -1,4 +1,4 @@
-function mmdplot(out,varargin)
+function [brushedUnits, BrushedUnits]=mmdplot(out,varargin)
 %mmdplot plots the trajectory of minimum Mahalanobis distance (mmd)
 %
 %<a href="matlab: docsearchFS('mmdplot')">Link to the help function</a>
@@ -188,9 +188,21 @@ function mmdplot(out,varargin)
 %                   Example - 'scaled',0
 %                   Data Types - char 
 %
-% Output: 
+%  Output:
 %
-% See also:
+% brushedUnits  : brushed units. Vector. Vector containing the list of the
+%                 units which are inside subset in the trajectories which
+%                 have been brushed using option databrush. If option
+%                 databrush has not been used brushedUnits will be an empty
+%                 value.
+%
+% BrushedUnits  : brushed units. Matrix. Matrix of size
+%                 r-by-numBrushingActions which contains in column j
+%                 the brushed units after jth brushing.
+%                 If during jth brushing action the number of brushed units
+%                 is $s<r$ the last $r-s$ units of column j are set to 0.
+%
+% See also: mdrplot
 %
 % References:
 %
@@ -360,6 +372,8 @@ function mmdplot(out,varargin)
 %% Beginning of code
 
 % Initialization
+brushedUnits=[];
+BrushedUnits=[];
 
 % Extract the absolute value of minimum deletion residual
 % or minimum Mahalanobis distance
@@ -751,6 +765,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 brushcum=nbrush;
                 group=ones(n,1);
             end
+            % Construct a matrix with brushed units
+            BrushedUnits(1:length(nbrush),end+1)=nbrush; %#ok<AGROW>
             
             % group=vector of length(Xsel) observations taking values
             % from 1 to the number of groups selected.
@@ -891,6 +907,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         end
         
     end % close loop associated with but
+            brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = mmdplotLbl(~,event_obj,out)

@@ -1,4 +1,4 @@
-function brushedUnits=mdrrsplot(out,varargin)
+function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
 %mdrrsplot plots the trajectory of minimum deletion residual from random starts
 %
 %<a href="matlab: docsearchFS('mdrrsplot')">Link to the help function</a>
@@ -192,6 +192,12 @@ function brushedUnits=mdrrsplot(out,varargin)
 %                 databrush has not been used brushedUnits will be an empty
 %                 value.
 %
+% BrushedUnits  : brushed units. Matrix. Matrix of size
+%                 r-by-numBrushingActions which contains in column j
+%                 the brushed units after jth brushing.
+%                 If during jth brushing action the number of brushed units
+%                 is $s<r$ the last $r-s$ units of column j are set to 0.
+%
 % See also: mmdrsplot, FSRmdrrs, tclustreg
 %
 %
@@ -363,6 +369,7 @@ function brushedUnits=mdrrsplot(out,varargin)
 %% Beginning of code
 
 brushedUnits=[];
+BrushedUnits=[];
 mdr=out.mdrrs;
 ntrajectories=size(mdr,2)-1;
 
@@ -1088,11 +1095,14 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
             % - the list of selected observations in the current iteration
             %   if persist=off
             if strcmp(persist,'on')
+                %  Brushcum=Brushcum nbrush(:)
                 brushcum=unique([brushcum; nbrush(:)]);
             else
                 brushcum=nbrush;
                 group=ones(n,1);
             end
+            % Construct a matrix with brushed units
+            BrushedUnits(1:length(nbrush),end+1)=nbrush; %#ok<AGROW>
             
             % group=vector of length(Xsel) observations taking values
             % from 1 to the number of groups selected.

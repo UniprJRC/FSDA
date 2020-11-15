@@ -1,4 +1,4 @@
-function mdrplot(out,varargin)
+function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
 %mdrplot plots the trajectory of minimum deletion residual (mdr)
 %
 %<a href="matlab: docsearchFS('mdrplot')">Link to the help function</a>
@@ -70,7 +70,7 @@ function mdrplot(out,varargin)
 %                   Data Types - double
 %
 %       lwdenv  :   Line width. Scalar. Scalar which controls the width of
-%                   the lines associated with the envelopes. 
+%                   the lines associated with the envelopes.
 %                   Default is lwdenv=1
 %                   Example - 'lwdenv',2
 %                   Data Types - double
@@ -175,7 +175,7 @@ function mdrplot(out,varargin)
 %                   Data Types - single | double | struct
 %
 %       FontSize:   Size of axes labels. Scalar. Scalar which controls the
-%                   fontsize of the labels of the axes. 
+%                   fontsize of the labels of the axes.
 %                   Default value is 12.
 %                   Example - 'FontSize',14
 %                   Data Types - single | double
@@ -206,7 +206,7 @@ function mdrplot(out,varargin)
 %                   Example - 'lwd',3
 %                   Data Types - single | double
 %
-%       titl    :   main title. Character. 
+%       titl    :   main title. Character.
 %                   A label for the title (default: '').
 %                   Example - 'namey','Plot title'
 %                   Data Types - char
@@ -226,7 +226,19 @@ function mdrplot(out,varargin)
 %
 % Output:
 %
-% See also: resfwdplot
+% brushedUnits  : brushed units. Vector. Vector containing the list of the
+%                 units which are inside subset in the trajectories which
+%                 have been brushed using option databrush. If option
+%                 databrush has not been used brushedUnits will be an empty
+%                 value.
+%
+% BrushedUnits  : brushed units. Matrix. Matrix of size
+%                 r-by-numBrushingActions which contains in column j
+%                 the brushed units after jth brushing.
+%                 If during jth brushing action the number of brushed units
+%                 is $s<r$ the last $r-s$ units of column j are set to 0.
+%
+% See also: resfwdplot, mmdplot
 %
 % References:
 %
@@ -408,9 +420,11 @@ function mdrplot(out,varargin)
     mdrplot(out,'databrush',databrush)
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Initialization
+brushedUnits=[];
+BrushedUnits=[];
 
 % Extract the absolute value of minimum deletion residual
 mdr=abs(out.mdr);
@@ -903,6 +917,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 brushcum=nbrush;
                 group=ones(n,1);
             end
+            % Construct a matrix with brushed units
+            BrushedUnits(1:length(nbrush),end+1)=nbrush; %#ok<AGROW>
             
             % group=vector of length(Xsel) observations taking values
             % from 1 to the number of groups selected.
@@ -1077,6 +1093,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         end
         
     end % close loop associated with but
+        brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = mdrplotLbl(~,event_obj,out)
