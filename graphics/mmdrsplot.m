@@ -1,4 +1,4 @@
-function brushedUnits=mmdrsplot(out,varargin)
+function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
 %mmdrsplot plots the trajectories of minimum Mahalanobis distances from different starting points
 %
 %<a href="matlab: docsearchFS('mmdrsplot')">Link to the help function</a>
@@ -192,6 +192,13 @@ function brushedUnits=mmdrsplot(out,varargin)
 %                 databrush has not been used, brushedUnits will be an empty
 %                 value.
 %
+% BrushedUnits  : brushed units. Matrix. Matrix of size
+%                 r-by-numBrushingActions which contains in column j
+%                 the brushed units after jth brushing.
+%                 If during jth brushing action the number of brushed units
+%                 is $s<r$ the last $r-s$ units of column j are set to 0.
+%
+%
 % See also: FSMmmdrs.m
 %
 % References:
@@ -347,6 +354,8 @@ if nargin<1
 end
 
 brushedUnits=[];
+BrushedUnits=[];
+
 mmdrs=out.mmdrs;
 ntrajectories=size(mmdrs,2)-1;
 
@@ -626,7 +635,7 @@ if ~isempty(options.datatooltip)
         
         % datacursormode on;
         hdt = datacursormode;
-        set(hdt,'Enable','on'); 
+        set(hdt,'Enable','on');
         % If options.datatooltip is not a struct then use our default options
         if ~isstruct(options.datatooltip)
             set(hdt,'DisplayStyle','window','SnapToDataVertex','on');
@@ -904,6 +913,8 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
                 brushcum=nbrush;
                 group=ones(n,1);
             end
+            % Construct a matrix with brushed units
+            BrushedUnits(1:length(nbrush),end+1)=nbrush; %#ok<AGROW>
             
             % group=vector of length(Xsel) observations taking values
             % from 1 to the number of groups selected.
