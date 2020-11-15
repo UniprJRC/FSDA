@@ -97,6 +97,29 @@ function [out]=FSR(y,X,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
+%        tag    : tags to the plots which are created. 
+%                 character or cell array of characters.
+%                 This option enables to add a tag to the plots which are
+%                 created. The default tag names are:
+%                 fsr_mdrplot for the plot of mdr based on all the
+%                 observations;
+%                 fsr_yXplot for the plot of y against each column of X
+%                 with the outliers highlighted;
+%                 fsr_resuperplot for the plot of resuperimposed envelopes. The
+%                 first plot with 4 panel of resuperimposed envelopes has
+%                 tag fsr_resuperplot1, the second  fsr_resuperplot2 ...
+%                 If tag is character or a cell of characters of length 1,
+%                 it is possible to specify the tag for the plot of mdr
+%                 based on all the observations;
+%                 If tag is a cell of length 2 it is possible to control
+%                 both the tag for the plot of mdr based on all the
+%                 observations and the tag for the yXplot with outliers
+%                 highlighted.
+%                 If tag is a cell of length 3 the third element specifies
+%                 the names of the plots of resuperimposed envelopes.
+%                 Example - 'tag',{'plmdr' 'plyXplot'};
+%                 Data Types - char or cell
+%
 %       init    : Search initialization. Scalar. It specifies the initial
 %                 subset size to start monitoring exceedances of minimum
 %                 deletion residual, if init is not specified it set equal
@@ -551,13 +574,16 @@ else
 end
 % ini0=init;
 
+% tag 
+tagdef='pl_fsr';
+
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',1,...
     'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
     'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
-    'bsbmfullrank',1,'threshoutX','','weak',false);
+    'bsbmfullrank',1,'threshoutX','','weak',false,'tag',tagdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
