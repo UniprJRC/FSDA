@@ -343,7 +343,10 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     % greysh color. If persist is 'on' after each selection, trajectories
     % never selected in any iteration are plotted in greysh color.
     databrush.persist='on';
-    mmdrsplot(out,'databrush',databrush)
+    % outV is the vector of all selected units during brushing
+    % outM is a matrix, each column contains the groups of selected units 
+    % at each brushing action
+    [outV, outM]=mmdrsplot(out,'databrush',databrush)
 %}
 
 %% Beginning of code

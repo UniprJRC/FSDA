@@ -362,7 +362,10 @@ function [brushedUnits,BrushedUnits]=mdrrsplot(out,varargin)
     databrush=struct
     databrush.persist='on';
     databrush.selectionmode='Rect'
-    mdrrsplot(out,'databrush',databrush)
+    % outV is the vector of all selected units during brushing
+    % outM is a matrix, each column contains the groups of selected units 
+    % at each brushing action
+    [outV, outM]=mdrrsplot(out,'databrush',databrush)
 %}
 
 
