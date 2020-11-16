@@ -221,7 +221,6 @@ if nargin > 1
     options=struct('testname',testname,'threshold',threshold,'alpha',alpha,'datamatrix',false);
     
     % UserOptions=varargin(1:2:length(varargin));
-    if ~isempty(varargin)
         UserOptions=varargin(1:2:length(varargin));
         if ~isempty(UserOptions)
             % Check if number of supplied options is valid
@@ -242,7 +241,6 @@ if nargin > 1
         threshold=options.threshold;
         alpha=options.alpha;
         testname=options.testname;
-    end
 end
 
 if ischar(testname) && strcmp(testname,'fisher')
