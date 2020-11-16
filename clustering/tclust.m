@@ -1035,6 +1035,16 @@ if isstruct(restrfactor)
     end
     restrGPCM=true;
     nocheckpa=true;
+    
+    if restrfactor.cdet==1
+        restrfactor.pars(1)='E';
+    end
+    if restrfactor.shb==1 
+            restrfactor.pars(2)='E';
+    end
+    
+    
+    
 else
     restrGPCM=false;
     % Check restriction factor
