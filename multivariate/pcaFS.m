@@ -341,7 +341,7 @@ if plots==true
     end
 end
 if biplot==true
-    biplotFS(Ztable,'standardize',standardize)
+    biplotAPP(Ztable,'standardize',standardize)
 end
 
 end
