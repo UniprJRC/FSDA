@@ -188,3 +188,4 @@ function biplotFS(Y,varargin)
   biplotAPP(Y,varargin{:})
 
 end
+%FScategory:VIS-Mult
