@@ -289,6 +289,21 @@ function out  = tclustICgpcm(Y, varargin)
 %                 Example - 'Ysave',1
 %                 Data Types - single | double
 %
+%     warmup  : warming up step. Boolean. If warmup is true (default) we
+%               investigate for each candidate value of k the 14 GPCMs and
+%               identify the best model. If we find varying determinants
+%               then the sequence of values of cdet is investigated else
+%               cdet is always set to 1. Similarly, if we find a shape
+%               different from the identity the sequence of values of cshw
+%               is investigated else cshw is set equal to 1. Moreover in
+%               this step we control the type of rotation. If warmp is
+%               false we always start from VVV specificationa and we
+%               investigate each value of cdet and cshw. On a later stage
+%               we investigate the optimal value of cshb and the type of
+%               rotation.
+%                 Example - 'warmup',true
+%                 Data Types - boolean
+%
 %   UnitsSameGroup : Units with same labels. Numeric vector.
 %                   List of the units which must (whenever possible)
 %                   have the same label.  For example if
@@ -553,6 +568,7 @@ cc=[1 2 4 8 16 32 64 128];
 cleanpool=false;
 UnitsSameGroup='';
 RandNumbForNini='';
+warmup=true;
 pa=struct;
 pa.pars='VVV';
 
@@ -560,7 +576,7 @@ options=struct('pa',pa,'kk',kk,'whichIC',whichIC,'alpha',alpha,'nsamp',nsamp,'pl
     'msg',msg,'Ysave',1,'refsteps',refsteps,'equalweights',equalweights,...
     'reftol',reftol,'startv1',startv1,...
     'UnitsSameGroup',UnitsSameGroup,'RandNumbForNini',RandNumbForNini,...
-    'numpool',numpool, 'cleanpool', cleanpool);
+    'numpool',numpool, 'cleanpool', cleanpool,'warmup',warmup);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -607,6 +623,7 @@ if nargin > 2
     numpool=options.numpool;
     UnitsSameGroup=options.UnitsSameGroup;
     RandNumbForNini=options.RandNumbForNini;
+    warmup=options.warmup;
 end
 
 if strcmp(whichIC,'MIXMIX')
@@ -642,13 +659,14 @@ lcshw=length(ccshw);
 lkk=length(kk);
 
 if typeIC==2
-    MIXMIX=zeros(lkk,lcdet,lcshw);
+    MIXMIX=Inf(lkk,lcdet,lcshw);
     IDXMIX=cell(lkk,lcdet,lcshw);
 elseif typeIC==1
-    MIXCLA=zeros(lkk,lcdet,lcshw);
+    MIXCLA=Inf(lkk,lcdet,lcshw);
     IDXMIX=cell(lkk,lcdet,lcshw);
+    
 else %  typeIC==0
-    CLACLA=zeros(lkk,lcdet,lcshw);
+    CLACLA=Inf(lkk,lcdet,lcshw);
     IDXCLA=cell(lkk,lcdet,lcshw);
 end
 
@@ -664,6 +682,11 @@ colnamesIC=regexprep(colnamesIC,' ','');
 %% Preapare the pool (if required)
 Cnsampall=cell(lkk,1);
 gRandNumbForNiniall=cell(lkk,1);
+
+if warmup==true
+        modsini={'EII' 'VII' 'EEI' 'VEI'  'EVI'  'VVI' 'EEE' 'VEE' 'EVE' 'VVE' 'EEV' 'VEV' 'EVV' 'VVV' };
+        BIC=zeros(14,1);
+end
 
 for k=1:lkk  % loop for different values of k (number of groups)
     
@@ -690,15 +713,75 @@ for k=1:lkk  % loop for different values of k (number of groups)
     pasel=pa;
     pasel.shb=128;
     
-    for cshw=1:lcshw
-        pasel.shw=ccshw(cshw);
+    if warmup==true
+        for j=1:14
+            
+            pasel1=pasel;
+            pasel1.pars=modsini{j};
+            if typeIC>0 % MIXMIX or MIXCLA
+                outMixt=tclust(Y,seqk,alpha,pasel1,'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',2, ...
+                    'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNini);
+                
+                if typeIC==2
+                    BIC(j,1)=outMixt.MIXMIX;
+                end
+                if typeIC==1
+                    BIC(j,1)=outMixt.MIXCLA;
+                end
+            else % CLACLA
+                % tclust using classification likelihood
+                outCla=tclust(Y,seqk,alpha, pasel1,'nsamp',Cnsamp,'plots',0,'msg',0, ...
+                    'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNini);
+                BIC(j,1)=outCla.CLACLA;
+            end
+        end
         
-        parfor (cdet=1:lcdet , numpool)
-            % for cdet=1:lcc
+        [~,indminBIC]=min(BIC);
+        modwithminBIC=modsini{indminBIC};
+        % modwithminBIC=['VV' modwithminBIC(3)];
+        pasel.pars=modwithminBIC;
+        % If the best model has an I or an E in second place cshb=1
+        if strcmp(pasel.pars(2),'E') || strcmp(pasel.pars(2),'I')
+            pasel.shb=1;
+        end
+        % If the best model has an I in second place cshw=1
+        if strcmp(pasel.pars(2),'I')
+            lcshwsel=1;
+            ccshwsel=1;
+        else
+            lcshwsel=lcshw;
+            ccshwsel=ccshw;
+        end
+        
+        % If the best model has an E in first place cdet=1
+        if strcmp(pasel.pars(1),'E')
+            lcdetsel=1;
+            ccdetsel=1;
+        else
+            lcdetsel=lcdet;
+            ccdetsel=ccdet;
+        end
+        
+    else
+        lcshwsel=lcshw;
+        lcdetsel=lcdet;
+        ccdetsel=ccdet;
+        ccshwsel=ccshw;
+    end
+    
+    
+    
+    for cshw=1:lcshwsel
+        pasel.shw=ccshwsel(cshw);
+        
+        parfor (cdet=1:lcdetsel , numpool)
+            % for cdet=1:lcdet
             % Select  value for restriction among determinants
             pasel1=pasel;
-            pasel1.cdet=ccdet(cdet);
-            
+            pasel1.cdet=ccdetsel(cdet);
+            % disp(pasel1)
             
             % columns = restr factor c_det
             % Third dimension values of c_shw
@@ -744,11 +827,13 @@ end
 
 out=struct;
 
+
 % Call tclustreg with **V **E **I to decide about best rotation
 modelb=zeros(3,1);
 IDXrot=zeros(n,3);
 models=cell(3,1);
 typerot={'I';'E';'V'};
+
 
 
 
@@ -782,60 +867,76 @@ if typeIC==0 % CLACLA
     % the best type of rotation
     pasel.cdet=cdetbest;
     pasel.shw=cshwbest;
+    pasel.k=kbest;
+    pasel.v=v;
+    
+    
     
     modelroot=pasel.pars;
     if cdetbest==1
         modelroot(1)='E';
     end
-    
-    
-    pasel.k=kbest;
-    pasel.v=v;
-    
-    
-    % Find best estimate of cshbbest
-    candshb=cc(cc<=cshwbest^((v-1)/v));
-    
-    IDXshb=zeros(n,length(candshb));
-    BICshb=zeros(length(candshb),1);
-    for jshb=1:length(candshb)
-        pasel.shb=candshb(jshb);
-        
-        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
-            'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
-        
-        BICshb(jshb)=outCla.CLACLA;
-    end
-    
-    [~,posminbestcshb]=min(BICshb);
-    cshbbest=candshb(posminbestcshb);
-    % Set best values of constraint across groups
-    pasel.shb=cshbbest;
-    
-    % End of instructions to determine best cshb
-    % Beginning of instruction to determine best type of rotation
-    if cshbbest==1
+    if cshwbest==1 && ~strcmp(modelroot(2),'I')
         modelroot(2)='E';
     end
     
-    % End of between groups refinment for CLACLA
-    % Beginning of rotation part for CLACLA
-    models{1}=[modelroot(1:2) 'I'];
-    models{2}=[modelroot(1:2) 'E'];
-    models{3}=[modelroot(1:2) 'V'];
-    
-    
-    for jrot=1:3
-        pasel.pars=models{jrot};
+    if warmup==true
+        pasel.pars=modelroot;
+    else
+        % Find best estimate of cshbbest
+        candshb=cc(cc<=cshwbest^((v-1)/v));
         
-        outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
-            'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
+        IDXshb=zeros(n,length(candshb));
+        BICshb=zeros(length(candshb),1);
+        for jshb=1:length(candshb)
+            pasel.shb=candshb(jshb);
+            
+            outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
+                'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
+            
+            BICshb(jshb)=outCla.CLACLA;
+        end
         
-        IDXrot(:,jrot)=outCla.idx;
-        modelb(jrot)=outCla.CLACLA;
+        [~,posminbestcshb]=min(BICshb);
+        cshbbest=candshb(posminbestcshb);
+        % Set best values of constraint across groups
+        pasel.shb=cshbbest;
+        
+        % End of instructions to determine best cshb
+        % Beginning of instruction to determine best type of rotation
+        if cshbbest==1
+            modelroot(2)='E';
+        end
+        
+        % End of between groups refinement for CLACLA
+        
+        
+        if strcmp(modelroot(2),'E') ||  strcmp(modelroot(2),'V')
+            
+            % Beginning of rotation part for CLACLA
+            models{1}=[modelroot(1:2) 'I'];
+            models{2}=[modelroot(1:2) 'E'];
+            models{3}=[modelroot(1:2) 'V'];
+            
+            
+            for jrot=1:3
+                pasel.pars=models{jrot};
+                
+                outCla=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',0, ...
+                    'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
+                
+                IDXrot(:,jrot)=outCla.idx;
+                modelb(jrot)=outCla.CLACLA;
+            end
+            [~,indminrot]=min(modelb);
+        else
+            indminrot=1;
+        end
+        pasel.pars=models{indminrot};
     end
+    
 else  % MIXMIX or MIXCLA store IDXMIX
     if ~isempty(UnitsSameGroup)
         IDXMIX=ClusterRelabel(IDXMIX,UnitsSameGroup);
@@ -860,70 +961,81 @@ else  % MIXMIX or MIXCLA store IDXMIX
     
     pasel.cdet=cdetbest;
     pasel.shw=cshwbest;
+    pasel.k=kbest;
+    pasel.v=v;
     
     modelroot=pasel.pars;
     if cdetbest==1
         modelroot(1)='E';
     end
-    
-    
-    pasel.k=kbest;
-    pasel.v=v;
-    
-    % Find best estimate of cshbbest
-    candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
-    
-    BICshb=zeros(length(candshb),1);
-    IDXshb=zeros(n,length(candshb));
-    for jshb=1:length(candshb)
-        pasel.shb=candshb(jshb);
-        
-        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
-            'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
-        if typeIC==2
-            BICshb(jshb)=outMixt.MIXMIX;
-        end
-        if typeIC==1
-            BICshb(jshb)=outMixt.MIXCLA;
-        end
-        IDXshb(:,jshb)=outMixt.idx;
-    end
-    
-    [~,posminbestcshb]=min(BICshb);
-    cshbbest=candshb(posminbestcshb);
-    % Set best values of constraint across groups
-    pasel.shb=cshbbest;
-    
-    if cshbbest==1
+    if cshwbest==1 && ~strcmp(modelroot(2),'I')
         modelroot(2)='E';
     end
     
-    % End of between groups refinment for MIXMIX (MIXCLA)
-    % Beginning of rotation part for MIXMIX (MIXCLA)
-    
-    models{1}=[modelroot(1:2) 'I'];
-    models{2}=[modelroot(1:2) 'E'];
-    models{3}=[modelroot(1:2) 'V'];
-    
-    for jrot=1:3
-        pasel.pars=models{jrot};
-        outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
-            'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
-            'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
-        IDXrot(:,jrot)=outMixt.idx;
+    if warmup==true
+        pasel.pars=modelroot;
+        cshbbest=cshwbest^((v-1)/v);
+    else
+        % Find best estimate of cshbbest
+        candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
         
-        if typeIC==2
-            modelb(jrot)=outMixt.MIXMIX;
+        BICshb=zeros(length(candshb),1);
+        IDXshb=zeros(n,length(candshb));
+        for jshb=1:length(candshb)
+            pasel.shb=candshb(jshb);
+            
+            outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
+                'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
+            if typeIC==2
+                BICshb(jshb)=outMixt.MIXMIX;
+            end
+            if typeIC==1
+                BICshb(jshb)=outMixt.MIXCLA;
+            end
+            IDXshb(:,jshb)=outMixt.idx;
         end
-        if typeIC==1
-            modelb(jrot)=outMixt.MIXCLA;
+        
+        [~,posminbestcshb]=min(BICshb);
+        cshbbest=candshb(posminbestcshb);
+        % Set best values of constraint across groups
+        pasel.shb=cshbbest;
+        
+        if cshbbest==1
+            modelroot(2)='E';
         end
+        
+        % End of between groups refinment for MIXMIX (MIXCLA)
+        % Beginning of rotation part for MIXMIX (MIXCLA)
+        
+        if strcmp(modelroot(2),'E') ||  strcmp(modelroot(2),'V')
+            
+            models{1}=[modelroot(1:2) 'I'];
+            models{2}=[modelroot(1:2) 'E'];
+            models{3}=[modelroot(1:2) 'V'];
+            
+            for jrot=1:3
+                pasel.pars=models{jrot};
+                outMixt=tclust(Y,kbest,alpha,pasel,'nsamp',Cnsampall{kk==kbest},'plots',0,'msg',0,'mixt',2, ...
+                    'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                    'reftol',reftol,'RandNumbForNini',gRandNumbForNiniall{kk==kbest});
+                IDXrot(:,jrot)=outMixt.idx;
+                
+                if typeIC==2
+                    modelb(jrot)=outMixt.MIXMIX;
+                end
+                if typeIC==1
+                    modelb(jrot)=outMixt.MIXCLA;
+                end
+            end
+            [~,indminrot]=min(modelb);
+        else
+            indminrot=1;
+        end
+        pasel.pars=models{indminrot};
+        
     end
 end
-
-[~,indminrot]=min(modelb);
-pasel.pars=models{indminrot};
 
 % Stope optimal values of the parameters
 out.kbest=kbest;
@@ -931,9 +1043,14 @@ out.cdetbest=cdetbest;
 out.cshwbest=cshwbest;
 out.cshbbest=cshbbest;
 out.BICbest=bestBIC;
-out.modelbest=models{indminrot};
 
-out.idxcshbbest=IDXrot(:,indminrot);
+if warmup==false
+    out.modelbest=models{indminrot};
+    out.idxcshbbest=IDXrot(:,indminrot);
+else
+    out.modelbest=modelroot;
+end
+
 % Store best classification before refining step for rotation
 if typeIC>0
     out.idx=IDXMIX{kk==kbest,ccdet==cdetbest,ccshw==cshwbest};
@@ -946,7 +1063,7 @@ out.pa=pasel;
 
 
 % Show refinements plots
-if plots==1
+if plots==1 && warmup==false
     
     figure
     if length(candshb)>1
@@ -985,12 +1102,14 @@ out.alpha=alpha;
 % Store original matrix
 out.Y=Y;
 
-
-out.BICshb=[candshb(:),BICshb];
-out.IDXshb=IDXshb;
-
-out.BICrot=modelb;
-out.IDXrot=IDXrot;
+if warmup==false
+    out.BICshb=[candshb(:),BICshb];
+    out.IDXshb=IDXshb;
+    
+    out.BICrot=modelb;
+    out.IDXrot=IDXrot;
+else
+end
 end
 
 
