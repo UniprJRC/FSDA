@@ -1,4 +1,4 @@
-function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
+function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lmd, OMG)
 %restrSigmaGPCM computes constrained covariance matrices for the 14 GPCM specifications
 %
 %
@@ -80,7 +80,7 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck)
 %                   older than 2016b.
 %               Data Types - struct
 %
-%    nocheck : check in input option pa. Sboolena. Specify whether it is
+%    nocheck : check in input option pa. Boolean. Specify whether it is
 %               necessary to check the input fields in
 %               previous input option pa. If nocheck is
 %               false (default is true) no check is performed on input
@@ -306,8 +306,10 @@ v=size(Sigma,1);
 pa.v=v;
 pa.k=k;
 
-% OMG = initialize 3D array containing rotation matrices
-OMG=zeros(size(Sigma));
+if nargin<5
+    % OMG = initialize 3D array containing rotation matrices
+    OMG=zeros(size(Sigma));
+end
 
 % Tolerance associated to the maximum of the elements which have to be
 % constrained. If the maximum  is smaller than zerotol restreigen
@@ -447,7 +449,22 @@ if strcmp(pars(3),'E')
     % In the common principal components case it is necessary to find
     % initial values for OMG (rotation), and lmd (unconstrained
     % determinants)
-    [lmd, OMG]  = initR(SigmaB, niini, pa);
+    if nargin<5
+        % fifth argin is lm and 6th argin is OMG
+        [lmd, OMG]  = initR(SigmaB, niini, pa);
+    else
+        %         % Initialize lmd
+        %         lmd = NaN(1,k);
+        %
+        %         if strcmp(pars(1),'V')
+        %             for j=1:k
+        %                 % lmd(j)=exp(log(det(SigmaB(:,:,j)))/v);
+        %                 lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+        %             end
+        %         else
+        %             lmd = ones(1,k);
+        %         end
+    end
     
     % In presence of variable shape
     % compute Wk and wk once and for all.
@@ -464,38 +481,41 @@ if strcmp(pars(3),'E')
         end
     end
 elseif  strcmp(pars(3),'V')
-    
-    % Initialize lmd
-    lmd = ones(1,k);
-    
-    % Find initial (and final value for OMG)
-    for j=1:k
-        [V,eigunsorted]= eig(SigmaB(:,:,j));
-        diageigunsorted=diag(abs(eigunsorted));
-        % Sort eigenvalues from largest to smallest and reorder the columns
-        % of the matrix of eigenvectors accordingly
-        % [~,ordeig]=sort(diageigunsorted,'descend');
-        % V=V(:,ordeig);
-        OMG(:,:,j)=V;
+    if nargin<5
+        % Initialize lmd
+        lmd = ones(1,k);
         
-        if strcmp(pars(1),'V')
-            % lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
-            lmd(j) = (prod(diageigunsorted)) ^ (1 / v);
+        % Find initial (and final value for OMG)
+        for j=1:k
+            [V,eigunsorted]= eig(SigmaB(:,:,j));
+            diageigunsorted=diag(abs(eigunsorted));
+            % Sort eigenvalues from largest to smallest and reorder the columns
+            % of the matrix of eigenvectors accordingly
+            [~,ordeig]=sort(diageigunsorted,'descend');
+            V=V(:,ordeig);
+            OMG(:,:,j)=V;
+            
+            if strcmp(pars(1),'V')
+                % lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+                lmd(j) = (prod(diageigunsorted)) ^ (1 / v);
+            end
         end
     end
 else % The remaining case is when **I
-    % Find initial (and final value for OMG).
-    % in this case OMG is a 3D arry contaning identity matrices
-    eyep=eye(pa.v);
-    for j=1:k
-        OMG(:,:,j)=eyep;
-    end
-    
-    % Initialize lmd
-    lmd = ones(1,k);
-    if strcmp(pars(1),'V')
+    if nargin<5
+        % Find initial (and final value for OMG).
+        % in this case OMG is a 3D arry contaning identity matrices
+        eyep=eye(pa.v);
         for j=1:k
-            lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+            OMG(:,:,j)=eyep;
+        end
+        
+        % Initialize lmd
+        lmd = ones(1,k);
+        if strcmp(pars(1),'V')
+            for j=1:k
+                lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+            end
         end
     end
 end
