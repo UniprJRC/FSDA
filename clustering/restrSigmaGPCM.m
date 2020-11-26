@@ -89,6 +89,17 @@ function [Sigma, lmd, OMG, GAM]  = restrSigmaGPCM(SigmaB, niini, pa, nocheck, lm
 %
 %  Optional input arguments:
 %
+%     lmd  : determinants. Vector.
+%             Initial estimates of (constrained) determinants
+%                 Example - [ 2 4 6]
+%                 Data Types - double
+%      OMG : rotation matrices. p-by-p-by-k array.
+%             p-by-p-by-k array containing the preliminary estimates of the
+%             rotation matrices for the k groups. If common rotation is
+%             imposed (third letter is equal to E),
+%             OMG(:,:,1)=...=OMG(:,:,k).
+%                 Example - .5*hadamard(4)
+%                 Data Types - double
 %
 % Output:
 %
