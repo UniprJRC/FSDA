@@ -54,8 +54,16 @@ for j=1:k
     Sigma = Sigma + (1/lmdc(j)) * (niini(j) /sumnini)  * SigmaB(:,:,j);
 end
 
-[V,~]= eig(Sigma);
-V=fliplr(V);
+[V,eigunsorted]= eig(Sigma);
+diageigunsorted=diag(abs(eigunsorted));
+[~,ordeig]=sort(diageigunsorted,'descend');
+% First column of V is first eigenvector associated to largest
+% eigenvalue ....
+V=V(:,ordeig);
+
+% old instruction to remove
+% V=fliplr(V);
+
 Omega2D=V;
 % diagSigma=diag(Sigma);
 
