@@ -31,7 +31,7 @@ function out  = tclustICsolGPCM(IC,varargin)
 %                Remark: fields CLACLA and IDXCLA are linked together.
 %                   CLACLA and IDXCLA are compulsory just if optional input
 %                   argument 'whichIC' is 'CLACLA'.
-%                IC.MIXMIX = 3D array of size length(kk)-by-length(cdet)-by-length(cshw) 
+%                IC.MIXMIX = 3D array of size length(kk)-by-length(cdet)-by-length(cshw)
 %                   containinig the value of the penalized
 %                   mixture likelihood (BIC). This field is linked with
 %                   IC.IDXMIX.
@@ -511,9 +511,17 @@ for k=1:length(kk) % loop for different values of k (number of groups)
             idjm1(idjm1<0)=0;
             idj(idj<0)=0;
             if Rand==1
-                ARI(k,j)=RandIndexFS(idjm1,idj,0);
+                try
+                    ARI(k,j)=RandIndexFS(idjm1,idj,0);
+                catch
+                    ARI(k,j)=0;
+                end
             else
-                ARI(k,j)=FowlkesMallowsIndex(idjm1,idj,0);
+                try
+                    ARI(k,j)=FowlkesMallowsIndex(idjm1,idj,0);
+                catch
+                    ARI(k,j)=0;
+                end
             end
         end
     end
@@ -709,7 +717,7 @@ for z=1:NumberOfBestSolutions
                 
                 Bestsols{z,4}=cc(cctoadd==1);
             end
-         end
+        end
         % get out of the loop because in this case there is a new candidate
         % solution (with the same k because the R index was smaller than a
         % certain threshold, or with a different k)
