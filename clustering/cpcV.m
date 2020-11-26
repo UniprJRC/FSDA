@@ -78,12 +78,9 @@ while ( (diffOMG > tolR) && (iter < maxiterR) )
     
     F=0;
     for j=1:k
-
-        
         GAMjinv=diag(1./(GAMc(:,j)));
-        F=F+(1/lmdc(j)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
+        F=F+(1/lmdc(j)^(1/v)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
             - wk(j)*(lmdc(j)^(-1/v))*GAMjinv * (Omega2D');
-        
     end
     
     [U,~,V] = svd(F,'econ');
