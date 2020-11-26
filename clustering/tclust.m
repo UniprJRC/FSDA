@@ -99,6 +99,12 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               if verLessThanFS(9.1) is false and bsxfun if MATLAB is
 %               older than 2016b.
 %               Data Types - scalar or struct
+% restrfactor.usepreviousest = boolean, which specifies if for each refining
+%               step we use values of constrained determints and rotation
+%               matrices found in the previous refining step. Default value
+%               is true.
+%               Data Types - boolean
+%
 %  Optional input arguments:
 %
 %       nsamp : Number of subsamples to extract.
@@ -1013,9 +1019,11 @@ end
 % is restrfactor is a struct then restriction is GPCM
 if isstruct(restrfactor)
     restrnum=3;
+    usepreviousest=true;
     optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
         'maxiterR','','tolR','','shw',100,'shb',50,...
-        'cdet',100,'zerotol','','pars','','k','','v','','tol','','msg','');
+        'cdet',100,'zerotol','','pars','','k','','v','','tol','',...
+        'msg','','usepreviousest',usepreviousest);
     chkoptions(optionspa,fieldnames(restrfactor))
     
     if ~isfield(restrfactor,'shw')
@@ -1028,11 +1036,16 @@ if isstruct(restrfactor)
         restrfactor.cdet=100;
     end
     
+    if ~isfield(restrfactor,'usepreviousest')
+        restrfactor.usepreviousest=usepreviousest;
+    end
+
     if verLess2016b ==true
         restrfactor.userepmat=1;
     else
         restrfactor.userepmat=2;
     end
+    
     restrGPCM=true;
     nocheckpa=true;
     
@@ -1290,7 +1303,7 @@ for i=1:nselected
                 % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
             end
         elseif restrnum==3
-            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
+            [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
         end
         
     else
@@ -1584,7 +1597,11 @@ for i=1:nselected
             % Alternative code based on gpuArrary
             % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         else
-            sigmaini=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
+            if restrfactor.usepreviousest ==true
+                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa,lmd, OMG);
+            else
+                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);   
+            end
         end
         % Calculus of the objective function (E-step)
         % oldobj=obj;
