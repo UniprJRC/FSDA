@@ -160,6 +160,12 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
+% commonslope  : Impose contraint of common slope regression coefficients. Boolean.
+%               If commonslope is true, the groups are forced to have the
+%               same regression coefficients (apart from the intercepts).
+%               The default value of commonslope is false; 
+%                 Example - 'commonslope',true
+%                 Data Types - boolean
 %
 %
 % plots    :    Plot on the screen. Scalar structure.
@@ -714,11 +720,12 @@ seqk = 1:k;
 
 plots          = 1;
 UnitsSameGroup = '';
+commonslopedef=false;
 
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
-    'reftol',reftoldef,...
+    'reftol',reftoldef,'commonslope',commonslopedef,...
     'we',wedef,'numpool',numpool,'cleanpool', cleanpool,...
     'equalweights',equalweightsdef,...
     'RandNumbForNini','','msg',1,'plots',plots,...
@@ -769,6 +776,10 @@ nsamp   = options.nsamp;
 % Concentration steps
 refsteps = options.refsteps;
 reftol   = options.reftol;
+
+% Common slope constraint
+commonslope=options.commonslope;
+
 
 % Equalweights constraints
 equalweights   = options.equalweights;
@@ -906,7 +917,7 @@ parfor (j=1:lalpha, numpool)
     [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,~,idxopt]...
         = tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,...
         equalweights,h,nselected,k,restrfact,restrfactX,alphaLik(j),alphaX,...
-        seqk,NoPriorNini,msgrs,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
+        seqk,NoPriorNini,msgrs,C,intercept,cwm,commonslope,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation);
     
     %%  END OF RANDOM STARTS
     
