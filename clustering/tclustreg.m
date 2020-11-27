@@ -158,6 +158,13 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
+% commonslope  : Impose contraint of common slope regression coefficients. Boolean.
+%               If commonslope is true, the groups are forced to have the
+%               same regression coefficients (apart from the intercepts).
+%               The default value of commonslope is false; 
+%                 Example - 'commonslope',true
+%                 Data Types - boolean
+%
 %    plots : Plot on the screen. Scalar. A flag to control the
 %            generation of the plots.
 %            If plots=1 a plot is showed on the screen with the
@@ -228,7 +235,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                enters in the thinning procedure. If pstar = 1 (default), all units
 %                enter in the thinning procedure.
 %                Data Types - scalar
-%                Example - pstar, 0.95  
+%                Example - pstar, 0.95
 %
 %       k_dens_mixt: in the Poisson/Exponential mixture density function,
 %                    number of clusters for density mixtures. Scalar.
@@ -373,10 +380,10 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                      presence of full convergence -out.NlogLmixt/2 is
 %                      equal to out.obj. If input parameter mixt=0 then
 %                      out.NlogLmixt is a missing value.
-%       
+%
 %               out.h = Scalar. Number of observations that have determined the
 %                       regression coefficients (number of untrimmed units).
-%        
+%
 %          out.class = 'tclustreg'.
 %
 %  Optional Output:
@@ -838,17 +845,10 @@ if nargin>6
         %no_wtrim = 1;
         wtrimdef = 0;
     end
-else
-    wtrimdef = 0;
-end
-
 
 %% User options and their default values
 
 %%% - nsamp: the number of subsets to extract randomly, or the indexes of the initial subsets pre-specified by the User
-
-if nargin>6
-    
     % Check whether option nsamp exists
     chknsamp = strcmp(varargin,'nsamp');
     if sum(chknsamp)>0
@@ -905,7 +905,9 @@ if nargin>6
 else
     % if nargin == 6, then the user has not supplied prior subsets
     NoPriorSubsets=1;
+    wtrimdef = 0;
 end
+
 % If the user has not specified prior subsets (nsamp is not a scalar), then
 % set the default number of samples to extract
 if NoPriorSubsets == 1
@@ -940,10 +942,14 @@ cupdef = 1;
 %pstar = thinning probability
 pstardef = 1;
 
+% commonslopedef = equal or different regression coefficients (excluding
+% intercepts)
+commonslopedef=false; 
+
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
     'nsamp',nsampdef,'refsteps',refstepsdef,...
-    'reftol',reftoldef,...
+    'reftol',reftoldef,'commonslope',commonslopedef,...
     'we',wedef,'wtrim',wtrimdef,...
     'equalweights',equalweightsdef,...
     'RandNumbForNini','','msg',1,'plots',1,...
@@ -995,6 +1001,9 @@ nsamp = options.nsamp;
 refsteps = options.refsteps;
 reftol   = options.reftol;
 
+% Common regression coefficients (excluding the intercepts)
+commonslope=options.commonslope;
+
 % Equalweights constraints
 equalweights = options.equalweights;
 
@@ -1008,7 +1017,7 @@ cup = options.cup;
 %pstar = thinning probability
 pstar = options.pstar;
 
-% Flag to control the type of thinning scheme for estimate beta
+% Flag to control the type of thinning scheme for estimating beta
 % (wtype_beta) and to compute obj function (wtype_obj)
 if isstruct(options.wtrim)
     % Flag to control the type of thinning scheme for beta estimation
@@ -1188,7 +1197,7 @@ end
 %     seqk,zigzag,NoPriorNini,sigma2ini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj);
 [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt, Beta_all, obj_all] ...
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation,cup,pstar);
+    seqk,NoPriorNini,msg,C,intercept,cwm,commonslope,wtype_beta,we,wtype_obj,zigzag,weiForLikComputation,cup,pstar);
 
 %%  END OF RANDOM STARTS
 
@@ -1231,7 +1240,7 @@ else
     %   sigma2opt_corr      = estimated group variances corrected with  asymptotic
     %                         consistency factor and small sample correction factor
     out.sigma2opt_corr      = sigma2opt_corr;
-%    out.wbetaopt            = webetaopt;
+    %    out.wbetaopt            = webetaopt;
     
     if wtype_beta==5
         %TO BE IMPLEMENTED
@@ -1279,24 +1288,24 @@ else
     end
     
     %% Compute INFORMATION CRITERIA
-  
+    
     %%% - Find NParam penalty term to use inside AIC and BIC
-
-% Add paramters referred to sigma2 restrictions
-% parameters associated to beta coefficients 
-npar=(p+(n-hh))*k;
-
-if equalweights==false      %to be generalized for equalweights==true
-    npar=npar +(k-1);
-end
-nParam=npar+ (k-1)*(1-1/restrfact) +1;
-
-if cwm==1
-    p1=p-intercept;
-    nParam=nParam+ 0.5*p1*(p1-1)*k + (p1*k-1)*(1-1/restrfactX) +1;
-end
-
-
+    
+    % Add paramters referred to sigma2 restrictions
+    % parameters associated to beta coefficients
+    npar=(p+(n-hh))*k;
+    
+    if equalweights==false      %to be generalized for equalweights==true
+        npar=npar +(k-1);
+    end
+    nParam=npar+ (k-1)*(1-1/restrfact) +1;
+    
+    if cwm==1
+        p1=p-intercept;
+        nParam=nParam+ 0.5*p1*(p1-1)*k + (p1*k-1)*(1-1/restrfactX) +1;
+    end
+    
+    
     % Discriminant functions for the assignments (use values of sigma2
     % corrected with Tallis
     if equalweights == 1
@@ -1359,7 +1368,7 @@ end
         out.MIXMIX=MIXMIX;
         out.MIXCLA=MIXCLA;
         
-        % Store 2 times negative log likelihood for mixt and classification 
+        % Store 2 times negative log likelihood for mixt and classification
         out.NlogL=2*NlogL;
         out.NlogLmixt=2*NlogLmixt;
     else
@@ -1370,10 +1379,10 @@ end
         
         out.CLACLA=CLACLA;
         
-         % Store 2 times negative log likelihood for mixt and classification 
+        % Store 2 times negative log likelihood for mixt and classification
         out.NlogL=NlogL;
         out.NlogLmixt=[];
-
+        
     end
     
     

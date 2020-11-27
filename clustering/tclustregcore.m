@@ -1,6 +1,6 @@
 function [bopt,sigma2opt,nopt,postprobopt,muXopt,sigmaXopt,vopt,subsetopt,idxopt,webeta,cstepopt,webetaopt,Beta_all, obj_all]...%,retained_idopt
     =tclustregcore(y,X,RandNumbForNini,reftol,refsteps,mixt,equalweights,h,nselected,k,restrfact,restrfactX,alphaLik,alphaX,...
-    seqk,NoPriorNini,msg,C,intercept,cwm,wtype_beta,we,wtype_obj,zigzag,wei,cup,pstar)
+    seqk,NoPriorNini,msg,C,intercept,cwm,commonslope,wtype_beta,we,wtype_obj,zigzag,wei,cup,pstar)
 
 % This function is called by tclustregeda and it is not intended to be called directly
 
@@ -514,7 +514,7 @@ for i =1:nselected
                         Xj          = X(ijj,:);
                         yj          = y(ijj,:);
                         yhat        = Xj*Beta(:,jj);
-
+                        
                         [Zt , ~]    = wthin(yhat,'cup',cup,'pstar',pstar);%,'bandwidth',0.9);
                         tmp(jj,1)=sum(ijj);
                         tmp(jj,2)=sum(Zt==0);
@@ -818,6 +818,24 @@ for i =1:nselected
             Beta=NaN; %#ok<NASGU>
             break
         end
+       
+        if commonslope ==true
+            Zdum=Z;
+            Zdum(Zdum>0)=1;
+            sqweightsc = sqrt(max(Z,[],2));
+                % No that the intercepts vary for each group
+            if intercept==1
+                Xadd=[Zdum X(:,2:end)];
+            else
+                Xadd=[Zdum X];
+            end
+            Xw = bsxfun(@times, Xadd, sqweightsc);
+            yw = y .* sqweightsc;
+            
+            % bregc = pooled estimate of beta using unthinned and
+            % untrimmed units from (re)weighted regression (RWLS)
+            bregc = Xw\yw;
+        end
         
         %% -- -- *M-Step*: find beta coefficients and sigma2 using weighted regression
         for jj=1:k
@@ -827,6 +845,7 @@ for i =1:nselected
             %trimmed and thinned units are 0, while the weights of the
             %other observations are the sqrt of the posterior
             %probabilities.
+            
             sqweights = sqrt(Z(:,jj));
             % nj = sum of the weights (posterior probabilities of not
             % trimmed and not thinned observations) for group jj.
@@ -842,14 +861,16 @@ for i =1:nselected
                 Xw = bsxfun(@times, X, sqweights);
                 yw = y .* sqweights;
                 
-                % breg = estimate of beta of group jj from (re)weighted regression
-                % (RWLS)
-                breg = Xw\yw;
-                % outp=regressH(yw,Xw,X(:,end),'maxiter',10);
-                % breg=outp.Beta(1:end-1,1);
                 % Beta = estimate of beta of all group from (re)weighted regression
                 % (RWLS).
-                Beta(:,jj)=breg;
+                if commonslope==false
+                % breg = estimate of beta of group jj from (re)weighted regression
+                % (RWLS)
+                    breg = Xw\yw;
+                else
+                    breg=bregc([jj (k+1):(k+p-intercept)]);
+                end
+                    Beta(:,jj)=breg;
                 
                 % sigma2 = estimate of sigma2 of group jj after
                 % weighted regression.
@@ -1056,7 +1077,7 @@ for i =1:nselected
             
             % obj >= vopt: to check an increase in the target value.
             if obj >= vopt && sum(isnan(Beta(:))) ==0
-
+                
                 %cstepopt = cstep with the largest obj
                 cstepopt  = cstep;
                 %subsetopt = subset with the largest obj
