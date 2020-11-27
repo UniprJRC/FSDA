@@ -438,56 +438,59 @@ if isempty(databrush)
 end
 
 %% Beginnning of refinemenet plot for cshb
-candshb=IC.BICshb;
-IDXshb=IC.IDXshb;
-if size(candshb,1)>1
-    h=figure;
-    set(h,'Name', 'ICgpcmcshb plot', 'NumberTitle', 'off');
-    hold('on')
-    for i=1:size(candshb,1)
-        plot(i,candshb(i,2),'o','LineWidth',5)
-    end
-    xlabel('c_{shb}')
-    ylabel('BIC to select best c_{shb}')
-    title(['Best c_{shb}=' num2str(IC.cshbbest)])
+if isfield(IC,'BICshb')
     
-    set(gca,'xtick',1:size(candshb,1),'xticklabel',candshb(:,1))
+    candshb=IC.BICshb;
+    IDXshb=IC.IDXshb;
+    if size(candshb,1)>1
+        h=figure;
+        set(h,'Name', 'ICgpcmcshb plot', 'NumberTitle', 'off');
+        hold('on')
+        for i=1:size(candshb,1)
+            plot(i,candshb(i,2),'o','LineWidth',5)
+        end
+        xlabel('c_{shb}')
+        ylabel('BIC to select best c_{shb}')
+        title(['Best c_{shb}=' num2str(IC.cshbbest)])
+        
+        set(gca,'xtick',1:size(candshb,1),'xticklabel',candshb(:,1))
+        % Datatooltip mode (call to function ICplotLbl)
+        if ~isempty(datatooltip)
+            PrepareDatatooltip(candshb(:,2),IDXshb)
+        end
+    else
+        % if cshw is <=2 there is just one point and the plot is not shown
+    end
+    plot1cshb=gcf;
+    
+    %% Beginnning of refinement plot for type or rotation
+    typerot={'I';'E';'V'};
+    h=figure;
+    set(h,'Name', 'ICgpcmROT plot', 'NumberTitle', 'off');
+    
+    BICrot=IC.BICrot;
+    IDXrot=IC.IDXrot;
+    
+    [~,indminrot]=min(BICrot);
+    hold('on')
+    for i=1:3
+        plot(i,BICrot(i),'o','LineWidth',5)
+    end
+    
+    xlabel('Type of rotation')
+    ylabel('BIC to select best type of rotation')
+    title(['Best rot =' typerot{indminrot}])
+    xlim([0.5 3.5])
+    set(gca,'XTick',1:3)
+    set(gca,'XTickLabel',char(typerot));
+    
     % Datatooltip mode (call to function ICplotLbl)
     if ~isempty(datatooltip)
-        PrepareDatatooltip(candshb(:,2),IDXshb)
+        PrepareDatatooltip(BICrot,IDXrot)
     end
-else
-    % if cshw is <=2 there is just one point and the plot is not shown
+    plot1crot=gcf;
+    
 end
-plot1cshb=gcf;
-
-%% Beginnning of refinement plot for type or rotation
-typerot={'I';'E';'V'};
-h=figure;
-set(h,'Name', 'ICgpcmROT plot', 'NumberTitle', 'off');
-
-BICrot=IC.BICrot;
-IDXrot=IC.IDXrot;
-
-[~,indminrot]=min(BICrot);
-hold('on')
-for i=1:3
-    plot(i,BICrot(i),'o','LineWidth',5)
-end
-
-xlabel('Type of rotation')
-ylabel('BIC to select best type of rotation')
-title(['Best rot =' typerot{indminrot}])
-xlim([0.5 3.5])
-set(gca,'XTick',1:3)
-set(gca,'XTickLabel',char(typerot));
-
-% Datatooltip mode (call to function ICplotLbl)
-if ~isempty(datatooltip)
-    PrepareDatatooltip(BICrot,IDXrot)
-end
-plot1crot=gcf;
-
 
 % Make the main BIC plot the current figure
 plBIC=findobj('type','figure','Name','BIC');
@@ -669,9 +672,9 @@ if ~isempty(databrush) || isstruct(databrush)
         % the plotedit mode initially to on and then to off, has the effect
         % to deselect plotedit mode.
         figure(plot1);
-         plotedit on
+        plotedit on
         plotedit off
-       
+        
         [~,~,pl] = selectdataFS(sele{:});
         
         % exit if the ICplot figure was closed before selection
