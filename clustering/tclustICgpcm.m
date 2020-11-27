@@ -684,8 +684,8 @@ Cnsampall=cell(lkk,1);
 gRandNumbForNiniall=cell(lkk,1);
 
 if warmup==true
-        modsini={'EII' 'VII' 'EEI' 'VEI'  'EVI'  'VVI' 'EEE' 'VEE' 'EVE' 'VVE' 'EEV' 'VEV' 'EVV' 'VVV' };
-        BIC=zeros(14,1);
+    modsini={'EII' 'VII' 'EEI' 'VEI'  'EVI'  'VVI' 'EEE' 'VEE' 'EVE' 'VVE' 'EEV' 'VEV' 'EVV' 'VVV' };
+    BIC=zeros(14,1);
 end
 
 for k=1:lkk  % loop for different values of k (number of groups)
@@ -714,9 +714,18 @@ for k=1:lkk  % loop for different values of k (number of groups)
     pasel.shb=128;
     
     if warmup==true
+        pasel1=pasel;
+        % Select the largest values of cdet and shw among those specified
+        % by the user
+        if isfield(pasel,'cdet')
+            pasel1.cdet=max(pasel.cdet);
+        end
+        if isfield(pasel,'shw')
+            pasel1.shw=max(pasel.shw);
+        end
+        
         for j=1:14
             
-            pasel1=pasel;
             pasel1.pars=modsini{j};
             if typeIC>0 % MIXMIX or MIXCLA
                 outMixt=tclust(Y,seqk,alpha,pasel1,'nsamp',Cnsamp,'plots',0,'msg',0,'mixt',2, ...
@@ -882,6 +891,7 @@ if typeIC==0 % CLACLA
     
     if warmup==true
         pasel.pars=modelroot;
+        cshbbest=NaN;
     else
         % Find best estimate of cshbbest
         candshb=cc(cc<=cshwbest^((v-1)/v));
@@ -974,7 +984,7 @@ else  % MIXMIX or MIXCLA store IDXMIX
     
     if warmup==true
         pasel.pars=modelroot;
-        cshbbest=cshwbest^((v-1)/v);
+        cshbbest=NaN;
     else
         % Find best estimate of cshbbest
         candshb=ccshw(ccshw<=cshwbest^((v-1)/v));
