@@ -158,10 +158,11 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-% commonslope  : Impose contraint of common slope regression coefficients. Boolean.
+% commonslope  : Impose constraint of common slope regression coefficients.
+%               Boolean.
 %               If commonslope is true, the groups are forced to have the
 %               same regression coefficients (apart from the intercepts).
-%               The default value of commonslope is false; 
+%               The default value of commonslope is false;
 %                 Example - 'commonslope',true
 %                 Data Types - boolean
 %
@@ -845,10 +846,10 @@ if nargin>6
         %no_wtrim = 1;
         wtrimdef = 0;
     end
-
-%% User options and their default values
-
-%%% - nsamp: the number of subsets to extract randomly, or the indexes of the initial subsets pre-specified by the User
+    
+    %% User options and their default values
+    
+    %%% - nsamp: the number of subsets to extract randomly, or the indexes of the initial subsets pre-specified by the User
     % Check whether option nsamp exists
     chknsamp = strcmp(varargin,'nsamp');
     if sum(chknsamp)>0
@@ -944,7 +945,7 @@ pstardef = 1;
 
 % commonslopedef = equal or different regression coefficients (excluding
 % intercepts)
-commonslopedef=false; 
+commonslopedef=false;
 
 % automatic extraction of user options
 options = struct('intercept',1,'mixt',mixtdef,...
@@ -1291,9 +1292,14 @@ else
     
     %%% - Find NParam penalty term to use inside AIC and BIC
     
-    % Add paramters referred to sigma2 restrictions
+    % Add parameters referred to sigma2 restrictions
     % parameters associated to beta coefficients
-    npar=(p+(n-hh))*k;
+    % npar=(p+(n-hh))*k;
+    if commonslope == false
+        npar=p*k;
+    else
+        npar=k+(p-intercept);
+    end
     
     if equalweights==false      %to be generalized for equalweights==true
         npar=npar +(k-1);
@@ -1305,6 +1311,9 @@ else
         nParam=nParam+ 0.5*p1*(p1-1)*k + (p1*k-1)*(1-1/restrfactX) +1;
     end
     
+    % Specify which sigma2 to use in the final assignment
+    % The two possibilities are siga2opt or sigma2opt_corr
+    sigma2opt_corr=sigma2opt;
     
     % Discriminant functions for the assignments (use values of sigma2
     % corrected with Tallis
