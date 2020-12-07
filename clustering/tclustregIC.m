@@ -316,6 +316,14 @@ function out  = tclustregIC(y,X,varargin)
 %               needs to be followed by their value. The order of the input
 %               arguments is of no importance.
 %
+% commonslope  : Impose constraint of common slope regression coefficients.
+%               Boolean.
+%               If commonslope is true, the groups are forced to have the
+%               same regression coefficients (apart from the intercepts).
+%               The default value of commonslope is false; 
+%                 Example - 'commonslope',true
+%                 Data Types - boolean
+%
 %
 %  Output:
 %
@@ -533,6 +541,7 @@ plots=0;
 nsamp=300;
 kk=1:5;
 whichIC='ALL';
+commonslope='false';
 msg=1;
 ccsigmay=[1 2 4 8 16 32 64 128];
 ccSigmaX=12;
@@ -559,7 +568,7 @@ options=struct('alphaLik',alphaLik,'alphaX',alphaX,'cc',ccsigmay,...
     'reftol',reftol,'startv1',startv1,...
     'UnitsSameGroup',UnitsSameGroup,'we',we,...
     'numpool',numpool, 'cleanpool', cleanpool,...
-    'intercept',intercept,'h','');
+    'intercept',intercept,'h','','commonslope',commonslope);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -609,6 +618,7 @@ if nargin > 2
     whichIC      = options.whichIC;
     UnitsSameGroup  = options.UnitsSameGroup;
     RandNumbForNini = options.RandNumbForNini;
+    commonslope    = options.commonslope;
 end
 
 
@@ -723,10 +733,10 @@ for k=1:lkk
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0,'mixt',2, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini);
+                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope);
             
             if ~isstruct(outMixt)
-                warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
+                warning('FSDA:tclustregIC:nocnvg','No convergence inside tclustreg')
                 warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(cORa)'])
             else
                 IDXMIX{k,cORa}=outMixt.idx;
@@ -749,10 +759,10 @@ for k=1:lkk
                 'nsamp',Cnsamp,...
                 'plots',0,'msg',0, ...
                 'nocheck',1,'reftol',reftol,'refsteps',refsteps,'equalweights',equalweights,...
-                'RandNumbForNini',gRandNumbForNini);
+                'RandNumbForNini',gRandNumbForNini,'commonslope',commonslope);
             
             if ~isstruct(outCla)
-                warning('FSDA:tclustreg:nocnvg','No convergence inside tclustreg')
+                warning('FSDA:tclustregIC:nocnvg','No convergence inside tclustreg')
                 warning('FSDA:tclustregIC:nocnvg',['No convergence when k= ' num2str(k) ' and c=' num2str(cORa)'])
                 IDXCLA{k,cORa}=NaN(n,1);
                 
