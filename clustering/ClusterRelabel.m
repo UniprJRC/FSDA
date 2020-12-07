@@ -45,10 +45,10 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 %                   it is found that unit UnitsSameGroup(r) has already
 %                   been assigned to groups 1, 2, ..., r-1).
 %
-%   idxMapping   : indexes of the permutations associated with IDX{1,1}. 
-%                       r-by-2 matrix. 
+%   idxMapping   : indexes of the permutations associated with IDX{1,1}.
+%                       r-by-2 matrix.
 %                       Matrix of size r-by-2 which keeps track of all the
-%                       permutations which have been done. For example if 
+%                       permutations which have been done. For example if
 %                       idxMapping is equal to  [3, 1; 3, 2],
 %                       it means that in the first iteration labels 1 and 3
 %                       have swapped, while in the second iteration label 3
@@ -62,7 +62,7 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 %
 % Cerioli, A., Garcia-Escudero, L.A., Mayo-Iscar, A. and Riani M. (2017),
 % Finding the Number of Groups in Model-Based Clustering via Constrained
-% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416, 
+% Likelihoods, "Journal of Computational and Graphical Statistics", pp. 404-416,
 % https://doi.org/10.1080/10618600.2017.1390469
 %
 %
@@ -90,7 +90,7 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
 
 %{
     %% Example with detailed description of output element OldAndNewIndexes.
-    % Random seed to be example ro replicate the results. 
+    % Random seed to be example ro replicate the results.
     rng(1000)
     Y=load('geyser2.txt');
     k=3;
@@ -98,12 +98,12 @@ function [IDXrelabelled, idxMapping]  = ClusterRelabel(IDX,pivotunits)
     % Make sure that group which contains
     % unit 10 is always labelled with number 1. Similarly,
     % make sure that the group which contains unit 12 is always labelled
-    % with number 2, 
+    % with number 2,
     UnitsSameGroup=[10;12];
     [idxnew, OldNewIndexes]=ClusterRelabel({out.idx}, UnitsSameGroup);
-    % In this case OldNewIndexes is equal to 
-    % 3 1 
-    % 3 2 
+    % In this case OldNewIndexes is equal to
+    % 3 1
+    % 3 2
     % It means that in the first iteration labels 1 and 3 have swapped
     % while in the second iteration label 3 and 2 have swapped
     subplot(1,2,1)
@@ -139,8 +139,8 @@ if iscell(IDX)
             % unassigned units whose label does not have to change.
             uniqvar(uniqvar==0)=[];
             
-            % Preliminary operation: make sure that the number contained inside
-            % idx goes from 1 to length(uniqvar).
+            % Preliminary operation: make sure that the numbers contained inside
+            % idx go from 1 to length(uniqvar).
             missingnumb=setdiff(1:length(uniqvar),uniqvar);
             if ~isempty(missingnumb)
                 for ii=1:length(missingnumb)
@@ -157,7 +157,7 @@ if iscell(IDX)
                     
                     idxtmp=idx;
                     if  OldLabel > jj
-                       
+                        
                         % The new label for units whose old label was OldLabel
                         % becomes jj
                         idx(idxtmp==OldLabel)=jj;
@@ -166,8 +166,8 @@ if iscell(IDX)
                         % becomes OldLabel
                         idx(idxtmp==jj)=OldLabel;
                         if i==1 && j==1
-                        idxMapping(jk,:)=[OldLabel jj];
-                        jk=jk+1;
+                            idxMapping(jk,:)=[OldLabel jj];
+                            jk=jk+1;
                         end
                     end
                 end
