@@ -820,9 +820,9 @@ for i =1:nselected
         end
        
         if commonslope ==true
-            Zdum=Z;
-            Zdum(Zdum>0)=1;
-            sqweightsc = sqrt(max(Z,[],2));
+            [weightsc,indmax]=max(Z,[],2);
+            Zdum=dummyvar(indmax);
+            sqweightsc = sqrt(weightsc);
                 % No that the intercepts vary for each group
             if intercept==1
                 Xadd=[Zdum X(:,2:end)];
@@ -868,7 +868,11 @@ for i =1:nselected
                 % (RWLS)
                     breg = Xw\yw;
                 else
-                    breg=bregc([jj (k+1):(k+p-intercept)]);
+                    if length(bregc)==(k+p-intercept)
+                        breg=bregc([jj (k+1):(k+p-intercept)]);
+                    else
+                        breg=zeros(p,1);
+                    end
                 end
                     Beta(:,jj)=breg;
                 
