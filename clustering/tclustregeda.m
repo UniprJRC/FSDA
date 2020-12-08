@@ -160,10 +160,10 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 %                 Example - 'reftol',1e-05
 %                 Data Types - single | double
 %
-% commonslope  : Impose contraint of common slope regression coefficients. Boolean.
+% commonslope  : Impose constraint of common slope regression coefficients. Boolean.
 %               If commonslope is true, the groups are forced to have the
 %               same regression coefficients (apart from the intercepts).
-%               The default value of commonslope is false; 
+%               The default value of commonslope is false;
 %                 Example - 'commonslope',true
 %                 Data Types - boolean
 %
@@ -447,10 +447,20 @@ function [out, varargout] = tclustregeda(y,X,k,restrfact,alphaLik,alphaX,varargi
 % proportion alpha reduces. This function enables us to monitor the change
 % in classification (measured by the ARI index) and the change in
 % regression coefficients and error variances (measured by the relative
-% squared Euclidean distances). In order to make sure that consistent
-% labels are used for the groups, between two consecutive values of alpha,
+% squared Euclidean distances).
+% Note that there is a non-identifiability of a finite mixture distribution
+% caused by the invariance of the mixture density function to components
+% relabeling. In order to make sure that consistent labels are used for the
+% groups, between two consecutive values of alpha, we call
 % we assign label r to a group if this group shows the smallest distance
-% with group r for the previous value of alpha. In order to be consistent
+% with group r for the previous value of alpha.
+% More precisely, once the labelling is fixed for the largest value of the
+% trimming factor supplied, if $\alpha_r$ and $\alpha_s$ denote two
+% consecutive levels of trimming ($\alpha_r>\alpha_s$) and
+% \beta_{j,\alpha_r}
+%given \beta_{j,\alpha_r}
+%
+% In order to be consistent
 % along the different runs it is possible to specify through option
 % UnitsSameGroup the list of the units which must (whenever possible) have
 % a particular label.
@@ -1066,10 +1076,11 @@ for j=2:lalpha
     [maxmindist,indmaxdist] =max(mindist);
     maxdist(j)=maxmindist;
     
-    % If newlab k=3 and newlab is 2 3 1 it means that previous group 1 now
-    % has been labelled group 2, previous group 3 now has been labelled
-    % group 3 and previous group 3 now has been labelled group 1.
-    % Therfore if isequal(sort(newlab),seqk) relabelling is easy
+    % If for example in the case k=3, newlab is 2 3 1, it means that
+    % previous group 1 now has been labelled group 2, previous group 3 now
+    % has been labelled group 3 and previous group 3 now has been labelled
+    % group 1.
+    % Therefore if isequal(sort(newlab),seqk) relabelling is easy
     if isequal(sort(newlab),seqk)
         
         if existXspace == true
@@ -1090,7 +1101,7 @@ for j=2:lalpha
         % newlab. To this label we assign the maximum distance and check is
         % this time sequal(sort(newlab),seqk), that is we check whether
         % vector sort(newlab) of length k contain the numbers 1, 2, ..., k
-        % if length(newl) two labels do not have the corerspondence
+        % if length(newl) >1 two labels do not have the correspondence
         % therefore automatic relabelling is not possible.
         newl=setdiff(seqk,newlab);
         if length(newl)==1
@@ -1745,9 +1756,22 @@ if d>0
             % Make the axes of the panel with handle AX(i) the current axes.
             set(gcf,'CurrentAxes',AX(j));
             for i=1:k
+                if intercept==1
+                    indexesOtherCoef=[1 setdiff((2:p),j+1)];
+                else
+                    indexesOtherCoef=setdiff((1:p),j);
+                end
+                
                 % add a refline for each value of alpha1
                 for jj=1:length(alphaLik)
-                    hline           = refline([Beta(i,j+1,jj) Beta(i,1,jj)]);
+                    
+                    idxi=IDX(:,jj)==i;
+                    % Beta = k-by-p-by-length(alphaLik)
+                    meanOtherX=mean(X(idxi,indexesOtherCoef)*Beta(i,indexesOtherCoef,jj)');
+                    % hline  = refline(Beta(i,j+intercept,jj),meanOtherX);
+                    xlimits = get(AX(j),'Xlim');
+                    hline = line(xlimits , meanOtherX + Beta(i,j+intercept,jj).*xlimits);
+            
                     hline.Color     = clrdefmap(jj,:,i);
                     hline.LineStyle = linedef{i};
                 end
