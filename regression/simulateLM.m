@@ -1,16 +1,18 @@
-function [y, X] = simulateLM(n,varargin)
+function [out] = simulateLM(n,varargin)
 %simulateLM simulates linear regression data with prespecified values of statistical indexes.
 %
 %<a href="matlab: docsearchFS('simulateLM')">Link to the help function</a>
 %
 % simulateLM simulates linear regression data. It is possible to specify:
-% 1) the requested value of R2;
-% 2) the values of the beta coefficients;
+% 1) the requested value of R2 (or equivaletly its SNR);
+% 2) the values of the beta coefficients (possibly sparse);
 % 3) the correlation (covariance) matrix among the explanatory variables.
 % 4) the value of the intercept term.
 % 5) the distribution to use to generate the Xs;
 % 6) the distribution to use to generate the ys.
-%
+% 7) the MSOM contamination in Xs and ys.
+% 8) the VIOM contamination in ys.
+% 
 %  Required input arguments:
 %
 %         n  :  sample size. Scalar. n is a positive integer
@@ -25,11 +27,19 @@ function [y, X] = simulateLM(n,varargin)
 %            The default is to simulate regression data with R2=0;
 %                 Example - 'R2',0.90
 %                 Data Types - double
+%
+%     SNR  : Signal to noise ratio characterizing the simulation. This
+%            is defined such that sigma_error == sqrt(var(X_u*beta_true)/SNR)
+%            The default is SNR=='' and R2 is used instead.
+%            Example - 'SNR',10
+%            Data Types - double
+%
 %     beta :   the values of the beta coefficients. Vector. Vector which
 %              contains the values of the regression coefficients. The
 %              default is a vector of ones.
 %                 Example - 'beta',[3 5 8]
 %                 Data Types - double
+%
 %    SigmaX :   the correlation matrix. Matrix. Positive definite matrix
 %               which contains the correlation matrix among regressors. The
 %               default is the identity matrix.
@@ -61,7 +71,7 @@ function [y, X] = simulateLM(n,varargin)
 %              with parameters mu and sigma respectively equal to 2 and 10.
 %                 Example - 'distribypars', '[2 10]'
 %                 Data Types - double
-%       nexpl   : number of explanatory varibles. If vector beta is
+%       nexpl   : number of explanatory variables. If vector beta is
 %                 supplied nexpl is equal to length(beta). Similarly if
 %                 sigmaX is supplied nexpl is set equal to size(sigmaX,1).
 %                 Note that both nexpl is supplied together with beta and SigmaX it is check that
@@ -81,18 +91,65 @@ function [y, X] = simulateLM(n,varargin)
 %                 Example - 'plots',false
 %                 Data Types - single | double
 %
+%       pMSOM   : Proportion of MSOM outliers. The default is 10% MSOM 
+%                 contmaination.
+%                 Example - 'pMSOM',0.25
+%                 Data Types - double
+% 
+%       pVIOM   : Proportion of VIOM outliers (non-overlapping with MSOM). 
+%                 The default is 10% VIOM contmaination.
+%                 Example - 'pVIOM',0.25
+%                 Data Types - double
+% 
+%   shiftMSOMe  : Mean-shift on the error terms for MSOM outliers.
+%                 Default value shiftMSOMe==10.
+%                 Example - 'shiftMSOMe',-3
+%                 Data Types - double
+% 
+%   predxMSOM   : Predictors subject to a mean shift by MSOM. It is a 
+%                 p-dimensional vector indexing design matrix columns.
+%                 Default value is to contaminate only the non-zero
+%                 entries of beta_true (excluding the intercept).
+%                 Example - 'predMSOM',true(2,1)
+%                 Data Types - boolean
+% 
+%   shiftMSOMx  : Mean-shift on the predictor terms for MSOM outliers.
+%                 Default value shiftMSOMx==10.
+%                 Example - 'shiftMSOMx',3
+%                 Data Types - double
+% 
+%   inflVIOMe   : Variance-inflation for the errors subject to a VIOM.
+%                 Default value is inflVIOMe==10.
+%                 Example - 'inflVIOMe',5
+%                 Data Types - double
 %
-%  Output:
 %
-%           y :  simulated response. Vector. Column vector of length n
-%               containing the response.
-%           X :  simulated regressors. Matrix . Matrix of size
-%                n-times-nexpl containing the values of the regressors.
+% Output:
+%
+%         out:   structure which contains the following fields
+%
+%    out.y        = simulated response. Vector. Column vector of length n
+%                   containing the response.
+%    out.X        = simulated regressors. Matrix . Matrix of size
+%                   n-times-nexpl containing the values of the regressors.
+%
+%  Optional Output (for pVIOM+pMSOM>0):
+%
+%   out.yc        = Contaminated response vector.
+%   out.Xc        = Contaminated response vector.
+% out.ind_clean   = Indexes for non-outlying cases.
+% out.ind_MSOM    = Indexes for MSOM outlying cases.
+% out.ind_VIOM    = Indexes for VIOM outlying cases.
+% out.vareps      = Variance for the uncontaminated errors.
+%
 %
 % See also simulateTS
 %
 % References:
 %
+% Insolia, L., F. Chiaromonte, and M. Riani (2020a). 
+% “A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliers”. 
+% In press.
 %
 %
 % Copyright 2008-2019.
@@ -108,7 +165,7 @@ function [y, X] = simulateLM(n,varargin)
 %{
     %% Use all defaul options.
     % Simulate 100 observations y and X (uncorrelated with y) using standard normal distribution.
-    [y,X]=simulateLM(100,'plots',true);
+    out=simulateLM(100,'plots',true);
 %}
 
 %{
@@ -116,8 +173,8 @@ function [y, X] = simulateLM(n,varargin)
     % Set value of R2;
     R2=0.82;
     n=10000;
-    [y,X]=simulateLM(n,'R2',R2);
-    out=fitlm(X,y);
+    out=simulateLM(n,'R2',R2);
+    outLM=fitlm(out.X,out.y);
 %}
 
 %{
@@ -126,19 +183,21 @@ function [y, X] = simulateLM(n,varargin)
     R2=0.26;
     n=10000;
     A = gallery('moler',5,0.2);
-    [y,X]=simulateLM(n,'R2',R2,'SigmaX',A);
-    out=fitlm(X,y)
+    out=simulateLM(n,'R2',R2,'SigmaX',A);
+    outLM=fitlm(out.X,out.y)
 %}
 
 %{
+
     %% Use prefixed values of R2, beta and intercept.
     % Set value of R2.
     R2=0.92;
     beta=[3; 4; 5; 2; 7];
     intercept=43;
     n=100000;
-    [y,X]=simulateLM(n,'R2',R2,'beta',beta);
-    out=fitlm(X,y);
+    out=simulateLM(n,'R2',R2,'beta',beta);
+    outLM=fitlm(out.X,out.y);
+
 %}
 
 %{
@@ -154,15 +213,31 @@ function [y, X] = simulateLM(n,varargin)
     df=5;
     for j=1:nsimul
         % Data generated from Normal
-        [y,X]=simulateLM(n,'R2',R2,'beta',beta);
-        out=fitlm(X,y);
-        R2all(j,1)=out.Rsquared.Ordinary;
+        out=simulateLM(n,'R2',R2,'beta',beta);
+        outLM=fitlm(out.X,out.y);
+        R2all(j,1)=outLM.Rsquared.Ordinary;
         % Data generated from T(5)
-        [y,X]=simulateLM(n,'R2',R2,'beta',beta,'distriby','T','distribypars',df);
-        out=fitlm(X,y);
-        R2all(j,2)=out.Rsquared.Ordinary;
+        out=simulateLM(n,'R2',R2,'beta',beta,'distriby','T','distribypars',df);
+        outLM=fitlm(out.X,out.y);
+        R2all(j,2)=outLM.Rsquared.Ordinary;
     end
     boxplot(R2all,'Labels',{'Normal', 'T(5)'});
+%}
+
+%{
+
+    %% Use SNR and include MSOM (on active features) and VIOM contamination
+    SNR=3;
+    beta=[2, 2, 0, 0];
+    intercept=1;
+    n=100;
+    out=simulateLM(n,'SNR',SNR,'beta',beta, 'pMSOM', 0.1, 'pVIOM', 0.2, 'plots', 1);
+    X = out.X;
+    y = out.y;
+    outLM=fitlm(X,y);
+    Xc = out.Xc;
+    yc = out.yc;
+    outLM2=fitlm(Xc,yc);
 %}
 
 %% Beginning of code
@@ -181,13 +256,23 @@ distriby = 'normal';
 distribypars = [0 1];
 plots=false;
 intercept=0;
+SNR = '';
+pMSOM = 0;
+pVIOM = 0;
+shiftMSOMe = -10;
+predxMSOM = '';
+shiftMSOMx = 10;
+inflVIOMe = 10;
 
 
 options=struct('R2',R2,...
     'beta',beta,'SigmaX',SigmaX,...
     'distribX',distribX,'distribXpars',distribXpars,...
     'distriby',distriby,'distribypars',distribypars,...
-    'nexpl',nexpl,'intercept',intercept,'plots',plots);
+    'nexpl',nexpl,'intercept',intercept,'plots',plots, ...
+    'SNR', SNR, 'pMSOM', pMSOM, 'pVIOM', pVIOM, ...
+    'shiftMSOMe', shiftMSOMe, 'predxMSOM', predxMSOM, ...
+    'shiftMSOMx', shiftMSOMx, 'inflVIOMe', inflVIOMe);
 
 
 %% User options
@@ -231,7 +316,24 @@ if ~isempty(UserOptions)
     distribypars = options.distribypars;
     plots=options.plots;
     intercept=options.intercept;
-    
+    SNR = options.SNR;
+    pMSOM = options.pMSOM;
+    pVIOM = options.pVIOM;
+    shiftMSOMe = options.shiftMSOMe;
+    if isempty(predxMSOM)
+        predxMSOM= abs(beta)>0;
+    else
+        predxMSOM = options.predxMSOM;
+    end
+    shiftMSOMx = options.shiftMSOMx;
+    inflVIOMe = options.inflVIOMe;
+
+    if R2<0 || R2>=1
+        error('FSDA:simulateLM:WrongOpt','R2 must belong to [0, 1)');
+    end
+    if SNR<=0
+        error('FSDA:simulateLM:WrongOpt','SNR must be greater than zero');
+    end
     
     % Preliminary checks both beta, nexpl and sigmaX have been supplied
     if betaboo==true && SigmaXboo==true && nexplboo==true
@@ -346,11 +448,13 @@ if ~isempty(UserOptions)
      err=sqrt((n)/(n-p))*err/std(err,1);
     % err=err/std(err,1);
     
-    if R2>0
+    if R2>0 && isempty(SNR)
         % Find var(\epsilon) which produces a value of R2 centered around
         % the one which has been requested.
         vareps=(intercept+beta'*SigmaX*beta)*((1 - R2)/R2);
-        
+        y=intercept+X*beta(:)+err*sqrt(vareps);
+    elseif ~isempty(SNR)
+        vareps = var(X*beta(:)) / SNR;
         y=intercept+X*beta(:)+err*sqrt(vareps);
     else
         y=intercept+err;
@@ -362,6 +466,59 @@ if ~isempty(UserOptions)
 end
 
 %% checks on the explanatory variables
+
+
+%% add contamination as MSOM and VIOM
+    
+if pMSOM + pVIOM >0
+    
+    eu = err*sqrt(vareps);
+    Xu = X;
+
+    % number of units arising from a MSOM
+    nMSOM = floor(n * pMSOM);
+    % indexes MSOM
+    indMSOM = randperm(n, nMSOM);
+    % MSOM (also on X)
+    Xc = Xu;
+    Xc(indMSOM, predxMSOM) = Xu(indMSOM, predxMSOM) + shiftMSOMx; 
+    ec = eu;
+    ec(indMSOM) = eu(indMSOM) + shiftMSOMe;
+
+    % number of units arising from a VIOM
+    nVIOM = floor(n * pVIOM);
+    % indexes VIOM
+    indVIOM = datasample(setdiff(1:n, indMSOM), nVIOM, 'replace', false);
+    %VIOM
+    ec(indVIOM) = eu(indVIOM) .* sqrt(inflVIOMe);
+    % contaminated model
+    yc = Xu * beta(:) + ec;
+
+    % total contaminated units
+    indcont = unique([indMSOM, indVIOM]);
+    % clean obs indexes
+    indkeep = setdiff(1:n, indcont);
+    
+    if plots==true
+        indunit = zeros(n, 1);
+        indunit(indMSOM) = 1;
+        indunit(indVIOM) = 2;
+        yXplot(yc,Xc, indunit);
+    end
+
+    %% save output
+
+    out.Xc = Xc;
+    out.yc = yc;
+    out.ind_clean = indkeep;
+    out.ind_MSOM = indMSOM;
+    out.ind_VIOM = indVIOM;
+    out.vareps = vareps;
+    
+end
+
+out.X = X;
+out.y = y;
 
 end
 

@@ -291,7 +291,9 @@ function out=boxcoxR(y,X, varargin)
    %% Ex of the use of option usefmin.
     rng(500)
     % Generate regression data
-    [yori,X]=simulateLM(100,'R2',0.95);
+    outsim=simulateLM(100,'R2',0.95);
+    yori = outsim.y;
+	X = outsim.X;
     % Transform in a different way positive and negative values
     laPos=0.2;
     laNeg=0.8;
@@ -317,7 +319,9 @@ function out=boxcoxR(y,X, varargin)
     % In this example we specify as solver to use fminunc
     rng(1000)
     % Generate regression data
-    [yori,X]=simulateLM(100,'R2',0.6);
+    outsim=simulateLM(100,'R2',0.6);
+    yori = outsim.y;
+	X = outsim.X;
     % Transform in a different way positive and negative values
     laPos=0.4;
     laNeg=-0.9;
