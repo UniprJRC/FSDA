@@ -10,7 +10,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %   cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
 % \]
 % consists of four parts:
-%1) $q$ a correction factor for the scale estimate;
+% 1) $q$ a correction factor for the scale estimate;
 % 2) $\sigma$ the scale parameter.
 % 3) $v$ a correction factor depending on the $\psi$ function which is
 % used;
@@ -110,7 +110,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \]
 %                where
 %                \[
-%                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}
+%                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
 %                \]
 %  out.covrob1 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
@@ -121,8 +121,8 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
 %                \]
-%                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n
-%                 \psi'(r_i/\hat \sigma)) \right]^2}$ ;
+%                 where $K=1+\frac{p}{n} \frac{var(\psi' (r/\hat \sigma))}{
+%                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}$ ;
 %  out.covrob2 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
@@ -132,25 +132,23 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
 %                \]
-%                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-%                 \psi'(r_i/\hat \sigma))^2}$ ;
 %  out.covrob3 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob implements
 %               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).
 %               namely:
 %                \[
-%                \mbox{covrob3} =  K  \hat v  (X' W X)^{-1};
+%                \mbox{covrob3} =  K  \frac{n}{n-p} 
+%                 \frac{\sum_{i=1}^n \psi (r/\hat \sigma)^2}{\sum_{i=1}^n
+%                 \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
 %                \]
-%                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-%                 \psi'(r_i/\hat \sigma))^2}$ ;
 %  out.covrob4 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob implements
 %               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).
 %               namely:
 %                \[
-%                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2  (X' W X)^{-1} X'X (X' W X)^{-1};
+%                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2  (X' W X)^{-1} X'X (X' W X)^{-1};
 %                \]
 %  out.covrobc =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing best variance covariance matrix of regression
@@ -168,10 +166,10 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2
 %               \]
 %               \[
-%               b = \frac{1}{n} \sum_{i=1}^n (\psi'(r_i/\hat \sigma))^2
+%               b = \frac{1}{n} \sum_{i=1}^n \psi'(r_i/\hat \sigma)
 %               \]
 %               \[
-%               c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)
+%                c = \frac{1}{n} \sum_{i=1}^n \psi(r_i/\hat \sigma) r_i/\hat \sigma
 %               \]
 %
 % See also: Sreg, MMreg, Taureg

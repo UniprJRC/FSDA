@@ -162,18 +162,18 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.83 seconds 
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.58 seconds 
 covrob
     0.6428   -0.0036
-   -0.0036    0.7251
+   -0.0036    0.7250
 
 covrob1
-   29.6408   -0.4576
-   -0.4576   29.4429
+   29.6396   -0.4575
+   -0.4575   29.4416
 
 covrob2
-   29.6345   -0.1655
-   -0.1655   33.4256
+   29.6333   -0.1655
+   -0.1655   33.4243
 
 covrob3
     0.2392   -0.0037
@@ -187,7 +187,7 @@ covrob4
 
 covrobc
     0.6428   -0.0036
-   -0.0036    0.7251
+   -0.0036    0.7250
 
 </pre><a href='http://rosa.unipr.it/fsda/RobCov.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\RobCov_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
             of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
@@ -252,7 +252,7 @@ covrobc
                 \]
                 where
                 \[
-                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{\sum_{i=1}^n \psi'(r_i/\hat \sigma)^2}
+                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
                 \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
@@ -262,8 +262,8 @@ covrobc
                 </p>\[
                  \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
                 \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ \left[ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma)) \right]^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                 where $K=1+\frac{p}{n} \frac{var(\psi' (r/\hat \sigma))}{
+                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -271,24 +271,22 @@ covrobc
                namely:</p> <p>
                 </p>\[
                  \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
-                \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma))^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.82) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
                namely:</p><p>
                 </p>\[
-                \mbox{covrob3} =  K  \hat v  (X' W X)^{-1};
-                \]
-                 where $K=1+p n \frac{var(\psi' (r/\hat \sigma))}{ (\sum_{i=1}^n
-                 \psi'(r_i/\hat \sigma))^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \mbox{covrob3} =  K  \frac{n}{n-p} 
+                 \frac{\sum_{i=1}^n \psi (r/\hat \sigma)^2}{\sum_{i=1}^n
+                 \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
+                \]</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.83) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
                namely:</p><p>
                 </p>\[
-                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2  (X' W X)^{-1} X'X (X' W X)^{-1};
+                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2  (X' W X)^{-1} X'X (X' W X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrobc</code></td><td><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing best variance covariance matrix of regression
                coefficients. covrobc checks the coefficient of variation
@@ -304,10 +302,10 @@ covrobc
                a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2
                \]
                \[
-               b = \frac{1}{n} \sum_{i=1}^n (\psi'(r_i/\hat \sigma))^2
+               b = \frac{1}{n} \sum_{i=1}^n \psi'(r_i/\hat \sigma)
                \]
                \[
-               c = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma)) r_i/\hat \sigma)
+                c = \frac{1}{n} \sum_{i=1}^n \psi(r_i/\hat \sigma) r_i/\hat \sigma
                \]</p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Maronna, R.A., Martin D. and Yohai V.J. (2006), "Robust Statistics, Theory
  and Methods", Wiley, New York.</p></div><div><p>Huber, P.J. and Ronchetti, E.M. (2009), "Robust Statistics, 2nd Edition",
  Wiley.</p></div><div><p>Maronna, R.A., and Yohai V.J. (2010), Correcting MM estimates for fat data
