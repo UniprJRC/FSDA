@@ -21,18 +21,18 @@ function malindexplot(md,v,varargin)
 %
 % Optional input arguments:
 %
-%               h : Where to plot. Axis hadle. 
+%               h : Where to plot. Axis hadle.
 %                   The axis handle of the Figure where to send the
 %                   malindexplot. This can be used to host the malindexplot
 %                   in a subplot of a complex figure formed by different
 %                   panels (e.g. a panel with malindexplot from a classical
 %                   mle estimator and another with Mahalanobis distances
-%                   from a robust analysis, see example below). 
-%                   Example - 'h',gca 
-%                   Data Types - graphics handle                 
+%                   from a robust analysis, see example below).
+%                   Example - 'h',gca
+%                   Data Types - graphics handle
 %
 %              x :  x-axis index. Vector. The vector to be plotted on the
-%                   x-axis. 
+%                   x-axis.
 %                   Default is the sequence 1:length(md).
 %                   Example - 'x','1:100'
 %                   Data Types - numeric
@@ -45,7 +45,7 @@ function malindexplot(md,v,varargin)
 %                   Example - 'laby','MD'
 %                   Data Types - character
 %
-%          title :  plot title. Character. A label containing the title of the plot. 
+%          title :  plot title. Character. A label containing the title of the plot.
 %                   Default is 'Index plot of Mahalanobid distances'.
 %                   Example - 'title','Index plot of MD'
 %                   Data Types - character
@@ -69,31 +69,31 @@ function malindexplot(md,v,varargin)
 %                   Data Types - numeric
 %
 %        FontSize:  Labels font size. Scalar. Scalar which controls the
-%                   font size of the labels of the axes. 
+%                   font size of the labels of the axes.
 %                   Default value is 12.
 %                   Example - 'FontSize',12
 %                   Data Types - numeric
 %
 %     SizeAxesNum:  Numbers font size. Scalar. Scalar which controls the
-%                   fontsize of the numbers of  the axes. 
+%                   fontsize of the numbers of  the axes.
 %                   Default value is 10.
 %                   Example - 'SizeAxesNum',12
 %                   Data Types - numeric
 %
 %           ylimy:  ylimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the y axis. 
-%                   Default is '' (automatic scale).                
+%                   maximum value of the y axis.
+%                   Default is '' (automatic scale).
 %                   Example - 'ylimiy',[-3 3]
 %                   Data Types - numeric
 %
 %           xlimx:  xlimits. Vector. Vector with two elements controlling minimum and
-%                   maximum value of the x axis. 
-%                   Default is '' (automatic scale).                 
+%                   maximum value of the x axis.
+%                   Default is '' (automatic scale).
 %                   Example - 'xlimix',[1 30]
 %                   Data Types - numeric
 %
 %          lwdenv:  Envelope line width. Scalar. Scalar which controls the
-%                   width of the lines associated  with the envelopes.                   
+%                   width of the lines associated  with the envelopes.
 %                   Default is lwdenv=1.
 %                   Example - 'lwdenv',4
 %                   Data Types - numeric
@@ -111,28 +111,28 @@ function malindexplot(md,v,varargin)
 %                   Example - 'MarkerFaceColor','b'
 %                   Data Types - numeric | character
 %
-%             tag:  Figure tag. Character.  
-%                   Tag of the figure which will host the malindexplot. 
+%             tag:  Figure tag. Character.
+%                   Tag of the figure which will host the malindexplot.
 %                   The default tag is pl_malindex.
 %                   Example - 'tag','indexPlot'
 %                   Data Types - character
 %
 %    databrush  :   interactive mouse brushing. Empty value, scalar or structure.
-%                   If databrush is an empty value (default), 
-%                   no brushing is done. The activation of this option 
-%                   (databrush is a scalar or a structure) enables the user  
+%                   If databrush is an empty value (default),
+%                   no brushing is done. The activation of this option
+%                   (databrush is a scalar or a structure) enables the user
 %                   to select a set the points in the current plot and to see them
 %                   highlighted in the scatter plot matrix (spm). If spm
-%                   does not exist it is automatically created. 
-%                   DATABRUSH IS A SCALAR. 
+%                   does not exist it is automatically created.
+%                   DATABRUSH IS A SCALAR.
 %                   If databrush is a scalar the default
 %                   selection tool is a rectangular brush and it is
 %                   possible to brush only once (that is persist='').
-%                   DATABRUSH IS A STRUCTURE. 
+%                   DATABRUSH IS A STRUCTURE.
 %                   If databrush is a structure,
 %                   it is possible to use all optional arguments of
 %                   function selectdataFS.m and the following optional
-%                   arguments: 
+%                   arguments:
 %                   databrush.persist = persisent brushing.
 %                     Persist is an empty value or a scalar
 %                     containing the strings 'on' or 'off'.
@@ -166,6 +166,10 @@ function malindexplot(md,v,varargin)
 %                   Example - 'nameY',{'Y_1' Y_2'}
 %                   Data Types - character
 %
+%      label : row labels. Cell.
+%               Cell of length n containing the labels of the rows.
+%                   Example - 'label',{'UK' ...  'IT'}
+%                   Data Types - cell
 %
 %  Output:
 %
@@ -188,7 +192,7 @@ function malindexplot(md,v,varargin)
 % Examples:
 
 %{
-    %   Mahalanobis distance plot of 100 random numbers. 
+    %   Mahalanobis distance plot of 100 random numbers.
     %   Numbers are from from the chi2 with 5 degrees of freedom
      malindexplot(chi2rnd(5,100,1),5)
 %}
@@ -220,7 +224,7 @@ function malindexplot(md,v,varargin)
 
 %{
     % Interactive_example
-    %   Index plot Mahalanobis distance with databrush option.    
+    %   Index plot Mahalanobis distance with databrush option.
     n=200;
     v=3;
     randn('state', 123456);
@@ -261,11 +265,11 @@ function malindexplot(md,v,varargin)
 %% Beginning of code
 
 if nargin<1
-        error('FSDA:malindexplot:missingInputs','To run this function a vector of Mahalanobis distances has to be supplied')
+    error('FSDA:malindexplot:missingInputs','To run this function a vector of Mahalanobis distances has to be supplied')
 end
 
 if nargin<2
-     error('FSDA:malindexplot:missingInputs','To run this function the number of variables which have been used to construct md has to be supplied')
+    error('FSDA:malindexplot:missingInputs','To run this function the number of variables which have been used to construct md has to be supplied')
 end
 
 if ~isscalar(v) || isempty(v) || isnan(v)
@@ -294,7 +298,7 @@ n=length(md);
 options=struct('h','','x',1:n,'labx','','laby','','numlab',{{5}},'conflev',0.975,...
     'title','Index plot of Mahalanobis distances','FontSize',12,'SizeAxesNum',10,...
     'xlimx','','ylimy','','lwdenv',1,'MarkerSize',6,'MarkerFaceColor','w',...
-    'databrush','','tag','pl_malindex','nameY','');
+    'databrush','','tag','pl_malindex','nameY','','label','');
 
 
 UserOptions=varargin(1:2:length(varargin));
@@ -353,7 +357,12 @@ set(afig,'FontSize',SizeAxesNum);
 plot(afig,x,md,'bo','MarkerFaceColor',MarkerFaceColor,...
     'MarkerSize',MarkerSize);
 
-text(x(ind),md(ind),int2str(ind),'VerticalAlignment','Baseline');
+label=options.label;
+if isempty(label)
+    text(x(ind),md(ind),int2str(ind),'VerticalAlignment','Baseline');
+else
+    text(x(ind),md(ind),label(ind),'VerticalAlignment','Baseline');
+end
 % dx=(max(x)-min(x))/80; dy=(max(md)-min(md))/80;
 % Displacement: baseline does already well the job of displacing the text.
 
@@ -409,7 +418,7 @@ if ~isempty(h)
     end
     drawnow;
     % Fix the y-axis
-    set(h,'YLimMode', 'manual'); 
+    set(h,'YLimMode', 'manual');
     % Add title and axis labels for the figure with subplots
     title(gca,titl);
     xlabel(gca,labx,'Fontsize',FontSize);
@@ -521,10 +530,10 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
     else
         sele={'selectionmode' 'Rect' 'Ignore' findobj(gcf,'tag','env') };
     end
- 
+    
     % Adding the instruction is necessary to make sure that the selection
     % is done in the  current plot
-     sele=[sele 'Tag' {Tag}];
+    sele=[sele 'Tag' {Tag}];
     
     
     % Create the labels
