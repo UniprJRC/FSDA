@@ -419,8 +419,8 @@ detS=msr;
 mala=[seq zeros(n,1)];
 
 if (rank(Y(bsb,:))<v)
-    warning('FSDA:FSMeda:NoFullRank','The supplied initial subset is not full rank matrix');
-    disp('FSMeda:message: FS loop will not be performed');
+    warning('FSDA:FSMedaeasy:NoFullRank','The supplied initial subset is not full rank matrix');
+    disp('FSMedaeasy:message: FS loop will not be performed');
     out=struct;
 else
     % this is to monitor the centroid position
