@@ -9,11 +9,12 @@ function plotopt=malfwdplot(out,varargin)
 %               Structure containing the following fields.
 %       out.MAL =  n-by-k matrix containing the squared Mahalanobis distances
 %               monitored in each step of the forward search or more in
-%               general any other trajectories monitored in k steps (e.g. the MCD
-%               monitored for k different values of break down point, the
-%               MM estimators monitored for k values of efficiency).
-%               This matrix can be created using functions FSMeda or
-%               Smulteda or MMmulteda ... This field is compulsory.
+%               general any other trajectories monitored in k steps (e.g.
+%               the MCD monitored for k different values of break down
+%               point, the MM estimators monitored for k values of
+%               efficiency). This matrix can be created using functions
+%               FSMeda or Smulteda or MMmulteda ... This field is
+%               compulsory.
 %       out.Y   =  n-by-v matrix.  It can be either the original data matrix
 %               or another matrix with n rows and p variables (i.e. the
 %               matrix of the first p principal components). This field is
@@ -27,13 +28,13 @@ function plotopt=malfwdplot(out,varargin)
 %                and y axes axis and the message in the datatooltip window. If
 %                out.class is a character then if:
 %               out.class='Smulteda' or 'mveeda' or 'mcdeda' the label in
-%               the x axis is 'Break down point' the label in the x axis is
-%               'Efficiency';
+%                   the x axis is 'Break down point' the label in the x axis is
+%                   'Efficiency';
 %               If out.class is a structure it may contain the fields xlab
-%               and ylab which specify the labels to be put respectively to
-%               the x and y axis.
+%                   and ylab which specify the labels to be put respectively to
+%                   the x and y axis.
 %               In all the other cases or if this field is not present the
-%               x label is 'Subset size m'.
+%                   x label is 'Subset size m'.
 %               This field is not compulsory. Also notice that the labels
 %               of the axes can be also personalized using option standard.
 %       out.Un  =  matrix of size (k-1)-by r containing the order of entry
