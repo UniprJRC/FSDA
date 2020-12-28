@@ -267,7 +267,6 @@ if nargin<2
 end
 
 [n,v]=size(Y);
-seq=(1:n)';
 
 hdef=floor(n*0.6);
 options=struct('init',hdef,'plots',0,'msg',1,'scaled',0,'nocheck',0);
