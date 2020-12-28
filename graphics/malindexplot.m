@@ -353,7 +353,7 @@ afig = axes('Parent',hfig);
 % Set the font size for the axes numbers
 set(afig,'FontSize',SizeAxesNum);
 
-% Plot the resindexplot and add relevant labels
+% Plot the malindexplot and add relevant labels
 plot(afig,x,md,'bo','MarkerFaceColor',MarkerFaceColor,...
     'MarkerSize',MarkerSize);
 
