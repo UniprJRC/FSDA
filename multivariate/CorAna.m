@@ -1207,7 +1207,7 @@ if isstruct(plots) || plots==1
                 typeR='RowsSta'; % rows are in standard coordinates
                 typeC='ColsPri'; % columns are in principal coordinates
                 titl={'Rows standard coordinates, and column principal coordinates' , ...
-                    '$\alpha=0$, $X=D_r^{-1/2}U $ and $G= D_c^{-1/2} V \Gamma$'};
+                    '$\alpha=0$, $X=D_r^{-1/2}U $ and $Y= D_c^{-1/2} V \Gamma$'};
                 typeRdesc='Row scores in standard coordinates';
                 typeCdesc='Column scores in principal coordinates';
                 
@@ -1224,7 +1224,7 @@ if isstruct(plots) || plots==1
                 typeR='RowsPri';        % rows are in principal coordinates
                 typeC='ColsPri';        % columns are in principal coordinates
                 titl={'French symmetrical model: rows and cols in principal coordinates.' , ...
-                    'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
+                    'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_c^{-1/2} V \Gamma$'};
                 typeCdesc='Column scores in principal coordinates';
                 typeRdesc='Row scores in principal coordinates';
                 
