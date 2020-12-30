@@ -892,9 +892,9 @@ else
         
         xlabel('Subset size m');
         if scaled==1
-            ylabel('Monitoring of scaled minimum Mahlanobis distance');
+            ylabel('Monitoring of scaled minimum Mahalanobis distance');
         else
-            ylabel('Monitoring of minimum Mahlanobis distance');
+            ylabel('Monitoring of minimum Mahalanobis distance');
         end
         
     end
