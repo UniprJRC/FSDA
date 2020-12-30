@@ -189,8 +189,8 @@ function out = FSMedaeasy(Y,bsb,varargin)
 
 %{
     %% FSMeda with optional arguments (centroid position monitoring).
-    % Monitoring the minimum Mahlanobis distance and the centroid position.
-    % In this example the figures of minimum Mahlanobis distance are closed.
+    % Monitoring the minimum Mahalanobis distance and the centroid position.
+    % In this example the figures of minimum Mahalanobis distance are closed.
 
     Y=load('sixty_eighty.txt');
     G = 60*ones(140,1); 

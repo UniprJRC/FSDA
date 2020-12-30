@@ -168,7 +168,7 @@ function out = FSMeda(Y,bsb,varargin)
 
 %{
     %% FSMeda with optional arguments.
-    % Monitoring the evolution of minimum Mahlanobis distance.
+    % Monitoring the evolution of minimum Mahalanobis distance.
     n=100;
     v=3;
     m0=3;
