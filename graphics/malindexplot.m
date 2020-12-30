@@ -1,4 +1,4 @@
-function malindexplot(md,v,varargin)
+function MCDenv=malindexplot(md,v,varargin)
 %malindexplot plots the Mahalanobis distances versus a selected variable.
 %The selected variable is typically a generic index number.
 %
@@ -10,16 +10,29 @@ function malindexplot(md,v,varargin)
 %        distances (in squared units) or a structure containing fields md
 %        and Y. In this second case md is a structure with the following
 %        fields:
-%        md.md = contains the Mahalanobis distances;
+%        md.md = contains the Mahalanobis distances (this field is compulsory);
 %        md.Y = contains the original data matrix whose Mahalanobis
-%        distances have been computed.
+%        distances have been computed (this field is compulsory is option
+%           databrush is used).
+%        md.class = this field is not compulsory. In the case of
+%        md.class='mcdCorAna' simulated envelopes are used to define the
+%           empirical quantiles. Note that if the simulated bands have been
+%           precalculated they can be passed through the seconf input
+%           argument v.
 %                Data Types - single|double
 %
-%  v : Number of variables. Scalar. The number of variables of the original
-%       data matrix which have been used to compute md.
+%  v : Number of variables or matrix of size n-by-k containing empirical envelope.
+%       Scalar or matrix with the same rows of length(md).
+%       If v is a scalar, it contains the number of variables of the
+%       original data matrix which have been used to compute md. The
+%       threshold in this case is based on the Chi^2 distribution with v
+%       degrees of freedom. If v is a matrix with size(v,1)=length(md)
+%       the empirical precalculated envelope in v are used to obtain the
+%       confidence bands.
 %                Data Types - single|double
 %
 % Optional input arguments:
+%
 %
 %               h : Where to plot. Axis hadle.
 %                   The axis handle of the Figure where to send the
@@ -171,7 +184,16 @@ function malindexplot(md,v,varargin)
 %                   Example - 'label',{'UK' ...  'IT'}
 %                   Data Types - cell
 %
+%
+%
+%
 %  Output:
+%
+%           MCDenv : Empirical envelopes. Array.
+%                   Matrix with size n-by-length(conflev) which contains
+%                   the empirical confidence envelopes or vector of length
+%                   length(conflev) containing teh quantiles of the
+%                   reference distribution.
 %
 %
 % See also resfwdplot.m, resindexplot.m
@@ -194,7 +216,7 @@ function malindexplot(md,v,varargin)
 %{
     %   Mahalanobis distance plot of 100 random numbers.
     %   Numbers are from from the chi2 with 5 degrees of freedom
-     malindexplot(chi2rnd(5,100,1),5)
+     MCDenv=malindexplot(chi2rnd(5,100,1),5);
 %}
 
 %{
@@ -272,8 +294,8 @@ if nargin<2
     error('FSDA:malindexplot:missingInputs','To run this function the number of variables which have been used to construct md has to be supplied')
 end
 
-if ~isscalar(v) || isempty(v) || isnan(v)
-    error('FSDA:malindexplot:Wrongv','v must be scalar non empty and non missing!!!');
+if isempty(v) || any(isnan(v))
+    error('FSDA:malindexplot:Wrongv','v must be scalar (or vector with the same length of md) non empty and non missing!!!');
 end
 
 
@@ -284,8 +306,27 @@ if ~isempty(findobj('type','figure','Tag','pl_malindex'))
 end
 
 if isstruct(md)
-    out=md;
-    md=out.md;
+ 
+    if isfield(md,'N') && isfield(md,'h')
+        % mcdCorAnatype
+        out=md;
+        hh=md.h;
+        N=md.N;
+        md=md.md;
+        class='mcdCorAna';
+    elseif isfield(md,'N')
+        % non robust distances
+        out=md;
+        N=md.N;
+        class='mcdCorAna';
+        hh=sum(N,'all');
+    else
+        out=md;
+        md=out.md;
+        class='';
+    end
+else
+    class='';
 end
 
 % The following line is to ensure md is always a column vector
@@ -379,13 +420,58 @@ legendstring2 = strcat(num2str(((conflev)*100)'),legendstring);
 
 % set the confidence bands values
 rangeaxis=axis;
-quant = chi2inv(conflev,v);
-V=[rangeaxis(1);rangeaxis(2)];
-QUANT=[quant;quant];
 
-% plot the confidence bands
-hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline');
+V=[rangeaxis(1);rangeaxis(2)];
+
+if isempty(class)
+    if isscalar(v)
+        quant = chi2inv(conflev,v);
+        QUANT=[quant;quant];
+        
+        % plot the confidence bands
+        hline = line(V, QUANT,'LineWidth',lwdenv,'Tag','conflevline');
+        MCDenv=quant;
+    else
+        % plot the empirical confidence band(s)
+        hline = line(x, v,'LineWidth',lwdenv,'Tag','conflevline');
+        MCDenv=v;
+    end
+    
+elseif strcmp(class,'mcdCorAna')
+    % if the class is mcdCorAna simulated envelopes are used for each row
+    [I,J]=size(N);
+    % nrowt = column vector containing row marginal totals
+    nrowt=sum(N,2);
+    % ncolt = row vector containing column marginal totals
+    ncolt=sum(N,1);
+    
+    nsimul=200;
+    mmdStore=zeros(I,nsimul);
+    
+    parfor j=1:nsimul
+        % Generate the contingency table
+        out1=rcontFS(I,J,nrowt,ncolt);
+        Nsim=out1.m144;
+        
+        RAW=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',hh);
+        mmdStore(:,j)=RAW.md;
+    end
+    
+    % Sort rows of matrix mmdStore
+    mmdStore=sort(mmdStore,2);
+    
+    
+    MCDenv=mmdStore(:,round(nsimul*conflev));
+    
+    % plot the confidence bands
+    hline = line(1:I, MCDenv,'LineWidth',lwdenv,'Tag','conflevline');
+else
+    % Should never be here
+    error('wrong class')
+end
+
 set(hline(1:numconflev),{'Displayname'},legendstring2);
+
 
 % make the legend for the confidence bands clickable
 clickableMultiLegend(hline(1:numconflev),legendstring2);
@@ -512,6 +598,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         error('FSDA:malindexplot:InvalidArg1',mess);
     else
         Y=out.Y;
+        v=size(Y,2);
     end
     
     
