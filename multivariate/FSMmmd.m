@@ -772,7 +772,7 @@ else
         line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
         
         xlabel('Subset size m');
-        ylabel('Monitoring of minimum Mahlanobis distance');
+        ylabel('Monitoring of minimum Mahalanobis distance');
     end
     
 end
