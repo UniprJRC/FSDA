@@ -13,7 +13,8 @@ function plotopt=malfwdplot(out,varargin)
 %               the MCD monitored for k different values of break down
 %               point, the MM estimators monitored for k values of
 %               efficiency). This matrix can be created using functions
-%               FSMeda or Smulteda or MMmulteda ... This field is
+%               FSMeda or Smulteda or MMmulteda or FSCorAnaeda... 
+%               This field is
 %               compulsory.
 %       out.Y   =  n-by-v matrix.  It can be either the original data matrix
 %               or another matrix with n rows and p variables (i.e. the
@@ -30,6 +31,9 @@ function plotopt=malfwdplot(out,varargin)
 %               out.class='Smulteda' or 'mveeda' or 'mcdeda' the label in
 %                   the x axis is 'Break down point' the label in the x axis is
 %                   'Efficiency';
+%               out.class='FSCorAnaeda' the label in the x axis is 'Subset
+%                   size m' the expected fields of input strucure are 
+%                   out.Loc and out.N;
 %               If out.class is a structure it may contain the fields xlab
 %                   and ylab which specify the labels to be put respectively to
 %                   the x and y axis.
@@ -1133,6 +1137,10 @@ if any(strcmp(fieldnames(out),'class'))
     elseif strcmp(out.class,'Smulteda') || strcmp(out.class,'mveeda') || strcmp(out.class,'mcdeda')
         x=out.bdp;
         out.Un='';
+    elseif   strcmp(out.class,'FSCorAnaeda')
+        
+        % out.Un='';
+        x=out.Loc(1,1):sum(out.N,'all');
     end
     
 end
