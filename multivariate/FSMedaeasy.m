@@ -170,8 +170,8 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %}
 
 %{
-    %% FSMeda with optional arguments (minimum Mahlanobis distance monitoring).
-    % Monitoring the evolution of minimum Mahlanobis distance.
+    %% FSMeda with optional arguments (minimum Mahalanobis distance monitoring).
+    % Monitoring the evolution of minimum Mahalanobis distance.
     n=100;
     v=3;
     m0=3;
@@ -584,9 +584,9 @@ else
         
         xlabel('Subset size m');
         if scaled==1
-            ylabel('Monitoring of scaled minimum Mahlanobis distance');
+            ylabel('Monitoring of scaled minimum Mahalanobis distance');
         else
-            ylabel('Monitoring of minimum Mahlanobis distance');
+            ylabel('Monitoring of minimum Mahalanobis distance');
         end
         
     end
