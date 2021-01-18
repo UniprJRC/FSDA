@@ -238,7 +238,8 @@ if strcmp(algorithm,'all') || strcmp(algorithm,'144')
     
     %% NEW CODE
     % generate a vector of pseudorandom scalar integers between 1 and ntotal
-    nvect=randi(ntotal,1,ntotal);
+    % without replacement
+    nvect=randsampleFS(1:ntotal, ntotal);
     
     % Initialize matrix which will contain required simulated contingency
     % table using algorithm AS144
