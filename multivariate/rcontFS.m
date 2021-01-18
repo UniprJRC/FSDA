@@ -122,11 +122,16 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
     nrow=2;
     ncol=3;
     % Fix the marginals of the two rows
-    nrowt=[20 30];
+    nrowt=[20; 30];
     % Fix the marginals of the three columns
     ncolt=[25 15 10];
     % Generate the contingency table
     out=rcontFS(nrow,ncol,nrowt,ncolt)
+    % testing row and column marginals
+    assert(isequal(nrowt, sum(out.m144,2)))
+    assert(isequal(ncolt, sum(out.m144,1)))
+    assert(isequal(nrowt, sum(out.m159,2)))
+    assert(isequal(ncolt, sum(out.m159,1)))
     % Random contingency table based on algorthm AS144
     disp(out.m144)
     % Random contingency table based on algorthm AS159
@@ -239,7 +244,7 @@ if strcmp(algorithm,'all') || strcmp(algorithm,'144')
     %% NEW CODE
     % generate a vector of pseudorandom scalar integers between 1 and ntotal
     % without replacement
-    nvect=randsampleFS(1:ntotal, ntotal);
+    nvect=randsample(1:ntotal, ntotal);
     
     % Initialize matrix which will contain required simulated contingency
     % table using algorithm AS144
