@@ -6,7 +6,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %     given random variable $Q$ defined as
 %
 %     \[  
-%     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi_k +\sigma X_0
+%     Q = \lambda_1 \chi^2_1 + \lambda_2 \chi_2 + ... + \lambda_k \chi^2_k +\sigma X_0
 %     \]
 %
 %     where $\chi^2_1, ..., \chi^2_k$ are $k$ non central chi squared random variables,
