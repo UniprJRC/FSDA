@@ -688,7 +688,7 @@ function CorAnaplot(out,varargin)
         Sup.c=N(1:14,6:8);
         Sup.Lc=colslab(6:8);
     end
-    % Superimpose confidence ellipses 
+    % Superimpose confidence ellipses
     confellipse=struct;
     % No confdence ellipse for row points
     confellipse.selRows=[];
@@ -754,7 +754,7 @@ function CorAnaplot(out,varargin)
         Sup.c=N(1:14,6:8);
         Sup.Lc=colslab(6:8);
     end
-    % Superimpose ellipses 
+    % Superimpose ellipses
     confellipse=struct;
     % Ellipse for the first 3 row points
     confellipse.selRows=1:3;
@@ -959,7 +959,7 @@ if isstruct(plots)
             % equivalent to alpha=0.5
             typeR='RowsSym';        % rows are in symmetrical coordinates
             typeC='ColsSym';        % columns are in symmetrical coordinates
-            titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} \Gamma V^{1/2}$';
+            titl='Biplot symmetrical model $\alpha=0.5$ $X=D_r^{-1/2}U\Gamma^{1/2} $ and $Y= D_c^{-1/2} V \Gamma {1/2}$';
             typeRSup='RowsSymSup';
             typeCSup='ColsSymSup';
             
@@ -1312,7 +1312,7 @@ if isstruct(confellipse) || confellipse ==1
                 selRows=seq1I(selRows);
             else
                 % Make sure that the indexes are in the interval [1 I]
-                if ~isempty(selRows) 
+                if ~isempty(selRows)
                     if (max(selRows)>I || min(selRows)<1)
                         error('FSDA:CorAnaplot:WrongInputOpt',['The indexes of the requested ellipses must be integers in the interval [1,' num2str(I)])
                     end
@@ -1458,6 +1458,13 @@ if isstruct(confellipse) || confellipse ==1
         Carowsext= eval(['outext.' typeR 'Sup']);
         Cacolsext= eval(['outext.'  typeC 'Sup']);
         
+        for i=1:length(changedimsign)
+            if changedimsign(i) == true
+                Carowsext(:,dim(i))=-Carowsext(:,dim(i));
+                Cacolsext(:,dim(i))=-Cacolsext(:,dim(i));
+            end
+        end
+        
         hold('on')
         if ~isempty(selCols)
             for j=selCols
@@ -1517,6 +1524,13 @@ if isstruct(confellipse) || confellipse ==1
         
         Carowsext= eval(['outext.' typeR 'Sup']);
         Cacolsext= eval(['outext.'  typeC 'Sup']);
+        
+          for i=1:length(changedimsign)
+            if changedimsign(i) == true
+                Carowsext(:,dim(i))=-Carowsext(:,dim(i));
+                Cacolsext(:,dim(i))=-Cacolsext(:,dim(i));
+            end
+          end
         
         hold('on')
         if ~isempty(selCols)
@@ -1592,6 +1606,12 @@ if isstruct(confellipse) || confellipse ==1
         
         Carowsext= eval(['outext.' typeR 'Sup']);
         Cacolsext= eval(['outext.'  typeC 'Sup']);
+        for i=1:length(changedimsign)
+            if changedimsign(i) == true
+                Carowsext(:,dim(i))=-Carowsext(:,dim(i));
+                Cacolsext(:,dim(i))=-Cacolsext(:,dim(i));
+            end
+        end
         
         hold('on')
         if ~isempty(selCols)
