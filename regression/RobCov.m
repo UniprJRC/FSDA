@@ -122,7 +122,11 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                 \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
 %                \]
 %                 where $K=1+\frac{p}{n} \frac{var(\psi' (r/\hat \sigma))}{
-%                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}$ ;
+%                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}=
+%                   1+[CV(\psi')]^2  p/n $. The notation $CV(\psi')$ stands
+%                   for the coefficient of variation of $\psi'$, where
+%                   $\psi$ and $\psi'$ are, respectively,  the first and
+%                   second derivatives of the $\rho$ function.
 %  out.covrob2 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
@@ -139,7 +143,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               namely:
 %                \[
 %                \mbox{covrob3} =  K  \frac{n}{n-p} 
-%                 \frac{\sum_{i=1}^n \psi (r/\hat \sigma)^2}{\sum_{i=1}^n
+%                 \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
 %                 \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
 %                \]
 %  out.covrob4 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
@@ -163,7 +167,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %               \]
 %               where
 %               \[
-%               a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2
+%               a = \frac{1}{n} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2
 %               \]
 %               \[
 %               b = \frac{1}{n} \sum_{i=1}^n \psi'(r_i/\hat \sigma)
@@ -188,7 +192,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
 % for robust estimators. Technical report, Dept. of Applied Economics, KU
 % Leuven.
-% Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2020),
+% Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2021),
 % Covariance matrices of robust estimators in regression, submitted.
 %
 % Copyright 2008-2019.
