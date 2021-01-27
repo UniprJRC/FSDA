@@ -5,7 +5,7 @@
    cov(\hat \beta)= q^2 \times \sigma^2 \times v \times V_X^{-1}
  \]<p>
  consists of four parts:</p> <p>
-1) $q$ a correction factor for the scale estimate;</p> <p>
+ 1) $q$ a correction factor for the scale estimate;</p> <p>
  2) $\sigma$ the scale parameter.</p> <p>
  3) $v$ a correction factor depending on the $\psi$ function which is
  used;</p> <p>
@@ -162,18 +162,18 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.58 seconds 
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.99 seconds 
 covrob
     0.6428   -0.0036
-   -0.0036    0.7250
+   -0.0036    0.7251
 
 covrob1
-   29.6396   -0.4575
-   -0.4575   29.4416
+   29.6406   -0.4576
+   -0.4576   29.4427
 
 covrob2
-   29.6333   -0.1655
-   -0.1655   33.4243
+   29.6343   -0.1655
+   -0.1655   33.4254
 
 covrob3
     0.2392   -0.0037
@@ -187,7 +187,7 @@ covrob4
 
 covrobc
     0.6428   -0.0036
-   -0.0036    0.7250
+   -0.0036    0.7251
 
 </pre><a href='http://rosa.unipr.it/fsda/RobCov.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\RobCov_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
             of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
@@ -263,7 +263,11 @@ covrobc
                  \mbox{covrob1} =  K^2  \hat v  (X' W X)^{-1};
                 \]
                  where $K=1+\frac{p}{n} \frac{var(\psi' (r/\hat \sigma))}{
-                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}$ ;</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                   \left[ \sum_{i=1}^n \psi'(r_i/\hat \sigma)/n \right]^2}=
+                   1+[CV(\psi')]^2  p/n $. The notation $CV(\psi')$ stands
+                   for the coefficient of variation of $\psi'$, where
+                   $\psi$ and $\psi'$ are, respectively,  the first and
+                   second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -278,7 +282,7 @@ covrobc
                namely:</p><p>
                 </p>\[
                 \mbox{covrob3} =  K  \frac{n}{n-p} 
-                 \frac{\sum_{i=1}^n \psi (r/\hat \sigma)^2}{\sum_{i=1}^n
+                 \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
                  \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
                 \]</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
@@ -299,7 +303,7 @@ covrobc
                \]
                where
                \[
-               a = \frac{1}{n} \sum_{i=1}^n (\psi(r_i/\hat \sigma))^2
+               a = \frac{1}{n} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2
                \]
                \[
                b = \frac{1}{n} \sum_{i=1}^n \psi'(r_i/\hat \sigma)
@@ -313,5 +317,5 @@ covrobc
  robust regression for small samples, "Computational Statistics & Data
  Analysis", Vol. 55, pp. 2504-2515.</p></div><div><p>Croux, C., Dhaene G., and Hoorelbeke D. (2003), Robust standard errors
  for robust estimators. Technical report, Dept. of Applied Economics, KU
- Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2020),
+ Leuven.</p></div><div><p>Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2021),
  Covariance matrices of robust estimators in regression, submitted.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="Sreg.html" itemprop="url"><span itemprop="name"><code>Sreg</code></span></a></span> | <span itemprop="seealso"><a href="MMreg.html" itemprop="url"><span itemprop="name"><code>MMreg</code></span></a></span> | <span itemprop="seealso"><a href="Taureg.html" itemprop="url"><span itemprop="name"><code>Taureg</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
