@@ -95,10 +95,11 @@ function d = mahalCorAna(Y,MU)
 %}
 
 %% Beginning of code
+% For versions of MATLAB before 2015b it is necessary to use bxsfun
+%Ytilde = bsxfun(@minus,Y, MU);
+% d=sum((Ytilde./MU).*Ytilde,2);
 
-Ytilde = bsxfun(@minus,Y, MU);
-d=sum((Ytilde./MU).*Ytilde,2);
-
+d=sum(((Y-MU).^2./MU),2);
 
 end
 %FScategory:UTISTAT
