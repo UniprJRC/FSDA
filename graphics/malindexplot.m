@@ -306,7 +306,7 @@ if ~isempty(findobj('type','figure','Tag','pl_malindex'))
 end
 
 if isstruct(md)
- 
+    
     if isfield(md,'N') && isfield(md,'h')
         % mcdCorAnatype
         out=md;
@@ -470,11 +470,12 @@ else
     error('wrong class')
 end
 
-set(hline(1:numconflev),{'Displayname'},legendstring2);
-
-
-% make the legend for the confidence bands clickable
-clickableMultiLegend(hline(1:numconflev),legendstring2);
+if isscalar(v)
+    set(hline(1:numconflev),{'Displayname'},legendstring2);
+    
+    % make the legend for the confidence bands clickable
+    clickableMultiLegend(hline(1:numconflev),legendstring2);
+end
 
 % fix the y-axis, otherwise the figure may change if one hides the bands
 % by clicking on the legend
