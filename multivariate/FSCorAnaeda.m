@@ -207,7 +207,7 @@ if nargin > 1
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
         if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:FSCorAna:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            error('FSDA:FSCorAnaeda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
         % Check if user options are valid options
         chkoptions(options,UserOptions)
@@ -332,7 +332,8 @@ for mm = ini0:n
         
         % oldbsb=bsb;
         oldbsbT=bsbT;
-        [mahaldistsor,indsortdist]=sort(mahaldist);
+        % sort MD distances multiplied by row masses
+        [mahaldistsor,indsortdist]=sort(mahaldist.*rtimesn);
         
         
         % The rows sortdist(1:indexesCR) will be completely
@@ -396,14 +397,14 @@ if plots==1
     quant=[0.01;0.5;0.99];
     % Compute theoretical envelops for minimum Mahalanobis distance based on all
     % the observations for the above quantiles.
-    disp('Creating empirical confidence band for minimum Mahalanobis distance')
+    disp('Creating empirical confidence band for minimum (weighted) Mahalanobis distance')
     [gmin] = FSCorAnaenvmmd(N,'prob',quant,'init',init1);
     
     plot(mmd(:,1),mmd(:,2),'tag','data_mmd');
     
     % include specified tag in the current plot
     set(gcf,'tag','pl_mmd');
-    set(gcf,'Name', 'Monitoring of Minimum Mahalnobis distance', 'NumberTitle', 'off');
+    set(gcf,'Name', 'Monitoring of Minimum (weighted) Mahalanobis distance', 'NumberTitle', 'off');
     
     % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
     lwdenv=2;
@@ -414,7 +415,7 @@ if plots==1
     line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
     
     xlabel('Subset size m');
-    ylabel('Monitoring of minimum Mahalanobis distance');
+    ylabel('Monitoring of minimum (weighted) Mahalanobis distance');
     
 end
 
