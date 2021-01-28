@@ -1187,6 +1187,7 @@ d1str=num2str(d1);
 d2str=num2str(d2);
 
 if isstruct(plots) || plots==1
+    CAplot=true;
     FontName='Times';
     FontSizeAxisLabels=12;
     
@@ -1351,7 +1352,7 @@ if isstruct(plots) || plots==1
 else
     typeR='RowsPri';        % rows are in principal coordinates
     typeC='ColsPri';        % columns are in principal coordinates
-    
+    CAplot=false;
 end
 % Score Rows and ScoreCols respectively contain scores for rows and columns
 ScoreRows=eval(typeR);
@@ -1474,8 +1475,10 @@ if dispresults==true
     
     disp('-----------------------------------------------------------')
     disp('Legend')
-    disp(typeRdesc)
-    disp(typeCdesc)
+    if CAplot==true
+        disp(typeRdesc)
+        disp(typeCdesc)
+    end
     
     disp('CntrbPnt2In = relative contribution of points to explain total Inertia of the latent dimension')
     disp('              The sum of the numbers in a column is equal to 1')
