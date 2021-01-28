@@ -1,4 +1,4 @@
-function [RAW,varargout] = mcdCorAna(N,varargin)
+function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %mcdCorAna computes Minimum Covariance Determinant in correspondence analysis
 %
 %<a href="matlab: docsearchFS('mcdCorAna')">Link to the help function</a>
@@ -103,7 +103,7 @@ function [RAW,varargout] = mcdCorAna(N,varargin)
 %
 % findEmpiricalEnvelope : Empirical Confidence level. Boolean.
 %               if findEmpiricalEnvelope is true (default is false) the
-%               empirical envelope for each Mahalanobis distance of 
+%               empirical envelope for each Mahalanobis distance of
 %               each Profile row of the contingency table is computed, else
 %               the empirical envelopes are found just if input option
 %               plots=1.
@@ -113,6 +113,9 @@ function [RAW,varargout] = mcdCorAna(N,varargin)
 %
 %
 %  Output:
+%
+%  The output consists of two structures RAW and REW. RAW refers to raw
+%  MCD, on the other hand, REW refers to reweighted MCD
 %
 %
 %         RAW:   structure which contains the following fields
@@ -133,15 +136,21 @@ function [RAW,varargout] = mcdCorAna(N,varargin)
 %     RAW.outliers = A vector containing the list of the rows declared as
 %                    outliers using confidence level specified in input
 %                    scalar conflev
-%      RAW.conflev = Confidence level that was used to declare outliers
+%      RAW.conflev = Confidence level that was used to declare outliers and
+%                    to do reweighting.
 %      RAW.singsub = Number of subsets without full rank. Notice that
 %                    out.singsub > 0.1*(number of subsamples) produces a
 %                    warning
-%      RAW.weights = n x 1 vector containing the estimates of the weights.
-%                    Weights assume values 0 or 1. Weight is 1 if the
-%                    associated observation has been used to compute
-%                    centroid and covariance matrix. These weights
-%                    determine which observations are used to compute the
+%      RAW.weights = I x 1 vector containing the estimates of the weights.
+%                    Weights assume values in the interval [0 1].
+%                    Weight is 1 if the
+%                    associated row fully contributes to compute
+%                    centroid and covariance matrix. If for a particular row
+%                    weight is 0.7 it means that the assocaited row contributes
+%                    with 70 per cent of its row mass. 0 weight for a
+%                    particular row it means that the associated row does
+%                    not participate at all.
+%                    determine which rows are used to compute the
 %                    final MCD estimates. Unless there is a perfect fit
 %                    sum(RAW.weights)=h
 %            RAW.N = Original contingency table in array format.
@@ -152,6 +161,22 @@ function [RAW,varargout] = mcdCorAna(N,varargin)
 %                   findEmpiricalEnvelope is true or scalar containing
 %                   quantile which ahse been used to declare the outliers.
 %        RAW.class = 'mcdCorAna'
+%
+%         REW:   structure which contains the following fields
+%           REW.md = I x 1 vector containing the estimates of the robust
+%                    Mahalanobis distances (in squared units). This vector
+%                    contains the distances of each observation from the
+%                    rewighted MCD location of the data, relative to the reweighted MCD
+%                    scatter matrix diag(reweighted MCD location)
+%     RAW.outliers = A vector containing the list of the rows declared as
+%                    outliers using confidence level specified in input
+%                    scalar conflev
+%            REW.Y = array I-by-J containing matrix of Profile Rows.
+%            REW.EmpEnv=array of size I-by-1 containing empirical envelopes for
+%                   each Mahalanobis distance if input option
+%                   findEmpiricalEnvelope is true or scalar containing
+%                   quantile which ahse been used to declare the outliers.
+%        REW.class = 'mcdCorAna'
 %
 %
 %  Optional Output:
@@ -292,6 +317,44 @@ function [RAW,varargout] = mcdCorAna(N,varargin)
     RAW=mcdCorAna(Ntable,'plots',1);
 %}
 
+%{
+    % Raw and reweighted MCD.
+    % mcdCorAna with option findEmpirical.
+  N=[134    76    43    50    49
+    173    62    20    23    16
+    67    76    48    36    23
+    11    21    31    36    52
+    25    32    57    60    58
+    32    42    40    67    67
+    20    35    31    41    41
+    10    16    23    23    24
+    54    28    29    30    23
+    12    19    14    15    20
+     9    10    14    20    23
+    52    43    38    47    54
+    21    36    33    30    36
+    85    74    55    31    22
+     3     8    12    12    25
+    28    33    40    31    45
+     9    17    23    19    34
+    18    36    44    35    40
+    12    24    22    25    37
+    16    32    35    39    38
+    28    39    36    41    54
+     3    15    22    25    24
+    30    40    28    20    26
+     8    10    12    13    17
+     2     1     2     3     3
+    29    10    16     8     9
+    47    51    29    19    12
+     7    19    20    26     9];
+    rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
+     'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
+    collab={'x1' 'x2' 'x3' 'x4' 'x5'};
+    Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
+    [RAW,REW]=mcdCorAna(Ntable,'plots',1);
+%}
+
 %% Beginning of code
 
 if ~isempty(varargin)
@@ -329,6 +392,7 @@ else
     [I,J]=size(N);
     if istable(N)
         Ntable=N;
+        Lr=Ntable.Properties.RowNames;
         N=N{:,:};
     else
         % default labels for rows of contingency table
@@ -538,7 +602,7 @@ else
         end
         
         
-        % Function IRWLSmult performs refsteps concentration steps of IRLS on elemental
+        % Function IRWLSmcd performs refsteps concentration steps of IRLS on elemental
         % start. Input:
         % - N = contingency table of dimension I-by-J
         % - ProfilesRows = matrix of profile rows
@@ -675,27 +739,53 @@ if findEmpiricalEnvelope == true
     nrowt=sum(N,2);
     % ncolt = row vector containing column marginal totals
     ncolt=sum(N,1);
+    disp('Finding empirical bands')
+    if conflev<=0.99
+        nsimul=200;
+    elseif conflev <=0.999
+        nsimul=1000;
+    else
+        disp('Empirical band is very extreme: running 10000 replicates')
+        nsimul=20000;
+    end
     
-    nsimul=200;
     mmdStore=zeros(I,nsimul);
-    
+    if nargout>1
+        mmdStoreR=zeros(I,nsimul);
+    end
+    if nargout>1
+        alsorew=true;
+    else
+        alsorew=false;
+    end
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
         % of the current table
         out1=rcontFS(I,J,nrowt,ncolt);
         Nsim=out1.m144;
-        
-        TMP=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',h);
-        mmdStore(:,j)=TMP.md;
+        % Nsim=out1.m159;
+        if alsorew==false
+            TMP=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',h);
+            mmdStore(:,j)=TMP.md;
+        else
+            [TMP,TMPr]=mcdCorAna(Nsim,'plots',0,'msg',0,'bdp',h);
+            mmdStore(:,j)=TMP.md;
+            mmdStoreR(:,j)=TMPr.md;
+        end
     end
     
     % Sort rows of matrix mmdStore (MD in squared units)
     mmdStore=sort(mmdStore,2);
+    EmpEnv=mmdStore(:,ceil(nsimul*conflev));
+    if alsorew==true
+        mmdStoreR=sort(mmdStoreR,2);
+        EmpEnvR=mmdStoreR(:,ceil(nsimul*conflev));
+    end
     
     
-    EmpEnv=mmdStore(:,round(nsimul*conflev));
 else
-    EmpEnv=chi2inv(conflev,(J-1)/(I-1));
+    EmpEnv=repmat(chi2inv(conflev,(J-1)*(I-1))/n,I,1);
+    EmpEnvR=EmpEnv;
 end
 weights=md<EmpEnv;
 RAW.weights=weights;
@@ -709,9 +799,13 @@ plo=options.plots;
 
 % Plot Mahalanobis distances with outliers highlighted
 if isstruct(plo) || (~isstruct(plo) && plo~=0)
-    
-    laby='Raw MCD Mahalanobis distances';
-    malindexplot(RAW,EmpEnv,'conflev',conflev,'laby',laby,'numlab',RAW.outliers,'tag','rawmcd');
+    if h<n
+        laby='Raw MCD squared Mahalanobis distances';
+    else
+        laby='Squared Mahalanobis distances';
+    end
+    malindexplot(RAW.md,EmpEnv,'conflev',conflev,'laby',laby,...
+        'numlab',RAW.outliers,'tag','rawmcd','label',Lr);
     
     figure('Tag','pl_spm_outliers');
     group=ones(I,1);
@@ -723,6 +817,47 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
 end
 
 
+% Reweighting part
+
+if nargout>1
+    % size Yj is J-by-J
+    Nrew = N(weights,:);
+    
+    %grand total
+    nred=sum(Nrew,'all');
+    
+    % Column masses = centroids of the row profiles using subset
+    % crew= final centroid after reweighting
+    crew  = sum(Nrew,1)/nred;
+    
+    % Compute Mahalanobis distances using locrew
+    md=mahalCorAna(ProfilesRows,crew);
+    
+    REW=struct;
+    % Store vector of Mahalanobis distances (in squared units)
+    REW.md = md;
+    
+    REW.outliers=seq(md > EmpEnv);
+    % Matrix Profile Rows is stored in stucutre RAW
+    REW.Y=ProfilesRows;
+    REW.EmpEnv=EmpEnvR;
+end
+
+% Plot Mahalanobis distances with outliers highlighted
+if (isstruct(plo) || (~isstruct(plo) && plo~=0)) && nargout>1
+    
+    laby='Reweighted squared Mahalanobis distances';
+    malindexplot(REW.md,EmpEnvR,'conflev',conflev,'laby',laby,...
+        'numlab',REW.outliers,'tag','rewmcd','label',Lr);
+    
+    figure('Tag','pl_spm_outliers(REW)');
+    group=ones(I,1);
+    if ~isempty(REW.outliers)
+        group(REW.outliers)=2;
+    end
+    spmplot(ProfilesRows,group,plo);
+    set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Subfunctions called by main function mcd
@@ -762,6 +897,7 @@ end
         loc = initialloc;
         % Mahalanobis distances (in squared units) from initialloc and Initialshape
         mahaldist2=r.*mahalCorAna(ProfileRows,initialloc);
+        % mahaldist2=mahalCorAna(ProfileRows,initialloc);
         
         iter = 0;
         locdiff = 9999;
@@ -784,10 +920,10 @@ end
             Niter(end,:)=unitstoADD*Niter(end,:)/r(sortdist(indexesCR+1));
             
             newloc      = sum(Niter,1)/h;
-            obj         = prod(newloc);
             
             % Compute MD
             mahaldist2=r.*mahalCorAna(ProfileRows,newloc);
+            % mahaldist2=mahalCorAna(ProfileRows,newloc);
             
             
             % locdiff is linked to the tolerance
@@ -795,7 +931,7 @@ end
             loc = newloc;
             
         end
-        
+        obj         = prod(newloc);
         outIRWLS = struct('loc',newloc,'obj',obj,'bsb',bsb);
     end
 
