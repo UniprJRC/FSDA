@@ -162,6 +162,8 @@ function CorAnaplot(out,varargin)
 %                   $D_r^{-0.5}(P-rc')D_c^{-0.5}$ is as small as possible.
 %              plots.FontSize = scalar which specifies the font size of row
 %                   (column) labels. The default value is 10.
+%              plots.FontSizeSup = scalar which specifies the font size of row
+%                   (column) labels of supplementary points. The default value is 10.
 %              plots.MarkerSize = scalar which specifies the marker size
 %                   of symbols associated with rows or columns. The default
 %                   value is 10.
@@ -925,7 +927,7 @@ if isstruct(plots)
     plotsdef.ColorColsSup='r';
     plotsdef.MarkerFaceColorRows='auto';
     plotsdef.MarkerFaceColorCols='auto';
-    plotsdef.MarkerFaceColorRowsSup='r';
+    plotsdef.MarkerFaceColorRowsSup='b';
     plotsdef.MarkerFaceColorColsSup='r';
     
     fld=fieldnames(plots);
@@ -1080,6 +1082,13 @@ if isstruct(plots)
     else
         FontSize=FontSizedef;
     end
+    if isfield(plots,'FontSizeSup')
+        FontSizeSup=plots.FontSizeSup;
+    else
+        FontSizeSup=FontSizedef;
+    end
+    
+    
     if isfield(plots,'MarkerSize')
         MarkerSize=plots.MarkerSize;
     else
@@ -1118,7 +1127,7 @@ if isstruct(plots)
     if isfield(plots,'ColorRowsSup')
         ColorRowsSup=plots.ColorRowsSup;
     else
-        ColorRowsSup='r';
+        ColorRowsSup='b';
     end
     
     if isfield(plots,'MarkerFaceColorRows')
@@ -1162,6 +1171,7 @@ else
     titl={'French symmetrical model: rows and cols in principal coordinates.'...
         'Plot of $X=D_r^{-1/2}U \Gamma$ and $Y= D_r^{-1/2} V \Gamma$'};
     FontSize=FontSizedef;
+    FontSizeSup=FontSize;
     MarkerSize=MarkerSizedef;
     typeRSup='RowsPriSup';
     typeCSup='ColsPriSup';
@@ -1222,7 +1232,7 @@ if ~isempty(LrSup)
     CarowsSup= eval(typeRSup);
     plot(afig,CarowsSup(:,d1),CarowsSup(:,d2),'LineStyle','none','Marker',SymbolRowsSup ,...
         'Color', ColorRowsSup , 'MarkerFaceColor', MarkerFaceColorRowsSup,'MarkerSize',MarkerSize)
-    text(CarowsSup(:,d1)+addx , CarowsSup(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSize,'Color', ColorRowsSup )
+    text(CarowsSup(:,d1)+addx , CarowsSup(:,d2)+addy, LrSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorRowsSup )
 end
 
 % Add points and text associated to supplementary columns
@@ -1230,7 +1240,7 @@ if ~isempty(LcSup)
     CacolsSup= eval(typeCSup);
     plot(afig,CacolsSup(:,d1),CacolsSup(:,d2),'LineStyle','none','Marker',SymbolColsSup ,...
         'Color', ColorColsSup , 'MarkerFaceColor', MarkerFaceColorColsSup, 'MarkerSize',MarkerSize)
-    text(CacolsSup(:,d1)+addx , CacolsSup(:,d2)+addy, LcSup,'Interpreter','None','FontSize',FontSize,'Color', ColorColsSup )
+    text(CacolsSup(:,d1)+addx , CacolsSup(:,d2)+addy, LcSup,'Interpreter','None','FontSize',FontSizeSup,'Color', ColorColsSup )
 end
 
 % set the x and y axis
