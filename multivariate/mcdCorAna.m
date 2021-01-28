@@ -64,8 +64,8 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %     conflev : Confidence level. Scalar. Number between 0 and 1 containing
 %               confidence level which is used to declare units as outliers.
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
+%               or 1-0.05/I, 1-0.025/I, 1-0.01/I (simultaneous alpha).
+%               Default value is 0.99 per cent simultaneous
 %               Example - 'conflev',0.99
 %               Data Types - double
 %
@@ -102,11 +102,14 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Data Types - double
 %
 % findEmpiricalEnvelope : Empirical Confidence level. Boolean.
-%               if findEmpiricalEnvelope is true (default is false) the
+%               If findEmpiricalEnvelope is true (default is false) the
 %               empirical envelope for each Mahalanobis distance of
 %               each Profile row of the contingency table is computed, else
 %               the empirical envelopes are found just if input option
-%               plots=1.
+%               plots=1. In case findEmpiricalEnvelope is false the
+%               theoretical envelope is based on the quantiles of the
+%               following scaled gamma distribution
+%               chi2inv(conflev,(J-1)*(I-1)/I)/n,I,1)./r;
 %               Example - 'findEmpiricalEnvelope',true
 %               Data Types - Boolean
 %
@@ -122,12 +125,14 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %
 %         RAW.h    = scalar. The number of observations that have
 %                    determined the MCD estimator
-%         RAW.loc  = 1 x v  vector containing raw MCD location of the data
+%         RAW.loc  = 1 x J  vector containing raw MCD location of the data
 %         RAW.cov  = robust MCD estimate of
 %                    covariance matrix. It is the raw MCD covariance matrix
 %                    (multiplied by a finite sample correction factor and
 %                    an asymptotic consistency factor).
 %           RAW.obj= The determinant of the raw MCD covariance matrix.
+%           RAW.bsb= k x 1 vector containing the rows of matrix N which
+%                    contributed to the computation of the MCS estimate of location
 %           RAW.md = I x 1 vector containing the estimates of the robust
 %                    Mahalanobis distances (in squared units). This vector
 %                    contains the distances of each observation from the
@@ -146,13 +151,11 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    Weight is 1 if the
 %                    associated row fully contributes to compute
 %                    centroid and covariance matrix. If for a particular row
-%                    weight is 0.7 it means that the assocaited row contributes
+%                    weight is 0.7 it means that the associated row contributes
 %                    with 70 per cent of its row mass. 0 weight for a
 %                    particular row it means that the associated row does
 %                    not participate at all.
-%                    determine which rows are used to compute the
-%                    final MCD estimates. Unless there is a perfect fit
-%                    sum(RAW.weights)=h
+%                    Note that sum(N,2)'*RAW.weights=h
 %            RAW.N = Original contingency table in array format.
 %            RAW.Ntable = Original contingency table in table format.
 %            RAW.Y = array I-by-J containing matrix of Profile Rows.
@@ -168,7 +171,10 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %                    contains the distances of each observation from the
 %                    rewighted MCD location of the data, relative to the reweighted MCD
 %                    scatter matrix diag(reweighted MCD location)
-%     RAW.outliers = A vector containing the list of the rows declared as
+%      REW.weights = I x 1 vector containing the estimates of the weights.
+%                    Weights assume values 0 or 1. Weight is 0 if the
+%                    associated row has been declared outlier after reweighting.
+%     REW.outliers = A vector containing the list of the rows declared as
 %                    outliers using confidence level specified in input
 %                    scalar conflev
 %            REW.Y = array I-by-J containing matrix of Profile Rows.
@@ -281,7 +287,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %}
 
 %{
-    % mcdCorAna with option findEmpirical.
+    % mcdCorAna with option plots.
   N=[134    76    43    50    49
     173    62    20    23    16
     67    76    48    36    23
@@ -318,7 +324,7 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %}
 
 %{
-    % Raw and reweighted MCD.
+    %% Raw and reweighted MCD.
     % mcdCorAna with option findEmpirical.
   N=[134    76    43    50    49
     173    62    20    23    16
@@ -457,12 +463,13 @@ tolMCDdef=eps('double');
 % Boolean which specified whether it is necessary to find the empirical
 % confidence level for each row of the contingency table.
 findEmpiricalEnvelope=false;
+conflev=1-0.01/I;
 
 % store default values in the structure options
 options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
-    'bdp',bdpdef,'plots',0,'conflev',0.999,...
+    'bdp',bdpdef,'plots',0,'conflev',conflev,...
     'msg',1,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope);
 
 % check user options and update structure options
@@ -561,7 +568,7 @@ if h==n
     
     RAW.md=md;
     RAW.class='mcdCorAna';
-    
+    bsbh=1:I;
 else
     
     %% Extract in the rows of matrix C the indexes of all required subsets
@@ -594,7 +601,7 @@ else
         
         % Find weighted estimate of the mean and cov
         locj = cj;        % centroid of subset
-        Sj = diag(cj);           % covariance of subset
+        Sj = diag(cj);    % covariance of subset
         
         % Check if the subset is in general position (rank<v)
         if det(Sj)< tolMCD
@@ -692,24 +699,20 @@ else
         if tmp.obj < superbestobj
             superbestobj    = tmp.obj;
             superbestloc    = tmp.loc;
-            superbestsubset = bestsubset(i,:);
             bsbh=tmp.bsb;
             % weights = tmp.weights;
         end
     end
     
-    % Remove the extra zeros in superbestsubset;
-    superbestsubset(superbestsubset==0)=[];
-    
     RAW.class   = 'mcdCorAna';
     RAW.obj   = superbestobj;       % value of the objective function
     
-    % RAW.bsb is the list of the rows of contingency table I of size v
-    RAW.bs=superbestsubset;
+    % RAW.bsb is the list of the rows of contingency table used to compute best centroid
+    RAW.bsb=bsbh;
     
     % RAW.bsbh is the list of the rows of contingency table which
     % determined the final fit to obtain the best h units.
-    RAW.bsbh=bsbh;
+    % RAW.bsbh=bsbh;
     
     RAW.loc= superbestloc;
     RAW.cov = diag(superbestloc);
@@ -734,6 +737,14 @@ RAW.singsub=singsub;
 RAW.N=N;
 RAW.Ntable=Ntable;
 
+% weights of each row of the contingency table for the calculation of the
+% centroid.
+weights=zeros(I,1);
+weights(bsbh(1:end-1))=1;
+lastunit=bsbh(end);
+weights(lastunit)=(h-sum(N(bsbh(1:end-1),:),'all'))/sum(N(lastunit,:));
+RAW.weights=weights;
+
 if findEmpiricalEnvelope == true
     % nrowt = column vector containing row marginal totals
     nrowt=sum(N,2);
@@ -745,8 +756,8 @@ if findEmpiricalEnvelope == true
     elseif conflev <=0.999
         nsimul=1000;
     else
-        disp('Empirical band is very extreme: running 10000 replicates')
-        nsimul=20000;
+        disp('Empirical band is very extreme: running 5000 replicates')
+        nsimul=5000;
     end
     
     mmdStore=zeros(I,nsimul);
@@ -761,7 +772,7 @@ if findEmpiricalEnvelope == true
     parfor j=1:nsimul
         % Generate random contingency table using row and column marginals
         % of the current table
-        out1=rcontFS(I,J,nrowt,ncolt);
+        out1=rcontFS(I,J,nrowt,ncolt,'nocheck',true,'algorithm','144');
         Nsim=out1.m144;
         % Nsim=out1.m159;
         if alsorew==false
@@ -784,13 +795,12 @@ if findEmpiricalEnvelope == true
     
     
 else
-    EmpEnv=repmat(chi2inv(conflev,(J-1)*(I-1))/n,I,1);
+    EmpEnv=repmat(chi2inv(conflev,(J-1)*(I-1)/I)/n,I,1)./r;
     EmpEnvR=EmpEnv;
 end
-weights=md<EmpEnv;
-RAW.weights=weights;
 
-RAW.outliers=seq(md > EmpEnv);
+weightsboo=md <= EmpEnv;
+RAW.outliers=seq(~weightsboo);
 % Matrix Profile Rows is stored in stucutre RAW
 RAW.Y=ProfilesRows;
 RAW.EmpEnv=EmpEnv;
@@ -813,7 +823,7 @@ if isstruct(plo) || (~isstruct(plo) && plo~=0)
         group(RAW.outliers)=2;
     end
     spmplot(ProfilesRows,group,plo);
-    set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
+    set(gcf,'Name',' Raw MCD: scatter plot matrix of row profiles with outliers highlighted');
 end
 
 
@@ -821,7 +831,7 @@ end
 
 if nargout>1
     % size Yj is J-by-J
-    Nrew = N(weights,:);
+    Nrew = N(weightsboo,:);
     
     %grand total
     nred=sum(Nrew,'all');
@@ -836,11 +846,14 @@ if nargout>1
     REW=struct;
     % Store vector of Mahalanobis distances (in squared units)
     REW.md = md;
+    REW.weights=md <= EmpEnv;
     
-    REW.outliers=seq(md > EmpEnv);
+    REW.outliers=seq(~REW.weights);
     % Matrix Profile Rows is stored in stucutre RAW
     REW.Y=ProfilesRows;
     REW.EmpEnv=EmpEnvR;
+    REW.class   = 'mcdCorAna';
+    
 end
 
 % Plot Mahalanobis distances with outliers highlighted
@@ -856,7 +869,7 @@ if (isstruct(plo) || (~isstruct(plo) && plo~=0)) && nargout>1
         group(REW.outliers)=2;
     end
     spmplot(ProfilesRows,group,plo);
-    set(gcf,'Name',' Raw MCD: scatter plot matrix with outliers highlighted');
+    set(gcf,'Name',' Rew MCD: scatter plot matrix of profile rows with outliers highlighted');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -890,14 +903,20 @@ end
         %      outIRWLS.obj     : scalar. Value of the objective function after refsteps refining
         %                         steps.
         %      outIRWLS.bsb     : vector. Indexes of the rows of
-        %                         contingency table which contribute to the
-        %                         calculation of loc.
+        %                         contingency table which contributed to the
+        %                         calculation of loc. If the length of
+        %                         bsb is q it means that the rows of
+        %                         the contingency table bsb(1:m-1)
+        %                         contributed to loc with weight 1, and row bsb(m)
+        %                         contributed with a fraction
+        %                         (h-sum(N(bsb(1:q-1),:),'all')/sum(N(bsb(q),:))
+        %                         of its mass
         %
         
         loc = initialloc;
         % Mahalanobis distances (in squared units) from initialloc and Initialshape
+        % (multiplied by masses)
         mahaldist2=r.*mahalCorAna(ProfileRows,initialloc);
-        % mahaldist2=mahalCorAna(ProfileRows,initialloc);
         
         iter = 0;
         locdiff = 9999;
