@@ -931,13 +931,18 @@ end
             cumsumnjdot=cumsum(r(sortdist));
             indexesCR=find(cumsumnjdot<h,1,'last');
             
-            % Find how many units must be included from
-            % row indexesCR+1 of the initial contingency table;
-            unitstoADD=h-cumsumnjdot(indexesCR);
+            if isempty(indexesCR)
+                indexesCR=0;
+                unitstoADD=h;
+            else
+                % Find how many units must be included from
+                % row indexesCR+1 of the initial contingency table;
+                unitstoADD=h-cumsumnjdot(indexesCR);
+            end
+            
             bsb=sortdist(1:indexesCR+1);
             Niter=N(bsb,:);
             Niter(end,:)=unitstoADD*Niter(end,:)/r(sortdist(indexesCR+1));
-            
             newloc      = sum(Niter,1)/h;
             
             % Compute MD
