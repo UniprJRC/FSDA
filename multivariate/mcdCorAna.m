@@ -89,6 +89,15 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Example - 'plots',1
 %               Data Types - double or structure
 %
+%      Lr : row labels. Cell.
+%               Cell of length n containing the labels of the rows.
+%                   Example - 'label',{'UK' ...  'IT'}
+%                   Data Types - cell
+%
+%      Lc : column labels. Cell.
+%               Cell of length n containing the labels of the rows.
+%                   Example - 'label',{'UK' ...  'IT'}
+%                   Data Types - cell
 %        msg  : Display or not messages on the screen.
 %               Scalar. If msg==1 (default) messages are displayed
 %               on the screen about estimated time to compute the final
@@ -398,7 +407,8 @@ else
     [I,J]=size(N);
     if istable(N)
         Ntable=N;
-        Lr=Ntable.Properties.RowNames;
+        Lr = Ntable.Properties.RowNames;
+        Lc = Ntable.Properties.VariableNames;
         N=N{:,:};
     else
         % default labels for rows of contingency table
@@ -470,7 +480,7 @@ options=struct('nsamp',nsampdef,'refsteps',refstepsdef,'bestr',bestrdef,...
     'reftol',reftoldef,...
     'refstepsbestr',refstepsbestrdef,'reftolbestr',reftolbestrdef,...
     'bdp',bdpdef,'plots',0,'conflev',conflev,...
-    'msg',1,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope);
+    'msg',1,'tolMCD',tolMCDdef,'findEmpiricalEnvelope',findEmpiricalEnvelope,'Lr',{Lr},'Lc',{Lc});
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
@@ -506,6 +516,10 @@ msg=options.msg;
 
 % Use or not empirical envelope to detect the outliers.
 findEmpiricalEnvelope=options.findEmpiricalEnvelope;
+
+%Labels of row profiles.
+Lr = options.Lr;
+Lc = options.Lc;
 
 % Initialize the matrices which contain the best "bestr" estimates of
 % location, indexes of subsets, cov matrices and objective function
