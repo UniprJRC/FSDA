@@ -90,13 +90,13 @@ function [RAW,REW, varargout] = mcdCorAna(N,varargin)
 %               Data Types - double or structure
 %
 %      Lr : row labels. Cell.
-%               Cell of length n containing the labels of the rows.
+%               Cell of length I containing the labels of the rows.
 %                   Example - 'label',{'UK' ...  'IT'}
 %                   Data Types - cell
 %
 %      Lc : column labels. Cell.
-%               Cell of length n containing the labels of the rows.
-%                   Example - 'label',{'UK' ...  'IT'}
+%               Cell of length J containing the labels of the columns.
+%                   Example - 'label',{'x1' ...  'x5'}
 %                   Data Types - cell
 %        msg  : Display or not messages on the screen.
 %               Scalar. If msg==1 (default) messages are displayed
