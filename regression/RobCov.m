@@ -195,7 +195,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 % Salini, S., Laurini, F., Morelli, G., Riani M. and Cerioli A. (2021),
 % Covariance matrices of robust estimators in regression, submitted.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % FSDA toolbox
 %
 %

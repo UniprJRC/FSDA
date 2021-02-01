@@ -171,7 +171,7 @@ function [out]=FSRaddt(y,X,varargin)
 % tests and the effect of masked outliers on model selection, "Biometrika",
 % Vol. 89, pp. 939-946.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

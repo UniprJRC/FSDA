@@ -1,6 +1,6 @@
 %% EXAMPLES OF ROBUST REGRESSION
 % examples_regression shows a series of analysis of regression datasets 
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %$LastChangedDate::                      $: Date of the last commit

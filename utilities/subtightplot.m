@@ -21,7 +21,7 @@ function h=subtightplot(m,n,p,gap,marg_h,marg_w,varargin)
 %
 % Usage example: h=subtightplot(2,3,1:2,[0.5,0.2])
 
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

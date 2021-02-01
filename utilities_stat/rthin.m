@@ -76,7 +76,7 @@ function [Y , retain]= rthin(X, P)
 % spatstat for more details.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

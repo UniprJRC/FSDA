@@ -72,7 +72,7 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %out.sigma2= estimate of sigma2
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

@@ -117,7 +117,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 % Regression with the Forward Search: Theory and Data Analysis, "Test",
 % Vol. 26, pp. 869-886, DOI 10.1007/s11749-017-0542-6
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

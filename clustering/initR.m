@@ -29,7 +29,7 @@ function [lmd, Omega, Omega2D]  = initR(SigmaB, niini, pa)
 %    Omega : p-by-p-k 3D array containing in position j Omega2D.
 %            This is the common rotation matrix replicated k times.
 
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

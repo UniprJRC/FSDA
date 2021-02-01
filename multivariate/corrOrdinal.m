@@ -353,7 +353,7 @@ function out=corrOrdinal(N, varargin)
 % gkgammatst: Goodman-Kruskal's gamma test. URL address
 % http://www.mathworks.com/matlabcentral/fileexchange/42645-gkgammatst
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

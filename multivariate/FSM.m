@@ -188,7 +188,7 @@ function [out]=FSM(Y,varargin)
 % and scatter, "Journal of Multivariate Analysis", Vol. 126,
 % pp. 167-183, http://dx.doi.org/10.1016/j.jmva.2013.12.010
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

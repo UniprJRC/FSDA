@@ -92,7 +92,7 @@ function fstring=publishFunctionAlpha(InputCell, varargin)
 % References:
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

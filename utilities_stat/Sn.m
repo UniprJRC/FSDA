@@ -60,7 +60,7 @@ function y=Sn(X,dim)
 % highly robust estimators of scale, in "Computational Statistics", Volume 1,
 % eds. Y . Dodge and J. Whittaker, Heidelberg: Physika-Verlag, 41 1-428.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

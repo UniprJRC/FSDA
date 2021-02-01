@@ -25,7 +25,7 @@ function varargout=rug(varargin)
 % - handles [optional] - plot handles for each set of rug objects.
 %
 
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

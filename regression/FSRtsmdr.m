@@ -229,7 +229,7 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 % Monitoring of Many Time Series with Application to Fraud Detection,
 % "Econometrics and Statistics". [RPRH]
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

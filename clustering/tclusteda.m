@@ -398,7 +398,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %   www.eio.uva.es/inves/grupos/representaciones/trTCLUST.pdf]
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

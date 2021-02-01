@@ -96,7 +96,7 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 % chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('ncx2mixtcdf')">Link to the help function</a>

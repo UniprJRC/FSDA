@@ -73,7 +73,7 @@ function w = HYPwei(u, cktuning)
 % "Journal of the American Statistical Association", Vol. 76, 
 % pp. 643-648. [HRR]
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

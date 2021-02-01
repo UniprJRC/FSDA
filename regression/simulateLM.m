@@ -148,11 +148,11 @@ function [out] = simulateLM(n,varargin)
 % References:
 %
 % Insolia, L., F. Chiaromonte, and M. Riani (2020a). 
-% “A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliers”. 
+% ï¿½A Robust Estimation Approach for Mean-Shift and Variance-Inflation Outliersï¿½. 
 % In press.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('simulateLM')">Link to the help function</a>

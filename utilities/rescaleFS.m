@@ -14,7 +14,7 @@ function y = rescaleFS(x,a,b)
 %     (default value of b is 1)
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

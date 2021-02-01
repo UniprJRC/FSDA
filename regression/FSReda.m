@@ -211,7 +211,7 @@ function [out] = FSReda(y,X,bsb,varargin)
 % Analysis", Springer Verlag, New York.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %
@@ -428,7 +428,7 @@ function [out] = FSReda(y,X,bsb,varargin)
     X = data.data(:,1);
     tit = sprintf('Loyalty data');
     xla = 'Number of visits';
-    yla = 'Amount spent (in €)';
+    yla = 'Amount spent (in ï¿½)';
     n = size(X, 1);
     p = size(X, 2);
     % LXS and FSReda

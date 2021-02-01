@@ -70,7 +70,7 @@ function [bdp,eff] = HAc(ctun,v,varargin)
 % Exploratory Data Analysis", Wiley, New York.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

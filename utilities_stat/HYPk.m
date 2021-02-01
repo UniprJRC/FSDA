@@ -78,7 +78,7 @@ function [bdp,eff,A,B,d] = HYPk(k,p,varargin)
 % pp. 643-648 [HRR]'
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

@@ -9,7 +9,7 @@ function [outstring]=mwriteFS(out)
 % At the end open the output file and write it into a string outstring
 % fileID = fopen(fullpathFileName,'w');
 
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 
@@ -315,7 +315,7 @@ end
 out.LastModified='05-06-2016';
 fprintf(fileID,'%%\n');
 fprintf(fileID,'%%\n');
-fprintf(fileID,'%s\n','%  Copyright 2008-2016.');
+fprintf(fileID,'%s\n','%  Copyright 2008-2021.');
 fprintf(fileID,'%s\n','%  Written by FSDA team');
 fprintf(fileID,'%%\n');
 fprintf(fileID,'%s',['%<a href="matlab: docsearchFS(''' out.titl ''')">Link to the help function</a>']);

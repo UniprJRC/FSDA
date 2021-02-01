@@ -31,7 +31,7 @@ function [Omega, Omega2D]  = cpcE(lmdc, SigmaB, niini, pa)
 %               ..., k
 %   Omega2D : p-by-p matrix containing the updated common rotation matrix.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %$LastChangedDate::                      $: Date of the last commit
 

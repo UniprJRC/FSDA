@@ -131,7 +131,7 @@ function [rn , varargout] = mtR(n, distrib, Rstate)
 %   random number generation and Monte-Carlo simulation.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('mtR')">Link to the help page for this function</a>

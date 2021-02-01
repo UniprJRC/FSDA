@@ -410,7 +410,7 @@ function out  = tclustregIC(y,X,varargin)
 % Analysis and Classification". [doi
 % https://doi.org/10.1007/s11634-018-0331-4].
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

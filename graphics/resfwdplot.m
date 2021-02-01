@@ -373,7 +373,7 @@ function plotopt=resfwdplot(out,varargin)
 % Atkinson, A.C. and Riani, M. (2000), "Robust Diagnostic Regression
 % Analysis", Springer Verlag, New York.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

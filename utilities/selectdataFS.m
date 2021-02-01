@@ -231,7 +231,7 @@ function [pointslist,xselect,yselect] = selectdataFS(varargin)
 % This routine is extensively based on a function written by John D'Errico
 % (woodchips@rochester.rr.com), Release: 3.0,  Release date: 2/19/07.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % John D'Errico's selectdata has been adapted to this toolbox by
 % FSDA team
 %

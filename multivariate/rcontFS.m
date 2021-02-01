@@ -106,7 +106,7 @@ function out = rcontFS( I, J, nrowt, ncolt, varargin)
 % Michael Patefield and James Boyett and on the Matlab version by John
 % Burkardt.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %
