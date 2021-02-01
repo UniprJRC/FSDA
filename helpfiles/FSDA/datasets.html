@@ -52,35 +52,15 @@ simplest way to load a data set into the MATLAB workspace is to type:</p>
 will load the original txt file into a standard data matrix. Note that this
 straightforward loading option will not work for datasets mixing numerical and
 categorical variables, like fishery.txt. </p>
-
-
-<p>The datasets have been also organized in a <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/struct.html'],'-helpbrowser')"><tt>structure</tt></a>
-complementing the data matrix with the variable and observation names and data
-specific notes. Once the structure is loaded in the workspace by typing</p>
+	<p>The datasets have also been organized in a
+	<a href="https://www.mathworks.com/help/matlab/ref/table.html">table format</a> 
+	complementing the data matrix with the variable and observation names and 
+	data specific notes. The table can be loaded in the workspace by typing</p>
 <pre class="programlisting"> load <tt><i>filename</i>.mat</tt></pre>
-the four structure fields can be retrieved with: 
-<ul>
-  <li><tt>data = <i>filename</i>.data;</tt></li>
-  <li><tt>rownames = <i>filename</i>.rownames;</tt></li>
-  <li><tt>colnames  = <i>filename</i>.colnames;</tt></li>
-  <li><tt>notes = <i>filename</i>.notes;</tt></li>
-</ul>
-
-<p>Finally, the datasets are also provided as <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/cell.html'],'-helpbrowser')"><tt>cell</tt></a>
-and <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/toolbox/stats/help.jar!/dataset.html'],'-helpbrowser')"><tt>dataset</tt></a>
-structures, which can be loaded by typing respectively:</p>
-<pre class="programlisting"> load <tt><i>filename</i>C</tt></pre>
-<pre class="programlisting"> load <tt><i>filename</i>D</tt></pre>
-
-<p>The <tt>dataset </tt>and <tt>cell</tt> formats are convenient for data
-mixing numerical and categorical variables. In particular, the <tt>cell</tt>
-can be used for displaying data through GUI components such as <a
-href="matlab:web(['jar:file:///',matlabroot,'/help/techdoc/help.jar!/ref/uitable.html'],'-helpbrowser')"><tt>uitables</tt></a>.
-</p>
-			<ul class="list-unstyled">
+	<p>Note that from FSDA 2021a (version 8.5.0) the datasets are not provided 
+	anylonger in cell, dataset or structure format.</p>
+	<p>&nbsp;</p>
+	<ul class="list-unstyled">
 				<li><a href="datasets_reg.html"><strong>Regression datasets</strong></a></li>
 				<li><a href="datasets_mv.html"><strong>Multivariate datasets</strong></a></li>
 				<li><a href="datasets_clu.html"><strong>Clustering datasets</strong></a></li>
