@@ -61,7 +61,10 @@ function ceff = TBeff(eff, v, shapeeff, approxsheff)
     % The constant c associated to a nominal location efficiency of 95% in regression is
     % c = 4.685064948559557
     c=TBeff(0.95,1)
-    % for a fixed shape efficiency we have
+%}
+
+%{
+    % Find c associated to a fixed shape efficiency 
     % c= 5.490249208447494
     c=TBeff(0.95,1,1)
 %}
