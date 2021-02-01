@@ -95,7 +95,7 @@ resindexplot(outLMSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','confl
 h=subplot(2,2,4);
 laby='Scaled reweighted LTS residuals';
 resindexplot(outLTSr.residuals,'h',h,'title',titl,'laby',laby,'numlab','','conflev',conflev);
-% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+% By simply changing the seed to 543 (state=543), using a Bonferroni size of 1%, no unit is declared as outlier.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.04 seconds 
 
 h = 
 
@@ -210,8 +210,7 @@ Warning: Number of subsets without full rank or excluded because containing remo
                standard LTS or LMS.</p><p>
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Criterion to use to find the initial
-                 subset to initialize the search.</span></a><span class="example_desc">scalar, vector | structure.</span></span></h3><div class="collapse">	<p><p>If lms is a scalar = 1 (default) Least Median of Squares is
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lms" class="clearfix"></div><h3 id="input_argument_namevalue_lms" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lms</code> &#8212;Estimation method.</span></a><span class="example_desc">scalar, vector | structure.</span></span></h3><div class="collapse">	<p><p>If lms is a scalar = 1 (default) Least Median of Squares is
                        computed,
                else if lms is a scalar = 2 fast lts with the all default options is used
                else if lms is a scalar different from 1 and 2 standard lts

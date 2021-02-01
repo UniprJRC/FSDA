@@ -65,7 +65,7 @@ y = 5*x + 0.9*randn(1100,1);
 % thinning over the original bi-variate data
 [Wt2,pretain2,RetUnits] = wthin([x,y]);
 % disp(RetUnits)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>thinning on the fishery dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fishery;
-X=fishery.data;
+X=fishery{:,:};
 % some jittering is necessary because duplicated units are not treated
 % in tclustreg: this needs to be addressed
 X = X + 10^(-8) * abs(randn(677,2));

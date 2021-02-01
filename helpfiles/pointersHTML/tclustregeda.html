@@ -8,10 +8,20 @@
  proportion alpha reduces. This function enables us to monitor the change
  in classification (measured by the ARI index) and the change in
  regression coefficients and error variances (measured by the relative
- squared Euclidean distances). In order to make sure that consistent
- labels are used for the groups, between two consecutive values of alpha,
+ squared Euclidean distances).
+ Note that there is a non-identifiability of a finite mixture distribution
+ caused by the invariance of the mixture density function to components
+ relabeling. In order to make sure that consistent labels are used for the
+ groups, between two consecutive values of alpha, we call
  we assign label r to a group if this group shows the smallest distance
- with group r for the previous value of alpha. In order to be consistent
+ with group r for the previous value of alpha.
+ More precisely, once the labelling is fixed for the largest value of the
+ trimming factor supplied, if $\alpha_r$ and $\alpha_s$ denote two
+ consecutive levels of trimming ($\alpha_r&gt;\alpha_s$) and
+ \beta_{j,\alpha_r}
+given \beta_{j,\alpha_r}
+
+ In order to be consistent
  along the different runs it is possible to specify through option
  UnitsSameGroup the list of the units which must (whenever possible) have
  a particular label.

@@ -4,7 +4,7 @@
 % Results in structure "OLS" coincide with "Ordinary Leat Squares
 % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
 load('TableF91_Greene');
-data=TableF91_Greene.data;
+data=TableF91_Greene{:,:};
 n=size(data,1);
 % Linear regression of monthly expenditure on a constant, age, income
 % its square and a dummy variable for home ownership using the 72
@@ -50,7 +50,7 @@ Multiplicative Heteroskedasticity Model
 % table 14.3 page 557, 7th edition of Greene (2007).
 % (line of the table which starts with MLE)
 load('TableF61_Greene');
-Y=TableF61_Greene.data;
+Y=TableF61_Greene{:,:};
 Q=log(Y(:,4));
 Pfuel=log(Y(:,5));
 Loadfactor=Y(:,6);
@@ -72,7 +72,7 @@ out=regressHhar(y,X,Loadfactor,'msgiter',1,'test',1);</pre></div></div></p></
 % "$\sigma^2_i=\sigma^2 \exp(z' \alpha)$" in table 11.2, page 231, 5th edition of
 % Greene (1987).
 load('TableF91_Greene');
-data=TableF91_Greene.data;
+data=TableF91_Greene{:,:};
 n=size(data,1);
 % Linear regression of monthly expenditure on a constant, age, income and
 % its square and a dummy variable for home ownership using the 72
@@ -207,7 +207,7 @@ Coeff.
                        present only if input option test is true.</p></td></tr><tr valign="top"><td><code>LogL</code></td><td><p>scalar. Complete maximized log likelihood.  This
                        field is present only if
                        input option test is true.</p></td></tr></table></p></div></div></div></div></div></div><div class="moreabout ref_sect"><h2 id="MoreAbout">More About</h2><div class="expandableContent"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent" itemprop="content"><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span>Additional Details</span></a></span></h3><div class="expand"><p><p>
-   This routine implements Harvey�s (1976) model of
+   This routine implements Harvey&uuml;s (1976) model of
    multiplicative heteroscedasticity which is a very flexible, general
    model that includes most of the useful formulations as special cases.</p> <p>
    The general formulation is:</p> <p> 

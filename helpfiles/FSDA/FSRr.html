@@ -39,8 +39,8 @@ close(f1); close(f2);
 disp(['Outliers without R2 adjustment = ' num2str(out1.outliersr)]);
 disp(['Outliers with    R2 adjustment = ' num2str(out2.outliersr)]);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of FSRr in a real dataset from international trade.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all; clear all;
 load fishery;
-X = fishery.data(:,1);
-y = fishery.data(:,2);
+X = fishery{:,1};
+y = fishery{:,2};
 n = length(y);
 % Bonferronized confidence level
 cl = 0.005/n;
@@ -64,9 +64,8 @@ title(ax3,{'"fishery" dataset: FSRr fit with R2th=0.85','Prediction interval and
 close(f3); close(f4);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Comparing LTS, FSR and FSRr on the international trade dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all;
 clear all;
 load fishery
-data = fishery.data;
-X = data(:,1);
-y = data(:,2);
+X = fishery{:,1};
+y = fishery{:,2};
 n = length(y);
 % Bonferronized confidence level
 cl = 0.01/n;

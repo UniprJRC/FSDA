@@ -32,7 +32,7 @@ T=[2365 944 412; 249 585 276];
 out=SparseTableTest(T,'testname',la);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Chi-squared test on collapsed contingency table.</li></span></a></span></h3><div class="collapse"><p>
      Input is a data matrix and contingency table has to be built<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load smoke
 % X = original data matrix
-X=smoke.data;
+X=smoke{:,:};
 % Chi-squared test is used on collapsed 2-by-2 tables. 
 % Cells which have a frequency smaller or equal than 15 are ignored. 
 out=SparseTableTest(X,'datamatrix',true,'threshold',15,'testname',1);
