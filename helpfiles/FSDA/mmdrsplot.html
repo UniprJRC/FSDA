@@ -5,7 +5,7 @@
      Two groups with approximately the same number of units.</a></li><li><a class="intrnllnk" href="#ExtraExample_4"><i>Interactive example 5.</i>
      Example of the use of option databrush.</a></li></ul></li><li><a class="intrnllnk" href="#Inputs">Input Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_out">out</a></li></ul></li><li><a class="intrnllnk" href="#NameValuePairs">Name-Value Pair Arguments</a><ul><li><a class="intrnllnk" href="#input_argument_namevalue_quant">quant</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_envm">envm</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_xlimx">xlimx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_ylimy">ylimy</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwdenv">lwdenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_tag">tag</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_datatooltip">datatooltip</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_databrush">databrush</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_FontSize">FontSize</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_SizeAxesNum">SizeAxesNum</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_nameY">nameY</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_lwd">lwd</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_titl">titl</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labx">labx</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_laby">laby</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_labenv">labenv</a></li><li><a class="intrnllnk" href="#input_argument_namevalue_scaled">scaled</a></li></ul></li><li><a class="intrnllnk" href="#OutputArgs">Output Arguments</a><ul><li><a class="intrnllnk" href="#output_argument_brushedUnits">brushedUnits</a></li><li><a class="intrnllnk" href="#output_argument_BrushedUnits">BrushedUnits</a></li></ul></li><li><a class="intrnllnk" href="#References">References</a></li><li><a class="intrnllnk" href="#SeeAlso">See Also</a></li></ul></nav><script src="../includes/product/scripts/offcanvas.js"></script></div><div id="divtop"></div><div class="site_container site_toc_closed"><div class="page_container"><div class="content_frame"><div id="content_container" class="content_container"><section id="doc_center_content"><div class="function_ref"><div itemprop="content"><h1 itemprop="title">mmdrsplot</h1><div class="doc_topic_desc"><div class="purpose_container"><p itemprop="purpose">mmdrsplot plots the trajectories of minimum Mahalanobis distances from different starting points</p><div class="switch"><a id="expandAllPage" href="javascript:void(0);">expand all in page</a></div></div></div></div><div class="ref_sect"><h2 id="syntax">Syntax</h2><div class="syntax_signature"><div class="syntax_signature_module"><ul><li><code class="synopsis">brushedUnits=mmdrsplot(out)</code><span class="syntax_example"><a class="intrnllnk" href="mmdrsplot.html#Example_1">example</a></span></li><li><code class="synopsis">brushedUnits=mmdrsplot(out,Name,Value)</code><span class="syntax_example"><a class="intrnllnk" href="mmdrsplot.html#Example_2">example</a></span></li><li><code class="synopsis">[brushedUnits,BrushedUnits]=mmdrsplot(___)</code><span class="syntax_example"><a class="intrnllnk" href="mmdrsplot.html#Example_3">example</a></span></li></ul></div></div></div>	<div class="ref_sect" itemprop="content">							<h2 id="Description">Description</h2>							<div class="descriptions">								<div class="description_module"><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mmdrsplot.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_brushedUnits"><code>brushedUnits</code></a>=mmdrsplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>)</code></span>Example of mmdrsplot with all the default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mmdrsplot.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_brushedUnits"><code>brushedUnits</code></a>=mmdrsplot(<a class="intrnllnk" href="#inputarg_out"><code>out</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Example of the use of function mmdrsplot with personalized envelopes.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="mmdrsplot.html#Example_3">	example</a></p>	<p><span itemprop="syntax"><code>[<a class="intrnllnk" href="#outputarg_brushedUnits"><code>brushedUnits</code></a>,<a class="intrnllnk" href="#outputarg_BrushedUnits"><code>BrushedUnits</code></a>]=mmdrsplot(___)</code></span>Interactive_example
      mmdrsplot with option dataooltip.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of mmdrsplot with all the default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 %create an initial subset with the 4 observations, which fell the smallest
 %number of times outside the robust bivariate ellipses, and with the
@@ -16,7 +16,7 @@ bs=fre(1:m0,1);
 [outeda]=FSMeda(Y,bs);
 [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
 mmdrsplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/mmdrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mmdrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmdrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 m0=20;
@@ -28,7 +28,7 @@ mmdrsplot(out,'quant',[0.99;0.9999]);</pre></div></div></p></div></div><div
 %scalar (that is using default options for datacursor (i.e.
 %DisplayStyle =window)
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 m0=20;
@@ -39,7 +39,7 @@ mmdrsplot(out,'datatooltip',1);</pre></div></div></p></div></div></div><p>
      mmdrsplot with option dataooltip passed as structure.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%Example of the use of function mmdrsplot with datatooltip passed as
 %structure
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 m0=20;
@@ -51,7 +51,7 @@ tooltip.SnapToDataVertex='on'
 tooltip.DisplayStyle='datatip'
 mmdrsplot(out,'datatooltip',tooltip);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 3.</i>
     Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 m0=20;
@@ -85,7 +85,7 @@ disp('The decrease after the peak in the trajectories of mmd is due to the maski
 mmdrsplot(out,'databrush',1)</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 5.</i>
      Example of the use of option databrush.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Selected units are also highlighted in the malfwdplot.
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 out=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
 outEDA=FSMeda(Y,1:10,'init',20,'scaled',1);
 malfwdplot(outEDA)

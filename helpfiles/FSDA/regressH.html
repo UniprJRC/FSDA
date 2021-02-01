@@ -2,7 +2,7 @@
      The data in Appendix Table F6.1 were used in a study of efficiency in
      production of airline services in Greene (2007a).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% See p. 557 of Green (7th edition). 
 load('TableF61_Greene');
-Y=TableF61_Greene.data;
+Y=TableF61_Greene{:,:};
 Q=log(Y(:,4));
 Pfuel=log(Y(:,5));
 Loadfactor=Y(:,6);
@@ -14,7 +14,7 @@ out=regressH(y,X,Loadfactor);</pre></div></div></p></div></div><div id="exa
      formulation for the skedastic function, we replicate in 
      structure "out.Beta" the same results contained in table 9.2, 
      page 282, 7th edition of Greene (2007) (lines "Iterated").<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('TableF61_Greene');
-Y=TableF61_Greene.data;
+Y=TableF61_Greene{:,:};
 Q=log(Y(:,4));
 Pfuel=log(Y(:,5));
 Loadfactor=Y(:,6);
@@ -26,7 +26,7 @@ out=regressH(y,X,Loadfactor,'type','har');</pre></div></div></p></div></div>
      Estimates" of table 11.3, page 235, 5th edition of Greene (1987).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Results in structure "OLS" coincide with "Ordinary Leat Squares
 % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
 load('TableF91_Greene');
-data=TableF91_Greene.data;
+data=TableF91_Greene{:,:};
 n=size(data,1);
 % Linear regression of monthly expenditure on a constant, age, income
 % its square and a dummy variable for home ownership using the 72
@@ -62,7 +62,7 @@ grid on</pre></div></div></p></div></div><div id="Extraexample_2" class="ex
 % "\sigma^2*exp(z'*\alpha)" in table 11.2, page 231, 5th edition of
 % Greene (1987).
 load('TableF91_Greene');
-data=TableF91_Greene.data;
+data=TableF91_Greene{:,:};
 n=size(data,1);
 % Linear regression of monthly expenditure on a constant, age, income and
 % its square and a dummy variable for home ownership using the 72

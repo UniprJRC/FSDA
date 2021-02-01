@@ -398,11 +398,13 @@ fground=struct;
 fground.fthresh=15;
 malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,'nameY',NameY)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_out" class="clearfix"> </div> <h3 id="input_argument_out" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>out</code> &#8212; Structure containing monitoring of Mahalanobis distance. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>Structure containing the following fields.</p> <p></p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MAL</code></td><td><p><p>n-by-k matrix containing the squared Mahalanobis distances
                monitored in each step of the forward search or more in
-               general any other trajectories monitored in k steps (e.g. the MCD
-               monitored for k different values of break down point, the
-               MM estimators monitored for k values of efficiency).</p> <p>
-               This matrix can be created using functions FSMeda or
-               Smulteda or MMmulteda ... This field is compulsory.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>n-by-v matrix.  It can be either the original data matrix
+               general any other trajectories monitored in k steps (e.g.</p> <p>
+               the MCD monitored for k different values of break down
+               point, the MM estimators monitored for k values of
+               efficiency). This matrix can be created using functions
+               FSMeda or Smulteda or MMmulteda or FSCorAnaeda...</p><p> 
+               This field is
+               compulsory.</p></p></td></tr><tr valign="top"><td><code>Y</code></td><td><p>n-by-v matrix.  It can be either the original data matrix
                or another matrix with n rows and p variables (i.e. the
                matrix of the first p principal components). This field is
                compulsory if brushing, through option databrush, is
@@ -414,13 +416,16 @@ malfwdplot(out,'databrush',databrush,'label',RowLabelsMatrixY,'fground',fground,
                 and y axes axis and the message in the datatooltip window. If
                 out.class is a character then if:</p> <p>
                out.class='Smulteda' or 'mveeda' or 'mcdeda' the label in
-               the x axis is 'Break down point' the label in the x axis is
-               'Efficiency';</p> <p>
+                   the x axis is 'Break down point' the label in the x axis is
+                   'Efficiency';</p> <p>
+               out.class='FSCorAnaeda' the label in the x axis is 'Subset
+                   size m' the expected fields of input strucure are 
+                   out.Loc and out.N;</p> <p>
                If out.class is a structure it may contain the fields xlab
-               and ylab which specify the labels to be put respectively to
-               the x and y axis.</p> <p>
+                   and ylab which specify the labels to be put respectively to
+                   the x and y axis.</p> <p>
                In all the other cases or if this field is not present the
-               x label is 'Subset size m'.</p><p>
+                   x label is 'Subset size m'.</p><p>
                This field is not compulsory. Also notice that the labels
                of the axes can be also personalized using option standard.</p></p></td></tr><tr valign="top"><td><code>Un</code></td><td><p><p>matrix of size (k-1)-by r containing the order of entry
                of each unit, where k is the number of columns of matrix MAL.</p> <p>

@@ -7,7 +7,7 @@ mmdinv=FSMinvmmd(mmdenv,v);
 % mmdinv is a matrix which in the second colum contains
 % all values equal to 0.99.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSMinvmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Example of finding confidence level of mmd. Forgery Swiss Banknotes data. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(101:200,:);
 % The line below shows the plot of mmd
 [out]=FSM(Y,'plots',1);
@@ -19,7 +19,7 @@ plots.conflev=[0.01 0.5 0.99 0.999 0.9999 0.99999];
 mmdinv=FSMinvmmd(out.mmd,size(Y,2),'plots',plots);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Resuperimposing envelopes and normal coordinates.</li></span></a></span></h3><div class="collapse"><p>
      Comparison of resuperimposing envelopes using mmd coordinates and normal
      coordinates. Forgery Swiss Banknotes data. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(101:200,:);
 % The line below shows the plot of mmd
 [out]=FSM(Y,'plots',2);

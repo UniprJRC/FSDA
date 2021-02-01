@@ -34,7 +34,7 @@ xlabel('Log effective surface temperature')
 ylabel('Log light intensity')</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Bivariate boxplot of two variables of Emilia Romagna data.</li></span></a></span></h3><div class="collapse"><p>
      This example reproduces Figure 2 of Zani Riani and Corbellini<div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 load('emilia2001')
-Y=emilia2001.data;
+Y=emilia2001{:,:};
 % Extract the variables y1 and y3
 % y1= Percentage of infant population (that is the percentage of
 % population aged less than 10)

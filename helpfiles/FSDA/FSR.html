@@ -30,7 +30,7 @@ y(1:20)=y(1:20)+13;
 % The procedure of resuperimposing envelopes in this case stops when
 % n = 85, the first time in which we have a value of rmin(m) for
 % $n&gt;=m^\dagger-1$ greater than the 99% threshold. The group can
-% therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+% therefore be considered as homogeneous up to when we include 84 units.</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.01 seconds 
 -------------------------
 Signal detection loop
 Tentative signal in central part of the search: step m=81 because
@@ -70,13 +70,13 @@ y=randn(n,1);
 p=3;
 X=randn(n,p);
 y=randn(n,1);
-[out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
+[out]=FSR(y,X, 'labeladd','1','bivarfit','1','multivarfit','1');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
 -------------------------
 Signal detection loop
 Sample seems homogeneous, no outlier has been found
 Summary of the exceedances
            1          99         999        9999       99999
-           1           0           0           0           0
+           0           0           0           0           0
 
 </pre><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSR_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSR_06.png" alt=""> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of options xlim and ylim (Hawkins data).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt','hawkins');
 y=hawkins(:,9);
@@ -137,11 +137,11 @@ threshoutX.threshlevoutX=5;
 % threshoutX.bonflevoutX=0.99
 outWithLevConstr=FSR(yall,Xall,'threshoutX',threshoutX,'msg',0,'ylim',[0 5]);
 title('FS with bound on the leverage')</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example to detect both VIOM and MSOM outliers using weak=true.</li></span></a></span></h3><div class="collapse"><p>
-     loyalty data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">data = importdata('loyalty.mat');
-y = data.data(:,end);
-X = data.data(:,1);
+     loyalty data<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('loyalty');
+y = loyalty{:,end};
+X = loyalty{:,1};
 xla = 'Number of visits';
-yla = 'Amount spent (in €)';
+yla = 'Amount spent (in Euros)';
 n = size(X,1);
 % run FSR to detect a weaker signal indicating VIOM
 FSRoutw = FSR(y, X, 'intercept', 0, ...
@@ -152,9 +152,10 @@ clean_FSR = FSRoutw.ListCl;
 % plotting
 figure
 plot(X(clean_FSR, :), y(clean_FSR), 'b.', 'MarkerSize', 15, 'DisplayName', 'clean');
-hold on
+hold('on')
 plot(X(trim_FSR, :), y(trim_FSR), 'r.', 'MarkerSize', 15, 'DisplayName', 'MSOM');
 plot(X(down_FSR, :), y(down_FSR), 'g.', 'MarkerSize', 15, 'DisplayName', 'VIOM');
+drawnow
 clb = clickableMultiLegend(gca, 'Location', 'northeast');
 set(clb,'FontSize',12);
 xlabel(xla); 

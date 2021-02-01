@@ -27,11 +27,11 @@ end
 xlabel('Original values')
 ylabel('Transformed values')
 title('Box-Cox transformation')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Mussels data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 % Transform all columns of matrix Y according to the values of la
 Y=normBoxCox(Y,[],la);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Check the inverse tranformation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 % Transform all columns of matrix Y according to the values of la
 Ytra=normBoxCox(Y,[],la,'Jacobian',false);

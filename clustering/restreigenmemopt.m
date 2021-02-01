@@ -72,7 +72,7 @@ function [out]  = restreigenmemopt(eigenvalues, niini, restr, tol, userepmat)
 %
 %
 %
-%<a href="matlab: docsearchFS('restreigen')">Link to the help function</a>
+%<a href="matlab: docsearchFS('restreigenmemopt')">Link to the help function</a>
 %
 %$LastChangedDate::                      $: Date of the last commit
 

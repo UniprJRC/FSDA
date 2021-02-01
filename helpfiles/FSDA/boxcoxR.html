@@ -46,7 +46,9 @@ out=boxcoxR(y,X,'family','YJpn','plots',1);
 % have to transformed, negative observations have to be transformed using
 % lambda=0. For more details see Atkinson Riani and Corbellini (2020)</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\boxcoxR_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(500)
 % Generate regression data
-[yori,X]=simulateLM(100,'R2',0.95);
+outsim=simulateLM(100,'R2',0.95);
+yori = outsim.y;
+X = outsim.X;
 % Transform in a different way positive and negative values
 laPos=0.2;
 laNeg=0.8;
@@ -70,7 +72,9 @@ disp(out.lahat)</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
 </pre><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
      In this example we specify as solver to use fminunc<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 % Generate regression data
-[yori,X]=simulateLM(100,'R2',0.6);
+outsim=simulateLM(100,'R2',0.6);
+yori = outsim.y;
+X = outsim.X;
 % Transform in a different way positive and negative values
 laPos=0.4;
 laNeg=-0.9;

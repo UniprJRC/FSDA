@@ -32,8 +32,8 @@ ycont=y;
 ycont(1:5)=ycont(1:5)+6;
 [out]=Sregeda(ycont,X,'rhofunc','hyperbolic');</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Sreg on Stars data.</li></span></a></span></h3><div class="collapse"><p>
      Run this code to see the Figure 2 of the article in the References<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('stars');
-X=stars.data(:,1);
-y=stars.data(:,2);
+X=stars{:,1};
+y=stars{:,2};
 [out]=Sregeda(y,X,'rhofunc','bisquare');
 standard.Color={'b'}
 standard.xvalues=size(out.RES,1)-size(out.RES,2)+1:size(out.RES,1)
@@ -67,56 +67,56 @@ plot(out.bdp(1:49),RHO(:,3)');
 if strcmp(out.class,'Sregeda')
 set(gca,'XDir','reverse','ylim',ylimits);
 title('Pearson');
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.75 seconds 
-Total estimated time to complete S estimate:  0.54 seconds 
-Total estimated time to complete S estimate:  0.80 seconds 
-Total estimated time to complete S estimate:  0.79 seconds 
-Total estimated time to complete S estimate:  0.49 seconds 
-Total estimated time to complete S estimate:  0.51 seconds 
-Total estimated time to complete S estimate:  0.54 seconds 
-Total estimated time to complete S estimate:  0.52 seconds 
-Total estimated time to complete S estimate:  0.54 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.52 seconds 
-Total estimated time to complete S estimate:  0.63 seconds 
+end</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  0.76 seconds 
+Total estimated time to complete S estimate:  0.59 seconds 
+Total estimated time to complete S estimate:  0.65 seconds 
+Total estimated time to complete S estimate:  0.66 seconds 
 Total estimated time to complete S estimate:  0.56 seconds 
-Total estimated time to complete S estimate:  0.69 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.50 seconds 
-Total estimated time to complete S estimate:  0.48 seconds 
-Total estimated time to complete S estimate:  0.49 seconds 
-Total estimated time to complete S estimate:  0.47 seconds 
-Total estimated time to complete S estimate:  0.53 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.52 seconds 
-Total estimated time to complete S estimate:  0.48 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.46 seconds 
-Total estimated time to complete S estimate:  0.47 seconds 
 Total estimated time to complete S estimate:  0.55 seconds 
-Total estimated time to complete S estimate:  0.67 seconds 
-Total estimated time to complete S estimate:  0.50 seconds 
+Total estimated time to complete S estimate:  0.51 seconds 
+Total estimated time to complete S estimate:  0.65 seconds 
+Total estimated time to complete S estimate:  0.47 seconds 
 Total estimated time to complete S estimate:  0.49 seconds 
-Total estimated time to complete S estimate:  0.48 seconds 
+Total estimated time to complete S estimate:  0.62 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
+Total estimated time to complete S estimate:  0.47 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.49 seconds 
+Total estimated time to complete S estimate:  0.44 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
+Total estimated time to complete S estimate:  0.44 seconds 
+Total estimated time to complete S estimate:  0.44 seconds 
+Total estimated time to complete S estimate:  0.57 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
+Total estimated time to complete S estimate:  0.45 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
 Total estimated time to complete S estimate:  0.48 seconds 
 Total estimated time to complete S estimate:  0.45 seconds 
-Total estimated time to complete S estimate:  0.50 seconds 
-Total estimated time to complete S estimate:  0.47 seconds 
+Total estimated time to complete S estimate:  0.49 seconds 
+Total estimated time to complete S estimate:  0.44 seconds 
 Total estimated time to complete S estimate:  0.43 seconds 
-Total estimated time to complete S estimate:  0.34 seconds 
-Total estimated time to complete S estimate:  0.34 seconds 
+Total estimated time to complete S estimate:  0.45 seconds 
+Total estimated time to complete S estimate:  0.48 seconds 
+Total estimated time to complete S estimate:  0.38 seconds 
+Total estimated time to complete S estimate:  0.37 seconds 
+Total estimated time to complete S estimate:  0.36 seconds 
 Total estimated time to complete S estimate:  0.31 seconds 
-Total estimated time to complete S estimate:  0.32 seconds 
-Total estimated time to complete S estimate:  0.34 seconds 
-Total estimated time to complete S estimate:  0.29 seconds 
+Total estimated time to complete S estimate:  0.36 seconds 
 Total estimated time to complete S estimate:  0.31 seconds 
+Total estimated time to complete S estimate:  0.35 seconds 
 Total estimated time to complete S estimate:  0.31 seconds 
-Total estimated time to complete S estimate:  0.33 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
 Total estimated time to complete S estimate:  0.31 seconds 
-Total estimated time to complete S estimate:  0.30 seconds 
-Total estimated time to complete S estimate:  0.26 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
+Total estimated time to complete S estimate:  0.46 seconds 
 Total estimated time to complete S estimate:  0.27 seconds 
+Total estimated time to complete S estimate:  0.28 seconds 
+Total estimated time to complete S estimate:  0.27 seconds 
+Total estimated time to complete S estimate:  0.31 seconds 
 
 standard = 
 

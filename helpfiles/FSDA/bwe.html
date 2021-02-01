@@ -45,7 +45,7 @@ else
 xlabel(['bw0 / ' num2str(i) ' = ' num2str(h) ]);
 end
 end</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Bandwidth and kernel density estimates for a bivariate dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fishery;
-X = fishery.data;
+X = fishery{:,:};
 X = X+10^(-8)*abs(randn(677,2)); % some jittering to avoid dplicate points
 h = bwe(X)
 h = bwe(X,'scott')

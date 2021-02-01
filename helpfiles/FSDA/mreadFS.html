@@ -448,8 +448,8 @@
                              "% Monitor minimum deletion residual in each step of the forward search".</p> <p>
                              "% Common part to all examples: load fishery dataset".</p> <p>
                               load('fishery');</p> <p>
-                              y=fishery.data(:,2);</p> <p>
-                              X=fishery.data(:,1);</p> <p>
+                              y=fishery{:,2};</p> <p>
+                              X=fishery{:,1};</p> <p>
                               "% Find starting subset"
                               [out]=LXS(y,X,'nsamp',10000);</p> <p>
                               [mdr] = FSRmdr(y,X,out.bs);</p> <p>

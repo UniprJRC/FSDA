@@ -2,7 +2,7 @@
      The data in Appendix Table F6.1 were used in a study of efficiency in
      production of airline services in Greene (2007a). See p. 557 of Green (7th edition).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Common part to all examples: load TableF61_Greene dataset.
 load('TableF61_Greene');
-Y=TableF61_Greene.data;
+Y=TableF61_Greene{:,:};
 Q=log(Y(:,4));
 Pfuel=log(Y(:,5));
 Loadfactor=Y(:,6);
@@ -24,7 +24,7 @@ out=regressHart(y,X,Loadfactor);</pre></div></div><pre class="codeoutput">Ordin
      Estimate a multiplicative heteroscedastic model and print the
      estimates of regression and scedastic parameters together with LM, LR
      and Wald test<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('TableF61_Greene');
-Y=TableF61_Greene.data;
+Y=TableF61_Greene{:,:};
 Q=log(Y(:,4));
 Pfuel=log(Y(:,5));
 Loadfactor=Y(:,6);

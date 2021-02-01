@@ -6,13 +6,13 @@
       retain.</p> <p>
    3) returns the loadings in table format and shows them graphically.</p> <p>
    4) provides guidelines about the automatic choice of the number of
-       components;</p><p>
+       components;</p> <p>
    5) returns the communalities for each variable with respect to the
-       first k principal components in table format 
+       first k principal components in table format;</p><p> 
    5) calls app biplotFS which enables to obtain an interactive biplot in
       which points, rowslabels or arrows can be shown or hidden. This app
       also gives the possibility of controlling the length of the arrows
-      and the position of the row points through two interactive slier
+      and the position of the row points through two interactive slider
       bars.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>)</code></span>Use of pcaFS with creditrating dataset.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="pcaFS.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=pcaFS(<a class="intrnllnk" href="#inputarg_Y"><code>Y</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>use of pcaFS on the ingredients dataset.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Use of pcaFS with creditrating dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">creditrating = readtable('CreditRating_Historical.dat','ReadRowNames',true);
 % Use all default options
 out=pcaFS(creditrating(1:100,1:6))</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> use of pcaFS on the ingredients dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hald
@@ -22,31 +22,39 @@ In what follows we still extract the first 2 PCs
 Initial covariance matrix
             Y1        Y2         Y3        Y4   
           ______    _______    ______    _______
+
     Y1     34.60      20.92    -31.05     -24.17
     Y2     20.92     242.14    -13.88    -253.42
     Y3    -31.05     -13.88     41.03       3.17
     Y4    -24.17    -253.42      3.17     280.17
+
 Explained variance by PCs
-           Eignvalues    Explained_Variance    Explained_Variance_cum
-           __________    __________________    ______________________
-    PC1      517.80            86.60                    86.60        
-    PC2       67.50            11.29                    97.89        
-    PC3       12.41             2.07                    99.96        
-    PC4        0.24             0.04                   100.00        
+           Eigenvalues    Explained_Variance    Explained_Variance_cum
+           ___________    __________________    ______________________
+
+    PC1      517.80             86.60                    86.60        
+    PC2       67.50             11.29                    97.89        
+    PC3       12.41              2.07                    99.96        
+    PC4        0.24              0.04                   100.00        
+
 Loadings = correlations between variables and PCs
            PC1      PC2 
           _____    _____
+
     Y1     0.26     0.90
     Y2     0.99     0.01
     Y3    -0.10    -0.97
     Y4    -0.99     0.05
+
 Communalities
           PC1     PC2     PC1-PC2
           ____    ____    _______
+
     Y1    0.07    0.81     0.88  
     Y2    0.98    0.00     0.98  
     Y3    0.01    0.94     0.95  
     Y4    0.99    0.00     0.99  
+
 </pre><a href='http://rosa.unipr.it/fsda/pcaFS.html#Example_2'><img vspace="5" hspace="5" src="images\pcaFS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\pcaFS_02.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
@@ -77,12 +85,14 @@ Communalities
                    the arrows and the spread of row points.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'biplot',false
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_dispresults" class="clearfix"></div><h3 id="input_argument_namevalue_dispresults" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>dispresults</code> &#8212;show the results in the command window.</span></a><span class="example_desc">if dispresults                   is true, the percentage of variance explained together                   with the loadings and the criteria for deciding the                   number of components to retain is shown in the command                   window.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'dispresults',false
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_NumComponents" class="clearfix"></div><h3 id="input_argument_namevalue_NumComponents" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NumComponents</code> &#8212;the number of components desired.</span></a><span class="example_desc">specified as a                  scalar integer $k$ satisfying $0 &lt; k \leq v$ When specified,                  pcaFS returns the first $k$ columns of out.</span></span></h3><div class="collapse">	<p><p>coeff and out.score.</p> <p>
-                  If NumComponents is not specified the routines returns
-                  the minimum number of components which cumulatively
-                  enable to explain a percent of variance which is equal
-                  to $0.95^v$. If this threshold is exceeded already by
-                  the first PC, pcaFS still returns the first tow PCs.</p><p>
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_NumComponents" class="clearfix"></div><h3 id="input_argument_namevalue_NumComponents" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>NumComponents</code> &#8212;the number of components desired.</span></a><span class="example_desc">specified as a                  scalar integer $k$ satisfying $0 &lt; k \leq v$.</span></span></h3><div class="collapse">	<p><p>When
+                  specified, pcaFS returns the first $k$ columns of
+                  out.coeff and out.score. If NumComponents is not
+                  specified pcaFS returns the minimum number of components
+                  which cumulatively enable to explain a percentage of
+                  variance which is equal at least to $0.95^v$. If this
+                  threshold is exceeded already by the first PC, pcaFS
+                  still returns the first two PCs.</p> <p>
                    </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'NumComponents',2
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Rtable</code></td><td><p>v-by-v correlation matrix in table format.</p></td></tr><tr valign="top"><td><code>explained</code></td><td><p><p>v \times 3 matrix containing respectively
                 1st col = eigenvalues;</p> <p>
