@@ -238,7 +238,7 @@ function out = FSMtra(Y,varargin)
     % FSMtra with all default options.
     % Baby food data.
     load('baby.mat');
-    Y=baby.data(:,6:end);
+    Y=baby{:,6:end};
     % FS based on untrasnformed data H_0:\lambda=1 for all variables
     % Plot of mle of transformation parameters with all default options
     % Compare the output with Figure 4.7 p. 167 of ARC (2004)
@@ -250,7 +250,7 @@ function out = FSMtra(Y,varargin)
     % Plot the maximum likelihood estimates of the transformation parameters.
     % Baby food data.
     load('baby.mat');
-    Y=baby.data(:,6:end);
+    Y=baby{:,6:end};
     % FS based on untrasnformed data H_0:\lambda=1 for all variables
     % Plot of mle of transformation parameters with all default options
     % Compare the output with Figure 4.7 p. 167 of ARC (2004)
@@ -262,7 +262,7 @@ function out = FSMtra(Y,varargin)
     %% Personalized options for plotsmle.
     % Baby food data.
     load('baby.mat');
-    Y=baby.data(:,6:end);
+    Y=baby{:,6:end};
     % Personalized options for plotsmle
     plotsmle=struct;
     plotsmle.LineWidth=3;
@@ -276,7 +276,7 @@ function out = FSMtra(Y,varargin)
     % FSMtra based on log transformed data.
     % Baby food data.
     load('baby.mat');
-    Y=baby.data(:,6:end);
+    Y=baby{:,6:end};
     % FS based on log trasnformed data H_0:\lambda=0 for all variables
     % Plot of mle of transformation parameters with all default options
     v=size(Y,2);
@@ -289,7 +289,7 @@ function out = FSMtra(Y,varargin)
     %% Monitoring the profile log likelihood of the transformation parameters.
     % Baby food data ignoring the regression structure.
     load('baby.mat');
-    Y=baby.data(:,6:end);
+    Y=baby{:,6:end};
     % FS based on log trasnformed data H_0:\lambda=0 for all variables
     % Plot of mle of transformation parameters with all default options
     v=size(Y,2);
@@ -305,7 +305,7 @@ function out = FSMtra(Y,varargin)
     % Swiss heads data, Example 1.
     % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
-    Y=head.data;
+    Y=head{:,:};
     [out]=FSMtra(Y,'plotsmle',1);
 %}
 
@@ -313,7 +313,7 @@ function out = FSMtra(Y,varargin)
     % Swiss heads data, Example 2.
     % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
-    Y=head.data;
+    Y=head{:,:};
     % Analysis of profile loglikelihoods at step m=198
     prolik=struct;
     prolik.steps=198;
@@ -325,7 +325,7 @@ function out = FSMtra(Y,varargin)
     % Swiss heads data, Example 3.
     % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('head.mat');
-    Y=head.data;
+    Y=head{:,:};
     % Monitoring of likelihood ratio test
     % Compare the output with Figure 4.13 p. 172 of ARC (2004)
     [out]=FSMtra(Y,'plotslrt',1);
@@ -334,7 +334,7 @@ function out = FSMtra(Y,varargin)
 %{
     % Swiss heads data, Example 4.
     load('head.mat');
-    Y=head.data;
+    Y=head{:,:};
     % FS based on untransformed data H_0:\lambda=1 for variable 4
     % Monitoring of likelihood ratio test
     % Compare the output with Figure 4.14 p. 173 of ARC (2004)
@@ -345,7 +345,7 @@ function out = FSMtra(Y,varargin)
     % Mussels data, Example 1.
     % FSMtra based on untransformed data $H_0:\lambda=1$ for all variables
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     % Compare plot of mle with Figure 4.19 p. 178 of ARC (2004)
     % Compare plot of lrt with Figure 4.18 p. 178 of ARC (2004)
     [out]=FSMtra(Y,'plotsmle',1,'plotslrt',1);
@@ -354,7 +354,7 @@ function out = FSMtra(Y,varargin)
 %{
     % Mussels data, Example 2.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     % FSMtra based on with H_0:\lambda=[1 0.5 1 0 1/3]
     % Compare plot of mle with Figure 4.21 p. 178 of ARC (2004)
     % Compare plot of lrt with Figure 4.20 p. 178 of ARC (2004)
@@ -364,8 +364,8 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss bank notes data, Example 1.
-    load('swiss_banknotes')
-    Y=swiss_banknotes.data;
+    load('swiss_banknotes');
+    Y=swiss_banknotes{:,:};
     n=size(Y,1);
     Y1=repmat(max(Y),n,1);
     Y=Y./Y1;
@@ -376,8 +376,8 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss bank notes data, Example 2.
-    load('swiss_banknotes')
-    Y=swiss_banknotes.data;
+    load('swiss_banknotes');
+    Y=swiss_banknotes{:,:};
     n=size(Y,1);
     Y1=repmat(max(Y),n,1);
     Y=Y./Y1;
@@ -389,8 +389,8 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss bank notes data, Example 3.
-    load('swiss_banknotes')
-    Y=swiss_banknotes.data;
+    load('swiss_banknotes');
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     % FS using just one value of lambda for all the variables
     % Monitoring of mle of lambda (Figure 4.66 p. 223 of ARC (2004))
@@ -407,8 +407,8 @@ function out = FSMtra(Y,varargin)
 
 %{
     % Swiss bank notes data, Example 4.
-    load('swiss_banknotes')
-    Y=swiss_banknotes.data;
+    load('swiss_banknotes');
+    Y=swiss_banknotes{:,:};
     n=size(Y,1);
     Y1=repmat(max(Y),n,1);
     Y=Y./Y1;
@@ -421,7 +421,7 @@ function out = FSMtra(Y,varargin)
 %{
     %% Track records data.
     load('recordfg');
-    Y=recordfg.data;
+    Y=recordfg{:,:};
     n=size(Y,1);
     Y1=repmat(max(Y),n,1);
     Y=Y./Y1;
@@ -442,7 +442,7 @@ function out = FSMtra(Y,varargin)
 %{
     % Emilia Romagna data, Example 1.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -460,7 +460,7 @@ function out = FSMtra(Y,varargin)
     % Yeo and Johnson family of transformations is
     % used. In this case there is no need to correct 0 values
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
 
     % Extract demographic variables
     Y1=Y(:,[1 2 3 4 5 10 11 12 13]);
@@ -476,7 +476,7 @@ function out = FSMtra(Y,varargin)
     % Emilia Romagna data, Example 3.
     % Demographic data
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -502,7 +502,7 @@ function out = FSMtra(Y,varargin)
     % Emilia Romagna data, Example 4.
     % Modified wealth variables.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -524,7 +524,7 @@ function out = FSMtra(Y,varargin)
     % Emilia Romagna data, Example 5.
     % Modified wealth variables.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -545,7 +545,7 @@ function out = FSMtra(Y,varargin)
     % Emilia Romagna data, Example 6.
     % Work variables.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21 25 26];
     for i=sel
@@ -564,7 +564,7 @@ function out = FSMtra(Y,varargin)
     % Emilia Romagna data, Example 7.
     % Modified work variables.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel

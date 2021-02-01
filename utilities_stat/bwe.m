@@ -123,7 +123,7 @@ function bw = bwe(X, bwopt)
     % Bandwidth and kernel density estimates for a bivariate dataset.
 
     load fishery;
-    X = fishery.data;
+    X = fishery{:,:};
     X = X+10^(-8)*abs(randn(677,2)); % some jittering to avoid dplicate points
     h = bwe(X)
     h = bwe(X,'scott')

@@ -523,11 +523,11 @@ function [out]=FSR(y,X,varargin)
 %{
     %% Example to detect both VIOM and MSOM outliers using weak=true.
     % loyalty data
-    data = importdata('loyalty.mat');
-    y = data.data(:,end);
-    X = data.data(:,1);
+    load('loyalty');
+    y = loyalty{:,end};
+    X = loyalty{:,1};
     xla = 'Number of visits';
-    yla = 'Amount spent (in �)';
+    yla = 'Amount spent (in Euros)';
     n = size(X,1);
     % run FSR to detect a weaker signal indicating VIOM
     FSRoutw = FSR(y, X, 'intercept', 0, ...
@@ -538,9 +538,10 @@ function [out]=FSR(y,X,varargin)
     % plotting
     figure
     plot(X(clean_FSR, :), y(clean_FSR), 'b.', 'MarkerSize', 15, 'DisplayName', 'clean');
-    hold on
+    hold('on')
     plot(X(trim_FSR, :), y(trim_FSR), 'r.', 'MarkerSize', 15, 'DisplayName', 'MSOM');
     plot(X(down_FSR, :), y(down_FSR), 'g.', 'MarkerSize', 15, 'DisplayName', 'VIOM');
+    drawnow
     clb = clickableMultiLegend(gca, 'Location', 'northeast');
     set(clb,'FontSize',12);
     xlabel(xla); 

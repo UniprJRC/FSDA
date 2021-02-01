@@ -265,8 +265,8 @@ function [out , varargout] = Sregeda(y,X,varargin)
     %% Sreg on Stars data.
     % Run this code to see the Figure 2 of the article in the References
     load('stars');
-    X=stars.data(:,1);
-    y=stars.data(:,2);
+    X=stars{:,1};
+    y=stars{:,2};
     [out]=Sregeda(y,X,'rhofunc','bisquare');
 
     standard.Color={'b'}

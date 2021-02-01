@@ -174,7 +174,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %{
    % thinning on the fishery dataset.
     load fishery;
-    X=fishery.data;
+    X=fishery{:,:};
     % some jittering is necessary because duplicated units are not treated
     % in tclustreg: this needs to be addressed
     X = X + 10^(-8) * abs(randn(677,2));

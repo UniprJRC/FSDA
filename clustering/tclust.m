@@ -792,7 +792,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
     % tclust applied to Swiss banknotes imposing determinant restriciton.
     close all
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     out=tclust(Y,3,0.01,20,'restrtype','deter','refsteps',20,'plots',1);
 %}
 

@@ -1007,8 +1007,8 @@ function [out, varargout] = LTSts(y,varargin)
     % the datasets
     load('P12119085');
     load('P17049075');
-    Y4 = P12119085.data;
-    Y5 = P17049075.data;
+    Y4 = P12119085{:,1};
+    Y5 = P17049075{:,1};
 
     % the model
     model           = struct;

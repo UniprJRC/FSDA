@@ -223,8 +223,8 @@ function out = FSMedaeasy(Y,bsb,varargin)
 
 %{
     %% Example with the Swiss bank notes data.
-    load('swiss_banknotes')
-    Y=swiss_banknotes.data;
+    load('swiss_banknotes');
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     %create an initial subset with the 3 observations with the lowest
     %Mahalanobis Distance
@@ -237,7 +237,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %{
     % Example with the Emilia Romagna data.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     [fre]=unibiv(Y);
     %create an initial subset with the 30 observations with the lowest
     %Mahalanobis Distance
@@ -257,7 +257,7 @@ function out = FSMedaeasy(Y,bsb,varargin)
 %{
     % Example with the Emilia Romagna data (all variables).
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel

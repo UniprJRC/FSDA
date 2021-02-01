@@ -130,8 +130,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %{
     % FSRbsb with all default options.
     load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
+    y=fishery{:,2};
+    X=fishery{:,1};
     [out]=LXS(y,X,'nsamp',10000);
     Un = FSRbsb(y,X,out.bs);
 %}
@@ -140,8 +140,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     %% FSRbsb with optional arguments.
     % Monitoring units plot for fishery dataset
     load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
+    y=fishery{:,2};
+    X=fishery{:,1};
     [out]=LXS(y,X,'nsamp',10000);
     Un = FSRbsb(y,X,out.bs,'plots',1);
 %}
@@ -192,8 +192,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %{
     % Example with monitoring from step 60.
     load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
+    y=fishery{:,2};
+    X=fishery{:,1};
     [out]=LXS(y,X,'nsamp',10000);
     Un = FSRbsb(y,X,out.bs,'init',60);
 %}
@@ -201,8 +201,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %{
     % FSR using a regression model without intercept.
     load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
+    y=fishery{:,2};
+    X=fishery{:,1};
     [out]=LXS(y,X);
     bsb=out.bs;
     [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
@@ -211,8 +211,8 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %{
     %FSR applied without doing any checks on y and X variables.
     load('fishery');
-    y=fishery.data(:,1);
-    X=fishery.data(:,2);
+    y=fishery{:,2};
+    X=fishery{:,1};
     [out]=LXS(y,X,'nsamp',10000);
     [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
 %}

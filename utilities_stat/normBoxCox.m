@@ -115,7 +115,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %{
     % Mussels data.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     la=[0.5 0 0.5 0 0];
     % Transform all columns of matrix Y according to the values of la
     Y=normBoxCox(Y,[],la);
@@ -124,7 +124,7 @@ function Ytra=normBoxCox(Y,ColtoTra,la,varargin)
 %{
     % Check the inverse tranformation.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     la=[0.5 0 0.5 0 0];
     % Transform all columns of matrix Y according to the values of la
     Ytra=normBoxCox(Y,[],la,'Jacobian',false);

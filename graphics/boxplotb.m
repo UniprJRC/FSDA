@@ -188,7 +188,7 @@ function out = boxplotb(Y,varargin)
     % This example reproduces Figure 2 of Zani Riani and Corbellini
     close all
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Extract the variables y1 and y3
     % y1= Percentage of infant population (that is the percentage of
     % population aged less than 10)

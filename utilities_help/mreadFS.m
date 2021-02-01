@@ -480,8 +480,8 @@ function out=mreadFS(file,varargin)
 %                             "% Monitor minimum deletion residual in each step of the forward search".
 %                             "% Common part to all examples: load fishery dataset".
 %                              load('fishery');
-%                              y=fishery.data(:,2);
-%                              X=fishery.data(:,1);
+%                              y=fishery{:,2};
+%                              X=fishery{:,1};
 %                              "% Find starting subset"
 %                              [out]=LXS(y,X,'nsamp',10000);
 %                              [mdr] = FSRmdr(y,X,out.bs);

@@ -584,7 +584,7 @@ function [out,varargout]  = tclusteda(Y,k,alpha,restrfactor,varargin)
 %{
     % An example of use of plots as a structure with field ylimy.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [n,v]=size(Y);
     alphavec=0.15:-0.01:0;
     % alphavec=0.12:-0.005:0;

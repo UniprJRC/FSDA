@@ -9,8 +9,8 @@
 %% HD (Heads data) analysis using univariate boxplots
 clearvars;close all;
 load('head.mat');
-Y=head.data;
-cnames=head.colnames;
+Y=head{:,:};
+cnames=head.Properties.VariableNames;
 % Compare the output with Figure 3.9 p. 97 of Atkinson et al. (2004)
 boxplot(Y,'labels',cnames,'LabelOrientation','inline');
 % Label the outliers with the unit number
@@ -41,7 +41,7 @@ end
 %% HD (Heads data) analysis using S and MM estimators
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 [n,v]=size(Y);
 
 % conflevEst = scalar. Confidence level which is used by the estimator (S or MM) to
@@ -54,7 +54,7 @@ conflevPlot=[0.95 0.99 1-0.01/n];
 
 
 figure;
-% Top panel: analysis based on S estimator 
+% Top panel: analysis based on S estimator
 h1=subplot(2,1,1);
 [outS]=Smult(Y,'conflev',conflevEst);
 % numoutSest = number of outliers found by the S estimator
@@ -83,7 +83,7 @@ ylabel('MM estimator')
 % outliers (see outS.outliers). Using the same confidence level MM
 % estimator declares just 3 units as outliers (see outMM.outliers). Two
 % units which lie outside the confidence band of 0.99 for S estimator (namely
-% units 80 and 99) fall inside the confidence band after the MM loop. 
+% units 80 and 99) fall inside the confidence band after the MM loop.
 % The MM estimator keeps the estimate of the scale fixed and tries to
 % increase the efficiency of the estimator using a more tolerent rho
 % function, therefore generally the number of outliers found by the MM
@@ -93,8 +93,8 @@ ylabel('MM estimator')
 clearvars;close all;
 % scatterplot of data: two points look outlying
 load('head.mat');
-Y=head.data;
-cnames=head.colnames;
+Y=head{:,:};
+cnames=head.Properties.VariableNames;
 % Scatter plot matrix
 gplotmatrix(Y,[],[],[],[],[],[],[],cnames);
 set(findall(gcf,'Type','text'),'HorizontalAlignment','Right','rotation',45,'Interpreter','None','FontName','Arial')
@@ -105,7 +105,7 @@ set(findall(gcf,'Type','text'),'HorizontalAlignment','Right','rotation',45,'Inte
 clearvars;close all;
 figure;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 [n,v]=size(Y);
 
 cor=(n/((n-1)^2));
@@ -139,7 +139,7 @@ line(xplo,Yband(:,nsimul*quant),'color','g');
 % Figure 3.2
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 [fre]=unibiv(Y,'plots',1,'textlab',1,'rf',0.999);
 
 fre=sortrows(fre,4);
@@ -153,7 +153,7 @@ bs=fre(1:size(Y,2),1);
 % Interactive_example
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 
 [fre]=unibiv(Y,'rf',0.75);
 bs=fre((fre(:,2)==0 & fre(:,3)==0),1);
@@ -185,7 +185,7 @@ set(h,'FontSize',14);
 % Interactive_example
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 [fre]=unibiv(Y,'rf',0.75);
 bs=fre(1:size(Y,2)+1,1);
 [out]=FSMeda(Y,bs,'init',60,'scaled',1);
@@ -206,7 +206,7 @@ malfwdplot(out,'databrush',databrush);
 %% HD: EDA monitoring of the estimated correlation matrix
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 Y1=zscore(Y);
 [fre]=unibiv(Y1,'rf',0.75);
 bs=fre(1:size(Y,2)+2,1);
@@ -225,7 +225,7 @@ set(plot1,{'LineStyle'},slintyp(1:v1));
 % FS based on untransformed data H_0:\lambda=1 for all variables
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 % Monitoring of likelihood ratio test
 % Compare the output with Figure 4.13 p. 172 of ARC (2004)
 [out]=FSMtra(Y,'plotslrt',1);
@@ -233,7 +233,7 @@ Y=head.data;
 %% HD: analysis of transformations
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 % FS based on untransformed data H_0:\lambda=1 for variable 4
 % Monitoring of likelihood ratio test
 % Compare the output with Figure 4.14 p. 173 of ARC (2004)
@@ -244,7 +244,7 @@ Y=head.data;
 clearvars;close all;
 % Compare the output with Figure 4.15 p. 174 of ARC (2004)
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 v=size(Y,2);
 plotslrt=struct;
 plotslrt.ylim=[-3.2 3.2];
@@ -255,7 +255,7 @@ plotslrt.xlim=[110 200];
 % Compare the output with Figure 4.65 p. 222 of ARC (2004)
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 n=size(Y,1);
 [out]=FSRfan(Y(:,4),ones(n,1),'plots',1,'intercept',0,'xlimx',[60 210],'ylimy',[-5 4.4]);
 
@@ -263,7 +263,7 @@ n=size(Y,1);
 %% HD: random starts
 clearvars;close all;
 load('head.mat');
-Y=head.data;
+Y=head{:,:};
 [n,v]=size(Y);
 
 if exist('parfor','file') ==2
@@ -308,7 +308,7 @@ end
 clearvars;close all;
 close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 % Scatter plot matrix (Figure 1.4 of ARC)
 gplotmatrix(Y);
 
@@ -316,7 +316,7 @@ gplotmatrix(Y);
 % compare the output with Figure 1.2, p.9 or ARC(2004)
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [n,v]=size(Y);
 
 cor=(n/((n-1)^2));
@@ -352,7 +352,7 @@ line(xplo,Yband(:,nsimul*quant),'color','g');
 % Preliminary analysis based on robust bivariate ellipses
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,4);
 
@@ -365,7 +365,7 @@ bs=fre(1:size(Y,2),1);
 % compare with Figure 3.12 p. 100
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -380,7 +380,7 @@ malfwdplot(out,'standard',standard);
 %% TR: plot of max and mth distance
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -408,14 +408,14 @@ set(h,'FontSize',14);
 %% TR: automatic outlier detection procedure on original data
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 FSM(Y,'plots',2)
 
 
 %% TR: analysis using S and MM estimators
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [n,v]=size(Y);
 
 conflev=[0.95 0.99 1-0.01/n];
@@ -437,7 +437,7 @@ ylabel('MM estimator')
 % Track records
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 n=size(Y,1);
 Y1=repmat(max(Y),n,1);
 Y=Y./Y1;
@@ -458,7 +458,7 @@ end
 % Track records
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 n=size(Y,1);
 Y1=repmat(max(Y),n,1);
 Y=Y./Y1;
@@ -494,7 +494,7 @@ end
 % Compare the plot with Figure 4.51 p. 208 of ARC (2004)
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 [n , v]=size(Y);
 Y1=repmat(max(Y),n,1);
 Y=Y./Y1;
@@ -509,7 +509,7 @@ laAround=-4:0;
 %% TR transformed: parallel coordinates plot
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 n=size(Y,1);
 group=ones(n,1);
@@ -519,7 +519,7 @@ parallelcoords(Y,'LineWidth',1.5,'Standardize','on','Group',group)
 %% TR transformed: malfwdplot
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 
 [fre]=unibiv(Y);
@@ -536,16 +536,16 @@ malfwdplot(out,'standard',standard);
 %% TR transformed: spm
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
-cnames=recordfg.colnames;
+cnames=recordfg.Properties.VariableNames;
 % Scatter plot matrix
 gplotmatrix(Y,[],[],[],[],[],[],[],cnames);
 
 %% TR transformed: plot of max inside and min outside
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 figure;
 [fre]=unibiv(Y);
@@ -575,14 +575,14 @@ set(h,'FontSize',14);
 %% TR transformed: automatic outlier detection procedure (part I)
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 FSM(Y,'init',40,'plots',2)
 
 %% TR transformed: automatic outlier detection procedure (part II)
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 FSM(Y,'plots',2)
 
@@ -590,7 +590,7 @@ FSM(Y,'plots',2)
 %% TR transformed: random starts
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 [n,v]=size(Y);
 
@@ -625,7 +625,7 @@ xlabel('Subset size m');
 %% TR transformed: analysis using S and MM estimators
 clearvars;close all;
 load('recordfg');
-Y=recordfg.data;
+Y=recordfg{:,:};
 Y=Y.^-3;
 [n,v]=size(Y);
 
@@ -646,7 +646,7 @@ ylabel('MM estimator')
 %% SB: (Swiss banknotes) spmplot of the two groups
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 group=ones(200,1);
 group(101:200)=2;
 spmplot(Y,group)
@@ -655,7 +655,7 @@ spmplot(Y,group)
 %% SB: (Swiss banknotes) Forward EDA minMD
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -667,7 +667,7 @@ mmdplot(out,'mplus1',1);
 % Create figure 3.28 p.117 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -680,7 +680,7 @@ malfwdplot(out,'fground',fground);
 % Create figure 3.29 p.117 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
 bs=fre(1:size(Y,2)+5,1);
@@ -694,7 +694,7 @@ set(h,'FontSize',14);
 %% SB:  analysis using S and MM estimators
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [n,v]=size(Y);
 
 conflev=[0.95 0.99 1-0.01/n];
@@ -716,7 +716,7 @@ ylabel('MM estimator')
 % Create figure 3.31 p.118 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % start in the group of geniune notes
 bs=1:20;
 [out]=FSMeda(Y,bs,'init',30);
@@ -730,7 +730,7 @@ set(h,'FontSize',14);
 % Create figure 3.36 p.124 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % start in the group of forgeries
 bs=(1:20)+100;
 [out]=FSMeda(Y,bs,'init',30);
@@ -744,7 +744,7 @@ set(h,'FontSize',14);
 % Create figure 3.30 p.118 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % start in the group of geniune notes
 bs=1:20;
 [out]=FSMeda(Y,bs,'init',30,'scaled',1);
@@ -754,7 +754,7 @@ malfwdplot(out);
 % Create figure 3.35 p.123 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % start in the group of geniune notes
 bs=101:120;
 [out]=FSMeda(Y,bs,'init',30,'scaled',1);
@@ -765,7 +765,7 @@ malfwdplot(out,'fground',fground);
 %% SB: Forward EDA compare scaled and unscaled MD
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 fground=struct;
 fground.flabstep='';
 % Start the search with the first 20 observations of the forged notes
@@ -782,7 +782,7 @@ malfwdplot(out,'tag','unscaled','fground',fground);
 % Interactive_example
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 [n,v]=size(Y);
 
 if exist('parfor','file') ==2
@@ -825,7 +825,7 @@ end
 % Create figure 3.41 p.129 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -837,7 +837,7 @@ malfwdplot(out);
 % Create figure 3.41 p.129 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -854,7 +854,7 @@ set(h,'FontSize',14);
 % Create figure 3.43 p. 130 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % if corr=1 it is possible to monitor the elements of the correlation
 % matrix
 corr=0;
@@ -895,7 +895,7 @@ text(S2cov(end,1)*ones(v1,1),S2cov(end,2:end)',lab)
 % Create figure 3.44 p.129 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=zscore(Y(1:100,:));
 cnames=swiss_banknotes.colnames;
 % Compare the output with Figure 3.9 p. 97
@@ -922,7 +922,7 @@ end
 % Create figure 3.41 p.129 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [out]=FSM(Y,'plots',2);
 
@@ -930,7 +930,7 @@ Y=Y(1:100,:);
 % Interactive_example
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -957,7 +957,7 @@ mmdplot(out,'databrush',databrush);
 %% SB:  analysis using S and MM estimators
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(1:100,:);
 [n,v]=size(Y);
 
@@ -981,7 +981,7 @@ ylabel('MM estimator')
 % Create figure 3.43 p. 130 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 % if corr=1 it is possible to monitor the elements of the correlation
 % matrix
 corr=0;
@@ -1015,7 +1015,7 @@ set(plot1,{'LineStyle'},slintyp(1:v1));
 % Create figure 3.46 p.132 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(101:200,:);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -1027,7 +1027,7 @@ malfwdplot(out);
 % Create figure 3.41 p.129 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=Y(101:200,:);
 [out]=FSM(Y);
 
@@ -1035,7 +1035,7 @@ Y=Y(101:200,:);
 % Create figure 3.50 p.135 of ARC 2004
 clearvars;close all;
 load('swiss_banknotes');
-Y=swiss_banknotes.data;
+Y=swiss_banknotes{:,:};
 Y=zscore(Y(101:200,:));
 cnames=swiss_banknotes.colnames;
 % Compare the output with Figure 3.9 p. 97
@@ -1550,7 +1550,7 @@ xlabel('Subset size m');
 %% MU Mussels data (Untransformed) -- Forward EDA (Exploratory Data Analysis):
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 v=size(Y,2);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -1563,7 +1563,7 @@ malfwdplot(out,'standard',standard);
 %% MU Mussels data (Untransformed) -- Forward EDA (Exploratory Data Analysis):
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 v=size(Y,2);
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);
@@ -1576,13 +1576,13 @@ mmdplot(out);
 %% MU: automatic outlier detection procedure on original data
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 FSM(Y)
 
 %% MU Mussels data analysis of transformations
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
 % Compare plot of mle with Figure 4.21 p. 178 of ARC (2004)
 % Compare plot of lrt with Figure 4.20 p. 178 of ARC (2004)
@@ -1592,7 +1592,7 @@ Y=mussels.data;
 %% MU transformed: plot of MD
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);
@@ -1606,7 +1606,7 @@ malfwdplot(out);
 %% MU transformed: plot of mmd
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);
@@ -1622,7 +1622,7 @@ mmdplot(out);
 clearvars;close all;
 close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y1=normBoxCox(Y,1:v,la);
@@ -1644,7 +1644,7 @@ mmdplot(out);
 %% MU transformed: automatic outlier detection procedure
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);
@@ -1653,7 +1653,7 @@ FSM(Y,'plots',2)
 %% MU transformed with la=[1/3 1/3 1/3 0 0] automatic outlier detection procedure
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[1/3 1/3 1/3 0 0];
 v=size(Y,2);
 Y=normBoxCox(Y,1:v,la);
@@ -1662,7 +1662,7 @@ FSM(Y,'plots',2)
 %% MU transformed random starts
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[0.5 0 0.5 0 0];
 [n,v]=size(Y);
 Y=normBoxCox(Y,1:v,la);
@@ -1699,7 +1699,7 @@ xlabel('Subset size m')
 %% MU transformed: S and MM estimators
 clearvars;close all;
 load('mussels.mat');
-Y=mussels.data;
+Y=mussels{:,:};
 la=[1/3 1/3 1/3 0 0];
 [n,v]=size(Y);
 Y=normBoxCox(Y,1:v,la);

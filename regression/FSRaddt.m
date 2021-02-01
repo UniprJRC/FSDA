@@ -196,8 +196,8 @@ function [out]=FSRaddt(y,X,varargin)
     %%FSRaddt with optional arguments.
     % We perform a variable selection on the 'famous' stack loss data using different transformation scales for the response.
     load('stack_loss');
-    y=stack_loss.data(:,4);
-    X=stack_loss.data(:,1:3);
+    y=stack_loss{:,4};
+    X=stack_loss{:,1:3};
     %We start with a fan plot based on first-order model and the five most common values of ? (Figure below).
     [out]=FSRfan(y,X,'plots',1);
     %The fan plot shows that the square root transformation, ?= 0.5, is supported by all the data, with the absolute value of the statistic always less than 1.5. The evidence for all other transformations depends on which observations have been deleted: the log transformation is rejected when some of the suspected outliers are introduced into the data although it is acceptable for all the data: ?= 1 is rejected as soon as any of the suspected outliers are present.
@@ -231,8 +231,8 @@ function [out]=FSRaddt(y,X,varargin)
 %{
     % FSRaddt with plots (transformed wool data).
     load('wool');
-    y=log(wool.data(:,end));
-    X=wool.data(:,1:end-1);
+    y=log(wool{:,end});
+    X=wool{:,1:end-1};
     [out]=FSRaddt(y,X,'plots',1);
 %}
 

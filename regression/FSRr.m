@@ -179,8 +179,8 @@ function [out , varargout] = FSRr(y, X, varargin)
         close all; clear all;
 
         load fishery;
-        X = fishery.data(:,1);
-        y = fishery.data(:,2);
+        X = fishery{:,1};
+        y = fishery{:,2};
         n = length(y);
 
         % Bonferronized confidence level
@@ -214,9 +214,8 @@ function [out , varargout] = FSRr(y, X, varargin)
         clear all;
 
         load fishery
-        data = fishery.data;
-        X = data(:,1);
-        y = data(:,2);
+        X = fishery{:,1};
+        y = fishery{:,2};
         n = length(y);
 
         % Bonferronized confidence level

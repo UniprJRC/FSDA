@@ -423,12 +423,12 @@ function [out] = FSReda(y,X,bsb,varargin)
 %{
     %% Example to compute REML single weights for the units excluded
     % from the search at each step using wREML=true.
-    data = importdata('loyalty.mat');
-    y = data.data(:,end);
-    X = data.data(:,1);
+    load('loyalty.mat');
+    y = loyalty{:,end};
+    X = loyalty{:,1};
     tit = sprintf('Loyalty data');
     xla = 'Number of visits';
-    yla = 'Amount spent (in �)';
+    yla = 'Amount spent (in Euros)';
     n = size(X, 1);
     p = size(X, 2);
     % LXS and FSReda
