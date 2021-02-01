@@ -568,7 +568,7 @@ cc=[1 2 4 8 16 32 64 128];
 cleanpool=false;
 UnitsSameGroup='';
 RandNumbForNini='';
-warmup=true;
+warmup=false;
 pa=struct;
 pa.pars='VVV';
 
