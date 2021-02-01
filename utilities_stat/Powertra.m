@@ -134,7 +134,7 @@ function Ytra=Powertra(Y,la,varargin)
 %{
     % Mussels data.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     la=[0.5 0 0.5 0 0];
     % Transform all columns of matrix Y according to the values of la using
     % the basic power transformation

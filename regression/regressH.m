@@ -244,7 +244,7 @@ function out=regressH(y,X,Z,varargin)
     % Greene (1987).
     
     load('TableF91_Greene');
-    data=TableF61_Greene{:,:};
+    data=TableF91_Greene{:,:};
     n=size(data,1);
 
     % Linear regression of monthly expenditure on a constant, age, income and
