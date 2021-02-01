@@ -188,7 +188,6 @@ function [out] = simulateLM(n,varargin)
 %}
 
 %{
-
     %% Use prefixed values of R2, beta and intercept.
     % Set value of R2.
     R2=0.92;
