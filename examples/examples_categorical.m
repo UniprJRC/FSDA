@@ -1,5 +1,5 @@
 %% EXAMPLES OF CATEGORICAL DATA ANALYSIS
-% examples_categorical shows a series of analysis of regression datasets
+% examples_categorical shows a series of analysis of correspondence analysis datasets
 % Copyright 2008-2019.
 % Written by FSDA team
 %
@@ -9,15 +9,18 @@
 
 %% Correpondence analysis of the smoke data (1)
 % Input is the contingency table
-load smoke
-X=smoke.data;
+% In this case we load data from the txt file which contains the codifed
+% labels 
+X=load('smoke.txt');
 N=crosstab(X(:,1),X(:,2));
 % All rows and columns of n are active points (no supplementary unit)
 out=CorAna(N);
 
 %% Correpondence analysis of the smoke data (2)
-load smoke
-X=smoke.data;
+% In this case we load the data in table format
+load('smoke');
+% X is a cell array of size 193-by-2 which contains the two variables
+X=smoke{:,1:2};
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -26,8 +29,9 @@ labels_columns=labels(1:J,2);
 out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns);
 
 %% Correpondence analysis of the smoke data (3)
-load smoke
-X=smoke.data;
+load('smoke');
+% X is a cell array of size 193-by-2 which contains the two variables
+X=smoke{:,1:2};
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -42,8 +46,9 @@ Sup.r=1;
 out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 
 %% Correpondence analysis of the smoke data (4)
-load smoke
-X=smoke.data;
+load('smoke');
+% X is a cell array of size 193-by-2 which contains the two variables
+X=smoke{:,1:2};
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -58,8 +63,9 @@ Sup.r=[2,3];
 out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 
 %% Correpondence analysis of the smoke data (5)
-load smoke
-X=smoke.data;
+load('smoke');
+% X is a cell array of size 193-by-2 which contains the two variables
+X=smoke{:,1:2};
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -74,13 +80,13 @@ out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'Sup',Sup);
 
 %% Correpondence analysis of the smoke data (6)
 % The input is the original data matrix.
-load smoke
-X=smoke.data;
+load('smoke');
+% X is a cell array of size 193-by-2 which contains the two variables
+X=smoke{:,1:2};
 out=CorAna(X,'datamatrix',true);
 
 %% Correpondence analysis of the smoke data (7)
-load smoke
-X=smoke.data;
+X=load('smoke.txt');
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -103,9 +109,14 @@ else
 end
 
 %% Correpondence analysis of the smoke data (8)
+% In this case the input cell is passed directly to CorAna
+load smoke
+CorAna(smoke{:,1:2},'datamatrix',true)
+
+%% Correpondence analysis of the smoke data (9)
 % In this section we explore options inside input structure plots
 load smoke
-X=smoke.data;
+X=smoke{:,1:2};
 [N,~,~,labels]=crosstab(X(:,1),X(:,2));
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
@@ -278,14 +289,12 @@ end
 
 %% CorAna using plots as structure
 % Input is the contingency table, labels for rows and columns are supplied
-load smoke
-X=smoke.data;
-[N,~,~,labels]=crosstab(X(:,1),X(:,2));
+load('smoke')
+[N,~,~,labels]=crosstab(smoke{:,1},smoke{:,2});
 [I,J]=size(N);
 labels_rows=labels(1:I,1);
 labels_columns=labels(1:J,2);
 
 plots=struct;
 plots.FontSize=20;
-N=crosstab(X(:,1),X(:,2));
 out=CorAna(N,'Lr',labels_rows,'Lc',labels_columns,'plots',plots);
