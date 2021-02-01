@@ -341,7 +341,7 @@ function CorAnaplot(out,varargin)
 % Output:
 %
 %
-% See also: corAna
+% See also: corAna, mcdCorAna
 %
 % References:
 % Benzecri, J.-P. (1992), "Correspondence Analysis Handbook", New-York,
@@ -783,8 +783,7 @@ function CorAnaplot(out,varargin)
     % option  plots.alpha='colprincipal'; (which implicitly implies
     % alpha=0) with those which come out imposing directly plots.alpha=0.
     load smoke
-    X=smoke.data;
-    [N,~,~,labels]=crosstab(X(:,1),X(:,2));
+    [N,~,~,labels]=crosstab(smoke{:,1},smoke{:,2});
     [I,J]=size(N);
     labels_rows=labels(1:I,1);
     labels_columns=labels(1:J,2);
