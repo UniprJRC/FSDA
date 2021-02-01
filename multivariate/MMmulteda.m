@@ -216,7 +216,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %{
     %% MMmult with all default options.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     [outMM]=MMmulteda(Y);
     malfwdplot(outMM);
@@ -231,7 +231,7 @@ function [out , varargout] = MMmulteda(Y,varargin)
 %{
     % MMmulteda with extracted subsamples in second output argument C.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     [outMM,C]=MMmulteda(Y);
 %}

@@ -264,18 +264,18 @@ function [out]=FSM(Y,varargin)
     % Forgery Swiss banknotes examples.
 
     load('swiss_banknotes');
-
+    Y=swiss_banknotes{:,:};
     % Monitor the exceedances of Minimum Mahalanobis Distance
-    [out]=FSM(swiss_banknotes.data(101:200,:),'plots',1);
+    [out]=FSM(Y(101:200,:),'plots',1);
 
     % Control minimum and maximum on the x axis
     plots=struct;
     plots.xlim=[60 90];
-    [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);
+    [out]=FSM(Y(101:200,:),'plots',plots);
 
     % Monitor the exceedances of Minimum Mahalanobis Distance using normal coordinates for mmd.
     plots.ncoord=1;
-    [out]=FSM(swiss_banknotes.data(101:200,:),'plots',plots);
+    [out]=FSM(Y(101:200,:),'plots',plots);
 %}
 
 %% Beginning of code

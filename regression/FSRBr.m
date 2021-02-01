@@ -331,8 +331,8 @@ function [out , varargout] = FSRBr(y, X, varargin)
         %% Example of FSRBr for international trade data.
         % Bayesian FS to fit the group of undervalued flows.
         load('fishery');
-        X = fishery.data(:,1);
-        y = fishery.data(:,2);
+        X = fishery{:,1};
+        y = fishery{:,2};
         [n,p] = size(X);
         X = X + 0.000001*randn(n,1);
 
@@ -384,8 +384,8 @@ function [out , varargout] = FSRBr(y, X, varargin)
         % Example of FSRBr for international trade data (explore options).
         % Bayesian FS to fit the group of undervalued flows.
         load('fishery');
-        X = fishery.data(:,1);
-        y = fishery.data(:,2);
+        X = fishery{:,1};
+        y = fishery{:,2};
         [n,p] = size(X);
         X = X + 0.000001*randn(n,1);
 

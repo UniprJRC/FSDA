@@ -160,7 +160,7 @@ function out=regressH(y,X,Z,varargin)
     % See p. 557 of Green (7th edition). 
     
     load('TableF61_Greene');
-    Y=TableF61_Greene.data;
+    Y=TableF61_Greene{:,:};
 
     Q=log(Y(:,4));
     Pfuel=log(Y(:,5));
@@ -178,7 +178,7 @@ function out=regressH(y,X,Z,varargin)
     % structure "out.Beta" the same results contained in table 9.2, 
     % page 282, 7th edition of Greene (2007) (lines "Iterated").
     load('TableF61_Greene');
-    Y=TableF61_Greene.data;
+    Y=TableF61_Greene{:,:};
 
     Q=log(Y(:,4));
     Pfuel=log(Y(:,5));
@@ -197,7 +197,7 @@ function out=regressH(y,X,Z,varargin)
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
  
     load('TableF91_Greene');
-    data=TableF91_Greene.data;
+    data=TableF91_Greene{:,:};
     n=size(data,1);
 
     % Linear regression of monthly expenditure on a constant, age, income
@@ -244,7 +244,7 @@ function out=regressH(y,X,Z,varargin)
     % Greene (1987).
     
     load('TableF91_Greene');
-    data=TableF91_Greene.data;
+    data=TableF61_Greene{:,:};
     n=size(data,1);
 
     % Linear regression of monthly expenditure on a constant, age, income and

@@ -506,7 +506,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % tclustreg of fishery data 1.
     clear all; close all;
     load fishery;
-    X = fishery.data;
+    X = fishery{:,:};
     % some jittering might be useful if there are many duplicated units
     X = X + 10^(-8) * abs(randn(677,2));
 
@@ -530,7 +530,7 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     % tclustreg of fishery data 2.
     clear all; close all;
     load fishery;
-    X=fishery.data;
+    X = fishery{:,:};
     % some jittering is necessary because duplicated units are not treated
     % in tclustreg: this needs to be addressed
     X = X + 10^(-8) * abs(randn(677,2));

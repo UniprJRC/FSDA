@@ -1177,11 +1177,9 @@ ylabel('MM residuals')
 
 %% FP (Fishery product): preliminary analysis
 clearvars;close all;
-lobyx=load('fishery.mat');
-lobyx=lobyx.fishery.data;
-%lobyx=lobyx(lobyx(:,2)>5,:);
-y=lobyx(:,2);
-X=lobyx(:,1);
+load('fishery.mat');
+y=fishery{:,2};
+X=fishery{:,1};
 % Plot of the original data
 plot(X,y,'*');
 xlabel('Quantity (Tons)');
@@ -1191,11 +1189,9 @@ ylabel('Values (Thousands of Euros)');
 % Interactive_example
 clearvars;close all;
 % Multiple trajectories can be selected
-lobyx=load('fishery.mat');
-lobyx=lobyx.fishery.data;
-%lobyx=lobyx(lobyx(:,2)>5,:);
-y=lobyx(:,2);
-X=lobyx(:,1);
+load('fishery.mat');
+y=fishery{:,2};
+X=fishery{:,1};
 
 [out]=FSRfan(y,X,'plots',1,'la',[0 0.5 1]);
 fanplot(out,'ylimy',[-40,20],'databrush',{'selectionmode' 'Rect' 'persist' '' 'selectionmode','Brush'},'conflev',1-0.001/length(y))

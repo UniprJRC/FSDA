@@ -252,8 +252,8 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Monitor minimum deletion residual in each step of the forward search.
     % Common part to all examples: load fishery dataset.
      load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+     y=fishery{:,2};
+     X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
      [mdr] = FSRmdr(y,X,out.bs);
@@ -266,9 +266,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Choose step to start monitoring.
     % Compute minimum deletion residual and start monitoring it from step
     % 60.
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr] = FSRmdr(y,X,out.bs,'init',60);
@@ -281,9 +281,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % the FS provides an ordering of the data from those most in agreement
     % with a suggested model (which enter the first steps) to those least in
     % agreement with it (which are included in the final steps).
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un] = FSRmdr(y,X,out.bs);
@@ -294,9 +294,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Units forming subset in each step.
     % Obtain detailed information about the units forming subset in each
     % step of the forward search (matrix BB).
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB] = FSRmdr(y,X,out.bs);
@@ -306,9 +306,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Monitor \( \hat  \beta \).
     % Monitor how the estimates of beta coefficients changes as the subset
     % size increases (matrix Bols).
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB,Bols] = FSRmdr(y,X,out.bs);
@@ -318,9 +318,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     % Monitor $s^2$.
     % Monitor the estimate of $\sigma^2$ in each step of the fwd search
     % (matrix S2).
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs);
@@ -331,9 +331,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %{
     % Specify a regression model without intercept.
     % FSRmdr using a regression model without intercept.
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
@@ -342,9 +342,9 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %{
     % Example of the use of option nocheck.
     %FSRmdr applied without doing any checks on y and X variables.
-     load('fishery');
-     y=fishery.data(:,2);
-     X=fishery.data(:,1);
+    load('fishery');
+    y=fishery{:,2};
+    X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
     [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);

@@ -222,7 +222,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %{
     %% MMmult with all default options.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     [n,v]=size(Y);
     conflev=[0.95 0.99 1-0.01/n];
@@ -234,7 +234,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %{
     %% MMmult with optional arguments.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     [out]=MMmult(Y,'plots',1);
 %}
@@ -242,7 +242,7 @@ function [out , varargout] = MMmult(Y,varargin)
 %{
     % MMmult with exctracted subsamples.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(1:100,:);
     [outMM,C]=MMmult(Y);
 %}

@@ -201,7 +201,7 @@ function out = FSMfan(Y,la0,varargin)
     %%FSMfan with all default options.
     % First example with Mussels data.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     warning('off','optim:fminunc:SwitchingMethod');
     [out]=FSMfan(Y,[0.5 0 0.5 0 0]);
 %}
@@ -210,7 +210,7 @@ function out = FSMfan(Y,la0,varargin)
     %% FSMfan with optional arguments.
     % Example with Mussels data.
     load('mussels.mat');
-    Y=mussels.data;
+    Y=mussels{:,:};
     % FS based on with H_0:\lambda=[1 0.5 1 0 1/3]
     plotslrt=struct;
     plotslrt.ylim=[-6.2 6.2];
@@ -223,7 +223,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % EmiliaRomagna data (demographic variables).
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -244,7 +244,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data (modified wealth variables), example 1.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -268,7 +268,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data (modified wealth variables), example 2.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -293,7 +293,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data with Yeo and Johnson parametric family.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
 
     % Modify wealth variables
     Y(:,16)=100-Y(:,16);
@@ -313,7 +313,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data (modified work variables), example 1.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21 25 26];
     for i=sel
@@ -336,7 +336,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data (modified work variables), example 2.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -362,7 +362,7 @@ function out = FSMfan(Y,la0,varargin)
 %{
     % Emilia Romagna data (all variables).
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel
@@ -390,7 +390,7 @@ function out = FSMfan(Y,la0,varargin)
     % Emilia Romagna data (all variables) with Yeo and Johnson parametric
     % family.
     load('emilia2001')
-    Y=emilia2001.data;
+    Y=emilia2001{:,:};
     % Replace zeros with min values for variables specified in sel
     sel=[6 10 12 13 19 21];
     for i=sel

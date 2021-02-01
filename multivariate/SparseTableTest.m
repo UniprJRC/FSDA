@@ -160,7 +160,7 @@ function out = SparseTableTest(N,varargin)
     % Input is a data matrix and contingency table has to be built
     load smoke
     % X = original data matrix
-    X=smoke.data;
+    X=smoke{:,:};
     % Chi-squared test is used on collapsed 2-by-2 tables. 
     % Cells which have a frequency smaller or equal than 15 are ignored. 
     out=SparseTableTest(X,'datamatrix',true,'threshold',15,'testname',1);

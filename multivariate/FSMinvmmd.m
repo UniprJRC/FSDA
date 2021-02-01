@@ -148,7 +148,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
     % FSMinvmmd with optional arguments.
     % Example of finding confidence level of mmd. Forgery Swiss Banknotes data. 
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(101:200,:);
     % The line below shows the plot of mmd
     [out]=FSM(Y,'plots',1);
@@ -166,7 +166,7 @@ function [mmdinv] = FSMinvmmd(mmd,v,varargin)
     % Comparison of resuperimposing envelopes using mmd coordinates and normal
     % coordinates. Forgery Swiss Banknotes data. 
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     Y=Y(101:200,:);
     % The line below shows the plot of mmd
     [out]=FSM(Y,'plots',2);

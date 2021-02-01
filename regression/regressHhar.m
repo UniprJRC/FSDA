@@ -249,7 +249,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Estimates" of table 11.3, page 235, 5th edition of Greene (1987).
  
     load('TableF91_Greene');
-    data=TableF91_Greene.data;
+    data=TableF91_Greene{:,:};
     n=size(data,1);
 
     % Linear regression of monthly expenditure on a constant, age, income
@@ -298,7 +298,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % (line of the table which starts with MLE)
 
     load('TableF61_Greene');
-    Y=TableF61_Greene.data;
+    Y=TableF61_Greene{:,:};
 
     Q=log(Y(:,4));
     Pfuel=log(Y(:,5));
@@ -330,7 +330,7 @@ function [out]=regressHhar(y,X,Z,varargin)
     % Greene (1987).
     
     load('TableF91_Greene');
-    data=TableF91_Greene.data;
+    data=TableF91_Greene{:,:};
   
     n=size(data,1);
 

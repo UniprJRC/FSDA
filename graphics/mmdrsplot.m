@@ -219,7 +219,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
 %{
     %% Example of mmdrsplot with all the default options.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     %create an initial subset with the 4 observations, which fell the smallest
     %number of times outside the robust bivariate ellipses, and with the
@@ -236,7 +236,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
 %{
     %Example of the use of function mmdrsplot with personalized envelopes.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
     m0=20;
@@ -253,7 +253,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     %scalar (that is using default options for datacursor (i.e.
     %DisplayStyle =window)
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
     m0=20;
@@ -269,7 +269,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     %Example of the use of function mmdrsplot with datatooltip passed as
     %structure
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
     m0=20;
@@ -286,7 +286,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     % Interactive_example
     %Example of the use of option databrush.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
+    Y=swiss_banknotes{:,:};
     [fre]=unibiv(Y);
     fre=sortrows(fre,[3 4]);
     m0=20;
@@ -332,8 +332,7 @@ function [brushedUnits,BrushedUnits]=mmdrsplot(out,varargin)
     % Example of the use of option databrush.
     % Selected units are also highlighted in the malfwdplot.
     load('swiss_banknotes');
-    Y=swiss_banknotes.data;
-
+    Y=swiss_banknotes{:,:};
     out=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
     outEDA=FSMeda(Y,1:10,'init',20,'scaled',1);
     malfwdplot(outEDA)

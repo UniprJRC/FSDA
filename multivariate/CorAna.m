@@ -571,7 +571,7 @@ function out=CorAna(N, varargin)
 %{
     % CorAna with all the default options.
     load smoke
-    [N,~,~,labels] =crosstab(smoke.data(:,1),smoke.data(:,2));
+    [N,~,~,labels] =crosstab(smoke{:,1},smoke{:,2});
     [I,J]=size(N);
     if verLessThan('matlab','8.2.0')==0
     % Contingency table is supplied to CorAna in table format
@@ -597,7 +597,7 @@ function out=CorAna(N, varargin)
 %{
     % CorAna with original data matrix as input.
     load smoke
-    out=CorAna(smoke.data,'datamatrix',true);
+    out=CorAna(smoke,'datamatrix',true);
 %}
 
 %{

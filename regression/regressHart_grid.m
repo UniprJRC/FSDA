@@ -105,7 +105,7 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     % Common part to all examples: load TableF61_Greene dataset.
 
     load('TableF61_Greene');
-    Y=TableF61_Greene.data;
+    Y=TableF61_Greene{:,:};
 
     Q=log(Y(:,4));
     Pfuel=log(Y(:,5));
@@ -134,7 +134,7 @@ function [out] = regressHart_grid(y,X,Z,varargin)
     % estimates of regression and scedastic parameters together with LM, LR
     % and Wald test
     load('TableF61_Greene');
-    Y=TableF61_Greene.data;
+    Y=TableF61_Greene{:,:};
 
     Q=log(Y(:,4));
     Pfuel=log(Y(:,5));
