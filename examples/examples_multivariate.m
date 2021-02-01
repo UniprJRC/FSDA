@@ -1,5 +1,5 @@
 %examples_multivariate shows a series of analysis of multivariate datasets
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %$LastChangedDate::                      $: Date of the last commit

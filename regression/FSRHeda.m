@@ -266,7 +266,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 % Vol. 104, p. 209-222, http://dx.doi.org/10.1016/j.csda.2016.07.002 [ART]
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

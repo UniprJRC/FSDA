@@ -264,7 +264,7 @@ function [y,X,id]=simdatasetreg(n, Pi, Beta, S, Xdistrib, varargin)
 % Davies, R. (1980), The distribution of a linear combination of
 % chi-square random variables, "Applied Statistics", Vol. 29, pp. 323-333.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('simdatasetreg')">Link to the help function</a>

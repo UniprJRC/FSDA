@@ -186,7 +186,7 @@ function [out] = mdpdR(y, X, alpha, varargin)
 %   pp. 43-56.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('mdpdR')">Link to the help function</a>

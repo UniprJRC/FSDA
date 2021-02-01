@@ -273,7 +273,7 @@ function outms = FSRms(y,X,varargin)
 %   Riani M. and Atkinson A.C. (2010), Robust Model Selection with Flexible Trimming,
 %   "Computational Statistics and Data Analysis", Vol. 54, p. 3300-3312.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

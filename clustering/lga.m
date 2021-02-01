@@ -71,7 +71,7 @@ function out = lga(X,k,varargin)
 % Grouping Using Orthogonal Regression, "Computational Statistics and Data
 % Analysis", Vol. 50, pp. 1287-1312.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

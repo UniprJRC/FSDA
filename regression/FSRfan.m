@@ -367,7 +367,7 @@ function [out]=FSRfan(y,X,varargin)
 % Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
 % Transformation: Review and Extensions, "Statistical Science", in press.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

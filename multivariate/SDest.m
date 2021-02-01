@@ -308,7 +308,7 @@ function [out, varargout] = SDest(Y,varargin)
 % References:
 %
 % Stahel, W.A. (1981), "Breakdown of covariance estimators", Research
-%        Report 31, Fachgruppe für Statistik, E.T.H. Zürich, Switzerland.
+%        Report 31, Fachgruppe fï¿½r Statistik, E.T.H. Zï¿½rich, Switzerland.
 % Donoho, D.L. (1982), "Breakdown Properties of Multivariate Location
 %        Estimators", Ph.D. dissertation, Harvard University.
 % Maronna, R.A. and Yohai, V.J. (1995), The behavior of the Stahel-Donoho
@@ -327,7 +327,7 @@ function [out, varargout] = SDest(Y,varargin)
 %
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

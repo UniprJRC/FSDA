@@ -77,7 +77,7 @@ function  [obj, varargout1, varargout2]=estepFS(log_lh, verLess2016b)
 %
 %   McLachlan, G.J.; Peel, D. (2000). Finite Mixture Models. Wiley. ISBN 0-471-00626-2
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 %
 %<a href="matlab: docsearchFS('estepFS')">Link to the help function</a>
 %

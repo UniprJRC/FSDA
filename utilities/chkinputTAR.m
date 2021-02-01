@@ -61,7 +61,7 @@ function [y,q,X,n,k,rmv_obs,input_full] = chkinputTAR(y, q, X, intercept)
 %
 % See also SETARX
 %
-% Copyright 2008-2020.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('chkinputTAR')">Link to the help function</a>

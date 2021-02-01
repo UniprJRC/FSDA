@@ -64,7 +64,7 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 % Techniques for Data Analysis", Oxford University Press.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

@@ -49,7 +49,7 @@ function weights = GYfilt(x,varargin)
 % Gervini, D. and Yohai, V.J. (2002), A class of robust and fully efficient
 % regression estimators, "Annals of Statistics", Vol. 30, pp. 583-616.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('GYfilt')">Link to the help function</a>

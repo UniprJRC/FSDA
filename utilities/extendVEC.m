@@ -23,7 +23,7 @@ function [ext] = extendVEC(x, index, value)
 %       vector, depending on input x.
 %
 %
-% Copyright 2008-2020.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

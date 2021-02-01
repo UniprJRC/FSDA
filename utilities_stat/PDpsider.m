@@ -44,7 +44,7 @@ function psider=PDpsider(u,alpha)
 %  Analysis, submitted.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

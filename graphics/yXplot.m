@@ -374,7 +374,7 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %
 % See also: spmplot, mdrplot, fanplot, resfwdplot, add2yX
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

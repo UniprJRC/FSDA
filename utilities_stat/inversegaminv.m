@@ -92,7 +92,7 @@ function x = inversegaminv(p,a,b,nocheck)
 %
 % https://en.wikipedia.org/wiki/Inverse-gamma_distribution
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

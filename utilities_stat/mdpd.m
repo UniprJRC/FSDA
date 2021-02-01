@@ -103,7 +103,7 @@ function [res] = mdpd(y, alpha, varargin)
 %  Analysis, submitted.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %<a href="matlab: docsearchFS('mdpd')">Link to the help function</a>

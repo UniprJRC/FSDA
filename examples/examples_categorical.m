@@ -1,6 +1,6 @@
 %% EXAMPLES OF CATEGORICAL DATA ANALYSIS
 % examples_categorical shows a series of analysis of correspondence analysis datasets
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %$LastChangedDate::                      $: Date of the last commit
@@ -153,7 +153,7 @@ CorAnaplot(out,'plots',plots,'confellipse',confellipse)
 %   correspondence analysis.
 % Supplementary columns (6:8): the coordinates of
 %   these columns will be predicted.
-% Source Traitements Statistiques des Enquêtes (D. Grangé, L. Lebart, eds.)
+% Source Traitements Statistiques des Enquï¿½tes (D. Grangï¿½, L. Lebart, eds.)
 % Dunod, 1993
 N=[51	64	32	29	17	59	66	70;
     53	90	78	75	22	115	117	86;

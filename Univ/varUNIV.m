@@ -34,7 +34,7 @@ function out = varUNIV(x,w)
 %
 % References:
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

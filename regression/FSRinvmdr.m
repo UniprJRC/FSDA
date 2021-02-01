@@ -66,7 +66,7 @@ function [MDRinv] = FSRinvmdr(mdr,p,varargin)
 % Analysis and Classification", Vol. 1, pp. 123-141.
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

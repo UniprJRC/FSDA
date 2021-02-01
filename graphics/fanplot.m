@@ -231,7 +231,7 @@ function brushedUnits=fanplot(out,varargin)
 % Atkinson, A.C. Riani, M. and Corbellini A. (2020), The Box-Cox
 % Transformation: Review and Extensions, "Statistical Science", in press.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %
@@ -581,7 +581,7 @@ if ~isempty(options.datatooltip)
         else
             % options.databrush contains a structure where the user can set the
             % properties of the data cursor
-            % options.databrush può anche essere passato come cell?????????????
+            % options.databrush puï¿½ anche essere passato come cell?????????????
             set(hdt,options.datatooltip);
         end
         % Declare a custom datatip update function to display additional

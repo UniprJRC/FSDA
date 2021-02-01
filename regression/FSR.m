@@ -352,7 +352,7 @@ function [out]=FSR(y,X,varargin)
 % number of multivariate outliers, "Journal of the Royal Statistical
 % Society Series B", Vol. 71, pp. 201-221.
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %
@@ -527,7 +527,7 @@ function [out]=FSR(y,X,varargin)
     y = data.data(:,end);
     X = data.data(:,1);
     xla = 'Number of visits';
-    yla = 'Amount spent (in €)';
+    yla = 'Amount spent (in ï¿½)';
     n = size(X,1);
     % run FSR to detect a weaker signal indicating VIOM
     FSRoutw = FSR(y, X, 'intercept', 0, ...

@@ -217,7 +217,7 @@ function out=boxcoxR(y,X, varargin)
 % https://www.mathworks.com/matlabcentral/fileexchange/10419-box-cox-power-transformation-for-linear-models
 % in the file exchange written by Hovav Dror, hovav@hotmail.com, March 2006
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

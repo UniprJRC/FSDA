@@ -75,7 +75,7 @@ function out = rlga(X,k,alpha,varargin)
 % [doi: 10.1111/j.1467-9868.2008.00682.x]
 %
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %

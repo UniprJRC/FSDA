@@ -668,7 +668,7 @@ function out=publishFS(file,varargin)
 %
 % References:
 %
-% Copyright 2008-2019.
+% Copyright 2008-2021.
 % Written by FSDA team
 %
 %
@@ -859,8 +859,8 @@ linkHTML=regexp(fstring,['docsearchFS\(''' name '''\)']);
 %fstring=regexprep(fstring,'[^%]<','&lt;');
 fstring=regexprep(fstring,'<','&lt;');
 fstring=regexprep(fstring,'>','&gt;');
-% replace if present symbol ü with its HTML code
-fstring=regexprep(fstring,'ü','&uuml;');
+% replace if present symbol ï¿½ with its HTML code
+fstring=regexprep(fstring,'ï¿½','&uuml;');
 
 
 
