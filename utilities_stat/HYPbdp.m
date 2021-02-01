@@ -84,16 +84,32 @@ function [c,A,B,d] = HYPbdp(bdp, v,k,traceiter)
 % Examples:
 
 %{
+    % HYPbdp with all default options.
+    % Find required value of c when k=4.5 and bdp=0.5.
+    c=HYPbdp(0.5,1);
+%}
+
+%{
     % Find value of c, A, B, for fixed break down point. 
     % Find required values when k=4.5 and bdp=0.5.
- 
-    ktuning=4.5;
-    [c,A,B,d]=HYPbdp(0.5,1,ktuning);
+    [c,A,B,d]=HYPbdp(0.5,1);
     % In this case
     % c = 2.010311082005501
     % A = 0.008931591866092
     % B = 0.051928487236632
     % d=  0.132017481327058
+%}
+
+%{
+    % Find value of c, A, B, for fixed break down point. 
+    % Find required values when k=4.5 and bdp=0.5.
+    ktuning=4.2;
+    [c,A,B,d]=HYPbdp(0.5,1,ktuning);
+    % In this case
+    % c =  2.093345907330513
+    % A = 0.002411382994023
+    % B = 0.026962054035832
+    % d=  0.066725444793702
 %}
 
 %{

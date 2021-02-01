@@ -145,6 +145,35 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
     s=Mscale(u,psifunc,3,1e-7,20)
 %}
 
+%{
+    % Compare scale estimate using two differnt link functions.
+    psifunc=struct;
+    psifunc.class='HA'
+    abc=[1.5 3.5 8];
+    bdp=0.5;
+    c=HAbdp(bdp,1,abc);
+    % kc = E(rho) = sup(rho)*bdp
+    kc=HArho(c*abc(3),[c, abc])*bdp;
+    psifunc.c1=[c abc];
+    psifunc.kc1=kc;
+    n=10000;
+    shift=100;
+    u=3*randn(n,1);
+    u(100:200)=u(100:200)+shift;
+    sHA=Mscale(u,psifunc)
+    % kc = E(rho) = sup(rho)*bdp
+    psifunc=struct;
+    psifunc.class='TB';
+    c=TBbdp(bdp,1);
+    psifunc.c1=c;
+    kc=c^2/6*bdp;
+    psifunc.kc1=kc;
+    sTB=Mscale(u,psifunc,3,1e-7,20);
+    sMLE=std(u);
+    cate=categorical({'Robust scale (Hampel)' 'Robust scale (TB)' 'Non robust scale'})
+    bar(cate,[sHA sTB sMLE])
+%}
+
 %% Beginning of code
 c=psifunc.c1;
 kc=psifunc.kc1;
