@@ -72,16 +72,25 @@ function [y,X,n,p] = chkinputR(y, X, nnargin, vvarargin)
     [out]=FSR(X);
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 optargin = size(vvarargin,2);
 stdargin = nnargin - optargin;
 
+
 if nnargin > stdargin
     
     % chklist is the vector containing the names of optional arguments
-    chklist=vvarargin(1:2:length(vvarargin));
-    
+    if coder.target('MATLAB')
+        chklist=vvarargin(1:2:length(vvarargin));
+    else
+        chklist=cell(1,length(vvarargin)/2);
+        ij=0;
+        for i=1:2:(length(vvarargin)-1)
+            ij=ij+1;
+            chklist{ij}=vvarargin{i};
+        end
+    end
     % chkchk is the position of the option nocheck in vector chklist
     % chkchk = strmatch('nocheck',chklist,'exact');
     chkchk = find(strcmpi('nocheck',chklist));
@@ -168,7 +177,9 @@ else
     constcols = find(max(X,[],1)-min(X,[],1) == 0);
     if numel(constcols)>1
         X(:,constcols(2:end))=[];
-        disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
+        if coder.target('MATLAB')
+            disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
+        end
     end
     
     
