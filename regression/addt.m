@@ -19,7 +19,7 @@ function [out]=addt(y,X,w,varargin)
 %
 % Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -71,7 +71,7 @@ function [out]=addt(y,X,w,varargin)
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones
 %               for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
+%               Example - 'nocheck',1
 %               Data Types - double
 %
 % Output:
@@ -143,7 +143,7 @@ function [out]=addt(y,X,w,varargin)
 %}
 %
 %
-%% Beginning of code 
+%% Beginning of code
 
 % User options
 
@@ -162,16 +162,16 @@ plots=0;
 
 if nargin > 3
     
-  if coder.target('MATLAB')
-% the 'options' struct in this implementation is provided by the for loop
-     options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
-        'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,'nocheck',nocheck);
-  end 
-  
-    for i=1:2:(length(varargin)-1)
-        options.(varargin{i})=varargin{i+1};   
+    if coder.target('MATLAB')
+        % the 'options' struct in this implementation is provided by the for loop
+        options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
+            'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,'nocheck',nocheck);
     end
-  
+    
+    for i=1:2:(length(varargin)-1)
+        options.(varargin{i})=varargin{i+1};
+    end
+    
     
     la=options.la;
     plots=options.plots;
@@ -205,13 +205,16 @@ A(linind)=1+A(linind);
 % -E*E' = matrix -H = -X*inv(X'X)*X' computed through qr decomposition
 % A = Matrix I - H
 
+
 if ~isempty(la)
+    la1=la(1);
     %geometric mean of the y
-    G=exp(mean(log(y)));
+    G=exp(mean(log(y)))+ 0i; %G is complex;
+    %  if la1==0
     if la==0
         z=G*log(y);
     else
-        z=(y.^la-1)/(la*G^(la-1));
+        z=(y.^la1-1)/(la*G^(la1-1));
     end
 else
     z=y;
@@ -228,7 +231,9 @@ if wAw <1e-12
     Tl=NaN;
     b=NaN;
     pval=NaN;
-    warning('FSDA:addt:NearlySingularMatrix','The augmented X matrix is nearly singular');
+    if coder.target('MATLAB')
+        warning('FSDA:addt:NearlySingularMatrix','The augmented X matrix is nearly singular');
+    end
 else
     % b=regress(Az,Aw);
     b=zAw/wAw;
@@ -257,7 +262,7 @@ out.pval=pval;
 
 %% Added variable plot
 
-if plots==1
+if coder.target('MATLAB') && plots==1
     if ~isempty(units)
         sel=setdiff(1:length(y),units);
         [outsel]=addt(y(sel),X(sel,2:end),w(sel),'plots',0);
