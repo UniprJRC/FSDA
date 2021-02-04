@@ -48,11 +48,11 @@ function [out]=addt(y,X,w,varargin)
 %               Example - 'units',[1,3] removes units 1 and 3
 %               Data Types - double
 %
-%   textlab:    Labels of units in the plot. Character. If textlab=''
-%               default no text label is written on the plot
+%   textlab:    Labels of units in the plot. Boolean. If textlab=false
+%               (default) no text label is written on the plot
 %               for units else text label of units are added on the plot
-%               Example - 'textlab','1'
-%               Data Types - char
+%               Example - 'textlab',true
+%               Data Types - boolean
 %
 %   FontSize:   Label font size inside plot. Scalar. It controls the
 %               fontsize of the labels of the axes and eventual plot
@@ -129,7 +129,7 @@ function [out]=addt(y,X,w,varargin)
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
-    [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[43],'textlab','y');
+    [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[43],'textlab',true);
 %}
 
 %{
@@ -139,7 +139,7 @@ function [out]=addt(y,X,w,varargin)
     load('multiple_regression.txt');
     y=multiple_regression(:,4);
     X=multiple_regression(:,1:3);
-    [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[9 21 30 31 38 47]','textlab','y');
+    [out]=addt(y,X(:,2:3),X(:,1),'plots',1,'units',[9 21 30 31 38 47]','textlab',true);
 %}
 %
 %
@@ -151,9 +151,9 @@ if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')
 end
 
-la='';
-units='';
-textlab='';
+la=1;
+units=[]';
+textlab=false;
 FontSize=10;
 SizeAxesNum=10;
 nocheck=0;
@@ -161,24 +161,17 @@ plots=0;
 
 
 if nargin > 3
-    options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
+    
+  if coder.target('MATLAB')
+% the 'options' struct in this implementation is provided by the for loop
+     options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
         'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,'nocheck',nocheck);
-    
-    UserOptions=varargin(1:2:length(varargin));
-    if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
-        if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:addt:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-        end
-        % Check if user options are valid options
-        chkoptions(options,UserOptions)
+  end 
+  
+    for i=1:2:(length(varargin)-1)
+        options.(varargin{i})=varargin{i+1};   
     end
-    
-    % We overwrite inside structure options the default values with those
-    % chosen by the user
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
-    end
+  
     
     la=options.la;
     plots=options.plots;
@@ -278,7 +271,7 @@ if plots==1
         line(xlimits , b.*xlimits,'Color','r','LineWidth',2);
         % Superimposed line based on reduced set of units
         line(xlimits , outsel.b.*xlimits,'LineWidth',2);
-        if ~isempty(textlab)
+        if textlab==true
             text(Aw(units)+0.05,Az(units),num2str(units),'FontSize',FontSize);
         end
         set(gca,'FontSize',SizeAxesNum)
