@@ -39,13 +39,13 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%    nocheck  :    Check input arguments. Scalar.
+%    nocheck  :    Check input arguments. Boolean.
 %                  If nocheck is equal to 1 no check is performed on
 %                  matrix y and matrix X. Notice that y and X are left
-%                  unchanged. In other words the additioanl column of ones for
-%                  the intercept is not added. As default nocheck=0.
-%                  Example - 'nocheck',1
-%                  Data Types - double
+%                  unchanged. In other words the additional column of ones for
+%                  the intercept is not added. As default nocheck=false.
+%                  Example - 'nocheck',true
+%                  Data Types - boolean
 %
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
@@ -68,13 +68,13 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
-%       msg    :  Level of output to display. Scalar. It controls whether
+%       msg    :  Level of output to display. Boolean. It controls whether
 %                 to display or not messages on the screen
-%                 If msg==1 (default) messages are displayed on the screen about
+%                 If msg==true (default) messages are displayed on the screen about
 %                   step of the fwd search
 %                 else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
+%               Example - 'msg',true
+%               Data Types - boolean
 %
 % Output:
 %
@@ -238,19 +238,22 @@ end
 
 bsbstepdef='';
 
-options=struct('intercept',1,'init',init,'nocheck',0,'plots',0,...
-    'bsbsteps',bsbstepdef,'msg',1);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSRbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    
+    options=struct('intercept',1,'init',init,'nocheck',false,'plots',0,...
+        'bsbsteps',bsbstepdef,'msg',true);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSRbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
+    
 end
-
 
 if nargin<3
     error('FSDA:FSRbsb:missingInputs','Initial subset is missing');
@@ -264,8 +267,13 @@ if nargin > 3
     end
 end
 
+% Initialize Xb (necessary for MATLAB coder)
+% otherwise the following message appears
+% Variable 'Xb' is not fully defined on some execution paths.
+Xb=X(1:p,:);
+
 if bsb==0
-    Ra=1; nwhile=1;
+    Ra=true; nwhile=1;
     while and(Ra,nwhile<100)
         bsb=randsample(n,p);
         Xb=X(bsb,:);
@@ -273,7 +281,9 @@ if bsb==0
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        if coder.target('MATLAB')
+            warning('FSDA:FSRbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        end
     end
     yb=y(bsb);
 else
@@ -286,19 +296,25 @@ ini0=length(bsb);
 % check init
 init=options.init;
 if init <p
+    if coder.target('MATLAB')
     fprintf(['Attention : init should be larger than p-1. \n',...
         'It is set to p.']);
+    end
     init=p;
 elseif init<ini0
+    if coder.target('MATLAB')
     fprintf(['Attention : init should be >= length of supplied subset. \n',...
         'It is set equal to ' num2str(length(bsb)) ]);
+    end
     init=ini0;
 elseif init>=n
+    if coder.target('MATLAB')
     fprintf(['Attention : init should be smaller than n. \n',...
         'It is set to n-1.']);
+    end
     init=n-1;
 end
-
+init=init(1);
 msg=options.msg;
 nocheck=options.nocheck;
 
@@ -321,6 +337,7 @@ r = [seq zeros(n,1)];
 % If n is very large, the step of the search is printed every 100 step
 % seq100 is linked to printing
 seq100 = 100*(1:1:ceil(n/100));
+seq100=seq100(seq100<=n);
 seq100boo=false(n,1);
 seq100boo(seq100)=true;
 
@@ -333,19 +350,20 @@ if isempty(bsbsteps)
     % Default for vector bsbsteps which indicates for which steps of the fwd
     % search units forming subset have to be saved
     if n<=5000
-        bsbsteps = init:1:n;
+        bsbsteps = (init:1:n)';
     else
-        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)];
+        bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)]';
     end
     BB = NaN(n,length(bsbsteps),'single');
 elseif bsbsteps==0
-    bsbsteps=init:n;
+    bsbsteps=(init:n)';
     BB = NaN(n,n-init+1,'single');
 else
-    if min(bsbsteps)<init
+    if min(bsbsteps)<init && coder.target('MATLAB')
         warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
     end
-    bsbsteps=bsbsteps(bsbsteps>=init);
+    boo=(bsbsteps>=init);
+    bsbsteps=bsbsteps(boo);
     
     BB = NaN(n,length(bsbsteps),'single');
 end
@@ -361,10 +379,11 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 % The last correctly computed beta oefficients
 blast=NaN(p,1);
 
-
 %% Forward search loop
-if nocheck==0 && rank(Xb)~=p
-    warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
+if nocheck==false && rank(Xb)~=p
+    if coder.target('MATLAB')
+        warning('FSDA:FSRbsb:NoFullRank','The provided initial subset does not form a full rank matrix');
+    end
     % FS loop will not be performed
     Un=NaN;
 else
@@ -374,7 +393,7 @@ else
     
     for mm = ini0:n
         % if n>200 show every 100 steps the fwd search index
-        if n>200 && msg==1
+        if n>200 && msg== true
             
             if  seq100boo(mm) == true
                 % OLD CODE if length(intersect(mm,seq100))==1
@@ -405,7 +424,9 @@ else
             blast=b;
         else
             b=blast;    % in case of rank problem, the last orrectly computed coefficients are used
-            warning('FSDA:FSRbsb:NoFullRank','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+            if coder.target('MATLAB')
+                warning('FSDA:FSRbsb:NoFullRank','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+            end
         end
         
         % e= vector of residual for all units using b estimated using subset
@@ -451,8 +472,9 @@ else
             end
         end
     end
+    
     plots=options.plots;
-    if plots==1
+    if coder.target('MATLAB') &&  plots==1
         % Create the 'monitoring units plot'
         figure;
         plot(bsbsteps,BB','bx')
