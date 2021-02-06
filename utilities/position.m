@@ -41,7 +41,7 @@ function position(plmain)
 %{
     % Three plots, with a recognized tag. They are organized properly in
     % the screen area.
-
+    close all
     Y1=load('geyser2.txt');
     Y2=load('fishery.txt');
     Y3=load('M5data.txt');
