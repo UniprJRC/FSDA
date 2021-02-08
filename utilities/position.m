@@ -246,7 +246,16 @@ switch notherfigs
         posotherfigs = repmat(posotherfigs,notherfigs,1);
         posotherfigs(:,1:notherfigs) = posotherfigs(:,1:notherfigs) - displacements;
         cposotherfigs=num2cell(posotherfigs,2);
-        set(otherfigs,{'OuterPosition'},cposotherfigs);
+        % repositioning can be done just for figures and not for UIfigures
+        % Given that instruction below is only supported from 2018b
+        % matlab.ui.internal.isUIFigure(hFig)
+        % we opted for try and catch
+        for i=1:length(otherfigs)
+            try
+                set(otherfigs(i),{'OuterPosition'},cposotherfigs(i));
+            catch
+            end
+        end
 end
 
 end
