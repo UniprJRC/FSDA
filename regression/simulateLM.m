@@ -308,6 +308,7 @@ if ~isempty(UserOptions)
     R2=options.R2;
     nexpl=options.nexpl;
     beta=options.beta;
+    beta=beta(:);
     SigmaX=options.SigmaX;
     distribX = options.distribX;
     distribXpars=options.distribXpars;
