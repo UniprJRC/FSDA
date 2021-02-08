@@ -151,6 +151,7 @@ if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')
 end
 
+% Insert code for intercept
 la=1;
 units=[]';
 textlab=false;
