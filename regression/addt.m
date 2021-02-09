@@ -209,7 +209,7 @@ A(linind)=1+A(linind);
 if ~isempty(la)
     la1=la(1);
     %geometric mean of the y
-    G=exp(mean(log(y)))+ 0i; %G is complex;
+    G=exp(mean(log(y)));
     %  if la1==0
     if la==0
         z=G*log(y);
