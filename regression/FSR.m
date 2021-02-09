@@ -129,12 +129,12 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
-%                 no check is performed on matrix y and matrix X. Notice
-%                 that y and X are left unchanged. In other words the
-%                 additional column of ones for the intercept is not added.
-%                 As default nocheck=0.
-%               Example - 'nocheck',1
+%       nocheck : Check input arguments. Boolean. If nocheck is equal to
+%                 true no check is performed on matrix y and matrix X.
+%                 Notice that y and X are left unchanged. In other words
+%                 the additional column of ones for the intercept is not
+%                 added. As default nocheck=false.
+%               Example - 'nocheck',true
 %               Data Types - double
 %
 %    bivarfit : Superimpose bivariate least square lines. Character. This option adds
@@ -583,7 +583,7 @@ options=struct('h',hdef,...
     'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
+    'msg',1,'nocheck',false,'intercept',1,'bonflev','',...
     'bsbmfullrank',1,'threshoutX','','weak',false,'tag',tagdef);
 
 UserOptions=varargin(1:2:length(varargin));
