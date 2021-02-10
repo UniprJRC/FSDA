@@ -174,14 +174,17 @@ if nargin > 3
     
     
     la=options.la;
-    plots=options.plots;
-    units=options.units;
-    textlab=options.textlab;
     
-    % FontSize = font size of the axes labels
-    FontSize =options.FontSize;
-    % FontSizeAxes = font size for the axes numbers
-    SizeAxesNum=options.SizeAxesNum;
+    if coder.target('MATLAB')
+        plots=options.plots;
+        units=options.units;
+        textlab=options.textlab;
+        
+        % FontSize = font size of the axes labels
+        FontSize =options.FontSize;
+        % FontSizeAxes = font size for the axes numbers
+        SizeAxesNum=options.SizeAxesNum;
+    end
 end
 %% t test for an additional explanatory variable
 
