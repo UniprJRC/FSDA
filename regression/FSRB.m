@@ -118,12 +118,12 @@ function [out]=FSRB(y,X,varargin)
 %                   Data Types - double
 %
 %   nocheck :        Check input arguments. Scalar.
-%                    If nocheck is equal to 1 no check is performed on
+%                    If nocheck is equal to true no check is performed on
 %                    matrix y and matrix X. Notice that y and X are left
 %                    unchanged. In other words the additional column of ones
-%                     for the intercept is not added. As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - double
+%                     for the intercept is not added. As default nocheck=false.
+%                   Example - 'nocheck',true
+%                   Data Types - boolean
 %
 %    bivarfit :  Superimpose bivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
@@ -335,7 +335,7 @@ function [out]=FSRB(y,X,varargin)
     bayes.n0=n0;
     bayes.beta0=beta0;
     bayes.tau0=tau0;
-    intercept=1;
+    intercept=true;
 
     % function call
     out=FSRB(y,X,'bayes',bayes,'msg',0,'plots',1,'init',round(n/2),'intercept', intercept)
@@ -588,7 +588,7 @@ function [out]=FSRB(y,X,varargin)
     seq02=1:n02;
 
     % frequentist Forward Search, 1st year (regression without intercept)
-    [out02]=FSR(y02,X02,'intercept',0,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);
+    [out02]=FSR(y02,X02,'intercept',false,'nsamp',nsamp,'plots',1,'msg',0,'init',round(n02*3/4),'bonflev',bonflev);
 
     % In what follows
     % g stands for good units
@@ -646,7 +646,7 @@ function [out]=FSRB(y,X,varargin)
 
     % Run Bayesian Forward Search for the 2nd year using the prior based on
     % the first year.
-    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',0);
+    out03=FSRB(y03,X03,'bayes',bayes,'msg',0,'plots',1,'init',round(n03/2),'bonflev',bonflev,'intercept',false);
 %}
 
 %{
@@ -682,7 +682,7 @@ function [out]=FSRB(y,X,varargin)
     bayes.n0=n0;
     bayes.beta0=beta0;
     bayes.tau0=tau0;
-    intercept=1;
+    intercept=true;
     n=length(y);
 
     out=FSRB(y,X,'bayes',bayes,'msg',1,'plots',1,...
@@ -749,7 +749,7 @@ tagdef='pl_fsr';
 options=struct('plots',1,'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','','msg',1, ...
-    'nocheck',0,'intercept',1,'bonflev','', 'bayes',bayesdef,'tag',tagdef);
+    'nocheck',false,'intercept',true,'bonflev','', 'bayes',bayesdef,'tag',tagdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -783,7 +783,7 @@ n0=bayes.n0;
 
 
 %% Start of the forward search
-[mdrB,Un,bb,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, 'nocheck',1,'init',init);
+[mdrB,Un,bb,BBayes,S2Bayes] = FSRBmdr(y, X, beta0, R, tau0, n0, 'nocheck',true,'init',init);
 
 
 %% Call core function which computes exceedances to thresholds of mdr
