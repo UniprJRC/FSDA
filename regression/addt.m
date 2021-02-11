@@ -66,13 +66,13 @@ function [out]=addt(y,X,w,varargin)
 %               Example - SizeAxesNum,12
 %               Data Types - double
 %
-% nocheck :       Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+% nocheck :       Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones
-%               for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 % Output:
 %
@@ -157,7 +157,7 @@ units=[]';
 textlab=false;
 FontSize=10;
 SizeAxesNum=10;
-nocheck=0;
+nocheck=false;
 plots=0;
 
 
@@ -165,7 +165,7 @@ if nargin > 3
     
     if coder.target('MATLAB')
         % the 'options' struct in this implementation is provided by the for loop
-        options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
+        options=struct('intercept',true,'plots',plots,'la',la,'units',units,'textlab',textlab,...
             'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,'nocheck',nocheck);
     end
     

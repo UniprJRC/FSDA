@@ -94,13 +94,13 @@ function [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0, varargin)
 %               Example - 'bsbsteps',[10,20,30]
 %               Data Types - double
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
@@ -283,8 +283,8 @@ seq500=500*(1:1:ceil(n/500));
 
 bsbstepdef='';
 bsb='';
-options=struct('bsb',bsb,'init',initdef,'intercept',1,...
-    'plots',0,'nocheck',0,'msg',1,'bsbsteps',bsbstepdef);
+options=struct('bsb',bsb,'init',initdef,'intercept',true,...
+    'plots',0,'nocheck',false,'msg',1,'bsbsteps',bsbstepdef);
 
 if nargin > 7
     UserOptions=varargin(1:2:length(varargin));
@@ -389,7 +389,7 @@ for mm=ini0:n
     end
     
     % call bayesian procedure
-    [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'nocheck',1);
+    [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'intercept',intercept,'nocheck',true);
     
     % bayesian beta
     b=bayes.beta1;

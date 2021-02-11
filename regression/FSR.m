@@ -129,7 +129,7 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'init',100 starts monitoring from step m=100
 %               Data Types - double
 %
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to
+%       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %                 true no check is performed on matrix y and matrix X. Notice
 %                 that y and X are left unchanged. In other words the
 %                 additional column of ones for the intercept is not added.

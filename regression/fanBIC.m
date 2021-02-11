@@ -300,7 +300,7 @@ for j=1:nla
     if signal==true
         mmstop(j,2)=mdagger;
         % Find units belonging to subset for laj in step mdagger
-        [~,BB] = FSRbsb(ytraj,X,bs(:,j),'intercept',1,'init',mdagger,'nocheck',1,'msg',0);
+        [~,BB] = FSRbsb(ytraj,X,bs(:,j),'intercept',true,'init',mdagger,'nocheck',1,'msg',0);
         % good = good units for score test
         good=seq(~isnan(BB(:,1)));
     else

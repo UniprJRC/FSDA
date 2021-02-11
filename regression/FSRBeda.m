@@ -76,14 +76,14 @@ function [out] = FSRBeda(y, X, varargin)
 %                   Example - 'init',100 starts monitoring from step m=100 
 %                   Data Types - double
 %
-%      nocheck: Check input arguments. Scalar.
-%               Scalar. If nocheck is equal to 1 no check is performed on
+%      nocheck: Check input arguments. Boolean.
+%               Scalar. If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0. See
+%               the intercept is not added. As default nocheck=false. See
 %               routine chkinputRB.m for the details of the operations.
-%               Example - 'nocheck',1 
-%               Data Types - double
+%               Example - 'nocheck',true 
+%               Data Types - boolean
 %
 %  conflev:   confidence levels to be used to compute HPDI. Vector.
 %               This input option is used just if input
@@ -220,7 +220,7 @@ function [out] = FSRBeda(y, X, varargin)
 %               variable which has been used.
 %     out.X=       Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
-%               input option intercept was missing or equal to 1).
+%               input option intercept was missing or equal to true).
 %out.class =    'FSRBeda'.
 %
 %
@@ -699,7 +699,7 @@ else
     chkint='';
 end
 
-% If nocheck=1 skip checks on y and X
+% If nocheck=true skip checks on y and X
 if ~isempty(chkint) && cell2mat(varargin(2*chkint))==1
     [n,p]=size(X);
 else
@@ -761,8 +761,8 @@ bayesdef.n0=1;
 
 
 conflevdef=[0.95 0.99];
-options=struct('intercept',1,'init',init,'bayes',bayesdef,'bsb',bsb,...
-    'nocheck',0,'conflev',conflevdef);
+options=struct('intercept',true,'init',init,'bayes',bayesdef,'bsb',bsb,...
+    'nocheck',false,'conflev',conflevdef);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -917,9 +917,9 @@ for mm=ini0:n
     %b=Xb\yb;
     % call bayesian procedure
     if mm>=init
-        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',1,'conflev',conflev, 'nocheck',1);
+        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',1,'conflev',conflev, 'nocheck',true);
     else
-        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',0, 'nocheck',1);
+        [bayes]=regressB(y, X, beta0, R, tau0, n0, 'bsb', bsb,'stats',0, 'nocheck',true);
     end
     
     % why not bayes.res?
