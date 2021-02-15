@@ -35,24 +35,19 @@ function [out]=addt(y,X,w,varargin)
 %               Example - 'la',0.5 tests square root transformation
 %               Data Types - double
 %
+% nocheck :     Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               matrix y and matrix X. Notice that y and X are left
+%               unchanged. In other words the additional column of ones
+%               for the intercept is not added. As default nocheck=0.
+%               Example - 'nocheck',1
+%               Data Types - double
+%
 %   plots:      Plot on the screen. Scalar.
 %               If plots=1 the added variable
 %               plot is produced else (default) no plot is produced.
 %               Example - 'plots',1
 %               Data Types - double
-%
-%   units:      Units to remove. Vector.
-%               Vector containing the list of
-%               units which has to be removed in the computation of the
-%               test. The default is to use all units
-%               Example - 'units',[1,3] removes units 1 and 3
-%               Data Types - double
-%
-%   textlab:    Labels of units in the plot. Boolean. If textlab=false
-%               (default) no text label is written on the plot
-%               for units else text label of units are added on the plot
-%               Example - 'textlab',true
-%               Data Types - boolean
 %
 %   FontSize:   Label font size inside plot. Scalar. It controls the
 %               fontsize of the labels of the axes and eventual plot
@@ -65,14 +60,19 @@ function [out]=addt(y,X,w,varargin)
 %               axes. Default value is 10
 %               Example - SizeAxesNum,12
 %               Data Types - double
-%
-% nocheck :       Check input arguments. Boolean.
-%               If nocheck is equal to true no check is performed on
-%               matrix y and matrix X. Notice that y and X are left
-%               unchanged. In other words the additional column of ones
-%               for the intercept is not added. As default nocheck=false.
-%               Example - 'nocheck',true
+%   textlab:    Labels of units in the plot. Boolean. If textlab=false
+%               (default) no text label is written on the plot
+%               for units else text label of units are added on the plot
+%               Example - 'textlab',true
 %               Data Types - boolean
+%
+%   units:      Units to remove. Vector.
+%               Vector containing the list of
+%               units which has to be removed in the computation of the
+%               test. The default is to use all units
+%               Example - 'units',[1,3] removes units 1 and 3
+%               Data Types - double
+%
 %
 % Output:
 %
@@ -175,14 +175,17 @@ if nargin > 3
     
     
     la=options.la;
-    plots=options.plots;
-    units=options.units;
-    textlab=options.textlab;
     
-    % FontSize = font size of the axes labels
-    FontSize =options.FontSize;
-    % FontSizeAxes = font size for the axes numbers
-    SizeAxesNum=options.SizeAxesNum;
+    if coder.target('MATLAB')
+        plots=options.plots;
+        units=options.units;
+        textlab=options.textlab;
+        
+        % FontSize = font size of the axes labels
+        FontSize =options.FontSize;
+        % FontSizeAxes = font size for the axes numbers
+        SizeAxesNum=options.SizeAxesNum;
+    end
 end
 %% t test for an additional explanatory variable
 
@@ -210,7 +213,7 @@ A(linind)=1+A(linind);
 if ~isempty(la)
     la1=la(1);
     %geometric mean of the y
-    G=exp(mean(log(y)))+ 0i; %G is complex;
+    G=exp(mean(log(y)));
     %  if la1==0
     if la==0
         z=G*log(y);
