@@ -280,7 +280,7 @@ end
 
 bsbstepdef='';
 
-options=struct('init',init,'nocheck',0,'plots',0,...
+options=struct('init',init,'nocheck',false,'plots',0,...
     'bsbmfullrank',1,'bsbsteps',bsbstepdef,'model',modeldef);
 
 UserOptions=varargin(1:2:length(varargin));

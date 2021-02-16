@@ -79,10 +79,10 @@ function [out] = simulateLM(n,varargin)
 %                 sigmaX are empty nexpl is set equal to 3.
 %                 Example - 'distribypars', '[2 10]'
 %                 Data Types - double
-%    intercept : value of the intercept to use. Scalar. The default value
-%               for intercept is 0.
-%                 Example - 'intercept', '10'
-%                 Data Types - double
+%    intercept : value of the intercept to use. Boolean. The default value
+%               for intercept is false.
+%                 Example - 'intercept', true
+%                 Data Types - boolean
 %       plots : Plot on the screen. Boolean.
 %               If plots = true, the yXplot which shows the response
 %               against all the explanatory variables s shown on the
@@ -192,7 +192,7 @@ function [out] = simulateLM(n,varargin)
     % Set value of R2.
     R2=0.92;
     beta=[3; 4; 5; 2; 7];
-    intercept=43;
+    intercept=true;
     n=100000;
     out=simulateLM(n,'R2',R2,'beta',beta);
     outLM=fitlm(out.X,out.y);
@@ -228,7 +228,7 @@ function [out] = simulateLM(n,varargin)
     %% Use SNR and include MSOM (on active features) and VIOM contamination
     SNR=3;
     beta=[2, 2, 0, 0];
-    intercept=1;
+    intercept=true;
     n=100;
     out=simulateLM(n,'SNR',SNR,'beta',beta, 'pMSOM', 0.1, 'pVIOM', 0.2, 'plots', 1);
     X = out.X;
@@ -254,7 +254,7 @@ distribXpars=[0 1];
 distriby = 'normal';
 distribypars = [0 1];
 plots=false;
-intercept=0;
+intercept=true;
 SNR = '';
 pMSOM = 0;
 pVIOM = 0;

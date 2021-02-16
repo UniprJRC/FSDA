@@ -132,13 +132,13 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
+%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
 %               and X are left unchanged. In other words the additioanl
 %               column of ones for the intercept is not added. As default
-%               nocheck=0. The controls on h, bdp and nsamp still remain.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               nocheck=false. The controls on h, bdp and nsamp still remain.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %        nomes:  It controls whether to display or not on the screen
 %               messages about estimated  time to compute LMS (LTS) . Scalar.
@@ -185,7 +185,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %            out.rew  = Scalar if out.rew=1 all subsequent output refers to
 %                       reweighted else no reweighting is done.
 %            out.beta = Vector of beta LTS (LMS) coefficient estimates,
-%                       including the intercept when options.intercept=1.
+%                       including the intercept when options.intercept=true.
 %                       out.beta=[intercept slopes].
 %              out.bs = p x 1 vector containing the units forming subset
 %                       associated with bLMS (bLTS).
@@ -449,8 +449,8 @@ hmin=p+1;
 % coefficients
 brob=-99;
 
-options=struct('intercept',1,'nsamp',nsampdef,'h',hdef,'bdp',...
-    bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',0,'nomes',0,...
+options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
+    bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',false,'nomes',0,...
     'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
 
 UserOptions=varargin(1:2:length(varargin));
@@ -1031,7 +1031,7 @@ else
 end
 
 if options.yxsave
-    if options.intercept==1
+    if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else

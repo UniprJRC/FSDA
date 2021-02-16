@@ -95,13 +95,13 @@ function out=MMregcore(y,X,b0,auxscale,varargin)
 %                 Example - 'rhofuncparam',5 
 %                 Data Types - single | double
 %
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
-%                 no check is performed on matrix y and matrix X. Notice
-%                 that y and X are left unchanged. In other words the
-%                 additional column of ones for the intercept is not added.
-%                 As default nocheck=0.
-%               Example - 'nocheck',1 
-%               Data Types - double
+%       nocheck : Check input arguments. Boolean. If nocheck is equal to
+%               true no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words the
+%               additional column of ones for the intercept is not added.
+%               As default nocheck=false.
+%               Example - 'nocheck',true 
+%               Data Types - boolean
 %
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
@@ -275,7 +275,7 @@ options=struct('refsteps',refstepsdef,'reftol',reftoldef,...
     'eff',effdef,'effshape',effshapedef,'conflev',0.975,...
     'rhofunc',rhofuncdef,'rhofuncparam','',...
     'Srhofunc',Srhofuncdef,'Srhofuncparam','',...
-    'plots',0,'nocheck',0,'yxsave',0,'intercept',1);
+    'plots',0,'nocheck',false,'yxsave',0,'intercept',true);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));

@@ -96,13 +96,13 @@ function [out]=regressHart(y,X,Z,varargin)
 %               Data Types - double
 %
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -241,8 +241,8 @@ toldef=1e-08;
 %toldef=1e-13;
 test=0;
 
-options=struct('intercept',1,'maxiter',maxiterdef,'type','art',...
-    'initialbeta','','initialgamma','','tol',toldef,'nocheck',0,'msgiter',0,'test',test);
+options=struct('intercept',true,'maxiter',maxiterdef,'type','art',...
+    'initialbeta','','initialgamma','','tol',toldef,'nocheck',false,'msgiter',0,'test',test);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -295,7 +295,7 @@ if size(Z,1)==n
 else
     % Check if interecept was true
     intercept=options.intercept;
-    if intercept==1
+    if intercept==true
         Z=[ones(n,1) X(:,Z+1)];
     else
         Z=[ones(n,1) X(:,Z)];

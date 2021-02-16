@@ -50,13 +50,13 @@ function [out] = regressHart_grid(y,X,Z,varargin)
 %               Example - 'theta',0.1:0.1:5
 %               Data Types - double
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %         out:   structure which contains the following fields
 %
@@ -159,8 +159,8 @@ vvarargin = varargin;
 alpha=0.1:0.1:4;
 theta=[0.001 0.01 0.1 1 1.71 10:120 500 1000 5000 10000 50000];
 
-options=struct('intercept',1,...
-    'alpha',alpha,'theta',theta,'plots',0,'nocheck',0);
+options=struct('intercept',true,...
+    'alpha',alpha,'theta',theta,'plots',0,'nocheck',false);
 
 
 if nargin > 3
