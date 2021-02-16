@@ -270,13 +270,13 @@ function [out, varargout] = LTSts(y,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
-%      nocheck: Check input arguments. Scalar. If nocheck is equal to 1 no
+%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
 %               and X are left unchanged. In other words the additioanl
 %               column of ones for the intercept is not added. As default
-%               nocheck=0. The controls on h, bdp and nsamp still remain.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               nocheck=false. The controls on h, bdp and nsamp still remain.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 % lshiftlocref: Parameters for local shift refinement. Structure.
 %               This option is used just if model.lshift is greater then 0.
@@ -344,7 +344,7 @@ function [out, varargout] = LTSts(y,varargin)
 %  out :     A structure containing the following fields
 %
 %             out.B =   Matrix containing estimated beta coefficients,
-%                       (including the intercept when options.intercept=1)
+%                       (including the intercept when options.intercept=true)
 %                       standard errors, t-stat and p-values
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients
@@ -1101,10 +1101,10 @@ nbestindexesdef=3;
 % dispresultsdef Boolean about display results.
 dispresultsdef=false;
 
-options=struct('intercept',1,'lts','','nsamp',nsampdef,'h',hdef,...
+options=struct('intercept',true,'lts','','nsamp',nsampdef,'h',hdef,...
     'bdp',bdpdef,'plots',0,'model',modeldef,...
     'conflev',0.975,'msg',1,'yxsave',0,...
-    'SmallSampleCor',2,'nocheck',0,...
+    'SmallSampleCor',2,'nocheck',false,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
     'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
     'dispresults',dispresultsdef);
@@ -1194,7 +1194,7 @@ Seq = [one seq seq.^2 seq.^3];
 
 % Define matrix which contains linear quadratic of cubic trend
 intercept=options.intercept;
-if intercept ==1
+if intercept ==true
     Xtrend = Seq(:,1:trend+1);
 else
     Xtrend = Seq(:,2:trend+1);
@@ -2187,7 +2187,7 @@ end
 out.y=yin;
 
 if options.yxsave
-    if options.intercept==1
+    if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=Xlin(:,2:end);
     else

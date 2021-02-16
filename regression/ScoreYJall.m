@@ -95,13 +95,13 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %               Data Types - boolean or struct
 %
 %
-%       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%       nocheck : Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -170,7 +170,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
     ytra=normYJ(y,[],la,'inverse',true);
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJall(ytra,X,'intercept',0);
+    [outSC]=ScoreYJall(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
     Sco=[la outSC.Score];
     Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','Ftest'});
@@ -198,7 +198,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
     X=ones(n,1);
     % also compute lik. ratio test based on MLE of laP and laN
     scoremle=true;
-    [outSC]=ScoreYJall(ytra,X,'intercept',0,'scoremle',scoremle);
+    [outSC]=ScoreYJall(ytra,X,'intercept',false,'scoremle',scoremle);
     la=[-1 -0.5 0 0.5 1]';
     Sco=[la outSC.Score];
     Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','FtestPN' 'FtestLR'});
@@ -231,7 +231,7 @@ usefmin=true;
 
 if nargin>2
     
-    options=struct('la',la,'nocheck',0,'intercept',0,'scoremle',scoremle,...
+    options=struct('la',la,'nocheck',false,'intercept',false,'scoremle',scoremle,...
         'usefmin',usefmin);
     
     UserOptions=varargin(1:2:length(varargin));
@@ -459,7 +459,7 @@ for i=1:lla
     
     if scoremle == true
         % compute the exact score test based on lik. ratio
-        Likrat=ScoreYJmle(y,X,'la',lai,'sseReducedModel',SSeR,'usefmin',usefmin,'nocheck',1);
+        Likrat=ScoreYJmle(y,X,'la',lai,'sseReducedModel',SSeR,'usefmin',usefmin,'nocheck',true);
         Sc(i,5)=Likrat.Score;
         laMLE=Likrat.laMLE;
     end

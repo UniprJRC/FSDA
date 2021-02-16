@@ -31,7 +31,7 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double the simulated time
 %                       series will not contain a trend. The default value
 %                       of model.trendb is [0 1] that is a slope equal to 1
-%                       and intercept equal to 0.
+%                       and intercept equal to false.
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
 %                       data (default) s=12, for quartely data s=4, ...
@@ -779,7 +779,7 @@ if ~isempty(ARb)
     
     if exist('regARIMA','file')>0
         % Use the Econometric toolbox if present: regARIMA
-        Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+        Mdl1 = regARIMA('Intercept',false,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
         % arima generates ARIMAX models
         % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
         [y , irregular] = simulate(Mdl1,T,'X',signal);

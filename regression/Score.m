@@ -40,13 +40,13 @@ function [outSC]=Score(y,X,varargin)
 %               Example - 'Lik',0
 %               Data Types - double
 %
-%       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%       nocheck : Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -102,7 +102,7 @@ function [outSC]=Score(y,X,varargin)
     % la = vector containing the values of the transformation
     % parameters which have to be tested
     la=[0.25 1/3 0.4 0.5];
-    [outSc]=Score(y,X,'la',la,'intercept',0);
+    [outSc]=Score(y,X,'la',la,'intercept',false);
 %}
 
 
@@ -119,7 +119,7 @@ if min(y)<0
     error('FSDA:Score:ynegative','Score test using BoxCox cannot be computed because min(y) is smaller than 0. Please use Yeo-Johnson family')
 end
 
-options=struct('Lik',0,'la',[-1 -0.5 0 0.5 1],'nocheck',0,'intercept',0);
+options=struct('Lik',0,'la',[-1 -0.5 0 0.5 1],'nocheck',false,'intercept',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
