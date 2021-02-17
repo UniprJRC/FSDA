@@ -779,7 +779,7 @@ if ~isempty(ARb)
     
     if exist('regARIMA','file')>0
         % Use the Econometric toolbox if present: regARIMA
-        Mdl1 = regARIMA('Intercept',false,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
+        Mdl1 = regARIMA('Intercept',0,'AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
         % arima generates ARIMAX models
         % Mdl1 = arima('AR',num2cell(ARb), 'Beta',1,'Variance',sigmaeps^2);
         [y , irregular] = simulate(Mdl1,T,'X',signal);

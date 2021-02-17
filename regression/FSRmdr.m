@@ -336,7 +336,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
-    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','false');
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept',false);
 %}
 
 %{
