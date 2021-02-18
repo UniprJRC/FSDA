@@ -11,9 +11,9 @@ function barVariableWidth(heights, classes, varargin)
 %
 %   classes :  classes of the frequency distribution. Vector.
 %              Vector of length k+1 containing numeric values describing the
-%              widths of the bars which make up the plot. widths(1)
+%              widths of the bars which make up the plot. classes(1)
 %              contains the starting point of the first bar on the x axis, and
-%              width(end) contains the end point of the last bar on the x axis.
+%              classes(end) contains the end point of the last bar on the x axis.
 %              For example if classes=[0.5 0.6 0.9 1 1.2]; the first baar
 %              has x coordinates [0.5 0.6], the second bar has x
 %              coordinates [0.6 0.9], the third has x coordinates [0.9 1]
@@ -75,9 +75,8 @@ function barVariableWidth(heights, classes, varargin)
 % Examples:
 
 %{
-    %%
+    % barVariableWidth with all default options.
     close all
-    % barVariableWidth with all default options
     % The following table shows the frequency distribution of the firms in
     % correspondence of the different classes of number of employees
     labels={'10-20' '20-30' '30-50' '50-100' '100-170'};
