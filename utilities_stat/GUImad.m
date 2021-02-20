@@ -88,7 +88,7 @@ function out = GUImad(x,flag,w)
 %}
 
 %{
-    %% MAD in a frequency distribution. 
+    %% MAD in a frequency distribution.
     % MAD = median absolute deviation from median.
     % Frequency distribution of the number of children in a sample of 200
     % families.
@@ -105,7 +105,7 @@ function out = GUImad(x,flag,w)
 %}
 
 %{
-    %% SM in a frequency distribution. 
+    %% SM in a frequency distribution.
     % SM= mean absolute deviation from mean.
     % Frequency distribution of the number of children in a sample of 200
     % families.
@@ -122,7 +122,7 @@ function out = GUImad(x,flag,w)
 %}
 
 %{
-    %% SMe in a frequency distribution. 
+    %% SMe in a frequency distribution.
     % SMe= median absolute deviation from mean.
     % Frequency distribution of the number of children in a sample of 200
     % families.
@@ -271,6 +271,7 @@ if nargin<3 % no weights
             xup=xord(posup);
             strmedian=['\boldmath{$Me$}= $\frac{x_{(' num2str(poslow) ')}+x_{(' num2str(posup) ')}}{' num2str(2) '}= \frac{' num2str(xlow) '+' num2str(xup) '}{' num2str(2) '}=' num2str(Me) '$'];
         else
+            posMe=(lenx+1)/2;
             strmedian=['\boldmath{$Me$}= $x_{(' num2str(posMe) ')}=' num2str(Me) '$'];
         end
     elseif flag==0 % S_M
