@@ -67,23 +67,27 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 or equal to -1 which
+%               model.lshift = scalar greater or equal than 0 or equal to -1, 
+%                         or vector of positive integer values which
 %                         specifies whether it is necessary to include a
 %                         level shift component. lshift = 0 (default)
 %                         implies no level shift component. lshift = -1
 %                         specifies the moment to start considering level
 %                         shifts automatically from specification of
 %                         lshift in position floor((T-1-p)/2). If lshift is
-%                         an interger greater then 0 then it specifies the
-%                         moment to start considering level shifts. For
+%                         an interger greater then 0 or a vector of positive 
+%                         integer values then it specifies the
+%                         moments where the level shift can be located. For
 %                         example if lshift =13 then the following
 %                         additional parameters are estimated
 %                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
 %                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
-%                          is an integer which assumes values 14, 14, ...,
-%                          T-13.
-%                         In general, the level shift which are considered
-%                         are referred to times (lshift+1):(T-lshift).
+%                          is an integer which assumes values 13.
+%                          T-13. If lshift =[13 20] then the following
+%                         additional parameters are estimated
+%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
+%                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
+%                          is an integer which assumes values 13 or 20.
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
@@ -552,7 +556,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.seasonal=0;
     % Potential level shift position is investigated in positions:
     % t=10, t=11, ..., t=T-10.
-    model.lshift=10;
+    model.lshift=11:n-10;
     out=LTSts(y,'model',model,'plots',1);
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
@@ -746,10 +750,10 @@ function [out, varargout] = LTSts(y,varargin)
     yLS=y;
     yLS(55:end)=yLS(55:end)+130;
     model=struct;
-    model.trend=1;              % linear trend
-    model.s=12;                 % monthly time series
+    model.trend=1;                          % linear trend
+    model.s=12;                             % monthly time series
     model.seasonal=1;
-    model.lshift=13;            % impose level shift
+    model.lshift=14:length(yLS)-13;         % impose level shift
     out=LTSts(yLS,'model',model);
 
     close all
@@ -793,7 +797,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
     model.seasonal=103;
-    model.lshift=25;
+    model.lshift=26:length(yLS)-25;
     out=LTSts(yLS,'model',model,'msg',0);
 
     close all
@@ -875,10 +879,10 @@ function [out, varargout] = LTSts(y,varargin)
     y1(90:90)=y1(90:90)+300;
     % Create structure specifying model
     model=struct;
-    model.trend=2;              % quadratic trend
-    model.s=12;                 % monthly time series
-    model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.trend=2;                  % quadratic trend
+    model.s=12;                     % monthly time series
+    model.seasonal=204;             % number of harmonics
+    model.lshift=41:length(y1)-40;  % position where monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lshiftlocref=struct;
@@ -925,10 +929,10 @@ function [out, varargout] = LTSts(y,varargin)
     y1(68:69)=y1(68:69)+800;
     % Create structure specifying model
     model=struct;
-    model.trend=2;              % quadratic trend
-    model.s=12;                 % monthly time series
-    model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.trend=2;                  % quadratic trend
+    model.s=12;                     % monthly time series
+    model.seasonal=204;             % number of harmonics
+    model.lshift=41:length(y1)-40;  % position where monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lshiftlocref=struct;
@@ -975,10 +979,10 @@ function [out, varargout] = LTSts(y,varargin)
     y1(90:90)=y1(90:90)+300;
     % Create structure specifying model
     model=struct;
-    model.trend=2;              % quadratic trend
-    model.s=12;                 % monthly time series
-    model.seasonal=204;         % number of harmonics
-    model.lshift=40;            % position where to start monitoring level shift
+    model.trend=2;                  % quadratic trend
+    model.s=12;                     % monthly time series
+    model.seasonal=204;             % number of harmonics
+    model.lshift=41:length(y1)-40;  % position where monitoring level shift
     model.X='';
     % Create structure lts specifying lts options
     lshiftlocref=struct;
@@ -1015,7 +1019,7 @@ function [out, varargout] = LTSts(y,varargin)
     model.trend     = 1;
     model.seasonal  = 102;
     model.s         = 12;
-    model.lshift    = 13;
+    model.lshift    = 14:length(Y4)-13;
 
     % LTSts
     out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true,'msg',0);
@@ -1268,15 +1272,20 @@ pini=ntrend+nseaso+nexpl;
 % p = total number of parameters in the model
 % nini +
 % varampl = number of parameters involving time varying trend,
-% + 2 additional parameters is there is a level shift component
-p=pini+varampl+(lshift>0 || lshift==-1)*2;
+% + 2 additional parameters if there is a level shift component
+lshiftYN=0;
+if length(lshift)>1 || lshift==-1 || lshift>0
+    lshiftYN=1;
+end
+p=pini+varampl+lshiftYN*2;
+
 
 %automatic specification of lshift which takes into account the fact that
 %at line 217 of FSRinvmdr the degrees of freedom mm-p must be positive.
 %Being mm the length of LSH = (lshift+1):(T-lshift), mm-p>0 can be written as:
 %(T-lshift)-(lshift+1) > p -->  2*lshift < T-1-p  --> lshift < (T-1-p)/2
 
-if lshift==-1   
+if length(lshift)==1 && lshift==-1   
     lshift=floor((T-1-p)/2);
 end
 % indexes of linear part of seasonal component
@@ -1287,7 +1296,7 @@ else
 end
 
 otherind=setdiff(1:p,indlinsc);
-if lshift>0
+if lshiftYN==1
     otherind=otherind(1:end-1);
 end
 
@@ -1398,14 +1407,13 @@ warning('off','MATLAB:rankDeficientMatrix');
 warning('off','MATLAB:singularMatrix');
 warning('off','MATLAB:nearlySingularMatrix');
 
-if lshift>0
+if lshiftYN==1
     % If a level shift is present, it is necessary to
     % reestimate a linear model each time with a different
-    % level shift starting from period lshift+1 up to period
-    % T-lshift and take the one which minimizes the target
+    % level shift and, if  take the one which minimizes the target
     % function (residual sum of squares/2 = negative log
     % likelihood)
-    LSH = (lshift+1):(T-lshift);
+    LSH = lshift;
     % total number of subsets to pass to procedure subsets
     ncombLSH=bc(T-1,pini+1);
     
@@ -1511,12 +1519,12 @@ for lsh=LSH
         bestnumscale2 = Inf * ones(bestrdiv2,1);
         bestbetas = zeros(bestrdiv2,p);
         bestyhat=zeros(T,bestrdiv2);
-        bestsubset = zeros(bestrdiv2,pini+(lshift>0)*2);
+        bestsubset = zeros(bestrdiv2,pini+lshiftYN*2);
         
     else
         bestbetas = zeros(bestr,p);
         bestyhat=zeros(T,bestr);
-        bestsubset = zeros(bestr,pini+(lshift>0)*2);
+        bestsubset = zeros(bestr,pini+lshiftYN*2);
         bestnumscale2 = Inf * ones(bestr,1);
         bestrLSH=bestr;
     end
@@ -1942,7 +1950,7 @@ end
 
 stdres = residuals/s0;
 if SmallSampleCor==1
-    plinear=pini+(lshift>0);
+    plinear=pini+lshiftYN;
     robest='LTS';
     eff='';
     rhofunc='';
@@ -2001,7 +2009,7 @@ bsbModSel=bsb;
 % computed previously.
 
 
-if varampl==0 && lshift==0 % In this case the model is linear
+if varampl==0 && lshiftYN==0 % In this case the model is linear
     % Function lik constructs fitted values and residual sum of
     % squares
     betaout = Xsel(bsb,:) \ yin(bsb);
@@ -2015,7 +2023,7 @@ if varampl==0 && lshift==0 % In this case the model is linear
     covB=s2*invXX; %#ok<MINV>
     Xlin=Xsel;
     
-elseif   varampl==0 && lshift>0
+elseif   varampl==0 && lshiftYN==1
     % In this case there is just level shift however we do not redo
     % the non linear estimation but a simple LS
     
@@ -2042,7 +2050,7 @@ else % model is non linear because there is time varying amplitude in seasonal c
     weights=false(T,1);
     weights(bsb)=true;
     
-    if lshift>0
+    if lshiftYN==1
         Xlshiftf=Xlshift(bsb);
         [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
     else
@@ -2233,7 +2241,7 @@ if varampl>0
 else
     posvarampl=[];
 end
-if lshift>0
+if lshiftYN==1
     lab=[lab; b_lshift(1)];
 end
 
@@ -2254,7 +2262,7 @@ if dispresults
     else
         disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
     end
-    if lshift>0
+    if lshiftYN==1
         disp(['Level shift position t=' num2str(out.posLS)])
     end
 end
@@ -2431,7 +2439,7 @@ if seasonal<6
     % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
     selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
     
-    if varampl==0 && lshift==0 % In this case the model is linear
+    if varampl==0 && lshiftYN==0 % In this case the model is linear
         % Function lik constructs fitted values and residual sum of
         % squares
         betaout = Xsel(bsb,selWithoutLastHarmonic) \ yin(bsb);
@@ -2440,7 +2448,7 @@ if seasonal<6
         
         s2reduced=sum((yin(bsb)-yhat(bsb)).^2);
         
-    elseif   varampl==0 && lshift>0
+    elseif   varampl==0 && lshiftYN==1
         % In this case there is just level shift however we do not redo
         % the non linear estimation but a simple LS
         Xselreduced= Xsel(:,selWithoutLastHarmonic);
@@ -2485,7 +2493,7 @@ if seasonal<6
             varampl=0;
         end
         
-        if lshift>0
+        if lshiftYN==1
             Xlshiftf=Xlshift(bsb);
             [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic(1:end-1)));
         else
@@ -2511,7 +2519,7 @@ else
 end
 out.LastHarmonicPval=pval;
 
-if lshift>0
+if lshiftYN==1
     lsdet=FSRinvmdr([length(LSH) abs(out.B(end,3))],p-1);
     LevelShiftPval=1-lsdet(1,2);
     out.LevelShiftPval=LevelShiftPval;
@@ -2550,7 +2558,7 @@ end
         Seqbsbvarampl=Seq(bsb,2:varampl+1);
         
         if isemptyX
-            if lshift>0
+            if lshiftYN==1
                 Xlshiftbsb=Xlshift(bsb);
                 XtrendXbsbXseasonXlshift=[Xtrendbsb Seqbsbvarampl Xlshiftbsb];
                 XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xlshiftbsb];
@@ -2563,7 +2571,7 @@ end
         else
             Xbsb= X(bsb,:);
             XtrendbsbXbsb=[Xtrendbsb Xbsb];
-            if lshift>0
+            if lshiftYN==1
                 Xlshiftbsb=Xlshift(bsb);
                 XtrendXbsbXseasonXlshift=[XtrendbsbXbsb Seqbsbvarampl Xlshiftbsb];
                 XtrendbsbXbsbXlshiftbsb=[Xtrendbsb Xbsb Xlshiftbsb];
@@ -2644,13 +2652,13 @@ end
             % seasonal + coefficient of fixed level shift
             % trlshift is the matrix of explanatory variables
             if isemptyX
-                if lshift>0
+                if lshiftYN==1
                     tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
                 else
                     tr_expl_nls_lshift=[Xtrend(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1))];
                 end
             else
-                if lshift>0
+                if lshiftYN==1
                     tr_expl_nls_lshift=[Xtrend(bsb,:) X(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1)) Xlshift(bsb)];
                 else
                     tr_expl_nls_lshift=[Xtrend(bsb,:) X(bsb,:) bsxfun(@times,at,Seq(bsb,2:varampl+1))];
@@ -2667,7 +2675,7 @@ end
             % seasonal component)
             yhatnlseaso=Seq(bsb,1)+ Seq(bsb,2:varampl+1)*b0145((trend+2+nexpl):(trend+2+nexpl+varampl-1));
             if isemptyX
-                if lshift>0
+                if lshiftYN==1
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
                         \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-Xlshift(bsb)*b0145(end));
                 else
@@ -2675,7 +2683,7 @@ end
                         \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1));
                 end
             else
-                if lshift>0
+                if lshiftYN==1
                     b2378=bsxfun(@times,yhatnlseaso,Xseaso(bsb,:))...
                         \(yin(bsb)-Xtrend(bsb,:)*b0145(1:trend+1)-X(bsb,:)*b0145((trend+2):(trend+1+nexpl)) - Xlshift(bsb)*b0145(end));
                 else
@@ -2739,7 +2747,7 @@ end
             npar=npar+nexpl;
         end
         
-        if lshift >0
+        if lshiftYN==1
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
@@ -2810,7 +2818,7 @@ end
             npar=npar+nexpl;
         end
         
-        if lshift >0
+        if lshiftYN==1
             %  \beta_(npar+1)* I(t \geq \beta_(npar+2)) where beta_(npar+1)
             %  is a real number and \beta_(npar+2) is a integer which
             %  denotes the period in which level shift shows up
@@ -2886,7 +2894,7 @@ end
         % Initialize parameters for the refining steps loop
         iter        = 0;
         betadiff    = 9999;
-        if lshift>0
+        if lshiftYN==1
             beta=initialbeta(1:end);
         else
             beta        = initialbeta;
@@ -2930,7 +2938,7 @@ end
                 bsb=i_r2s(1:h);
             end
             
-            if varampl==0 && lshift==0 % In this case the model is linear
+            if varampl==0 && lshiftYN==0 % In this case the model is linear
                 % Function lik constructs fitted values and residual sum of
                 % squares
                 newbeta = Xsel(bsb,:) \ y(bsb);
@@ -2938,7 +2946,7 @@ end
                 yhat = Xsel * newbeta;
                 exitfl=0;
                 
-            elseif   lshift>0
+            elseif   lshiftYN==1
                 
                 if varampl>0
                     % No minimization is used but just ALS
