@@ -1,4 +1,4 @@
-function out = GUItrimmean(x,percent, varargin)
+function out = GUItrimmean(x,percent, freq)
 %GUItrimmean shows the necessary calculations to obtain the trimmed mean in a GUI.
 %
 %
@@ -23,6 +23,11 @@ function out = GUItrimmean(x,percent, varargin)
 %           Example - 1:10
 %           Data Types - double
 %
+%    freq  : weights. Vector.
+%         Vector of the same length of x containing the (frequencies)
+%         weights assigned to each observation.
+%           Example - 1:10
+%           Data Types - double
 %
 %
 % Optional input arguments:
@@ -53,34 +58,91 @@ function out = GUItrimmean(x,percent, varargin)
 % Examples:
 %
 %{
-    %% Example of use of trimmed mean with 50 per cent of trimming
+    %% Example of use of trimmed mean with 50 per cent of trimming.
     x=[60 30 50 50  80 35000  80 95];
     out=GUItrimmean(x,50);
 %}
 
 %{
-    % Example of use of trimmed mean with 25 per cent of trimming
+    % Example of use of trimmed mean with 25 per cent of trimming.
     x=[60 30 50 50  80 35000  80 95];
     out=GUItrimmean(x,25);
 %}
 
+%{
+    %% Trimmed mean in a frequency distribution.
+    % Matrix X below contains the frequency distribution of the grades obtained
+    % by 10 students.
+    % Compute the truncated mean of the grades using alpha=0.2
+    X=[22	1
+    25	2
+    30	1
+    23	4
+    24	2];
+    x=X(:,1);
+    freq=X(:,2);
+    GUItrimmean(x,20,freq)
+%}
+
+%{
+    % Comparison of truncated mean using original data and frequency
+    % distribution.
+    % Vector x contains the temperature (Celsius degrees) in 10 places.
+    % Compute the truncated mean using alpha equal to 0.4.
+    x=[18	24	21	19 	27	12	21	15	12	16];
+    % Matrix X below contains the frequency distribution of the grades obtained
+    % by 10 students.
+    % Compute the truncated mean of the grades using alpha=0.2
+    trimperc=40;
+    GUItrimmean(x,trimperc)
+    Ta=tabulateFS(x);
+    GUItrimmean(Ta(:,1),trimperc,Ta(:,2))
+%}
+
+
 %% Beginning of code
 
 x=x(:);
-n=length(x);
-seq=(1:n)';
+[xord,xordind]=sort(x);
+    n=length(x);
+    seq=(1:n)';
 
-header={'i' 'x_i' 'x_{(i)}' 'x_{(i)} \; not \; trimmed'};
+if nargin <3
+    header={'i' 'x_i' 'x_{(i)}' 'x_{(i)} \; not \; trimmed'};
+    
+    m=floor(n*(percent/100)/2);
+    xordused=NaN(n,1);
+    xordused(m+1:n-m)=xord(m+1:n-m);
+    den=length((m+1):(n-m));
+    corpus=[seq, x, xord xordused];
+    num=sum(xord(m+1:n-m));
+    footer=[NaN sum(x) sum(x) num];
+    strtitle=['Details of trimmed mean calculation $\alpha=$' num2str(percent/100) ' $m$=' num2str(m)];
+    
+else
+    x=xord;
+    header={'i' 'x_i' 'n_i' 'n_i \; not \; trimmed'  'x_in_i'};
+    freq=freq(xordind);
+    n=sum(freq);
+    m=floor(n*(percent/100)/2);
+    
+    xseries=repelem(x,freq);
+    xseries=xseries(m+1:n-m);
+    [~,ia]=intersect(xord,xseries(:,1));
+    lenx=length(x);
+    freqused=zeros(lenx,1);
+    DistFreqTruncated=tabulateFS(xseries);
+    freqused(ia)=DistFreqTruncated(:,2);
+    xfreqused=xord.*freqused;
+    corpus=[seq, x, freq freqused xfreqused];
+    num=sum(xfreqused);
+    den=sum(freqused);
+    
+    footer=[NaN sum(x) sum(freq) sum(freqused) num];
+    strtitle=['Details of trimmed mean calculation $\alpha=$' num2str(percent/100) ' $m$=' num2str(m)];
+    
+end
 
-xord=sort(x);
-m=floor(n*(percent/100)/2);
-xordused=NaN(n,1);
-xordused(m+1:n-m)=xord(m+1:n-m);
-den=length((m+1):(n-m));
-corpus=[seq, x, xord xordused];
-num=sum(xord(m+1:n-m));
-footer=[NaN sum(x) sum(x) num];
-strtitle=['Details of trimmed mean calculation $\alpha=$' num2str(percent/100) ' $m$=' num2str(m)];
 
 str=strForSchool(header, corpus, footer);
 
@@ -108,3 +170,4 @@ fs1=20;
 annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);
 
 end
+%FScategory:GUI

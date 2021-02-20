@@ -51,20 +51,20 @@ function out = GUIvar(x,w)
 %{
     % Variance of the first 6 natural numbers.
     x=1:6;
-    out=varUNIV(x)
+    out=GUIvar(x)
 %}
 
 %{  
     % Example of calculation of variance (using n as denominator).
     x=[427 492 445 444 476 470];
-    y=varUNIV(x,1)
+    y=GUIvar(x,1)
 %}
 
 %{
     %% Example of weighted variance.
     x=[25:50:175 250 400 750];
     w=[59 69 31 25 8 3 1];
-    y=varUNIV(x,w);
+    out=GUIvar(x,w);
 %}
 
 %% Beginning of code
@@ -147,3 +147,4 @@ fs1=20;
 annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','latex','FontSize',fs1);
 
 end
+%FScategory:GUI
