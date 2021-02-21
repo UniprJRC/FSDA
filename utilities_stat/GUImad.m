@@ -19,7 +19,7 @@ function out = GUImad(x,flag,w)
 %  Required input arguments:
 %
 %     x : vector of numeric data. Vector.
-%           Vector containg strictly numerical data
+%           Vector containing strictly numerical data.
 %           Data Types - double
 %
 %

@@ -8,7 +8,7 @@ function out = GUIvar(x,w)
 %  Required input arguments:
 %
 %     x : vector of numeric data. Vector.
-%           Vector containg strictly numrical data
+%           Vector containing strictly numerical data.
 %           Data Types - double
 %
 %
