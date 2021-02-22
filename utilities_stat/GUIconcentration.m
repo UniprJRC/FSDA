@@ -23,8 +23,8 @@ function out = GUIconcentration(Q, varargin)
 % ExactFormula : use of exact formula. Boolean.
 %               Use of exact or approximate formula.
 %               The default is to use the exact formula if previously
-%               option freq has not been supplied, else approximate fomrula
-%               is used. Option ExactFomula overwrites the default.
+%               option freq has not been supplied, else approximate formula
+%               is used. Option ExactFormula overwrites the default.
 %           Example - 'ExactFormula',true
 %           Data Types - boolean
 %
