@@ -9,9 +9,9 @@ function out = GUIpowermean(x, s, w)
 %  Kolmogorov-Negumo function of the mean), is an abstraction of the
 %  Pythagorean means. It includes the harmonic $(s=-1)$, geometric
 %  ($s\rightarrow 0$), and arithmetic ($s=1$), quadratic ($s=2$), cubic
-%  mean ($s=3$). When $s\rightarrow -\infty$ the power mean tends to
+%  mean ($s=3$). When $s \rightarrow -\infty$ the power mean tends to
 %  $x_{min}$ and when $s\rightarrow +\infty$ the power mean tends to
-%  $x_{max}$ https://en.wikipedia.org/wiki/Generalized_mean
+%  $x_{max}$. http://en.wikipedia.org/wiki/Generalized_mean
 %
 %  Required input arguments:
 %
@@ -20,9 +20,9 @@ function out = GUIpowermean(x, s, w)
 %           Data Types - double
 %
 %    s  : power indicator. Scalar.
-%         Power indicator for the desired mean ($s=-\Inf= x_{min}$; $s=-1$
+%         Power indicator for the desired mean ($s=- \inf= x_{min}$; $s=-1$
 %         harmonic mean; $s=0$ geometric mean; $s=1$ = arithmetic mean; $s=2$
-%         quadratic mean; $s=3$ cubic mean, $s=+\Inf$ = $x_{max}$).
+%         quadratic mean; $s=3$ cubic mean, $s=+\inf$ = $x_{max}$).
 %           Example - 1:10
 %           Data Types - double
 %
@@ -38,10 +38,9 @@ function out = GUIpowermean(x, s, w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows
-%    (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
-%
 %
 % See also: GUIvar, GUIstd, GUIquantile, GUIconcentration
 %
@@ -83,7 +82,7 @@ sstr=num2str(s);
 if nargin<3 % unweighted generalized mean
     if abs(s)>1e-7
         
-        header={'i' 'x_i' ['x_i^' sstr]};
+        header={'i' 'x_i' ['x_i^{' sstr '}']};
     else
         header={'i' 'x_i' '\log(x_i)'};
         xs=log(x);
@@ -103,7 +102,7 @@ if nargin<3 % unweighted generalized mean
 else % weighted variance
     w=w(:);
     if abs(s)>1e-7
-        header={'i' 'x_i' ['x_i^' sstr] 'w_i' ['x_i^' sstr 'w_i']};
+        header={'i' 'x_i' ['x_i^{' sstr '}' ] 'w_i' ['x_i^' sstr 'w_i']};
     else
         header={'i' 'x_i' '\log(x_i)'  'w_i'  ' w_i \log(x_i)'}   ;
         xs=log(x);
@@ -140,10 +139,16 @@ annotation('textbox',dim,'FitBoxToText','on','String',strtitle,'Interpreter','la
 dim = [.2 .05 0.1 0.1];
 
 if nargin<3
+    if any(isinf(xs))
+        strfin=[' \it $\lim_{s \rightarrow + \infty} M_s(X)= \lim_{s \rightarrow + \infty} \left( \frac{\sum_{i=1}^n x_i^s}{n} \right)^{1/s}=x_{\max} =' num2str(max(x)) '$'];
+    elseif max(abs(xs))<1e-12 && min(abs(xs))>=0
+        strfin=[' \it $\lim_{s \rightarrow - \infty} M_s(X)= \lim_{s \rightarrow - \infty} \left( \frac{\sum_{i=1}^n x_i^s}{n} \right)^{1/s}=x_{\min} =' num2str(min(x)) '$'];
+    else
     if abs(s)>1e-7
         strfin=[' \it M$_s(X)= \left( \frac{\sum_{i=1}^n x_i^s}{n} \right)^{1/s}= (\frac{'  num2str(sumdev2) '}{' num2str(den) '})^{1/' sstr '}=' num2str(mx) '$'];
     else
         strfin=[' \it M$_s(X)= \exp \left( \frac{\sum_{i=1}^n \log(x_i)}{n} \right)= \exp (\frac{'  num2str(sumdev2) '}{' num2str(den) '})=' num2str(mx) '$'];
+    end
     end
 else
     if abs(s)>1e-7

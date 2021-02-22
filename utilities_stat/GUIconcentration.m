@@ -33,11 +33,12 @@ function out = GUIconcentration(Q, varargin)
 %                the concentration area is displayed on the screen. The
 %                default value of plots is false.
 %           Example - 'plots',true
-%           Data Types - boolean%
+%           Data Types - boolean
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %

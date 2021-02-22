@@ -10,7 +10,7 @@ function out = GUIquantile(x, z, varargin)
 %           Vector containing strictly numerical data.
 %           Note that if x is referred to a continuous variable x(1)
 %           represent the lower extreme of the first class, and the other
-%           values of x contain the upper extremes of the the other
+%           values of x contain the upper extremes of the other
 %           classes.
 %           Data Types - double
 %
@@ -25,31 +25,31 @@ function out = GUIquantile(x, z, varargin)
 %         Vector of the same length of x containing the frequencies
 %         (weights) associated to each value of x if x is discrete or
 %         vector with length length(x)-1 is variable X is continuous. If
-%         freq is not supplied it is assumed that all observations have the
+%         freq is not supplied, it is assumed that all observations have the
 %         same (relative) frequency (weight).
 %           Example - 'freq',1:10
 %           Data Types - double
 %
 % DiscreteData : Discrete data or continuous data. Boolean.
-%               If DiscreteData is true (default) we assume that the data
+%               If DiscreteData is true (default), we assume that the data
 %               in x come from a discrete variable.
-%               If DiscreteData is false (default) we assume that the data
+%               If DiscreteData is false, we assume that the data
 %               in x come from a continuous variable.
 %           Example - 'DiscreteData',false
 %           Data Types - boolean
 %
 %     plots    : show quantile graphically. Boolean.
-%                If plots is true and additional plot which shows
+%                If plots is true an additional plot which shows
 %                graphically how the quantile has been obtained using the
-%                linear interepolation is displayed on the screen. The
+%                linear interpolation is displayed on the screen. The
 %                default value of plots is false.
 %           Example - 'plots',true
 %           Data Types - boolean
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows
-%           (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %
@@ -176,7 +176,7 @@ if isempty(freq)
     
 else
     if DiscreteData == false
-        [minx,indminx]=min(x(:)) ;
+        [~,indminx]=min(x(:)) ;
         xori=x;
         x(indminx)=[];
     end
@@ -213,7 +213,7 @@ else
     
     fs=14;
     dim = [.2 .80 0.1 0.1];
-    figure('Position',[100 100 1000 600],'Units','normalized');
+    figure('Position',[100 100 1100 600],'Units','normalized');
     annotation('textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
     
     dim = [.2 .9 0.1 0.1];
@@ -240,7 +240,7 @@ else
         calc=[xzstr '+ \frac{' num2str(x(indexxz+1)) '-'...
             num2str(x(indexxz)) '}{' num2str(fcum(indexxz+1)) '-' num2str(fcum(indexxz)) '}'...
             '(' zstr '-' num2str(fcum(indexxz)) ')=' num2str(reqq) ]   ;
-        strfin=[' \it x $_{' zstr '}=  \frac{\overline{\overline x}_s  -\overline x_s}{F(x_s)-F(x_{s-1})}[' zstr '-F(x_{s-1})]=' calc '$'];
+        strfin=[' \it x $_{' zstr '}= \overline x_s+ \frac{\overline{\overline x}_s  -\overline x_s}{F(x_s)-F(x_{s-1})}[' zstr '-F(x_{s-1})]=' calc '$'];
         xz=reqq;
         xzstr=num2str(reqq);
     end
