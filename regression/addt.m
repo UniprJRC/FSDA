@@ -151,12 +151,13 @@ if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')
 end
 
+% Insert code for intercept
 la=1;
 units=[]';
 textlab=false;
 FontSize=10;
 SizeAxesNum=10;
-nocheck=0;
+nocheck=false;
 plots=0;
 
 
@@ -164,7 +165,7 @@ if nargin > 3
     
     if coder.target('MATLAB')
         % the 'options' struct in this implementation is provided by the for loop
-        options=struct('intercept',1,'plots',plots,'la',la,'units',units,'textlab',textlab,...
+        options=struct('intercept',true,'plots',plots,'la',la,'units',units,'textlab',textlab,...
             'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,'nocheck',nocheck);
     end
     

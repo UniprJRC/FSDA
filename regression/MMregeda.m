@@ -86,13 +86,13 @@ function [out , varargout] = MMregeda(y,X,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
-%                 no check is performed on matrix y and matrix X. Notice
-%                 that y and X are left unchanged. In other words the
-%                 additional column of ones for the intercept is not added.
-%                 As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%       nocheck : Check input arguments. Boolean. If nocheck is equal to
+%               true no check is performed on matrix y and matrix X. Notice
+%               that y and X are left unchanged. In other words the
+%               additional column of ones for the intercept is not added.
+%               As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %       plots : Plot on the screen. Scalar or structure.
 %               If plots = 1, generates a plot with the robust residuals
@@ -272,10 +272,10 @@ Srhofuncdef='bisquare';
 % default values of nominal efficiency which are used
 eff=0.5:0.01:0.99;
 
-options=struct('intercept',1,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
+options=struct('intercept',true,'InitialEst','','Snsamp',Snsampdef,'Srefsteps',Srefstepsdef,...
     'Sbestr',Sbestrdef,'Sreftol',Sreftoldef,'Sminsctol',Sminsctoldef,...
     'Srefstepsbestr',Srefstepsbestrdef,'Sreftolbestr',Sreftolbestrdef,...
-    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',0,'eff',eff,'effshape',0,...
+    'Sbdp',Sbdpdef,'Srhofunc',Srhofuncdef,'Srhofuncparam','','nocheck',false,'eff',eff,'effshape',0,...
     'refsteps',100,'tol',1e-7,'conflev',0.975,'plots',0);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -336,14 +336,14 @@ if isempty(InitialEst)
         [Sresult , C] = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',1);
+            'nocheck',true);
         
         varargout = {C};
     else
         Sresult = Sreg(y,X,'nsamp',nsamp,'bdp',bdp,'refsteps',refsteps,'bestr',bestr,...
             'reftol',reftol,'minsctol',minsctol,'refstepsbestr',refstepsbestr,...
             'reftolbestr',reftolbestr,'rhofunc',rhofunc,'rhofuncparam',rhofuncparam,...
-            'nocheck',1);
+            'nocheck',true);
     end
     
     bs = Sresult.beta;
@@ -383,7 +383,7 @@ out = struct;
 
 for jj=1:length(eff)
     outIRW = MMregcore(y,X,bs,ss,'eff',eff(jj),'effshape',effshape,...
-        'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',1,...
+        'refsteps',refsteps,'reftol',tol,'conflev',conflev,'plots',0,'nocheck',true,...
         'Srhofunc',Srhofunc);
     residuals=(y-X*outIRW.beta)/ss;
     Residuals(:,jj)=residuals;
@@ -417,7 +417,7 @@ end
 % Store values of efficiency
 out.eff=eff;
 
-if options.intercept==1
+if options.intercept==true
     % Store X (without the column of ones if there is an intercept)
     out.X=X(:,2:end);
 else
