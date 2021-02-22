@@ -31,7 +31,8 @@ function out = GUIstd(x,w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %

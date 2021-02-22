@@ -24,7 +24,7 @@ function out = GUItrimmean(x,percent, freq)
 %           Data Types - double
 %
 %    freq  : weights. Vector.
-%         Vector of the same length of x containing the (frequencies)
+%         Vector with the same length of x containing the (frequencies)
 %         weights assigned to each observation.
 %           Example - 1:10
 %           Data Types - double
@@ -36,7 +36,8 @@ function out = GUItrimmean(x,percent, freq)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %

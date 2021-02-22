@@ -1,5 +1,5 @@
 function out = GUIcov(x,y,w)
-%GUIstd shows the necessary calculations to obtain the covarianzìce in a GUI.
+%GUIcov shows the necessary calculations to obtain the covariance in a GUI.
 %
 %
 %<a href="matlab: docsearchFS('GUIcov')">Link to the help function</a>
@@ -11,14 +11,16 @@ function out = GUIcov(x,y,w)
 %
 %     x : vector of numeric data or table. Vector or table.
 %           Vector containing strictly numerical data.
-%           If x is table the second input argument y is not necessary.
-%           In this case weighted covariance is computed where the weights
-%           are the values inside the contingncy table.
-%           Data Types - array or table
+%           If x is table the second input argument y is not necessary. In
+%           this case weighted covariance is computed where the weights are
+%           the values inside the contingency table.
+%           Data Types - double or table
 %
-%     y : vector of numeric data or table. Vector or table.
+%     y : vector of numeric data. 
 %           Vector containing strictly numerical data.
-%           Data Types - array or table
+%           This input argument is not requested if previously input
+%           argument x is a table.
+%           Data Types - double
 %
 %  Optional input arguments:
 %
@@ -30,7 +32,8 @@ function out = GUIcov(x,y,w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %
@@ -77,7 +80,8 @@ function out = GUIcov(x,y,w)
 
 %{
     %% Example 2 of weighted covariance.
-    % In this example vectors x is table and only this argument is passed.
+    % In this example first input argument is a table and only this
+    % argument is passed.
     N=[0 0.4 0.1
     0.3	 0	0.2];
     colnames={'5' '6'	'7'};

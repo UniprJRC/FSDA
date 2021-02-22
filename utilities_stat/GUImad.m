@@ -25,14 +25,13 @@ function out = GUImad(x,flag,w)
 %
 %  Optional input arguments:
 %
-%    flag  : median or mean absolute deviation or mean absolute deviation from mean. Scalar.
+%    flag  : median or mean absolute deviation from median or mean absolute deviation from mean. Scalar.
 %         If flag=1 (default),  MAD is based on medians, i.e.
 %         median(abs(x-median(x)).
 %         elseif flag=0, $S_M$ is computed (mean absolute deviation) i.e.
 %         mean(abs(x-mean(x)).
 %         elseif flag=2, $S_{Me}$ is computed (mean absolute deviation from median) i.e.
 %         mean(abs(x-median(x)).
-%
 %           Example - 1
 %           Data Types - double
 %
@@ -44,8 +43,8 @@ function out = GUImad(x,flag,w)
 %
 % Output:
 %
-%    out = detailed output to compute the index. Table. Table with n+1 rows
-%           (where n is the length of x) containing the
+%    out = detailed output to compute the index. Table. 
+%          Table with n+1 rows (where n is the length of x) containing
 %          what is shown in the GUI. Last row contains the totals.
 %
 %
@@ -69,6 +68,7 @@ function out = GUImad(x,flag,w)
 
 %{
     % Example of calculation of MAD.
+    % MAD = median absolute deviation from median.
     x=[98 105 85 110 102];
     y=GUImad(x)
 %}
