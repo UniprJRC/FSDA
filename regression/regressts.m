@@ -157,7 +157,7 @@ function out = regressts(y,varargin)
 %  out :     A structure containing the following fields
 %
 %             out.B =   Matrix containing estimated beta coefficients,
-%                       (including the intercept when options.intercept=1)
+%                       (including the intercept when options.intercept=true)
 %                       standard errors, t-stat and p-values
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients
@@ -448,7 +448,7 @@ bsbini=1:T;
 
 dispresultsdef=false;
 
-options=struct('model',modeldef,'nocheck',0,'dispresults',dispresultsdef,...
+options=struct('model',modeldef,'nocheck',false,'dispresults',dispresultsdef,...
     'StartDate',StartDate,'bsb',bsbini,'plots',0,...
     'smallsamplecor',false,'asymptcor',false);
 

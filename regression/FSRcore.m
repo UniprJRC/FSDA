@@ -214,7 +214,7 @@ end
 % Set the intercept
 if strcmp(model,'ts')
     % ts: regression in time series always requires intercept
-    intercept=1;
+    intercept=true;
 else
     X=INP.X;
     % intcolumn = the index of the first constant column found in X, or empty.
@@ -222,9 +222,9 @@ else
     % The variable 'intercept' will be used later for plotting.
     intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
     if any(intcolumn) && p>1
-        intercept=1;
+        intercept=true;
     else
-        intercept=0;
+        intercept=false;
     end
 end
 
@@ -1269,14 +1269,14 @@ if ndecl>0
             bsb=seq(~isnan(bb(:,colbb)));
             if isempty(model)
                 % Call procedure FSRbsb
-                [Un,BB] = FSRbsb(y,X,bsb,'intercept',intercept,'init',n-ndecl,'nocheck',1);
+                [Un,BB] = FSRbsb(y,X,bsb,'intercept',intercept,'init',n-ndecl,'nocheck',true);
             elseif strcmp(model,'H')
                 % Call procedure FSRHbsb
                 Z=INP.Z;
                 gridsearch=options.gridsearch;
                 modeltype=options.modeltype;
                 [Un,BB] = FSRHbsb(y,X,Z,bsb,'intercept',intercept,'init',n-ndecl,...
-                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',1,'msg',0);
+                    'gridsearch',gridsearch,'modeltype',modeltype,'nocheck',true,'msg',0);
             elseif strcmp(model,'B')
                 % Call procedure FSRBbsb
                 beta0=INP.beta0;
@@ -1284,7 +1284,7 @@ if ndecl>0
                 tau0=INP.tau0;
                 n0=INP.n0;
                 [Un,BB] = FSRBbsb(y, X, beta0, R, tau0, n0,'bsb',bsb,'intercept',intercept,...
-                    'init',n-ndecl,'nocheck',1,'msg',0);
+                    'init',n-ndecl,'nocheck',true,'msg',0);
             elseif strcmp(model,'ts')
                 modelmdr=options.model;
                 [Un,BB] = FSRtsbsb(y,bsb,...
@@ -1349,7 +1349,7 @@ if ndecl>0
         n0=INP.n0;
         if ~isempty(goodobs)
             outregrB = regressB(y(goodobs), X(goodobs,:), beta0, R, tau0, n0,'intercept',intercept,...
-                'nocheck',1);
+                'nocheck',true);
         else
             % posterior values are equal to prior values, if goodobs is
             % empty
@@ -1412,7 +1412,7 @@ if plo==1 || plo==2
         namey=options.namey;
     end
     
-    if intercept==1
+    if intercept==true
         if isempty(options.nameX)
             nameX=cellstr(num2str((1:p-1)','X%d'));
         else

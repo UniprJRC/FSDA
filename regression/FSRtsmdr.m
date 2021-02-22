@@ -105,9 +105,9 @@ function [mdr,Un,BB,Bols,S2,Exflag] = FSRtsmdr(y,bsb,varargin)
 %               necessary to use function mdrplot.
 %
 %  nocheck:     Check input arguments inside structure model. As default
-%               nocheck=0. 
-%               Example - 'nocheck',1
-%               Data Types - double
+%               nocheck=false. 
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the

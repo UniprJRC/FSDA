@@ -43,14 +43,14 @@ function [out] = FSReda(y,X,bsb,varargin)
 %                       Example - 'init',100 starts monitoring from step m=100
 %                       Data Types - double
 %
-%      nocheck:  Check input arguments. Scalar.
-%                       If nocheck is equal to 1 no check is performed on
+%      nocheck:  Check input arguments. Boolean.
+%                       If nocheck is equal to true no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones for
-%                       the intercept is not added. As default nocheck=0. The
+%                       the intercept is not added. As default nocheck=false. The
 %                       controls on h, alpha and nsamp still remain
-%                       Example - 'nocheck',1
-%                       Data Types - double
+%                       Example - 'nocheck',true
+%                       Data Types - boolean
 %
 %        tstat:      the kind of t-statistics which have to be monitored.
 %               Character.
@@ -433,7 +433,7 @@ function [out] = FSReda(y,X,bsb,varargin)
     p = size(X, 2);
     % LXS and FSReda
     [outLXS]=LXS(y,X,'nsamp',1000);
-    [out] = FSReda(y, X, outLXS.bs, 'intercept', 0, 'wREML', true);
+    [out] = FSReda(y, X, outLXS.bs, 'intercept', false, 'wREML', true);
     % plot solution overwriting the RES output for simplicity
     out.RES = out.wREML;
     resfwdplot(out);
@@ -491,8 +491,8 @@ else
 end
 
 conflevdef=[0.95 0.99];
-options=struct('intercept',1,'init',init,'tstat','scal',...
-    'nocheck',0,'conflev',conflevdef,'wREML',false);
+options=struct('intercept',true,'init',init,'tstat','scal',...
+    'nocheck',false,'conflev',conflevdef,'wREML',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -661,7 +661,7 @@ if wREML == true
 	wt = RES;
 end
 %% Start of the forward search
-if nocheck==0 && rank(Xb)~=p
+if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
@@ -674,7 +674,7 @@ else
             end
         end
         
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             NoRankProblem=(rank(Xb) == p);
