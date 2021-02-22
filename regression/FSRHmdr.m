@@ -101,13 +101,13 @@ function [mdr,Un,BB,Bgls,S2,Hetero,WEI] = FSRHmdr(y,X,Z,bsb,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
@@ -367,7 +367,7 @@ end
 
 bsbstepdef='';
 
-options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
+options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','bsbmfullrank',1,'modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -399,7 +399,7 @@ end
 if size(Z,1)~=n
     % Check if intercept was true
     intercept=options.intercept;
-    if intercept==1
+    if intercept==true
         Z=X(:,Z+1);
     else
         Z=X(:,Z);
@@ -549,7 +549,7 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 hhh=1;
 %% Start of the forward search
-if nocheck==0 && rank(Xb)~=p
+if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     mdr=NaN;
@@ -564,7 +564,7 @@ else
             end
         end
         
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             NoRankProblem=(rank(Xb) == p);
@@ -574,13 +574,13 @@ else
             if art==1
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET=regressHart(yb,Xb,Zb,'nocheck',1,'intercept',intercept);
+                    HET=regressHart(yb,Xb,Zb,'nocheck',true,'intercept',intercept);
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHart_grid(yb,Xb,exp(Zb),'nocheck',1,'intercept',intercept);
+                        HET=regressHart_grid(yb,Xb,exp(Zb),'nocheck',true,'intercept',intercept);
                     else
-                        HET=regressHart(yb,Xb,Zb,'nocheck',1,'intercept',intercept);
+                        HET=regressHart(yb,Xb,Zb,'nocheck',true,'intercept',intercept);
                     end
                 end
                 
@@ -592,13 +592,13 @@ else
             else
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                    HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                 else
                     if size(Zb,2)==1
                         % Use grid search algorithm if Z has just one column
-                        HET=regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
+                        HET=regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',true);
                     else
-                        HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                        HET=regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                     end
                 end
                 

@@ -38,13 +38,13 @@ function [out] = regressHhar_grid(y,X,Z,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  plots :    Plot on the screen. Scalar.
 %               If equal to one a plot of profile loglikelihood
@@ -242,7 +242,7 @@ vvarargin = varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 alpha=0.1:0.1:4;
-options=struct('intercept',1,'alpha',alpha,'nocheck',0,'plots',0);
+options=struct('intercept',true,'alpha',alpha,'nocheck',false,'plots',0);
 
 if nargin > 3
     % Write in structure 'options' the options chosen by the user

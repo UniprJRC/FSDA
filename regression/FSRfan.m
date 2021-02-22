@@ -58,13 +58,13 @@ function [out]=FSRfan(y,X,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%       nocheck :   Check input arguments. Scalar.
-%                   If nocheck is equal to 1 no check is performed
+%       nocheck :   Check input arguments. Boolean.
+%                   If nocheck is equal to true no check is performed
 %                   on matrix y and matrix X. Notice that y and X are left
 %                   unchanged. In other words the additional column of ones
-%                   for the intercept is not added. As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - double
+%                   for the intercept is not added. As default nocheck=false.
+%                   Example - 'nocheck',true
+%                   Data Types - boolean
 %
 %           la  :   values of the transformation parameter for which it is
 %                   necessary to compute the score test. Vector.
@@ -619,7 +619,7 @@ conflev=0.99;
 msg=1;
 tag='pl_fan';
 la=[-1 -0.5 0 0.5 1];
-nocheck=0;
+nocheck=false;
 lwd=2;
 lwdenv=1;
 FontSize=12;
@@ -628,7 +628,7 @@ ylimy=[];
 SizeAxesNum=10;
 labx='Subset size m';
 laby='Score test statistic';
-intercept=1;
+intercept=true;
 titl='Fan plot';
 
 UserOptions=varargin(1:2:length(varargin));
@@ -785,7 +785,7 @@ for i=1:lla
     % Find initial subset to initialize the search using as y transformed
     % vector z
     if size(lms,1)==1
-        [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
+        [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg);
         bsb=out.bs;
         % Store information about the units forming subset for each value of
         % lambda
@@ -811,7 +811,7 @@ for i=1:lla
     % last correctly computed beta oefficients
     blast=NaN(p,1);
     
-    if nocheck==0 && (rank(Xb)~=p)
+    if nocheck==false && (rank(Xb)~=p)
         warning('FSRfan:message','The provided initial subset does not form full rank matrix');
         % FS loop will not be performed
     else
@@ -826,27 +826,27 @@ for i=1:lla
             if (mm>=init)
                 if BoxCox==1
                     % Compute and store the value of the score test
-                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',1);
+                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',true);
                     % Store score test for the units belonging to subset
                     Sco(mm-init+1,i+1)=outSC.Score;
                     
                 elseif BoxCox==0
                     % Compute and store the value of the score test using Yeo
                     % and Johnson transformation (just the global test)
-                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
+                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true);
                     % Store score test for the units belonging to subset
                     Sco(mm-init+1,i+1)=outSC.Score;
                     
                 else % in this case BoxCox==-1 || BoxCox==-2
-                    %[outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',1);
-                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
-                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',1);
+                    %[outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true);
+                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
+                    % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
                     %                     if i==1
                     if mm==init
                         clear cachedlahatPreviousStep
                     end
                     
-                    [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'scoremle',scoremle,'nocheck',1,'usefmin',usefmin);
+                    [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'scoremle',scoremle,'nocheck',true,'usefmin',usefmin);
                     if scoremle == true
                         laMLE(mm-init+1,i*2:i*2+1)=outSCpn.laMLE;
                     end
@@ -867,7 +867,7 @@ for i=1:lla
                 
             end
             
-            if nocheck==1
+            if nocheck==true
                 NoRankProblem=true;
             else
                 % Compute b using transformed vector zb

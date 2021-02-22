@@ -466,7 +466,7 @@ for jjpos=1:length(laposcand)
         ytra1(negs)=normYJ(ynegs,[],lanegj,'inverse',false,'Jacobian',false);
         
         [outtest]=FSRfan(ytra1,Xwithintercept,'plots',0,'init',init,'nsamp',nsamp,'la',1,...
-            'msg',0,'family','YJall','conflev',conflev,'scoremle',scoremle,'nocheck',1);
+            'msg',0,'family','YJall','conflev',conflev,'scoremle',scoremle,'nocheck',true);
         
         if msg==1
             % title([num2str(laposj) ' -- ' num2str(lanegj)])
@@ -774,7 +774,7 @@ end
 if signal==true
     mmstop(1)=mdagger;
     % Find units belonging to subset for laj in step mdagger
-    [~,BB] = FSRbsb(y,Xwithintercept,bs,'init',init,'nocheck',1,'msg',0,'bsbsteps',unique([init mdagger]));
+    [~,BB] = FSRbsb(y,Xwithintercept,bs,'init',init,'nocheck',true,'msg',0,'bsbsteps',unique([init mdagger]));
     % good = good units for score test
     good=seq(~isnan(BB(:,end)));
 else
@@ -800,7 +800,7 @@ end
 
 %  Outlier detection
 outl=FSR(y(good),Xwithintercept(good,:),'bonflev',bonflev,...
-    'lms',lms,'nocheck',1,'plots',0,'msg',0,'init',initlarger);
+    'lms',lms,'nocheck',true,'plots',0,'msg',0,'init',initlarger);
 
 if isnan(outl.ListOut)
     
@@ -821,10 +821,10 @@ if isnan(outl.ListOut)
         
         bsStepInit=seq(~isnan(BB(:,1)));
         if Sizenewgood<init
-            [~,BBn] = FSRbsb(y,Xwithintercept,bs,'init',Sizenewgood,'nocheck',1,'msg',0,...
+            [~,BBn] = FSRbsb(y,Xwithintercept,bs,'init',Sizenewgood,'nocheck',true,'msg',0,...
                 'bsbsteps',Sizenewgood);
         else
-            [~,BBn] = FSRbsb(y,Xwithintercept,bsStepInit,'init',length(bsStepInit),'nocheck',1,'msg',0,...
+            [~,BBn] = FSRbsb(y,Xwithintercept,bsStepInit,'init',length(bsStepInit),'nocheck',true,'msg',0,...
                 'bsbsteps',Sizenewgood);
         end
         

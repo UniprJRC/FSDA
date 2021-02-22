@@ -31,7 +31,7 @@ function [out] = simulateTS(T,varargin)
 %                       If this field is an empty double the simulated time
 %                       series will not contain a trend. The default value
 %                       of model.trendb is [0 1] that is a slope equal to 1
-%                       and intercept equal to 0.
+%                       and intercept equal to false.
 %               model.s = scalar greater than zero which specifies the
 %                       length of the seasonal period. For monthly
 %                       data (default) s=12, for quartely data s=4, ...

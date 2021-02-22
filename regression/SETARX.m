@@ -370,7 +370,7 @@ if d <= 0
 end
 
 % Check if there is at least one regressor.
-if isequal(p, 0) && isempty(X) && isempty(Z) && isequal(intercept, 0)
+if isequal(p, 0) && isempty(X) && isempty(Z) && isequal(intercept, false)
     error('FSDA:SETARX:WrongInput','The model must contain at least one regressor. Change p, intercept, X and/or Z.');
 end
 

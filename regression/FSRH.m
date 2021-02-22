@@ -175,13 +175,13 @@ function [out]=FSRH(y,X,Z,varargin)
 %               Example - 'gridsearch',1 
 %               Data Types - double
 %
-%       nocheck : Check input arguments. Scalar.
-%                 If nocheck is equal to 1 no check is performed on
+%       nocheck : Check input arguments. Boolean.
+%                 If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true 
+%               Data Types - boolean
 %
 %    bivarfit : Superimpose bivariate least square lines. Character. 
 %               This option adds one or more least square lines, based on
@@ -405,9 +405,9 @@ vvarargin=varargin;
 % The variable 'intercept' will be used later for plotting.
 intcolumn = find(max(X,[],1)-min(X,[],1) == 0,1);
 if any(intcolumn) && p>1
-    intercept=1;
+    intercept=true;
 else
-    intercept=0;
+    intercept=false;
 end
 
 % If the number of all possible subsets is <1000 the default is to extract
@@ -433,7 +433,7 @@ options=struct('h',hdef,...
     'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',1,'nocheck',0,'intercept',1,'bonflev','',...
+    'msg',1,'nocheck',false,'intercept',true,'bonflev','',...
     'bsbmfullrank',1,'gridsearch',0,'modeltype','art','tag',tagdef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -483,7 +483,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
+    [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,'msg',msg,'modeltype',modeltype,'gridsearch',gridsearch);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
@@ -504,7 +504,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'msg',msg);
+    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg);
     
     if out.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
@@ -521,7 +521,7 @@ else % initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',1,...
+        [mdr,Un,bb,Bgls,S2,Hetero] = FSRHmdr(y,X,Z,bs,'init',init,'plots',0,'nocheck',true,...
             'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'intercept',intercept,'modeltype',modeltype,'gridsearch',gridsearch);
         
         % If FSRmdr run without problems, mdr has two columns. In the second
@@ -549,7 +549,7 @@ else % initial subset is not supplied by the user
                 % restart LXS without the units forming
                 % initial subset
                 bsb=setdiff(seq,out.bs);
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
+                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg);
                 bs=bsb(out.bs);
                 
                 
@@ -560,7 +560,7 @@ else % initial subset is not supplied by the user
                 iter=iter+1;
                 bsb=setdiff(seq,mdr);
                 constr=mdr;
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
+                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg);
                 bs=bsb(out.bs);
             end
         end

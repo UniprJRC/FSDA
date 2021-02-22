@@ -73,14 +73,14 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %                       Example - 'tstat','trad'
 %                       Data Types - char
 %
-%      nocheck:  Check input arguments. Scalar.
-%                       If nocheck is equal to 1 no check is performed on
+%      nocheck:  Check input arguments. Boolean.
+%                       If nocheck is equal to true no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones for
-%                       the intercept is not added. As default nocheck=0. The
+%                       the intercept is not added. As default nocheck=false. The
 %                       controls on h, alpha and nsamp still remain
-%                       Example - 'nocheck',1
-%                       Data Types - double
+%                       Example - 'nocheck',true
+%                       Data Types - boolean
 %
 %        conflev:  confidence levels to be used to compute confidence interval
 %                       for the elements of $\beta$ and for $\sigma^2$. Vector.
@@ -250,7 +250,7 @@ function [out] = FSRHeda(y,X,Z,bsb,varargin)
 %               variable which has been used.
 %     out.X=    Data matrix of explanatory variables
 %               which has been used (it also contains the column of ones if
-%               input option intercept was missing or equal to 1).
+%               input option intercept was missing or equal to true).
 %     out.Z=   Predictor variables in the scedastic equation.
 %   out.class =  'FSRHeda'.
 %
@@ -510,8 +510,8 @@ else
 end
 
 conflevdef = [0.95 0.99];
-options = struct('intercept',1,'init',init,'tstat','scal',...
-    'nocheck',0,'conflev',conflevdef,'gridsearch',0,'modeltype','art', 'constr', '');
+options = struct('intercept',true,'init',init,'tstat','scal',...
+    'nocheck',false,'conflev',conflevdef,'gridsearch',0,'modeltype','art', 'constr', '');
 
 UserOptions = varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -688,7 +688,7 @@ sigma2INT = [(init:n)' zeros(n-init+1,2*lconflev)];
 % heteroskedasticity
 if size(Z,1) ~= n
     % Check if interecept was true
-    if intercept == 1
+    if intercept == true
         Z = X(:,Z+1);
     else
         Z = X(:,Z);
@@ -715,7 +715,7 @@ ncl=setdiff(seq,bsb);
 
 hhh = 1;
 %% Start of the forward search
-if nocheck==0 && rank(Xb)~=p
+if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSRHeda:NoFullRank','The provided initial subset does not form full rank matrix');
     % FS loop will not be performed
 else
@@ -728,7 +728,7 @@ else
             end
         end
         
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             NoRankProblem=(rank(Xb) == p);
@@ -738,13 +738,13 @@ else
             if art == 1
                 if  mm > 5  && gridsearch ~=1
                     % Use scoring
-                    HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                    HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                 else
                     if size(Zb,2) == 1
                         % Use grid search algorithm if Z has just one column
-                        HET = regressHart_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
+                        HET = regressHart_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',true);
                     else
-                        HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                        HET = regressHart(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                     end
                 end
                 
@@ -756,13 +756,13 @@ else
             else
                 if  mm > 5  && gridsearch ~= 1
                     % Use scoring
-                    HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                    HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                 else
                     if size(Zb,2) == 1
                         % Use grid search algorithm if Z has just one column
-                        HET = regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',1);
+                        HET = regressHhar_grid(yb,Xb,exp(Zb),'intercept',intercept,'nocheck',true);
                     else
-                        HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',1);
+                        HET = regressHhar(yb,Xb,Zb,'intercept',intercept,'nocheck',true);
                     end
                 end
                 omegahat = exp(Z*HET.Gamma(2:end,1));

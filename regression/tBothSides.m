@@ -438,7 +438,7 @@ la0='';
 family='BoxCox';
 prolik='';
 dispresults=false;
-intercept=1;
+intercept=true;
 
 options=struct('intercept',intercept,'la',la,'modelfun',modelfun,...
     'beta0',beta0,'la0',la0,'family',family,...
@@ -481,7 +481,7 @@ end
 n=length(y);
 
 % If the link is linear and there is the intercept add the column of ones
-if isempty(modelfun) && intercept==1
+if isempty(modelfun) && intercept==true
     X=[ones(n,1) X];
 end
 

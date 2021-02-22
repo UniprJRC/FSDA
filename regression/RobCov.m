@@ -100,7 +100,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %
 %  out :     A structure containing the following fields
 %
-%   out.covrob = p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%   out.covrob = p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob implements
 %               equation (4.49) of p. 101 of Maronna et al. (2006)
@@ -112,7 +112,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
 %                \]
-%  out.covrob1 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%  out.covrob1 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -127,7 +127,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                   for the coefficient of variation of $\psi'$, where
 %                   $\psi$ and $\psi'$ are, respectively,  the first and
 %                   second derivatives of the $\rho$ function.
-%  out.covrob2 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%  out.covrob2 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob1 implements
 %               equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -136,7 +136,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
 %                \]
-%  out.covrob3 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%  out.covrob3 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob implements
 %               equation (7.82) of p. 171 of of Huber and Ronchetti (2009).
@@ -146,7 +146,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                 \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
 %                 \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
 %                \]
-%  out.covrob4 =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%  out.covrob4 =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing asymptotic variance covariance
 %               matrix of regression coefficients. covrob implements
 %               equation (7.83) of p. 171 of of Huber and Ronchetti (2009).
@@ -154,7 +154,7 @@ function out=RobCov(X,scaledres,scaleest,varargin)
 %                \[
 %                 \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2  (X' W X)^{-1} X'X (X' W X)^{-1};
 %                \]
-%  out.covrobc =  p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+%  out.covrobc =  p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
 %               containing best variance covariance matrix of regression
 %               coefficients. covrobc checks the coefficient of variation
 %               of the derivative of function $\psi(r_i/\hat \sigma)$. If 
@@ -378,7 +378,7 @@ rhofuncdef='bisquare';
 bdpdef='';
 effdef='';
 % store default values in the structure options
-options=struct('intercept',1,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,'eff',effdef);
+options=struct('intercept',true,'rhofunc',rhofuncdef,'rhofuncparam','','bdp',bdpdef,'eff',effdef);
 
 % check user options and update structure options
 UserOptions=varargin(1:2:length(varargin));
