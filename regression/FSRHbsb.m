@@ -89,13 +89,13 @@ function [Un,BB] = FSRHbsb(y,X,Z,bsb,varargin)
 %               Example - 'modeltype','har'
 %               Data Types - string
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  msg  :    Level of output to display. Scalar.
 %               It controls whether to display or not messages
@@ -243,7 +243,7 @@ end
 
 bsbstepdef='';
 
-options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
+options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','modeltype','art','gridsearch',0,'bsbsteps',bsbstepdef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -275,7 +275,7 @@ end
 if size(Z,1)~=n
     % Check if interecept was true
     intercept=options.intercept;
-    if intercept==1
+    if intercept==true
         Z=X(:,Z+1);
     else
         Z=X(:,Z);
@@ -385,7 +385,7 @@ Un = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 hhh=1;
 %% Start of the forward search
-if nocheck==0 && rank(Xb)~=p
+if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSRHmdr:message','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRHmdr:message','FS loop will not be performed');
     % FS loop will not be performed
@@ -403,7 +403,7 @@ else
             end
         end
         
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             NoRankProblem=(rank(Xb) == p);

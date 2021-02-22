@@ -150,9 +150,9 @@ function [out]=FSRts(y,varargin)
 %               Data Types - double
 %
 %       nocheck : Check input arguments inside input option model.
-%               As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %    bivarfit : Superimpose bivariate least square lines. Character. This option adds
 %                 one or more least squares lines, based on
@@ -585,7 +585,7 @@ options=struct('nsamp',nsampdef,'model',modeldef,'lms',1,'plots',1,...
     'init',init,'h',hdef,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',1,'nocheck',0,'bonflev','',...
+    'msg',1,'nocheck',false,'bonflev','',...
     'bsbmfullrank',1,'tag',tagdef);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -645,7 +645,7 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
     
     % Compute Minimum Deletion Residual for each step of the search
-    [mdr,Un,bb,Bols,S2,Exflag] = FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',1,'msg',msg);
+    [mdr,Un,bb,Bols,S2,Exflag] = FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',true,'msg',msg);
     
     if size(mdr,2)<2
         if length(mdr)>=T/2
@@ -704,7 +704,7 @@ else % Initial subset is not supplied by the user
     while size(mdr,2)<2 && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
-        [mdr,Un,bb,Bols,S2,Exflag]=FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',1,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
+        [mdr,Un,bb,Bols,S2,Exflag]=FSRtsmdr(y,bs,'model',modelmdr,'init',init,'plots',0,'nocheck',true,'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank);
         
         % If FSRtsmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -743,7 +743,7 @@ else % Initial subset is not supplied by the user
                 iter=iter+1;
                 bsb=setdiff(seq,mdr);
                 constr=mdr;
-                % [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',1,'msg',msg);
+                % [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg);
                 [out]=LTSts(y(bsb),'model',model,'h',h,'nsamp',nsamp,'msg',msg,'yxsave',1);
                 
                 bs=bsb(out.bs);

@@ -205,7 +205,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     X=fishery{:,1};
     [out]=LXS(y,X);
     bsb=out.bs;
-    [Un,BB] = FSRbsb(y,X,out.bs,'intercept','0');
+    [Un,BB] = FSRbsb(y,X,out.bs,'intercept',false);
 %}
 
 %{
@@ -214,7 +214,7 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
     y=fishery{:,2};
     X=fishery{:,1};
     [out]=LXS(y,X,'nsamp',10000);
-    [Un,BB] = FSRbsb(y,X,out.bs,'nocheck','1');
+    [Un,BB] = FSRbsb(y,X,out.bs,'nocheck',true);
 %}
 
 %% Beginning of code
@@ -240,7 +240,7 @@ bsbstepdef='';
 
 if coder.target('MATLAB')
     
-    options=struct('intercept',1,'init',init,'nocheck',false,'plots',0,...
+    options=struct('intercept',true,'init',init,'nocheck',false,'plots',0,...
         'bsbsteps',bsbstepdef,'msg',true);
     
     UserOptions=varargin(1:2:length(varargin));
@@ -412,7 +412,7 @@ else
         end
         
         % Compute beta coefficients using subset
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             rankXb=rank(Xb);

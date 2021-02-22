@@ -40,13 +40,13 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %               Example - 'Lik',0
 %               Data Types - double
 %
-%       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%       nocheck : Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -96,7 +96,7 @@ function [outSC]=ScoreYJ(y,X,varargin)
     % la = vector containing the values of the transformation
     % parameters which have to be tested
     la=[0.25 1/3 0.4 0.5];
-    [outSc]=ScoreYJ(y,X,'la',la,'intercept',1);
+    [outSc]=ScoreYJ(y,X,'la',la,'intercept',true);
 %}
 
 %{
@@ -124,8 +124,8 @@ function [outSC]=ScoreYJ(y,X,varargin)
      X=ones(n,1);
      la=-1:0.01:2.5;
      % Given that there are no explanatory variables the test must be
-     % called with intercept 0
-     out=ScoreYJ(y,X,'intercept',0,'la',la,'Lik',1);
+     % called with intercept false
+     out=ScoreYJ(y,X,'intercept',false,'la',la,'Lik',1);
      plot(la',out.Score)
      xax=axis;
      line(xax(1:2),zeros(1,2))
@@ -144,7 +144,7 @@ Likopt=0;
 
 if nargin>2
     
-    options=struct('Lik',0,'la',la,'nocheck',0,'intercept',0); % ,'mingreater0',mingreater0);
+    options=struct('Lik',0,'la',la,'nocheck',false,'intercept',false); % ,'mingreater0',mingreater0);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid

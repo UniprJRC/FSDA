@@ -59,13 +59,13 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               connect it dynamically to the other forward plots it is
 %               necessary to use function mdrplot.
 %
-%  nocheck:     Check input arguments. Scalar. If nocheck is equal to 1 no
+%  nocheck:     Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
 %               and X are left unchanged. In other words the additioanl
 %               column of ones for the intercept is not added. As default
-%               nocheck=0. The controls on h, alpha and nsamp still remain
-%               Example - 'nocheck',1
-%               Data Types - double
+%               nocheck=false. The controls on h, alpha and nsamp still remain
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  msg  :       Level of output to display. Scalar. It controls whether to
 %               display or not messages about great interchange on the
@@ -336,7 +336,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
-    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept',false);
 %}
 
 %{
@@ -347,7 +347,7 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
     X=fishery{:,1};
      % Find starting subset
      [out]=LXS(y,X,'nsamp',10000);
-    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);
+    [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',true);
 %}
 
 
@@ -476,7 +476,7 @@ end
 
 internationaltrade=false;
 
-options=struct('intercept',1,'init',initdef,'plots',0,'nocheck',0,'msg',1,...
+options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,...
     'threshlevoutX',[],'internationaltrade',internationaltrade);
 
@@ -624,7 +624,7 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
 
 %% Start of the forward search
-if nocheck==0 && rank(Xb)~=p
+if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
     warning('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
     mdr=NaN;
@@ -638,7 +638,7 @@ else
             end
         end
         
-        if nocheck==1
+        if nocheck==true
             NoRankProblem=true;
         else
             NoRankProblem=(rank(Xb) == p);

@@ -123,13 +123,13 @@ function out=regressB(y, X, beta0, R, tau0, n0, varargin)
 %               Example - 'conflev',[0.99 0.999]
 %               Data Types - double
 %
-%  nocheck:   Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%  nocheck:   Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones for
-%               the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 % Output:
 %
@@ -413,8 +413,8 @@ bsbini=1:n1;
 cini=1;
 stats=0;
 
-options=struct('intercept',1,'bsb',bsbini,'c',cini,'stats',stats,...
-    'conflev',[0.95 0.99],'nocheck',0);
+options=struct('intercept',true,'bsb',bsbini,'c',cini,'stats',stats,...
+    'conflev',[0.95 0.99],'nocheck',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)

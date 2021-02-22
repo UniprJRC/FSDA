@@ -14,7 +14,7 @@ function [outFORE] = forecastTS(outEST,varargin)
 %               Structure.
 %               Structure containing the following fields.
 %          outEST.B =   Matrix containing estimated beta coefficients,
-%                       (including the intercept when options.intercept=1)
+%                       (including the intercept when options.intercept=true)
 %                       standard errors, t-stat and p-values
 %                       The content of matrix B is as follows:
 %                       1st col = beta coefficients

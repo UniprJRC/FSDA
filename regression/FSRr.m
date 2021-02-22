@@ -280,7 +280,7 @@ options = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
     'h','','nsamp','','lms',1,'plots',1,...
     'init',init,'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','',...
-    'msg',0,'nocheck',0,'intercept',1,'bonflev','','bsbmfullrank',1);
+    'msg',0,'nocheck',false,'intercept',true,'bonflev','','bsbmfullrank',1);
 
 UserOptions = varargin(1:2:length(varargin));
 
@@ -357,8 +357,8 @@ end
 nlistIn=length(ListIn);
 
 % Find S2 using units not declared as outliers using FSR
-%in case intercept=1:
-if intercept == 1
+%in case intercept=true:
+if intercept == true
     X = [ones(n,1) X];
 end
 
@@ -374,7 +374,7 @@ resb=res(ListIn);
 % subset)
 numS2b=(resb'*resb);
 %ytildeb = deviation from the mean (if intercept is present) for subset
-if intercept==1
+if intercept==true
     ytildeb=y(ListIn)-mean(y(ListIn));
 else
     ytildeb=y(ListIn);
@@ -457,7 +457,7 @@ if nargout > 0 || plotsPI==1
     maxX=max(X(:,end));
     
     xnew=(minX:((maxX-minX)/1000):maxX)';
-    if intercept==1
+    if intercept==true
         xnew=[ones(length(xnew),1) xnew];
         hasintercept=true;
     else

@@ -273,7 +273,7 @@ function out=regressH(y,X,Z,varargin)
 %% Beginning of code
 
 if nargin>3
-    options=struct('type','art','intercept',1,'maxiter',100,...
+    options=struct('type','art','intercept',true,'maxiter',100,...
         'initialbeta','','initialgamma','','tol',1e-7); %#ok<NASGU>
 
 % check if input option type exists
