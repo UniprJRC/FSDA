@@ -73,13 +73,13 @@ function out=boxcoxR(y,X, varargin)
 %               Example - 'family','YJ'
 %               Data Types - char
 %
-%       nocheck : Check input arguments. Scalar. If nocheck is equal to 1
-%                 no check is performed on vector y and matrix X. This
+%       nocheck : Check input arguments. Boolean. 
+%                 If nocheck is equal to true no check is performed on vector y and matrix X. This
 %                 means that y and X are left unchanged. Note also that the
 %                 additional column of ones for the intercept is not added.
-%                 As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%                 As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %        conflev : Confidence level for lambda. Scalar. The scalar is 
 %                  between 0 and 1 and determines the confidence level for
@@ -390,8 +390,8 @@ usefmin=false;
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
     
-    options=struct('family',family,'plots',0,'laseq',laseq,'nocheck',0,...
-        'intercept',1,'conflev',conflev,'laseqPos',laseqPos,...
+    options=struct('family',family,'plots',0,'laseq',laseq,'nocheck',false,...
+        'intercept',true,'conflev',conflev,'laseqPos',laseqPos,...
         'laseqNeg',laseqNeg,'usefmin',usefmin);
     
     UserOptions=varargin(1:2:length(varargin));

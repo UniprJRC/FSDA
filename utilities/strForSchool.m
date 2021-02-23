@@ -1,6 +1,7 @@
 function [str] = strForSchool(header, corpus, footer, classes)
 [n,p]=size(corpus);
 
+% classes is the string array to put in the second column of the table
 if nargin<4
     classes='';
 end
@@ -18,10 +19,15 @@ TableCorpus='';
 if size(corpus)<=17
     for i=1:n
         for j=1:p
-            numij=num2str(corpus(i,j));
+            corpusij=corpus(i,j);
+            if isnan(corpusij)
+                numij='-';
+            else
+            numij=num2str(corpusij);
+            end
             
-            if j==1 && iscell(classes)
-                TableCorpus=[TableCorpus classes{i} ' &' numij ' &'];
+            if j==2 && isstring(classes)
+                TableCorpus=[TableCorpus ' ' classes{i}  ' &'];
                 
             elseif j<size(corpus,2)
                 TableCorpus=[TableCorpus ' ' numij ' &'];
@@ -35,8 +41,8 @@ else
         for j=1:p
             numij=num2str(corpus(i,j));
             
-            if j==1 && iscell(classes)
-                TableCorpus=[TableCorpus classes{i} ' &' numij ' &'];
+            if j==2 && isstring(classes)
+                TableCorpus=[TableCorpus ' ' classes{i}  ' &'];
                 
             elseif j<p
                 TableCorpus=[TableCorpus ' ' numij ' &'];
@@ -60,8 +66,8 @@ else
         for j=1:p
             numij=num2str(corpus(i,j));
             
-            if j==1 && iscell(classes)
-                TableCorpus=[TableCorpus classes{i} ' &' numij ' &'];
+            if j==2 && isstring(classes)
+                TableCorpus=[TableCorpus ' ' classes{i}  ' &'];
                 
             elseif j<size(corpus,2)
                 TableCorpus=[TableCorpus ' ' numij ' &'];

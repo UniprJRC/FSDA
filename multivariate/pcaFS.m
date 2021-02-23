@@ -13,7 +13,7 @@ function out=pcaFS(Y,varargin)
 %   4) provides guidelines about the automatic choice of the number of
 %       components;
 %   5) returns the communalities for each variable with respect to the
-%       first k principal components in table format; 
+%       first k principal components in table format;
 %   5) calls app biplotFS which enables to obtain an interactive biplot in
 %      which points, rowslabels or arrows can be shown or hidden. This app
 %      also gives the possibility of controlling the length of the arrows
@@ -273,8 +273,12 @@ commun=loadings.^2;
 labelscum=cellstr([repmat([pcnames{1} '-'],NumComponents-1,1) char(pcnames{2:end})]);
 communcum=cumsum(loadings.^2,2);
 communwithcum=[commun communcum(:,2:end)];
+varNames=[pcnames; labelscum];
+if verLessThanFS(9.7)
+    varNames=matlab.lang.makeValidName(varNames);
+end
 communwithcumT=array2table(communwithcum,'RowNames',varnames,...
-    'VariableNames',[pcnames; labelscum]);
+    'VariableNames',varNames);
 
 out=struct;
 out.Rtable=Rtable;
@@ -331,9 +335,12 @@ if plots==true
         subplot(NumComponents,1,i)
         b=bar(xlabels, loadings(:,i),'g');
         title(['Correlations with PC' num2str(i)])
-        
-        xtips = b.XEndPoints;
-        ytips = b.YEndPoints;
+        xtips=b(1).XData;
+        ytips=b(1).YData;
+        % The alternative instructions below only work from MATLAB
+        % 2019b
+        %   xtips = b.XEndPoints;
+        %   ytips = b.YEndPoints;
         barlabels = string(round(loadings(:,i),2));
         text(xtips,ytips,barlabels,'HorizontalAlignment','center',...
             'VerticalAlignment','bottom')

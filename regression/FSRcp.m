@@ -37,13 +37,13 @@ function [outCp] = FSRcp(y,X,smallp,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%     nocheck   : Check input arguments. Scalar.
-%                        If nocheck is equal to 1 no check is performed on
+%     nocheck   : Check input arguments. Boolean.
+%                        If nocheck is equal to true no check is performed on
 %                       matrix y and matrix X. Note that y and X are left
 %                       unchanged. In other words the additioanl column of ones
-%                       for the intercept is not added. As default nocheck=1.
-%                       Example - 'nocheck',1
-%                       Data Types - double
+%                       for the intercept is not added. As default nocheck=true.
+%                       Example - 'nocheck',true
+%                       Data Types - boolean
 %
 %           h   :       number of observations that have determined the least
 %                       trimmed squares estimator. Integer.
@@ -471,7 +471,7 @@ options=struct('intercept',1,'h',hdef,...
     'plots',0,'quant',[0.025 0.5 0.975],...
     'steps',steplabdef,'Excl','','labout',0,'ExclThresh',0.99999,...
     'titl','','labx','Subset size m','laby','',...
-    'xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,'nocheck',0);
+    'xlimx','','ylimy','','lwd',2,'lwdenv',1,'FontSize',12,'SizeAxesNum',10,'nocheck',false);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -608,7 +608,7 @@ if ~isempty(Aj)
         
         % Find initial subset to initialize the search using reduced subset of
         % variables
-        [out]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1,'nomes',nomes);
+        [out]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'nomes',nomes);
         bsb=out.bs;
         Xb=Xred(bsb,:); % Subset of X using reduced set of expl. variables
         Xball=X(bsb,:); % Subset of X using full set of expl. variables

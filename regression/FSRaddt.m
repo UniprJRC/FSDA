@@ -90,13 +90,13 @@ function [out]=FSRaddt(y,X,varargin)
 %                        Example - 'lwdt',1 
 %                        Data Types - double
 %
-%       nocheck :       Check input arguments. Scalar.
-%                       If nocheck is equal to 1 no check is performed on
+%       nocheck :       Check input arguments. Boolean.
+%                       If nocheck is equal to true no check is performed on
 %                       matrix y and matrix X. Notice that y and X are left
 %                       unchanged. In other words the additional column of ones
-%                       for the intercept is not added. As default nocheck=0.
-%                       Example - 'nocheck',1 
-%                       Data Types - double
+%                       for the intercept is not added. As default nocheck=false.
+%                       Example - 'nocheck',true 
+%                       Data Types - boolean
 %
 %       titl    :       a label for the title. Character.
 %                       (default: '')
@@ -279,7 +279,7 @@ end
 options=struct('h',hdef,...
     'nsamp',nsampdef,'lms',1,'plots',0,...
     'init',init,'nameX','','lwdenv',2,'quant',[0.005 0.995],'lwdt',2,'xlimx','','ylimy','',...
-    'titl','','labx','Subset size m','laby','Deletion t statistics','FontSize',12,'SizeAxesNum',10,'nocheck',0,'intercept',1);
+    'titl','','labx','Subset size m','laby','Deletion t statistics','FontSize',12,'SizeAxesNum',10,'nocheck',false,'intercept',true);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -373,7 +373,7 @@ for i=vars
 
     % Find initial subset to initialize the search (in the search which
     % excludes variable w
-    [outLXS]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',1);
+    [outLXS]=LXS(y,Xred,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true);
     bsb=outLXS.bs;
 
     Xb=Xred(bsb,:); % Subset of reduced X matrix (in the search which excludes variable w)
@@ -393,7 +393,7 @@ for i=vars
 
         if (mm>=init)
             % compute added t test
-            [outADDT]=addt(yb,Xb,wb,'intercept',0,'nocheck',1);
+            [outADDT]=addt(yb,Xb,wb,'intercept',false,'nocheck',true);
             % Store added tstat
             Tdel(mm-init+1,i)=outADDT.Tadd;
             % store added estimate of S2

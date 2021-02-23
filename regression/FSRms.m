@@ -63,13 +63,13 @@ function outms = FSRms(y,X,varargin)
 %                 Example - 'lms',1 
 %                 Data Types - double
 %
-%     nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%     nocheck : Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Note that y and X are left
 %               unchanged. In other words the additional column of ones
-%               for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1 
-%               Data Types - double
+%               for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true 
+%               Data Types - boolean
 %
 %    smallpint: submodels to consider. Vector. It specifies which submodels 
 %               (number of variables) must be considered. 
@@ -460,7 +460,7 @@ if n<40
 else
     init=min(3*p+1,floor(0.5*(n+p+1)));  
 end
-options=struct('nocheck',0,'intercept',1,'h',hdef,...
+options=struct('nocheck',0,'intercept',true,'h',hdef,...
     'nsamp',nsampdef,'lms',1,'init',init,'meanmed',1,...
     'smallpint',smallpdef,'labels','','fin_step',round(n*[0.2 0.05]),'first_k',3,...
     'ignore',1,'ExclThresh',0.99999,...
