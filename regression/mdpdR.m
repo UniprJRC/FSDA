@@ -474,7 +474,7 @@ end
 modelfun = '';
 theta0   = '';
 dispresults = false;
-intercept   = 1;
+intercept   = true;
 conflev     = 0.975;
 plots       = 0;
 yxsave      = 0;
@@ -520,7 +520,7 @@ end
 n=length(y);
 
 % If the link is linear and there is the intercept add the column of ones
-if isempty(modelfun) && intercept==1
+if isempty(modelfun) && intercept==true
     X=[ones(n,1) X];
 end
 p=size(X,2);
@@ -610,7 +610,7 @@ out.outliers = seq( abs(out.residuals)>norminv(conflev) );
 
 
 if yxsave
-    if options.intercept==1
+    if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
     else

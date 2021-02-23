@@ -57,12 +57,12 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 %               Data Types - double
 %
 %       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -119,8 +119,8 @@ function [outSC]=ScoreYJpn(y,X,varargin)
     ytra=normYJ(y,[],la,'inverse',true);
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJ(ytra,X,'intercept',0);
-    [outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+    [outSC]=ScoreYJ(ytra,X,'intercept',false);
+    [outSCpn]=ScoreYJpn(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
     disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
     % Comment: if we consider the 5 most common values of lambda
@@ -144,8 +144,8 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJ(ytra,X,'intercept',0);
-    [outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+    [outSC]=ScoreYJ(ytra,X,'intercept',false);
+    [outSCpn]=ScoreYJpn(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
     disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
     % Comment: if we consider the 5 most common values of lambda
@@ -179,9 +179,9 @@ function [outSC]=ScoreYJpn(y,X,varargin)
      % Score and extended score test in the grid of lambda 1, 1.1, ..., 2
      la=[1:0.1:2];
      % Given that there are no explanatory variables the test must be
-     % called with intercept 0
-     outpn=ScoreYJpn(y,X,'intercept',0,'la',la);
-     out=ScoreYJ(y,X,'intercept',0,'la',la);
+     % called with intercept false
+     outpn=ScoreYJpn(y,X,'intercept',false,'la',la);
+     out=ScoreYJ(y,X,'intercept',false,'la',la);
      disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])
 %}
 
@@ -196,7 +196,7 @@ la=[-1 -0.5 0 0.5 1];
 
 if nargin>2
     
-    options=struct('la',la,'nocheck',0,'intercept',0);
+    options=struct('la',la,'nocheck',false,'intercept',false);
     
     UserOptions=varargin(1:2:length(varargin));
     % Check if number of supplied options is valid

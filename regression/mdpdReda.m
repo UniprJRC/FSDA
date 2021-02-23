@@ -260,7 +260,7 @@ end
 
 modelfun='';
 theta0='';
-intercept=1;
+intercept=true;
 conflev=0.975;
 plots=0;
 alphaORbdp='alpha';
@@ -330,7 +330,7 @@ conflev = (conflev+1)/2;
 seq = 1:n;
 
 % If the link is linear and there is the intercept add the column of ones
-if isempty(modelfun) && intercept==1
+if isempty(modelfun) && intercept==true
     X=[ones(n,1) X];
 end
 p=size(X,2);
@@ -352,7 +352,7 @@ if isempty(theta0)
         resMLE= y-yhat;
         sigma0 = sqrt(resMLE'*resMLE/(n-p));
     else
-        outini=LXS(y,X,'nocheck',1,'msg',0,'nsamp',1000);
+        outini=LXS(y,X,'nocheck',true,'msg',0,'nsamp',1000);
         beta0=outini.beta;
         sigma0=outini.scale;
     end
@@ -422,7 +422,7 @@ out.bdp=bdpvec;
 
 out.class='MDPDReda';
 
-if intercept==1
+if intercept==true
     % Store X (without the column of ones if there is an intercept)
     out.X=X(:,2:end);
 else

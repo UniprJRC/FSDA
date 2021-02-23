@@ -159,13 +159,13 @@ function [out , varargout] = FSRBr(y, X, varargin)
 %                   Example - 'init',100 starts monitoring from step m=100
 %                   Data Types - double
 %
-%   nocheck : Check input arguments. Scalar.
+%   nocheck : Check input arguments. Boolean.
 %                    If nocheck is equal to 1 no check is performed on
 %                    matrix y and matrix X. Notice that y and X are left
 %                    unchanged. In other words the additional column of ones
 %                     for the intercept is not added. As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - double
+%                   Example - 'nocheck',true
+%                   Data Types - boolean
 %
 %    bivarfit :  Superimpose bivariate least square lines. Character.
 %                   This option adds one or more least square lines, based on
@@ -357,12 +357,12 @@ function [out , varargout] = FSRBr(y, X, varargin)
         bayes.beta0 = mybeta;
 
         % fit based on Bayesian FS with prior on the underdeclared flows
-        [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
+        [out_B, xnew1 , ypred1, yci1]   = FSRBr(y,X,'bayes',bayes,'intercept',false,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
          
         h1 = allchild(gca); a1 = gca; f1 = gcf;
 
         % fit based on traditional FS
-        [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',0,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
+        [out, xnew2 , ypred2, yci2]   = FSRr(y,X,'intercept',false,'alpha',0.01,'bonflev',0.999,'fullreweight',false,'plotsPI',1,'plots',0);
 
         h2 = allchild(gca); a2 = gca; f2 = gcf;
 
@@ -456,7 +456,7 @@ options     = struct('plotsPI',0,'alpha',0.05,'fullreweight',true,'R2th',1,...
     'plots',1,'init',init,...
     'labeladd','','bivarfit','','multivarfit','',...
     'xlim','','ylim','','nameX','','namey','','msg',0, ...
-    'nocheck',0,'intercept',1,'bonflev','', 'bayes','','tag',tagdef);
+    'nocheck',false,'intercept',true,'bonflev','', 'bayes','','tag',tagdef);
 
 
 UserOptions = varargin(1:2:length(varargin));
@@ -529,8 +529,8 @@ nlistIn=length(ListIn);
 
 
 % Find S2 using units not declared as outliers using FSR
-% in case intercept=1:
-if intercept == 1
+% in case intercept=true:
+if intercept == true
     X = [ones(n,1) X];
 end
 % p= number of explanatory variables
@@ -611,7 +611,7 @@ if nargout > 0 || plotsPI==1
     maxX=max(X(:,end));
     
     xnew=(minX:((maxX-minX)/1000):maxX)';
-    if intercept==1
+    if intercept==true
         xnew=[ones(length(xnew),1) xnew];
         hasintercept=true;
     else
@@ -684,7 +684,7 @@ if ~isempty(y)
     % Sum of squared residuals of current observations
     SSres=(y-X*beta)'*(y-X*beta);
     % Deviance of current observations
-    if intercept==0
+    if intercept==false
         yy=y'*y;
     else
         yy=(y-mean(y))'*(y-mean(y));
@@ -695,7 +695,7 @@ else
 end
 % Total sum of squared residuals considering the bayesian beta
 numS2b=SSres0+SSres;
-if intercept==0
+if intercept==false
     % No mean adjustment for total deviance
     devtotb=y0y0+yy;
 else

@@ -119,7 +119,7 @@ function [out] = VIOM(y,X,dw,varargin)
     X=randn(n,p);
     y=randn(n,1);
     y(1:5)=y(1:5)*2;
-    [out]=VIOM(y,X,1:5,'cook',1,'intercept',0);
+    [out]=VIOM(y,X,1:5,'cook',1,'intercept',false);
     out.w(1:5);
     out.beta;
 %}

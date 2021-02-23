@@ -91,13 +91,13 @@ function [outSC]=ScoreYJmle(y,X,varargin)
 %               Example - 'sseReducedModel',[20.2 30.3 12.8]
 %               Data Types - empty value or double
 %
-%       nocheck : Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+%       nocheck : Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %                 matrix y and matrix X. Notice that y and X are left
 %                 unchanged. In other words the additional column of ones
-%                 for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%                 for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %  Output:
 %
@@ -152,7 +152,7 @@ function [outSC]=ScoreYJmle(y,X,varargin)
     ytra=normYJ(yori,[],la,'inverse',true);
     % Start the analysis
     X=ones(n,1);
-    [outSCmle]=ScoreYJmle(ytra,X,'intercept',0);
+    [outSCmle]=ScoreYJmle(ytra,X,'intercept',false);
 
     la=[-1 -0.5 0 0.5 1]';
     Comb=[la outSCmle.Score(:,1)];
@@ -175,7 +175,7 @@ function [outSC]=ScoreYJmle(y,X,varargin)
     % Start the analysis
     X=ones(n,1);
     la=[-1:0.25:1]';
-    [outSCmle]=ScoreYJmle(ytra,X,'intercept',0,'la',la);
+    [outSCmle]=ScoreYJmle(ytra,X,'intercept',false,'la',la);
     Pval=fcdf(outSCmle.Score,2,n-2,'upper');
     Comb=[la outSCmle.Score(:,1) Pval];
     
@@ -201,7 +201,7 @@ sseReducedModel=[];
 
 if nargin>2
     
-    options=struct('la',la,'nocheck',0,'intercept',0,...
+    options=struct('la',la,'nocheck',false,'intercept',false,...
         'usefmin',usefmin,'sseReducedModel',sseReducedModel);
     
     UserOptions=varargin(1:2:length(varargin));
@@ -229,13 +229,13 @@ end
 %% Find MLE of la_P and la_N once and for all
 
 if isstruct(usefmin) || (islogical(usefmin) && usefmin==true)
-    LA=boxcoxR(y,X,'family','YJpn','plots',0,'nocheck',1,...
+    LA=boxcoxR(y,X,'family','YJpn','plots',0,'nocheck',true,...
         'usefmin',usefmin);
     
 else
     lamax=2;
     step=0.02;
-    LA=boxcoxR(y,X,'family','YJpn','plots',0,'nocheck',1,...
+    LA=boxcoxR(y,X,'family','YJpn','plots',0,'nocheck',true,...
         'laseqPos',-lamax:step:lamax,'laseqNeg',-lamax:step:lamax);
 end
 
