@@ -8,11 +8,12 @@ function out = GUIregress(x,y, varargin)
 %
 %  Required input arguments:
 %
-%     x : vector of numeric data or table. Vector or table.
+%     x : vector of numeric data or table. Vector or table or empty.
 %           Vector containing strictly numerical data.
 %           If x is table the second input argument y is not necessary. In
 %           this case the response if the last column of the table.
-%           Data Types - double or table
+%           If x is empty it is assumed that regression is against time.
+%           Data Types - double or table or []
 %
 %     y : vector of numeric data.
 %           Vector containing strictly numerical data.
@@ -38,12 +39,12 @@ function out = GUIregress(x,y, varargin)
 %           Example - 'plots',true
 %           Data Types - boolean
 %
-%    weights  : weights. Vector.
-%         Vector of the same length of x containing the weights
-%         (frequencies) assigned to each observation.
-%           NOT IMPLEMENTED YET
-%           Example - 1:10
-%           Data Types - double
+%   interpolant  : interpolation method. 'character'.
+%         Possible values are 'linear' (default) for linear interpolation,
+%         'exponential' for exponential interpolation and 'power' for power
+%         interpolation.
+%           Example - 'interpolant','exponential'
+%           Data Types - char
 %
 % Output:
 %
@@ -109,23 +110,56 @@ function out = GUIregress(x,y, varargin)
     out=GUIregress(XX);
 %}
 
+%{
+    %% Example of exponential interpolation.
+    % The following data matrix reports, for 6 countries, the tourism revenues
+    % The values ​​of a company's production, in millions of euros were as follows:   
+    y=[50 52 56 59 65 70 76];
+    out=GUIregress([],y,'interpolant','exponential','plots',true);
+%}
 
+%{
+    %% Example of power interpolation.
+    % The following data matrix reports, for 6 countries, the tourism revenues
+    % The values ​​of a company's production, in millions of euros were as follows:   
+    y=[50 52 56 59 65 70 76];
+    out=GUIregress([],y,'interpolant','power','plots',true);
+%}
+    
 %% Beginning of code
 
-if istable(x)
+if isempty(x)
+    x=1:length(y);
+    timeseries=true;
+    
+elseif istable(x)
     y=x{:,end};
     x=x{:,1};
+    timeseries=false;
+else
+    timeseries=false;
 end
 
 lenx=length(x);
 seq=(1:lenx)';
 
-weights='';
+% weights='';
+% %    weights  : weights. Vector.
+% %         Vector of the same length of x containing the weights
+% %         (frequencies) assigned to each observation.
+% %           NOT IMPLEMENTED YET
+% %           Example - 1:10
+% %           Data Types - double
+
 intercept=true;
 plots=false;
+interpolant='linear';
 if nargin>2
-    options=struct('intercept',intercept,'plots',false,'weights',weights);
-    
+    options=struct('intercept',intercept,'plots',false,... 
+        'interpolant',interpolant);
+ 
+    % 'weights',weights,...
+ 
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -143,9 +177,11 @@ if nargin>2
     
     plots=options.plots;
     intercept=options.intercept;
-    weights=options.weights;
+    % weights=options.weights;
+    interpolant=options.interpolant;
 end
 
+weights=[];
 if isempty(weights)
     unweighted=true;
 else
@@ -155,6 +191,21 @@ end
 if unweighted==true % unweighted regression
     x=x(:);
     y=y(:);
+    
+    if strcmp(interpolant,'exponential')
+        yori=y;
+        y=log(y);
+        interpType=2;
+    elseif strcmp(interpolant,'power')
+        xori=x;
+        yori=y;
+        x=log(x);
+        y=log(y);
+        interpType=3;
+    else
+        interpType=1;
+    end
+    
     sumx=sum(x);
     mx=sumx/lenx;
     sumy=sum(y);
@@ -179,6 +230,7 @@ if unweighted==true % unweighted regression
     end
     yhat=a+b*x;
     e=y-yhat;
+    
     sume=sum(e);
     e2=e.^2;
     deve=sum(e2);
@@ -199,20 +251,75 @@ if unweighted==true % unweighted regression
         R2=devyhat/devy;
     end
     
-    header={'i' 'x_i' 'y_i' 'x_i^2' 'x_iy_i' '\hat y_i'};
-    corpus=[seq, x,y, x2, xy, yhat];
-    footer=[NaN sumx sumy sumx2 sumxy sum(yhat)];
+    if timeseries==true
+        if  interpType==1
+            header={'t' 'y_t' 't^2' 'ty_t' '\hat y_t'};
+            corpus=[x,y, x2, xy, yhat];
+            footer=[sumx sumy sumx2 sumxy sum(yhat)];
+        elseif interpType==2
+            yhat=exp(yhat);
+            header={'t' 'log(y_t)' 't^2' 'tlog(y_t)' 'y_t' '\hat y_t'};
+            corpus=[x,y, x2, xy, yori, yhat];
+            footer=[sumx sumy sumx2 sumxy sum(yori) sum(yhat)];
+        elseif interpType==3
+            yhat=exp(a)*xori.^b;
+            header={'log(t)' 'log(y_t)' 'log(t)^2' 'log(t)log(y_t)' 'y_t' '\hat y_t'};
+            corpus=[x,y,           x2, xy, yori, yhat];
+            footer=[sumx sumy sumx2 sumxy sum(yori) sum(yhat)];
+        else
+        end
+        
+        
+    else
+        header={'i' 'x_i' 'y_i' 'x_i^2' 'x_iy_i' '\hat y_i'};
+        corpus=[seq, x,y, x2, xy, yhat];
+        footer=[NaN sumx sumy sumx2 sumxy sum(yhat)];
+    end
     strtitle='Details of calculations of $a$ (intercept),  $b$ (slope)  and $\hat y$ (fitted values)';
     
-    if intercept ==true
-        header1={'i' 'y_i' '\hat y_i' 'e_i' 'e_i^2' '(\hat y_i -M_Y)^2' '(y_i -M_Y)^2'}; %  'e_i' 'x_ie_i'};
-        corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
-        footer1=[NaN sumy sumyhat sume deve devyhat devy];
+    if intercept==true
+        if timeseries==true
+            if interpType==1 % linear
+                header1={'t' 'y_t' '\hat y_t' 'e_t' 'e_t^2' '(\hat y_t -M_Y)^2' '(y_t -M_Y)^2'};
+                corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumy sumyhat sume deve devyhat devy];
+            elseif interpType==2 % exponential
+                header1={'t' 'log y_t' 'log \hat y_t' 'e_t' 'e_t^2' '( log \hat y_t -M_Y)^2' '( log y_t -M_Y)^2'};
+                corpus1=[seq, y , log(yhat),  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumy sum(log(yhat)) sume deve devyhat devy];
+            elseif interpType==3 % power
+                header1={'t' 'log t' 'log y_t' 'log \hat y_t' 'e_t' 'e_t^2' '( log \hat y_t -M_Y)^2' '( log y_t -M_Y)^2'};
+                corpus1=[seq, x, y , log(yhat),  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumx sumy sum(log(yhat)) sume deve devyhat devy];
+            else
+            end
+        else
+            header1={'i' 'y_i' '\hat y_i' 'e_i' 'e_i^2' '(\hat y_i -M_Y)^2' '(y_i -M_Y)^2'};
+            corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+            footer1=[NaN sumy sumyhat sume deve devyhat devy];
+        end
         strtitle1='Total ($DEV(y)$), regression ($DEV(\hat y)$) and residual deviance ($DEV(e)$)';
-    else
-        header1={'i' 'y_i' '\hat y_i' 'e_i' 'e_i^2' '\hat y_i^2' 'y_i^2'};
-        corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
-        footer1=[NaN sumy sumyhat sume deve devyhat devy];
+    else % no intercept
+        if timeseries==true
+            if interpType==1 % linear
+                header1={'t' 'y_t' '\hat y_t' 'e_t' 'e_t^2' '\hat y_t^2' 'y_t^2'};
+                corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumy sumyhat sume deve devyhat devy];
+            elseif interpType==2 % exponential
+                header1={'t' 'log(y_t)' '\hat y_t' 'e_t' 'e_t^2' '\hat y_t^2' 'y_t^2'};
+                corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumy sumyhat sume deve devyhat devy];
+            elseif interpType==3 % power
+                header1={'t' 'log t' 'log(y_t)' '\hat y_t' 'e_t' 'e_t^2' '\hat y_t^2' 'y_t^2'};
+                corpus1=[seq, x, y , yhat,  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumx sumy sumyhat sume deve devyhat devy];
+            end
+        else
+            header1={'i' 'y_i' '\hat y_i' 'e_i' 'e_i^2' '\hat y_i^2' 'y_i^2'};
+                corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+                footer1=[NaN sumy sumyhat sume deve devyhat devy];
+        end
+        
         strtitle1='Total, regression and residual sum of squares';
     end
 else % weighted regression
@@ -249,9 +356,9 @@ end
 
 % main window
 fs=14;
-dim = [.02 .80 0.1 0.1];
+dim = [.02 .850 0.1 0.1];
 h=figure('Position',[100 100 1200 700],'Units','normalized');
-h1=figure('Position',[100 100 800 700],'Units','normalized');
+h1=figure('Position',[100 100 900 700],'Units','normalized');
 
 annotation(h,'textbox',dim,'FitBoxToText','on','String',str,'Interpreter','latex','FontSize',fs);
 drawnow
@@ -270,11 +377,6 @@ if unweighted==true
     strmean=['\boldmath{$M_X$}= $\frac{' num2str(sumx) '}{' num2str(lenx) '}=' num2str(mx)  '\qquad $' ...
         '\boldmath{$M_Y$}= $\frac{' num2str(sumy) '}{' num2str(lenx) '}=' num2str(my) '$'];
     if intercept==true
-%         if mx>0
-%             signmx='-';
-%         else
-%             signmx='+';
-%         end
         stramean=['\boldmath{$a$}= $M_Y - b M_X =' num2str(my) psm num2str(abs(b)) '\times' num2str(abs(mx)) '=' num2str(a) '$'];
     else
         stramean='\boldmath{$a$}=0';
@@ -290,13 +392,29 @@ if sumx>=0
 else
     signsumx='+';
 end
-
-stryhat1=['\boldmath{$\hat y_1$}= $a+b x_1 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
-stryhat2=['\boldmath{$\hat y_2$}= $a+b x_2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+if timeseries==true
+    if interpType==1
+        stryhat1=['\boldmath{$\hat y_1$}= $a+b  =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
+        stryhat2=['\boldmath{$\hat y_2$}= $a+b \times 2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ a+b \times'  num2str(lenx) ' =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
+        
+    elseif interpType==2 % exponential function
+        stryhat1=['\boldmath{$\hat y_1$}= $\exp(a+b  )= \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) ')=' num2str(yhat(1)) '$'];
+        stryhat2=['\boldmath{$\hat y_2$}= $\exp(a+b \times 2) = \exp(' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ \exp(a+b \times'  num2str(lenx) ') = \exp(' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) ')=' num2str(yhat(lenx)) '$'];
+    elseif interpType==3   % power function
+        stryhat1=['\boldmath{$\hat y_1$}= $\exp(a)  = \exp(' num2str(a) ') =' num2str(yhat(1)) '$'];
+        stryhat2=['\boldmath{$\hat y_2$}= $\exp(a) \times 2^b  = \exp(' num2str(a) ') \times 2^{' num2str(b)  '}=' num2str(yhat(2)) '$'];
+        stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ \exp(a)'  num2str(xori(lenx)) '^{ '  num2str(b) '}=' num2str(yhat(lenx)) '$'];
+    end
+else
+    stryhat1=['\boldmath{$\hat y_1$}= $a+b x_1 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(1)) '=' num2str(yhat(1)) '$'];
+    stryhat2=['\boldmath{$\hat y_2$}= $a+b x_2 =' num2str(a) ps num2str(abs(b)) '\times' num2str(x(2)) '=' num2str(yhat(2)) '$'];
+    stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ a+b x_{' num2str(lenx) '} =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
+end
 stryhati='...';
-stryhatn=['\boldmath{$\hat y_{' num2str(lenx)  '}$} = $ a+b x_{' num2str(lenx) '} =' num2str(a) ps num2str(abs(b)) ' \times ' num2str(x(lenx)) '=' num2str(yhat(lenx)) '$'];
 
-posp=0.47;
+posp=0.49;
 dimstrmean = [posp .78 0.1 0.1];
 annotation(h,'textbox',dimstrmean,'FitBoxToText','on','String',strmean,'Interpreter','latex','FontSize',fs);
 dimamean = [posp .68 0.1 0.1];
@@ -319,25 +437,74 @@ annotation(h1,'textbox',dim,'FitBoxToText','on','String',strtitle1,'Interpreter'
 % strfin = text at the end of the GUI
 if unweighted==true
     if intercept==true
-        strbcoeff=['\boldmath{$b$}=$ \frac{n\sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
-            '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
-            '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
-            num2str(b) '$'];
-        stracoeff=['\boldmath{$a$}=$ \frac{\sum_{i=1}^n y_i \sum_{i=1}^nx_i^2 - \sum_{i=1}^n x_i \sum_{i=1}^n x_i y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
-            '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
-            '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
-            num2str(a) '$'];
-        
+        if timeseries==true
+            if interpType==1
+                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T t y_i - \sum_{t=1}^T t \sum_{t=1}^T y_i}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                    '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^n y_i \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t y_i}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                    '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
+                    num2str(a) '$'];
+            elseif interpType==2
+                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T t y_i - \sum_{t=1}^T t \sum_{t=1}^T y_i}{T \sum_{t=1}^T t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                    '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^n y_i \sum_{i=1}^n t^2 - \sum_{t=1}^n t \sum_{i=1}^n t y_i}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^T t \right)^2}'...
+                    '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
+                    num2str(a) '$'];
+                
+            elseif  interpType==3
+                strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^T log(t) log y_t - \sum_{t=1}^T log(t) \sum_{t=1}^T log y_t}{T \sum_{t=1}^T log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
+                    '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+                stracoeff=['\boldmath{$a$}=$ \frac{\sum_{t=1}^T log y_t \sum_{i=1}^T log(t)^2 - \sum_{t=1}^T log(t) \sum_{i=1}^T log(t) log y_t}{T \sum_{t=1}^n log(t)^2 - \left( \sum_{t=1}^T log(t) \right)^2}'...
+                    '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                    '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
+                    num2str(a) '$'];
+                
+                
+            end
+        else
+            strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^n xti y_i - \sum_{t=1}^n t \sum_{i=t}^n y_t}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^n t \right)^2}'...
+                '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                num2str(b) '$'];
+            stracoeff=['\boldmath{$a$}=$ \frac{\sum_{i=1}^n y_i \sum_{i=1}^nx_i^2 - \sum_{i=1}^n x_i \sum_{i=1}^n x_i y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
+                '= \frac{' num2str(sumy) ' \times ' num2str(sumx2) signsumx num2str(abs(sumx)) ' \times ' num2str(sumxy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
+                '= \frac{' num2str(numa) '}{' num2str(denb) '}=' ...
+                num2str(a) '$'];
+        end
         strR2=['\boldmath{$R^2$}=$ \frac{DEV(\hat{y})}{DEV(y)} '...
             '= \frac{' num2str(devyhat)  '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
         strR2bis=['\boldmath{$R^2$}=$ 1-\frac{DEV(e)}{DEV(y)}' ...
             '= 1-\frac{' num2str(deve) '}{' num2str(devy) '}=' ...
             num2str(R2) '$'];
-    else
-        strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{i=1}^n x_i y_i}{ \sum_{i=1}^n x_i^2 }'...
-            '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
-            num2str(b) '$'];
+    else % intercept = false
+        if timeseries==true
+            if interpType==1
+                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T t y_t}{ \sum_{t=1}^T t^2 }'...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+            elseif interpType==2
+                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T t log(y_t)}{ \sum_{t=1}^T t^2 }'...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+            elseif interpType==3
+                strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{t=1}^T log(t) log(y_t)}{ \sum_{t=1}^T log(t)^2 }'...
+                    '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                    num2str(b) '$'];
+            end
+        else
+            strbcoeff=['\boldmath{$b$}=$ \frac{\sum_{i=1}^n x_i y_i}{ \sum_{i=1}^n x_i^2 }'...
+                '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
+                num2str(b) '$'];
+        end
         stracoeff='\boldmath{$a$}=0';
         strR2=['\boldmath{$R^2$}=$ \frac{ \sum_{i=1}^n \hat y_i^2 }{ \sum_{i=1}^n y_i^2} '...
             '= \frac{' num2str(devyhat)  '}{' num2str(devy) '}=' ...
@@ -361,20 +528,52 @@ annotation(h1,'textbox',dimacoeff,'FitBoxToText','on','String',strR2bis,'Interpr
 
 % Show plot of (x,y) coordinates, fitted line and residuals
 if plots==true
-    figure
-    plot(x,y,'o','LineWidth',2)
-    h=refline(b,a);
-    %h=lsline;
-    h.Color='r';
-    hold('on')
-    plot([x x]',[yhat y]','k','DisplayName','Residuals')
-    if b>0
-        abx=['(' num2str(a) '+' num2str(b) 'x)'];
-    else
-        abx=['(' num2str(a) num2str(b) 'x)'];
-    end
     r2str=['(R2=' num2str(R2) ')'];
-    leg={'(x,y) coordinates',['Regression line ' abx] ['Residuals ' r2str]};
+    if timeseries==true
+        labx='t';
+    else
+        labx='x_i';
+    end
+    figure
+    hold('on')
+    
+    if interpType==1
+        plot(x,y,'o','LineWidth',2,'DisplayName','xyori')
+        h=refline(b,a);
+        %h=lsline;
+        h.Color='r';
+        plot([x x]',[yhat y]','k','DisplayName','Residuals')
+
+        if b>0
+            abx=['(' num2str(a) '+' num2str(b) labx ')'];
+        else
+            abx=['(' num2str(a) num2str(b) labx ')'];
+        end
+        leg={['(' labx(1) ',y) coordinates'],['Regression line ' abx] ['Residuals ' r2str]};
+    end
+    
+    if interpType==2
+        plot(x,yori,'o','LineWidth',2)
+        plot(x,yhat,'DisplayName','fit')
+        plot([x x]',[yhat yori]','k','DisplayName','Residuals')
+        if b>0
+            abx=['exp(' num2str(a) '+' num2str(b) labx ')'];
+        else
+            abx=['exp(' num2str(a) num2str(b) labx ')'];
+        end
+        
+        leg={'(t,y_t) coordinates',['Exponential fit ' abx] ['Residuals ' r2str]};
+        
+    elseif interpType==3
+        plot(xori,yori,'o','LineWidth',2)
+        plot(xori,yhat,'r','DisplayName','fit')
+        plot([xori xori]',[yhat yori]','k','DisplayName','Residuals')
+            abx=[num2str(exp(a)) 't^{' num2str(b) '}'];
+                leg={'(t,y_t) coordinates',['Power fit ' abx] ['Residuals ' r2str]};
+
+    else
+    end
+    drawnow
     clickableMultiLegend(leg,'Location','best')
 end
 
