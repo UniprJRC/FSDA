@@ -23,13 +23,13 @@ function out = GUIconcentration(Q, varargin)
 % ExactFormula : use of exact formula. Boolean.
 %               Use of exact or approximate formula.
 %               The default is to use the exact formula if previously
-%               option freq has not been supplied, else approximate fomrula
-%               is used. Option ExactFomula overwrites the default.
+%               option freq has not been supplied, else approximate formula
+%               is used. Option ExactFormula overwrites the default.
 %           Example - 'ExactFormula',true
 %           Data Types - boolean
 %
 %     plots    : show Lorenz curve. Boolean.
-%                If plots is true and additional plot which shows
+%                If plots is true an additional plot which shows
 %                the concentration area is displayed on the screen. The
 %                default value of plots is false.
 %           Example - 'plots',true
@@ -77,7 +77,7 @@ function out = GUIconcentration(Q, varargin)
 %{
     %% Concentrartion index using approximate formula.
     % The families in a certain area have been classified 
-    % according to their annual income 
+    % according to their annual income. 
     % Classes of income and frequencies.
     % 5  - 10	50 
     % 10 - 20	125
@@ -208,7 +208,7 @@ annotation('textbox',dim,'FitBoxToText','on','String',strfin,'Interpreter','late
 
 if plots==true
     figure
-    % Show graphically concentrationa area
+    % Show graphically concentration area
     f1 = [0; freqcum];
     q1 = [0; qcum];
     fill([0;f1],[0;q1],'c');
@@ -217,7 +217,7 @@ if plots==true
     % plot([0;f1],[0;q1],'o','Marker','o');
     plot([0,1],[0,1],'--k');     
     stem(f1,q1,'--')                
-    axis tight      % ranges of abscissa and ordinate are  exactly [0,1]
+    axis tight      % ranges of abscissa and ordinate are exactly [0,1]
     axis square     % same length on hor and ver axes
     set(gca,'XTick',get(gca,'YTick'))   % ensure equal ticking
     xlabel('$f_i''$','Interpreter','latex','FontSize',fs1)

@@ -30,7 +30,7 @@ function out = GUIpowermean(x, s, w)
 %
 %    w  : weights. Vector.
 %         Vector of the same length of x containing the weights assigned to
-%         each obsearvation. If w is not supplied we assume that all
+%         each observation. If w is not supplied we assume that all
 %         observations have weight equal to 1.
 %           Example - 1:10
 %           Data Types - double

@@ -16,7 +16,7 @@ function out = GUIcov(x,y,w)
 %           the values inside the contingency table.
 %           Data Types - double or table
 %
-%     y : vector of numeric data. 
+%     y : vector of numeric data. Vector.
 %           Vector containing strictly numerical data.
 %           This input argument is not requested if previously input
 %           argument x is a table.
