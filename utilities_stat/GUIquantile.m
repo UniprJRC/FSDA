@@ -24,7 +24,7 @@ function out = GUIquantile(x, z, varargin)
 %    freq : frequencies. Vector.
 %         Vector of the same length of x containing the frequencies
 %         (weights) associated to each value of x if x is discrete or
-%         vector with length length(x)-1 is variable X is continuous. If
+%         vector with length (x)-1 if variable X is continuous. If
 %         freq is not supplied, it is assumed that all observations have the
 %         same (relative) frequency (weight).
 %           Example - 'freq',1:10

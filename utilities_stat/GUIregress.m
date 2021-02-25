@@ -11,13 +11,13 @@ function out = GUIregress(x,y, varargin)
 %     x : vector of numeric data or table. Vector or table or empty.
 %           Vector containing strictly numerical data.
 %           If x is table the second input argument y is not necessary. In
-%           this case the response if the last column of the table.
+%           this case the response is the last column of the table.
 %           If x is empty it is assumed that regression is against time.
 %           Data Types - double or table or []
 %
 %     y : vector of numeric data.
 %           Vector containing strictly numerical data.
-%           This input argument is not requested if previously input
+%           This input argument is not requested if previous input
 %           argument x is a table.
 %           Data Types - double
 %
@@ -112,17 +112,17 @@ function out = GUIregress(x,y, varargin)
 
 %{
     %% Example of exponential interpolation.
-    % The following data matrix reports, for 6 countries, the tourism revenues
     % The values ​​of a company's production, in millions of euros were as follows:   
     y=[50 52 56 59 65 70 76];
+    % Analyze the trend of the company's production using an exponential fit.
     out=GUIregress([],y,'interpolant','exponential','plots',true);
 %}
 
 %{
     %% Example of power interpolation.
-    % The following data matrix reports, for 6 countries, the tourism revenues
     % The values ​​of a company's production, in millions of euros were as follows:   
     y=[50 52 56 59 65 70 76];
+    % Analyze the trend of the company's production using a power fit.
     out=GUIregress([],y,'interpolant','power','plots',true);
 %}
     
@@ -470,7 +470,7 @@ if unweighted==true
                 
             end
         else
-            strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^n xti y_i - \sum_{t=1}^n t \sum_{i=t}^n y_t}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^n t \right)^2}'...
+            strbcoeff=['\boldmath{$b$}=$ \frac{n\sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
                 '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                 '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                 num2str(b) '$'];

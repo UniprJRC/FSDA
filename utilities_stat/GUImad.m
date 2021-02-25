@@ -176,7 +176,7 @@ if nargin<3 % no weights
         
         
     elseif flag==2 % mean absolute deviation from median
-        strtitle='Details of mean absolute deviation from Median ($S_{Me}$)  calculation';
+        strtitle='Details of mean absolute deviation from Median ($S_{Me}$) calculation';
         header={'i' 'x_i' 'x_{(i)}' 'x_i-Me'  '|x_i-Me|' };
         corpus=[seq, x, xord xminusMe absxminusMe];
         num=sum(absxminusMe);
