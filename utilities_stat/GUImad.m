@@ -70,7 +70,7 @@ function out = GUImad(x,flag,w)
     % Example of calculation of MAD.
     % MAD = median absolute deviation from median.
     x=[98 105 85 110 102];
-    y=GUImad(x)
+    y=GUImad(x);
 %}
 
 %{
@@ -146,7 +146,7 @@ lenx=length(x);
 n=length(x);
 seq=(1:n)';
 
-if nargin < 2 || isempty(flag)
+if nargin<2 || isempty(flag)
     flag = 1;
 end
 

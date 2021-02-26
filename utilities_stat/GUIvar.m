@@ -52,13 +52,13 @@ function out = GUIvar(x,w)
 %{
     % Variance of the first 6 natural numbers.
     x=1:6;
-    out=GUIvar(x)
+    out=GUIvar(x);
 %}
 
 %{  
     % Example of calculation of variance (using n as denominator).
     x=[427 492 445 444 476 470];
-    y=GUIvar(x,1)
+    y=GUIvar(x,1);
 %}
 
 %{
