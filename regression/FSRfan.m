@@ -143,12 +143,13 @@ function [out]=FSRfan(y,X,varargin)
 %               Data Types - logical
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
-%               if usefmin is true or usefmin is a struct it is
-%               possible to use MATLAB solvers fminsearch or fminunc to
-%               find the maximum likelihood estimates of $\lambda_P$ and
-%               $\lambda_N$. The default value of usefmin is false that is
-%               solver is not used and the likelihood is evaluated at the
-%               grid of points with steps 0.01.
+%               This option takes effect only when input option 'family' is 
+%               'YJpn'  or 'YJall'. If usefmin is true or usefmin is a
+%               struct it is possible to use MATLAB solvers fminsearch or
+%               fminunc to find the maximum likelihood estimates of
+%               $\lambda_P$ and $\lambda_N$. The default value of usefmin
+%               is false that is solver is not used and the likelihood is
+%               evaluated at the grid of points with steps 0.01.
 %               If usefmin is a structure it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
@@ -180,6 +181,16 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'plots',1
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
+%
+%         msg   : Level of output to display. Scalar.
+%                   scalar which controls whether to display or not
+%                   messages on the screen. Scalar.
+%                   If msg==1 (default) messages are
+%                   displayed on the screen about estimated time to compute
+%                   the LMS (LTS) for each value of lamabda else no message
+%                   is displayed on the screen
+%                  Example - 'msg',1
+%                  Data Types - double
 %
 %       conflev :   Confidence level. Scalar or vector. Confidence level
 %                   for the bands (default is 0.99, that is we plot two
@@ -237,15 +248,6 @@ function [out]=FSRfan(y,X,varargin)
 %                  Example - 'SizeAxesNum',12
 %                  Data Types - double
 %
-%         msg   : Level of output to display. Scalar.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
-%                   If msg==1 (default) messages are
-%                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
-%                   is displayed on the screen
-%                  Example - 'msg',1
-%                  Data Types - double
 %
 %       tag     :   handle of the plot which is about to be created.
 %                   Character. The default is to use tag 'pl_fan'. Notice
