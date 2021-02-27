@@ -122,15 +122,15 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
-%        msg  : It controls whether to display or not messages on the screen. Scalar.
-%                If msg==1 (default) messages are displayed
+%        msg  : It controls whether to display or not messages on the screen. Boolean.
+%                If msg==true (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off
 %               else no message is displayed on the screen
-%               Example - 'msg',1
-%               Data Types - double
+%               Example - 'msg',false
+%               Data Types - logical
 %
 %      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
@@ -772,7 +772,7 @@ for i=1:nselected
             time(i) = toc(ttic);
         elseif i==tsampling+1
             % stop sampling and print the estimated time
-            if msg==1
+            if msg==true
                 switch lmsopt
                     case 1
                         fprintf('Total estimated time to complete LMS: %5.2f seconds \n', nselected*median(time));
@@ -968,7 +968,7 @@ if abs(s0) > 1e-7
     end
     
 else % Perfect fit
-    if msg==1
+    if msg==true
         disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
     end
     % There is an approximate perfect fit for the first h observations.
@@ -1013,7 +1013,7 @@ out.h=h;
 
 % Store number of singular subsets
 out.singsub=singsub;
-if msg==1
+if msg==true
     if singsub/nselected>0.1
         disp('------------------------------')
         if bonflevout == true

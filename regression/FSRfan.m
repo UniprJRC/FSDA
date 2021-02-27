@@ -106,6 +106,15 @@ function [out]=FSRfan(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
+%       init    :   Search initialization. Scalar.
+%                   It specifies the initial subset size to start
+%                   monitoring the value of the score test, if init is not
+%                   specified it will be set equal to:
+%                    p+1, if the sample size is smaller than 40;
+%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                    Example - 'init',100 starts monitoring from step m=100
+%                    Data Types - double
+%
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
 %                   (default), 'YJ', 'YJpn' or 'YJall'.
@@ -166,14 +175,15 @@ function [out]=FSRfan(y,X,varargin)
 %               Example - 'usefmin',true
 %               Data Types - boolean or struct
 %
-%       init    :   Search initialization. Scalar.
-%                   It specifies the initial subset size to start
-%                   monitoring the value of the score test, if init is not
-%                   specified it will be set equal to:
-%                    p+1, if the sample size is smaller than 40;
-%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                    Example - 'init',100 starts monitoring from step m=100
-%                    Data Types - double
+%         msg   : Level of output to display. Boolean.
+%                   scalar which controls whether to display or not
+%                   messages on the screen. Scalar.
+%                   If msg==true (default) messages are
+%                   displayed on the screen about estimated time to compute
+%                   the LMS (LTS) for each value of lamabda else no message
+%                   is displayed on the screen
+%                  Example - 'msg',false
+%                  Data Types - double
 %
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
@@ -182,15 +192,6 @@ function [out]=FSRfan(y,X,varargin)
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
 %
-%         msg   : Level of output to display. Scalar.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
-%                   If msg==1 (default) messages are
-%                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
-%                   is displayed on the screen
-%                  Example - 'msg',1
-%                  Data Types - double
 %
 %       conflev :   Confidence level. Scalar or vector. Confidence level
 %                   for the bands (default is 0.99, that is we plot two
@@ -618,7 +619,7 @@ usefmin=true;
 plo=1;
 lms=1;
 conflev=0.99;
-msg=1;
+msg=true;
 tag='pl_fan';
 la=[-1 -0.5 0 0.5 1];
 nocheck=false;
@@ -819,7 +820,7 @@ for i=1:lla
     else
         for mm=ini0:n
             % if n>1000 show every 100 steps the fwd search index
-            if  msg==1 && seq100boo(mm) == true
+            if  msg==true && seq100boo(mm) == true
                 % OLD CODE if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
@@ -924,7 +925,7 @@ for i=1:lla
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;
                     else
-                        if msg==1
+                        if msg==true
                             disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                         end
                         Unlai(mm-init+1,2:end)=unit(1:10);

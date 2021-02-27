@@ -28,7 +28,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %               Data Types - single|double
 %
 %        msg  : scalar which controls whether to display or not messages
-%               on the screen. If msg=1 (default), messages are displayed
+%               on the screen. If msg=true (default), messages are displayed
 %               on the screen about estimated time.
 %               Example - C=subsets(20,10,3,120,0)
 %               Data Types - boolean
@@ -305,7 +305,7 @@ end
 
 
 if nargin<5 || isempty(msg)
-    msg=1;
+    msg=true;
 end
 
 if nargin<6
