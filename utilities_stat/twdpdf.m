@@ -1,5 +1,5 @@
 function pdf = twdpdf(x,alpha,theta,delta)
-% TWDPDF computes the probability density function of the Tweedie distribution.
+%twopdf computes the probability density function of the Tweedie distribution.
 %
 %<a href="matlab: docsearchFS('twdpdf')">Link to the help function</a>
 %
