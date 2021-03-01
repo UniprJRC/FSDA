@@ -100,3 +100,4 @@ end
 A=sigma^2*S.^(2*(delta-1)); % spot variance
 
 end
+%FScategory:UTISTAT
