@@ -1,5 +1,5 @@
 function [spotvar,tau] = FE_spot_vol_FFT(x,t, varargin)
-% FE_spot_vol estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm
+% FE_spot_vol_FFT estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm
 %
 %
 %<a href="matlab: docsearchFS('FE_spot_vol_FFT')">Link to the help function</a>
