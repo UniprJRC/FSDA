@@ -86,12 +86,12 @@ function [H,AX,BigAx]=yXplot(y,X,varargin)
 %  group: grouping variable. Vector with n elements.
 %         It is a grouping variable that determines
 %         the marker and color assigned to each point. It can be a categorical
-%         variable, vector, string matrix, or cell array of strings.
+%         variable, vector, string matrix, or cell array of strings or logical.
 %         Note that if 'group' is used to distinguish a set of outliers from
 %         a set of good units, the id number for the outliers should be the
 %         larger (see optional field 'labeladd' of option 'plo' for details).
 %         Example - 'group',ones(n,1)
-%         Data Types - double.
+%         Data Types - categorical vector | numeric vector | logical vector | character array | string array | cell array
 %
 %    plo: yXplot personalization. Empty value, scalar of structure.
 %         This option controls the names which
@@ -1309,7 +1309,7 @@ if ndims(H) == 3
     
     % Put in the figure UserData field the list of units in the last group,
     % i.e. (depending on context) the outliers or the units last brushed.
-    if isnumeric(group)
+    if isnumeric(group) 
         set(H(:,:,end), 'UserData' , seq(group==max(group)));
     else
         set(H(:,:,end), 'UserData' , seq(groupv==max(groupv)));
@@ -1318,7 +1318,7 @@ if ndims(H) == 3
     if strcmp(doleg,'on')
         % Add to the spm the clickable multilegend and eventually the text labels
         % of the selections
-        if isnumeric(group)
+        if isnumeric(group) || islogical(group)
             % use context sensitive legends
             add2yX(H,AX,BigAx,'labeladd',labeladd,'userleg','1','RowNamesLabels',numtext);
         else
