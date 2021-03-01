@@ -15,9 +15,7 @@ ycont(1:8) = ycont(1:8)+0.05;
 [out , xnew1 , ypred1, yci1] = ...
 FSRr(ycont,X,'plotsPI',1,'plots',1);
 disp(['Outliers without R2 adjustment = ' num2str(out.outliers)]);
-disp(['Outliers with    R2 adjustment = ' num2str(out.outliersr)]);</pre></div></div><pre class="codeoutput">Outliers without R2 adjustment = 1  2  3  4  6  7  8
-Outliers with    R2 adjustment = 1    2    3    4    5    6    7    8   15   50   64   84   97  108  114  138
-</pre><a href='http://rosa.unipr.it/fsda/FSRr.html#Example_1'><img vspace="5" hspace="5" src="images\FSRr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRr_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRr_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of outlier detection in a case of almost perfect fit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200; p=1;
+disp(['Outliers with    R2 adjustment = ' num2str(out.outliersr)]);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of outlier detection in a case of almost perfect fit.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200; p=1;
 X = rand(n,p);
 y = X + 0.01*randn(n,1);
 % contaminated data points

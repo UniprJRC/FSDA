@@ -17,50 +17,7 @@ disp(BarOmega)
 disp('Maximum overlap')
 disp(MaxOmega)
 disp('Groups with maximum overlap')
-disp(rcMax)</pre></div></div><pre class="codeoutput">
-OmegaMap =
-
-    1.0000    0.0000         0
-    0.0000    1.0000    0.0230
-         0    0.0263    1.0000
-
-
-BarOmega =
-
-    0.0164
-
-
-MaxOmega =
-
-    0.0493
-
-
-StdOmega =
-
-    0.0285
-
-
-rcMax =
-
-     2
-     3
-
-OmegaMap= k-by-k matrix which contains misclassification probabilities
-    1.0000    0.0000         0
-    0.0000    1.0000    0.0230
-         0    0.0263    1.0000
-
-Average overlap
-    0.0164
-
-Maximum overlap
-    0.0493
-
-Groups with maximum overlap
-     2
-     3
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of option tol.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
+disp(rcMax)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of option tol.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load fisheriris;
 Y=meas;
 pigen=ones(3,1)/3;
 k=3;

@@ -29,19 +29,7 @@ plots.type = 'contourf';
 plots.cmap = autumn;
 out=tclust(Y,3,0.1,10000,'plots',plots);
 title('contourf plot with autumn colormap','interpreter','LaTex','FontSize',18);
-cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.39 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.69 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.58 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.47 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.71 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.70 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/tclust.html#Example_2'><img vspace="5" hspace="5" src="images\tclust_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\tclust_02.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_03.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_04.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_05.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_06.png" alt=""> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+cascade</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>tclust of geyser with varargout.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=20;
 [out,MatrixContSubsets]=tclust(Y,3,0.1,10000,'nsamp',nsamp);
 % MatrixContSubsets is a matrix containing in the rows the indexes of
@@ -61,13 +49,7 @@ title(['Restriction factor =' num2str(restrfactor)],'interpreter','LaTex','FontS
 restrfactor=1;
 out=tclust(Y,3,0.1,restrfactor,'nsamp',nsamp,'refsteps',10,'plots','ellipse');
 title(['Restriction factor =' num2str(restrfactor) '. Trimmed k-means solution'],'interpreter','LaTex','FontSize',18)
-cascade</pre></div></div><pre class="codeoutput">ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.19 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  0.83 seconds 
-ClaLik with untrimmed units selected using crisp criterion
-Total estimated time to complete tclust:  1.12 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\tclust_07.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\tclust_08.png" alt=""> <img vspace="5" hspace="5" src="images\tclust_09.png" alt=""> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
+cascade</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>tclust applied to the M5data.</li></span></a></span></h3><div class="collapse"><p>
       A bivariate data set obtained from three normal bivariate
       distributions with different scales and proportions 1:2:2. One of
       the components is very overlapped with another one. A 10 per cent
@@ -167,7 +149,7 @@ subplot(1,3,3)
 plot(MIXCLA(:,1),MIXCLA(:,2))
 xlabel('Number of groups')
 ylabel('MIXCLA (ICL)')
-xlim([1 maxk])</pre></div></div><a href='http://rosa.unipr.it/fsda/tclust.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\tclust_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
+xlim([1 maxk])</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Automatic choice of the best number of groups for simulated data with
      k=5 and v=5.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 n1=100;     % Generate 5 groups in 5 dimensions
 n2=80;

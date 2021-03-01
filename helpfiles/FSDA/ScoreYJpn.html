@@ -26,21 +26,15 @@ la=0.5;
 ytra=normYJ(y,[],la,'inverse',true);
 % Start the analysis
 X=ones(n,1);
-[outSC]=ScoreYJ(ytra,X,'intercept',0);
-[outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+[outSC]=ScoreYJ(ytra,X,'intercept',false);
+[outSCpn]=ScoreYJpn(ytra,X,'intercept',false);
 la=[-1 -0.5 0 0.5 1]';
 disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
 % Comment: if we consider the 5 most common values of lambda
 % the value of the score test when lambda=0.5 is the only one which is not
 % significant. Both values of the score test for positive and negative
 % observations confirm that this value of the transformation parameter is
-% OK for both sides of the distribution.</pre></div></div><pre class="codeoutput">   -1.0000   40.2357   24.1288   15.7149
-   -0.5000   20.4741   14.7964    9.9619
-         0    8.9009    6.9774    4.5230
-    0.5000    1.3042    0.2740   -1.0664
-    1.0000   -4.8797   -6.2978   -7.9574
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
+% OK for both sides of the distribution.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 n=100;
 y=randn(n,1);
 % Tranform in a different way positive and negative values
@@ -51,23 +45,17 @@ ytraneg=normYJ(y(y&lt;0),[],laneg,'inverse',true);
 ytra=[ytrapos; ytraneg];
 % Start the analysis
 X=ones(n,1);
-[outSC]=ScoreYJ(ytra,X,'intercept',0);
-[outSCpn]=ScoreYJpn(ytra,X,'intercept',0);
+[outSC1]=ScoreYJ(ytra,X,'intercept',false);
+[outSC]=ScoreYJpn(ytra,X,'intercept',false);
 la=[-1 -0.5 0 0.5 1]';
-disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
+disp([la outSC.Score(:,1) outSC1.Score outSC.Score(:,2)])
 % Comment: if we consider the 5 most common values of lambda
 % the value of the score test when lambda=0.5 is the only one which is not
 % significant. However when lambda=0.5 the score test for negative
 % observations is highly significant. The difference between the test for
-% positive and the test for negative is 2.7597+0.7744=3.5341, which is very
+% positive and the test for negative is 2.7597+0.7744=3.5341, is very
 % large. This indicates that the two tails need a different value of the
-% transformation parameter.</pre></div></div><pre class="codeoutput">   -1.0000   89.5466   39.6867   28.3433
-   -0.5000   33.4110   24.9236   19.4072
-         0   10.3643   11.4446   10.8674
-    0.5000   -0.7744    0.8272    2.7597
-    1.0000   -9.8327   -9.4050   -6.8708
-
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
+% transformation parameter.</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
      Load the wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
 X=XX(:,1:end-1);
@@ -81,9 +69,9 @@ X=ones(n,1);
 % Score and extended score test in the grid of lambda 1, 1.1, ..., 2
 la=[1:0.1:2];
 % Given that there are no explanatory variables the test must be
-% called with intercept 0
-outpn=ScoreYJpn(y,X,'intercept',0,'la',la);
-out=ScoreYJ(y,X,'intercept',0,'la',la);
+% called with intercept false
+outpn=ScoreYJpn(y,X,'intercept',false,'la',la);
+out=ScoreYJ(y,X,'intercept',false,'la',la);
 disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
@@ -94,7 +82,7 @@ disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])</pre></div></div></p>
                since observations (rows) with missing or infinite values will
                automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
 </code>,<code> 'la',[0 0.5]
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
@@ -106,12 +94,12 @@ disp([la' outpn.Score(:,1) out.Score outpn.Score(:,2)])</pre></div></div></p>
                -0.5 0 0.5 1]; that is the five most common values of
                lambda
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',[0 0.5]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones
-                 for the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
+                 for the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
 
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score test. Matrix.</p> <p>
                             Matrix of size length(lambda)-by-3  which

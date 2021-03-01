@@ -108,7 +108,7 @@ seluni=[10 30];
 plo=struct;
 plo.label=cellstr(RowLabelsMatrixY);
 % add labels for units inside vector seluni
-yXplot(y,X,'selunit',seluni,'plo',plo);</pre></div></div><a href='http://rosa.unipr.it/fsda/yXplot.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\yXplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
+yXplot(y,X,'selunit',seluni,'plo',plo);</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>yXplot with first input argument a vector, varargin is name/value pairs Ex3.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=100;
 p=3;
 X=randn(n,p);
 y=100+randn(n,1);
@@ -401,12 +401,12 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
 </code>,<code> 'selunit','3'
 </code></code></span></div><div class="expandableContent"><div id="inputarg_group" class="clearfix"></div><h3 id="input_argument_namevalue_group" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>group</code> &#8212;grouping variable.</span></a><span class="example_desc">vector with n elements.</span></span></h3><div class="collapse">	<p><p>It is a grouping variable that determines
          the marker and color assigned to each point. It can be a categorical
-         variable, vector, string matrix, or cell array of strings.</p> <p>
+         variable, vector, string matrix, or cell array of strings or logical.</p> <p>
          Note that if 'group' is used to distinguish a set of outliers from
          a set of good units, the id number for the outliers should be the
          larger (see optional field 'labeladd' of option 'plo' for details).</p><p>
          </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'group',ones(n,1)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double.</code></p></div></div><div class="expandableContent"><div id="inputarg_plo" class="clearfix"></div><h3 id="input_argument_namevalue_plo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plo</code> &#8212;yXplot personalization.</span></a><span class="example_desc">empty value, scalar of structure.</span></span></h3><div class="collapse">	<p><p>This option controls the names which
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>categorical vector | numeric vector | logical vector | character array | string array | cell array</code></p></div></div><div class="expandableContent"><div id="inputarg_plo" class="clearfix"></div><h3 id="input_argument_namevalue_plo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plo</code> &#8212;yXplot personalization.</span></a><span class="example_desc">empty value, scalar of structure.</span></span></h3><div class="collapse">	<p><p>This option controls the names which
          are displayed in the margins of the yX matrix and the
          labels of the legend.</p> <p>
 

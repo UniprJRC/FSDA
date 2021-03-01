@@ -19,7 +19,7 @@ model.trend=1;
 model.seasonal=0;
 % Potential level shift position is investigated in positions:
 % t=10, t=11, ..., t=T-10.
-model.lshift=10;
+model.lshift=11:n-10;
 out=LTSts(y,'model',model,'plots',1);
 % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1&gt;0$.
 str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
@@ -177,10 +177,10 @@ y=(y(:));
 yLS=y;
 yLS(55:end)=yLS(55:end)+130;
 model=struct;
-model.trend=1;              % linear trend
-model.s=12;                 % monthly time series
+model.trend=1;                          % linear trend
+model.s=12;                             % monthly time series
 model.seasonal=1;
-model.lshift=13;            % impose level shift
+model.lshift=14:length(yLS)-13;         % impose level shift
 out=LTSts(yLS,'model',model);
 close all
 % Plot real and fitted values
@@ -216,7 +216,7 @@ model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
 model.seasonal=103;
-model.lshift=25;
+model.lshift=26:length(yLS)-25;
 out=LTSts(yLS,'model',model,'msg',0);
 close all
 % Plot real and fitted values
@@ -285,10 +285,10 @@ y1(70:75)=y1(70:75)+300;
 y1(90:90)=y1(90:90)+300;
 % Create structure specifying model
 model=struct;
-model.trend=2;              % quadratic trend
-model.s=12;                 % monthly time series
-model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.trend=2;                  % quadratic trend
+model.s=12;                     % monthly time series
+model.seasonal=204;             % number of harmonics
+model.lshift=41:length(y1)-40;  % position where monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lshiftlocref=struct;
@@ -305,7 +305,7 @@ numpar = {'model parameters:' , str};
 axeslast=findobj('-regexp','Tag','LTSts:ts');
 title(axeslast(end),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_6'><img vspace="5" hspace="5" src="images\LTSts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 2 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift and three isolated outliers, two of which in
      proximity of the level shift.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -329,10 +329,10 @@ y1(45)=y1(45)-800;
 y1(68:69)=y1(68:69)+800;
 % Create structure specifying model
 model=struct;
-model.trend=2;              % quadratic trend
-model.s=12;                 % monthly time series
-model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.trend=2;                  % quadratic trend
+model.s=12;                     % monthly time series
+model.seasonal=204;             % number of harmonics
+model.lshift=41:length(y1)-40;  % position where monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lshiftlocref=struct;
@@ -348,7 +348,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\LTSts_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_8" class="example_module expandableContent"><div id="ExtraExample_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example 3 used in the paper RPRH.</li></span></a></span></h3><div class="collapse"><p>
      A persisting level shift preceded and followed in the proximity by
      other two short level shifts, and an isolated outlier.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -371,10 +371,10 @@ y1(70:75)=y1(70:75)+300;
 y1(90:90)=y1(90:90)+300;
 % Create structure specifying model
 model=struct;
-model.trend=2;              % quadratic trend
-model.s=12;                 % monthly time series
-model.seasonal=204;         % number of harmonics
-model.lshift=40;            % position where to start monitoring level shift
+model.trend=2;                  % quadratic trend
+model.s=12;                     % monthly time series
+model.seasonal=204;             % number of harmonics
+model.lshift=41:length(y1)-40;  % position where monitoring level shift
 model.X='';
 % Create structure lts specifying lts options
 lshiftlocref=struct;
@@ -391,7 +391,7 @@ str=strcat('A=2, B=4, G=2, $\delta_2=',num2str(out.posLS),'$');
 numpar = {'model parameters:' , str};
 title(findobj('-regexp','Tag','LTSts:ts'),numpar,'interpreter','LaTeX','FontSize',16);
 % generate the wedgeplot
-% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_8'><img vspace="5" hspace="5" src="images\LTSts_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_04.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_05.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_06.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_07.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_08.png" alt=""> </a></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
+% wedgeplot(out,'transpose',true,'extradata',[y1 out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_9" class="example_module expandableContent"><div id="ExtraExample_9"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Examples 4 and 5 used in the paper RPRH: trade data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">%% Examples 4 and 5 used in the paper RPRH: trade data.
 close all; clear all;
 % the datasets
 load('P12119085');
@@ -403,7 +403,7 @@ model           = struct;
 model.trend     = 1;
 model.seasonal  = 102;
 model.s         = 12;
-model.lshift    = 13;
+model.lshift    = 14:length(Y4)-13;
 % LTSts
 out4 = LTSts(Y4,'model',model,'plots',0,'dispresults',true,'msg',0);
 out5 = LTSts(Y5,'model',model,'plots',0,'dispresults',true,'msg',0);
@@ -423,91 +423,7 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P12119085, FS with default conflev');
 outLTS5 = LTSts(Y5,'model',model,'plots',1,'conflev',0.99,'msg',0);
 title(findobj(gcf,'Tag','LTSts:ts'),'P17049075, LTS with conflev=0.99');
 outFRS5 = FSRts(Y5,'model',model,'plots',1);
-title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div><pre class="codeoutput">         lab           bhat          se         tstat         pval   
-    _____________    _________    _________    ________    __________
-
-    {'b_trend1' }       115.27       4.5051      25.586    2.0728e-26
-    {'b_trend2' }        1.592      0.27465      5.7965    9.1326e-07
-    {'b_cos1'   }      -2.8294       3.9153    -0.72265        0.4741
-    {'b_sin1'   }      -12.419       4.6909     -2.6475      0.011543
-    {'b_cos2'   }      -9.0708       4.6584     -1.9472      0.058559
-    {'b_sin2'   }      -22.604       4.7099     -4.7992    2.2402e-05
-    {'b_varampl'}    -0.015796    0.0042445     -3.7215    0.00060896
-    {'b_lshift' }      -112.62       7.6319     -14.756    8.9213e-18
-
-Level shift position t=27
-         lab           bhat          se         tstat        pval   
-    _____________    _________    _________    _______    __________
-
-    {'b_trend1' }        55.14       3.8549     14.304    2.5537e-17
-    {'b_trend2' }      0.89673      0.19848     4.5181    5.4202e-05
-    {'b_cos1'   }       15.545       4.1497     3.7461    0.00056646
-    {'b_sin1'   }        3.612       4.2659    0.84671        0.4022
-    {'b_cos2'   }      -32.496       4.2541    -7.6387    2.4573e-09
-    {'b_sin2'   }      -16.057        4.313    -3.7229    0.00060638
-    {'b_varampl'}    -0.022594    0.0018596     -12.15    5.2846e-15
-    {'b_lshift' }      -79.413       5.6981    -13.937    6.0952e-17
-
-Level shift position t=34
-Level shift for t=14
-Level shift for t=15
-Level shift for t=16
-Level shift for t=17
-Level shift for t=18
-Level shift for t=19
-Level shift for t=20
-Level shift for t=21
-Level shift for t=22
-Level shift for t=23
-Level shift for t=24
-Level shift for t=25
-Level shift for t=26
-Level shift for t=27
-Level shift for t=28
-Level shift for t=29
-Level shift for t=30
-Level shift for t=31
-Level shift for t=32
-Level shift for t=33
-Level shift for t=34
-Level shift for t=35
--------------------------
-Signal detection loop
-Sample seems homogeneous, no outlier has been found
-Summary of the exceedances
-           1          99         999        9999       99999
-           1           2           0           0           0
-
-Level shift for t=14
-Level shift for t=15
-Level shift for t=16
-Level shift for t=17
-Level shift for t=18
-Level shift for t=19
-Level shift for t=20
-Level shift for t=21
-Level shift for t=22
-Level shift for t=23
-Level shift for t=24
-Level shift for t=25
-Level shift for t=26
-Level shift for t=27
-Level shift for t=28
-Level shift for t=29
-Level shift for t=30
-Level shift for t=31
-Level shift for t=32
-Level shift for t=33
-Level shift for t=34
-Level shift for t=35
--------------------------
-Signal detection loop
-Sample seems homogeneous, no outlier has been found
-Summary of the exceedances
-           1          99         999        9999       99999
-           0           5           1           0           0
-
-</pre><a href='http://rosa.unipr.it/fsda/LTSts.html#ExtraExample_9'><img vspace="5" hspace="5" src="images\LTSts_09.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\LTSts_10.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_11.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_12.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_13.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_14.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_15.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_16.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_17.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_18.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_19.png" alt=""> <img vspace="5" hspace="5" src="images\LTSts_20.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'intercept',false
 </code>,<code> 'h',round(n*0.75)
@@ -520,7 +436,7 @@ Summary of the exceedances
 </code>,<code> 'plots',1
 </code>,<code> 'SmallSampleCor',3
 </code>,<code> 'msg',1
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code>,<code> 'lshiftlocref',lshiftlocref.typeres=2
 </code>,<code> 'nbestindexes',5
 </code>,<code> 'dispresults',true
@@ -572,23 +488,27 @@ Summary of the exceedances
                        corresponds to B=1 and G=2, while model.seasonal=3
                        corresponds to B=3 and G=0;</p></p></td></tr><tr valign="top"><td><code>X</code></td><td><p>matrix of size T-by-nexpl containing the
                          values of nexpl extra covariates which are likely
-                         to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater or equal than 0 or equal to -1 which
+                         to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar greater or equal than 0 or equal to -1, 
+                         or vector of positive integer values which
                          specifies whether it is necessary to include a
                          level shift component. lshift = 0 (default)
                          implies no level shift component. lshift = -1
                          specifies the moment to start considering level
                          shifts automatically from specification of
                          lshift in position floor((T-1-p)/2). If lshift is
-                         an interger greater then 0 then it specifies the
-                         moment to start considering level shifts. For
+                         an interger greater then 0 or a vector of positive 
+                         integer values then it specifies the
+                         moments where the level shift can be located. For
                          example if lshift =13 then the following
                          additional parameters are estimated
                           $\beta_{LS1}* I(t \geq beta_{LS2})$ where
                           $\beta_{LS1}$ is a real number and $\beta_{LS2}$
-                          is an integer which assumes values 14, 14, ...,
-                          T-13.</p> <p>
-                         In general, the level shift which are considered
-                         are referred to times (lshift+1):(T-lshift).</p><p>
+                          is an integer which assumes values 13.</p> <p>
+                          T-13. If lshift =[13 20] then the following
+                         additional parameters are estimated
+                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
+                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
+                          is an integer which assumes values 13 or 20.</p><p>
                        In the paper RPRH $\beta_{LS1}$ is denoted with
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
                        with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>scalar greater or equal than 0 which
@@ -740,13 +660,13 @@ Summary of the exceedances
                'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
                are set to off else no message is displayed on the screen
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'msg',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no
                check is performed on matrix y and matrix X. Notice that y
                and X are left unchanged. In other words the additioanl
                column of ones for the intercept is not added. As default
-               nocheck=0. The controls on h, bdp and nsamp still remain.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_lshiftlocref" class="clearfix"></div><h3 id="input_argument_namevalue_lshiftlocref" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lshiftlocref</code> &#8212;Parameters for local shift refinement.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>This option is used just if model.lshift is greater then 0.</p> <p>
+               nocheck=false. The controls on h, bdp and nsamp still remain.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_lshiftlocref" class="clearfix"></div><h3 id="input_argument_namevalue_lshiftlocref" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>lshiftlocref</code> &#8212;Parameters for local shift refinement.</span></a><span class="example_desc">structure.</span></span></h3><div class="collapse">	<p><p>This option is used just if model.lshift is greater then 0.</p> <p>
                In order to precisely identify level shift position it is
                necessary to consider a local sum of squares varying the
                position of the level shift around the first tentative
@@ -793,7 +713,7 @@ Summary of the exceedances
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields
 
      <table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
-                       (including the intercept when options.intercept=1)
+                       (including the intercept when options.intercept=true)
                        standard errors, t-stat and p-values
                        The content of matrix B is as follows:</p> <p>
                        1st col = beta coefficients

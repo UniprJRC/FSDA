@@ -8,7 +8,7 @@
    4) provides guidelines about the automatic choice of the number of
        components;</p> <p>
    5) returns the communalities for each variable with respect to the
-       first k principal components in table format;</p><p> 
+       first k principal components in table format;</p><p>
    5) calls app biplotFS which enables to obtain an interactive biplot in
       which points, rowslabels or arrows can be shown or hidden. This app
       also gives the possibility of controlling the length of the arrows
@@ -17,45 +17,7 @@
 % Use all default options
 out=pcaFS(creditrating(1:100,1:6))</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> use of pcaFS on the ingredients dataset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load hald
 % Operate on the covariance matrix.
-out=pcaFS(ingredients,'standardize',false,'biplot',false);</pre></div></div><pre class="codeoutput">The first PC already explains more than 0.95^v variability
-In what follows we still extract the first 2 PCs
-Initial covariance matrix
-            Y1        Y2         Y3        Y4   
-          ______    _______    ______    _______
-
-    Y1     34.60      20.92    -31.05     -24.17
-    Y2     20.92     242.14    -13.88    -253.42
-    Y3    -31.05     -13.88     41.03       3.17
-    Y4    -24.17    -253.42      3.17     280.17
-
-Explained variance by PCs
-           Eigenvalues    Explained_Variance    Explained_Variance_cum
-           ___________    __________________    ______________________
-
-    PC1      517.80             86.60                    86.60        
-    PC2       67.50             11.29                    97.89        
-    PC3       12.41              2.07                    99.96        
-    PC4        0.24              0.04                   100.00        
-
-Loadings = correlations between variables and PCs
-           PC1      PC2 
-          _____    _____
-
-    Y1     0.26     0.90
-    Y2     0.99     0.01
-    Y3    -0.10    -0.97
-    Y4    -0.99     0.05
-
-Communalities
-          PC1     PC2     PC1-PC2
-          ____    ____    _______
-
-    Y1    0.07    0.81     0.88  
-    Y2    0.98    0.00     0.98  
-    Y3    0.01    0.94     0.95  
-    Y4    0.99    0.00     0.99  
-
-</pre><a href='http://rosa.unipr.it/fsda/pcaFS.html#Example_2'><img vspace="5" hspace="5" src="images\pcaFS_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\pcaFS_02.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
+out=pcaFS(ingredients,'standardize',false,'biplot',false);</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or table.</span></span></h3> <div class="collapse"> <p><p>n x v data matrix; n observations and v variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite

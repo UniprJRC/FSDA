@@ -94,7 +94,7 @@ lts.bestr=20; % number of best solutions to bring to full convergence
 % Remember to remove the last column of the matrix of the residuals
 % obtained for each level shift position if you want to avoid the
 % top orange band (just execute RES(:,64)=[] before line 258).
-wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);</pre></div></div><a href='http://rosa.unipr.it/fsda/wedgeplot.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\wedgeplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
+wedgeplot(out,'transpose',true,'extradata',[y out.yhat]);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Same double wedge plot as before, but with the time series at the top
      subplot.</li></span></a></span></h3><div class="collapse"><p> This is obtained simply by specifying extradata before transpose.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the airline data.
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960.
 y = [112  115  145  171  196  204  242  284  315  340  360  417    % Jan

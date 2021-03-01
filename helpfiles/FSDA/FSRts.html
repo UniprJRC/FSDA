@@ -33,14 +33,7 @@ model1.trend=1;              % linear trend
 model1.s=12;                 % monthly time series
 model1.lshift=0;             % No level shift
 model1.seasonal=104;         % Four harmonics
-out=FSRts(y,'model',model1);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-Sample seems homogeneous, no outlier has been found
-Summary of the exceedances
-           1          99         999        9999       99999
-           4           0           0           0           0
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#Example_2'><img vspace="5" hspace="5" src="images\FSRts_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRts_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_03.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_04.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRts with optional arguments in time series with outliers.</li></span></a></span></h3><div class="collapse"><p>
+out=FSRts(y,'model',model1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>FSRts with optional arguments in time series with outliers.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
@@ -81,26 +74,7 @@ model1.trend=1;              % linear trend
 model1.s=12;                 % monthly time series
 model1.seasonal=104;
 % Initialize the search with the first 20 units.
-out=FSRts(y,'model',model1,'lms',1:20);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=89 because
-rmin(89,100)&gt;99.999%
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=88
-Superimposition stopped because r_{min}(89,91)&gt;99% envelope
-$r_{min}(89,91)&gt;99$\% envelope
-Subsample of 90 units is homogeneous
-----------------------------
-Final output
-Number of units declared as outliers=10
-Summary of the exceedances
-           1          99         999        9999       99999
-          16           9           6           6           5
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSRts_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_06.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_07.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
+out=FSRts(y,'model',model1,'lms',1:20);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option lms as struct.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
@@ -126,26 +100,7 @@ lms=struct;
 lms.bsb=[1:20 80:85];
 lms.posLS=30;
 % Initialize the search with the units inside lms.bsb.
-out=FSRts(y,'model',model1,'lms',lms);</pre></div></div><pre class="codeoutput">-------------------------
-Signal detection loop
-Tentative signal in central part of the search: step m=89 because
-rmin(89,100)&gt;99.999%
-rmin(89,100)&gt;99% at final step: Bonferroni signal in the central part of the search.
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
--------------------------------
-Start resuperimposing envelopes from step m=88
-Superimposition stopped because r_{min}(89,90)&gt;99% envelope
-$r_{min}(89,90)&gt;99$\% envelope
-----------------------------
-Final output
-Number of units declared as outliers=11
-Summary of the exceedances
-           1          99         999        9999       99999
-          16           9           7           7           6
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRts_08.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_09.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_10.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_11.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
+out=FSRts(y,'model',model1,'lms',lms);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Automatic outlier and level shift detection.</li></span></a></span></h3><div class="collapse"><p>
      A time series of 100 observations is simulated from a model which
      contains no trend, a linear time varying seasonal component with
      three harmonics, no explanatory variables and a signal to noise ratio
@@ -169,14 +124,14 @@ model1.s=12;                 % monthly time series
 model1.seasonal=104;
 model1.lshift=10;
 % Automatically serch for level shift and outliers
-out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRts.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\FSRts_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRts_13.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_14.png" alt=""> <img vspace="5" hspace="5" src="images\FSRts_15.png" alt=""> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
+out=FSRts(y,'model',model1,'msg',0);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Time series to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A row or a column vector
                with T elements, which contains the time series.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'model', model
 </code>,<code> 'nsamp',1000
 </code>,<code> 'lms',1
 </code>,<code> 'h',round(n*0.55)
 </code>,<code> 'plots',1
 </code>,<code> 'init',100 starts monitoring from step m=100
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code>,<code> 'bivarfit','2'
 </code>,<code> 'multivarfit','1'
 </code>,<code> 'labeladd','1'
@@ -304,8 +259,8 @@ out=FSRts(y,'model',model1,'msg',0);</pre></div></div><a href='http://rosa.unip
                start monitoring required diagnostics. If it is not
                specified it is set equal floor(0.5*(T+1))
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',100 starts monitoring from step m=100
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments inside input option model.</span></a><span class="example_desc">as default nocheck=0.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments inside input option model.</span></a><span class="example_desc">as default nocheck=false.</span></span></h3><div class="collapse">	<p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds
                  one or more least squares lines, based on
                  SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>
                  bivarfit = ''

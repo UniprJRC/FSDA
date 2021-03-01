@@ -30,7 +30,7 @@
 %   MMmulteda       - Computes MM estimators in multivariate analysis for a series of values of eff              - MULT-Multivariate   - 2021 Feb 01
 %   mve             - Computes Minimum volume ellipsoid                                                          - MULT-Multivariate   - 2021 Feb 01
 %   mveeda          - Monitors Minimum volume ellipsoid for a series of values of bdp                            - MULT-Multivariate   - 2021 Feb 01
-%   pcaFS           - Performs Principal Component Analysis (PCA) on raw data                                    - MULT-Multivariate   - 2021 Feb 01
+%   pcaFS           - Performs Principal Component Analysis (PCA) on raw data                                    - MULT-Multivariate   - 2021 Feb 09
 %   rcontFS         - Generates a random two-way table with given marginal totals                                - MULT-Categorical    - 2021 Feb 01
 %   SDest           - Computes Stahel-Donoho robust estimator of dispersion-location                             - MULT-Multivariate   - 2021 Feb 01
 %   Smult           - Computes S estimators in multivariate analysis                                             - MULT-Multivariate   - 2021 Feb 01

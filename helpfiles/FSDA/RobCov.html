@@ -162,34 +162,7 @@ hLS.LineStyle = ':';
 hLS.LineWidth = 2;
 hROB=refline([outS.beta(2) outS.beta(1)]);
 hROB.LineWidth = 2;
-legend({'' 'LS','Robust'},'Location','Best')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  1.66 seconds 
-covrob
-    0.6428   -0.0036
-   -0.0036    0.7251
-
-covrob1
-   29.6408   -0.4576
-   -0.4576   29.4429
-
-covrob2
-   29.6345   -0.1655
-   -0.1655   33.4256
-
-covrob3
-    0.2392   -0.0037
-   -0.0037    0.2376
-
-covrob4
-   1.0e-03 *
-
-    0.2844   -0.0069
-   -0.0069    0.2488
-
-covrobc
-    0.6428   -0.0036
-   -0.0036    0.7251
-
-</pre><a href='http://rosa.unipr.it/fsda/RobCov.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\RobCov_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
+legend({'' 'LS','Robust'},'Location','Best')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Data matrix of explanatory variables (also called 'regressors')
             of dimension (n x p-1). </span>  </a><span class="example_desc">Rows of X represent observations, and
             columns represent variables.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaledres" class="clearfix"> </div> <h3 id="input_argument_scaledres" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaledres</code> &#8212; Scaled residuals.Vector. </span>  </a><span class="example_desc">n-times-1 vector containing scaled
              residuals $r_i/\hat \sigma$.</span></span></h3> <div class="collapse"> <p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_scaleest" class="clearfix"> </div> <h3 id="input_argument_scaleest" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>scaleest</code> &#8212; robust estimate of the scale. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Robust estimate of
@@ -242,7 +215,7 @@ covrobc
                For Hampel rho function it is possible to define parameters
                a, b and c (the default values are a=2, b=4, c=8)
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'rhofuncparam',5
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>single | double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>A structure containing the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>covrob</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (4.49) of p. 101 of Maronna et al. (2006)
@@ -253,7 +226,7 @@ covrobc
                 where
                 \[
                 \hat v =  \frac{n}{n-p} n\frac{\sum_{i=1}^n \psi(r_i/\hat \sigma)^2}{[\sum_{i=1}^n \psi'(r_i/\hat \sigma)]^2}
-                \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrob1</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -267,7 +240,7 @@ covrobc
                    1+[CV(\psi')]^2  p/n $. The notation $CV(\psi')$ stands
                    for the coefficient of variation of $\psi'$, where
                    $\psi$ and $\psi'$ are, respectively,  the first and
-                   second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                   second derivatives of the $\rho$ function.</p></td></tr><tr valign="top"><td><code>covrob2</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob1 implements
                equation (7.81) of p. 171 of Huber and Ronchetti (2009)
@@ -275,7 +248,7 @@ covrobc
                namely:</p> <p>
                 </p>\[
                  \mbox{covrob2} =  K^2  \hat v  (X' X)^{-1};
-                \]</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrob3</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.82) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
@@ -284,14 +257,14 @@ covrobc
                 \mbox{covrob3} =  K  \frac{n}{n-p} 
                  \frac{\sum_{i=1}^n \psi (r_i/\hat \sigma)^2}{\sum_{i=1}^n
                  \psi'(r_i/\hat \sigma)} (X' W X)^{-1};
-                \]</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrob4</code></td><td><p><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing asymptotic variance covariance
                matrix of regression coefficients. covrob implements
                equation (7.83) of p. 171 of of Huber and Ronchetti (2009).</p> <p>
                namely:</p><p>
                 </p>\[
                  \mbox{covrob4} =  \frac{1}{n-p} K^{-1} \sum_{i=1}^n \psi(r_i/\hat \sigma)^2  (X' W X)^{-1} X'X (X' W X)^{-1};
-                \]</p></td></tr><tr valign="top"><td><code>covrobc</code></td><td><p>p-times-p (if intercept is 1 else is (p-1)-by-(p-1)) matrix
+                \]</p></td></tr><tr valign="top"><td><code>covrobc</code></td><td><p>p-times-p (if intercept is true else is (p-1)-by-(p-1)) matrix
                containing best variance covariance matrix of regression
                coefficients. covrobc checks the coefficient of variation
                of the derivative of function $\psi(r_i/\hat \sigma)$. If 

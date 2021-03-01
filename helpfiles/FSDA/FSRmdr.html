@@ -56,13 +56,13 @@ y=fishery{:,2};
 X=fishery{:,1};
 % Find starting subset
 [out]=LXS(y,X,'nsamp',10000);
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept','0');</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option nocheck.</li></span></a></span></h3><div class="collapse"><p>
+[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'intercept',false);</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option nocheck.</li></span></a></span></h3><div class="collapse"><p>
     FSRmdr applied without doing any checks on y and X variables.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
 y=fishery{:,2};
 X=fishery{:,1};
 % Find starting subset
 [out]=LXS(y,X,'nsamp',10000);
-[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',1);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of s2, and the evolution of beta coefficients for the Hawkins dataset
+[mdr,Un,BB,Bols,S2] = FSRmdr(y,X,out.bs,'nocheck',true);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of s2, and the evolution of beta coefficients for the Hawkins dataset
     load('hawkins.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt');
 y=hawkins(:,9);
 X=hawkins(:,1:8);
@@ -93,8 +93,7 @@ plot(Bols(:,1),Bols(:,j))
 xlabel('Subset size m');
 ylabel(['b' num2str(j-2)]);
 end
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRmdr_02.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
+end</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Store units forming subsets in selected steps.</li></span></a></span></h3><div class="collapse"><p>
      In this example the units forming subset are stored just for
      selected steps.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('hawkins.txt');
 y=hawkins(:,9);
@@ -113,12 +112,7 @@ else
 % sum(~isnan(BB(:,2))) is 60
 disp(sum(~isnan(BB(:,1))))
 disp(sum(~isnan(BB(:,2))))
-end</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.14 seconds 
-    30
-
-    60
-
-</pre></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option threshlevoutX.</li></span></a></span></h3><div class="collapse"><p>
+end</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of the use of option threshlevoutX.</li></span></a></span></h3><div class="collapse"><p>
      In this example a set of remote units is added to a cloud of points.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% The purpose of this example is to show that in presence of units very far
 % from the bulk of th data (bad or good elverage points) it is necessary to
 % bound their effect putting a constraint on their leverage hi=xi'(X'X)xi
@@ -146,8 +140,7 @@ subplot(2,1,2)
 out2=FSRmdr(yall,Xall,bs,'plots',1,'threshlevoutX',10);
 ylim(xylim(3:4));
 ylabel('mdr')
-title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.02 seconds 
-</pre><a href='http://rosa.unipr.it/fsda/FSRmdr.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSRmdr_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+title('Monitoring of mdr with bound on the leverage')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -170,7 +163,7 @@ title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre cla
                m0=length(bsb)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'intercept',false
 </code>,<code> 'plots',1
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code>,<code> 'msg',1
 </code>,<code> 'bsbmfullrank',1
 </code>,<code> 'threshlevoutX',5
@@ -196,13 +189,13 @@ title('Monitoring of mdr with bound on the leverage')</pre></div></div><pre cla
                necessary to use function mdrplot.</p><p>
 
 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'plots',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If nocheck is equal to 1 no
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If nocheck is equal to true no
                check is performed on matrix y and matrix X. Notice that y
                and X are left unchanged. In other words the additioanl
                column of ones for the intercept is not added. As default
-               nocheck=0. The controls on h, alpha and nsamp still remain
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to
+               nocheck=false. The controls on h, alpha and nsamp still remain
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to
                display or not messages about great interchange on the
                screen If msg==1 (default)
                messages are displayed on the screen
