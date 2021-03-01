@@ -133,7 +133,16 @@ function smo = supsmu(x,y,varargin)
     plot(x,y,'o',x,smo)
 %}
 
-
+%{
+    %% Example of use of option Span.
+    x = linspace(0,1,201);
+    y = sin(2.5*x) + 0.05*randn(1,201);
+    smo = supsmu(x,y,'Span',0.3);
+    smo1 = supsmu(x,y,'Span',0.5);
+    smo2 = supsmu(x,y,'Span',0.7);
+    plot(x,y,'o',x,[smo; smo1; smo2])
+    legend({'Original data' 'span=0.3' 'span=0.5' 'span=0.7'},'Location','best')
+%}
 
 %% Beginning of code
 
