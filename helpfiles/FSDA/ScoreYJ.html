@@ -11,7 +11,7 @@ X=loyalty(:,1:3);
 % la = vector containing the values of the transformation
 % parameters which have to be tested
 la=[0.25 1/3 0.4 0.5];
-[outSc]=ScoreYJ(y,X,'la',la,'intercept',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare Score test using BoxCox and YeoJohnson for the wool data.</li></span></a></span></h3><div class="collapse"><p>
+[outSc]=ScoreYJ(y,X,'la',la,'intercept',true);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Compare Score test using BoxCox and YeoJohnson for the wool data.</li></span></a></span></h3><div class="collapse"><p>
      Wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
 X=XX(:,1:end-1);
@@ -29,14 +29,14 @@ n=length(y);
 X=ones(n,1);
 la=-1:0.01:2.5;
 % Given that there are no explanatory variables the test must be
-% called with intercept 0
-out=ScoreYJ(y,X,'intercept',0,'la',la,'Lik',1);
+% called with intercept false
+out=ScoreYJ(y,X,'intercept',false,'la',la,'Lik',1);
 plot(la',out.Score)
 xax=axis;
 line(xax(1:2),zeros(1,2))
 xlabel('\lambda')
 ylabel('Value of the score test')
-title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$','Interpreter','Latex')</pre></div></div><a href='http://rosa.unipr.it/fsda/ScoreYJ.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\ScoreYJ_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$','Interpreter','Latex')</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')
@@ -46,8 +46,8 @@ title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$',
                since observations (rows) with missing or infinite values will
                automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
 </code>,<code> 'la',[0 0.5]
-</code>,<code> 'Lik',0
-</code>,<code> 'nocheck',1
+</code>,<code> 'Lik',false
+</code>,<code> 'nocheck',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
@@ -59,15 +59,17 @@ title('Value of the score test is 0 in correspondence of $\hat \lambda =1.305$',
                  Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
                  is the five most common values of lambda
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'la',[0 0.5]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Lik" class="clearfix"></div><h3 id="input_argument_namevalue_Lik" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lik</code> &#8212;likelihood for the augmented model.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If 1 the value of the likelihood for the augmented model will be produced
-                 else (default) only the value of the score test will be given
-               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lik',0
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_Lik" class="clearfix"></div><h3 id="input_argument_namevalue_Lik" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>Lik</code> &#8212;likelihood for the augmented model.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p>If true the value of the likelihood for the augmented
+                   model will be produced
+                 else (default) only the value of the score test will be
+                 given
+               </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'Lik',false
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>logical</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones
-                 for the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
+                 for the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
 
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p>score test. Scalar. t test for additional
                             constructed variable</p></td></tr><tr valign="top"><td><code>Lik</code></td><td><p>value of the likelihood. Scalar. This output

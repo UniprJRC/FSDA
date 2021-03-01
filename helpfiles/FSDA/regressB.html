@@ -13,15 +13,7 @@ X=randn(n1,p-1);
 y=randn(n1,1);
 % Run regressB using all n1 data and use the default value of c=1
 out=regressB(y, X, beta0, R, tau0, n0);
-disp(out)</pre></div></div><pre class="codeoutput">       beta1: [3&times;1 double]
-          a1: 63.5000
-          b1: 68.1135
-        tau1: 0.9323
-    covbeta1: [3&times;3 double]
-     sigma21: 1.0898
-         res: [100&times;2 double]
-
-</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressB with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+disp(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressB with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Run regressB and compute new estimate of beta using just the first 20
      observations and use a value of c equal to 1.2.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng('default')
 rng(100) % set seed for replicability
@@ -75,21 +67,7 @@ R(4,4)=.6;
 R(5,5)=.6;
 R=inv(R);
 out=regressB(y, X, beta0, R, tau0, n0,'stats',1);
-disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 double]
-            a1: 273
-            b1: 9.0326e+10
-          tau1: 3.0224e-09
-      covbeta1: [5&times;5 double]
-       sigma21: 3.3208e+08
-           res: [546&times;2 double]
-      beta1HPD: [5&times;4 double]
-       tau1HPD: [2.6745e-09 3.3913e-09 2.5720e-09 3.5143e-09]
-    sigma21HPD: [2.9487e+08 3.7391e+08 2.8455e+08 3.8880e+08]
-         Bpval: [5&times;1 double]
-      postodds: [5&times;1 double]
-     modelprob: [5&times;1 double]
-
-</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+disp(out)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n1, where n1 is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>
@@ -133,7 +111,7 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
 </code>,<code> 'c',1.2
 </code>,<code> 'stats',1
 </code>,<code> 'conflev',[0.99 0.999]
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
@@ -185,12 +163,12 @@ disp(out)</pre></div></div><pre class="codeoutput">         beta1: [5&times;1 d
                is 95 per cent and 99 per cent HPDI confidence intervals
                are computed
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'conflev',[0.99 0.999]
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                matrix y and matrix X. Notice that y and X are left
                unchanged. In other words the additional column of ones for
-               the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta1</code></td><td><p>p x 1 vector containing posterior mean (conditional on
+               the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>beta1</code></td><td><p>p x 1 vector containing posterior mean (conditional on
                $\tau_0$) of $\beta$ (regression coefficents)
                $ \beta_1 = (c \times R + X'X)^{-1} (c \times R \times \beta_0 + X'y)$</p></td></tr><tr valign="top"><td><code>a1</code></td><td><p><p>shape parameter of the posterior gamma distribution of
                $\tau$ ($\sigma^2$). Scalar.</p> <p>

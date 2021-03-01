@@ -37,13 +37,7 @@ msel=195;
 [~,BBsel]=FSMbsb(Ycont,0,'bsbsteps',msel);
 seq=1:n;
 disp(['Units outside subset at step m=' num2str(msel)])
-disp(setdiff(seq,BBsel))</pre></div></div><pre class="codeoutput">Contaminated units
-    11    21    31    41    51
-
-Units outside subset at step m=195
-    11    21    31    41    51
-
-</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Specifying the point where to start monitoring.</li></span></a></span></h3><div class="collapse"><p>
+disp(setdiff(seq,BBsel))</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Specifying the point where to start monitoring.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the point where to start monitoring units belongng to subset.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 randn('state',123456);

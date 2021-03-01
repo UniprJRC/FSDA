@@ -13,14 +13,7 @@ X=[(-40:39)' X];
 y=X(:,end);
 X=X(:,1:end-1);
 labels={'Time','1','2','3','4','5','6','7','8'};
-[Cpms]=FSRms(y,X,'labels',labels,'plots',1);</pre></div></div><pre class="codeoutput">small p=9
-small p=8
-small p=7
-small p=6
-small p=5
-small p=4
-small p=3
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#Example_2'><img vspace="5" hspace="5" src="images\FSRms_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
+[Cpms]=FSRms(y,X,'labels',labels,'plots',1);</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Reproduce the candlestick plot given in Figure 5 of Riani and Atkinson (2010).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
 X=[(-40:39)' X];
 y=X(:,end);
@@ -36,11 +29,7 @@ outms=FSRms(y,X,'fin_step',fin_step,'plots',1,'labels',labels,'smallpint',[4:7])
 %a satisfactory model. For smallp = 4 the best model has the trend, x3 and
 %x7, although the plot shows the values of Cp(m) increasing towards the end
 %of the search. By far the most stable model for smallp= 5 adds x2 to these
-%variables.</pre></div></div><pre class="codeoutput">small p=7
-small p=6
-small p=5
-small p=4
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSRms_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
+%variables.</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Considering all submodels.</li></span></a></span></h3><div class="collapse"><p>
      Perform robust model selection and show the generalized candlestick
      plot considering all submodels for each smallp from 2 to size(X).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
@@ -62,16 +51,7 @@ labels={'Time','1','2','3','4','5','6','7','8'};
 % ignore=0
 [Cpms]=FSRms(y,X,'ignore',0,'smallpint',4:6,'labels',labels,'plots',1);
 % with ignore=0 but changing the threshold for excluding models
-[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'ExclThresh',0.99999999999999);</pre></div></div><pre class="codeoutput">small p=6
-small p=5
-small p=4
-small p=6
-small p=5
-small p=4
-small p=6
-small p=5
-small p=4
-</pre><a href='http://rosa.unipr.it/fsda/FSRms.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSRms_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSRms_04.png" alt=""> <img vspace="5" hspace="5" src="images\FSRms_05.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
+[Cpms]=FSRms(y,X,'smallpint',4:6,'labels',labels,'plots',1,'ExclThresh',0.99999999999999);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Changing confidence bands.</li></span></a></span></h3><div class="collapse"><p>
      Same options as before but using different confidence bands.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">X=load('ozone.txt');
 X(:,end)=log(X(:,end));
 X=[(-40:39)' X];
@@ -137,7 +117,7 @@ labels={'Time','1','2','3','4','5','6','7','8'};
 </code>,<code> 'h',round(n*0,75) 
 </code>,<code> 'nsamp',1000 
 </code>,<code> 'lms',1 
-</code>,<code> 'nocheck',1 
+</code>,<code> 'nocheck',true 
 </code>,<code> 'smallpint',3 
 </code>,<code> 'labels',{'1','2'} 
 </code>,<code> 'fin_step',[1 50] 
@@ -178,12 +158,12 @@ labels={'Time','1','2','3','4','5','6','7','8'};
                  subset to initialize the search.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If lms=1 (default) Least Median of Squares is
                computed, else Least Trimmed of Squares is computed.</p> <p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'lms',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                matrix y and matrix X. Note that y and X are left
                unchanged. In other words the additional column of ones
-               for the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_smallpint" class="clearfix"></div><h3 id="input_argument_namevalue_smallpint" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallpint</code> &#8212;submodels to consider.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies which submodels 
+               for the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_smallpint" class="clearfix"></div><h3 id="input_argument_namevalue_smallpint" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>smallpint</code> &#8212;submodels to consider.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>It specifies which submodels 
                (number of variables) must be considered.</p> <p> 
                The default is to consider all models
                from size 2 to size bigP-1. In other words, as default,

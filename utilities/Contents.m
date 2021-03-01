@@ -12,7 +12,7 @@
 %   findFile               - Finds recursively all files in root                                                                          - UTIGEN- 2021 Feb 01
 %   isfunction             - Checks if a function exists                                                                                  - UTIGEN- 2021 Feb 01
 %   openMatlabFileFromHTML - Enables to put in HTML an hypertextual link to a specific MATLAB file                                        - UTIGEN- 2021 Feb 01
-%   position               - Controls the position of the open figures                                                                    - UTIGEN- 2021 Feb 01
+%   position               - Controls the position of the open figures                                                                    - UTIGEN- 2021 Feb 08
 %   quickselectFS          - Finds the k-th order statistic                                                                               - UTIGEN- 2021 Feb 01
 %   removeExtraSpacesLF    - Removes extra spaces and selected carriage returns from input string                                         - UTIGEN- 2021 Feb 01
 %   repDupValWithMean      - Replaces values of y which have non unique elements in vector x with local means                             - UTIGEN- 2021 Feb 01

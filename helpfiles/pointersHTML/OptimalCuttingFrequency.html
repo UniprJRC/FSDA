@@ -1,0 +1,36 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>OptimalCuttingFrequency</title> <meta content="refpage" name="chunktype"><meta content="function:OptimalCuttingFrequency " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="OptimalCuttingFrequency Computes the optimal cutting frequency for the Fourier estimator of integrated variance" itemprop="description" name="description" /><h1 itemprop="title">OptimalCuttingFrequency</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:web([docrootFS '/FSDA/OptimalCuttingFrequency.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/OptimalCuttingFrequency.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/OptimalCuttingFrequency.html">http://rosa.unipr.it/FSDA/OptimalCuttingFrequency.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: OptimalCuttingFrequency</em></p><P>OptimalCuttingFrequency</P><P>Computes the optimal cutting frequency for the Fourier estimator of integrated variance</P><h2>Description</h2><P>OptimalCuttingFrequency computes the optimal cutting frequency for
+ running  the Fourier estimator of the integrated variance
+ on noisy timeseries data.</P><h2>More About</h2><P>
+ We assume our timeseries data are noisy observations $\tilde x$ from a diffusion
+ process following the Ito stochastic differential equation
+ $$dx(t)= \sigma(t) \ dW(t) + b(t) \ dt,$$
+ where $W$ is a Brownian motion on a filtered probability space. Let
+ $\sigma$ and $b$ be random processes, adapted to the Brownian filtration.
+ The integrated variance of the process over the time interval $[0,T]$ is defined as
+ $$\int_0^T \sigma^2(t) dt.$$
+
+ For any positive integer $n$, let ${\cal S}_{n}:=\{ 0=t_{0}\leq \cdots
+ \leq t_{n}=T  \}$ be the observation times.
+ The observations are affected by i.i.d. noise terms $\eta(t_i)$  with
+ mean zero and finite variance
+ $$\tilde x(t_i)=x(t_i)+\eta(t_i).$$
+ See the Reference for further  mathematical details.
+ Moreover, let $\delta_i(\tilde x):= \tilde x(t_{i+1})-\tilde x(t_i)$ be
+ the increments of $\tilde x$.
+
+ The optimal cutting frequency $N$ for computing  the Fourier estimator of
+ the integrated variance from noisy timeseries data is obtained by
+ minimization of the estimated MSE.
+
+ The Fourier estimator of the integrated variance over $[0,T]$, is
+ then defined as
+ $$\widehat\sigma^{2}_{n,N}:= {T^2 \over {2N+1}}\sum_{|s|\leq N} c_s(d\tilde x_n)
+ c_{-s}(d\tilde x_n),$$
+ where for any integer $k$, $|k|\leq N$, the discretized Fourier
+ coefficients of the increments are
+ $$c_k(d\tilde x_{n}):= {1\over {T}} \sum_{i=0}^{n-1} e^{-{\rm i} {{2\pi}\over {T}}
+ kt_i}\delta_i(\tilde x).$$
+
+</P><h2>References</h2><P>Mancino, M.E., Recchioni, M.C., Sanfelici, S. (2017), Fourier-Malliavin
+ Volatility Estimation. Theory and Practice, "Springer Briefs in
+ Quantitative Finance", Springer.</P></html>

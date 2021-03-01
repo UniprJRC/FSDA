@@ -7,87 +7,22 @@
  useful in identifying potential problem areas in an organization’s sales
  processes. A funnel chart is similar to a stacked percent bar chart. For
  more details see: <a href="https://en.wikipedia.org/wiki/Funnel_chart">https://en.wikipedia.org/wiki/Funnel_chart</a></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="funnelchart.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_h"><code>h</code></a>=funnelchart(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>)</code></span>funnelchart with all default options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="funnelchart.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_h"><code>h</code></a>=funnelchart(<a class="intrnllnk" href="#inputarg_x"><code>x</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>funnelchart with Labels option.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with all default options.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[500 425 200 150 100 90];
-funnelchart(x)</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Figure (1) with properties:
-
-      Number: 1
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [489 343 560 420]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/funnelchart.html#Example_1'><img vspace="5" hspace="5" src="images\funnelchart_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with Labels option.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[500 425 200 150 100 90];
+funnelchart(x)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with Labels option.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[500 425 200 150 100 90];
 labels={'Prospects', 'Qualified prospects', 'Needs analysis', 'Price quotes', ...
 'Negotiations', 'Closed sales'};
-funnelchart(x,'Labels',labels)</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Figure (2) with properties:
-
-      Number: 2
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [489 343 560 420]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/funnelchart.html#Example_2'><img vspace="5" hspace="5" src="images\funnelchart_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart when x is a matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
+funnelchart(x,'Labels',labels)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart when x is a matrix.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
 x=sort(x,1,'descend');
 labels={'A', 'B', 'C', 'D', 'E', ...
 'F', 'G' 'H', 'I' 'J'};
-funnelchart(x,'Labels',labels)</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Figure (3) with properties:
-
-      Number: 3
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [489 343 560 420]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/funnelchart.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\funnelchart_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with a non-default color.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
+funnelchart(x,'Labels',labels)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with a non-default color.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
 x=sort(x,1,'descend');
 labels={'A', 'B', 'C', 'D', 'E', ...
 'F', 'G' 'H', 'I' 'J'};
-funnelchart(x,'Labels',labels,'Color',FSColors.greysh.RGB)</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Figure (4) with properties:
-
-      Number: 4
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [489 343 560 420]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/funnelchart.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\funnelchart_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with a title.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
+funnelchart(x,'Labels',labels,'Color',FSColors.greysh.RGB)</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> funnelchart with a title.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=100*abs(randn(10,4));
 x=sort(x,1,'descend');
 labels={'A', 'B', 'C', 'D', 'E', ...
 'F', 'G' 'H', 'I' 'J'};
-funnelchart(x,'Labels',labels,'Title','A Funnel Chart')</pre></div></div><pre class="codeoutput">
-ans = 
-
-  Figure (5) with properties:
-
-      Number: 5
-        Name: ''
-       Color: [0.9400 0.9400 0.9400]
-    Position: [489 343 560 420]
-       Units: 'pixels'
-
-  Use GET to show all properties
-
-</pre><a href='http://rosa.unipr.it/fsda/funnelchart.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\funnelchart_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option h.</li></span></a></span></h3><div class="collapse"><p>
+funnelchart(x,'Labels',labels,'Title','A Funnel Chart')</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of the use of option h.</li></span></a></span></h3><div class="collapse"><p>
      Create a subplot<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ax=subplot(3,2,5);
 % Create the funnelchart inside the axes specified by ax instead of in
 % the current axes (gca)

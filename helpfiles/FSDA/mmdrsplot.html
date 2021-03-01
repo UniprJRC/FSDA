@@ -15,7 +15,7 @@ m0=20;
 bs=fre(1:m0,1);
 [outeda]=FSMeda(Y,bs);
 [out]=FSMmmdrs(Y,'bsbsteps',0,'cleanpool',0,'nsimul',80);
-mmdrsplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/mmdrsplot.html#Example_1'><img vspace="5" hspace="5" src="images\mmdrsplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmdrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
+mmdrsplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of the use of function mmdrsplot with personalized envelopes.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('swiss_banknotes');
 Y=swiss_banknotes{:,:};
 [fre]=unibiv(Y);
 fre=sortrows(fre,[3 4]);

@@ -11,7 +11,7 @@ y=XX(:,2);
 X=XX(:,1);
 X=X./max(X);
 Z=log(X);
-Un=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRHbsb.html#Example_2'><img vspace="5" hspace="5" src="images\FSRHbsb_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the units belonging to subset in each step.</li></span></a></span></h3><div class="collapse"><p>
+Un=FSRHbsb(y,X,Z,[1:10],'plots',1,'msg',0);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the units belonging to subset in each step.</li></span></a></span></h3><div class="collapse"><p>
      Common part to all examples: load tradeH dataset (used in the paper ART).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
 X=XX(:,1);
@@ -62,7 +62,7 @@ disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p><
                m0=length(bsb)</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',100 starts monitoring from step m=100
 </code>,<code> 'intercept',false
 </code>,<code> 'modeltype','har'
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code>,<code> 'msg',1
 </code>,<code> 'gridsearch',0
 </code>,<code> 'constr',[1 6 3]
@@ -94,12 +94,12 @@ disp(isequaln(Un,Unchk))</pre></div></div></p></div></div></div><p> </p><
                            Z(i,1) + \cdots + \gamma_{r} Z(i,r))
                \]
                </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'modeltype','har'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>string</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                matrix y and matrix X. Notice that y and X are left
                unchanged. In other words the additional column of ones for
-               the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to display or not messages
+               the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_msg" class="clearfix"></div><h3 id="input_argument_namevalue_msg" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>msg</code> &#8212;Level of output to display.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>It controls whether to display or not messages
                about great interchange on the screen
                If msg==1 (default) messages are displayed on the screen
                else no message is displayed on the screen

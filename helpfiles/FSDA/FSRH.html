@@ -9,42 +9,7 @@ plot(X,y,'o')
 fs=14;
 ylabel('Value','FontSize',fs)
 xlabel('Quantity','FontSize',fs)
-out=FSRH(y,X,Z);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.06 seconds 
-Warning: interchange greater than 10 when m=13
-Number of units which entered=14
-Warning: interchange greater than 10 when m=353
-Number of units which entered=11
-Warning: interchange greater than 10 when m=354
-Number of units which entered=16
-Warning: interchange greater than 10 when m=499
-Number of units which entered=21
-Warning: interchange greater than 10 when m=502
-Number of units which entered=13
-Warning: interchange greater than 10 when m=507
-Number of units which entered=19
-Warning: interchange greater than 10 when m=509
-Number of units which entered=11
--------------------------
-Signal detection loop
-Signal is in penultimate step of the search
-rmin(1098,1100)&gt;99.9%
-rmin(1098,1100)&gt;99% at final step: Bonferroni signal in the final part of the search.
--------------------
-Signal validation exceedance of upper envelopes
-Validated signal
-Warning: Upper limit of y axis of the mdr forward plot set to 20 
--------------------------------
-Start resuperimposing envelopes from step m=1097
-Superimposition stopped because r_{min}(1098,1099)&gt;99% envelope
-$r_{min}(1098,1099)&gt;99$\% envelope
-----------------------------
-Final output
-Number of units declared as outliers=2
-Summary of the exceedances
-           1          99         999        9999       99999
-          75           6           2           2           2
-
-</pre><a href='http://rosa.unipr.it/fsda/FSRH.html#Example_1'><img vspace="5" hspace="5" src="images\FSRH_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRH_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSRH_03.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRH with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+out=FSRH(y,X,Z);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRH with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the search initialization and controlling the y scale in
      plot. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
@@ -94,7 +59,7 @@ out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);</pre></div>
 </code>,<code> 'init',100 starts monitoring from step m=100 
 </code>,<code> 'tag',{'plmdr' 'plyXplot'};
 </code>,<code> 'gridsearch',1 
-</code>,<code> 'nocheck',1 
+</code>,<code> 'nocheck',true 
 </code>,<code> 'bivarfit',2 
 </code>,<code> 'multivarfit','1' 
 </code>,<code> 'labeladd','1' 
@@ -200,12 +165,12 @@ out=FSRH(y,X,Z,'init',round(length(y)/2),'plots',1,'ylim',[1.6 3]);</pre></div>
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char or cell</code></p></div></div><div class="expandableContent"><div id="inputarg_gridsearch" class="clearfix"></div><h3 id="input_argument_namevalue_gridsearch" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>gridsearch</code> &#8212;Algorithm to be used.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If gridsearch ==1 grid search will be used else (default) the
                scoring algorith will be used.</p> <p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'gridsearch',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones
-                 for the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1 
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
+                 for the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true 
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_bivarfit" class="clearfix"></div><h3 id="input_argument_namevalue_bivarfit" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>bivarfit</code> &#8212;Superimpose bivariate least square lines.</span></a><span class="example_desc">character.</span></span></h3><div class="collapse">	<p><p>This option adds one or more least square lines, based on
                  SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.</p> <p>
                  bivarfit = ''
                    is the default: no line is fitted.</p> <p>
