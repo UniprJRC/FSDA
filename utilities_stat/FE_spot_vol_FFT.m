@@ -168,14 +168,15 @@ fft_def=[conj(ff) fft_v(1:M+N+1)];
 fft_def=fft_def./T; % Fourier coeff. of log-returns
 
 idxk=-N:1:N; nshift=M+N+1;
-for kk=-M:M
+k=-M:1:M;
+coeff=zeros(1,length(k));
+for kk=k
     idxx=idxk+nshift+kk;
     Capp=fft_def(idxx);
     coeff(M+kk+1)=Capp*fft_def(nshift-N:nshift+N)';
 end
 C=coeff.*(T/(2*N+1)); % Fourier coeff. of variance
 
-k=(-M:1:M);
 f=C.*(1-abs(k)/M);
 Fsum=(2*M+1)*ifft(f);
 Fsum=exp(-1i*2*pi*M*(k+M)/(2*M+1)).*Fsum;
