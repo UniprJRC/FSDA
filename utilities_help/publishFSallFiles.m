@@ -22,7 +22,7 @@ function [FilesWithProblems,OUT,InputCell]=publishFSallFiles(InputCell,varargin)
 %             whether HTML file must be created or if just structure out
 %             must be created. The default value of write2file is true,
 %             that is html file is created
-%             Example - 'write2file','false'
+%             Example - 'write2file',false
 %             Data Types - Boolean
 %
 % outputDir : Output folder. String.
