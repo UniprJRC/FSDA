@@ -286,7 +286,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
     end
     p = 2;
     d = 2;
-    [out] = SETARX(y, p ,d, 'X',X1);
+    [out, reg, input] = SETARX(y, p ,d, 'X',X1);
 %}
 
 %{
