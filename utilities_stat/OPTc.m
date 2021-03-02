@@ -17,7 +17,7 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
 %   shapeeff : location or shape efficiency. Scalar. 
 %              If shapeeff=1, the efficiency is referred to the shape else
 %              (default) is referred to the location estimator
-%               Example - 'shapeeff',1 
+%               Example - 1 
 %               Data Types - double
 %
 % Output:
@@ -109,6 +109,13 @@ function [bdp,eff,approxsheff] = OPTc(c, v, shapeeff)
     xlabel('c','Interpreter','Latex','FontSize',16)
     ylabel('Asymptotic efficiency','Interpreter','none')
 
+%}
+
+%{
+    % An example with 3 output arguments.
+    c=5;
+    % third input argument is 1, that is shape efficiency
+    [bdp, eff, approxeff] = OPTc(c,2,1);
 %}
 
 %% Beginning of code
