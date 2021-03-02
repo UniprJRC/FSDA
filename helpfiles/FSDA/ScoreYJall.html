@@ -37,7 +37,16 @@ disp(Scotable)
 % of the score test when lambda=0.5 is the only one which is not
 % significant. Both values of the score test for positive and negative
 % observations and the Ftest confirm that this value of the
-% transformation parameter is OK for both sides of the distribution.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2000)
+% transformation parameter is OK for both sides of the distribution.</pre></div></div><pre class="codeoutput">    lambda     Tall        Tp         Tn       Ftest 
+    ______    _______    _______    _______    ______
+
+       -1      21.177     32.887     14.266     575.2
+     -0.5      12.662     15.573      9.192    122.47
+        0      5.0377     5.3971     3.9745    14.416
+      0.5     -1.6988    -1.4896    -1.7737    1.5805
+        1     -8.4803    -7.4925    -9.3782    43.761
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(2000)
 n=100;
 y=randn(n,1);
 % Tranform in a different way positive and negative values
@@ -63,7 +72,19 @@ disp('Difference between the test for positive and the test for negative')
 disp(abs(Scotable{4,3}-Scotable{4,4})),
 % which is very
 % large. This indicates that the two tails need a different value of the
-% transformation parameter.</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
+% transformation parameter.</pre></div></div><pre class="codeoutput">    lambda     Tall        Tp         Tn       FtestPN    FtestLR
+    ______    _______    _______    _______    _______    _______
+
+       -1      36.467      55.13     25.519    1610.7     198.99 
+     -0.5      20.184     22.481     16.391    250.17     61.484 
+        0      7.8511     6.7795      8.197    33.341     12.708 
+      0.5     -1.5618     -2.642    0.61876     14.23     3.0175 
+        1     -11.647    -11.721    -9.2192    68.153     27.268 
+
+Difference between the test for positive and the test for negative
+    3.2608
+
+</pre></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>A vector with n elements that
                contains the response
                variable.  It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory
                variables (also called 'regressors')

@@ -12,7 +12,12 @@
 nsamp=20;
 Y=load('geyser2.txt');
 % If no trimming is used 4 groups are found.
-out=tclustICgpcm(Y,'nsamp',nsamp);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+out=tclustICgpcm(Y,'nsamp',nsamp);</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example of use of input options alpha and typeIC.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 pa=struct;
 pa.pars='VVV';
 rng(100)

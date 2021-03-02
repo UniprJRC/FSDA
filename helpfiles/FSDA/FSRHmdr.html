@@ -4,7 +4,30 @@ y=XX(:,2);
 X=XX(:,1);
 X=X./max(X);
 Z=log(X);
-mdr=FSRHmdr(y,X,Z,0);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHmdr with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+mdr=FSRHmdr(y,X,Z,0);</pre></div></div><pre class="codeoutput">Warning: Maximum number of iterations has been reached without convergence 
+Warning: Matrix is singular, close to singular or badly scaled. Results may be
+inaccurate. RCOND = NaN. 
+Warning: interchange greater than 10 when m=10
+Number of units which entered=11
+Warning: interchange greater than 10 when m=136
+Number of units which entered=12
+Warning: interchange greater than 10 when m=315
+Number of units which entered=17
+Warning: interchange greater than 10 when m=322
+Number of units which entered=20
+Warning: interchange greater than 10 when m=330
+Number of units which entered=25
+Warning: interchange greater than 10 when m=354
+Number of units which entered=17
+Warning: interchange greater than 10 when m=499
+Number of units which entered=21
+Warning: interchange greater than 10 when m=502
+Number of units which entered=13
+Warning: interchange greater than 10 when m=507
+Number of units which entered=19
+Warning: interchange greater than 10 when m=509
+Number of units which entered=11
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>FSRHmdr with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Specifying the search initialization.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
 X=XX(:,1);
@@ -48,7 +71,7 @@ X=XX(:,1);
 X=X./max(X);
 Z=log(X);
 [mdr,Un,BB,Bols,S2,Hetero]=FSRHmdr(y,X,Z,0,'init',round(length(y)/2));
-plot(Hetero(:,1),Hetero(:,2))</pre></div></div></p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
+plot(Hetero(:,1),Hetero(:,2))</pre></div></div><a href='http://rosa.unipr.it/fsda/FSRHmdr.html#Example_7'><img vspace="5" hspace="5" src="images\FSRHmdr_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_8" class="example_module expandableContent"><div id="Example_8"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Monitoring the estimates of the weights.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('tradeH.txt');
 y=XX(:,2);
 X=XX(:,1);
 X=X./max(X);

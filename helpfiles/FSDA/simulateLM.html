@@ -12,7 +12,7 @@
  6) the distribution to use to generate the ys.</p> <p>
  7) the MSOM contamination in Xs and ys.</p><p>
  8) the VIOM contamination in ys.</p></p><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simulateLM.html#Example_1">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=simulateLM(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>)</code></span>Use all defaul options.</p></div><div class="description_element">	<p class="syntax_example">	<a class="intrnllnk" href="simulateLM.html#Example_2">	example</a></p>	<p><span itemprop="syntax"><code><a class="intrnllnk" href="#outputarg_out"><code>out</code></a>=simulateLM(<a class="intrnllnk" href="#inputarg_n"><code>n</code></a>,<a class="intrnllnk" href="#namevaluepairarguments"><code>Name, Value</code></a>)</code></span>Simulate with prefixed value of R2.</p></div>								</div>							</div>							<div class="clear">							</div>						</div><div class="ref_sect" itemprop="content"><div class="examples"><h2 id="Examples">Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="example_1" class="example_module expandableContent"><div id="Example_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use all defaul options.</li></span></a></span></h3><div class="collapse"><p>
-     Simulate 100 observations y and X (uncorrelated with y) using standard normal distribution.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateLM(100,'plots',true);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulate with prefixed value of R2.</li></span></a></span></h3><div class="collapse"><p>
+     Simulate 100 observations y and X (uncorrelated with y) using standard normal distribution.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">out=simulateLM(100,'plots',true);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateLM.html#Example_1'><img vspace="5" hspace="5" src="images\simulateLM_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulate with prefixed value of R2.</li></span></a></span></h3><div class="collapse"><p>
      Set value of R2;<div class="programlisting"><div class="codeinput"><pre class="matlab-code">R2=0.82;
 n=10000;
 out=simulateLM(n,'R2',R2);
@@ -21,7 +21,30 @@ outLM=fitlm(out.X,out.y);</pre></div></div></p></div></div></div><p> </p>
 n=10000;
 A = gallery('moler',5,0.2);
 out=simulateLM(n,'R2',R2,'SigmaX',A);
-outLM=fitlm(out.X,out.y)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use prefixed values of R2, beta and intercept.</li></span></a></span></h3><div class="collapse"><p>
+outLM=fitlm(out.X,out.y)</pre></div></div><pre class="codeoutput">
+outLM = 
+
+
+Linear regression model:
+    y ~ 1 + x1 + x2 + x3 + x4 + x5
+
+Estimated Coefficients:
+                   Estimate        SE        tStat       pValue  
+                   _________    ________    _______    __________
+
+    (Intercept)    -0.076653    0.053898    -1.4222       0.15501
+    x1                1.0515    0.056414     18.638    3.0647e-76
+    x2               0.92447    0.056001     16.508    2.0145e-60
+    x3                1.0394    0.055297     18.797      1.72e-77
+    x4               0.92012    0.055248     16.654    1.8903e-61
+    x5                 1.029    0.054653     18.828    9.8022e-78
+
+
+Number of observations: 10000, Error degrees of freedom: 9994
+Root Mean Squared Error: 5.39
+R-squared: 0.253,  Adjusted R-Squared: 0.253
+F-statistic vs. constant model: 679, p-value = 0
+</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Use prefixed values of R2, beta and intercept.</li></span></a></span></h3><div class="collapse"><p>
      Set value of R2.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">R2=0.92;
 beta=[3; 4; 5; 2; 7];
 intercept=true;
@@ -62,7 +85,7 @@ y = out.y;
 outLM=fitlm(X,y);
 Xc = out.Xc;
 yc = out.yc;
-outLM2=fitlm(Xc,yc);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>n is a positive integer
+outLM2=fitlm(Xc,yc);</pre></div></div><a href='http://rosa.unipr.it/fsda/simulateLM.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\simulateLM_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; sample size. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p>n is a positive integer
                which defines the length of the simulated data. For example
                if n=100, y will be 100x1 and X will be 100xp.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'R2',0.90
 </code>,<code> 'SNR',10

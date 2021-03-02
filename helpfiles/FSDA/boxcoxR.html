@@ -18,11 +18,13 @@
 y=wool(:,4);
 X=wool(:,1:3);
 out=boxcoxR(y,X);
-disp(['Estimate of lambda using Box Cox is =',num2str(out.lahat)])</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> boxcoxR using YJ transformation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
+disp(['Estimate of lambda using Box Cox is =',num2str(out.lahat)])</pre></div></div><pre class="codeoutput">Estimate of lambda using Box Cox is =-0.059
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> boxcoxR using YJ transformation.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 out=boxcoxR(y,X,'family','YJ');
-disp(['Estimate of lambda using YJ family is =',num2str(out.lahat)])</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option confint.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
+disp(['Estimate of lambda using YJ family is =',num2str(out.lahat)])</pre></div></div><pre class="codeoutput">Estimate of lambda using YJ family is =-0.062
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example of use of option confint.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('wool.txt','wool');
 y=wool(:,4);
 X=wool(:,1:3);
 % A 99.9 per cent confidence interval for lambda is used.
@@ -35,14 +37,14 @@ y=wool(:,4);
 X=wool(:,1:3);
 % Plot the profile loglikelihood in the interval [-1 1]
 laseq=[-1:0.0001:1];
-out=boxcoxR(y,X,'plots',1,'laseq',laseq);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option family.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+out=boxcoxR(y,X,'plots',1,'laseq',laseq);</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\boxcoxR_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example of use of option family.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 YY=load('fondi_large.txt');
 y=YY(:,2);
 X=YY(:,[1 3]);
 out=boxcoxR(y,X,'family','YJpn','plots',1);
 % The contour plot suggestes that while positive observatios do not
 % have to transformed, negative observations have to be transformed using
-% lambda=0. For more details see Atkinson Riani and Corbellini (2020)</pre></div></div></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(500)
+% lambda=0. For more details see Atkinson Riani and Corbellini (2020)</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_4'><img vspace="5" hspace="5" src="images\boxcoxR_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_5" class="example_module expandableContent"><div id="ExtraExample_5"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(500)
 % Generate regression data
 outsim=simulateLM(100,'R2',0.95);
 yori = outsim.y;
@@ -64,7 +66,10 @@ usefmin.MaxIter=100;
 clear boxcoxR
 out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
 disp('MLE of laPos and laNeg')
-disp(out.lahat)</pre></div></div></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
+disp(out.lahat)</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
+    0.2364    0.8265
+
+</pre><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\boxcoxR_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_6" class="example_module expandableContent"><div id="ExtraExample_6"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Another example of the use of option usefmin.</li></span></a></span></h3><div class="collapse"><p>
      In this example we specify as solver to use fminunc<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 % Generate regression data
 outsim=simulateLM(100,'R2',0.6);
@@ -85,7 +90,10 @@ out=boxcoxR(y,X,'family','YJpn','plots',1,'usefmin',usefmin);
 disp('MLE of laPos and laNeg')
 disp(out.lahat)
 % Check that the values after the optmization are as expected
-assert(max(abs(out.lahat-[0.3166   -0.8825]))&lt;1e-4,'Wrong values of laP and laN')</pre></div></div></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex using simulated contaminated data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10000)
+assert(max(abs(out.lahat-[0.3166   -0.8825]))&lt;1e-4,'Wrong values of laP and laN')</pre></div></div><pre class="codeoutput">MLE of laPos and laNeg
+    0.3166   -0.8825
+
+</pre></p></div></div><div id="Extraexample_7" class="example_module expandableContent"><div id="ExtraExample_7"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex using simulated contaminated data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(10000)
 % Generate X and y data
 n=200;
 X=randn(n,3);
@@ -106,7 +114,7 @@ yconttra=normYJpn(ycont,[],[lapos laneg],'inverse',true,'Jacobian',false);
 subplot(2,1,1)
 out=boxcoxR(ytra,X,'family','YJpn','plots',1);
 subplot(2,1,2)
-outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/boxcoxR.html#ExtraExample_7'><img vspace="5" hspace="5" src="images\boxcoxR_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each element of y is the response for the
                corresponding row of X.</p> <p>

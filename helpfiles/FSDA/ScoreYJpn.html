@@ -34,7 +34,13 @@ disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
 % the value of the score test when lambda=0.5 is the only one which is not
 % significant. Both values of the score test for positive and negative
 % observations confirm that this value of the transformation parameter is
-% OK for both sides of the distribution.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
+% OK for both sides of the distribution.</pre></div></div><pre class="codeoutput">   -1.0000   40.2357   24.1288   15.7149
+   -0.5000   20.4741   14.7964    9.9619
+         0    8.9009    6.9774    4.5230
+    0.5000    1.3042    0.2740   -1.0664
+    1.0000   -4.8797   -6.2978   -7.9574
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Ex in which positive and negative observation require different lambdas.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1000)
 n=100;
 y=randn(n,1);
 % Tranform in a different way positive and negative values
@@ -55,7 +61,13 @@ disp([la outSC.Score(:,1) outSC1.Score outSC.Score(:,2)])
 % observations is highly significant. The difference between the test for
 % positive and the test for negative is 2.7597+0.7744=3.5341, is very
 % large. This indicates that the two tails need a different value of the
-% transformation parameter.</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
+% transformation parameter.</pre></div></div><pre class="codeoutput">   -1.0000   89.5466   39.6867   28.3433
+   -0.5000   33.4110   24.9236   19.4072
+         0   10.3643   11.4446   10.8674
+    0.5000   -0.7744    0.8272    2.7597
+    1.0000   -9.8327   -9.4050   -6.8708
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Extended score with all default options for the wool data.</li></span></a></span></h3><div class="collapse"><p>
      Load the wool data.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">XX=load('wool.txt');
 y=XX(:,end);
 X=XX(:,1:end-1);

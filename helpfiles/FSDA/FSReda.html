@@ -70,7 +70,8 @@ quant=chi2inv(0.99,2);
 v=axis;
 line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
 title('Normality test');
-xlabel('Subset size m');</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
+xlabel('Subset size m');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.19 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/FSReda.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\FSReda_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\FSReda_02.png" alt=""> <img vspace="5" hspace="5" src="images\FSReda_03.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring of 95 per cent and 99 per cent confidence intervals of
      beta and sigma2.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% House price data
 load hprice.txt;
 n=size(hprice,1);
@@ -142,7 +143,16 @@ suplabel(['Housing data; confidence intervals of the parameters monitored in the
 num2str(xlimL) ',' num2str(xlimU) ...
 ']'],'t');
 disp(['The vertical lines are located in the' ...
-' step prior to the inclusion of the first outlier'])</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
+' step prior to the inclusion of the first outlier'])</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.61 seconds 
+------------------------------
+Warning: Number of subsets without full rank equal to 32.16%
+m=100
+m=200
+m=300
+m=400
+m=500
+The vertical lines are located in the step prior to the inclusion of the first outlier
+</pre><a href='http://rosa.unipr.it/fsda/FSReda.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\FSReda_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><i>Interactive example 1.</i>
      Reveal masked outliers.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Load the data
 clearvars;close all;
 load('multiple_regression.txt');
@@ -173,7 +183,13 @@ p = size(X, 2);
 % plot solution overwriting the RES output for simplicity
 out.RES = out.wREML;
 resfwdplot(out);
-ylabel('REML weights FS');</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
+ylabel('REML weights FS');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+m=100
+m=200
+m=300
+m=400
+m=500
+</pre><a href='http://rosa.unipr.it/fsda/FSReda.html#ExtraExample_5'><img vspace="5" hspace="5" src="images\FSReda_05.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>Response variable, specified as
                a vector of length n, where n is the number of
                observations. Each entry in y is the response for the
                corresponding row of X.</p> <p>

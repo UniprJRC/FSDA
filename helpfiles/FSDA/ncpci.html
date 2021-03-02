@@ -11,15 +11,24 @@
      interval for the non centrality parameter of the chi^2 with
      (3-1)(4-1)=8 degrees of freedom.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ci=ncpci(52,'X2',8);
 disp('Confidence interval for the non centrality parameter')
-disp(ci)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
+disp(ci)</pre></div></div><pre class="codeoutput">Confidence interval for the non centrality parameter
+   43.5345   76.2004
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option confint.</li></span></a></span></h3><div class="collapse"><p>
      A 99 per cent confidence interval is requested.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">confint=0.99;
 ci=ncpci(52,'X2',8,'confLevel',confint);
 disp([ num2str(100*confint) ' per cent confidence interval for the non centrality parameter'])
-disp(ci)</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
+disp(ci)</pre></div></div><pre class="codeoutput">99 per cent confidence interval for the non centrality parameter
+   47.9550   87.6262
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> ncpci with option prec.</li></span></a></span></h3><div class="collapse"><p>
      Increase the precision.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">prec=1e-12;
 ci=ncpci(52,'X2',8,'prec',prec);
 disp(['95 per cent confidence interval for the non centrality parameter'])
-disp(ci)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
+disp(ci)</pre></div></div><pre class="codeoutput">95 per cent confidence interval for the non centrality parameter
+   43.5345   76.2003
+
+</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>ncpci with option doAnimate.</li></span></a></span></h3><div class="collapse"><p>
      set doAnimate to true.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">doAnimate=true;
 ci=ncpci(52,'X2',8,'doAnimate',true);</pre></div></div></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Confidence interval based on the F distibution.</li></span></a></span></h3><div class="collapse"><p>
      See the animation which leads to convergence.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">ci=ncpci(52,'F',[8 3],'doAnimate',true);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; Non centrality parameter for which confidence interval is

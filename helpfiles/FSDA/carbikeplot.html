@@ -43,14 +43,54 @@ ThreshRandIndex=0.8;
 NumberOfBestSolutions=5;
 [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',NumberOfBestSolutions,'ThreshRandIndex',ThreshRandIndex);
 % Car-bike plot to show what are the most relevant solutions
-carbikeplot(outCLACLA)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> car-bike plot for the geyser data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
+carbikeplot(outCLACLA)</pre></div></div><pre class="codeoutput">Starting parallel pool (parpool) using the 'local' profile ...
+Connected to the parallel pool (number of workers: 8).
+k=1
+k=2
+k=3
+k=4
+k=5
+Best 5 solutions using CLACLA
+
+ans = 
+
+  Figure (1) with properties:
+
+      Number: 1
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [489 343 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><a href='http://rosa.unipr.it/fsda/carbikeplot.html#Example_1'><img vspace="5" hspace="5" src="images\carbikeplot_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> car-bike plot for the geyser data.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">Y=load('geyser2.txt');
 nsamp=100;
 out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',nsamp);
 % Find the best solutions using as Information criterion MIXMIX
 disp('Best solutions using MIXMIX')
 [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',6);
 % Produce the car-bike plot
-carbikeplot(outMIXMIX)</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RelSol" class="clearfix"> </div> <h3 id="input_argument_RelSol" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RelSol</code> &#8212; Relevant solutions produced by function tclustICsol. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>It contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MIXMIXbs</code></td><td><p><p>cell of size NumberOfBestSolutions-times-5 which contains
+carbikeplot(outMIXMIX)</pre></div></div><pre class="codeoutput">k=1
+k=2
+k=3
+k=4
+k=5
+Best solutions using MIXMIX
+
+ans = 
+
+  Figure (2) with properties:
+
+      Number: 2
+        Name: ''
+       Color: [0.9400 0.9400 0.9400]
+    Position: [489 343 560 420]
+       Units: 'pixels'
+
+  Use GET to show all properties
+
+</pre><a href='http://rosa.unipr.it/fsda/carbikeplot.html#Example_2'><img vspace="5" hspace="5" src="images\carbikeplot_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_RelSol" class="clearfix"> </div> <h3 id="input_argument_RelSol" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>RelSol</code> &#8212; Relevant solutions produced by function tclustICsol. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p>It contains the following fields:<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>MIXMIXbs</code></td><td><p><p>cell of size NumberOfBestSolutions-times-5 which contains
                 the details of the best solutions for MIXMIX (BIC).</p> <p>
                 Each row refers to a solution.  The information which is
                 stored in the columns is as follows.</p> <p>

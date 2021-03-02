@@ -33,7 +33,15 @@ Certificate={'World';'World';'Europe'};
 Xtable=table(Capacity,Price,Alarm,Dispenser,Display,Certificate,'RowNames',NameRows);
 [S,Stable]=GowerIndex(Xtable,'l',[ 1 1 2 2 2 3]);
 disp('Matrix of Gower similarity indexes')
-disp(Stable)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or MATLAB table .</span></span></h3> <div class="collapse"> <p><p>n x p data matrix; n observations and p variables. Rows of
+disp(Stable)</pre></div></div><pre class="codeoutput">Matrix of Gower similarity indexes
+               AEG       BOSCH      IGNIS 
+             _______    _______    _______
+
+    AEG            1    0.42251    0.36623
+    BOSCH    0.42251          1          0
+    IGNIS    0.36623          0          1
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_Y" class="clearfix"> </div> <h3 id="input_argument_Y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>Y</code> &#8212; Input data. </span>  </a><span class="example_desc">2D array or MATLAB table .</span></span></h3> <div class="collapse"> <p><p>n x p data matrix; n observations and p variables. Rows of
                Y represent observations, and columns represent variables.</p> <p>
                Missing values (NaN's) and infinite values (Inf's) are
                allowed, since observations (rows) with missing or infinite

@@ -17,7 +17,7 @@ Ycont(1:5,:)=Ycont(1:5,:)+3;
 fre=sortrows(fre,[3 4]);
 bs=fre(1:m0,1);
 mmd=FSMmmd(Ycont,bs);
-plot(mmd(:,1),mmd(:,2))</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+plot(mmd(:,1),mmd(:,2))</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_1'><img vspace="5" hspace="5" src="images\FSMmmd_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> FSMmmd with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      Plotting the bandwith of the minimum Mahalanobis distance<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 v=3;
 m0=4;
@@ -31,7 +31,7 @@ fre=sortrows(fre,[3 4]);
 bs=fre(1:m0,1);
 [mmd]=FSMmmd(Ycont,bs,'plots',1);
 % The output is exactly the same as that of FSMmmdeasy
-% mmd1=FSMmmdeasy(Ycont,bs,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Checking the unit(s) included in the subset at each step of the
+% mmd1=FSMmmdeasy(Ycont,bs,'plots',1);</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMmmd.html#Example_2'><img vspace="5" hspace="5" src="images\FSMmmd_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Checking the unit(s) included in the subset at each step of the
      search.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Un contains the unit(s) present in the new subset but not in the old one.
 n=200;
 v=3;
