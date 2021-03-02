@@ -7,7 +7,14 @@ Un = FSRbsb(y,X,out.bs);</pre></div></div></p></div></div><div id="example_
 y=fishery{:,2};
 X=fishery{:,1};
 [out]=LXS(y,X,'nsamp',10000);
-Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring the units belonging to subset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">state=1000;
+Un = FSRbsb(y,X,out.bs,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.28 seconds 
+m=100
+m=200
+m=300
+m=400
+m=500
+m=600
+</pre><a href='http://rosa.unipr.it/fsda/FSRbsb.html#Example_2'><img vspace="5" hspace="5" src="images\FSRbsb_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Monitoring the units belonging to subset.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">state=1000;
 randn('state', state);
 n=100;
 X=randn(n,3);
@@ -44,7 +51,9 @@ figure;
 seqr=[Un(1,1)-1; Un(:,1)];
 plot(seqr,BB','bx');
 xlabel('Subset size m');
-ylabel('Monitoring units plot');</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with monitoring from step 60.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
+ylabel('Monitoring units plot');</pre></div></div><pre class="codeoutput">Total estimated time to complete LMS:  0.03 seconds 
+Total estimated time to complete LMS:  0.04 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/FSRbsb.html#Example_3'><img vspace="5" hspace="5" src="images\FSRbsb_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\FSRbsb_03.png" alt=""> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with monitoring from step 60.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">load('fishery');
 y=fishery{:,2};
 X=fishery{:,1};
 [out]=LXS(y,X,'nsamp',10000);

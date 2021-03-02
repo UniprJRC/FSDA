@@ -18,7 +18,30 @@ disp(out)
 disp('Ratio between largest and smallest determinant')
 disp(max(prod(eigenvalues))/min(prod(eigenvalues)))
 disp('Ratio between largest and smallest restricted determinants')
-disp(max(prod(out))/min(prod(out)))</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Determinant restriction when an eigenvalue is 0.</li></span></a></span></h3><div class="collapse"><p>
+disp(max(prod(out))/min(prod(out)))</pre></div></div><pre class="codeoutput">
+out =
+
+    4.7173   50.0736    7.6327    3.7940
+   10.7021    0.2257    3.8281    3.6133
+    2.8139   11.4263    4.8620   10.3628
+
+Input matrix of unrestricted eigenvalues
+    6.4581   11.1831   11.6942    7.3428
+   14.6513    0.0504    5.8652    6.9930
+    3.8523    2.5519    7.4491   20.0559
+
+Output matrix of restricted eigenvalues which satisfy determinant constraint
+    4.7173   50.0736    7.6327    3.7940
+   10.7021    0.2257    3.8281    3.6133
+    2.8139   11.4263    4.8620   10.3628
+
+Ratio between largest and smallest determinant
+  715.8613
+
+Ratio between largest and smallest restricted determinants
+    1.1000
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Determinant restriction when an eigenvalue is 0.</li></span></a></span></h3><div class="collapse"><p>
      Suppose 5 variables and six groups<div class="programlisting"><div class="codeinput"><pre class="matlab-code">av=abs(randn(5,6));
 % The third eigenvalue of the second groups is set to 0
 av(3,2)=0;
@@ -35,7 +58,23 @@ disp(a)
 disp('Values of restricted determinants')
 disp(prod(a))
 disp('Maximum value of ratio among determinants')
-disp(max(prod(a))/min(prod(a)))</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>An example using option arguments tol and repmat.</li></span></a></span></h3><div class="collapse"><p>
+disp(max(prod(a))/min(prod(a)))</pre></div></div><pre class="codeoutput">Original values of the determinants
+    0.0055         0    0.0010    0.0000    0.1825    0.0432
+
+Restricted eigenvalues which satisfy determinant constraint
+    1.3868   53.0992    0.6626    0.0566    0.6163    1.2339
+    0.0670   61.2269    0.5191    0.6177    0.3601    1.0498
+    0.6905    0.0000    0.4029    1.3884    0.6211    0.1682
+    0.1217    7.6070    0.1578    0.7623    0.3348    0.1529
+    1.1867   61.2269    0.4240    0.2507    0.3214    0.4454
+
+Values of restricted determinants
+    0.0093    0.0093    0.0093    0.0093    0.0148    0.0148
+
+Maximum value of ratio among determinants
+    1.6000
+
+</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>An example using option arguments tol and repmat.</li></span></a></span></h3><div class="collapse"><p>
      Suppose 3 variables and six groups<div class="programlisting"><div class="codeinput"><pre class="matlab-code">av=abs(randn(3,6));
 % Maximum ratio among determinants must be equal to 1.6.
 restr=1.6;

@@ -52,7 +52,20 @@ RAW=mcdCorAna(Ntable,'bdp',0);
 out=CorAna(Ntable,'dispresults',false,'plots',0);
 d2=out.OverviewRows.Inertia./out.OverviewRows.Mass;
 disp('Square distance of each row profile from the centroid')
-disp([RAW.md d2])</pre></div></div></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcdCorAna with option plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[134    76    43    50    49
+disp([RAW.md d2])</pre></div></div><pre class="codeoutput">The MCD estimates are equal to the classical estimates h=n=1036
+Square distance of each row profile from the centroid
+    0.0962    0.0962
+    0.2942    0.2942
+    0.5219    0.5219
+    0.0932    0.0932
+    0.2415    0.2415
+    1.6514    1.6514
+    0.7965    0.7965
+    0.1151    0.1151
+    0.0547    0.0547
+    0.2517    0.2517
+
+</pre></p></div></div><div id="example_3" class="example_module expandableContent"><div id="Example_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>mcdCorAna with option plots.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">N=[134    76    43    50    49
 173    62    20    23    16
 67    76    48    36    23
 11    21    31    36    52
@@ -117,7 +130,8 @@ rowlab={'GB' 'SK' 'BG' 'IE' 'BE' 'ES' 'PL' 'FI' 'GR' 'HU' 'SI' 'NL' 'IT' 'RO'...
 'AT' 'FR' 'HR' 'SE' 'CZ' 'DK' 'DE' 'LT' 'PT' 'EE' 'LU' 'MT' 'LV' 'CY'};
 collab={'x1' 'x2' 'x3' 'x4' 'x5'};
 Ntable=array2table(N,'RowNames',rowlab,'VariableNames',collab);
-[RAW,REW]=mcdCorAna(Ntable,'plots',1);</pre></div></div></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">2D Array or Table.</span></span></h3> <div class="collapse"> <p><p>2D array or table which contains the input contingency
+[RAW,REW]=mcdCorAna(Ntable,'plots',1);</pre></div></div><pre class="codeoutput">Total estimated time to complete MCD:  0.56 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/mcdCorAna.html#Example_4'><img vspace="5" hspace="5" src="images\mcdCorAna_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\mcdCorAna_02.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_03.png" alt=""> <img vspace="5" hspace="5" src="images\mcdCorAna_04.png" alt=""> </a></p></div></div></div><p> </p></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">2D Array or Table.</span></span></h3> <div class="collapse"> <p><p>2D array or table which contains the input contingency
                  table (say of size I-by-J) or the original data matrix X.</p> <p>
                  In this last case N=crosstab(X(:,1),X(:,2)) or
                  N=crosstab(X(:,1),X(:,2)) if X is in table format. As

@@ -23,13 +23,42 @@ expectedRes = [0.8966972 0.2655087 0.3721239 0.5728534 0.9082078]';
 rn = mtR(5);
 sprintf('%s %0.7f  ',m,rn)
 sprintf('%s %0.7f  ',r,[0.8966972 0.2655087 0.3721239 0.5728534 0.9082078])
-assert(isequal(round(rn,7), round(expectedRes,7)), 'Error: MATLAB did not output the same random values as R!')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where the distributiion is specified (0 for uniform).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
+assert(isequal(round(rn,7), round(expectedRes,7)), 'Error: MATLAB did not output the same random values as R!')</pre></div></div><pre class="codeoutput">EXECUTE THE FOLLOWING IN R AND COMPARE RESULTS
+
+RNGkind("Mersenne-Twister") # set "Mersenne-Twister" "Inversion"
+set.seed(0)
+state = .Random.seed
+
+runif(5)
+# [1] 0.8966972 0.2655087 0.3721239 0.5728534 0.9082078
+
+
+ans =
+
+    'MATLAB:  0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
+
+
+ans =
+
+    'R:       0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Example where the distributiion is specified (0 for uniform).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
 r = 'R:      ';
 rn = mtR(5,0);
 expectedRes=[0.8966972 0.2655087 0.3721239 0.5728534 0.9082078]';
 sprintf('%s %0.7f  ',m,rn)
 sprintf('%s %0.7f  ',r,[0.8966972 0.2655087 0.3721239 0.5728534 0.9082078])
-assert(isequal(round(rn,7), round(expectedRes,7)), 'Error: MATLAB did not output the same random values as R!')</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the default stream.</li></span></a></span></h3><div class="collapse"><p>
+assert(isequal(round(rn,7), round(expectedRes,7)), 'Error: MATLAB did not output the same random values as R!')</pre></div></div><pre class="codeoutput">
+ans =
+
+    'MATLAB:  0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
+
+
+ans =
+
+    'R:       0.8966972  2.655087e-01 0.3721239  5.728534e-01 0.9082078  '
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with the default stream.</li></span></a></span></h3><div class="collapse"><p>
      The default stream is associated to a seed equal to 0.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">m = 'MATLAB: ';
 r = 'R:      ';
 rn = mtR(5,[],0);

@@ -13,7 +13,42 @@ y(i) = (y(i-2) &lt; 0.5)*(0.3+0.7*y(i-1)-0.5*y(i-2)-0.6*X1(i,1)+0.3*X1(i,2))+...
 end
 p = 2;
 d = 2;
-[out] = SETARX(y, p ,d, 'X',X1);</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 50;
+[out, reg, input] = SETARX(y, p ,d, 'X',X1);</pre></div></div><pre class="codeoutput">Warning: observations in positions 1  2 have been removed!
+Searching for the optimal threshold: loop 1 of 34
+Searching for the optimal threshold: loop 2 of 34
+Searching for the optimal threshold: loop 3 of 34
+Searching for the optimal threshold: loop 4 of 34
+Searching for the optimal threshold: loop 5 of 34
+Searching for the optimal threshold: loop 6 of 34
+Searching for the optimal threshold: loop 7 of 34
+Searching for the optimal threshold: loop 8 of 34
+Searching for the optimal threshold: loop 9 of 34
+Searching for the optimal threshold: loop 10 of 34
+Searching for the optimal threshold: loop 11 of 34
+Searching for the optimal threshold: loop 12 of 34
+Searching for the optimal threshold: loop 13 of 34
+Searching for the optimal threshold: loop 14 of 34
+Searching for the optimal threshold: loop 15 of 34
+Searching for the optimal threshold: loop 16 of 34
+Searching for the optimal threshold: loop 17 of 34
+Searching for the optimal threshold: loop 18 of 34
+Searching for the optimal threshold: loop 19 of 34
+Searching for the optimal threshold: loop 20 of 34
+Searching for the optimal threshold: loop 21 of 34
+Searching for the optimal threshold: loop 22 of 34
+Searching for the optimal threshold: loop 23 of 34
+Searching for the optimal threshold: loop 24 of 34
+Searching for the optimal threshold: loop 25 of 34
+Searching for the optimal threshold: loop 26 of 34
+Searching for the optimal threshold: loop 27 of 34
+Searching for the optimal threshold: loop 28 of 34
+Searching for the optimal threshold: loop 29 of 34
+Searching for the optimal threshold: loop 30 of 34
+Searching for the optimal threshold: loop 31 of 34
+Searching for the optimal threshold: loop 32 of 34
+Searching for the optimal threshold: loop 33 of 34
+Searching for the optimal threshold: loop 34 of 34
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 2: Estimation from simulated data of example 1 with an extra constant column as regressor.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">n = 50;
 y = randn(n,1);
 X1 = randn(n,2);
 X2 = [repmat(0.3,n,1) X1];

@@ -35,7 +35,15 @@ out=regressHhar(y,X,[3 4]);
 plot(X(:,4),r,'o')
 xlabel('Income')
 ylabel('OLS residuals')
-grid on</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHhar with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
+grid on</pre></div></div><pre class="codeoutput">Ordinary Least Squares Estimates
+ -237.1465  199.3517   -1.1896    0.2384
+   -3.0818    5.5147   -0.5588    0.5781
+   27.9409   82.9223    0.3370    0.7372
+  234.3470   80.3660    2.9160    0.0048
+  -14.9968    7.4693   -2.0078    0.0487
+
+Multiplicative Heteroskedasticity Model
+</pre><a href='http://rosa.unipr.it/fsda/regressHhar.html#Example_1'><img vspace="5" hspace="5" src="images\regressHhar_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>regressHhar with optional arguments.</li></span></a></span></h3><div class="collapse"><p>
      The data in Appendix Table F6.1 were used in a study of efficiency in
      production of airline services in Greene (2007a).<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% See p. 557 of Green (7th edition).
 % Results in structure "out.Beta" coincide with those of
@@ -80,7 +88,21 @@ y=data(:,5); % Monthly expenditure
 sel=y&gt;0;
 X=X(sel,:);
 y=y(sel);
-out=regressHhar(y,X,[3 4],'msgiter',1,'maxiter',1);</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
+out=regressHhar(y,X,[3 4],'msgiter',1,'maxiter',1);</pre></div></div><pre class="codeoutput">Regression parameters beta
+Coeff.   SE     t-stat
+ -117.8675   50.4970   -2.3341
+   -1.2337    1.2707   -0.9709
+   50.9498   26.3050    1.9369
+  145.3045   23.0917    6.2925
+   -7.9383    1.8611   -4.2653
+
+Scedastic parameters gamma from first iteration
+Coeff.
+    4.1374
+    2.4857
+   -0.2449
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Response variable. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that contains the response variable.</p> <p>
                It can be either a row or column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_X" class="clearfix"> </div> <h3 id="input_argument_X" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>X</code> &#8212; Predictor variables in the regression equation. </span>  </a><span class="example_desc">Matrix.</span></span></h3> <div class="collapse"> <p><p>Data matrix of explanatory variables (also called 'regressors')
                of dimension (n x p-1). Rows of X represent observations, and
                columns represent variables.</p> <p>

@@ -39,7 +39,38 @@ out=SparseTableTest(X,'datamatrix',true,'threshold',15,'testname',1);
 % show the output obtained
 RejectedBonf = out.RejectedBonf
 RejectedSidak = out.RejectedSidak
-TestResults = out.TestResults</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input
+TestResults = out.TestResults</pre></div></div><pre class="codeoutput">
+RejectedBonf =
+
+  5&times;4 logical array
+
+   0   0   0   0
+   0   0   0   0
+   1   0   0   0
+   1   0   0   0
+   0   0   0   0
+
+
+RejectedSidak =
+
+  5&times;4 logical array
+
+   0   0   0   0
+   0   0   0   0
+   1   0   0   0
+   1   0   0   0
+   0   0   0   0
+
+
+TestResults =
+
+       Inf       Inf       Inf       Inf
+       Inf       Inf       Inf       Inf
+    0.0018       Inf       Inf       Inf
+    0.0023    0.2340    0.1432       Inf
+       Inf       Inf       Inf       Inf
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_N" class="clearfix"> </div> <h3 id="input_argument_N" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>N</code> &#8212; Contingency table (default) or n-by-2 input dataset. </span>  </a><span class="example_desc">Matrix or Table.</span></span></h3> <div class="collapse"> <p><p>Matrix or table which contains the input
                  contingency table (say of size I-by-J) or the original
                  data matrix. In this last case N=crosstab(N(:,1),N(:,2)).</p> <p>
                  By default the procedure assumes that the input is a

@@ -11,7 +11,8 @@ ycont(1:5)=ycont(1:5)+6;
 [out]=Sreg(ycont,X);
 laby='Scaled S residuals'; 
 titl='';
-resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
+resindexplot(out.residuals,'title',titl,'laby',laby,'numlab','')</pre></div></div><pre class="codeoutput">Total estimated time to complete S estimate:  2.39 seconds 
+</pre><a href='http://rosa.unipr.it/fsda/Sreg.html#Example_1'><img vspace="5" hspace="5" src="images\Sreg_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Sreg with optional input arguments.</li></span></a></span></h3><div class="collapse"><p>
      Sreg with optimal rho function. Run this code to see the output shown in the help file<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;
 p=3;
 randn('state', 123456);

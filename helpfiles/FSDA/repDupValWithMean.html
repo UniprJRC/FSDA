@@ -11,7 +11,19 @@ disp([x y ysmo])
 % corresponding elements of x share the same value.
 % The elements in position 8 and 9 of ysmo are equal to mean(y([8:9]))
 % because the corresponding elements of x share the same value.
-% All the other elements of vector ysmo are equal to y.</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 2: x is non ordered.</li></span></a></span></h3><div class="collapse"><p>
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    1.0000    1.0000    3.0000
+    1.0000    2.0000    3.0000
+    1.0000    3.0000    3.0000
+    1.0000    4.0000    3.0000
+    1.0000    5.0000    3.0000
+    6.0000    6.0000    6.0000
+    7.0000    7.0000    7.0000
+    8.2000    8.0000    8.5000
+    8.2000    9.0000    8.5000
+   10.0000   10.0000   10.0000
+
+</pre></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 2: x is non ordered.</li></span></a></span></h3><div class="collapse"><p>
      Note that in this case x is not ordered therefore if the function is
      called with just two arguments it takes the average of the elements of
      y which correspond to elements of x which are equal<div class="programlisting"><div class="codeinput"><pre class="matlab-code">x=[8.2; 1.0; 1.0; 6.0; 7.0; 10.0; 1.0; 8.2; 1.0; 1.0];
@@ -24,7 +36,19 @@ disp([x y ysmo])
 % ysmo(1)=smo(8) = mean(y([1 8])).
 % Elements 2, 3, 7, 9 and 10 share the same value of x therefore
 % ysmo(2)=ysmo(3)=ysmo(7)=ysmo(9)=ysmo(10)= mean(y([2 3 7 9 10])).
-% All the other elements of vector ysmo are equal to y.</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 3: x is non ordered and third argument consec is true.</li></span></a></span></h3><div class="collapse"><p>
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    8.2000   11.0000   14.5000
+    1.0000   12.0000   16.2000
+    1.0000   13.0000   16.2000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   16.2000
+    8.2000   18.0000   14.5000
+    1.0000   19.0000   16.2000
+    1.0000   20.0000   16.2000
+
+</pre></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Case 3: x is non ordered and third argument consec is true.</li></span></a></span></h3><div class="collapse"><p>
      Note that in this case x is not ordered therefore if the function is
      called with the third argument consec equal to true, this function
      computes the average of the elements of y which correspond to
@@ -38,7 +62,19 @@ disp([x y ysmo])
 % ysmo(2)=ysmo(3) = mean(y([2 3])).
 % Elements 7, 8 and 9 of x are equal and consecutive therefore
 % ysmo(7)=ysmo(8)=ysmo(9) = mean(y([7 8 9])).
-% All the other elements of vector ysmo are equal to y.</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulation study to compare repDupValWithMean with and without loops.</li></span></a></span></h3><div class="collapse"><p>
+% All the other elements of vector ysmo are equal to y.</pre></div></div><pre class="codeoutput">      x         y         ysmo  
+    8.2000   11.0000   11.0000
+    1.0000   12.0000   12.5000
+    1.0000   13.0000   12.5000
+    6.0000   14.0000   14.0000
+    7.0000   15.0000   15.0000
+   10.0000   16.0000   16.0000
+    1.0000   17.0000   18.0000
+    1.0000   18.0000   18.0000
+    1.0000   19.0000   18.0000
+    8.2000   20.0000   20.0000
+
+</pre></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Simulation study to compare repDupValWithMean with and without loops.</li></span></a></span></h3><div class="collapse"><p>
      Create function 'repDupValWithMeanLoop.m' and write it into a file.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% At the end this file will be deleted.
 name='repDupValWithMeanLoop.m';
 filetmpID=fopen([pwd filesep name],'w');
@@ -124,7 +160,14 @@ disp(totimeOpt2)
 disp('Implementation using loops')
 disp(totimeOpt3)
 % Remove temporary file repDupValWithMeanLoop.m
-delete repDupValWithMeanLoop.m</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector with values to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that may contain duplicated
+delete repDupValWithMeanLoop.m</pre></div></div><pre class="codeoutput">Comparison of times based on 10000 replicates
+Implementation without loops
+    3.4643
+
+Implementation using loops
+    0.8936
+
+</pre></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_x" class="clearfix"> </div> <h3 id="input_argument_x" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>x</code> &#8212; vector with values to analyze. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p><p>A vector with n elements that may contain duplicated
                values.</p> <p>
                It can be either a row or a column vector.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_y" class="clearfix"> </div> <h3 id="input_argument_y" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>y</code> &#8212; Vector on which the computations have to be made. </span>  </a><span class="example_desc">Vector.</span></span></h3> <div class="collapse"> <p>It can be either a row or a column vector.</p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="optionalarguments" class="clearfix"></div><h3 id="namevaluepairs" class="bottom_ruled">Optional Arguments</h3><div class="expandableContent"> <div id="inputarg_consec" class="clearfix"> </div> <h3 id="input_argument_consec" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>consec</code> &#8212; how to compute the local means. </span>  </a><span class="example_desc">Boolean.</span></span></h3> <div class="collapse"> <p><p>If consec is true
                the unique entries in vector x are defined as those values

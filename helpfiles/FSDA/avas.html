@@ -16,7 +16,7 @@ X = [X1 X2 X3 X4];
 % Apply the avas algorithm
 out= avas(y,X);
 % Show the output graphically using function aceplot
-aceplot(out)</pre></div></div></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 1 from TIB88: brain body weight data.</li></span></a></span></h3><div class="collapse"><p>
+aceplot(out)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#Example_1'><img vspace="5" hspace="5" src="images\avas_01.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> <img vspace="5" hspace="5" src="images\avas_02.png" alt=""> </a></p></div></div><div id="example_2" class="example_module expandableContent"><div id="Example_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"> <li>Example 1 from TIB88: brain body weight data.</li></span></a></span></h3><div class="collapse"><p>
      Comparison between ace and avas.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">YY=load('animals.txt');
 y=YY(1:62,2);
 X=YY(1:62,1);
@@ -66,7 +66,7 @@ legend({'ACE' 'AVAS'},'Location','Best')
 % z &lt;- rnorm(n)
 % y=x+0.1*x*z;
 % out=ace(x,y)
-% out=avas(x,y)</pre></div></div></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4 from TIB88: non constant underlying variance.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
+% out=avas(x,y)</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\avas_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div><div id="Extraexample_2" class="example_module expandableContent"><div id="ExtraExample_2"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 4 from TIB88: non constant underlying variance.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 negstate=-100;
 rng('default')
 seed=100;
@@ -122,7 +122,7 @@ aceplot(out);
 % y2=-3+5*x+z;
 % y=c(y1,y2);
 % X=c(x,x)
-% out=avas(X,y);</pre></div></div></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6 from TIB88: binary.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">seed=20;
+% out=avas(X,y);</pre></div></div><a href='http://rosa.unipr.it/fsda/avas.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\avas_04.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\avas_05.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example 6 from TIB88: binary.</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">seed=20;
 n=50;
 y1=exp(-0.5+0.5*mtR(n,1,seed));
 y2=exp(0.5+0.5*mtR(n,1,-seed));
