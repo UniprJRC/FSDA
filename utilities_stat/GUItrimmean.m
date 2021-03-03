@@ -91,11 +91,10 @@ function out = GUItrimmean(x,percent, freq)
     % Vector x contains the temperature (Celsius degrees) in 10 places.
     % Compute the truncated mean using alpha equal to 0.4.
     x=[18	24	21	19 	27	12	21	15	12	16];
-    % Matrix X below contains the frequency distribution of the grades obtained
-    % by 10 students.
-    % Compute the truncated mean of the grades using alpha=0.2
     trimperc=40;
     GUItrimmean(x,trimperc)
+    % Note that the same results are obtained if you use frequency
+    % distribution in the firsts two columns of Ta
     Ta=tabulateFS(x);
     GUItrimmean(Ta(:,1),trimperc,Ta(:,2))
 %}
