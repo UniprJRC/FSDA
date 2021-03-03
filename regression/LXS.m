@@ -122,15 +122,15 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
-%        msg  : It controls whether to display or not messages on the screen. Scalar.
-%                If msg==1 (default) messages are displayed
+%        msg  : It controls whether to display or not messages on the screen. Boolean.
+%                If msg==true (default) messages are displayed
 %               on the screen about estimated time to compute the estimator
 %               and the warnings about
 %               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
 %               'MATLAB:nearlySingularMatrix' are set to off
 %               else no message is displayed on the screen
-%               Example - 'msg',1
-%               Data Types - double
+%               Example - 'msg',false
+%               Data Types - logical
 %
 %      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
@@ -448,52 +448,57 @@ hmin=p+1;
 % initialize brob which will be the vector of estimated robust regression
 % coefficients
 brob=-99;
-
-options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
-    bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',false,'nomes',0,...
-    'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
+if coder.target('MATLAB')
     
-    % If 'lms' is part of UserOptions and it is 2 or it is a structure (fastLTS),
-    % then decrease the default for nsamp (nsampdef and options.nsamp) from
-    % 3000 to 1000.
-    checklms2 = strcmp(UserOptions,'lms');
-    if sum(checklms2)
-        lmsval = vvarargin(2*find(checklms2));
-        if isstruct(lmsval{1}) || lmsval{1}==2
-            nsampdef = min(1000,ncomb);
-            options.nsamp = nsampdef;
+    options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
+        bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',false,'nomes',0,...
+        'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        
+        % If 'lms' is part of UserOptions and it is 2 or it is a structure (fastLTS),
+        % then decrease the default for nsamp (nsampdef and options.nsamp) from
+        % 3000 to 1000.
+        checklms2 = strcmp(UserOptions,'lms');
+        if sum(checklms2)
+            lmsval = vvarargin(2*find(checklms2));
+            if isstruct(lmsval{1}) || lmsval{1}==2
+                nsampdef = min(1000,ncomb);
+                options.nsamp = nsampdef;
+            end
         end
-    end
-    
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:LXS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-    end
-    
-    % Check if all the specified optional arguments were present
-    % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:LXS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:LXS:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        
+        % Check if all the specified optional arguments were present
+        % in structure options
+        % Remark: the nocheck option has already been dealt by routine
+        % chkinputR
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('FSDA:LXS:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        end
     end
 end
 
 if nargin > 2
-    
-    % Extract the names of the optional arguments
-    chklist=varargin(1:2:length(varargin));
-    
-    % Check whether the user has selected both h and bdp.
-    chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
-    if chktrim ==3
-        error('FSDA:LXS:TooManyInputArgs','Both input arguments bdp and h are provided. Only one is required.')
+    if coder.target('MATLAB')
+        % Extract the names of the optional arguments
+        chklist=varargin(1:2:length(varargin));
+        
+        % Check whether the user has selected both h and bdp.
+        chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
+        if chktrim ==3
+            error('FSDA:LXS:TooManyInputArgs','Both input arguments bdp and h are provided. Only one is required.')
+        end
+    else
+        chktrim=1;
     end
     
     % Write in structure 'options' the options chosen by the user
@@ -540,7 +545,9 @@ if nargin > 2
         end
     else % in this case nsamp is the matrix of prextracted subsamples
         if size(options.nsamp,2)~=p
-            error('FSDA:LXS:WrongNsamp',['Matrix nsamp must have ' num2str(p) ' columns']);
+            if coder.target('MATLAB')
+                error('FSDA:LXS:WrongNsamp',['Matrix nsamp must have ' num2str(p) ' columns']);
+            end
         end
     end
 end
@@ -553,93 +560,98 @@ if isempty(h)
     h=hdef;
 end
 
-plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
 if isempty(nsamp)
     nsamp=nsampdef;
 end
 
 lms=options.lms;            % if options.lms==1 then LMS, else LTS
-
-if ~isstruct(lms) && lms==2
-    lms=struct;
-    refsteps=3;
-    reftol=1e-6;
-    bestr=5;
-    refstepsbestr=50;
-    reftolbestr=1e-8;
-    % ij is a scalar used to ensure that the best first bestr non singular
-    % subsets are stored
-    ij=1;
-    
-    % lmsopt is associated with the message about total computing time
-    lmsopt=2;
-    
-elseif isstruct(lms)
-    lmsdef.refsteps=3;
-    lmsdef.reftol=1e-6;
-    lmsdef.bestr=5;
-    lmsdef.refstepsbestr=50;
-    lmsdef.reftolbestr=1e-8;
-    
-    % Control the appearance of the trajectories to be highlighted
-    if ~isequal(lms,lmsdef)
+if coder.target('MATLAB')
+    if ~isstruct(lms) && lms==2
+        lms=struct;
+        refsteps=3;
+        reftol=1e-6;
+        bestr=5;
+        refstepsbestr=50;
+        reftolbestr=1e-8;
+        % ij is a scalar used to ensure that the best first bestr non singular
+        % subsets are stored
+        ij=1;
         
-        fld=fieldnames(lms);
+        % lmsopt is associated with the message about total computing time
+        lmsopt=2;
         
-        % Check if user options inside options.fground are valid options
-        chkoptions(lmsdef,fld)
-        for i=1:length(fld)
-            lmsdef.(fld{i})=lms.(fld{i});
+    elseif isstruct(lms)
+        lmsdef.refsteps=3;
+        lmsdef.reftol=1e-6;
+        lmsdef.bestr=5;
+        lmsdef.refstepsbestr=50;
+        lmsdef.reftolbestr=1e-8;
+        
+        % Control the appearance of the trajectories to be highlighted
+        if ~isequal(lms,lmsdef)
+            
+            fld=fieldnames(lms);
+            
+            % Check if user options inside options.fground are valid options
+            chkoptions(lmsdef,fld)
+            for i=1:length(fld)
+                lmsdef.(fld{i})=lms.(fld{i});
+            end
+        end
+        
+        % For the options not set by the user use their default value
+        lms=lmsdef;
+        
+        refsteps=lms.refsteps;
+        reftol=lms.reftol;
+        bestr=lms.bestr;
+        refstepsbestr=lms.refstepsbestr;
+        reftolbestr=lms.reftolbestr;
+        
+        bestbetas = zeros(bestr,p);
+        bestsubset = bestbetas;
+        bestscales = Inf * ones(bestr,1);
+        sworst = Inf;
+        
+        % ij is a scalar used to ensure that the best first bestr non singular
+        % subsets are stored
+        ij=1;
+        % lmsopt is associated with the message about total computing time
+        lmsopt=2;
+    else
+        % lmsopt is associated with the message about total computing time
+        if lms==1
+            lmsopt=1;
+        else
+            lmsopt=0;
         end
     end
     
-    % For the options not set by the user use their default value
-    lms=lmsdef;
-    
-    refsteps=lms.refsteps;
-    reftol=lms.reftol;
-    bestr=lms.bestr;
-    refstepsbestr=lms.refstepsbestr;
-    reftolbestr=lms.reftolbestr;
-    
-    bestbetas = zeros(bestr,p);
-    bestsubset = bestbetas;
-    bestscales = Inf * ones(bestr,1);
-    sworst = Inf;
-    
-    % ij is a scalar used to ensure that the best first bestr non singular
-    % subsets are stored
-    ij=1;
-    % lmsopt is associated with the message about total computing time
-    lmsopt=2;
 else
-    % lmsopt is associated with the message about total computing time
     if lms==1
         lmsopt=1;
     else
         lmsopt=0;
     end
+    
 end
 
-
-rew=options.rew;            % if options.rew==1 use reweighted version of LMS/LTS,
-conflev=options.conflev;    % Confidence level which is used for outlier detection
-conflev=(conflev+1)/2;
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
 nomes=options.nomes;        % if options.nomes==1 no message about estimated time to compute LMS is displayed
 
-% Get user values of warnings
-warnrank=warning('query','MATLAB:rankDeficientMatrix');
-warnsing=warning('query','MATLAB:singularMatrix');
-warnnear=warning('query','MATLAB:nearlySingularMatrix');
-% Set them to off inside this function
-% At the end of the file they will be restored to previous values
-warning('off','MATLAB:rankDeficientMatrix');
-warning('off','MATLAB:singularMatrix');
-warning('off','MATLAB:nearlySingularMatrix');
-
+if coder.target('MATLAB')
+    % Get user values of warnings
+    warnrank=warning('query','MATLAB:rankDeficientMatrix');
+    warnsing=warning('query','MATLAB:singularMatrix');
+    warnnear=warning('query','MATLAB:nearlySingularMatrix');
+    % Set them to off inside this function
+    % At the end of the file they will be restored to previous values
+    warning('off','MATLAB:rankDeficientMatrix');
+    warning('off','MATLAB:singularMatrix');
+    warning('off','MATLAB:nearlySingularMatrix');
+end
 
 %% Extract in the rows of matrix C the indexes of all required subsets
 if isscalar(nsamp)
@@ -673,8 +685,13 @@ else
 end
 
 %% Computation of LMS (LTS)
+ttic=tic;
+bs=zeros(1,p);
+
 for i=1:nselected
-    if i <= tsampling, ttic = tic; end
+    if i <= tsampling 
+        ttic = tic; 
+    end
     
     % extract a subset of size p
     index = C(i,:);
@@ -767,12 +784,11 @@ for i=1:nselected
     
     if ~nomes
         if i <= tsampling
-            
             % sampling time until step tsampling
             time(i) = toc(ttic);
         elseif i==tsampling+1
             % stop sampling and print the estimated time
-            if msg==1
+            if msg==true
                 switch lmsopt
                     case 1
                         fprintf('Total estimated time to complete LMS: %5.2f seconds \n', nselected*median(time));
@@ -879,13 +895,14 @@ else
     
 end
 
+
 if abs(s0) > 1e-7
     
     % Assign weight=1 to the h units which show the smallest h squared
     % residuals
     [~ , indsorres2] = sort(residuals.^2);
-    weights = zeros(n,1);
-    weights(indsorres2(1:h)) = 1;
+    weights = false(n,1);
+    weights(indsorres2(1:h)) = true;
     
     % Initialize structure out
     out=struct;
@@ -899,6 +916,8 @@ if abs(s0) > 1e-7
     % m = factor which modifies the degrees of freedom used for computing
     % the quantile.
     m = 2*n / asvar(h,n);
+    conflev=options.conflev;    % Confidence level which is used for outlier detection
+    conflev=(conflev+1)/2;
     quantile=tinv(conflev,m);
     
     % Observations with a standardized residual smaller than the quantile
@@ -912,6 +931,8 @@ if abs(s0) > 1e-7
     
     
     %% Reweighting part
+    rew=options.rew;            % if options.rew==1 use reweighted version of LMS/LTS,
+    
     if rew==1
         
         % Find new estimate of beta using only observations which have
@@ -968,7 +989,7 @@ if abs(s0) > 1e-7
     end
     
 else % Perfect fit
-    if msg==1
+    if msg==true
         disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
     end
     % There is an approximate perfect fit for the first h observations.
@@ -977,6 +998,7 @@ else % Perfect fit
     
     % Store the weights
     out.weights=weights;
+    out.rew=0;
     
     % s is set to 0
     s0=0;
@@ -1013,24 +1035,20 @@ out.h=h;
 
 % Store number of singular subsets
 out.singsub=singsub;
-if msg==1
-    if singsub/nselected>0.1
-        disp('------------------------------')
-        if bonflevout == true
-            disp(['Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to ' num2str(100*singsub/nselected) '%'])
-        else
-            disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+if coder.target('MATLAB')
+    if msg==true
+        if singsub/nselected>0.1
+            disp('------------------------------')
+            if bonflevout == true
+                disp(['Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to ' num2str(100*singsub/nselected) '%'])
+            else
+                disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+            end
         end
     end
-end
-% Store information about the class of the object
-if lmsopt==1
-    out.class='LMS';
-else
-    out.class='LTS';
-end
 
-if options.yxsave
+
+if options.yxsave == true
     if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=X(:,2:end);
@@ -1040,28 +1058,40 @@ if options.yxsave
     % Store response
     out.y=y;
 end
+end
+% Store information about the class of the object
+if lmsopt==1
+    out.class='LMS';
+else
+    out.class='LTS';
+end
+
 
 
 %% Create plots
-% If plots is a structure, plot directly those chosen by the user;
-% elseif plots is 1 a plot or residuals against index number appears
-% else no plot is produced.
-if plots==1
-    if lmsopt==1
-        laby='Robust lms residuals';
+if coder.target('MATLAB')
+    
+    plots=options.plots;        % Plot of residuals equal to 1
+    
+    % If plots is a structure, plot directly those chosen by the user;
+    % elseif plots is 1 a plot or residuals against index number appears
+    % else no plot is produced.
+    if plots==1
+        if lmsopt==1
+            laby='Robust lms residuals';
+        else
+            laby='Robust lts residuals';
+        end
+        resindexplot(out.residuals,'conflev',options.conflev,'laby',laby,'numlab',out.outliers);
     else
-        laby='Robust lts residuals';
     end
-    resindexplot(out.residuals,'conflev',options.conflev,'laby',laby,'numlab',out.outliers);
-else
+    
+    % Restore the previous state of the warnings
+    warning(warnrank.state,'MATLAB:rankDeficientMatrix');
+    warning(warnsing.state,'MATLAB:singularMatrix');
+    warning(warnnear.state,'MATLAB:nearlySingularMatrix');
+    
 end
-
-% Restore the previous state of the warnings
-warning(warnrank.state,'MATLAB:rankDeficientMatrix');
-warning(warnsing.state,'MATLAB:singularMatrix');
-warning(warnnear.state,'MATLAB:nearlySingularMatrix');
-
-
 
 %% The part below contains subfunctions which are used only inside this file
 
@@ -1276,9 +1306,10 @@ else
 end
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
-end
-if 0.875 < alpha && alpha < 1
+elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+else
+    fp_alpha_n=1;
 end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50

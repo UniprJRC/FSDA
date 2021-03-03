@@ -87,21 +87,21 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 nfore=36;
 StartDate=[1949 1];
 conflev=0.999; % Wide confidence level for the forecast
-outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">         lab           bhat          se        tstat         pval    
-    _____________    _________    ________    ________    ___________
+outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">         lab           bhat         se        tstat         pval    
+    _____________    ________    ________    ________    ___________
 
-    {'b_trend1' }       301.92      3.3892      89.083    3.9559e-121
-    {'b_trend2' }       2.7612    0.038653      71.435    1.5165e-108
-    {'b_cos1'   }      -2.1239      2.8813    -0.73715        0.46232
-    {'b_sin1'   }      -1.0546      1.4327    -0.73612        0.46295
-    {'b_cos2'   }    -0.094731     0.15537    -0.60971        0.54309
-    {'b_sin2'   }        1.216      1.6514     0.73635         0.4628
-    {'b_cos3'   }      0.52291     0.71389     0.73248        0.46516
-    {'b_sin3'   }     -0.17542     0.24875    -0.70518        0.48192
-    {'b_varampl'}      0.24992     0.35327     0.70743        0.48053
-    {'b_lshift' }       -225.8      4.5708     -49.402     7.0551e-88
+    {'b_trend1' }      315.87      5.1388      61.468    4.6562e-100
+    {'b_trend2' }       2.787    0.038712      71.993    5.4912e-109
+    {'b_cos1'   }       2.515      3.3193     0.75768        0.44997
+    {'b_sin1'   }      1.2431      1.6427     0.75678        0.45051
+    {'b_cos2'   }    0.062504     0.12609     0.49572         0.6209
+    {'b_sin2'   }     -1.4392      1.9004    -0.75734        0.45017
+    {'b_cos3'   }    -0.59234     0.78919    -0.75056        0.45423
+    {'b_sin3'   }     0.24437     0.33753     0.72401        0.47032
+    {'b_varampl'}     -0.2321     0.29285    -0.79255        0.42944
+    {'b_lshift' }     -241.96      6.1276     -39.487     1.1144e-75
 
-Level shift position t=21
+Level shift position t=10
 </pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\forecastTS_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
 % In this example we estimate a model without the seasonal component
 %   1949 1950 1951 1952 1953 1954 1955 1956 1957 1958 1959 1960
@@ -134,11 +134,11 @@ conflev=0.999; % Wide confidence level for the forecast
 outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">        lab          bhat         se        tstat        pval   
     ____________    _______    ________    _______    __________
 
-    {'b_trend1'}     307.43      7.2337       42.5    2.8696e-82
-    {'b_trend2'}     2.3919    0.087445     27.354    3.0083e-58
-    {'b_lshift'}    -214.71      9.7761    -21.963    2.3563e-47
+    {'b_trend1'}     318.56      12.143     26.234    4.1665e-56
+    {'b_trend2'}     2.4871    0.096914     25.663    5.4488e-55
+    {'b_lshift'}    -229.59      14.512    -15.821    4.6764e-33
 
-Level shift position t=21
+Level shift position t=10
 </pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastTS_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_13.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
      Simulate data with linear trend, time varying seasonal component, and
      level shift<div class="programlisting"><div class="codeinput"><pre class="matlab-code">rng(1)
@@ -280,7 +280,7 @@ forecastTS(out,'model',model,'nfore',50,'conflev',0.75)
 hold('on')
 plot(1:length(yall),yall)</pre></div></div></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_outEST" class="clearfix"> </div> <h3 id="input_argument_outEST" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>outEST</code> &#8212; A structure containing the output of routine LTSts. </span>  </a><span class="example_desc">Structure.</span></span></h3> <div class="collapse"> <p><p>Structure containing the following fields.</p> <p>
   </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>B</code></td><td><p><p>Matrix containing estimated beta coefficients,
-                       (including the intercept when options.intercept=1)
+                       (including the intercept when options.intercept=true)
                        standard errors, t-stat and p-values
                        The content of matrix B is as follows:</p> <p>
                        1st col = beta coefficients

@@ -106,6 +106,15 @@ function [out]=FSRfan(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
+%       init    :   Search initialization. Scalar.
+%                   It specifies the initial subset size to start
+%                   monitoring the value of the score test, if init is not
+%                   specified it will be set equal to:
+%                    p+1, if the sample size is smaller than 40;
+%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                    Example - 'init',100 starts monitoring from step m=100
+%                    Data Types - double
+%
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
 %                   (default), 'YJ', 'YJpn' or 'YJall'.
@@ -143,12 +152,13 @@ function [out]=FSRfan(y,X,varargin)
 %               Data Types - logical
 %
 %    usefmin :  use solver to find MLE of lambda. Boolean or struct.
-%               if usefmin is true or usefmin is a struct it is
-%               possible to use MATLAB solvers fminsearch or fminunc to
-%               find the maximum likelihood estimates of $\lambda_P$ and
-%               $\lambda_N$. The default value of usefmin is false that is
-%               solver is not used and the likelihood is evaluated at the
-%               grid of points with steps 0.01.
+%               This option takes effect only when input option 'family' is
+%               'YJpn'  or 'YJall'. If usefmin is true or usefmin is a
+%               struct it is possible to use MATLAB solvers fminsearch or
+%               fminunc to find the maximum likelihood estimates of
+%               $\lambda_P$ and $\lambda_N$. The default value of usefmin
+%               is false that is solver is not used and the likelihood is
+%               evaluated at the grid of points with steps 0.01.
 %               If usefmin is a structure it may contain the following
 %               fields:
 %               usefmin.MaxIter = Maximum number of iterations (default is 1000).
@@ -165,14 +175,15 @@ function [out]=FSRfan(y,X,varargin)
 %               Example - 'usefmin',true
 %               Data Types - boolean or struct
 %
-%       init    :   Search initialization. Scalar.
-%                   It specifies the initial subset size to start
-%                   monitoring the value of the score test, if init is not
-%                   specified it will be set equal to:
-%                    p+1, if the sample size is smaller than 40;
-%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                    Example - 'init',100 starts monitoring from step m=100
-%                    Data Types - double
+%         msg   : Level of output to display. Boolean.
+%                   scalar which controls whether to display or not
+%                   messages on the screen. Scalar.
+%                   If msg==true (default) messages are
+%                   displayed on the screen about estimated time to compute
+%                   the LMS (LTS) for each value of lamabda else no message
+%                   is displayed on the screen
+%                  Example - 'msg',false
+%                  Data Types - double
 %
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
@@ -180,6 +191,7 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'plots',1
 %                   Data Types - double
 %                   REMARK: all the following options work only if plots=1
+%
 %
 %       conflev :   Confidence level. Scalar or vector. Confidence level
 %                   for the bands (default is 0.99, that is we plot two
@@ -237,15 +249,6 @@ function [out]=FSRfan(y,X,varargin)
 %                  Example - 'SizeAxesNum',12
 %                  Data Types - double
 %
-%         msg   : Level of output to display. Scalar.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
-%                   If msg==1 (default) messages are
-%                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
-%                   is displayed on the screen
-%                  Example - 'msg',1
-%                  Data Types - double
 %
 %       tag     :   handle of the plot which is about to be created.
 %                   Character. The default is to use tag 'pl_fan'. Notice
@@ -616,7 +619,7 @@ usefmin=true;
 plo=1;
 lms=1;
 conflev=0.99;
-msg=1;
+msg=true;
 tag='pl_fan';
 la=[-1 -0.5 0 0.5 1];
 nocheck=false;
@@ -631,53 +634,56 @@ laby='Score test statistic';
 intercept=true;
 titl='Fan plot';
 
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
+if coder.target('MATLAB')
     
-    options=struct('la',la,'h',h,...
-        'nsamp',nsamp,'lms',lms,'plots',plo,'init',init,'conflev',conflev,...
-        'titl',titl,'labx',labx,...
-        'laby',laby,'xlimx',xlimx,'ylimy',ylimy,'lwd',lwd,...
-        'lwdenv',lwdenv,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,...
-        'tag',tag,'intercept',intercept,'msg',msg,'nocheck',nocheck,'family',family,...
-        'scoremle',scoremle,'usefmin',usefmin);
-    
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSRfan:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-    end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
-    
-    
-    
-    % Write in structure 'options' the options chosen by the user
-    if nargin > 2
-        for i=1:2:length(varargin)
-            options.(varargin{i})=varargin{i+1};
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        
+        options=struct('la',la,'h',h,...
+            'nsamp',nsamp,'lms',lms,'plots',plo,'init',init,'conflev',conflev,...
+            'titl',titl,'labx',labx,...
+            'laby',laby,'xlimx',xlimx,'ylimy',ylimy,'lwd',lwd,...
+            'lwdenv',lwdenv,'FontSize',FontSize,'SizeAxesNum',SizeAxesNum,...
+            'tag',tag,'intercept',intercept,'msg',msg,'nocheck',nocheck,'family',family,...
+            'scoremle',scoremle,'usefmin',usefmin);
+        
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSRfan:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+end
+
+% Write in structure 'options' the options chosen by the user
+if nargin > 2
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
     end
     
     h=options.h;
     lms=options.lms;
-    plo=options.plots;
     nsamp=options.nsamp;
     msg=options.msg;
     nocheck=options.nocheck;
     family=options.family;
-    scoremle=options.scoremle;
-    usefmin=options.usefmin;
-    tag=options.tag;
     la=options.la;
     init=options.init;
-    lwd=options.lwd;
-    lwdenv=options.lwdenv;
-    conflev=options.conflev;
-    labx=options.labx;
-    laby=options.laby;
-    titl=options.titl;
-    
+    if coder.target('MATLAB')
+        plo=options.plots;
+        scoremle=options.scoremle;
+        usefmin=options.usefmin;
+        tag=options.tag;
+        lwd=options.lwd;
+        lwdenv=options.lwdenv;
+        conflev=options.conflev;
+        labx=options.labx;
+        laby=options.laby;
+        titl=options.titl;
+    end
 end
+
 
 if strcmp(family,'BoxCox')
     BoxCox=1;
@@ -688,8 +694,11 @@ elseif strcmp(family,'YJpn')
 elseif strcmp(family,'YJall')
     BoxCox=-2;
 else
-    warning('FSDA:FSRfan:WrongFamily','Transformation family which has been chosen is not supported')
-    error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YJ or YJpn or YJall')
+    BoxCox=NaN;
+    if coder.target('MATLAB')
+        warning('FSDA:FSRfan:WrongFamily','Transformation family which has been chosen is not supported')
+        error('FSDA:FSRfan:WrongFamily','Supported values are BoxCox or YJ or YJpn or YJall')
+    end
 end
 
 % Specify where to send the output of the current procedure if options plot
@@ -728,21 +737,32 @@ seq=(1:n)';
 Unlai = cat(2 , (init+1:n)' , NaN(n-init,10));
 
 % Un = cell which will contain the matrices Unlai for each value of lambda
-Un=cell(length(la),1);
-
 lla=length(la);
+Un=cell(lla,1);
+if coder.target('MATLAB')
+% For code generation, before you use a cell array element, you must assign
+% a value to it. When you use cell to create a variable-size cell array,
+% for example, cell(1,n), MATLAB® assigns an empty matrix to each element.
+% However, for code generation, the elements are unassigned. For code
+% generation, after you use cell to create a variable-size cell array, you
+% must assign all elements of the cell array before any use of the cell
+% array.
+    for i=1:lla
+        Un{i,1}=Unlai;
+    end
+end
 
 % Initialize matrix which will contain the score test
 Sco=[((init):n)'  NaN(n-init+1,lla)];
 
-if BoxCox==-1
-    Scop=Sco;
-    Scon=Sco;
-elseif BoxCox==-2
-    Scop=Sco;
-    Scon=Sco;
-    Scob=Sco;
-end
+% if BoxCox==-1
+%     Scop=Sco;
+%     Scon=Sco;
+% elseif BoxCox==-2
+Scop=Sco;
+Scon=Sco;
+Scob=Sco;
+% end
 
 if scoremle == true
     Scomle=Sco;
@@ -757,6 +777,7 @@ r=[seq zeros(n,1)];
 % If n is very large, the step of the search is printed every 100 step
 % seq100 is linked to printing
 seq100 = 1000*(1:1:ceil(n/1000));
+seq100(seq100>n)=[];
 seq100boo=false(n,1);
 seq100boo(seq100)=true;
 
@@ -764,9 +785,11 @@ seq100boo(seq100)=true;
 binit=zeros(p,lla);
 
 % Preextract subsample once and for all for all values of lambda;
-if lla>1
-    [nsamp] = subsets(nsamp,n,p);
-end
+% if lla>1
+[nsampArray] = subsets(nsamp,n,p);
+% else
+%     nsampArray=nsamp;
+% end
 
 % loop over the values of \lambda
 for i=1:lla
@@ -779,17 +802,18 @@ for i=1:lla
             z=y.^la(i);
         end
     else
-        z=normYJ(y,1,la(i),'Jacobian',false);
+        z=normYJ(y,1,la(i),'Jacobian',false,'inverse',false);
     end
     
     % Find initial subset to initialize the search using as y transformed
     % vector z
     if size(lms,1)==1
-        [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg);
-        bsb=out.bs;
+        [out]=LXS(z,X,'lms',lms,'h',h,'nsamp',nsampArray,'nocheck',true,'msg',msg,...
+            'nomes',0,'bonflevoutX','','conflev',0.99,'rew',0,'yxsave',false,'intercept',true);
+        bsb=out.bs(:);
         % Store information about the units forming subset for each value of
         % lambda
-        binit(:,i)=bsb';
+        binit(:,i)=bsb;
     else
         bsb=lms(:,i);
         % Store information about the units forming subset for each value of
@@ -812,12 +836,16 @@ for i=1:lla
     blast=NaN(p,1);
     
     if nocheck==false && (rank(Xb)~=p)
-        warning('FSRfan:message','The provided initial subset does not form full rank matrix');
+        if coder.target('MATLAB')
+            warning('FSRfan:message','The provided initial subset does not form full rank matrix');
+        else
+            disp('Initial subset does not form full rank matrix')
+        end
         % FS loop will not be performed
     else
         for mm=ini0:n
             % if n>1000 show every 100 steps the fwd search index
-            if  msg==1 && seq100boo(mm) == true
+            if  msg==true && seq100boo(mm) == true
                 % OLD CODE if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
@@ -826,39 +854,39 @@ for i=1:lla
             if (mm>=init)
                 if BoxCox==1
                     % Compute and store the value of the score test
-                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',true);
+                    [outSC]=Score(yb,Xb,'la',la(i),'nocheck',true,'Lik',false);
                     % Store score test for the units belonging to subset
-                    Sco(mm-init+1,i+1)=outSC.Score;
+                    Sco(mm-init+1,i+1)=outSC.Score(1);
                     
                 elseif BoxCox==0
                     % Compute and store the value of the score test using Yeo
                     % and Johnson transformation (just the global test)
-                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true);
+                    [outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true,'Lik',false);
                     % Store score test for the units belonging to subset
-                    Sco(mm-init+1,i+1)=outSC.Score;
+                    Sco(mm-init+1,i+1)=outSC.Score(1);
                     
-                else % in this case BoxCox==-1 || BoxCox==-2
+                elseif BoxCox==-1 || BoxCox==-2
                     %[outSC]=ScoreYJ(yb,Xb,'la',la(i),'nocheck',true);
                     % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
                     % [outSCpn]=ScoreYJpn(yb,Xb,'la',la(i),'nocheck',true);
                     %                     if i==1
-                    if mm==init
-                        clear cachedlahatPreviousStep
-                    end
                     
+                    if coder.target('MATLAB')
+                        if mm==init
+                            clear cachedlahatPreviousStep
+                        end
+                    end
                     [outSCpn]=ScoreYJall(yb,Xb,'la',la(i),'scoremle',scoremle,'nocheck',true,'usefmin',usefmin);
                     if scoremle == true
                         laMLE(mm-init+1,i*2:i*2+1)=outSCpn.laMLE;
                     end
-                end
-                
-                if BoxCox<=-1
                     Sco(mm-init+1,i+1)=outSCpn.Score(1,1);
                     Scop(mm-init+1,i+1)=outSCpn.Score(1,2);
                     Scon(mm-init+1,i+1)=outSCpn.Score(1,3);
-                end
-                if BoxCox==-2
-                    Scob(mm-init+1,i+1)=outSCpn.Score(1,4);
+                    if BoxCox==-2
+                        Scob(mm-init+1,i+1)=outSCpn.Score(1,4);
+                    end
+                else
                 end
                 
                 if scoremle == true
@@ -878,7 +906,11 @@ for i=1:lla
                 b=Xb\zb;
                 blast=b;   % Store correctly computed b for the case of rank problem
             else   % number of independent columns is smaller than number of parameters
-                warning('FSR:FSRfan','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+                if coder.target('MATLAB')
+                    warning('FSR:FSRfan','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+                else
+                    disp('FSR:FSRfan','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
+                end
                 b=blast;
             end
             
@@ -922,7 +954,7 @@ for i=1:lla
                     if length(unit)<=10
                         Unlai(mm-init+1,2:(length(unit)+1))=unit;
                     else
-                        if msg==1
+                        if msg==true
                             disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                         end
                         Unlai(mm-init+1,2:end)=unit(1:10);
@@ -945,13 +977,18 @@ out.bs=binit;
 out.Un=Un;
 out.y=y;
 out.X=X;
-if BoxCox==-1
+if BoxCox==-1 || BoxCox==-2
     out.Scorep=Scop;
     out.Scoren=Scon;
-elseif BoxCox==-2
-    out.Scorep=Scop;
-    out.Scoren=Scon;
-    out.Scoreb=Scob;
+    if BoxCox==-2
+        out.Scoreb=Scob;
+    else
+        out.Scoreb=NaN;
+    end
+else
+    out.Scorep=NaN;
+    out.Scoren=NaN;
+    out.Scoreb=NaN;
 end
 
 if scoremle == true
@@ -959,170 +996,89 @@ if scoremle == true
     out.laMLE=laMLE;
 end
 
-if plo==1
-    if BoxCox == -2 && scoremle == false
-        subplot(2,1,1);
-    end
+if coder.target('MATLAB')
     
-    % Specify the line type for the units inside vector units
-    slin={'-';'--';':';'-.'};
-    slin=repmat(slin,ceil(lla/4),1);
-    
-    % Specify the color for the trajectories
-    ColorOrd=[{[0 0 1]}; {[1 0 0]}; {[1 0 1]}; {[1 1 0]}; {[0 1 0]}; {[0 1 1]}];
-    ColorOrd=repmat(ColorOrd,4,1);
-    
-    
-    % plot the lines associated with the score test lwd = line width of the
-    % trajectories which contain the score test
-    plot1=plot(Sco(:,1),Sco(:,2:end),'LineWidth',lwd);
-    
-    set(plot1,{'Color'}, ColorOrd(1:lla,:));
-    
-    set(plot1,{'LineStyle'},slin(1:lla));
-    
-    if BoxCox <= -1
-        hold('on')
-        plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
-        set(plotp,{'LineStyle'},{'--'});
-        % set(plotp,{'LineStyle'},slin(1:lla));
-        %  set(plotp,{'Color'}, ColorOrd(1:lla,:));
-        % Green color for positive values of y
-        set(plotp,{'Color'},{'g'})
-        
-        plotn=plot(Scon(:,1),Scon(:,2:end),'LineWidth',lwd);
-        set(plotn,{'LineStyle'},slin(1:lla));
-        set(plotn,{'LineStyle'},{'--'});
-        % set(plotn,{'Color'}, ColorOrd(1:lla,:));
-        set(plotn,{'Color'},{'k'})
-        
-        set(plot1,{'LineStyle'},{'-'});
-        
-    end
-    
-    % Confidence bands lwdenv = line width of the curves associated with
-    % the envelopes
-%     v=axis;
-%     quant=sqrt(chi2inv(conflev,1));
-%     line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
-%     line([v(1),v(2)],[-quant,-quant],'color','r','LineWidth',lwdenv);
- 
-    rangeaxis=axis;
-quant = sqrt(chi2inv(conflev,1));
-numconflev=length(conflev);
-V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
-QUANT=[[quant;quant],[ -quant;-quant]];
-line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
- 
-    
-    
-    if size(la,2)>1
-        la=la';
-    end
-    text(n*ones(lla,1),Sco(end,2:end)',num2str(la));
-    
-    % set the x and y axis
-    
-    if ~isempty(xlimx)
-        xlim(xlimx);
-    end
-    
-    if isempty(ylimy)
-        
-        if BoxCox <= -1
-            Scog=[Sco(:,2:end);Scop(:,2:end);Scon(:,2:end)];
-            maxSco=max([max(Scog) quant]);
-            minSco=min([min(Scog) -quant]);
-            ylim1=max(-20,minSco);
-            ylim2=min(20,maxSco);
-        else
-            % Use default limits for y axis
-            ylim1=max(-20,min([min(Sco(:,2:end)) -quant]));
-            ylim2=min(20,max([max(Sco(:,2:end)) quant]));
-        end
-        ylim([ylim1 ylim2]);
-    else
-        
-        % Use limits specified by the user
-        ylim(ylimy);
-    end
-    
-    
-    % Main title of the plot and labels for the axes
-    
-    title(titl);
-    
-    % FontSize = font size of the axes labels
-    
-    % Add to the plot the labels for values of la Add the horizontal lines
-    % representing asymptotic confidence bands
-    xlabel(labx,'Fontsize',FontSize);
-    ylabel(laby,'Fontsize',FontSize);
-    
-    % FontSizeAxesNum = font size for the axes numbers
-    set(gca,'FontSize',SizeAxesNum)
-    box on
-    
-    
-    
-    
-    if BoxCox==-2
-        if scoremle == false
-            subplot(2,1,2)
-        else
-            figure
-            subplot(2,1,1)
+    if plo==1
+        if BoxCox == -2 && scoremle == false
+            subplot(2,1,1);
         end
         
-        plot1=plot(Scob(:,1),Scob(:,2:end),'LineWidth',lwd);
+        % Specify the line type for the units inside vector units
+        slin={'-';'--';':';'-.'};
+        slin=repmat(slin,ceil(lla/4),1);
+        
+        % Specify the color for the trajectories
+        ColorOrd=[{[0 0 1]}; {[1 0 0]}; {[1 0 1]}; {[1 1 0]}; {[0 1 0]}; {[0 1 1]}];
+        ColorOrd=repmat(ColorOrd,4,1);
+        
+        
+        % plot the lines associated with the score test lwd = line width of the
+        % trajectories which contain the score test
+        plot1=plot(Sco(:,1),Sco(:,2:end),'LineWidth',lwd);
+        
         set(plot1,{'Color'}, ColorOrd(1:lla,:));
         
         set(plot1,{'LineStyle'},slin(1:lla));
-        text(n*ones(lla,1),Scob(end,2:end)',num2str(la));
+        
+        if BoxCox <= -1
+            hold('on')
+            plotp=plot(Scop(:,1),Scop(:,2:end),'LineWidth',lwd);
+            set(plotp,{'LineStyle'},{'--'});
+            % set(plotp,{'LineStyle'},slin(1:lla));
+            %  set(plotp,{'Color'}, ColorOrd(1:lla,:));
+            % Green color for positive values of y
+            set(plotp,{'Color'},{'g'})
+            
+            plotn=plot(Scon(:,1),Scon(:,2:end),'LineWidth',lwd);
+            set(plotn,{'LineStyle'},slin(1:lla));
+            set(plotn,{'LineStyle'},{'--'});
+            % set(plotn,{'Color'}, ColorOrd(1:lla,:));
+            set(plotn,{'Color'},{'k'})
+            
+            set(plot1,{'LineStyle'},{'-'});
+            
+        end
         
         % Confidence bands lwdenv = line width of the curves associated with
         % the envelopes
-        lwdenv=options.lwdenv;
-        quant=conflev;
+        %     v=axis;
+        %     quant=sqrt(chi2inv(conflev,1));
+        %     line([v(1),v(2)],[quant,quant],'color','r','LineWidth',lwdenv);
+        %     line([v(1),v(2)],[-quant,-quant],'color','r','LineWidth',lwdenv);
         
-        % Compute and superimpose envelopes based on the F distribution
-        EnvF=[Scob(:,1) zeros(size(Scob,1),length(quant))];
+        rangeaxis=axis;
+        quant = sqrt(chi2inv(conflev,1));
+        numconflev=length(conflev);
+        V=repmat([rangeaxis(1);rangeaxis(2)],1,2*numconflev);
+        QUANT=[[quant;quant],[ -quant;-quant]];
+        line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
         
-        for i=1:size(Scob,1)
-            ast=finv(quant,2,Scob(i,1)-p);
-            EnvF(i,2:end)=ast;
+        
+        
+        if size(la,2)>1
+            la=la';
         end
+        text(n*ones(lla,1),Sco(end,2:end)',num2str(la));
         
-        line(EnvF(:,1),EnvF(:,2:end),'LineStyle','-','Color','r','LineWidth',lwdenv);
+        % set the x and y axis
         
-        % Add text associated with the envelopes which have been used
-        % text(repmat(n,length(quant),1),EnvF(end,2:end)',num2str(quant'));
-        
-        % Main title of the plot and labels for the axes
-        labx=options.labx;
-        laby=options.laby;
-        
-        
-        title('F test for both constructed variables','Interpreter','latex','FontSize',14);
-        
-        % FontSize = font size of the axes labels
-        FontSize =options.FontSize;
-        
-        % Add to the plot the labels for values of la Add the horizontal lines
-        % representing asymptotic confidence bands
-        xlabel(labx,'Fontsize',FontSize);
-        ylabel(laby,'Fontsize',FontSize);
-        
-        % FontSizeAxesNum = font size for the axes numbers
-        SizeAxesNum=options.SizeAxesNum;
-        set(gca,'FontSize',SizeAxesNum)
-        box on
+        if ~isempty(xlimx)
+            xlim(xlimx);
+        end
         
         if isempty(ylimy)
             
-            % Use default limits for y axis
-            ylim1=0;
-            ylim2=min(100,max(max([Scob(:,2:end) EnvF(:,2:end)] )));
+            if BoxCox <= -1
+                Scog=[Sco(:,2:end);Scop(:,2:end);Scon(:,2:end)];
+                maxSco=max([max(Scog) quant]);
+                minSco=min([min(Scog) -quant]);
+                ylim1=max(-20,minSco);
+                ylim2=min(20,maxSco);
+            else
+                % Use default limits for y axis
+                ylim1=max(-20,min([min(Sco(:,2:end)) -quant]));
+                ylim2=min(20,max([max(Sco(:,2:end)) quant]));
+            end
             ylim([ylim1 ylim2]);
         else
             
@@ -1130,18 +1086,36 @@ line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
             ylim(ylimy);
         end
         
-        if scoremle == true && BoxCox == -2
-            subplot(2,1,2)
-        elseif scoremle ==true
-            figure
-        end
         
-        if scoremle ==true
-            plot2=plot(Scomle(:,1),Scomle(:,2:end),'LineWidth',lwd);
-            set(plot2,{'Color'}, ColorOrd(1:lla,:));
+        % Main title of the plot and labels for the axes
+        
+        title(titl);
+        
+        % FontSize = font size of the axes labels
+        
+        % Add to the plot the labels for values of la Add the horizontal lines
+        % representing asymptotic confidence bands
+        xlabel(labx,'Fontsize',FontSize);
+        ylabel(laby,'Fontsize',FontSize);
+        
+        % FontSizeAxesNum = font size for the axes numbers
+        set(gca,'FontSize',SizeAxesNum)
+        box on
+        
+        
+        if BoxCox==-2
+            if scoremle == false
+                subplot(2,1,2)
+            else
+                figure
+                subplot(2,1,1)
+            end
             
-            set(plot2,{'LineStyle'},slin(1:lla));
-            text(n*ones(lla,1),Scomle(end,2:end)',num2str(la));
+            plot1=plot(Scob(:,1),Scob(:,2:end),'LineWidth',lwd);
+            set(plot1,{'Color'}, ColorOrd(1:lla,:));
+            
+            set(plot1,{'LineStyle'},slin(1:lla));
+            text(n*ones(lla,1),Scob(end,2:end)',num2str(la));
             
             % Confidence bands lwdenv = line width of the curves associated with
             % the envelopes
@@ -1149,10 +1123,10 @@ line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
             quant=conflev;
             
             % Compute and superimpose envelopes based on the F distribution
-            EnvF=[Scomle(:,1) zeros(size(Scomle,1),length(quant))];
+            EnvF=[Scob(:,1) zeros(size(Scob,1),length(quant))];
             
-            for i=1:size(Scomle,1)
-                ast=finv(quant,2,Scomle(i,1)-p);
+            for i=1:size(Scob,1)
+                ast=finv(quant,2,Scob(i,1)-p);
                 EnvF(i,2:end)=ast;
             end
             
@@ -1166,7 +1140,7 @@ line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
             laby=options.laby;
             
             
-            title('F test based on MLE of $\lambda_P$ and $\lambda_N$','interpreter','latex','FontSize',14);
+            title('F test for both constructed variables','Interpreter','latex','FontSize',14);
             
             % FontSize = font size of the axes labels
             FontSize =options.FontSize;
@@ -1185,17 +1159,80 @@ line(V, QUANT,'LineWidth',lwdenv,'color','r','LineWidth',lwdenv);
                 
                 % Use default limits for y axis
                 ylim1=0;
-                ylim2=min(100,max(max([Scomle(:,2:end) EnvF(:,2:end)] )));
+                ylim2=min(100,max(max([Scob(:,2:end) EnvF(:,2:end)] )));
                 ylim([ylim1 ylim2]);
             else
                 
                 % Use limits specified by the user
                 ylim(ylimy);
             end
+            
+            if scoremle == true && BoxCox == -2
+                subplot(2,1,2)
+            elseif scoremle ==true
+                figure
+            end
+            
+            if scoremle ==true
+                plot2=plot(Scomle(:,1),Scomle(:,2:end),'LineWidth',lwd);
+                set(plot2,{'Color'}, ColorOrd(1:lla,:));
+                
+                set(plot2,{'LineStyle'},slin(1:lla));
+                text(n*ones(lla,1),Scomle(end,2:end)',num2str(la));
+                
+                % Confidence bands lwdenv = line width of the curves associated with
+                % the envelopes
+                lwdenv=options.lwdenv;
+                quant=conflev;
+                
+                % Compute and superimpose envelopes based on the F distribution
+                EnvF=[Scomle(:,1) zeros(size(Scomle,1),length(quant))];
+                
+                for i=1:size(Scomle,1)
+                    ast=finv(quant,2,Scomle(i,1)-p);
+                    EnvF(i,2:end)=ast;
+                end
+                
+                line(EnvF(:,1),EnvF(:,2:end),'LineStyle','-','Color','r','LineWidth',lwdenv);
+                
+                % Add text associated with the envelopes which have been used
+                % text(repmat(n,length(quant),1),EnvF(end,2:end)',num2str(quant'));
+                
+                % Main title of the plot and labels for the axes
+                labx=options.labx;
+                laby=options.laby;
+                
+                
+                title('F test based on MLE of $\lambda_P$ and $\lambda_N$','interpreter','latex','FontSize',14);
+                
+                % FontSize = font size of the axes labels
+                FontSize =options.FontSize;
+                
+                % Add to the plot the labels for values of la Add the horizontal lines
+                % representing asymptotic confidence bands
+                xlabel(labx,'Fontsize',FontSize);
+                ylabel(laby,'Fontsize',FontSize);
+                
+                % FontSizeAxesNum = font size for the axes numbers
+                SizeAxesNum=options.SizeAxesNum;
+                set(gca,'FontSize',SizeAxesNum)
+                box on
+                
+                if isempty(ylimy)
+                    
+                    % Use default limits for y axis
+                    ylim1=0;
+                    ylim2=min(100,max(max([Scomle(:,2:end) EnvF(:,2:end)] )));
+                    ylim([ylim1 ylim2]);
+                else
+                    
+                    % Use limits specified by the user
+                    ylim(ylimy);
+                end
+            end
         end
     end
 end
-
 
 end
 %FScategory:REG-Transformations

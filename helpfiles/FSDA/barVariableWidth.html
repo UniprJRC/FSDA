@@ -3,7 +3,7 @@
 % correspondence of the different classes of number of employees
 labels={'10-20' '20-30' '30-50' '50-100' '100-170'};
 freqs=[132; 180; 60; 48; 20];
-T=array2table(freq,'RowNames',labels,'VariableNames',{'Frequency distribution'});
+T=array2table(freqs,'RowNames',labels,'VariableNames',{'Frequency distribution'});
 disp(T);
 % Show the plot of the frequency densities (frequency/class width)
 % widths= vector which contains the width of the classes
