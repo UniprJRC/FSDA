@@ -15,8 +15,8 @@ function out = GUIskewness(x, flag, w)
 %  Optional input arguments:
 %
 %    flag  : flag for unbiasness. Scalar.
-%         If w=0 the unbiased index is computed.
-%         If w=1 (default) the biased index is computed,
+%         If flag=0 the unbiased index is computed.
+%         If flag=1 (default) the biased index is computed,
 %         meaning that it tends to differ from the population skewness by a
 %         systematic amount based on the sample size.
 %           Example - 1

@@ -20,7 +20,7 @@ function out = GUIvar(x,w)
 %         If w=1 the denominator of the index corresponds to the number of
 %         observations.
 %         If w=0 (default), the denominator of the index corresponds to the
-%         number of observations minus 1,  If w is not supplied we assume that
+%         number of observations minus 1. If w is not supplied we assume that
 %         all observations have weight equal to 1 and the index is normalized with length(x)-1.
 %           Example - 1:10
 %           Data Types - double
