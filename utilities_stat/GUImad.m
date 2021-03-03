@@ -53,6 +53,7 @@ function out = GUImad(x,flag,w)
 % See also: GUIstd, GUIvar, GUItrimmean
 %
 % References:
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -90,8 +91,8 @@ function out = GUImad(x,flag,w)
 %{
     %% MAD in a frequency distribution.
     % MAD = median absolute deviation from median.
-    % Frequency distribution of the number of children in a sample of 200
-    % families.
+    % Frequency distribution of the number of children in a sample of 400
+    % families. (See page 29 of [CMR]).
     X=[0	112
     1	156
     2	111
@@ -107,8 +108,8 @@ function out = GUImad(x,flag,w)
 %{
     %% SM in a frequency distribution.
     % SM= mean absolute deviation from mean.
-    % Frequency distribution of the number of children in a sample of 200
-    % families.
+    % Frequency distribution of the number of children in a sample of 400
+    % families. (See page 29 of [CMR]).
     X=[0	112
     1	156
     2	111
@@ -124,8 +125,7 @@ function out = GUImad(x,flag,w)
 %{
     %% SMe in a frequency distribution.
     % SMe= median absolute deviation from mean.
-    % Frequency distribution of the number of children in a sample of 200
-    % families.
+    % Frequency distribution of the number of children in a sample of 400 families. (See page 29 of [CMR]).
     X=[0	112
     1	156
     2	111

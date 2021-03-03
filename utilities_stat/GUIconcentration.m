@@ -47,6 +47,7 @@ function out = GUIconcentration(Q, varargin)
 % See also: GUIvar, GUIstd, GUImad
 %
 % References:
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -62,7 +63,8 @@ function out = GUIconcentration(Q, varargin)
 %{
     % Concentration index using exact formula.
     % The percentage breakdown of the investments of a mutual 
-    % is the following:
+    % is the following.
+    % This is exercise 1.29 from [CMR] - page 61.
     % Government bonds 55 per cent.
     % Bonds 12 per cent.
     % Italian equities 23 per cent
@@ -77,18 +79,21 @@ function out = GUIconcentration(Q, varargin)
 %{
     %% Concentrartion index using approximate formula.
     % The families in a certain area have been classified 
-    % according to their annual income. 
+    % according to their annual income.
+    % This is exercise 1.28 from [CMR] - page 59.
     % Classes of income and frequencies.
-    % 5  - 10	50 
-    % 10 - 20	125
-    % 20 - 30	225
-    % 30 - 50	325
-    % 50 - 70	175
-    % 70 - 100	100
+    % 5  - 10	10 
+    % 10 - 20	25
+    % 20 - 30	45
+    % 30 - 50	65
+    % 50 - 70	35
+    % 70 - 100	20
     % Compute the concentration ratio and show the concentration area.
     % Note that given that n is large we can use the approximate formula.
+    % Using as x_i the central value of the classes, we estimate the Q_i as
+    % x_i * n_i. For example Q_1 = 7.5 * 10, Q_2 = 15 * 25...Q_6 = 85 * 20
     Q=[75 375 1125 2600 2100 1700];
-    ni=[5 12.5 22.5 32.5 17.5 10];
+    ni=[10 25 45 65 35 20];
     out=GUIconcentration(Q,'freq',ni,'plots',1);
 %}
 
