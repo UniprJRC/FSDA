@@ -34,11 +34,13 @@ function [outSC]=ScoreYJ(y,X,varargin)
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
-%           Lik : likelihood for the augmented model. Scalar.
-%                   If 1 the value of the likelihood for the augmented model will be produced
-%                 else (default) only the value of the score test will be given
-%               Example - 'Lik',0
-%               Data Types - double
+%           Lik : likelihood for the augmented model. Boolean.
+%                   If true the value of the likelihood for the augmented
+%                   model will be produced
+%                 else (default) only the value of the score test will be
+%                 given
+%               Example - 'Lik',false
+%               Data Types - logical
 %
 %       nocheck : Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
@@ -140,31 +142,31 @@ vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 la=[-1 -0.5 0 0.5 1];
-Likopt=0;
+Likboo=false;
 
-if nargin>2
+if coder.target('MATLAB')
     
-    options=struct('Lik',0,'la',la,'nocheck',false,'intercept',false); % ,'mingreater0',mingreater0);
-    
-    UserOptions=varargin(1:2:length(varargin));
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-    end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
-    
-    
-    % Write in structure 'options' the options chosen by the user
-    if nargin > 2
-        for i=1:2:length(varargin)
-            options.(varargin{i})=varargin{i+1};
+    if nargin>2
+        options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false); % ,'mingreater0',mingreater0);
+        
+        UserOptions=varargin(1:2:length(varargin));
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    
-    la=options.la;
-    % mingreater0=options.mingreater0;
-    Likopt=options.Lik;
+end
+% Write in structure 'options' the options chosen by the user
+if nargin > 2
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+
+la=options.la;
+% mingreater0=options.mingreater0;
+Likboo=options.Lik;
 end
 
 
@@ -174,7 +176,7 @@ lla=length(la);
 Sc=zeros(lla,1);
 
 % Lik is a vector which contains the likelihoods for diff. values of la
-if Likopt==1
+if Likboo==true
     Lik=Sc;
 end
 
@@ -258,7 +260,7 @@ for i=1:lla
     
     % Store the value of the likelihood for the model which also contains
     % the constructed variable
-    if Likopt==1
+    if Likboo==true
         Lik(i)=-n*log(SSe/n);
     end
 end
@@ -267,8 +269,10 @@ end
 outSC.Score=Sc;
 
 % Store values of the likelihood inside structure outSC
-if Likopt==1
+if Likboo==true
     outSC.Lik=Lik;
+else
+    outSC.Lik=NaN;
 end
 
 end

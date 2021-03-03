@@ -95,7 +95,15 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 %$LastChangedDate::                      $: Date of the last commit
 
 %   Examples:
-
+%{
+    % Call to logmvnpdfFS with 3 input arguments.
+     n=20;
+     v=2;
+     X=randn(n,v);
+     mu = [1 1]; Sigma = [.9 .4; .4 .3];
+     y = logmvnpdfFS(X, mu, Sigma);
+%}
+     
 %{
      % Comparison with mvnpdf.
      % In this example we check the agreement of the results with MATLAB
@@ -115,7 +123,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 %}
 
 %{
-    %% TIME COMPARISON USING TIC TOC.
+    % TIME COMPARISON USING TIC TOC.
     % In the examples below we compare the speed of the different solutions
     % logmvnpdfFS with mex function and logmvnpdfFS without mex function
 

@@ -84,7 +84,7 @@ format short
 
 % If it is necessary to call publishFSallFiles without execution of the
 % examples and without creating HTML files
-% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false','write2file',false);
+% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode',false,'write2file',false);
 
 if ~isempty(FilesWithProblems)
     % Check correctness of HTML link inside each .m file
@@ -193,8 +193,9 @@ fsep=filesep;
 cd(fileparts(which('docsearchFS.m')))
 
 % Note that input OUT comes from function publishFSallFiles
-% cell OUT can also be more easily created using option 'evalCode','false'
-% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode','false');
+% cell OUT can also be more easily created using option 'evalCode',false
+% and 'write2file',false
+% [~,OUT]=publishFSallFiles(FilesIncluded, 'evalCode',false,'write2file',false);
 
 % Create HTML file containing all the items which make up the bibblography
 [fileBiblio,Cits]=publishBibliography(FilesIncluded,OUT);

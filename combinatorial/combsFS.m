@@ -41,7 +41,7 @@ function P = combsFS(v,m)
 % References:
 %
 %    Knuth, D. E. (1997). "The Art of Computer Programming", Volume 1:
-%    Fundamental Algorithms, Third ed. Addison-Wesley. [pp. 52--74]. 
+%    Fundamental Algorithms, Third ed. Addison-Wesley. [pp. 52--74].
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -69,18 +69,23 @@ end
 v = v(:).';     % Make sure v is a row vector.
 n = length(v);  % Elements of v.
 
-% set the *theoretical* precision based on the number of elements in v.
-% Of course so big n values will never be used in practice. The precision
-% will always be int8.
-if n < 128
-    precision = 'int8';
-    v = int8(v);
-elseif n < 32768
-    precision = 'int16';
-    v = int16(v);
+if coder.target('MATLAB')
+    
+    % set the *theoretical* precision based on the number of elements in v.
+    % Of course so big n values will never be used in practice. The precision
+    % will always be int8.
+    if n < 128
+        precision = 'int8';
+        v = int8(v);
+    elseif n < 32768
+        precision = 'int16';
+        v = int16(v);
+    else
+        precision = 'int32';
+        v = int32(v);
+    end
 else
-    precision = 'int32';
-    v = int32(v);
+    precision = 'double';
 end
 
 if(m > n)

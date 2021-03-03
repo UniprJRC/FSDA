@@ -144,15 +144,15 @@ function [outSC]=ScoreYJpn(y,X,varargin)
 
     % Start the analysis
     X=ones(n,1);
-    [outSC]=ScoreYJ(ytra,X,'intercept',false);
-    [outSCpn]=ScoreYJpn(ytra,X,'intercept',false);
+    [outSC1]=ScoreYJ(ytra,X,'intercept',false);
+    [outSC]=ScoreYJpn(ytra,X,'intercept',false);
     la=[-1 -0.5 0 0.5 1]';
-    disp([la outSCpn.Score(:,1) outSC.Score outSCpn.Score(:,2)])
+    disp([la outSC.Score(:,1) outSC1.Score outSC.Score(:,2)])
     % Comment: if we consider the 5 most common values of lambda
     % the value of the score test when lambda=0.5 is the only one which is not
     % significant. However when lambda=0.5 the score test for negative
     % observations is highly significant. The difference between the test for
-    % positive and the test for negative is 2.7597+0.7744=3.5341, which is very
+    % positive and the test for negative is 2.7597+0.7744=3.5341, is very
     % large. This indicates that the two tails need a different value of the
     % transformation parameter.
 %}

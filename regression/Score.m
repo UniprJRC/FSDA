@@ -18,7 +18,7 @@ function [outSC]=Score(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
+%    intercept :  Indicator for constant term. true (default) | false.
 %                 Indicator for the constant term (intercept) in the fit,
 %                 specified as the comma-separated pair consisting of
 %                 'Intercept' and either true to include or false to remove
@@ -28,17 +28,19 @@ function [outSC]=Score(y,X,varargin)
 %
 %           la  :transformation parameter. Vector. It specifies for which values of the
 %                 transformation parameter it is necessary to compute the
-%                 score test. 
+%                 score test.
 %                 Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
 %                 is the five most common values of lambda
 %               Example - 'la',[0 0.5]
 %               Data Types - double
 %
-%           Lik : likelihood for the augmented model. Scalar.
-%                   If 1 the value of the likelihood for the augmented model will be produced
-%                 else (default) only the value of the score test will be given
-%               Example - 'Lik',0
-%               Data Types - double
+%           Lik : likelihood for the augmented model. Boolean.
+%                   If true the value of the likelihood for the augmented
+%                   model will be produced
+%                 else (default) only the value of the score test will be
+%                 given
+%               Example - 'Lik',false
+%               Data Types - logical
 %
 %       nocheck : Check input arguments. Boolean.
 %               If nocheck is equal to true no check is performed on
@@ -89,7 +91,7 @@ function [outSC]=Score(y,X,varargin)
     % Score test using the five most common values of lambda
     [outSC]=Score(y,X);
     disp('Values of the score test')
-    disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})  
+    disp({'la=-1' 'la=-0.5' 'la=0' 'la=0.5' 'la=1'})
     disp(outSC.Score')
 %}
 
@@ -119,16 +121,21 @@ if min(y)<0
     error('FSDA:Score:ynegative','Score test using BoxCox cannot be computed because min(y) is smaller than 0. Please use Yeo-Johnson family')
 end
 
-options=struct('Lik',0,'la',[-1 -0.5 0 0.5 1],'nocheck',false,'intercept',false);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+Likboo=false;
+la=[-1 -0.5 0 0.5 1];
+if coder.target('MATLAB')
+    
+    options=struct('Lik',Likboo,'la',la,'nocheck',false,'intercept',false);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:Score:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
 
 % Write in structure 'options' the options chosen by the user
@@ -136,9 +143,10 @@ if nargin > 2
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
+    
+    la=options.la;
+    Likboo=options.Lik;
 end
-
-la=options.la;
 
 
 %  Sc= vector which contains the t test for constructed variables for the
@@ -156,14 +164,14 @@ logG=log(G);
 
 % loop over the values of \lambda
 for i=1:lla
-  lai=la(i);
+    lai=la(i);
     % Define transformed and constructed variable
     if abs(lai)<1e-8
         z=G*logy;
         w=G*logy.*(logy/2-logG);
     else
         % laiGlaim1=lai*G^(lai-1);
-        laiGlaim1 =lai*exp((lai-1)*logG); 
+        laiGlaim1 =lai*exp((lai-1)*logG);
         % ylai=y.^lai;
         ylai=exp(lai*logy);
         ylaim1=ylai-1;
@@ -190,7 +198,7 @@ for i=1:lla
     
     % Store the value of the likelihood for the model which also contains
     % the constructed variable
-    if options.Lik==1
+    if Likboo==true
         Lik(i)=-n*log(sse/n);
     end
 end
@@ -199,8 +207,10 @@ end
 outSC.Score=Sc;
 
 % Store values of the likelihood inside structure outSC
-if options.Lik==1
+if Likboo==true
     outSC.Lik=Lik;
+else
+    outSC.Lik=NaN;
 end
 
 end

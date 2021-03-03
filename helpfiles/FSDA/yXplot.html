@@ -401,12 +401,12 @@ yXplot(out,'datatooltip',1);</pre></div></div></p></div></div></div></div>
 </code>,<code> 'selunit','3'
 </code></code></span></div><div class="expandableContent"><div id="inputarg_group" class="clearfix"></div><h3 id="input_argument_namevalue_group" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>group</code> &#8212;grouping variable.</span></a><span class="example_desc">vector with n elements.</span></span></h3><div class="collapse">	<p><p>It is a grouping variable that determines
          the marker and color assigned to each point. It can be a categorical
-         variable, vector, string matrix, or cell array of strings.</p> <p>
+         variable, vector, string matrix, or cell array of strings or logical.</p> <p>
          Note that if 'group' is used to distinguish a set of outliers from
          a set of good units, the id number for the outliers should be the
          larger (see optional field 'labeladd' of option 'plo' for details).</p><p>
          </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'group',ones(n,1)
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double.</code></p></div></div><div class="expandableContent"><div id="inputarg_plo" class="clearfix"></div><h3 id="input_argument_namevalue_plo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plo</code> &#8212;yXplot personalization.</span></a><span class="example_desc">empty value, scalar of structure.</span></span></h3><div class="collapse">	<p><p>This option controls the names which
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>categorical vector | numeric vector | logical vector | character array | string array | cell array</code></p></div></div><div class="expandableContent"><div id="inputarg_plo" class="clearfix"></div><h3 id="input_argument_namevalue_plo" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>plo</code> &#8212;yXplot personalization.</span></a><span class="example_desc">empty value, scalar of structure.</span></span></h3><div class="collapse">	<p><p>This option controls the names which
          are displayed in the margins of the yX matrix and the
          labels of the legend.</p> <p>
 

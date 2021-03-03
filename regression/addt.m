@@ -266,60 +266,61 @@ out.pval=pval;
 
 %% Added variable plot
 
-if coder.target('MATLAB') && plots==1
-    if ~isempty(units)
-        sel=setdiff(1:length(y),units);
-        [outsel]=addt(y(sel),X(sel,2:end),w(sel),'plots',0);
-        
-        plot(Aw(sel),Az(sel),'+b','MarkerSize',FontSize);
-        hold('on');
-        plot(Aw(units),Az(units),'or','MarkerSize',6,'MarkerFaceColor','r');
-        
-        xlimits = get(gca,'Xlim');
-        % Superimpose line based on all units
-        line(xlimits , b.*xlimits,'Color','r','LineWidth',2);
-        % Superimposed line based on reduced set of units
-        line(xlimits , outsel.b.*xlimits,'LineWidth',2);
-        if textlab==true
-            text(Aw(units)+0.05,Az(units),num2str(units),'FontSize',FontSize);
+if coder.target('MATLAB')
+    if plots==1
+        if ~isempty(units)
+            sel=setdiff(1:length(y),units);
+            [outsel]=addt(y(sel),X(sel,2:end),w(sel),'plots',0);
+            
+            plot(Aw(sel),Az(sel),'+b','MarkerSize',FontSize);
+            hold('on');
+            plot(Aw(units),Az(units),'or','MarkerSize',6,'MarkerFaceColor','r');
+            
+            xlimits = get(gca,'Xlim');
+            % Superimpose line based on all units
+            line(xlimits , b.*xlimits,'Color','r','LineWidth',2);
+            % Superimposed line based on reduced set of units
+            line(xlimits , outsel.b.*xlimits,'LineWidth',2);
+            if textlab==true
+                text(Aw(units)+0.05,Az(units),num2str(units),'FontSize',FontSize);
+            end
+            set(gca,'FontSize',SizeAxesNum)
+            
+            xlabel('Aw','Fontsize',FontSize);
+            ylabel('Ay','Fontsize',FontSize);
+            % Format for the legend
+            forleg='%11.3g';
+            forleg1='%3.2g';
+            
+            legend('Normal units','Excluded units',['Fit on all units tstat=' num2str(Tl,forleg) ' (pval=' num2str(pval,forleg1) ')'],...
+                ['Fit on subset tstat=' num2str(outsel.Tadd,forleg) ' (pval=' num2str(outsel.pval,forleg1) ')'])
+            hold('off');
+            
+            %olsline(2)
+        else
+            plot(Aw,Az,'+');
+            xlimits = get(gca,'Xlim');
+            % Superimpose line based on all units
+            line(xlimits, b.*xlimits,'LineWidth',3);
+            set(gca,'FontSize',SizeAxesNum)
+            
+            xlabel('Aw','Fontsize',FontSize);
+            ylabel('Ay','Fontsize',FontSize);
+            
         end
-        set(gca,'FontSize',SizeAxesNum)
         
-        xlabel('Aw','Fontsize',FontSize);
-        ylabel('Ay','Fontsize',FontSize);
-        % Format for the legend
-        forleg='%11.3g';
-        forleg1='%3.2g';
+        % Make the legends clickable.
+        hLines = findobj(gca, 'type', 'line');
+        eLegend = cell(length(hLines), 1);
+        for iLines = 1:length(hLines)
+            eLegend{iLines} = get(hLines(iLines), 'DisplayName');
+        end
+        clickableMultiLegend(hLines, eLegend{:});
         
-        legend('Normal units','Excluded units',['Fit on all units tstat=' num2str(Tl,forleg) ' (pval=' num2str(pval,forleg1) ')'],...
-            ['Fit on subset tstat=' num2str(outsel.Tadd,forleg) ' (pval=' num2str(outsel.pval,forleg1) ')'])
-        hold('off');
-        
-        %olsline(2)
-    else
-        plot(Aw,Az,'+');
-        xlimits = get(gca,'Xlim');
-        % Superimpose line based on all units
-        line(xlimits, b.*xlimits,'LineWidth',3);
-        set(gca,'FontSize',SizeAxesNum)
-        
-        xlabel('Aw','Fontsize',FontSize);
-        ylabel('Ay','Fontsize',FontSize);
+        % and freeze the scaling at the current limits
+        axis(axis); % equivalent to "axis manual";
         
     end
-    
-    % Make the legends clickable.
-    hLines = findobj(gca, 'type', 'line');
-    eLegend = cell(length(hLines), 1);
-    for iLines = 1:length(hLines)
-        eLegend{iLines} = get(hLines(iLines), 'DisplayName');
-    end
-    clickableMultiLegend(hLines, eLegend{:});
-    
-    % and freeze the scaling at the current limits
-    axis(axis); % equivalent to "axis manual";
-    
 end
-
 end
 %FScategory:REG-Regression

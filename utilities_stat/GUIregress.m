@@ -125,7 +125,7 @@ function out = GUIregress(x,y, varargin)
     % Analyze the trend of the company's production using a power fit.
     out=GUIregress([],y,'interpolant','power','plots',true);
 %}
-    
+
 %% Beginning of code
 
 if isempty(x)
@@ -155,11 +155,11 @@ intercept=true;
 plots=false;
 interpolant='linear';
 if nargin>2
-    options=struct('intercept',intercept,'plots',false,... 
+    options=struct('intercept',intercept,'plots',false,...
         'interpolant',interpolant);
- 
+    
     % 'weights',weights,...
- 
+    
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -316,8 +316,8 @@ if unweighted==true % unweighted regression
             end
         else
             header1={'i' 'y_i' '\hat y_i' 'e_i' 'e_i^2' '\hat y_i^2' 'y_i^2'};
-                corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
-                footer1=[NaN sumy sumyhat sume deve devyhat devy];
+            corpus1=[seq, y , yhat,  e,  e2, ymhat2  ymmy];
+            footer1=[NaN sumy sumyhat sume deve devyhat devy];
         end
         
         strtitle1='Total, regression and residual sum of squares';
@@ -542,20 +542,18 @@ if plots==true
         h=refline(b,a);
         %h=lsline;
         h.Color='r';
-        plot([x x]',[yhat y]','k','DisplayName','Residuals')
-
+        
         if b>0
             abx=['(' num2str(a) '+' num2str(b) labx ')'];
         else
             abx=['(' num2str(a) num2str(b) labx ')'];
         end
         leg={['(' labx(1) ',y) coordinates'],['Regression line ' abx] ['Residuals ' r2str]};
+        % plot([x x]',[yhat y]','k','DisplayName','Residuals')
+        plot([x x]',[yhat y]','k','DisplayName',leg{3})
     end
     
     if interpType==2
-        plot(x,yori,'o','LineWidth',2)
-        plot(x,yhat,'DisplayName','fit')
-        plot([x x]',[yhat yori]','k','DisplayName','Residuals')
         if b>0
             abx=['exp(' num2str(a) '+' num2str(b) labx ')'];
         else
@@ -563,14 +561,20 @@ if plots==true
         end
         
         leg={'(t,y_t) coordinates',['Exponential fit ' abx] ['Residuals ' r2str]};
+        plot(x,yori,'o','LineWidth',2)
+        plot(x,yhat,'DisplayName','fit')
+        plot([x x]',[yhat yori]','k','DisplayName',leg{3})
+        
+        
         
     elseif interpType==3
+        abx=[num2str(exp(a)) 't^{' num2str(b) '}'];
+        leg={'(t,y_t) coordinates',['Power fit ' abx] ['Residuals ' r2str]};
+        
         plot(xori,yori,'o','LineWidth',2)
         plot(xori,yhat,'r','DisplayName','fit')
-        plot([xori xori]',[yhat yori]','k','DisplayName','Residuals')
-            abx=[num2str(exp(a)) 't^{' num2str(b) '}'];
-                leg={'(t,y_t) coordinates',['Power fit ' abx] ['Residuals ' r2str]};
-
+        plot([xori xori]',[yhat yori]','k','DisplayName',leg{3})
+        
     else
     end
     drawnow

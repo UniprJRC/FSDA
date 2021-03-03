@@ -7,6 +7,7 @@
 %   aceplot            - Produces the aceplot to visualize the results of ace                                                                               - VIS-Reg       - 2021 Feb 01
 %   add2spm            - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix                                      - VIS-Mult      - 2021 Feb 01
 %   add2yX             - Adds objects (personalized clickable multilegends and text labels) to the yXplot                                                   - VIS-Reg       - 2021 Feb 01
+%   barVariableWidth   - Produces a bar plot with different widths and colors for each bar                                                                  - VIS-Reg       - 2021 Feb 19
 %   boxplotb           - Computes a bivariate boxplot                                                                                                       - VIS-Mult      - 2021 Feb 01
 %   carbikeplot        - Produces the carbike plot to find best relevant clustering solutions                                                               - VIS-Clu       - 2021 Feb 01
 %   carbikeplotGPCM    - Carbikeplot produces the carbike plot to find best relevant clustering solutions                                                   - VIS-Clu       - 2021 Feb 01
@@ -29,6 +30,6 @@
 %   spmplot            - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours - VIS-Mult      - 2021 Feb 01
 %   tclustICplot       - Plots information criterion as a function of c and k                                                                               - VIS-Clu       - 2021 Feb 01
 %   tclustICplotGPCM   - Plots information criterion as a function of  $c_{det}$, $c_{shw}$,  $c_{shb}$ and $k$                                             - VIS-Clu       - 2021 Feb 01
-%   waterfallchart     - Creates a waterfall chart                                                                                                          - VIS-Mult      - 2021 Feb 01
+%   waterfallchart     - Creates a waterfall chart                                                                                                          - VIS-Mult      - 2021 Feb 11
 %   wedgeplot          - Generates the double wedge plot of a time series                                                                                   - VIS-Reg       - 2021 Feb 01
-%   yXplot             - Produces an interactive scatterplot of y against each variable of X in the input dataset                                           - VIS-Reg       - 2021 Feb 01
+%   yXplot             - Produces an interactive scatterplot of y against each variable of X in the input dataset                                           - VIS-Reg       - 2021 Mar 01

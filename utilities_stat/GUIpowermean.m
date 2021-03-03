@@ -104,7 +104,7 @@ else % weighted variance
     if abs(s)>1e-7
         header={'i' 'x_i' ['x_i^{' sstr '}' ] 'w_i' ['x_i^' sstr 'w_i']};
     else
-        header={'i' 'x_i' '\log(x_i)'  'w_i'  ' w_i \log(x_i)'}   ;
+        header={'i' 'x_i' '\log(x_i)'  'w_i'  ' w_i \log(x_i)'};
         xs=log(x);
     end
     xsw=xs.*w;
