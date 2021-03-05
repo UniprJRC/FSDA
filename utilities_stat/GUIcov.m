@@ -16,7 +16,7 @@ function out = GUIcov(x,y,w)
 %           the values inside the contingency table.
 %           Data Types - double or table
 %
-%     y : vector of numeric data. 
+%     y : vector of numeric data. Vector.
 %           Vector containing strictly numerical data.
 %           This input argument is not requested if previously input
 %           argument x is a table.
@@ -42,6 +42,8 @@ function out = GUIcov(x,y,w)
 % See also: GUIvar, GUImad, GUIskewness
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -56,6 +58,8 @@ function out = GUIcov(x,y,w)
 %
 %{
     % Example of unweighted covariance.
+    % The data below are referred to monthly income of 13 families and
+    % their corrisponding free time expenditure (See page 223 of [MRZ]).
     % x= monthly income of 13 families.
     % y= free time expenditure.
     x=[1330 1225 1225 1400 1575 2050 1750 2240 1225 1730 1470 2730 1380];
@@ -65,13 +69,14 @@ function out = GUIcov(x,y,w)
 
 %{
     % Example of calculation of standard deviation (using n as denominator).
+    % See page 9 of [CMR]
     x=[427 492 445 444 476 470];
     GUIstd(x,1)
 %}
 
 %{
     % Example 1 of weighted covariance.
-    % In this example vectors x y and w are supplied.
+    % In this example vectors x y and w are supplied. (See Covariance from Wikipedia)
     x=[  8     8     9     9];
     y=[6     7     5     7];
     w=[0.4000    0.1000    0.3000    0.2000];
@@ -81,7 +86,7 @@ function out = GUIcov(x,y,w)
 %{
     %% Example 2 of weighted covariance.
     % In this example first input argument is a table and only this
-    % argument is passed.
+    % argument is passed. (See Covariance from Wikipedia)
     N=[0 0.4 0.1
     0.3	 0	0.2];
     colnames={'5' '6'	'7'};

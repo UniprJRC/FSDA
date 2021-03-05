@@ -20,7 +20,7 @@ function out = GUIvar(x,w)
 %         If w=1 the denominator of the index corresponds to the number of
 %         observations.
 %         If w=0 (default), the denominator of the index corresponds to the
-%         number of observations minus 1,  If w is not supplied we assume that
+%         number of observations minus 1. If w is not supplied we assume that
 %         all observations have weight equal to 1 and the index is normalized with length(x)-1.
 %           Example - 1:10
 %           Data Types - double
@@ -37,6 +37,8 @@ function out = GUIvar(x,w)
 % See also: GUIstd, GUImad, GUIquantile
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -56,13 +58,15 @@ function out = GUIvar(x,w)
 %}
 
 %{  
-    % Example of calculation of variance (using n as denominator).
+    % Calculation of variance (using n as denominator).
+    % See page 9 of [CMR]
     x=[427 492 445 444 476 470];
     y=GUIvar(x,1);
 %}
 
 %{
     %% Example of weighted variance.
+    % See page 128 of [MRZ]
     x=[25:50:175 250 400 750];
     w=[59 69 31 25 8 3 1];
     out=GUIvar(x,w);

@@ -132,7 +132,7 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                since observations (rows) with such values will
                automatically be excluded from the computations.</p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single| double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'intercept',false
 </code>,<code> 'family','YJ'
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code>,<code> 'conflev',0.99
 </code>,<code> 'laseq',[-1:0.001;0.7]
 </code>,<code> 'laseqPos',[-1:0.001;0.7]
@@ -163,13 +163,12 @@ outcont=boxcoxR(yconttra,X,'family','YJpn','plots',1);</pre></div></div><a href
                positive. Yeo-Johnson (and extended Yeo-Johnson family of
                transformations do not have this limitation).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'family','YJ'
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1
-                 no check is performed on vector y and matrix X. This
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>char</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on vector y and matrix X. This
                  means that y and X are left unchanged. Note also that the
                  additional column of ones for the intercept is not added.</p> <p>
-                 As default nocheck=0.</p><p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level for lambda.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The scalar is 
+                 As default nocheck=false.</p><p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_conflev" class="clearfix"></div><h3 id="input_argument_namevalue_conflev" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>conflev</code> &#8212;Confidence level for lambda.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>The scalar is 
                   between 0 and 1 and determines the confidence level for
                   lambda, based on the asymptotic $chi1^2$ of twice the
                   loglikelihood ratio. The default conflev value is 0.95;</p> <p>

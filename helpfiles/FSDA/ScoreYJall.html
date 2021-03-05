@@ -28,7 +28,7 @@ la=0.5;
 ytra=normYJ(y,[],la,'inverse',true);
 % Start the analysis
 X=ones(n,1);
-[outSC]=ScoreYJall(ytra,X,'intercept',0);
+[outSC]=ScoreYJall(ytra,X,'intercept',false);
 la=[-1 -0.5 0 0.5 1]';
 Sco=[la outSC.Score];
 Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','Ftest'});
@@ -59,7 +59,7 @@ ytra=[ytrapos; ytraneg];
 X=ones(n,1);
 % also compute lik. ratio test based on MLE of laP and laN
 scoremle=true;
-[outSC]=ScoreYJall(ytra,X,'intercept',0,'scoremle',scoremle);
+[outSC]=ScoreYJall(ytra,X,'intercept',false,'scoremle',scoremle);
 la=[-1 -0.5 0 0.5 1]';
 Sco=[la outSC.Score];
 Scotable=array2table(Sco,'VariableNames',{'lambda','Tall','Tp','Tn','FtestPN' 'FtestLR'});
@@ -67,9 +67,9 @@ disp(Scotable)
 % Comment: if we consider the 5 most common values of lambda
 % the value of the score test when lambda=0.5 is the only one which is not
 % significant. However when lambda=0.5 the score test for negative
-% observations is highly significant. 
-disp('Difference between the test for positive and the test for negative')  
-disp(abs(Scotable{4,3}-Scotable{4,4})), 
+% observations is highly significant.
+disp('Difference between the test for positive and the test for negative')
+disp(abs(Scotable{4,3}-Scotable{4,4})),
 % which is very
 % large. This indicates that the two tails need a different value of the
 % transformation parameter.</pre></div></div><pre class="codeoutput">    lambda     Tall        Tp         Tn       FtestPN    FtestLR
@@ -96,7 +96,7 @@ Difference between the test for positive and the test for negative
 </code>,<code> 'la',[0 0.5]
 </code>,<code> 'scoremle',true
 </code>,<code> 'usefmin',true
-</code>,<code> 'nocheck',1
+</code>,<code> 'nocheck',true
 </code></code></span></div><div class="expandableContent"><div id="inputarg_intercept" class="clearfix"></div><h3 id="input_argument_namevalue_intercept" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>intercept</code> &#8212;Indicator for constant term.</span></a><span class="example_desc">true (default) | false.</span></span></h3><div class="collapse">	<p><p>Indicator for the constant term (intercept) in the fit,
                  specified as the comma-separated pair consisting of
                  'Intercept' and either true to include or false to remove
@@ -111,7 +111,7 @@ Difference between the test for positive and the test for negative
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_scoremle" class="clearfix"></div><h3 id="input_argument_namevalue_scoremle" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scoremle</code> &#8212;likelihood ratio test for the two different transformation
                 parameters $\lambda_P$ and $\lambda_N$.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>if scoremle is true it is possible to compute the
                 likelihood ratio test. In this case the residual sum of
-                squares of the null model bsaed on a single trasnformation
+                squares of the null model bsaed on a single transformation
                 parameter $\lambda$ is compared with the residual sum of
                 squares of the model based on data transformed data using
                 MLE of $\lambda_P$ and $\lambda_N$. If scoremle is true it
@@ -138,12 +138,12 @@ Difference between the test for positive and the test for negative
                    just the final output) and 'iter' (displays iterative
                    output to the command window).</p><p>
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'usefmin',true
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to 1 no check is performed on
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean or struct</code></p></div></div><div class="expandableContent"><div id="inputarg_nocheck" class="clearfix"></div><h3 id="input_argument_namevalue_nocheck" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nocheck</code> &#8212;Check input arguments.</span></a><span class="example_desc">boolean.</span></span></h3><div class="collapse">	<p><p>If nocheck is equal to true no check is performed on
                  matrix y and matrix X. Notice that y and X are left
                  unchanged. In other words the additional column of ones
-                 for the intercept is not added. As default nocheck=0.</p> <p>
-               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',1
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
+                 for the intercept is not added. As default nocheck=false.</p> <p>
+               </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_outSC" class="clearfix"></div><h3 id="output_argument_outSC" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>outSC</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p><p>containing the following fields:</p> <p>
 
 </p><table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>Score</code></td><td><p><p>score tests. Matrix.</p> <p>
                             Matrix of size length(la)-by-5 which

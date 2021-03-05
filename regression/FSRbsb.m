@@ -61,13 +61,6 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %               subset in steps 100 and 200.
 %               Data Types - double
 %
-%       plots   : Plot on the screen. Scalar.
-%                 If plots=1 the monitoring units plot is displayed on the
-%                 screen. The default value of plots is 0 (that is no plot
-%                 is produced on the screen).
-%                 Example - 'plots',1
-%                 Data Types - double
-%
 %       msg    :  Level of output to display. Boolean. It controls whether
 %                 to display or not messages on the screen
 %                 If msg==true (default) messages are displayed on the screen about
@@ -75,6 +68,14 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                 else no message is displayed on the screen.
 %               Example - 'msg',true
 %               Data Types - boolean
+%
+%       plots   : Plot on the screen. Scalar.
+%                 If plots=1 the monitoring units plot is displayed on the
+%                 screen. The default value of plots is 0 (that is no plot
+%                 is produced on the screen).
+%                 Example - 'plots',1
+%                 Data Types - double
+%
 %
 % Output:
 %
@@ -297,20 +298,20 @@ ini0=length(bsb);
 init=options.init;
 if init <p
     if coder.target('MATLAB')
-    fprintf(['Attention : init should be larger than p-1. \n',...
-        'It is set to p.']);
+        fprintf(['Attention : init should be larger than p-1. \n',...
+            'It is set to p.']);
     end
     init=p;
 elseif init<ini0
     if coder.target('MATLAB')
-    fprintf(['Attention : init should be >= length of supplied subset. \n',...
-        'It is set equal to ' num2str(length(bsb)) ]);
+        fprintf(['Attention : init should be >= length of supplied subset. \n',...
+            'It is set equal to ' num2str(length(bsb)) ]);
     end
     init=ini0;
 elseif init>=n
     if coder.target('MATLAB')
-    fprintf(['Attention : init should be smaller than n. \n',...
-        'It is set to n-1.']);
+        fprintf(['Attention : init should be smaller than n. \n',...
+            'It is set to n-1.']);
     end
     init=n-1;
 end
@@ -473,13 +474,16 @@ else
         end
     end
     
-    plots=options.plots;
-    if coder.target('MATLAB') &&  plots==1
-        % Create the 'monitoring units plot'
-        figure;
-        plot(bsbsteps,BB','bx')
-        xlabel('Subset size m');
-        ylabel('Monitoring units plot');
+    if coder.target('MATLAB')
+        plots=options.plots;
+        if  plots==1
+            % Create the 'monitoring units plot'
+            figure;
+            plot(bsbsteps,BB','bx')
+            xlabel('Subset size m');
+            ylabel('Monitoring units plot');
+        end
     end
+end
 end
 %FScategory:REG-Regression

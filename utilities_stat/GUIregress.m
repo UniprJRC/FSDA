@@ -11,13 +11,13 @@ function out = GUIregress(x,y, varargin)
 %     x : vector of numeric data or table. Vector or table or empty.
 %           Vector containing strictly numerical data.
 %           If x is table the second input argument y is not necessary. In
-%           this case the response if the last column of the table.
+%           this case the response is the last column of the table.
 %           If x is empty it is assumed that regression is against time.
 %           Data Types - double or table or []
 %
 %     y : vector of numeric data.
 %           Vector containing strictly numerical data.
-%           This input argument is not requested if previously input
+%           This input argument is not requested if previous input
 %           argument x is a table.
 %           Data Types - double
 %
@@ -58,6 +58,8 @@ function out = GUIregress(x,y, varargin)
 % See also: GUIvar, GUImad, GUIskewness
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -71,9 +73,11 @@ function out = GUIregress(x,y, varargin)
 % Examples:
 %
 %{
-    %% Example of unweighted regression.
+    %% Calculation of unweighted regression.
+    % In this example we know the monthly income of 13 families and we
+    % estimate the correlation with the free time expenditure. (See page 223 of [MRZ]).
     % x= monthly income of 13 families.
-    % y= free time expenditure.
+    % y= free time expenditure. 
     x=[1330 1225 1225 1400 1575 2050 1750 2240 1225 1730 1470 2730 1380];
     y=[120 60 30 60 90 150 140 210 30 100 30 270 260];
     out=GUIregress(x,y);
@@ -83,7 +87,7 @@ function out = GUIregress(x,y, varargin)
     %% Use of option plots.
     % The following data matrix reports, for 6 countries, the tourism revenues
     % (y) recorded in a given year (in billions of dollars) and the number of
-    % foreign visitors (x) in the same year (in millions of units).
+    % foreign visitors (x) in the same year (in millions of units). (See page 101 of [CMR])
     x=[60 48 45 30 23 15];
     y=[27.3 25.1 58.4 27.1 17.5 11.9];
     out=GUIregress(x,y,'plots',true);
@@ -93,7 +97,7 @@ function out = GUIregress(x,y, varargin)
     %% Use of option intercept.
     % The following data matrix reports, for 6 countries, the tourism revenues
     % (y) recorded in a given year (in billions of dollars) and the number of
-    % foreign visitors (x) in the same year (in millions of units).
+    % foreign visitors (x) in the same year (in millions of units). (See page 101 of [CMR])
     x=[60 48 45 30 23 15];
     y=[27.3 25.1 58.4 27.1 17.5 11.9];
     out=GUIregress(x,y,'intercept',false);
@@ -103,7 +107,7 @@ function out = GUIregress(x,y, varargin)
     % First argument passed as table.
     % The following data matrix reports, for 6 countries, the tourism revenues
     % (y) recorded in a given year (in billions of dollars) and the number of
-    % foreign visitors (x) in the same year (in millions of units).
+    % foreign visitors (x) in the same year (in millions of units). (See page 101 of [CMR])
     x=[60 48 45 30 23 15];
     y=[27.3 25.1 58.4 27.1 17.5 11.9];
     XX=array2table([x' y'],'VariableNames',{'x','y'});
@@ -112,17 +116,17 @@ function out = GUIregress(x,y, varargin)
 
 %{
     %% Example of exponential interpolation.
-    % The following data matrix reports, for 6 countries, the tourism revenues
-    % The values ​​of a company's production, in millions of euros were as follows:
-    y=[50 52 56 59 65 70 76];
+    % The values ​​of a company's production, in millions of euros were as follows: (See page 116 of [CMR])  
+    y=[50 52 56 59 65 70 76]; 
+    % Analyze the trend of the company's production using an exponential fit.
     out=GUIregress([],y,'interpolant','exponential','plots',true);
 %}
 
 %{
     %% Example of power interpolation.
-    % The following data matrix reports, for 6 countries, the tourism revenues
-    % The values ​​of a company's production, in millions of euros were as follows:
+    % The values ​​of a company's production, in millions of euros were as follows: (See page 116 of [CMR])   
     y=[50 52 56 59 65 70 76];
+    % Analyze the trend of the company's production using a power fit.
     out=GUIregress([],y,'interpolant','power','plots',true);
 %}
 
@@ -470,7 +474,7 @@ if unweighted==true
                 
             end
         else
-            strbcoeff=['\boldmath{$b$}=$ \frac{T\sum_{t=1}^n xti y_i - \sum_{t=1}^n t \sum_{i=t}^n y_t}{T \sum_{t=1}^n t^2 - \left( \sum_{t=1}^n t \right)^2}'...
+            strbcoeff=['\boldmath{$b$}=$ \frac{n\sum_{i=1}^n x_i y_i - \sum_{i=1}^n x_i \sum_{i=1}^n y_i}{n \sum_{i=1}^n x_i^2 - \left( \sum_{i=1}^n x_i \right)^2}'...
                 '= \frac{' num2str(lenx) ' \times ' num2str(sumxy) signsumx  num2str(abs(sumx)) ' \times ' num2str(sumy)  '}{' num2str(lenx) ' \times ' num2str(sumx2) signsumx num2str(sumx)  '^2}' ...
                 '= \frac{' num2str(numb) '}{' num2str(denb) '}=' ...
                 num2str(b) '$'];
