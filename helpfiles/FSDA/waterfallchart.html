@@ -38,7 +38,7 @@ rownam={'Population 2015' 'Births2015' 'Deaths2015' ...
 'Population 2017' 'Births2017' 'Deaths2017' ...
 'Population 2018'};
 sel=[1 4 7 10];
-Xtable=array2table(X,'RowNames',rownam','VariableNames',{'Detailed Analysis of the population growth'});
+Xtable=array2table(X,'RowNames',rownam','VariableNames',{'Population'});
 h=waterfallchart(Xtable,'SetAsTotal',sel);
 % Change the colors of the patches  which are set as total
 h(1).FaceColor='k';

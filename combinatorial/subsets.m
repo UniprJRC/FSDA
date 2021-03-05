@@ -28,7 +28,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %               Data Types - single|double
 %
 %        msg  : scalar which controls whether to display or not messages
-%               on the screen. If msg=1 (default), messages are displayed
+%               on the screen. If msg=true (default), messages are displayed
 %               on the screen about estimated time.
 %               Example - C=subsets(20,10,3,120,0)
 %               Data Types - boolean
@@ -288,7 +288,7 @@ function [C,nselected] = subsets(nsamp, n, p, ncomb, msg, method)
 %% Beginning of code
 
 % We cache the MATLAB memory information for better performance.
-persistent cachedsys 
+persistent cachedsys
 
 seq=1:n;
 
@@ -298,14 +298,18 @@ end
 
 
 if ncomb<nsamp
-    disp(['Warning: number of subsets which have been chosen (' num2str(nsamp) ') are greater than possibile number (' num2str(ncomb) ')']);
+    if coder.target('MATLAB')
+        disp(['Warning: number of subsets which have been chosen (' num2str(nsamp) ') are greater than possibile number (' num2str(ncomb) ')']);
+    else
+        disp('Warning: number of subsets which have been chosen are greater than their possibile number');
+    end
     disp('All subsets are extracted')
     nsamp=0;
 end
 
 
 if nargin<5 || isempty(msg)
-    msg=1;
+    msg=true;
 end
 
 if nargin<6
@@ -324,12 +328,16 @@ end
 
 % Constants that determine the method used to extract the p-subsets
 Tcomb = 5e+7; T2comb = 1e+8;
-
+nsamp=nsamp(1);
 if nsamp==0 || ncomb <= Tcomb
     
     if nsamp==0
-        if ncomb > 100000 && msg==1
-            disp(['Warning: you have specified to extract all subsets (ncomb=' num2str(ncomb) ')']);
+        if ncomb > 100000 && msg==true
+            if coder.target('MATLAB')
+                disp(['Warning: you have specified to extract all subsets (ncomb=' num2str(ncomb) ')']);
+            else
+                disp('Warning: you have specified to extract all subsets');
+            end
             disp('The problem is combinatorial and the run may be very lengthy');
         end
         nselected = ncomb;
@@ -357,61 +365,70 @@ if nsamp==0 || ncomb <= Tcomb
     
 else
     
-    if nsamp > 100000 && msg==1
+    if nsamp > 100000 && msg==true
         disp('Warning: you have specified to extract more than 100000 subsets');
         disp('To iterate so many times may be lengthy');
     end
     nselected = nsamp;
-    
-    % usepascal: flag used to decide whether to use the Pascal triangle
-    % tric, which allows to reduce considerably the computation time
-    usepascal=0;
-    
-    if ncomb>Tcomb && ncomb<T2comb
+    if coder.target('MATLAB')
         
-        % Extract without replacement nsamp elements from ncomb
-        rndsi=randsampleFS(ncomb,nsamp,0); % METHOD: it was set to 2
-        
-        % The Pascal triangle can be used only if there is enough memory.
-        % Unfortunately, the memory check works only in PC platforms.
-        if ispc % ispc returns a logical: no need to specify ispc == true
-            if ~isempty(cachedsys)
-                sys = cachedsys;
-            else
-                [~,sys]=memory;
-                cachedsys=sys;
-            end
-            if sys.PhysicalMemory.Available > 2*8*n^2
-                pascalM=pascal(n);
-                usepascal=1;
-            end
-        end
-        
-    end
-    
-    % Create matrix C which will contain in each row the indexes forming the
-    % subset which is extracted at step i, where i=1....number of selected
-    % subsamples (nselected)
-    if n < 2^15
-        C=zeros(nselected,p,'int16');
-    else
-        C=zeros(nselected,p,'int32');
-    end
-    
-    for i=1:nselected
+        % usepascal: flag used to decide whether to use the Pascal triangle
+        % tric, which allows to reduce considerably the computation time
+        usepascal=0;
         
         if ncomb>Tcomb && ncomb<T2comb
-            if usepascal
-                s=lexunrank(n,p,rndsi(i),pascalM);
-            else
-                s=lexunrank(n,p,rndsi(i));
+            
+            % Extract without replacement nsamp elements from ncomb
+            rndsi=randsampleFS(ncomb,nsamp,0); % METHOD: it was set to 2
+            
+            % The Pascal triangle can be used only if there is enough memory.
+            % Unfortunately, the memory check works only in PC platforms.
+            if ispc % ispc returns a logical: no need to specify ispc == true
+                if isempty(cachedsys)
+                    [~,sys]=memory;
+                    cachedsys=sys;
+                else
+                    sys = cachedsys;
+                end
+                if sys.PhysicalMemory.Available > 2*8*n^2
+                    pascalM=pascal(n);
+                    usepascal=1;
+                end
             end
-        else
-            s=randsampleFS(n,p,method);
+            
         end
-        C(i,:)=s;
         
+        % Create matrix C which will contain in each row the indexes forming the
+        % subset which is extracted at step i, where i=1....number of selected
+        % subsamples (nselected)
+        if n < 2^15
+            C=zeros(nselected,p,'int16');
+        else
+            C=zeros(nselected,p,'int32');
+        end
+        
+        for i=1:nselected
+            
+            if ncomb>Tcomb && ncomb<T2comb
+                if usepascal
+                    s=lexunrank(n,p,rndsi(i),pascalM);
+                else
+                    s=lexunrank(n,p,rndsi(i));
+                end
+            else
+                s=randsampleFS(n,p,method);
+            end
+            C(i,:)=s;
+            
+        end
+    else
+        C=zeros(nselected,p);
+        for i=1:nselected
+            s=randsampleFS(n,p,method);
+            C(i,:)=s;
+        end
     end
+    
 end
 
 end

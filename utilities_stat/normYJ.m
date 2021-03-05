@@ -127,7 +127,7 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %}
 
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 % Extract size of the data
@@ -153,18 +153,19 @@ Jacobian=true;
 inverse=false;
 
 if nargin>2
-    options=struct('Jacobian',Jacobian,'inverse',inverse);
-    
-    UserOptions=varargin(1:2:length(varargin));
-    if ~isempty(UserOptions)
-        % Check if number of supplied options is valid
-        if length(varargin) ~= 2*length(UserOptions)
-            error('FSDA:normYJ:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    if coder.target('MATLAB')
+        options=struct('Jacobian',Jacobian,'inverse',inverse);
+        
+        UserOptions=varargin(1:2:length(varargin));
+        if ~isempty(UserOptions)
+            % Check if number of supplied options is valid
+            if length(varargin) ~= 2*length(UserOptions)
+                error('FSDA:normYJ:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+            end
+            % Check if user options are valid options
+            chkoptions(options,UserOptions)
         end
-        % Check if user options are valid options
-        chkoptions(options,UserOptions)
     end
-    
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -212,7 +213,7 @@ if inverse== false
     end
     
 else % inverse transformation
-     for j=1:length(ColtoTra)
+    for j=1:length(ColtoTra)
         cj=ColtoTra(j);
         laj=la(j);
         Ycj=Y(:,cj);
@@ -235,20 +236,20 @@ else % inverse transformation
             Ytra(negs,cj) = -expm1(-Y(negs,cj));
         end
         
-     end
-     
+    end
+    
     % insert a NaN every time there is a number which is not real
     Ytra(imag(Ytra(:))~=0)=NaN;
-
-%             ans[index] <- (y[index] * lambda[index] + 1)^(1/lambda[index]) - 
-%                 1
-%         if (any(index <- y >= 0 & abs(lambda) <= epsilon)) 
-%             ans[index] <- expm1(y[index])
-%         if (any(index <- y < 0 & abs(lambda - 2) > epsilon)) 
-%             ans[index] <- 1 - (-(2 - lambda[index]) * y[index] + 
-%                 1)^(1/(2 - lambda[index]))
-%         if (any(index <- y < 0 & abs(lambda - 2) <= epsilon)) 
-%             ans[index] <- -expm1(-y[index])  
+    
+    %             ans[index] <- (y[index] * lambda[index] + 1)^(1/lambda[index]) -
+    %                 1
+    %         if (any(index <- y >= 0 & abs(lambda) <= epsilon))
+    %             ans[index] <- expm1(y[index])
+    %         if (any(index <- y < 0 & abs(lambda - 2) > epsilon))
+    %             ans[index] <- 1 - (-(2 - lambda[index]) * y[index] +
+    %                 1)^(1/(2 - lambda[index]))
+    %         if (any(index <- y < 0 & abs(lambda - 2) <= epsilon))
+    %             ans[index] <- -expm1(-y[index])
 end
 
 end

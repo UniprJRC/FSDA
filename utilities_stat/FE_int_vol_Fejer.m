@@ -156,4 +156,4 @@ end
 ivar=sum(term)/(N+1);
 
 end
-
+%FScategory:UTISTAT

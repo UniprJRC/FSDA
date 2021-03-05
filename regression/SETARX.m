@@ -108,7 +108,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 %         out.thrhat =  Estimated threshold value. Scalar. It is the threshold value that minimizes
 %                              the joint RSS.
 %     out.thrvar_ord =  Index series after reorder of threshold variable yd. Vector.
-%           out.sigma_2 =  Estimated residual variance of SETARX model. Scalar.
+%           out.sigmaj_2 =  Estimated residual variance of SETARX model. Scalar.
 %           out.RSSj =  Joint Residual Sum of Squared of SETARX model. Scalar.
 %          out.yjhat =  Fitted values of SETARX model. Vector.
 %           out.resj =  Residuals of the SETARX model. Vector.
@@ -270,7 +270,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
 % Examples:
 
 %{
-    % Example 1: Estimation from simulated data.
+    %% Example 1: Estimation from simulated data.
     %  $\beta_1=(0.7, -0.5, -0.6, 0.3, 0.3)^{\prime}$ and ...
     %  $\beta_2=(-0.1, -0.5, 0.6, 0.4, 0)^{\prime}$.
     % SETAR with all the default options.
@@ -286,7 +286,7 @@ function [out, reg, input] = SETARX(y, p, d, varargin)
     end
     p = 2;
     d = 2;
-    [out1] = SETARX(y, p ,d, 'X',X1);
+    [out, reg, input] = SETARX(y, p ,d, 'X',X1);
 %}
 
 %{

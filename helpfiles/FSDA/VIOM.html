@@ -22,7 +22,7 @@ randn('state', 123456);
 X=randn(n,p);
 y=randn(n,1);
 y(1:5)=y(1:5)*2;
-[out]=VIOM(y,X,1:5,'cook',1,'intercept',0);
+[out]=VIOM(y,X,1:5,'cook',1,'intercept',false);
 out.w(1:5);
 out.beta;</pre></div></div></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>VIOM with optional arguments mult and trim.</li></span></a></span></h3><div class="collapse"><p>
      Use MLE for single weights and with pre-specified trimming.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">n=200;

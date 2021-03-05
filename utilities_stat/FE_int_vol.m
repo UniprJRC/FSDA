@@ -155,4 +155,4 @@ end
 ivar=(c_0.*conj(c_0)+2*sum(c_p.*conj(c_p)))/(2*N+1);
 
 end
-
+%FScategory:UTISTAT

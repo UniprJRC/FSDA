@@ -62,7 +62,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 %                parameters $\lambda_P$ and $\lambda_N$. Boolean.
 %                if scoremle is true it is possible to compute the
 %                likelihood ratio test. In this case the residual sum of
-%                squares of the null model bsaed on a single trasnformation
+%                squares of the null model bsaed on a single transformation
 %                parameter $\lambda$ is compared with the residual sum of
 %                squares of the model based on data transformed data using
 %                MLE of $\lambda_P$ and $\lambda_N$. If scoremle is true it
@@ -159,7 +159,7 @@ function [outSC]=ScoreYJall(y,X,varargin)
 
 
 %{
-        %% Ex in which positive and negative observations require the same lambda.
+    %% Ex in which positive and negative observations require the same lambda.
     rng('default')
     rng(100)
     n=100;
@@ -206,9 +206,9 @@ function [outSC]=ScoreYJall(y,X,varargin)
     % Comment: if we consider the 5 most common values of lambda
     % the value of the score test when lambda=0.5 is the only one which is not
     % significant. However when lambda=0.5 the score test for negative
-    % observations is highly significant. 
-    disp('Difference between the test for positive and the test for negative')  
-    disp(abs(Scotable{4,3}-Scotable{4,4})), 
+    % observations is highly significant.
+    disp('Difference between the test for positive and the test for negative')
+    disp(abs(Scotable{4,3}-Scotable{4,4})),
     % which is very
     % large. This indicates that the two tails need a different value of the
     % transformation parameter.
@@ -229,25 +229,25 @@ la=[-1 -0.5 0 0.5 1];
 scoremle= false;
 usefmin=true;
 
-if nargin>2
-    
-    options=struct('la',la,'nocheck',false,'intercept',false,'scoremle',scoremle,...
-        'usefmin',usefmin);
-    
-    UserOptions=varargin(1:2:length(varargin));
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:ScoreYJall:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-    end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
-    
-    
-    % Write in structure 'options' the options chosen by the user
-    if nargin > 2
-        for i=1:2:length(varargin)
-            options.(varargin{i})=varargin{i+1};
+if coder.target('MATLAB')
+    if nargin>2
+        options=struct('la',la,'nocheck',false,'intercept',false,'scoremle',scoremle,...
+            'usefmin',usefmin);
+        
+        UserOptions=varargin(1:2:length(varargin));
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:ScoreYJall:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
         end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+end
+
+% Write in structure 'options' the options chosen by the user
+if nargin > 2
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
     end
     
     la=options.la;
@@ -256,6 +256,7 @@ if nargin>2
     % SSElaMLE = residual sum of squares of the regression model based on
     % MLE of laPos and laNeg
 end
+
 
 
 % inizialize qunatities which do not depnd on la(i)
