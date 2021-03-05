@@ -40,6 +40,8 @@ function out = GUIskewness(x, flag, w)
 % See also: GUIstd, GUImad, GUIquantile
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -54,7 +56,7 @@ function out = GUIskewness(x, flag, w)
 %
 %{
     %% Calculation of biased index of skewness.
-    % Vector x contains the expenditure of 20 customers in a supermarket.
+    % Vector x contains the expenditure of 20 customers in a supermarket. (See page 178 of [MRZ])
     x=[20, 110,  31, 125,  40, 128,  50, 140,  65, 150,  72, 175,...
          85, 190,  100, 205,  100, 230,  105 310];
     GUIskewness(x)
@@ -62,15 +64,16 @@ function out = GUIskewness(x, flag, w)
 
 %{
     % Calculation of unbiased index of skewness.
-    % Vector x contains the expenditure of 20 customers in a supermarket.
+    % Vector x contains the expenditure of 20 customers in a supermarket. (See page 178 of [MRZ])
     x=[20, 110,  31, 125,  40, 128,  50, 140,  65, 150,  72, 175,...
          85, 190,  100, 205,  100, 230,  105 310];
     GUIskewness(x,0)
 %}
 
 %{
-    % Example of weighted unbiased index of skewness.
-    % Italian grades obtained in a particular university exam by 1000 students.
+    % Calculation of weighted unbiased index of skewness.
+    % Italian grades obtained in a particular university exam by 1000
+    % students. (See page 54 of [CMR])
     x=20:29;
     % w= vector of frequencies
     w=[61    82   102   164   122   122    61   143    82    61];
@@ -78,8 +81,9 @@ function out = GUIskewness(x, flag, w)
 %}
 
 %{
-    % Example of weighted biased index of skewness.
-    % Italian grades obtained in a particular university exam by 1000 students.
+    % Calculation of weighted biased index of skewness.
+    % Italian grades obtained in a particular university exam by 1000
+    % students. (See page 54 of [CMR])
     x=20:29;
     % w= vector of frequencies
     w=[61    82   102   164   122   122    61   143    82    61];
