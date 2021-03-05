@@ -45,6 +45,8 @@ function out = GUIpowermean(x, s, w)
 % See also: GUIvar, GUIstd, GUIquantile, GUIconcentration
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+%
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -60,12 +62,14 @@ function out = GUIpowermean(x, s, w)
 
 %{
     %% Example of use of the cubic mean.
+    % See page 92 of [MRZ]
     x=[60 30 50 50  80 35000  80 95];
     out=GUIpowermean(x,3);
 %}
 
 %{
     %% Example of use of weighted geometric mean.
+    % See page 82 of [MRZ]
     x=[1.01 1.02 1.03];
     w=[2 6 4];
     out=GUIpowermean(x,0,w);
