@@ -50,70 +50,6 @@ function [out]=FSRfan(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false.
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
-%
-%       nocheck :   Check input arguments. Boolean.
-%                   If nocheck is equal to true no check is performed
-%                   on matrix y and matrix X. Notice that y and X are left
-%                   unchanged. In other words the additional column of ones
-%                   for the intercept is not added. As default nocheck=false.
-%                   Example - 'nocheck',true
-%                   Data Types - boolean
-%
-%           la  :   values of the transformation parameter for which it is
-%                   necessary to compute the score test. Vector.
-%                   Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
-%                   is the five most common values of lambda
-%                   Example - 'la',[-1 -0.5]
-%                   Data Types - double
-%
-%           h   :   The number of observations that have determined the
-%                   least trimmed (median of) squares estimator. Integer.
-%                   Generally h is an integer greater or equal than
-%                   [(n+size(X,2)+1)/2] but smaller then n
-%                   Example - 'h',5
-%                   Data Types - double
-%
-%       nsamp   :   Number of subsamples which will be extracted to find
-%                   the robust estimator. Scalar.
-%                   If nsamp=0 all subsets will be extracted. They will be
-%                   (n choose p). Remark: if the number of all possible
-%                   subset is <1000 the default is to extract all subsets
-%                   otherwise just 1000. If nsamp is a matrix of size
-%                   r-by-p, it contains in the rows the subsets which sill
-%                   have to be extracted. For example, if p=3 and nsamp=[ 2
-%                   4 9; 23 45 49; 90 34 1]; the first subset is made up of
-%                   units [2 4 9], the second subset of units [23 45 49]
-%                   and the third subset of units [90 34 1];
-%                   Example - 'nsamp',1000
-%                   Data Types - double
-%
-%       lms     :   Criterion to use to find the initlal
-%                 subset to initialize the search. Scalar or Vector.
-%                 If lms=1 (default) Least Median of Squares is
-%                 computed, else Least trimmed of Squares is computed.
-%                 If, lms is matrix with size
-%                 p-1+intercept-by-length(la) it contains in column
-%                 j=1,..., lenght(la) the list of units forming the initial
-%                 subset for the search associated with la(j). In this last
-%                 case previous input option nsamp is ignored.
-%                 Example - 'lms',1
-%                 Data Types - double
-%
-%       init    :   Search initialization. Scalar.
-%                   It specifies the initial subset size to start
-%                   monitoring the value of the score test, if init is not
-%                   specified it will be set equal to:
-%                    p+1, if the sample size is smaller than 40;
-%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%                    Example - 'init',100 starts monitoring from step m=100
-%                    Data Types - double
 %
 %        family :   string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
@@ -137,6 +73,81 @@ function [out]=FSRfan(y,X,varargin)
 %                   observations.
 %                   Example - 'family','YJ'
 %                   Data Types - char
+%
+%           h   :   The number of observations that have determined the
+%                   least trimmed (median of) squares estimator. Integer.
+%                   Generally h is an integer greater or equal than
+%                   [(n+size(X,2)+1)/2] but smaller then n
+%                   Example - 'h',5
+%                   Data Types - double
+%
+%       init    :   Search initialization. Scalar.
+%                   It specifies the initial subset size to start
+%                   monitoring the value of the score test, if init is not
+%                   specified it will be set equal to:
+%                    p+1, if the sample size is smaller than 40;
+%                    min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%                    Example - 'init',100 starts monitoring from step m=100
+%                    Data Types - double
+%
+%    intercept :  Indicator for constant term. true (default) | false.
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
+%           la  :   values of the transformation parameter for which it is
+%                   necessary to compute the score test. Vector.
+%                   Default value of lambda is la=[-1 -0.5 0 0.5 1]; that
+%                   is the five most common values of lambda
+%                   Example - 'la',[-1 -0.5]
+%                   Data Types - double
+%
+%       lms     :   Criterion to use to find the initlal
+%                 subset to initialize the search. Scalar or Vector.
+%                 If lms=1 (default) Least Median of Squares is
+%                 computed, else Least trimmed of Squares is computed.
+%                 If, lms is matrix with size
+%                 p-1+intercept-by-length(la) it contains in column
+%                 j=1,..., lenght(la) the list of units forming the initial
+%                 subset for the search associated with la(j). In this last
+%                 case previous input option nsamp is ignored.
+%                 Example - 'lms',1
+%                 Data Types - double
+%
+%         msg   : Level of output to display. Boolean.
+%                   scalar which controls whether to display or not
+%                   messages on the screen. Scalar.
+%                   If msg==true (default) messages are
+%                   displayed on the screen about estimated time to compute
+%                   the LMS (LTS) for each value of lamabda else no message
+%                   is displayed on the screen
+%                  Example - 'msg',false
+%                  Data Types - double
+%
+%       nocheck :   Check input arguments. Boolean.
+%                   If nocheck is equal to true no check is performed
+%                   on matrix y and matrix X. Notice that y and X are left
+%                   unchanged. In other words the additional column of ones
+%                   for the intercept is not added. As default nocheck=false.
+%                   Example - 'nocheck',true
+%                   Data Types - boolean
+%
+%       nsamp   :   Number of subsamples which will be extracted to find
+%                   the robust estimator. Scalar.
+%                   If nsamp=0 all subsets will be extracted. They will be
+%                   (n choose p). Remark: if the number of all possible
+%                   subset is <1000 the default is to extract all subsets
+%                   otherwise just 1000. If nsamp is a matrix of size
+%                   r-by-p, it contains in the rows the subsets which sill
+%                   have to be extracted. For example, if p=3 and nsamp=[ 2
+%                   4 9; 23 45 49; 90 34 1]; the first subset is made up of
+%                   units [2 4 9], the second subset of units [23 45 49]
+%                   and the third subset of units [90 34 1];
+%                   Example - 'nsamp',1000
+%                   Data Types - double
 %
 %      scoremle: likelihood ratio test for the two different transformation
 %                parameters $\lambda_P$ and $\lambda_N$. Boolean.
@@ -175,16 +186,6 @@ function [out]=FSRfan(y,X,varargin)
 %               Example - 'usefmin',true
 %               Data Types - boolean or struct
 %
-%         msg   : Level of output to display. Boolean.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
-%                   If msg==true (default) messages are
-%                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
-%                   is displayed on the screen
-%                  Example - 'msg',false
-%                  Data Types - double
-%
 %       plots   :  Plot on the screen. Scalar.
 %                   If plots=1 the fan plot is produced
 %                   else (default) no plot is produced.
@@ -200,10 +201,10 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'conflev',[0.9 0.95 0.99]
 %                   Data Types - double
 %
-%       titl    :   a label for the title. Character.
-%                   default: 'Fan plot'
-%                   Example - 'titl','my title'
-%                   Data Types - char
+%       FontSize:   font size of the labels of  the axes. Scalar.
+%                   Default value is 12.
+%                   Example - 'FontSize',20
+%                   Data Types - double
 %
 %       labx    :   a label for the x-axis. Character.
 %                   default: 'Subset size m'
@@ -214,17 +215,6 @@ function [out]=FSRfan(y,X,varargin)
 %                   default:'Score test statistic'
 %                   Example - 'laby','my laby'
 %                   Data Types - char
-%
-%       xlimx   :   Minimum and maximum of the x axis. Vector.
-%                   Default value is [init n]
-%                   Example - 'xlimx',[0 1]
-%                   Data Types - double
-%
-%       ylimy   :  Minimum and maximum of the y axis. Vector.
-%                   Default value for ylimy(1)=max(min(score_test),-20).
-%                   Default value for ylimy(2)=min(max(score_test),20).
-%                   Example - 'ylimx',[0 1]
-%                   Data Types - double
 %
 %       lwd     :   linewidth of the curves which
 %                   contain the score test. Scalar.
@@ -238,17 +228,11 @@ function [out]=FSRfan(y,X,varargin)
 %                   Example - 'lwdenv',5
 %                   Data Types - double
 %
-%       FontSize:   font size of the labels of  the axes. Scalar.
-%                   Default value is 12.
-%                   Example - 'FontSize',20
-%                   Data Types - double
-%
 %    SizeAxesNum:   Scalar which controls the size of the numbers of the
 %                   axes. Scalar.
 %                   Default value is 10.
 %                  Example - 'SizeAxesNum',12
 %                  Data Types - double
-%
 %
 %       tag     :   handle of the plot which is about to be created.
 %                   Character. The default is to use tag 'pl_fan'. Notice
@@ -257,6 +241,23 @@ function [out]=FSRfan(y,X,varargin)
 %                   the new plot overwrites the existing one in the same
 %                   window else a new window is created Example -
 %                   'tag','mytag' Data Types - char
+%
+%       titl    :   a label for the title. Character.
+%                   default: 'Fan plot'
+%                   Example - 'titl','my title'
+%                   Data Types - char
+%
+%       xlimx   :   Minimum and maximum of the x axis. Vector.
+%                   Default value is [init n]
+%                   Example - 'xlimx',[0 1]
+%                   Data Types - double
+%
+%       ylimy   :  Minimum and maximum of the y axis. Vector.
+%                   Default value for ylimy(1)=max(min(score_test),-20).
+%                   Default value for ylimy(2)=min(max(score_test),20).
+%                   Example - 'ylimx',[0 1]
+%                   Data Types - double
+%
 %  Output:
 %
 %         out:   structure which contains the following fields
