@@ -1195,6 +1195,22 @@ set(gca,'FontSize',SizeAxesNum)
 % displays the boundary of the current axes.
 box on
 
+
+if isempty(options.label)
+    % In old releases of FSDA it was possible to supply row names
+    % directly from input structure out, so for compatibility we
+    % leave the instruction below
+    % If structure out does not contain labels for the rows then
+    % labels row1....rown are added automatically
+    if isempty(intersect('label',fieldnames(out)))
+        out.label=numtext;
+    end
+else
+    numtext=options.label;
+    out.label=options.label;
+end
+
+
 %% fground options
 if ~isempty(options.fground)
     fgrounddef.flabstep=[x(1) x(end)];
@@ -1300,41 +1316,7 @@ if ~isempty(options.fground)
         
         % strings = the labels supplied by the user if they
         % exist, otherwise we simply use the sequence 1 to n
-        %         if isempty(options.label)
-        %
-        %             % numtext: cell of strings used to label the units and their position in
-        %             % the dataset
-        %             numtext = cellstr(num2str(seq,'%d'));
-        %             strings = numtext(funit);
-        %         else
-        %             %             out.label=options.label;
-        %             %             strings = out.label(funit);
-        %             %             numtext=out.label;
-        %             strings = options.label(funit);
-        %             numtext=options.label;
-        %         end
-        
-        %%%%%%%%%%%%%%%%%%%%
-        if isempty(options.label)
-            % In old releases of FSDA it was possible to supply row names
-            % directly from input structure out, so for compatibility we
-            % leave the instruction below
-            % If structure out does not contain labels for the rows then
-            % labels row1....rown are added automatically
-            if isempty(intersect('label',fieldnames(out)))
-                out.label=numtext;
-            end
-            strings = numtext(funit);
-        else
-            numtext=options.label;
-            out.label=options.label;
-            strings = numtext(funit);
-        end
-        
-        
-        
-        %%%%%%%%%%%%%%%%%%%%
-        
+        strings = numtext(funit);
         
         % Label the units
         h=text(reshape(repmat(steps,lunits,1),lall,1),...
