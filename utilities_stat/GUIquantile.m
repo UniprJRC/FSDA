@@ -58,6 +58,7 @@ function out = GUIquantile(x, z, varargin)
 % See also: GUIconcentration, GUIvar, GUIstd
 %
 % References:
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -71,8 +72,8 @@ function out = GUIquantile(x, z, varargin)
 % Examples:
 %
 %{
-    % Percentile 43 in an individual series.
-    % In this case all frequencies are equal to 1.
+    % Percentile "z" in an individual series.
+    % In this case we find percentile 43, all frequencies are equal to 1. 
     x=[2 10 5 9 13];
     GUIquantile(x,0.43)
 %}
@@ -89,7 +90,7 @@ function out = GUIquantile(x, z, varargin)
 
 %{
     % Computation of the median in presence of discrete data with
-    % frequencies and related plot.
+    % frequencies and related plot. (See page 14 of [CMR])
     % X = 133 students grades on a given exam
     % freq = frequencies.
     x=18:30;
@@ -103,7 +104,7 @@ function out = GUIquantile(x, z, varargin)
     % distribution (X is continuous).
     % The following frequency distribution shows the amount (in thousands
     % of Euros) of advertising expenditure made in a given month by a series of
-    % companies
+    % companies. (See page 15 of [CMR])
     X=[9  1787
     15  1310
     19  972
