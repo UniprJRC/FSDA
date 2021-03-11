@@ -46,6 +46,8 @@ function out = GUItrimmean(x,percent, freq)
 % See also: GUIvar, GUIstd
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -59,13 +61,15 @@ function out = GUItrimmean(x,percent, freq)
 % Examples:
 %
 %{
-    %% Example of use of trimmed mean with 50 per cent of trimming.
+    %% Use of trimmed mean with 'percent' as per cent of trimming.
+    % In this case we use 50% as per cent of trimming. (See page 92 of [MRZ])
     x=[60 30 50 50  80 35000  80 95];
     out=GUItrimmean(x,50);
 %}
 
 %{
     % Example of use of trimmed mean with 25 per cent of trimming.
+    % (See page 92 of [MRZ])
     x=[60 30 50 50  80 35000  80 95];
     out=GUItrimmean(x,25);
 %}
@@ -73,7 +77,7 @@ function out = GUItrimmean(x,percent, freq)
 %{
     %% Trimmed mean in a frequency distribution.
     % Matrix X below contains the frequency distribution of the grades obtained
-    % by 10 students.
+    % by 10 students. (See page 71 of [CMR])
     % Compute the truncated mean of the grades using alpha=0.2
     X=[22	1
     25	2
@@ -88,7 +92,7 @@ function out = GUItrimmean(x,percent, freq)
 %{
     % Comparison of truncated mean using original data and frequency
     % distribution.
-    % Vector x contains the temperature (Celsius degrees) in 10 places.
+    % Vector x contains the temperature (Celsius degrees) in 10 places. (See page 23 of [CMR])
     % Compute the truncated mean using alpha equal to 0.4.
     x=[18	24	21	19 	27	12	21	15	12	16];
     trimperc=40;

@@ -41,6 +41,8 @@ function out = GUIstd(x,w)
 % See also: GUIvar, GUImad, GUIskewness
 %
 % References:
+% Milioli, M.A., Riani, M., Zani, S. (2019), "Introduzione all'analisi dei dati statistici (Quarta edizione ampliata)". [MRZ]
+% Cerioli, A., Milioli, M.A., Riani, M. (2016), "Esercizi di statistica (Quinta edizione)". [CMR]
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -60,13 +62,14 @@ function out = GUIstd(x,w)
 %}
 
 %{
-    % Example of calculation of standard deviation (using n as denominator).
+    % Calculation of standard deviation (using n as denominator).
+    % See page 9 of [CMR]
     x=[427 492 445 444 476 470];
     GUIstd(x,1)
 %}
 
 %{
-    %% Example of weighted standard deviation.
+    %% Example of weighted standard deviation. (See page 128 of [MRZ])
     x=[25:50:175 250 400 750];
     w=[59 69 31 25 8 3 1];
     y=GUIstd(x,w);
