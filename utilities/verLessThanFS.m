@@ -68,9 +68,7 @@ end
 % We cache the MATLAB version number (double format) for better performance.
 persistent cachedMatlabVerFS;
 
-if ~isempty(cachedMatlabVerFS)
-    doubleMatlabversion=cachedMatlabVerFS;
-else
+if isempty(cachedMatlabVerFS)
     % locate the position of the Contents.m file
     currentFName =[matlabroot filesep 'toolbox' filesep 'matlab' filesep 'general' filesep 'Contents.m'];
     fid = fopen(currentFName,'r');
@@ -82,6 +80,8 @@ else
     charMatlabversion = charMatlabversion(18:21);
     doubleMatlabversion=str2double(charMatlabversion);
     cachedMatlabVerFS = doubleMatlabversion;
+else
+      doubleMatlabversion=cachedMatlabVerFS;
 end
 
 if  doubleMatlabversion<vernumber
