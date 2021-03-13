@@ -12,7 +12,7 @@ if str2double(a.Version)>7.14
     docr=docroot    ;
     destinationpathFSDAdoc=[docr filesep 'FSDA'];
     chkFSDAinsideMatlab=exist(destinationpathFSDAdoc,'file');
-    if chkFSDAinsideMatlab ~=7
+    if chkFSDAinsideMatlab ~=7 % FSDA help files not copied yet
         FileName='addFSDA2path';
         FullPath=which(FileName);
         FSDAroot=FullPath(1:end-length(FileName)-3);
