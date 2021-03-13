@@ -374,7 +374,7 @@ else
         
         % usepascal: flag used to decide whether to use the Pascal triangle
         % tric, which allows to reduce considerably the computation time
-        usepascal=0;
+        usepascal=false;
         
         if ncomb>Tcomb && ncomb<T2comb
             
@@ -392,7 +392,7 @@ else
                 end
                 if sys.PhysicalMemory.Available > 2*8*n^2
                     pascalM=pascal(n);
-                    usepascal=1;
+                    usepascal=true;
                 end
             end
             
@@ -410,6 +410,47 @@ else
         for i=1:nselected
             
             if ncomb>Tcomb && ncomb<T2comb
+                if usepascal == true
+                    s=lexunrank(n,p,rndsi(i),pascalM);
+                else
+                    s=lexunrank(n,p,rndsi(i));
+                end
+            else
+                s=randsampleFS(n,p,method);
+            end
+            C(i,:)=s;
+        end
+    else
+        
+        % usepascal: flag used to decide whether to use the Pascal triangle
+        % tric, which allows to reduce considerably the computation time
+        usepascal=true;
+        if ncomb>Tcomb && ncomb<T2comb
+            
+            % Extract without replacement nsamp elements from ncomb
+            rndsi=randsampleFS(ncomb,nsamp,0); % METHOD: it was set to 2
+            
+            % The Pascal triangle can be used only if there is enough memory.
+            if n<=20000
+                pascalM=pascal(n);
+                usepascal=true;
+            else
+                usepascal=false;
+                pascalM=0;  % C coder initialization
+            end
+        else
+            rndsi=0; % C coder initialization
+            pascalM=0;  % C coder initialization
+        end
+        
+        % Create matrix C which will contain in each row the indexes forming the
+        % subset which is extracted at step i, where i=1....number of selected
+        % subsamples (nselected)
+        C=zeros(nselected,p);
+        
+        for i=1:nselected
+            
+            if ncomb>Tcomb && ncomb<T2comb
                 if usepascal
                     s=lexunrank(n,p,rndsi(i),pascalM);
                 else
@@ -421,14 +462,14 @@ else
             C(i,:)=s;
             
         end
-    else
-        C=zeros(nselected,p);
-        for i=1:nselected
-            s=randsampleFS(n,p,method);
-            C(i,:)=s;
-        end
+        
+        
+        %         C=zeros(nselected,p);
+        %         for i=1:nselected
+        %             s=randsampleFS(n,p,method);
+        %             C(i,:)=s;
+        %         end
     end
-    
 end
 
 end
