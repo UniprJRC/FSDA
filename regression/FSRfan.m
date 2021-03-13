@@ -118,14 +118,14 @@ function [out]=FSRfan(y,X,varargin)
 %                 Data Types - double
 %
 %         msg   : Level of output to display. Boolean.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
+%                   Boolean scalar which controls whether to display or not
+%                   messages on the screen. 
 %                   If msg==true (default) messages are
 %                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
+%                   the LMS (LTS) for each value of lambda else no message
 %                   is displayed on the screen
 %                  Example - 'msg',false
-%                  Data Types - double
+%                  Data Types - logical
 %
 %       nocheck :   Check input arguments. Boolean.
 %                   If nocheck is equal to true no check is performed
