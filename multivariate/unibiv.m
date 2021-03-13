@@ -5,7 +5,7 @@ function [fre]=unibiv(Y,varargin)
 %
 % Required input arguments:
 %
-% Y :           Input data. Matrix. 
+% Y :           Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               Y represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -22,7 +22,7 @@ function [fre]=unibiv(Y,varargin)
 %                  The default value is 0.95 that is the outer contour in
 %                  presence of normality for each ellipse should leave
 %                  outside 5% of the values.
-%                 Example - 'rf',0.99 
+%                 Example - 'rf',0.99
 %                 Data Types - double
 %
 %      robscale :   how to compute dispersion. Scalar. It specifies the
@@ -30,19 +30,19 @@ function [fre]=unibiv(Y,varargin)
 %                   each variable and the correlation among each pair of
 %                   variables.
 %                   robscale=1 (default): the program uses the median correlation
-%                   and the MAD as estimate of the dispersion of each variable; 
+%                   and the MAD as estimate of the dispersion of each variable;
 %                   robscale=2: the correlation coefficient among ranks is used
 %                   (Spearman's rho) and the MAD as estimate of the dispersion
-%                   of each variable; 
+%                   of each variable;
 %                   robscale=3: the correlation coefficient is based on Kendall's tau b
 %                   and the MAD as estimate of the dispersion of each
-%                   variable; 
+%                   variable;
 %                   robscale=4: tetracoric correlation coefficient is used and the MAD
-%                   as estimate of the dispersion of each variable; 
+%                   as estimate of the dispersion of each variable;
 %                   otherwise the correlation and the dispersion of the variables are
 %                   computed using the traditional (non robust) formulae
 %                   around the univariate medians.
-%                 Example - 'robscale',2 
+%                 Example - 'robscale',2
 %                 Data Types - double
 %
 %         plots :   Plot on the screen. Scalar. It specifies whether it is
@@ -55,7 +55,7 @@ function [fre]=unibiv(Y,varargin)
 %                   the main diagonal is produced on the screen. If plots is
 %                   <> 1 no plot is produced. As default no plot is
 %                   produced.
-%                 Example - 'plots',2 
+%                 Example - 'plots',2
 %                 Data Types - double
 %
 %       textlab : plot labels. Scalar.  Scalar which controls the labels in
@@ -78,8 +78,8 @@ function [fre]=unibiv(Y,varargin)
 %
 %       madcoef :  scaled MAD. Scalar. Coefficient which is used to scale MAD
 %                   coefficient to have a robust estimate of dispersion.  The
-%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1. 
-%                 Example - 'madcoef',2 
+%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1.
+%                 Example - 'madcoef',2
 %                 Data Types - double
 %                   Remark: if mad =median(y-median(y))=0 then the interquartile
 %                   range is used. If also the interquartile range is 0
@@ -91,11 +91,11 @@ function [fre]=unibiv(Y,varargin)
 %
 %   fre  :  n x 4 matrix which contains details about the univariate and
 %           bivariate outliers.
-%           1st col = index of the units; 
+%           1st col = index of the units;
 %           2nd col = number of times unit has been declared
-%           univariate outliers; 
+%           univariate outliers;
 %           3rd col = number of times unit has been declared
-%           bivariate outlier; 
+%           bivariate outlier;
 %           4th col = pseudo MD as sum of bivariate MD.
 %
 %
@@ -135,7 +135,7 @@ function [fre]=unibiv(Y,varargin)
     out=unibiv(Y,'plots',1,'textlab',1);
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 [n,v]=size(Y);
 
@@ -147,17 +147,17 @@ options=struct('rf',rfdef,'plots',0,'textlab',0,...
 
 
 % Input parameters checking
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:unibiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:unibiv:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
-
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 1
@@ -203,62 +203,63 @@ madcoef=options.madcoef;
 seq=(1:n)';
 
 for il=1:v      % il is linked to the rows
+    % Ys = vector which contains standardized data
+    y=Y(:,il);
+    Ty=median(y);
+    
+    mady=mad(y,1);
+    
+    if mady>0
+        Ys=(y-Ty)/(madcoef*mady);
+    else
+        iqry=iqr(y);
+        if iqry >0
+            mady=1.3490*iqr(y)/0.6745;
+            Ys=(y-Ty)/(madcoef*mady);
+        else
+            mady=1.2533*mad(y)/0.6745;
+            Ys=(y-Ty)/(madcoef*mady);
+        end
+    end
+    
+    
+    if robscale>4
+        % Sy is the unrobust standard deviation of y
+        Sy=sqrt((y-Ty)'*(y-Ty)/(n-1));
+        Ys=(y-Ty)/Sy;
+    else
+        Sy=0;
+    end
+    
+    % datax x add a sequence to standardized data
+    datax=[seq Ys];
+    
+    % quan = 1 x 3 vector which contins 1% quartile median and 3rd
+    % quartile
+    quan = quantile(Ys,[.25 .50 .75]);
+    % di= interquartile difference
+    di=quan(3)-quan(1);
+    % uq=upper truncation point
+    uq=quan(3)+1.5*di;
+    % lq=lower truncation point
+    lq=quan(1)-1.5*di;
+    % outy is a (l+1) x 2 matrix. the first column contains
+    % the indexes of the units declared univariate
+    % outliers, the second columns gives the standardized
+    % values of the outliers
+    
+    outy=datax(datax(:,2)>uq | datax(:,2)<lq  | abs(datax(:,2))>3 ,:);
+    
+    
+    if ~isempty(outy)
+        % Increase by 1 the frequencey distribution of
+        % univariate outliers in vector univT
+        univT(outy(:,1))=univT(outy(:,1))+1;
+    end
+    
     for jl=il:v    % jl is linked to columns
         
         if il==jl
-            
-            % Ys = vector which contains standardized data
-            y=Y(:,il);
-            Ty=median(y);
-            
-            mady=mad(y,1);
-            
-            if mady>0
-                Ys=(y-Ty)/(madcoef*mady);
-            else
-                iqry=iqr(y);
-                if iqry >0
-                    mady=1.3490*iqr(y)/0.6745;
-                    Ys=(y-Ty)/(madcoef*mady);
-                else
-                    mady=1.2533*mad(y)/0.6745;
-                    Ys=(y-Ty)/(madcoef*mady);
-                end
-            end
-            
-            
-            if robscale>4
-                % Sy is the unrobust standard deviation of y
-                Sy=sqrt((y-Ty)'*(y-Ty)/(n-1));
-                Ys=(y-Ty)/Sy;
-            end
-            
-            % datax x add a sequence to standardized data
-            datax=[seq Ys];
-            
-            % quan = 1 x 3 vector which contins 1% quartile median and 3rd
-            % quartile
-            quan = quantile(Ys,[.25 .50 .75]);
-            % di= interquartile difference
-            di=quan(3)-quan(1);
-            % uq=upper truncation point
-            uq=quan(3)+1.5*di;
-            % lq=lower truncation point
-            lq=quan(1)-1.5*di;
-            % outy is a (l+1) x 2 matrix. the first column contains
-            % the indexes of the units declared univariate
-            % outliers, the second columns gives the standardized
-            % values of the outliers
-            
-            outy=datax(datax(:,2)>uq | datax(:,2)<lq  | abs(datax(:,2))>3 ,:);
-            
-            
-            if ~isempty(outy)
-                % Increase by 1 the frequencey distribution of
-                % univariate outliers in vector univT
-                univT(outy(:,1))=univT(outy(:,1))+1;
-            end
-            
             
             % plotting part
             % produce a vertical boxplot @
@@ -294,7 +295,11 @@ for il=1:v      % il is linked to the rows
                 Xs=(x-Tx)/(madcoef*madx);
             else
                 if robscale==1
-                    warning('FSDA:unibiv:Median0','Median is 0 therefore robut correlation is computed using ranks')
+                    if coder.target('MATLAB')
+                        warning('FSDA:unibiv:Median0','Median is 0 therefore robut correlation is computed using ranks')
+                    else
+                        disp('FSDA:unibiv:Median0','Median is 0 therefore robut correlation is computed using ranks')
+                    end
                     robscale=2;
                 end
                 
@@ -302,14 +307,22 @@ for il=1:v      % il is linked to the rows
                 if iqrx>0
                     madx=1.3490*iqrx/0.6745;
                     Xs=(x-Tx)/(madcoef*madx);
-                    warning('FSDA:unibiv:IqrUsed','Interquartile range is used to scale the data')
+                    if coder.target('MATLAB')
+                        warning('FSDA:unibiv:IqrUsed','Interquartile range is used to scale the data')
+                    else
+                        disp('FSDA:unibiv:IqrUsed','Interquartile range is used to scale the data')
+                    end
+                    
                 else
-                    warning('FSDA:unibiv:MadUsed','Mean absolute deviation is used to scale the data')
+                    if coder.target('MATLAB')
+                        warning('FSDA:unibiv:MadUsed','Mean absolute deviation is used to scale the data')
+                    else
+                        disp('FSDA:unibiv:MadUsed','Mean absolute deviation is used to scale the data')
+                    end
                     madx=1.2533*mad(x)/0.6745;
                     Xs=(x-Tx)/(madcoef*madx);
                 end
             end
-            
             
             if robscale==1
                 us=abs(Xs+Ys);
@@ -323,12 +336,33 @@ for il=1:v      % il is linked to the rows
                 
             elseif robscale==2
                 % r is computed using ranks
-                r=corr(x,y,'type','Spearman');
+                if coder.target('MATLAB')
+                    r=corr(x,y,'type','Spearman');
+                else
+                    xrank=tiedrankFS(x(:));
+                    yrank=tiedrankFS(y(:));
+                    r=(xrank-mean(xrank))'*(yrank-mean(yrank))/((n-1)*std(xrank)*std(yrank));
+                end
             elseif robscale==3
                 % r is based on the linear correlation
                 % between the "concordances" sign(x(i)-x(j))*sign(y(i)-y(j)), i<j, with
                 % an adjustment for ties.  This is often referred to as Kendall's tau-b.
-                r=corr(x,y,'type','Kendall');
+                if coder.target('MATLAB')
+                    r=corr(x,y,'type','Kendall');
+                else
+                    % Manual computation of Kendall correlation
+                    % coefficient.
+                    % Prepare indexes for all combinations without repetition
+                    [i1, i2] = find(tril(ones(n, 'uint8'), -1));
+                    Yj=[x y];
+                    % Now, this is just a linear correlation using the signs of
+                    % [T * (T - 1) / 2] differences
+                    rr = sign(Yj(i2, :) - Yj(i1, :));
+                    rr = rr' * rr;
+                    temp = diag(rr);
+                    rr = rr ./ sqrt(temp * temp');
+                    r=rr(1,2);
+                end
             elseif robscale==4
                 % r is based on the tetracoric correlation
                 r=sum(sign((x-Tx).*(y-Ty)))/n;
@@ -337,7 +371,7 @@ for il=1:v      % il is linked to the rows
                 
                 Xs=(x-Tx)/Sx;   % standardization of x
                 Ys=(y-Ty)/Sy;   % standardization of y
-                r=Xs'*Ys/(n-1); % r= unrobust correlation 
+                r=Xs'*Ys/(n-1); % r= unrobust correlation
             end
             
             % Spearman's rho and Kendall's tau and tetracoric correlation
@@ -462,6 +496,54 @@ fre=[seq univT bivT MDbiv];
 if plo==1
     hold('off')
 end
+end
+
+% This function is called just in case of C coder translation
+function r = tiedrankFS(x)
+% tiedrankFS is a simplified version of tiedrank
+% to use with the C coder because tiedrank is not supported
+%   tiedrankFS computes the ranks of a sample, adjusting for ties.
+%   [R,] = tiedrankFS(x) computes the ranks of the values in the
+%   vector x.  If any x values are tied, TIEDRANK computes their average
+%   rank.
+
+epsx = zeros(size(x));
+
+% Sort, then leave the NaNs (which are sorted to the end) alone
+[sx, rowidx] = sort(x(:));
+epsx = epsx(rowidx);
+epsx = epsx(:);
+numNaNs = sum(isnan(x));
+xLen = numel(x) - numNaNs;
+
+% Use ranks counting from low end
+ranks = [1:xLen NaN(1,numNaNs)]';
+
+% Adjust for ties.  Avoid using diff(sx) here in case there are infs.
+ties = sx(1:xLen-1)+epsx(1:xLen-1) >= sx(2:xLen)-epsx(2:xLen);
+tieloc = [find(ties); xLen+2];
+maxTies = numel(tieloc);
+sz = length(x);
+r = zeros(sz,1);
+
+tiecount = 1;
+while (tiecount < maxTies)
+    tiestart = tieloc(tiecount);
+    ntied = 2;
+    while(tieloc(tiecount+1) == tieloc(tiecount)+1)
+        tiecount = tiecount+1;
+        ntied = ntied+1;
+    end
+    
+    % Compute mean of tied ranks
+    ranks(tiestart:tiestart+ntied-1) = ...
+        sum(ranks(tiestart:tiestart+ntied-1)) / ntied;
+    tiecount = tiecount + 1;
+end
+
+% Broadcast the ranks back out, including NaN where required.
+r(rowidx) = ranks;
+r = reshape(r,length(x),1);
 end
 
 %FScategory:MULT-Multivariate
