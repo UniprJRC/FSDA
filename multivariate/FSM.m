@@ -16,17 +16,27 @@ function [out]=FSM(Y,varargin)
 %
 % Optional input arguments:
 %
-%          m0   : Initial subset size or vector which contains the list of
-%                 the units forming initial subset. Scalar or vector.
-%                 The default is to start the search with v+1 units which
-%                 consisting of those observations which are not outlying
-%                 on any scatterplot, found as the intersection of all
-%                 points lying within a robust contour containing a
-%                 specified portion of the data (Riani and Zani 1997) and
-%                 inside the univariate boxplot. Remark: if m0 is a vector
-%                 option below crit is ignored.
-%                 Example - 'm0',5
+%
+%      bonflev  : option that might be used to identify extreme outliers
+%                 when the distribution of the data is strongly non normal.
+%                 Scalar.
+%                 In these circumstances, the general signal detection rule based on
+%                 consecutive exceedances cannot be used. In this case
+%                 bonflev can be:
+%                 - a scalar smaller than 1, which specifies the confidence
+%                   level for a signal and a stopping rule based on the
+%                   comparison of the minimum deletion residual with a
+%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   procedure stops when the trajectory exceeds for the
+%                   first time the 99% bonferroni bound.
+%                 - A scalar value greater than 1. In this case the
+%                   procedure stops when the residual trajectory exceeds
+%                   for the first time this value.
+%                 Default value is ' ', which means to rely on general rules
+%                 based on consecutive exceedances.
+%                 Example - 'bonflev',0.7
 %                 Data Types - double
+%
 %
 %       crit    : It specified the criterion to be used to
 %                 initialize the search. Character.
@@ -58,15 +68,41 @@ function [out]=FSM(Y,varargin)
 %                 (see below) the confidence level of the bivariate
 %                 ellipses.
 %
-%        rf     : confidence level for bivariate ellipses. Scalar. The default is
-%                 0.95. This option is useful only if crit='biv'.
-%                 Example - 'rf',0.9
-%                 Data Types - double
-%
 %       init    : Point where to start monitoring required diagnostics. Scalar.
 %                 Note that if bsb is suppliedinit>=length(bsb). If init is not
 %                 specified it will be set equal to floor(n*0.6).
 %                 Example - 'init',50
+%                 Data Types - double
+%
+%          m0   : Initial subset size or vector which contains the list of
+%                 the units forming initial subset. Scalar or vector.
+%                 The default is to start the search with v+1 units which
+%                 consisting of those observations which are not outlying
+%                 on any scatterplot, found as the intersection of all
+%                 points lying within a robust contour containing a
+%                 specified portion of the data (Riani and Zani 1997) and
+%                 inside the univariate boxplot. Remark: if m0 is a vector
+%                 option below crit is ignored.
+%                 Example - 'm0',5
+%                 Data Types - double
+%
+%       msg     : It controls whether to display or not messages
+%                 on the screen. Boolean.
+%                 If msg==1 (default) messages about the progression of the
+%                 search are displayed on the screen otherwise only error
+%                 messages will be displayed.
+%                 Example - 'msg',0
+%                 Data Types - logical
+%
+%   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
+%                 If nocheck is equal to 1 no check is performed.
+%                 As default nocheck=0.
+%                 Example - 'nocheck',1
+%                 Data Types - double
+%
+%        rf     : confidence level for bivariate ellipses. Scalar. The default is
+%                 0.95. This option is useful only if crit='biv'.
+%                 Example - 'rf',0.9
 %                 Data Types - double
 %
 %       plots   : plot of minimum Mahalanobis distance.
@@ -109,40 +145,6 @@ function [out]=FSM(Y,varargin)
 %                       envelopes. Default value of lwdenv=2.
 %               Example - 'plots',2
 %               Data Types - double
-%
-%      bonflev  : option that might be used to identify extreme outliers
-%                 when the distribution of the data is strongly non normal.
-%                 Scalar.
-%                 In these circumstances, the general signal detection rule based on
-%                 consecutive exceedances cannot be used. In this case
-%                 bonflev can be:
-%                 - a scalar smaller than 1, which specifies the confidence
-%                   level for a signal and a stopping rule based on the
-%                   comparison of the minimum deletion residual with a
-%                   Bonferroni bound. For example if bonflev=0.99 the
-%                   procedure stops when the trajectory exceeds for the
-%                   first time the 99% bonferroni bound.
-%                 - A scalar value greater than 1. In this case the
-%                   procedure stops when the residual trajectory exceeds
-%                   for the first time this value.
-%                 Default value is ' ', which means to rely on general rules
-%                 based on consecutive exceedances.
-%                 Example - 'bonflev',0.7
-%                 Data Types - double
-%
-%       msg     : It controls whether to display or not messages
-%                 on the screen. Scalar.
-%                 If msg==1 (default) messages about the progression of the
-%                 search are displayed on the screen otherwise only error
-%                 messages will be displayed.
-%                 Example - 'msg',0
-%                 Data Types - double
-%
-%   nocheck     : It controls whether to perform checks on matrix Y.Scalar.
-%                 If nocheck is equal to 1 no check is performed.
-%                 As default nocheck=0.
-%                 Example - 'nocheck',1
-%                 Data Types - double
 %
 %
 % Output:
@@ -300,7 +302,7 @@ end
 if coder.target('MATLAB')
     
     options=struct('m0',v+1,'init',hdef,'crit',critdef,'rf',0.95,...
-        'plots',1,'msg',1,'bonflev','','nocheck',0);
+        'plots',1,'msg',true,'bonflev','','nocheck',0);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -321,7 +323,6 @@ if nargin > 2
 end
 
 init=options.init;
-plo=options.plots;
 
 
 msg=options.msg;
@@ -337,6 +338,9 @@ fsizeannot=11;
 if length(m0)>1
     bs=m0;
 else
+    % m0(1) necessary for MATLAB C coder
+    m0=m0(1);
+    
     % Confidence level for robust bivariate ellipses
     rf=options.rf;
     
@@ -356,7 +360,7 @@ else
     end
     
     % initial subset
-    bs=fre(1:m0,1);
+    bs=fre(1:m0,1);  
     
     % the subset need to be incremented if it is not full rank. We also
     % treat the unfortunate case when the rank of the matrix is v but a
@@ -693,7 +697,8 @@ end
 % if plo is a structure or if it is a scalar different from 0
 % then produce a plot
 if coder.target('MATLAB')
-    
+   plo=options.plots;
+ 
     if isstruct(plo) || (~isstruct(plo) && plo~=0)
         
         % get screen size [left, bottom, width, height]
@@ -1097,7 +1102,6 @@ if (signal==1)
         for tr=(mdag-1):(n)
             % Compute theoretical envelopes based on tr observations
             gmin1=FSMenvmmd(tr,v,'prob',[0.99; 0.999; 0.01; 0.5],'init',init);
-            
             for ii=(i-1):size(gmin1,1)
                 
                 % CHECK IF STOPPING RULE IS FULFILLED
@@ -1234,7 +1238,7 @@ if (signal==1)
                         end
                     end
                     
-                    break;
+                    break
                 end
                 if ~isempty(resuper) && ~isempty(intersect(resuper,tr))
                     if jwind==nr*nc+1
@@ -1244,6 +1248,11 @@ if (signal==1)
                         % Create axes (Following line should not be necessary
                         % axes('Parent',figure2);
                     end
+                end
+            else
+                % The following is the only one non graphical instruction
+                if sto==1
+                    break
                 end
             end
         end
