@@ -98,13 +98,13 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %   bsbsteps :  Save the units forming subsets. Vector. It specifies for
 %               which steps of the fwd search it
 %               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=753 and init=6,
-%               units forming subset are stored for
-%               m=init, 100, 200, 300, 400, 500 and 600.
+%               is 0 we store the units forming subset in all steps. If
+%               bsbsteps=[] or omitted, the default is to store the units
+%               forming subset in all steps if n<=5000, else to store the
+%               units forming subset at steps init and steps which are
+%               multiple of 100. For example, as default, if n=753 and
+%               init=6, units forming subset are stored for m=init, 100,
+%               200, 300, 400, 500 and 600.
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
@@ -476,6 +476,7 @@ end
 
 internationaltrade=false;
 
+if coder.target('MATLAB')
 options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
     'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,...
     'threshlevoutX',[],'internationaltrade',internationaltrade);
@@ -489,7 +490,7 @@ if ~isempty(UserOptions)
     % Check if user options are valid options
     chkoptions(options,UserOptions)
 end
-
+end
 
 if nargin<3
     error('FSDA:FSRmdr:missingInputs','Initial subset is missing');
@@ -505,7 +506,8 @@ end
 % And check if the optional user parameters are reasonable.
 
 if bsb==0
-    Ra=1; nwhile=1;
+    Xb=0;
+    Ra=true; nwhile=1;
     while and(Ra,nwhile<100)
         bsb=randsample(n,p);
         Xb=X(bsb,:);
@@ -513,7 +515,11 @@ if bsb==0
         nwhile=nwhile+1;
     end
     if nwhile==100
+        if coder.target('MATLAB')
         warning('FSDA:FSRmdr:NoFullRank','Unable to randomly sample full rank matrix');
+        else
+        disp('FSDA:FSRmdr:NoFullRank','Unable to randomly sample full rank matrix');
+        end
     end
     yb=y(bsb);
 else
@@ -530,8 +536,8 @@ if  init1 <p+1
         'It is set to p+1.']);
     init1=p+1;
 elseif init1<ini0
-    fprintf(['Attention : init1 should be >= length of supplied subset. \n',...
-        'It is set equal to ' num2str(length(bsb)) ]);
+        formatSpec = 'Attention : init1 should be >= length of supplied subset. It is set equal to %.0f';
+    sprintf(formatSpec,length(bsb))
     init1=ini0;
 elseif init1>=n
     fprintf(['Attention : init1 should be smaller than n. \n',...
@@ -544,6 +550,9 @@ msg=options.msg;
 constr=options.constr;
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
+if isempty(bsbsteps)
+    bsbsteps=bsbstepdef;
+end
 nocheck=options.nocheck;
 internationaltrade=options.internationaltrade;
 
@@ -754,7 +763,11 @@ else
                     selmdr=min(ord(:,1));
                     
                     if S2(mm-init1+1,2)==0
+                        if coder.target('MATLAB')
                         warning('FSDA:FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
+                        else
+                        sprintf('Value of S2 at step %.0f is zero, mdr is NaN',mm-init1+1);
+                        end
                     else
                         mdr(mm-init1+1,2)=sqrt(selmdr(1,1)/S2(mm-init1+1,2));
                     end
