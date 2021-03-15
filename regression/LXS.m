@@ -679,14 +679,11 @@ bonflevoutX=options.bonflevoutX;
 if ~isempty(bonflevoutX)
     bonflevout=true;
     hdef=floor(n*0.6);
-    if options.nocheck==true
-        Xwithoutint=X;
-    else
-        if options.intercept==true
+    
+    if options.intercept==true
         Xwithoutint=X(:,2:end);
-        else
+    else
         Xwithoutint=X;
-        end
     end
     v=size(Xwithoutint,2);
     if v>1
