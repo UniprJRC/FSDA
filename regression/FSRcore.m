@@ -229,34 +229,36 @@ else
 end
 
 % Extract other options
-plo         = options.plots;
-labeladd    = options.labeladd;
-bivarfit    = options.bivarfit;
-multivarfit = options.multivarfit;
-xlimx       = options.xlim;
-ylimy       = options.ylim;
-msg         = options.msg;
 bonflev     = options.bonflev;
+msg         = options.msg;
 seq         = 1:n;
-tag         = options.tag; 
-if iscell(tag)
-    tagmdrplot=tag{1};
-    if length(tag)>1
-        tagyXplot=tag{2};
+if coder.target('MATLAB')
+    plo         = options.plots;
+    labeladd    = options.labeladd;
+    bivarfit    = options.bivarfit;
+    multivarfit = options.multivarfit;
+    xlimx       = options.xlim;
+    ylimy       = options.ylim;
+    tag         = options.tag;
+    if iscell(tag)
+        tagmdrplot=tag{1};
+        if length(tag)>1
+            tagyXplot=tag{2};
+        else
+            tagyXplot='fsr_yXplot';
+        end
+        
+        if length(tag)>2
+            tagresuperplot=tag{3};
+        else
+            tagresuperplot='fsr_resuperplot';
+        end
     else
+        tagmdrplot=tag;
         tagyXplot='fsr_yXplot';
-    end
-    
-    if length(tag)>2
-       tagresuperplot=tag{3};
-    else
         tagresuperplot='fsr_resuperplot';
     end
-else
-    tagmdrplot=tag;
-    tagyXplot='fsr_yXplot';
-    tagresuperplot='fsr_resuperplot';
-end   
+end
 
 %% Model-related settings
 
@@ -287,12 +289,15 @@ if ~isempty(bonflev)
         end
         bonfthresh=[(init:n-1)' bonflev*ones(n-init,1)];
     end
-    
+                istep =0; % declarations necessary for MATLAB C coder
+    c99=0; c999=0; c9999=0;  c99999=0; c001=0; c50=0;
+    gmin=0; NoFalseSig=true;  nout=0; 
+    lowexceed=false;
 else
-    
-    % lowexceed=0 means than outlier detection is just based on upper
+    bonfthresh=0;  % Initialization necessary for MATLAB C coder 
+    % lowexceed=false means than outlier detection is just based on upper
     % exceedances
-    lowexceed=0;
+    lowexceed=false;
     
     % Compute theoretical envelopes based on all observations
     quant=[0.99;0.999;0.9999;0.99999;0.01;0.5;0.00001];
@@ -337,13 +342,13 @@ else
         [size(out001,1) size(out99,1) size(out999,1) size(out9999,1) size(out99999,1)]];
     
     % NoFalseSig = boolean linked to the fact that the signal is good or not
-    NoFalseSig=0;
+    NoFalseSig=false;
     
     % NoFalseSig is set to 1 if the condition for an INCONTROVERTIBLE SIGNAL is
     % fulfilled.
     n9999 = nout(2,nout(1,:)==9999);
     if (n9999>=10)
-        NoFalseSig=1;
+        NoFalseSig=true;
         if msg
             disp('Observed curve of r_min is at least 10 times greater than 99.99% envelope'); % exact number is int2str(n9999)
             disp('--------------------------------------------------');
@@ -352,9 +357,13 @@ else
     
     % Divide central part from final part of the search
     istep = n-floor(13*sqrt(n/200));
+
 end
+% Initialization necessary for MATLAB C Coder
+gmin1=0;
+ii=0;
 
-
+ 
 %% Part 1. Signal detection and validation
 
 nmdr=size(mdr,1);
@@ -367,6 +376,7 @@ extram3='';
 extram2='';
 strplot='';
 resup=2;
+mdag=-1;
 if msg
     disp('-------------------------')
     disp('Signal detection loop');
@@ -412,20 +422,20 @@ if isempty(bonflev)
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
                     mdrsel=mdr(i,1:2);
-                    NoFalseSig=1; % i.e., no need of further validation
+                    NoFalseSig=true; % i.e., no need of further validation
                 end
                 
                 '------------------------------------------------';
                 
                 signal=1;
                 
-            elseif (mdr(i,2)<gmin(i,end)) && lowexceed==1  % && mdr(i,1)>round(n/2); % exceedance of the lower band
+            elseif (mdr(i,2)<gmin(i,end)) && lowexceed==true  % && mdr(i,1)>round(n/2); % exceedance of the lower band
                 if msg
                     disp(['rmin(' int2str(mdr(i,1)) ',' int2str(n) ')<0.00001% Bonferroni signal in the central part of the search.']);
                 end
                 strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')<0.00001\%$  (Bonferroni signal)'];
                 mdrsel=mdr(i,1:2);
-                NoFalseSig=1; % i.e., no need of further validation
+                NoFalseSig=true; % i.e., no need of further validation
                 signal=2;
                 mdag=mdr(i,1);
             else
@@ -445,12 +455,14 @@ if isempty(bonflev)
             if ( condition1 || condition2 || condition3  || condition4 )
                 
                 if msg
-                    disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
+                    % disp(['Signal in final part of the search: step ' num2str(mdr(i,1)) ' because']);
+                    fprintf('Signal in final part of the search: step %.0f because',mdr(i,1))
                 end
                 
                 if condition1
                     if msg
-                        disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);
+                        % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99%']);
+                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i,1),n,mdr(i+1,1),n,mdr(i-1,1),n)
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i-1,1)) ',' int2str(n) ')>99\%$ and $r_{min}(' int2str(mdr(i+1,1)) ',' int2str(n) ')>99.9\%$'];
                     mdrsel=mdr(i-1:i+1,1:2);
@@ -458,7 +470,8 @@ if isempty(bonflev)
                 
                 if condition2
                     if msg
-                        disp(['rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99%']);
+                        %   disp(['rmin('  int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.9% and rmin('  int2str(mdr(i+1,1)) ',' int2str(n) ')>99%']);
+                        fprintf('\nrmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99.9%% and rmin(%.0f,%.0f)>99%%',mdr(i-1,1),n,mdr(i,1),n,mdr(i+1,1),n)
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i-1,1)) ',' int2str(n) ')>99.9\%$ and $r_{min}(' int2str(mdr(i+1,1)) ',' int2str(n) ')>99\%$'];
                     mdrsel=mdr(i-1:i+1,1:2);
@@ -466,7 +479,8 @@ if isempty(bonflev)
                 
                 if condition3
                     if msg
-                        disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
+                        % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99% at final step: Bonferroni signal in the final part of the search.']);
+                        fprintf('\nrmin(%.0f,%.0f)>99%% at final step: Bonferroni signal in the final part of the search.',mdr(i,1),n)
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step (Bonferroni signal)'];
                     mdrsel=mdr(i:i,1:2);
@@ -475,16 +489,17 @@ if isempty(bonflev)
                 % Extreme single value above the upper threshold
                 if condition4
                     if msg
-                        disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
+                        % disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')>99.999%']);
+                        fprintf('\nrmin(%.0f,%.0f)>99.999%%',mdr(i,1),n)
                     end
                     strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99.999\%$'];
                     mdrsel=mdr(i:i,1:2);
                 end
                 
-                '------------------------------------------------';
+                fprintf('\n------------------------------------------------');
                 % Signal is always considered true if it takes place in the
                 % final part of the search
-                NoFalseSig=1;
+                NoFalseSig=true;
                 signal=1;
             end
         elseif (mdr(i,2)>gmin(i,c999) || mdr(i,2)>gmin(end,c99)) && i==size(mdr,1)-1
@@ -517,7 +532,7 @@ if isempty(bonflev)
             strplot=['$r_{min}(' int2str(mdr(i,1)) ',' int2str(n) ')>99\%$ at final step'];
             mdrsel=mdr(i:i,1:2);
             
-        elseif mdr(i,2)<gmin(i,end) && lowexceed==1 % exceedance of the lower extreme envelope
+        elseif mdr(i,2)<gmin(i,end) && lowexceed==true % exceedance of the lower extreme envelope
             signal=2;
             if msg
                 disp(['rmin('  int2str(mdr(i,1)) ',' int2str(n) ')<0.0001%']);
@@ -530,7 +545,8 @@ if isempty(bonflev)
         %% Stage 1b: signal validation
         if signal==1
             if msg
-                disp('-------------------')
+                %disp('-------------------')
+                fprintf('\n-------------------\n')
                 disp('Signal validation exceedance of upper envelopes');
             end
             % mdag is $m^\dagger$
@@ -544,23 +560,23 @@ if isempty(bonflev)
                     if msg
                         disp(['3 consecutive values of r_min greater than 99.999% envelope in step mdag= ' int2str(mdr(i,1))]);
                     end
-                    NoFalseSig=1;
+                    NoFalseSig=true;
                     extram3='Extreme signal';
                 end
             else
-                NoFalseSig=1;
+                NoFalseSig=true;
             end
             
             % if the following statement is true, observed curve of r_min is
             % above 99.99% and later is below 1%: peak followed by dip
             if size(mdr,1)>mdag-mdr(1,1)+31
                 if sum(mdr(i+1:i+31,2)<gmin(i+1:i+31,c001))>=2
-                    NoFalseSig=1;  % Peak followed by dip
+                    NoFalseSig=true;  % Peak followed by dip
                     extram2='Peak followed by dip (d_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope';
                 end
             else
                 if sum(mdr(i+1:end,2) < gmin(i+1:end,c001))>=2
-                    NoFalseSig=1;  %Peak followed by dip in the final part of the search';
+                    NoFalseSig=true;  %Peak followed by dip in the final part of the search';
                     extram2='Peak followed by dip (r_min is above 99.99% threshold and in the sucessive steps goes below 1% envelope)';
                 end
             end
@@ -570,7 +586,7 @@ if isempty(bonflev)
             % 2) signal tool place in the central part of the search
             % 3) signal was not incontrovertible
             % 4) there was not a peak followed by dip
-            if NoFalseSig==0
+            if NoFalseSig==false
                 % Compute the final value of the envelope based on
                 % mdr(i+1,1)=mdagger+1 observations
                 %[gval]=FSRenvmdr(mdag+1,p,'prob',0.01,'m0',mdag);
@@ -583,13 +599,13 @@ if isempty(bonflev)
                     % increase mdag of the search by one unit
                     mdag=0;
                 else
-                    NoFalseSig=1;
+                    NoFalseSig=true;
                 end
             end
             
             % If the signal has been validated get out of the signal detection
             % loop and move to stage 2: superimposition of the envelopes
-            if (NoFalseSig==1)
+            if (NoFalseSig==true)
                 if msg
                     disp('Validated signal');
                 end
@@ -597,7 +613,7 @@ if isempty(bonflev)
             end
         elseif signal==2
             if msg
-                disp('-------------------')
+                % disp('-------------------')
                 disp('Signal validation exceedance of extreme lower envelope');
             end
             break
@@ -620,224 +636,225 @@ else
 end
 
 %% Create figure containing mdr + envelopes based on all the observations.
-
-if plo==1 || plo ==2
-    % get screen size [left, bottom, width, height]
-    scrsz = get(0,'ScreenSize');
-    
-    figure1 = figure('Position',[1 scrsz(4)/2.5 scrsz(3)/3 scrsz(4)/2],'PaperSize',[20.98 29.68],'Name','Envelopes based on all the observations');
-    axes1 = axes('Parent',figure1);
-    
-    % Create a pan-handle for the figure ...
-    hpan_figure1 = pan(figure1);
-    % ... and listen to pan events using callback functions
-    set(hpan_figure1,'ActionPreCallback',@fprecallback);
-    set(hpan_figure1,'ActionPostCallback',@fpostcallback);
-    
-    %     % Create a zoom-handle for the figure ...
-    %     hzoom_figure1 = zoom(figure1);
-    %     % ... and listen to pan events using callback functions
-    %     set(hzoom_figure1,'ActionPreCallback',@figure1_precallback);
-    %     set(hzoom_figure1,'ActionPostCallback',@figure1_postcallback_zoom);
-    
-    if isempty(xlimx)
-        xl1=init-3; xl2=mdr(end,1);
-    else
-        xl1=xlimx(1);
-        xl2=xlimx(2);
-    end
-    
-    if isempty(ylimy)
-        if isempty(bonflev)
-            yl1=min([gmin(:,c001);mdr(:,2)]);
-            yl2=max([gmin(:,c999);mdr(:,2)]);
+if coder.target('MATLAB')
+    if plo==1 || plo ==2
+        % get screen size [left, bottom, width, height]
+        scrsz = get(0,'ScreenSize');
+        
+        figure1 = figure('Position',[1 scrsz(4)/2.5 scrsz(3)/3 scrsz(4)/2],'PaperSize',[20.98 29.68],'Name','Envelopes based on all the observations');
+        axes1 = axes('Parent',figure1);
+        
+        % Create a pan-handle for the figure ...
+        hpan_figure1 = pan(figure1);
+        % ... and listen to pan events using callback functions
+        set(hpan_figure1,'ActionPreCallback',@fprecallback);
+        set(hpan_figure1,'ActionPostCallback',@fpostcallback);
+        
+        %     % Create a zoom-handle for the figure ...
+        %     hzoom_figure1 = zoom(figure1);
+        %     % ... and listen to pan events using callback functions
+        %     set(hzoom_figure1,'ActionPreCallback',@figure1_precallback);
+        %     set(hzoom_figure1,'ActionPostCallback',@figure1_postcallback_zoom);
+        
+        if isempty(xlimx)
+            xl1=init-3; xl2=mdr(end,1);
         else
-            yl1=min([bonfthresh(:,end);mdr(:,2)]);
-            yl2=max([bonfthresh(:,end);mdr(:,2)]);
+            xl1=xlimx(1);
+            xl2=xlimx(2);
         end
         
-        % Set upper limit to 20 of the plot if it is greater
-        if yl2>20
-            if msg
-                % Inform the user about automatic upper limit
-                warning('FSDA:FSRcore:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+        if isempty(ylimy)
+            if isempty(bonflev)
+                yl1=min([gmin(:,c001);mdr(:,2)]);
+                yl2=max([gmin(:,c999);mdr(:,2)]);
+            else
+                yl1=min([bonfthresh(:,end);mdr(:,2)]);
+                yl2=max([bonfthresh(:,end);mdr(:,2)]);
             end
-            yl2=20;
+            
+            % Set upper limit to 20 of the plot if it is greater
+            if yl2>20
+                if msg
+                    % Inform the user about automatic upper limit
+                    warning('FSDA:FSRcore:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+                end
+                yl2=20;
+            end
+            
+        else
+            yl1=ylimy(1);
+            yl2=ylimy(2);
         end
         
-    else
-        yl1=ylimy(1);
-        yl2=ylimy(2);
-    end
-    
-    xlim([xl1 xl2]);
-    ylim([yl1 yl2]);
-    
-    
-    kx=0; ky=0;
-    
-    box('on'); hold('all');
-    
-    plot(mdr(:,1),mdr(:,2));
-    
-    
-    if isempty(bonflev)
+        xlim([xl1 xl2]);
+        ylim([yl1 yl2]);
         
-        % 1%, 99%, 99.9% envelopes based on all the observations
-        line(gmin(:,1),gmin(:,[c001 c99 c999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
-        % 99.99% and 99.999% envelopes based on all the observations
-        line(gmin(:,1),gmin(:,[c9999 c99999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
-        if signal==2
-            line(gmin(:,1),gmin(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
-        end
         
-        % 50% envelope based on all the observations
-        line(gmin(:,1),gmin(:,c50),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0.69 0.39]);
+        kx=0; ky=0;
         
-        % Property-value pairs which are common to all quantile-labels
-        PrVaCell{1,1} = 'HorizontalAlignment'; PrVaCell{2,1} = 'center';
-        PrVaCell{1,2} = 'EdgeColor'; PrVaCell{2,2} = 'none';
-        PrVaCell{1,3} = 'BackgroundColor'; PrVaCell{2,3} = 'none';
-        PrVaCell{1,4} = 'FitBoxToText'; PrVaCell{2,4} = 'off';
-        PrVaCell{1,5} = 'Tag'; PrVaCell{2,5} = 'quantile_label';
+        box('on'); hold('all');
         
-        % Create textbox with 1% label
-        [figx, figy] = dsxy2figxy(gca, init, gmin(1,c001));
-        if figy>=0 && figy<=1 && figx>=0 && figx<=1
-            annotation(figure1,'textbox',[figx figy kx ky],...
-                'String',{'1%'},...
-                'UserData',[gmin(:,1) gmin(:,c001)],...
-                PrVaCell{:});
-        end
+        plot(mdr(:,1),mdr(:,2));
         
-        % Create textbox with 99% label
-        [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99));
         
-        if figy>=0 && figy<=1 && figx>=0 && figx<=1
-            annotation(figure1,'textbox',[figx figy kx ky],...
-                'String',{'99%'},...
-                'UserData',[gmin(:,1) gmin(:,c99)],...
-                PrVaCell{:});
-        end
-        
-        % Create textbox with 50% label
-        [figx, figy] = dsxy2figxy(gca, init, gmin(1,c50));
-        
-        if figy>=0 && figy<=1 && figx>=0 && figx<=1
-            annotation(figure1,'textbox',[figx figy kx ky],...
-                'String',{'50%'},...
-                'UserData',[gmin(:,1) gmin(:,c50)],...
-                PrVaCell{:});
-        end
-        
-        if signal==1
-            % Create textbox with 99.9% label
-            [figx, figy] = dsxy2figxy(gca, init, gmin(1,c999));
+        if isempty(bonflev)
+            
+            % 1%, 99%, 99.9% envelopes based on all the observations
+            line(gmin(:,1),gmin(:,[c001 c99 c999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+            % 99.99% and 99.999% envelopes based on all the observations
+            line(gmin(:,1),gmin(:,[c9999 c99999]),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
+            if signal==2
+                line(gmin(:,1),gmin(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
+            end
+            
+            % 50% envelope based on all the observations
+            line(gmin(:,1),gmin(:,c50),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[1 0.69 0.39]);
+            
+            % Property-value pairs which are common to all quantile-labels
+            PrVaCell{1,1} = 'HorizontalAlignment'; PrVaCell{2,1} = 'center';
+            PrVaCell{1,2} = 'EdgeColor'; PrVaCell{2,2} = 'none';
+            PrVaCell{1,3} = 'BackgroundColor'; PrVaCell{2,3} = 'none';
+            PrVaCell{1,4} = 'FitBoxToText'; PrVaCell{2,4} = 'off';
+            PrVaCell{1,5} = 'Tag'; PrVaCell{2,5} = 'quantile_label';
+            
+            % Create textbox with 1% label
+            [figx, figy] = dsxy2figxy(gca, init, gmin(1,c001));
             if figy>=0 && figy<=1 && figx>=0 && figx<=1
                 annotation(figure1,'textbox',[figx figy kx ky],...
-                    'String',{'99.9%'},...
-                    'UserData',[gmin(:,1) gmin(:,c999)],...
+                    'String',{'1%'},...
+                    'UserData',[gmin(:,1) gmin(:,c001)],...
                     PrVaCell{:});
             end
             
-            % Create textbox with 99.99% label
-            [figx, figy] = dsxy2figxy(gca, init, gmin(1,c9999));
-            if figy<=1 && figy>=0 && figx>=0 && figx<=1
+            % Create textbox with 99% label
+            [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99));
+            
+            if figy>=0 && figy<=1 && figx>=0 && figx<=1
                 annotation(figure1,'textbox',[figx figy kx ky],...
-                    'String',{'99.99%'},...
-                    'UserData',[gmin(:,1) gmin(:,c9999)],...
+                    'String',{'99%'},...
+                    'UserData',[gmin(:,1) gmin(:,c99)],...
                     PrVaCell{:});
             end
             
-            if gmin(1,c99999)<=yl2
-                % Create textbox with 99.999% label
-                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99999));
+            % Create textbox with 50% label
+            [figx, figy] = dsxy2figxy(gca, init, gmin(1,c50));
+            
+            if figy>=0 && figy<=1 && figx>=0 && figx<=1
+                annotation(figure1,'textbox',[figx figy kx ky],...
+                    'String',{'50%'},...
+                    'UserData',[gmin(:,1) gmin(:,c50)],...
+                    PrVaCell{:});
+            end
+            
+            if signal==1
+                % Create textbox with 99.9% label
+                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c999));
+                if figy>=0 && figy<=1 && figx>=0 && figx<=1
+                    annotation(figure1,'textbox',[figx figy kx ky],...
+                        'String',{'99.9%'},...
+                        'UserData',[gmin(:,1) gmin(:,c999)],...
+                        PrVaCell{:});
+                end
+                
+                % Create textbox with 99.99% label
+                [figx, figy] = dsxy2figxy(gca, init, gmin(1,c9999));
                 if figy<=1 && figy>=0 && figx>=0 && figx<=1
                     annotation(figure1,'textbox',[figx figy kx ky],...
-                        'String',{'99.999%'},...
-                        'UserData',[gmin(:,1) gmin(:,c99999)],...
+                        'String',{'99.99%'},...
+                        'UserData',[gmin(:,1) gmin(:,c9999)],...
                         PrVaCell{:});
+                end
+                
+                if gmin(1,c99999)<=yl2
+                    % Create textbox with 99.999% label
+                    [figx, figy] = dsxy2figxy(gca, init, gmin(1,c99999));
+                    if figy<=1 && figy>=0 && figx>=0 && figx<=1
+                        annotation(figure1,'textbox',[figx figy kx ky],...
+                            'String',{'99.999%'},...
+                            'UserData',[gmin(:,1) gmin(:,c99999)],...
+                            PrVaCell{:});
+                    end
+                end
+            else
+            end
+            
+            % Add string which informs about the step where signal took place
+            if signal==1 || signal==2
+                strsig=['Signal is in step $m=' int2str(mdag) '$ because'];
+                stem(mdrsel(:,1),mdrsel(:,2),'LineWidth',1,...
+                    'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
+            else
+                strsig='No signal during the search';
+            end
+            
+            % Property-value pairs which are common to the next latex annotations
+            PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
+            PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
+            PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
+            PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
+            PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
+            
+            
+            % latex annotations informing that the envelopes are based on
+            % all the observations
+            strmin=['$r_{min}(m,' int2str(n) ')$. '];
+            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',{[strmin strsig]},...
+                PrVaCell{:});
+            
+            annotation(figure1,'textbox',[0.5 0.85 kx ky],'String',{strplot},...
+                PrVaCell{:});
+            
+            if istep<=xl2
+                % Add vertical line which divides central part from final part of the
+                % search
+                [figx, figy] = dsxy2figxy(gca, istep, yl1);
+                [figx, figy2] = dsxy2figxy(gca, istep, yl2);
+                if figy2>=1
+                    figy2=1;
+                else
+                end
+                if figx>=0
+                    annotation(figure1,'line',[figx figx],[figy figy2],...
+                        'UserData',[istep yl1 yl2],...
+                        'Tag','FinalPartLine');
                 end
             end
         else
-        end
-        
-        % Add string which informs about the step where signal took place
-        if signal==1 || signal==2
-            strsig=['Signal is in step $m=' int2str(mdag) '$ because'];
-            stem(mdrsel(:,1),mdrsel(:,2),'LineWidth',1,...
-                'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
-        else
-            strsig='No signal during the search';
-        end
-        
-        % Property-value pairs which are common to the next latex annotations
-        PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
-        PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
-        PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
-        PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
-        PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
-        
-        
-        % latex annotations informing that the envelopes are based on
-        % all the observations
-        strmin=['$r_{min}(m,' int2str(n) ')$. '];
-        annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',{[strmin strsig]},...
-            PrVaCell{:});
-        
-        annotation(figure1,'textbox',[0.5 0.85 kx ky],'String',{strplot},...
-            PrVaCell{:});
-        
-        if istep<=xl2
-            % Add vertical line which divides central part from final part of the
-            % search
-            [figx, figy] = dsxy2figxy(gca, istep, yl1);
-            [figx, figy2] = dsxy2figxy(gca, istep, yl2);
-            if figy2>=1
-                figy2=1;
+            % Superimpose Bonferroni line to the plot
+            line(bonfthresh(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+            
+            % Property-value pairs which are common to the next latex annotations
+            PrVaCell=cell(2,5);
+            PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
+            PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
+            PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
+            PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
+            PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
+            
+            if bonflev<1
+                % latex annotations informing that the envelopes are based on
+                % all the observations
+                strmin='Exceedance based on Bonferroni threshold';
+                annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
+                    PrVaCell{:});
+                msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
+                annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
             else
-            end
-            if figx>=0
-                annotation(figure1,'line',[figx figx],[figy figy2],...
-                    'UserData',[istep yl1 yl2],...
-                    'Tag','FinalPartLine');
+                strmin='Exceedance based on user supplied threshold';
+                annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
+                    PrVaCell{:});
+                msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
+                annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
             end
         end
-    else
-        % Superimpose Bonferroni line to the plot
-        line(bonfthresh(:,1),bonfthresh(:,end),'Parent',axes1,'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
-        
-        % Property-value pairs which are common to the next latex annotations
-        PrVaCell=cell(2,5);
-        PrVaCell{1,1} = 'Interpreter'; PrVaCell{2,1} = 'latex';
-        PrVaCell{1,2} = 'HorizontalAlignment'; PrVaCell{2,2} = 'center';
-        PrVaCell{1,3} = 'FitBoxToText'; PrVaCell{2,3} = 'on';
-        PrVaCell{1,4} = 'EdgeColor'; PrVaCell{2,4} = 'none';
-        PrVaCell{1,5} = 'BackgroundColor'; PrVaCell{2,5} = 'none';
-        
-        if bonflev<1
-            % latex annotations informing that the envelopes are based on
-            % all the observations
-            strmin='Exceedance based on Bonferroni threshold';
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
-                PrVaCell{:});
-            msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>' num2str(100*bonflev) '$\% envelope'];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
-        else
-            strmin='Exceedance based on user supplied threshold';
-            annotation(figure1,'textbox',[0.5 0.9 kx ky],'String',strmin,...
-                PrVaCell{:});
-            msgth=['$r_{min}(' num2str(mdr(i,1)) ',' int2str(n) ')>$' num2str(bonflev)];
-            annotation(figure1,'textbox',[0.5 0.8 kx ky],'String',msgth,PrVaCell{:});
+        if signal==1
+            stem(mdr(i,1),mdr(i,2),'LineWidth',1,...
+                'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
         end
+        
+        % set tag to fsr figure;
+        set(gcf,'tag',tagmdrplot);
     end
-    if signal==1
-        stem(mdr(i,1),mdr(i,2),'LineWidth',1,...
-            'Color',[0.4784 0.06275 0.8941], 'DisplayName','Signal');
-    end
-    
-    % set tag to fsr figure;
-    set(gcf,'tag',tagmdrplot);
 end
 
 %% Part 2: envelope resuperimposition
@@ -852,23 +869,25 @@ if signal==1 || signal==2
             disp(['Start resuperimposing envelopes from step m=' int2str(mdag-1)]);
         end
         
-        if plo==2
-            % jwind is associated with subplot window number
-            % nr is the number of row panes in the plot
-            % nc is the number of columns panes in the plot
-            jwind=1;
-            nc=2;
-            if mdr(i,1)>=n-2
-                nr=1;
-            else
-                nr=2;
+        if coder.target('MATLAB')
+            if plo==2
+                % jwind is associated with subplot window number
+                % nr is the number of row panes in the plot
+                % nc is the number of columns panes in the plot
+                jwind=1;
+                nc=2;
+                if mdr(i,1)>=n-2
+                    nr=1;
+                else
+                    nr=2;
+                end
+                
+                figure2 = figure('PaperSize',[20.98 29.68],'Name','Resuperimposed envelopes #1');
+                set(gcf,'tag',[tagresuperplot '1']);
+                
+                % Create axes
+                axes('Parent',figure2);
             end
-            
-            figure2 = figure('PaperSize',[20.98 29.68],'Name','Resuperimposed envelopes #1');
-            set(gcf,'tag',[tagresuperplot '1']);
-
-            % Create axes
-            axes('Parent',figure2);
         end
         
         % First resuperimposed envelope is based on mdag-1 observations
@@ -908,104 +927,109 @@ if signal==1 || signal==2
                     % mdr is inside the envelopes, so keep resuperimposing
                 end
             end
-            
-            if plo==2
-                % Plotting part
-                subplot(nr,nc,jwind,'Parent',figure2);
-                ylim([yl1 yl2]); xlim([xl1 xl2]);
-                box('on'); hold('on');
-                
-                % Show curve of mdr up to step tr-1 (notice that the envelope is
-                % based on tr observations. Step tr-1 in matrix mdr is
-                % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
-                plot(mdr(1:(tr-mdr(1,1)),1),mdr(1:(tr-mdr(1,1)),2));
-                
-                % Display the lines associated with 1%, 99% and 99.9% envelopes
-                line(gmin1(:,1),gmin1(:,[2 3 4]),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
-                line(gmin1(:,1),gmin1(:,5),'LineWidth',2,'LineStyle','--','Color',[0.3 0.3 0.2]);
-                
-                strtemp=['$r_{min}(m,' int2str(tr) ')$'];
-                % get the position of the current pane
-                gposcurax=get(gca,'position');
-                % set the width and the height of the current pane but keep
-                % unaltered the distance from bottom left corner
-                set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.3]);
-                % Subplots located on the left hand side
-                plleft=1:nc:(nr*(nc-1)+1);
-                % Subplots located on the right hand side
-                plright=nc:nc:nr*nc;
-                % For all plots not located on the left and the right hand side
-                % delete numbers on the y axis (YTickLabels)
-                getYTickLab=get(gca,'YTickLabel');
-                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
-                    set(gca,'YTickLabel',[]);
-                end
-                % For all plots not located on the right hand side put the
-                % yaxis location on the right
-                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
-                    set(gca,'YAxisLocation','right');
-                end
-                % For all plots which are not on the bottom hand side delete
-                % numbers on the x axis (XTickLabels)
-                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
-                    set(gca,'XTickLabel',[]);
-                else
-                    % For the plots on the bottom side add the xlabel
-                    xlabel('Subset size m');
-                end
-                annotation(figure2,...
-                    'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)+0.05],...
-                    'String',{strtemp},'Tag','mes1',...
-                    PrVaCell{:});
-                
-                hold('off');
-                jwind=jwind+1;
-            end
-            
-            if sto==1
+            if coder.target('MATLAB')
                 if plo==2
-                    % Write on the plot the reason why the procedure stopped
-                    annotation(figure2,...
-                        'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)],...
-                        'String',{mes},'Tag','mes2',...
-                        PrVaCell{:});
+                    % Plotting part
+                    subplot(nr,nc,jwind,'Parent',figure2);
+                    ylim([yl1 yl2]); xlim([xl1 xl2]);
+                    box('on'); hold('on');
                     
-                    % Unless for all plots not located on the right hand side
-                    % For the final plot put the yaxis location on the right
-                    % Unless it is the first on the left hand side
-                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
-                        set(gca,'YTickLabel',getYTickLab);
+                    % Show curve of mdr up to step tr-1 (notice that the envelope is
+                    % based on tr observations. Step tr-1 in matrix mdr is
+                    % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
+                    plot(mdr(1:(tr-mdr(1,1)),1),mdr(1:(tr-mdr(1,1)),2));
+                    
+                    % Display the lines associated with 1%, 99% and 99.9% envelopes
+                    line(gmin1(:,1),gmin1(:,[2 3 4]),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+                    line(gmin1(:,1),gmin1(:,5),'LineWidth',2,'LineStyle','--','Color',[0.3 0.3 0.2]);
+                    
+                    strtemp=['$r_{min}(m,' int2str(tr) ')$'];
+                    % get the position of the current pane
+                    gposcurax=get(gca,'position');
+                    % set the width and the height of the current pane but keep
+                    % unaltered the distance from bottom left corner
+                    set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.3]);
+                    % Subplots located on the left hand side
+                    plleft=1:nc:(nr*(nc-1)+1);
+                    % Subplots located on the right hand side
+                    plright=nc:nc:nr*nc;
+                    % For all plots not located on the left and the right hand side
+                    % delete numbers on the y axis (YTickLabels)
+                    getYTickLab=get(gca,'YTickLabel');
+                    if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
+                        set(gca,'YTickLabel',[]);
+                    end
+                    % For all plots not located on the right hand side put the
+                    % yaxis location on the right
+                    if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
                         set(gca,'YAxisLocation','right');
                     end
-                    
-                    % add X label again to the last plot
-                    getaxes=get(figure1,'Children');
-                    % getaxes=getaxes(end);
-                    getaxes=findobj(getaxes,'-property','XTickLabel');
-                    set(gca,'XTickLabel',get(getaxes,'XTick'))
-                    xlabel('Subset size m');
-                    
-                    % if jwind=2 than the width of the last plot is enlarged to
-                    % full screen
-                    if jwind==2 && nr*nc>1
-                        set(gca,'Position',[0.1 0.1 0.85 0.85])
-                        % Relocate the two messages
-                        set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
-                        set(findall(gcf,'Tag','mes2'),'Units','normalized','Position',[0.3 0.6 0.5 0.1])
+                    % For all plots which are not on the bottom hand side delete
+                    % numbers on the x axis (XTickLabels)
+                    if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
+                        set(gca,'XTickLabel',[]);
+                    else
+                        % For the plots on the bottom side add the xlabel
+                        xlabel('Subset size m');
                     end
+                    annotation(figure2,...
+                        'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)+0.05],...
+                        'String',{strtemp},'Tag','mes1',...
+                        PrVaCell{:});
+                    
+                    hold('off');
+                    jwind=jwind+1;
                 end
                 
-                break
-            end
-            if plo==2
-                if jwind==nr*nc+1
-                    jwind=1;
-                    figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
-                    set(gcf,'tag',[tagresuperplot int2str(resup)]);
-
-                    resup=resup+1;
-                    % Create axes (Following line should not be necessary
-                    %axes('Parent',figure2);
+                if sto==1
+                    if plo==2
+                        % Write on the plot the reason why the procedure stopped
+                        annotation(figure2,...
+                            'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)],...
+                            'String',{mes},'Tag','mes2',...
+                            PrVaCell{:});
+                        
+                        % Unless for all plots not located on the right hand side
+                        % For the final plot put the yaxis location on the right
+                        % Unless it is the first on the left hand side
+                        if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
+                            set(gca,'YTickLabel',getYTickLab);
+                            set(gca,'YAxisLocation','right');
+                        end
+                        
+                        % add X label again to the last plot
+                        getaxes=get(figure1,'Children');
+                        % getaxes=getaxes(end);
+                        getaxes=findobj(getaxes,'-property','XTickLabel');
+                        set(gca,'XTickLabel',get(getaxes,'XTick'))
+                        xlabel('Subset size m');
+                        
+                        % if jwind=2 than the width of the last plot is enlarged to
+                        % full screen
+                        if jwind==2 && nr*nc>1
+                            set(gca,'Position',[0.1 0.1 0.85 0.85])
+                            % Relocate the two messages
+                            set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
+                            set(findall(gcf,'Tag','mes2'),'Units','normalized','Position',[0.3 0.6 0.5 0.1])
+                        end
+                    end
+                    
+                    break
+                end
+                if plo==2
+                    if jwind==nr*nc+1
+                        jwind=1;
+                        figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
+                        set(gcf,'tag',[tagresuperplot int2str(resup)]);
+                        
+                        resup=resup+1;
+                        % Create axes (Following line should not be necessary
+                        %axes('Parent',figure2);
+                    end
+                end
+            else
+                if sto==1
+                    break
                 end
             end
             
@@ -1047,9 +1071,11 @@ if signal==1 || signal==2
                         tr=mdr(i,1);
                     end
                 end
+                tr=tr(1); % Instruction necessary for MATlAB C coder
                 if msg
                     disp('Probably there are two overlapping groups');
-                    disp(['Using the criterion of the maximum, the group of homogenous obs. is=' int2str(tr)]);
+                    % disp(['Using the criterion of the maximum, the group of homogenous obs. is=' int2str(tr)]);
+                    fprintf('Using the criterion of the maximum, the group of homogenous obs. is= %.0f\n',tr(1));
                 end
                 % tr is redefined and is associated with the step associated to
                 % the maximum value of r_min
@@ -1066,15 +1092,15 @@ if signal==1 || signal==2
         
     elseif  isempty(bonflev) && signal==2 % exceedance of the lower threshold
         
-        
-        if plo==2
-            nr=3; nc=3;
-            resup=1;
-            jwind=1;
-            figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
-            set(gcf,'tag',[tagresuperplot int2str(resup)]);
+        if coder.target('MATLAB')
+            if plo==2
+                nr=3; nc=3;
+                resup=1;
+                jwind=1;
+                figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
+                set(gcf,'tag',[tagresuperplot int2str(resup)]);
+            end
         end
-        
         
         
         for tr=(mdag-1):-1:max(mdag-80,init+1)
@@ -1102,106 +1128,110 @@ if signal==1 || signal==2
             else
             end
             
-            
-            if plo==2
-                % Plotting part
-                subplot(nr,nc,jwind,'Parent',figure2);
-                ylim([yl1 yl2]); xlim([xl1 xl2]);
-                box('on'); hold('on');
-                
-                % Show curve of mdr up to step tr-1 (notice that the envelope is
-                % based on tr observations. Step tr-1 in matrix mdr is
-                % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
-                plot(mdr(1:(tr-mdr(1,1)),1),mdr(1:(tr-mdr(1,1)),2));
-                
-                % Display the lines associated with 1%, 50% and 99% envelopes
-                line(gmin1(:,1),gmin1(:,2:4),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
-                
-                % Display the lines associated with 0.1% envelopes
-                line(gmin1(:,1),gmin1(:,5),'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
-                
-                
-                strtemp=['$r_{min}(m,' int2str(tr) ')$'];
-                % get the position of the current pane
-                gposcurax=get(gca,'position');
-                % set the width and the height of the current pane but keep
-                % unaltered the distance from bottom left corner
-                set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.3]);
-                % Subplots located on the left hand side
-                plleft=1:nc:(nr*(nc-1)+1);
-                % Subplots located on the right hand side
-                plright=nc:nc:nr*nc;
-                % For all plots not located on the left and the right hand side
-                % delete numbers on the y axis (YTickLabels)
-                getYTickLab=get(gca,'YTickLabel');
-                if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
-                    set(gca,'YTickLabel',[]);
-                end
-                % For all plots not located on the right hand side put the
-                % yaxis location on the right
-                if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
-                    set(gca,'YAxisLocation','right');
-                end
-                % For all plots which are not on the bottom hand side delete
-                % numbers on the x axis (XTickLabels)
-                if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
-                    set(gca,'XTickLabel',[]);
-                else
-                    % For the plots on the bottom side add the xlabel
-                    xlabel('Subset size m');
-                end
-                annotation(figure2,...
-                    'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)+0.05],...
-                    'String',{strtemp},'Tag','mes1',...
-                    PrVaCell{:});
-                
-                hold('off');
-                jwind=jwind+1;
-            end
-            
-            if sto==1
+            if coder.target('MATLAB')
                 if plo==2
-                    % Write on the plot the reason why the procedure stopped
-                    annotation(figure2,...
-                        'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)],...
-                        'String',{mes},'Tag','mes2',...
-                        PrVaCell{:});
+                    % Plotting part
+                    subplot(nr,nc,jwind,'Parent',figure2);
+                    ylim([yl1 yl2]); xlim([xl1 xl2]);
+                    box('on'); hold('on');
                     
-                    % Unless for all plots not located on the right hand side
-                    % For the final plot put the yaxis location on the right
-                    % Unless it is the first on the left hand side
-                    if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
-                        set(gca,'YTickLabel',getYTickLab);
+                    % Show curve of mdr up to step tr-1 (notice that the envelope is
+                    % based on tr observations. Step tr-1 in matrix mdr is
+                    % (tr-1)-mdr(1,1)+1=tr-mdr(1,1)
+                    plot(mdr(1:(tr-mdr(1,1)),1),mdr(1:(tr-mdr(1,1)),2));
+                    
+                    % Display the lines associated with 1%, 50% and 99% envelopes
+                    line(gmin1(:,1),gmin1(:,2:4),'LineWidth',2,'LineStyle','--','Color',[0 0 1]);
+                    
+                    % Display the lines associated with 0.1% envelopes
+                    line(gmin1(:,1),gmin1(:,5),'LineWidth',2,'LineStyle','--','Color',[1 0 0]);
+                    
+                    
+                    strtemp=['$r_{min}(m,' int2str(tr) ')$'];
+                    % get the position of the current pane
+                    gposcurax=get(gca,'position');
+                    % set the width and the height of the current pane but keep
+                    % unaltered the distance from bottom left corner
+                    set(gca,'position',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3)*1.3,gposcurax(4)*1.3]);
+                    % Subplots located on the left hand side
+                    plleft=1:nc:(nr*(nc-1)+1);
+                    % Subplots located on the right hand side
+                    plright=nc:nc:nr*nc;
+                    % For all plots not located on the left and the right hand side
+                    % delete numbers on the y axis (YTickLabels)
+                    getYTickLab=get(gca,'YTickLabel');
+                    if isempty(intersect(jwind,[plleft plright])) && nr*nc>1
+                        set(gca,'YTickLabel',[]);
+                    end
+                    % For all plots not located on the right hand side put the
+                    % yaxis location on the right
+                    if ~isempty(intersect(jwind,plright)) && nr*nc>1  && nc>1
                         set(gca,'YAxisLocation','right');
                     end
-                    
-                    % add X label again to the last plot
-                    set(gca,'XTickLabel',get(get(figure1,'Children'),'XTick'))
-                    xlabel('Subset size m');
-                    
-                    % if jwind=2 than the width of the last plot is enlarged to
-                    % full screen
-                    if jwind==2 && nr*nc>1
-                        set(gca,'Position',[0.1 0.1 0.85 0.85])
-                        % Relocate the two messages
-                        set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
-                        set(findall(gcf,'Tag','mes2'),'Units','normalized','Position',[0.3 0.6 0.5 0.1])
+                    % For all plots which are not on the bottom hand side delete
+                    % numbers on the x axis (XTickLabels)
+                    if isempty(intersect(jwind,(nr-1)*nc+1:(nr*nc)))
+                        set(gca,'XTickLabel',[]);
+                    else
+                        % For the plots on the bottom side add the xlabel
+                        xlabel('Subset size m');
                     end
+                    annotation(figure2,...
+                        'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)+0.05],...
+                        'String',{strtemp},'Tag','mes1',...
+                        PrVaCell{:});
+                    
+                    hold('off');
+                    jwind=jwind+1;
                 end
                 
-                break
-            end
-            if plo==2
-                if jwind==nr*nc+1
-                    jwind=1;
-                    resup=resup+1;
-                    figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
-            set(gcf,'tag',[tagresuperplot int2str(resup)]);
-                    % Create axes (Following line should not be necessary
-                    %axes('Parent',figure2);
+                if sto==1
+                    if plo==2
+                        % Write on the plot the reason why the procedure stopped
+                        annotation(figure2,...
+                            'textbox',[gposcurax(1)-0.1,gposcurax(2),gposcurax(3),gposcurax(4)],...
+                            'String',{mes},'Tag','mes2',...
+                            PrVaCell{:});
+                        
+                        % Unless for all plots not located on the right hand side
+                        % For the final plot put the yaxis location on the right
+                        % Unless it is the first on the left hand side
+                        if isempty(intersect(jwind-1,plleft)) && nr*nc>1  && nc>1
+                            set(gca,'YTickLabel',getYTickLab);
+                            set(gca,'YAxisLocation','right');
+                        end
+                        
+                        % add X label again to the last plot
+                        set(gca,'XTickLabel',get(get(figure1,'Children'),'XTick'))
+                        xlabel('Subset size m');
+                        
+                        % if jwind=2 than the width of the last plot is enlarged to
+                        % full screen
+                        if jwind==2 && nr*nc>1
+                            set(gca,'Position',[0.1 0.1 0.85 0.85])
+                            % Relocate the two messages
+                            set(findall(gcf,'Tag','mes1'),'Units','normalized','Position',[0.3 0.7 0.5 0.1])
+                            set(findall(gcf,'Tag','mes2'),'Units','normalized','Position',[0.3 0.6 0.5 0.1])
+                        end
+                    end
+                    
+                    break
+                end
+                if plo==2
+                    if jwind==nr*nc+1
+                        jwind=1;
+                        resup=resup+1;
+                        figure2 = figure('PaperSize',[20.98 29.68],'Name',['Resuperimposed envelopes #' int2str(resup)]);
+                        set(gcf,'tag',[tagresuperplot int2str(resup)]);
+                        % Create axes (Following line should not be necessary
+                        %axes('Parent',figure2);
+                    end
+                end
+            else
+                if sto==1
+                    break
                 end
             end
-            
         end
         
         ndecl=n-tr;
@@ -1269,7 +1299,8 @@ if ndecl>0
             bsb=seq(~isnan(bb(:,colbb)));
             if isempty(model)
                 % Call procedure FSRbsb
-                [Un,BB] = FSRbsb(y,X,bsb,'intercept',intercept,'init',n-ndecl,'nocheck',true);
+                [Un,BB] = FSRbsb(y,X,bsb(:),'intercept',intercept,'init',n-ndecl,...
+                    'nocheck',true,'msg',true,'bsbsteps',0);
             elseif strcmp(model,'H')
                 % Call procedure FSRHbsb
                 Z=INP.Z;
@@ -1403,170 +1434,170 @@ end
 % "as is" plot sections copied from other functions: LTSts in paeticular.
 
 %% Scatter plot matrix with the outliers shown with a different symbol
-
-if plo==1 || plo==2
-    figure;
-    if isempty(options.namey)
-        namey=char('y');
-    else
-        namey=options.namey;
-    end
-    
-    if intercept==true
-        if isempty(options.nameX)
-            nameX=cellstr(num2str((1:p-1)','X%d'));
+if coder.target('MATLAB')
+    if plo==1 || plo==2
+        figure;
+        if isempty(options.namey)
+            namey=char('y');
         else
-            nameX=options.nameX;
+            namey=options.namey;
         end
-        [H,AX,BigAx]=gplotmatrix(X(:,2:end),y,group,'br','+o',[],[],[],nameX,namey);
-    else
-        if isempty(options.nameX)
-            nameX=cellstr(num2str((1:p)','X%d'));
+        
+        if intercept==true
+            if isempty(options.nameX)
+                nameX=cellstr(num2str((1:p-1)','X%d'));
+            else
+                nameX=options.nameX;
+            end
+            [H,AX,BigAx]=gplotmatrix(X(:,2:end),y,group,'br','+o',[],[],[],nameX,namey);
         else
-            nameX=options.nameX;
+            if isempty(options.nameX)
+                nameX=cellstr(num2str((1:p)','X%d'));
+            else
+                nameX=options.nameX;
+            end
+            [H,AX,BigAx]=gplotmatrix(X,y,group,'br','+o',[],[],[],nameX,namey);
         end
-        [H,AX,BigAx]=gplotmatrix(X,y,group,'br','+o',[],[],[],nameX,namey);
-    end
-    set(gcf,'Name','Scatter plot matrix y|X with outliers highlighted');
-    set(gcf,'tag',tagyXplot);
-
-    % The second condition is necessary because in the Bayesian case all
-    % units can be declared as outliers
-    if ndecl>0 && n-ndecl>0
-        set(H(:,:,1),'DisplayName','Good units');
-        set(H(:,:,2),'DisplayName','Outliers');
+        set(gcf,'Name','Scatter plot matrix y|X with outliers highlighted');
+        set(gcf,'tag',tagyXplot);
+        
+        % The second condition is necessary because in the Bayesian case all
+        % units can be declared as outliers
+        if ndecl>0 && n-ndecl>0
+            set(H(:,:,1),'DisplayName','Good units');
+            set(H(:,:,2),'DisplayName','Outliers');
+            % save the indices of the outliers (ListOut) to the
+            % 'UserData' field of the second group of H(:,:,2)
+            set(H(:,:,2), 'UserData' , ListOut');
+        elseif ndecl>0
+            set(H(:,:,1),'DisplayName','Outliers');
+        else
+            set(H,'DisplayName',' Units');
+        end
+        
         % save the indices of the outliers (ListOut) to the
         % 'UserData' field of the second group of H(:,:,2)
-        set(H(:,:,2), 'UserData' , ListOut');
-    elseif ndecl>0
-        set(H(:,:,1),'DisplayName','Outliers');
-    else
-        set(H,'DisplayName',' Units');
-    end
-    
-    % save the indices of the outliers (ListOut) to the
-    % 'UserData' field of the second group of H(:,:,2)
-    %     if ~isnan(ListOut)
-    %         set(H(:,:,2), 'UserData' , ListOut');
-    %     end
-    
-    % The following line adds objects to the panels of the yX
-    % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
-    add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
-    
-    
-    %% Figure for Time Series
-    % Generates a figure with two panels: one with the time series
-    % and another with the residuals against index number; plots =2 produces
-    % also a number of other informative plots; else no plot is produced.
-    if strcmp(model,'ts')
+        %     if ~isnan(ListOut)
+        %         set(H(:,:,2), 'UserData' , ListOut');
+        %     end
         
-        % most of this section has been copied as is from LTSts
-        conflev   = 0.99;
-        yin       = y;
-        T         = length(y);
-        yhat      = out1.yhat;
-        residuals = out1.residuals; % they are computed as: (y-yhat)/scale;
-        if ~isnan(ListOut)
-            outliers=ListOut;
-        else
-            outliers=[];
-        end
+        % The following line adds objects to the panels of the yX
+        % add2yX(H,AX,BigAx,outadd,group,ListOut,bivarfit,multivarfit,labeladd)
+        add2yX(H,AX,BigAx,'intercept',intercept,'bivarfit',bivarfit,'multivarfit',multivarfit,'labeladd',labeladd);
         
-        % some general plot settings
-        vlt15 = verLessThan('matlab', '7.15');
-        clr = 'bkrgmcy';
-        syb = {'-','--','-.',':','-','--','-.'};
-        FontSize    = 14;
-        SizeAxesNum = 14;
         
-        % slightly increase the range of the time series axis values
-        mine = min(yin(:));
-        maxe = max(yin(:));
-        delta = (maxe-mine)*0.1;
-        yaxlim = [mine - delta ; maxe + delta];
-        
-        % Time series + fitted values
-        figure
-        htmp = subplot(2,1,1);
-        plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
-        hold('on');
-        plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
-        
-        set(htmp,'Tag','FSRts:ts');
-        %xlabel('Time','FontSize',FontSize);
-        ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
-        if ~vlt15
-            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
-        else
-            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
-        end
-        drawnow;
-        xtickval = get(htmp,'XTick');
-        xticklab = get(htmp,'XTickLabel');
-        set(htmp,'XTickMode','manual');
-        
-        % mark outliers with their severity
-        if ~isempty(residuals)
-            seq = 1:T;
-            quant = sqrt(chi2inv(conflev,1));
-            resboo = residuals(outliers);
-            th=8;resboo(abs(resboo)>th)=th;
-            %Rescale residuals in the interval [0 3]
-            sizeout=3*(abs(resboo)-quant)/(th-quant);
-            for i=1:length(sizeout)
-                plot(seq(outliers(i)),yin(outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+        %% Figure for Time Series
+        % Generates a figure with two panels: one with the time series
+        % and another with the residuals against index number; plots =2 produces
+        % also a number of other informative plots; else no plot is produced.
+        if strcmp(model,'ts')
+            
+            % most of this section has been copied as is from LTSts
+            conflev   = 0.99;
+            yin       = y;
+            T         = length(y);
+            yhat      = out1.yhat;
+            residuals = out1.residuals; % they are computed as: (y-yhat)/scale;
+            if ~isnan(ListOut)
+                outliers=ListOut;
+            else
+                outliers=[];
             end
+            
+            % some general plot settings
+            vlt15 = verLessThan('matlab', '7.15');
+            clr = 'bkrgmcy';
+            syb = {'-','--','-.',':','-','--','-.'};
+            FontSize    = 14;
+            SizeAxesNum = 14;
+            
+            % slightly increase the range of the time series axis values
+            mine = min(yin(:));
+            maxe = max(yin(:));
+            delta = (maxe-mine)*0.1;
+            yaxlim = [mine - delta ; maxe + delta];
+            
+            % Time series + fitted values
+            figure
+            htmp = subplot(2,1,1);
+            plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+            hold('on');
+            plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+            
+            set(htmp,'Tag','FSRts:ts');
+            %xlabel('Time','FontSize',FontSize);
+            ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
+            if ~vlt15
+                set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+            else
+                set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
+            end
+            drawnow;
+            xtickval = get(htmp,'XTick');
+            xticklab = get(htmp,'XTickLabel');
+            set(htmp,'XTickMode','manual');
+            
+            % mark outliers with their severity
+            if ~isempty(residuals)
+                seq = 1:T;
+                quant = sqrt(chi2inv(conflev,1));
+                resboo = residuals(outliers);
+                th=8;resboo(abs(resboo)>th)=th;
+                %Rescale residuals in the interval [0 3]
+                sizeout=3*(abs(resboo)-quant)/(th-quant);
+                for i=1:length(sizeout)
+                    plot(seq(outliers(i)),yin(outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+                end
+            end
+            
+            % plot the vertical line of the level shift position and the associated
+            % label on the X axis
+            if isfield(out1,'posLS') && ~isempty(out1.posLS)
+                line(out1.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+                text(out1.posLS , yaxlim(1) , num2str(out1.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+            end
+            
+            % Index plot of robust residuals
+            drawnow;
+            h2=subplot(2,1,2);
+            laby='Robust FS residuals';
+            labx='Index number';
+            resindexplot(residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',outliers,'h',h2,'title','');
+            drawnow;
+            set(get(gca,'Xlabel'),'interpreter','none');
+            set(get(gca,'Ylabel'),'interpreter','none');
+            if ~vlt15
+                set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+            else
+                set(h2,'FontSize',SizeAxesNum,'Box','on');
+            end
+            set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
+            drawnow;
         end
         
-        % plot the vertical line of the level shift position and the associated
-        % label on the X axis
-        if isfield(out1,'posLS') && ~isempty(out1.posLS)
-            line(out1.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
-            text(out1.posLS , yaxlim(1) , num2str(out1.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
-        end
-        
-        % Index plot of robust residuals
-        drawnow;
-        h2=subplot(2,1,2);
-        laby='Robust FS residuals';
-        labx='Index number';
-        resindexplot(residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',outliers,'h',h2,'title','');
-        drawnow;
-        set(get(gca,'Xlabel'),'interpreter','none');
-        set(get(gca,'Ylabel'),'interpreter','none');
-        if ~vlt15
-            set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
-        else
-            set(h2,'FontSize',SizeAxesNum,'Box','on');
-        end
-        set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
-        drawnow;
+        %     if strcmp(model,'ts')
+        %
+        %         yhat=out1.yhat;
+        %         % Time series + fitted values
+        %         figure
+        %         subplot(2,1,1)
+        %         plot([y yhat])
+        %         xlabel('Time')
+        %         ylabel('Real and fitted values')
+        %
+        %         % Index plot of robust residuals
+        %         h2=subplot(2,1,2);
+        %         laby='Robust FS residuals';
+        %         residuals=(y-yhat)/scale;
+        %         conflev=0.99;
+        %         if ~isnan(ListOut)
+        %             outl=ListOut;
+        %         else
+        %             outl=[];
+        %         end
+        %         resindexplot(residuals,'conflev',conflev,'laby',laby,'numlab',outl,'h',h2,'title','');
+        %     end
     end
-    
-    %     if strcmp(model,'ts')
-    %
-    %         yhat=out1.yhat;
-    %         % Time series + fitted values
-    %         figure
-    %         subplot(2,1,1)
-    %         plot([y yhat])
-    %         xlabel('Time')
-    %         ylabel('Real and fitted values')
-    %
-    %         % Index plot of robust residuals
-    %         h2=subplot(2,1,2);
-    %         laby='Robust FS residuals';
-    %         residuals=(y-yhat)/scale;
-    %         conflev=0.99;
-    %         if ~isnan(ListOut)
-    %             outl=ListOut;
-    %         else
-    %             outl=[];
-    %         end
-    %         resindexplot(residuals,'conflev',conflev,'laby',laby,'numlab',outl,'h',h2,'title','');
-    %     end
-    
 end
 
 
@@ -1585,6 +1616,10 @@ out.mdr=mdr;
 out.Un=Un;
 if isempty(bonflev)
     out.nout=nout;
+else
+        if ~coder.target('MATLAB')
+            out.nout=[];
+        end
 end
 out.beta=beta';
 if strcmp(model,'H')
@@ -1595,16 +1630,24 @@ end
 out.scale=scale;
 
 if weak == true
-    if exist('mdag', 'var') == 1
+    if mdag>-1
         out.mdag = mdag;
-        out.ListCl = seq(~isnan(bb(:,end-(n-mdag))));
+        ListCl=seq(~isnan(bb(:,end-(n-mdag))));
+        out.ListCl = ListCl;
         out.scale = sqrt(S2(end-(n-mdag),2));
-        out.outliersVIOM = setdiff(1:n, [out.ListCl, ListOut]);
+        % out.outliersVIOM = setdiff(1:n, [out.ListCl, ListOut]);
+        out.VIOMout = setdiff(1:n, [ListCl, ListOut]);
     else
         out.mdag = n;
         out.ListCl = 1:n;
         out.VIOMout = NaN;
     end
+else
+        if ~coder.target('MATLAB')
+            out.mdag=[];
+            out.ListCl = 1:n;
+        out.VIOMout = NaN;
+        end
 end
 
 

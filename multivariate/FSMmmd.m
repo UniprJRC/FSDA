@@ -22,19 +22,25 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
+%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
+%               which steps of the fwd search it
+%               is necessary to save the units forming subsets. If bsbsteps
+%               is 0 we store the units forming subset in all steps. The
+%               default is store the units forming subset in all steps if
+%               n<=5000, else to store the units forming subset at steps
+%               init and steps which are multiple of 100. For example, as
+%               default, if n=7530 and init=6,
+%               units forming subset are stored for
+%               m=init, 100, 200, ..., 7500.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
+%
 % init :       Point where to start monitoring
 %               required diagnostics. Scalar. Note that if bsb is supplied,
 %               init>=length(bsb). If init is not specified it will
 %               be set equal to floor(n*0.6).
 %                 Example - 'init',50
-%                 Data Types - double
-%
-% plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
-%                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
-%               the units not belonging to the subset is produced on the
-%               screen with 1% 50% and 99% confidence bands
-%               else (default) no plot is produced.
-%                 Example - 'plots',0
 %                 Data Types - double
 %
 %  msg  :     It controls whether to display or not messages
@@ -50,19 +56,15 @@ function [mmd,Un,varargout] = FSMmmd(Y,bsb,varargin)
 %                 Example - 'nocheck',false
 %                 Data Types - logical
 %
-%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
-%               which steps of the fwd search it
-%               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=7530 and init=6,
-%               units forming subset are stored for
-%               m=init, 100, 200, ..., 7500.
-%               Example - 'bsbsteps',[100 200] stores the unis forming
-%               subset in steps 100 and 200.
-%               Data Types - double
+%
+% plots :     It specify whether it is necessary to produce the plots of minimum Mahalanobis
+%                 distance. Scalar. If plots=1, a plot of the monitoring of minMD among
+%               the units not belonging to the subset is produced on the
+%               screen with 1% 50% and 99% confidence bands
+%               else (default) no plot is produced.
+%                 Example - 'plots',0
+%                 Data Types - double
+%
 %
 % Remark :      The user should only give the input arguments that have to
 %               change their default value.
@@ -367,9 +369,9 @@ if nargout==3
         % Default for vector bsbsteps which indicates for which steps of the fwd
         % search units forming subset have to be saved
         if n<=5000
-            bsbsteps = init1:1:n;
+            bsbsteps = (init1:1:n)';
         else
-            bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)];
+            bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)]';
         end
         if coder.target('MATLAB')
             BB = NaN(n,length(bsbsteps),'single');
@@ -377,7 +379,7 @@ if nargout==3
             BB = NaN(n,length(bsbsteps));
         end
     elseif bsbsteps==0
-        bsbsteps=init1:n;
+        bsbsteps=(init1:n)';
         if coder.target('MATLAB')
             BB = NaN(n,n-init1+1,'single');
         else
@@ -391,6 +393,7 @@ if nargout==3
                 disp('FSDA:FSMmmd:WrongInit','It is impossible to monitor the subset for values smaller than init');
             end
         end
+      
         bsbsteps=bsbsteps(bsbsteps>=init1);
         
         if coder.target('MATLAB')

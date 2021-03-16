@@ -652,16 +652,17 @@ elseif threshoutX == 1
     threshlevoutX=10;
     
 else
-    error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalr equal to 1 or a struct.');
+    error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalar equal to 1 or a struct.');
 end
 
 
 
 %% Start of the forward search
 
-seq=1:n;
+seq=(1:n)';
 
 iter=0;
+mdr=0; % Initialization necessary for MATLAB C-Coder
 
 % Use as initial subset the one supplied by the user or the best according
 % to LMS or LTS
@@ -706,29 +707,50 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg,...
+    [outLXS]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg,...
         'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
         'conflev',0.975,'rew',false);
     
-    if out.scale==0
+    if outLXS.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
         %return
     end
     
-    bs=out.bs(:);
-    mdr=0;
-    constr='';
+    bs=outLXS.bs(:);
+    % Necessary for MATLAb C Coder initialization
+    % Initialize constr as a column vector of variable size whose elements
+    % are greater than n is such a way that no unit is constrained to enter the final steps 
+    constr=((n+1):2*n)';
     
+    if coder.target('MATLAB')
+        bsbstepdef=[];
+    else
+        if n<40
+            initdef=p+1;
+        else
+            initdef=min(3*p+1,floor(0.5*(n+p+1)));
+        end
+        if n<=5000
+            bsbstepdef = 0;
+        else
+            iniseq=100:100:100*floor(n/100);
+            iniseq=iniseq(iniseq>initdef);
+            bsbstepdef = [initdef iniseq];
+        end
+    end
     
-    while size(mdr,2)<2 && iter <6
+    % Matlab C Coder initializations.
+    Un=0; bb=0; Bols=0; S2=0;
+    mdrFlag=true;
+    while mdrFlag==true && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
         [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',true,...
             'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,...
             'threshlevoutX',threshlevoutX,'intercept',intercept,...
-            'bsbsteps',[],'internationaltrade',false);
+            'bsbsteps',bsbstepdef,'internationaltrade',false);
         
         % If FSRmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -747,16 +769,32 @@ else % initial subset is not supplied by the user
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
-                out.ListOut = setdiff(seq,mdr);
-                
+                out.ListOut = setdiff(seq,mdr(:))';
+                    if ~coder.target('MATLAB')
+                        varsize=ceil(n/1000000);
+                        out.outliers=NaN(1,varsize);
+                        out.mdr=mdr;
+                        out.Un=NaN(varsize,11);
+                        out.nout=NaN(varsize,varsize);
+                        out.beta=NaN(varsize,1);
+                        out.scale=NaN;
+                        out.mdag=NaN(varsize,varsize);
+                        out.ListCl=NaN(1,varsize);
+                        out.VIOMout=NaN(1,varsize);
+                        out.fittedvalues=[];
+                        out.residuals=[];
+                        out.class='FSR';
+                    end
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
                 % restart LXS without the units forming
                 % initial subset
-                bsb=setdiff(seq,out.bs);
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg,'intercept',intercept);
-                bs=bsb(out.bs);
+                bsb=setdiff(seq,outLXS.bs(:));
+                [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
+                    'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
+                    'conflev',0.975,'rew',false);
+                bs=bsb(outLXS.bs(:));
                 
                 
             else
@@ -764,11 +802,15 @@ else % initial subset is not supplied by the user
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
                 % MATRIX. IN THIS CASE NEW LXS IS BASED ON  n-constr OBSERVATIONS
                 iter=iter+1;
-                bsb=setdiff(seq,mdr);
-                constr=mdr;
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg,'intercept',intercept);
-                bs=bsb(out.bs);
+                bsb=setdiff(seq,mdr(:));
+                constr=mdr(:);
+                [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
+                    'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
+                    'conflev',0.975,'rew',false);
+                bs=bsb(outLXS.bs);
             end
+        else
+            mdrFlag=false;
         end
     end
     
@@ -796,11 +838,13 @@ INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
 INP.weak = weak;
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(INP,'',options);
-
+[outPREL]=FSRcore(INP,'',options);
+out=outPREL;
 % compute and store in output structure the S robust scaled residuals
-out.fittedvalues = X*out.beta;
-out.residuals    = (y-out.fittedvalues)/out.scale;
+fittedvalues=X*outPREL.beta;
+scale=outPREL.scale;
+out.fittedvalues = fittedvalues;
+out.residuals    = (y-fittedvalues)/scale;
 
 out.class  =  'FSR';
 end
