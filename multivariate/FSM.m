@@ -433,7 +433,7 @@ if ~isempty(bonflev)
     else
         bonfthresh=bonflev*ones(n-init,1);
     end
-    % declarations necessary for C coder
+    % declarations necessary for MATLAB C coder
     istep =0; 
     c99=0; c999=0; c9999=0;  c99999=0; c001=0; c50=0;
     gmin=0; NoFalseSig=true; mdag=0; ii=0; gmin1=0; nout=0; 

@@ -104,9 +104,14 @@ else
     chkchk='';
     chkint='';
 end
+if coder.target('MATLAB')
+    nocheckTrue= ~isempty(chkchk) && vvarargin{2*chkchk}==1;
+else
+    nocheckTrue=vvarargin{2*chkchk};
+end
 
-% If nocheck=1, then skip checks on y and X
-if ~isempty(chkchk) && vvarargin{2*chkchk}==1
+% If nocheck=true, then skip checks on y and X
+if nocheckTrue==true
     [n,p]=size(X);
 else
     
@@ -167,7 +172,13 @@ else
         % the option intercept in chklist, which contains the optional is
         % given in chkint. chkint is empty if the option intercept is not
         % specified.
-        if isempty(chkint) || vvarargin{2*chkint}==1
+        %if coder.target('MATLAB')
+            interceptPresent=isempty(chkint) || vvarargin{2*chkint}==true;
+        %else
+        %    interceptPresent=vvarargin{2*chkint}==true;
+        %end
+        
+        if  interceptPresent==true
             X = cat(2,ones(n,1),X);
         end
     end
