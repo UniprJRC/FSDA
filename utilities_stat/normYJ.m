@@ -26,16 +26,16 @@ function Ytra=normYJ(Y,ColtoTra,la, varargin)
 %
 % Optional input arguments:
 %
-%  Jacobian :   Requested Jacobian of transformed values. true (default) or
-%               false. If true (default) the transformation is normalized
-%               to have Jacobian equal to 1
-%                 Example - 'Jacobian',true
-%                 Data Types - Logical
-%
 %  inverse :    Inverse transformation. Logical. If inverse is true, the
 %               inverse transformation is returned. The default value of
 %               inverse is false.
 %                 Example - 'inverse',true
+%                 Data Types - Logical
+%
+%  Jacobian :   Requested Jacobian of transformed values. true (default) or
+%               false. If true (default) the transformation is normalized
+%               to have Jacobian equal to 1
+%                 Example - 'Jacobian',true
 %                 Data Types - Logical
 %
 % Output:
