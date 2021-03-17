@@ -22,12 +22,6 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :       Point where to start monitoring required diagnostics. Scalar.
-%              Note that if bsb is supplied, init>=length(bsb). If init is not
-%              specified it will be set equal to floor(n*0.6).
-%                 Example - 'init',50
-%                 Data Types - double
-%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -42,6 +36,25 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               subset in steps 100 and 200.
 %               Data Types - double
 %
+% init :       Point where to start monitoring required diagnostics. Scalar.
+%              Note that if bsb is supplied, init>=length(bsb). If init is not
+%              specified it will be set equal to floor(n*0.6).
+%                 Example - 'init',50
+%                 Data Types - double
+%
+%  msg  :   It controls whether to display or not messages
+%               about great interchange on the screen. Boolean.
+%               If msg==true (default) messages are displyed on the screen
+%               else no message is displayed on the screen
+%                 Example - 'msg',false
+%                 Data Types - logical
+%
+% nocheck :   It controls whether to perform checks on matrix Y. Scalar.
+%             If nocheck is equal to 1 no check is performed on matrix Y.
+%             As default nocheck=0.
+%                 Example - 'nocheck',1
+%                 Data Types - double
+%
 % plots :     Plot on the screen. Scalar.
 %               If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
@@ -50,17 +63,6 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               Example - 'plots',0
 %               Data Types - double
 %
-%  msg  :   It controls whether to display or not messages
-%               about great interchange on the screen. Boolean.
-%               If msg==true (default) messages are displyed on the screen
-%               else no message is displayed on the screen
-%                 Example - 'msg',false
-%                 Data Types - logical
-% nocheck :   It controls whether to perform checks on matrix Y. Scalar.
-%             If nocheck is equal to 1 no check is performed on matrix Y.
-%             As default nocheck=0.
-%                 Example - 'nocheck',1
-%                 Data Types - double
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -353,9 +355,9 @@ if isempty(bsbsteps)
     % Default for vector bsbsteps which indicates for which steps of the fwd
     % search units forming subset have to be saved
     if n<=5000
-        bsbsteps = init1:1:n;
+        bsbsteps = (init1:1:n)';
     else
-        bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)];
+        bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)]';
     end
     if coder.target('MATLAB')
         BB = NaN(n,length(bsbsteps),'single');
@@ -363,7 +365,7 @@ if isempty(bsbsteps)
         BB = NaN(n,length(bsbsteps));
     end
 elseif bsbsteps==0
-    bsbsteps=init1:n;
+    bsbsteps=(init1:n)';
     if coder.target('MATLAB')
         BB = NaN(n,n-init1+1,'single');
     else
