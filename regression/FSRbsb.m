@@ -361,8 +361,10 @@ elseif bsbsteps==0
     bsbsteps=(init:n)';
     BB = NaN(n,n-init+1,'single');
 else
-    if min(bsbsteps)<init && coder.target('MATLAB')
-        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    if coder.target('MATLAB')
+        if min(bsbsteps)<init
+            warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        end
     end
     boo=(bsbsteps>=init);
     bsbsteps=bsbsteps(boo);

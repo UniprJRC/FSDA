@@ -539,7 +539,7 @@ function [out]=FSR(y,X,varargin)
     FSRoutw = FSR(y, X, 'intercept', false, ...
         'init', floor(n/2)-1, 'msg', 0, 'plots', 1, 'weak', true);
     trim_FSR =  FSRoutw.outliers;
-    down_FSR =  FSRoutw.outliersVIOM;
+    down_FSR =  FSRoutw.VIOMout;
     clean_FSR = FSRoutw.ListCl;
     % plotting
     figure

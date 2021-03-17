@@ -35,13 +35,13 @@ function [out]=addt(y,X,w,varargin)
 %               Example - 'la',0.5 tests square root transformation
 %               Data Types - double
 %
-% nocheck :     Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
+% nocheck :     Check input arguments. Boolean.
+%               If nocheck is equal to true no check is performed on
 %               matrix y and matrix X. Notice that y and X are left
 %               unchanged. In other words the additional column of ones
-%               for the intercept is not added. As default nocheck=0.
-%               Example - 'nocheck',1
-%               Data Types - double
+%               for the intercept is not added. As default nocheck=false.
+%               Example - 'nocheck',true
+%               Data Types - logical
 %
 %   plots:      Plot on the screen. Scalar.
 %               If plots=1 the added variable
