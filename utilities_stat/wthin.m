@@ -21,13 +21,6 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                Data Types - scalar
 %                Example - bandwidth,0.35
 %
-%   retainby  :  retention method. String. The function used to retain the
-%                observations. It can be:
-%                - 'inverse' , i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
-%                - 'comp2one' (default),  i.e. 1 - pdfe/max(pdfe))
-%                Data Types - char
-%                Example - 'method','comp2one'
-%
 %        cup  :  pdf upper limit. Scalar. The upper limit for the pdf used
 %                to compute the retantion probability. If cup = 1
 %                (default), no upper limit is set.
@@ -39,6 +32,14 @@ function [Wt,pretain,varargout] = wthin(X,varargin)
 %                enter in the thinning procedure.
 %                Data Types - scalar
 %                Example - pstar, 0.95  
+%
+%   retainby  :  retention method. String. The function used to retain the
+%                observations. It can be:
+%                - 'inverse' , i.e. (1 ./ pdfe) / max((1 ./ pdfe)))
+%                - 'comp2one' (default),  i.e. 1 - pdfe/max(pdfe))
+%                Data Types - char
+%                Example - 'method','comp2one'
+%
 %  Output:
 %
 %   Wt :        vector of Bernoulli weights. Vector. Contains 1 for retained

@@ -15,6 +15,13 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %
 %  Optional input arguments:
 %
+% distrib:      Reference distribution to use. Character.
+%               The statistical distribution used to compute the
+%               approximated Bonferroni bounds. Distributions implemented
+%               are 'chi2' and 'F' (default).
+%                 Example - 'distrib','chi2'
+%                 Data Types - char
+%
 % init :       Point where to start monitoring required diagnostics. Scalar. 
 %              Note that if bsb is supplied, init>=length(bsb). If init is not
 %              specified it will be set equal to floor(0.5*(n+p+1))+1.
@@ -26,13 +33,6 @@ function Bbound = FSMbonfbound(n,p,varargin)
 %               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
 %                 Example - 'prob',[0.05 0.95] 
 %                 Data Types - double
-%
-% distrib:      Reference distribution to use. Character.
-%               The statistical distribution used to compute the
-%               approximated Bonferroni bounds. Distributions implemented
-%               are 'chi2' and 'F' (default).
-%                 Example - 'distrib','chi2'
-%                 Data Types - char
 %
 %  Output:
 %

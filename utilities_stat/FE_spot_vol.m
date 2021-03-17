@@ -14,15 +14,15 @@ function [spotvar,tau] = FE_spot_vol(x,t, varargin)
 %
 % Optional input arguments:
 %
-%   N    :   cutting frequency. Scalar. If N is not specified, it is set
-%            equal to (length(x)-1)/2.
-%                 Example - 'N',500
-%                 Data Types - single | double
-%
 %   M    :   maximum Fourier frequency for spot variance reconstruction.
 %            Scalar. If M is not specified, it is set equal to
 %            sqrt(length(x))*log(length(x)).
 %                 Example - 'M',218
+%                 Data Types - single | double
+%
+%   N    :   cutting frequency. Scalar. If N is not specified, it is set
+%            equal to (length(x)-1)/2.
+%                 Example - 'N',500
 %                 Data Types - single | double
 %
 % Output:
