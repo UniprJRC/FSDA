@@ -6,15 +6,15 @@ plot(MMDenv(:,1),MMDenv(:,2:end))</pre></div></div><a href='http://rosa.unipr.i
      observations and 5 explanatory variables. The envelopes are produced for
      scaled Mahalanobis distances (no consistency factor is applied)<div class="programlisting"><div class="codeinput"><pre class="matlab-code">MMDenv=FSMenvmmd(10000,5,'scaled',1);
 plot(MMDenv(:,1),MMDenv(:,2:end))</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMenvmmd.html#Example_2'><img vspace="5" hspace="5" src="images\FSMenvmmd_02.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website). Graphical output could not be included in the installation file because toolboxes cannot be greater than 20MB. To load locally the image files, download zip file http://rosa.unipr.it/fsda/images.zip and unzip it to <tt>(docroot)/FSDA/images</tt> or simply run routine <tt>downloadGraphicalOutput.m</tt>"> </a></p></div></div></div><p> </p><div class="examples"><h2 id="ExtraExamples" class="bottom_ruled">Related Examples</h2><div id="expandableExamples" class="expandableContent"><p class="switch"><a class="expandAllLink"href="javascript:void(0);">expand all</a></p><div id="Extraexample_1" class="example_module expandableContent"><div id="ExtraExample_1"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Order statistics and simulations envelopes .</li></span></a></span></h3><div class="collapse"><p>
-     In this example we compare the accuracy of the envelopes computed with 
-     order statistics with those which come from simulations. <div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Fix a seed 
+     In this example we compare the accuracy of the envelopes computed with
+     order statistics with those which come from simulations.<div class="programlisting"><div class="codeinput"><pre class="matlab-code">% Fix a seed
 state=1000;
 mtstream = RandStream('shr3cong','Seed',state);
 RandStream.setGlobalStream(mtstream);
 defaultStream = RandStream.getGlobalStream();
 reset(defaultStream)
 % If you run this example in a version older than 7.9 replace the previous
-% four lines with 
+% four lines with
 % randn('state', 1000);
 n=200;
 p=3;
@@ -46,27 +46,27 @@ mmdT=FSMenvmmd(n,p,'init',init);
 line(mmdT(:,1),mmdT(:,2:4),'LineStyle','-','Color','r');
 xlabel('Subset size m');</pre></div></div><a href='http://rosa.unipr.it/fsda/FSMenvmmd.html#ExtraExample_1'><img vspace="5" hspace="5" src="images\FSMenvmmd_03.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> </a></p></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="Inputs">Input Arguments</h2><div class="expandableContent"><div class="arguments"><div class="input_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"> <div id="inputarg_n" class="clearfix"> </div> <h3 id="input_argument_n" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>n</code> &#8212; Number of observations. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Number of observations.</p> <p>
                </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div class="expandableContent"> <div id="inputarg_v" class="clearfix"> </div> <h3 id="input_argument_v" class="expand"> <span> <a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"> <span class="argument_name"><code>v</code> &#8212; Number of variables. </span>  </a><span class="example_desc">Scalar.</span></span></h3> <div class="collapse"> <p><p>Number of variables.</p> <p>
-               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',50 
-</code>,<code> 'prob',[0.05 0.95] 
-</code>,<code> 'scaled',0 
+               </p></p> <p class="datatypelist"><strong> Data Types: </strong><code>single | double</code></p> </div> </div><div id="namevaluepairarguments" class="clearfix"></div><h3 id="NameValuePairs" class="bottom_ruled">Name-Value Pair Arguments</h3><div class="namevaluecontainer"><p>Specify optional comma-separated pairs of <code>Name,Value</code> arguments. <code>Name</code> is the argument name and <code>Value</code> is the corresponding value. <code>Name</code> must appear  inside single quotes (<code>' '</code>).  You can specify several name and value pair arguments in any order as <code>  Name1,Value1,...,NameN,ValueN</code>.</p>  <span class="example_desc"><strong>Example:</strong><code><code> 'init',50
+</code>,<code> 'prob',[0.05 0.95]
+</code>,<code> 'scaled',0
 </code></code></span></div><div class="expandableContent"><div id="inputarg_init" class="clearfix"></div><h3 id="input_argument_namevalue_init" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>init</code> &#8212;Point where to start monitoring required diagnostics.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p><p>Note that if bsb is supplied, init&gt;=length(bsb). If init is not
               specified it will be set equal to floor(n*0.6).</p> <p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',50 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'init',50
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_prob" class="clearfix"></div><h3 id="input_argument_namevalue_prob" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>prob</code> &#8212;quantiles for which envelopes have
                to be computed.</span></a><span class="example_desc">vector.</span></span></h3><div class="collapse">	<p><p>Vector containing 1 x k elements .</p> <p>
                The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.</p><p>
-                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'prob',[0.05 0.95] 
+                 </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'prob',[0.05 0.95]
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_scaled" class="clearfix"></div><h3 id="input_argument_namevalue_scaled" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>scaled</code> &#8212;It indicates how to compute the envelopes.</span></a><span class="example_desc">scalar.</span></span></h3><div class="collapse">	<p>If scaled&gt;0 the envelopes are produced for
                scaled Mahalanobis distances (no consistency factor is
                applied) else the traditional consistency factor is applied
                (this is the default)
-                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scaled',0 
+                 </p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'scaled',0
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_MMDenv" class="clearfix"></div><h3 id="output_argument_MMDenv" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>MMDenv</code> &#8212;Envelopes
                for the requested quantiles.</span></a><span class="example_desc">n-m0+1 x length(prob)+1 columns</span></span></h3><div class="collapse"><p><p>
-               1st col = fwd search index from m0 to n-1;</p> <p> 
-               2nd col = envelope for quantile prob[1];</p> <p> 
-               3rd col = envelope for quantile prob[2];</p> <p> 
-               ...;</p><p> 
+               1st col = fwd search index from m0 to n-1;</p> <p>
+               2nd col = envelope for quantile prob[1];</p> <p>
+               3rd col = envelope for quantile prob[2];</p> <p>
+               ...;</p><p>
                (k+1) col = envelope for quantile prob[k].</p></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown
  number of multivariate outliers, "Journal of the Royal Statistical
  Society Series B", Vol. 71, pp. 201-221.</p></div></div></div><div class="ref_sect"><h2 id="SeeAlso">See Also</h2><p><span itemprop="seealso"><a href="FSMenvmmd.html" itemprop="url"><span itemprop="name"><code>FSMenvmmd</code></span></a></span> | <span itemprop="seealso"><a href="FSM.html" itemprop="url"><span itemprop="name"><code>FSM</code></span></a></span></div><i>This page has been automatically generated by our routine <a href="publishFS.html">publishFS</a></i></div></section></div></div></div></div><div id="divbottom"></div></body></html>
