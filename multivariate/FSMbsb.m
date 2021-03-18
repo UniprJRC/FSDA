@@ -429,7 +429,7 @@ else
         % If required, store units forming subset at each step
         if (mm>=init1)
             
-            if intersect(mm,bsbsteps)==mm
+            if intersect(mm,bsbsteps(:))==mm
                 if mm<=percn
                     BB(bsb,ij)=bsb;
                 else
