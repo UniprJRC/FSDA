@@ -425,7 +425,7 @@ if isempty(bonflev)
                     NoFalseSig=true; % i.e., no need of further validation
                 end
                 
-                '------------------------------------------------';
+                %'------------------------------------------------';
                 
                 signal=1;
                 
@@ -496,7 +496,9 @@ if isempty(bonflev)
                     mdrsel=mdr(i:i,1:2);
                 end
                 
-                fprintf('\n------------------------------------------------');
+                if msg
+                    fprintf('\n------------------------------------------------');
+                end
                 % Signal is always considered true if it takes place in the
                 % final part of the search
                 NoFalseSig=true;
@@ -545,7 +547,6 @@ if isempty(bonflev)
         %% Stage 1b: signal validation
         if signal==1
             if msg
-                %disp('-------------------')
                 fprintf('\n-------------------\n')
                 disp('Signal validation exceedance of upper envelopes');
             end
@@ -613,7 +614,6 @@ if isempty(bonflev)
             end
         elseif signal==2
             if msg
-                % disp('-------------------')
                 disp('Signal validation exceedance of extreme lower envelope');
             end
             break
