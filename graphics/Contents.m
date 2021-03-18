@@ -24,7 +24,7 @@
 %   mdrrsplot          - Plots the trajectory of minimum deletion residual from random starts                                                               - CLUS-RobClaREG- 2021 Feb 01
 %   mmdplot            - Plots the trajectory of minimum Mahalanobis distance (mmd)                                                                         - VIS-Mult      - 2021 Feb 01
 %   mmdrsplot          - Plots the trajectories of minimum Mahalanobis distances from different starting points                                             - VIS-Mult      - 2021 Feb 01
-%   resfwdplot         - Plots the trajectories of the monitored scaled (squared) residuals                                                                 - VIS-Reg       - 2021 Feb 01
+%   resfwdplot         - Plots the trajectories of the monitored scaled (squared) residuals                                                                 - VIS-Reg       - 2021 Mar 11
 %   resindexplot       - Plots the residuals from a regression analysis versus index number or any other variable                                           - VIS-Reg       - 2021 Feb 01
 %   scatterboxplot     - Creates scatter diagram with marginal boxplots                                                                                     - VIS-Mult      - 2021 Feb 01
 %   spmplot            - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours - VIS-Mult      - 2021 Feb 01
