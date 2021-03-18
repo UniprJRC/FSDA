@@ -20,13 +20,44 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false.
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
+%
+%         bdp :  breakdown point. Scalar.
+%               It measures the fraction of outliers
+%               the algorithm should
+%               resist. In this case any value greater than 0 but smaller
+%               or equal than 0.5 will do fine. If on the other hand the
+%               purpose is subgroups detection then bdp can be greater than
+%               0.5. In any case however n*(1-bdp) must be greater than
+%               p. If this condition is not fulfilled an error will be
+%               given. Please specify h or bdp not both.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%
+%
+%
+%  bonflevoutX : remote units in the X space. Scalar or empty (default).
+%               If the design matrix X contains several high leverage units
+%               (that is units which are very far from the bulk of the
+%               data), it may happen that the best subset may include some
+%               of these units.
+%               If boflevoutX is not empty, outlier detection procedure FSM
+%               is applied to the design matrix X,  using name/pair option
+%               'bonflev',bonflevoutX. The extracted subsets which contain
+%               at least one unit declared as outlier in the X space by FSM
+%               are removed (more precisely they are treated as singular
+%               subsets) from the list of candidate subsets to find the LXS
+%               solution. The default value of bonflevoutX is empty, that
+%               is FSM is not invoked.
+%               Example - 'bonflevoutX',0.95
+%               Data Types - double
+%
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
 %
 %           h : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar.
@@ -41,35 +72,13 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %
-%         bdp :  breakdown point. Scalar.
-%               It measures the fraction of outliers
-%               the algorithm should
-%               resist. In this case any value greater than 0 but smaller
-%               or equal than 0.5 will do fine. If on the other hand the
-%               purpose is subgroups detection then bdp can be greater than
-%               0.5. In any case however n*(1-bdp) must be greater than
-%               p. If this condition is not fulfilled an error will be
-%               given. Please specify h or bdp not both.
-%                 Example - 'bdp',0.4
-%                 Data Types - double
-%
-%       nsamp : Number of subsamples which will be extracted to find the
-%               robust estimator or matrix with preextracted subsamples.
-%               Scalar or matrix.
-%               If nsamp=0 all subsets will be extracted. They will be (n
-%               choose p). If nsamp is (say) 200, 200 subsets will be
-%               extracted. If nsamp is a matrix of size r-by-p, it contains
-%               in the rows the subsets which sill have to be extracted.
-%               For example, if p=3 and nsamp=[ 2 4 9; 23 45 49; 90 34 1];
-%               the first subset is made up of units [2 4 9], the second
-%               subset of units [23 45 49] and the third subset of units
-%               [90 34 1];
-%                 Example - 'nsamp',0
-%                 Data Types - double
-%               Remark: if the number of all possible subset is <1000 the
-%               default is to extract all subsets, otherwise just 1000 if
-%               fastLTS is used (lms=2 or lms is a structure) or 3000 for
-%               standard LTS or LMS.
+%    intercept :  Indicator for constant term. true (default) | false.
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
 %
 %       lms   : Estimation method. Scalar, vector or structure.
 %               If lms is a scalar = 1 (default) Least Median of Squares is
@@ -95,20 +104,12 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
-%       rew   : LXS reweighted. Boolean.
-%                If rew=true the reweighted version of LTS (LMS) is
-%               used and the output quantities refer to the reweighted
-%               version
-%               else no reweighting is performed (default).
-%                 Example - 'rew',true
-%                 Data Types - logical
-%
 %      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
-%               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
-%               column of ones for the intercept is not added. As default
-%               nocheck=false. The controls on h, bdp and nsamp still remain.
-%               Example - 'nocheck',true
+%               check is performed on matrix y and matrix X. Notice that
+%               when no check is true y and X are left unchanged, that is
+%               the additional column of ones for the intercept is
+%               not added. As default nocheck=false. The controls on h, bdp
+%               and nsamp still remain. Example - 'nocheck',true
 %               Data Types - boolean
 %
 %        nomes:  It controls whether to display or not on the screen
@@ -120,21 +121,42 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Example - 'nomes',true
 %               Data Types - logical
 %
-%  bonflevoutX : remote units in the X space. Scalar or empty (default).
-%               If the design matrix X contains several high leverage units
-%               (that is units which are very far from the bulk of the
-%               data), it may happen that the best subset may include some
-%               of these units.
-%               If boflevoutX is not empty, outlier detection procedure FSM
-%               is applied to the design matrix X,  using name/pair option
-%               'bonflev',bonflevoutX. The extracted subsets which contain
-%               at least one unit declared as outlier in the X space by FSM
-%               are removed (more precisely they are treated as singular
-%               subsets) from the list of candidate subsets to find the LXS
-%               solution. The default value of bonflevoutX is empty, that
-%               is FSM is not invoked.
-%               Example - 'bonflevoutX',0.95
-%               Data Types - double
+%
+%        msg  : It controls whether to display or not messages on the screen. Boolean.
+%                If msg==true (default) messages are displayed
+%               on the screen about estimated time to compute the estimator
+%               and the warnings about
+%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
+%               'MATLAB:nearlySingularMatrix' are set to off
+%               else no message is displayed on the screen
+%               Example - 'msg',false
+%               Data Types - logical
+%
+%       nsamp : Number of subsamples which will be extracted to find the
+%               robust estimator or matrix with preextracted subsamples.
+%               Scalar or matrix.
+%               If nsamp=0 all subsets will be extracted. They will be (n
+%               choose p). If nsamp is (say) 200, 200 subsets will be
+%               extracted. If nsamp is a matrix of size r-by-p, it contains
+%               in the rows the subsets which sill have to be extracted.
+%               For example, if p=3 and nsamp=[ 2 4 9; 23 45 49; 90 34 1];
+%               the first subset is made up of units [2 4 9], the second
+%               subset of units [23 45 49] and the third subset of units
+%               [90 34 1];
+%                 Example - 'nsamp',0
+%                 Data Types - double
+%               Remark: if the number of all possible subset is <1000 the
+%               default is to extract all subsets, otherwise just 1000 if
+%               fastLTS is used (lms=2 or lms is a structure) or 3000 for
+%               standard LTS or LMS.
+%
+%       rew   : LXS reweighted. Boolean.
+%                If rew=true the reweighted version of LTS (LMS) is
+%               used and the output quantities refer to the reweighted
+%               version
+%               else no reweighting is performed (default).
+%                 Example - 'rew',true
+%                 Data Types - logical
 %
 %       yxsave : the response vector y and data matrix X are saved into the output
 %                structure out. Scalar.
@@ -153,25 +175,6 @@ function [out , varargout] = LXS(y,X,varargin)
 %               be used.
 %                 Example - 'plots',1
 %                 Data Types - double
-%
-%     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
-%                 Example - 'conflev',0.99
-%                 Data Types - double
-%
-%        msg  : It controls whether to display or not messages on the screen. Boolean.
-%                If msg==true (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               and the warnings about
-%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
-%               else no message is displayed on the screen
-%               Example - 'msg',false
-%               Data Types - logical
-%
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -548,9 +551,7 @@ if nargin > 2
         end
     else % in this case nsamp is the matrix of prextracted subsamples
         if size(options.nsamp,2)~=p
-            if coder.target('MATLAB')
-                error('FSDA:LXS:WrongNsamp',['Matrix nsamp must have ' num2str(p) ' columns']);
-            end
+            error('FSDA:LXS:WrongNsamp','Matrix nsamp must have %.0f columns\n',p);
         end
     end
 end
@@ -658,12 +659,8 @@ end
 
 % Store the indices in varargout
 if nargout==2
-    % if coder.target('MATLAB')
     Ccell={C};
     varargout=Ccell;
-    % else
-    %    varargout=C;
-    %end
 end
 
 
@@ -680,10 +677,14 @@ if ~isempty(bonflevoutX)
     bonflevout=true;
     hdef=floor(n*0.6);
     
-    if options.intercept==true
-        Xwithoutint=X(:,2:end);
-    else
+    if options.nocheck==true
         Xwithoutint=X;
+    else
+        if options.intercept==true
+            Xwithoutint=X(:,2:end);
+        else
+            Xwithoutint=X;
+        end
     end
     v=size(Xwithoutint,2);
     if v>1
@@ -1053,30 +1054,38 @@ out.h=h;
 
 % Store number of singular subsets
 out.singsub=singsub;
-if coder.target('MATLAB')
-    if msg==true
-        if singsub/nselected>0.1
-            disp('------------------------------')
-            if bonflevout == true
-                disp(['Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to ' num2str(100*singsub/nselected) '%'])
-            else
-                disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
-            end
+if msg==true
+    if singsub/nselected>0.1
+        disp('------------------------------')
+        percexcl=100*singsub/nselected;
+        if bonflevout == true
+            fprintf('Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to %.1f %%',percexcl)
+        else
+            fprintf('Warning: Number of subsets without full rank equal to %.1f%%',percexcl)
         end
     end
-    
-    
-    if options.yxsave == true
+end
+
+if options.yxsave == true
+    if options.nocheck==true
+        out.X=X;
+    else
         if options.intercept==true
             % Store X (without the column of ones if there is an intercept)
             out.X=X(:,2:end);
         else
             out.X=X;
         end
-        % Store response
-        out.y=y;
+    end
+    % Store response
+    out.y=y;
+else
+    if ~coder.target('MATLAB')
+        out.X=[];
+        out.y=[];
     end
 end
+
 % Store information about the class of the object
 if lmsopt==1
     out.class='LMS';
