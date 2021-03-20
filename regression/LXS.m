@@ -570,7 +570,7 @@ if isempty(nsamp)
 end
 
 lms=options.lms;            % if options.lms==1 then LMS, else LTS
-if ~isstruct(lms) && lms==2
+if ~isstruct(lms) && lms(1)==2
     % lms=struct;
     refsteps=3;
     reftol=1e-6;
