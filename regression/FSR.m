@@ -709,7 +709,7 @@ else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
     [outLXS]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg,...
         'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
-        'conflev',0.975,'rew',false);
+        'conflev',0.975,'rew',false,'yxsave',false);
     
     if outLXS.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
@@ -793,7 +793,7 @@ else % initial subset is not supplied by the user
                 bsb=setdiff(seq,outLXS.bs(:));
                 [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
                     'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
-                    'conflev',0.975,'rew',false);
+                    'conflev',0.975,'rew',false,'yxsave',false);
                 bs=bsb(outLXS.bs(:));
                 
                 
@@ -806,7 +806,7 @@ else % initial subset is not supplied by the user
                 constr=mdr(:);
                 [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
                     'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
-                    'conflev',0.975,'rew',false);
+                    'conflev',0.975,'rew',false,'yxsave',false);
                 bs=bsb(outLXS.bs);
             end
         else
