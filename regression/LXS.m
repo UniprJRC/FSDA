@@ -1059,9 +1059,9 @@ if msg==true
         disp('------------------------------')
         percexcl=100*singsub/nselected;
         if bonflevout == true
-            fprintf('Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to %.1f %%',percexcl)
+            fprintf('Warning: Number of subsets without full rank or excluded because containing remote units in the X space equal to %.1f %%\n',percexcl)
         else
-            fprintf('Warning: Number of subsets without full rank equal to %.1f%%',percexcl)
+            fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl)
         end
     end
 end
