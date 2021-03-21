@@ -289,12 +289,12 @@ if ~isempty(bonflev)
         end
         bonfthresh=[(init:n-1)' bonflev*ones(n-init,1)];
     end
-                istep =0; % declarations necessary for MATLAB C coder
+    istep =0; % declarations necessary for MATLAB C coder
     c99=0; c999=0; c9999=0;  c99999=0; c001=0; c50=0;
-    gmin=0; NoFalseSig=true;  nout=0; 
+    gmin=0; NoFalseSig=true;  nout=0;
     lowexceed=false;
 else
-    bonfthresh=0;  % Initialization necessary for MATLAB C coder 
+    bonfthresh=0;  % Initialization necessary for MATLAB C coder
     % lowexceed=false means than outlier detection is just based on upper
     % exceedances
     lowexceed=false;
@@ -357,13 +357,13 @@ else
     
     % Divide central part from final part of the search
     istep = n-floor(13*sqrt(n/200));
-
+    
 end
 % Initialization necessary for MATLAB C Coder
 gmin1=0;
 ii=0;
 
- 
+
 %% Part 1. Signal detection and validation
 
 nmdr=size(mdr,1);
@@ -1617,9 +1617,9 @@ out.Un=Un;
 if isempty(bonflev)
     out.nout=nout;
 else
-        if ~coder.target('MATLAB')
-            out.nout=[];
-        end
+    if ~coder.target('MATLAB')
+        out.nout=[];
+    end
 end
 out.beta=beta';
 if strcmp(model,'H')
@@ -1643,11 +1643,11 @@ if weak == true
         out.VIOMout = NaN;
     end
 else
-        if ~coder.target('MATLAB')
-            out.mdag=[];
-            out.ListCl = 1:n;
+    if ~coder.target('MATLAB')
+        out.mdag=[];
+        out.ListCl = 1:n;
         out.VIOMout = NaN;
-        end
+    end
 end
 
 

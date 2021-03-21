@@ -639,8 +639,8 @@ ij=1;
 %  included.
 Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
-                blast=0;
-Xbb=0; resBSB=0; 
+blast=0;
+Xbb=0; resBSB=0;
 %% Start of the forward search
 if nocheck==false && rank(Xb)~=p
     if coder.target('MATLAB')
@@ -764,8 +764,11 @@ else
                     %hiall=sum((X/mAm).*X,2);
                     
                     if bonflevout==true
-                        unitstopenalize=(hi>threshlevoutX*p/mm);
-                        hi(unitstopenalize)=threshlevoutX*p/mm;
+                        thpmm=threshlevoutX*p/mm;
+                        unitstopenalize=hi>repelem(thpmm,n-mm,1);
+                        if any(unitstopenalize)
+                            hi(unitstopenalize)=thpmm;
+                        end
                     else
                         unitstopenalize=false;
                     end

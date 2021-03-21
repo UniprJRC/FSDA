@@ -467,12 +467,13 @@ else
                 
                 % If the interchange involves more than 10 units, store only the
                 % first 10.
-                if (size(unit,2)<=10)
-                    Un(mm-init+1,2:(size(unit,1)+1)) = unit;
+                if length(unit)<=10
+                    Un(mm-init+1,2:(length(unit)+1))=unit;
                 else
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
-                    Un(mm-init+1,2:end) = unit(1:10)';
+                    Un(mm-init+1,2:end)=unit(1:10);
                 end
+                
             end
         end
     end
