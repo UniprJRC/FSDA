@@ -38,7 +38,6 @@ function ci=ncpci(x,fType,df,varargin)
 %                 the numerator and of the denominator of the F
 %                 distribution)
 %
-%
 %  Optional input arguments:
 %
 % confLevel:     confidence levels to be used to
@@ -49,13 +48,6 @@ function ci=ncpci(x,fType,df,varargin)
 %               Example - 'confLevel',0.99
 %               Data Types - double�
 %
-%     prec   : tolerance for the iterative loop. Scalar.
-%             Iteration will run until the estimated percentile is <=prec
-%             away from the requested percentile.
-%             The default value is 1e-6;
-%                 Example - 'prec',1e-05
-%                 Data Types - single | double
-%
 % doAnimate :   show graphically the iteration process.
 %               Logical.
 %               If doAnimate is true the the iteration process will be
@@ -63,6 +55,13 @@ function ci=ncpci(x,fType,df,varargin)
 %               of doAnimate is false.
 %                 Example - 'doAnimate',false
 %                 Data Types - logical
+%
+%     prec   : tolerance for the iterative loop. Scalar.
+%             Iteration will run until the estimated percentile is <=prec
+%             away from the requested percentile.
+%             The default value is 1e-6;
+%                 Example - 'prec',1e-05
+%                 Data Types - single | double
 %
 %  Output:
 %
