@@ -2,8 +2,8 @@
 %% Preamble
 % The purpose of this file is to download and extract the graphical output
 % of the html examples of FSDA contained in file
-% http://rosa.unipr.it/FSDA/outputHTMLfiles.zip into
-% (MATLAB docroot)/FSDA//images
+% http://rosa.unipr.it/FSDA/images.zip into
+% (MATLAB docroot)/FSDA/images
 % if this path exists
 % or to
 % (FSDA root)/helpfiles/FSDA/images.
@@ -70,7 +70,7 @@ else
         disp('in')
         disp([docroot filesep help 'FSDA'])
         disp('-----------------------------')
-        disp('Alternatively, run routine checkFSDAsetup.m')
+        disp('Alternatively, run routine installHelpFiles.m')
         disp('which is located in the main folder of FSDA')
     catch
         disp('Unknown error when trying to unzip file into folder')

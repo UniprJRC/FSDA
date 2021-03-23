@@ -5,31 +5,31 @@
 %   Name             - Description                                                                                                                - Category           - Date last modified
 %------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 %   ace              - Computes alternative conditional expectation                                                                               - REG-Transformations- 2021 Feb 01
-%   addt             - Produces the t test for an additional explanatory variable                                                                 - REG-Regression     - 2021 Feb 26
+%   addt             - Produces the t test for an additional explanatory variable                                                                 - REG-Regression     - 2021 Mar 16
 %   avas             - Computes additivity and variance stabilization for regression                                                              - REG-Transformations- 2021 Feb 01
 %   boxcoxR          - Finds MLE of lambda in linear regression (and confidence interval) using Box Cox, YJ or extended YJ  transformation        - REG-Transformations- 2021 Feb 22
 %   estregimeTAR     - Estimate a regression model with OLS in one of the regimes of a TAR model                                                  - REG-Regression     - 2021 Feb 01
 %   fanBIC           - Uses the output of FSRfan to choose the best value of the transformation parameter in linear regression                    - VIS-Reg            - 2021 Feb 22
 %   fanBICpn         - Uses the output of FSRfan called with input option family 'YJpn' to choose la_P and la_N                                   - VIS-Reg            - 2021 Feb 22
 %   forecastTS       - Forecast for a time series with trend, time varying seasonal, level shift and irregular component                          - REG-Regression     - 2021 Feb 22
-%   FSR              - Computes forward search estimator in linear regression                                                                     - REG-Regression     - 2021 Feb 22
+%   FSR              - Computes forward search estimator in linear regression                                                                     - REG-Regression     - 2021 Mar 17
 %   FSRaddt          - Produces t deletion tests for each explanatory variable                                                                    - REG-ModelSelection - 2021 Feb 22
 %   FSRB             - Gives an automatic outlier detection procedure in Bayesian linear regression                                               - REG-Bayes          - 2021 Feb 22
 %   FSRBbsb          - Returns the units belonging to the subset in each step of the Bayesian forward search                                      - REG-Regression     - 2021 Feb 22
 %   FSRBeda          - Enables to monitor several quantities in each step of the Bayesian search                                                  - REG-Bayes          - 2021 Feb 22
 %   FSRBmdr          - Computes minimum deletion residual and other basic linear regression quantities in each step of the Bayesian search        - REG-Bayes          - 2021 Feb 22
 %   FSRBr            - Bayesian forward search in linear regression reweighted                                                                    - REG-Bayes          - 2021 Feb 22
-%   FSRbsb           - Returns the units belonging to the subset in each step of the forward search                                               - REG-Regression     - 2021 Feb 26
+%   FSRbsb           - Returns the units belonging to the subset in each step of the forward search                                               - REG-Regression     - 2021 Mar 16
 %   FSRcp            - Monitors Cp and AIC for all models of interest of size smallp                                                              - REG-ModelSelection - 2021 Feb 22
 %   FSReda           - Enables to monitor several quantities in each step of the forward search                                                   - REG-Regression     - 2021 Feb 22
-%   FSRenvmdr        - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                           - REG-Regression     - 2021 Feb 01
-%   FSRfan           - Monitors the values of the score test statistic for each lambda                                                            - REG-Transformations- 2021 Feb 28
+%   FSRenvmdr        - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                           - REG-Regression     - 2021 Mar 15
+%   FSRfan           - Monitors the values of the score test statistic for each lambda                                                            - REG-Transformations- 2021 Mar 05
 %   FSRH             - Gives an automatic outlier detection procedure in heteroskedastic linear regression                                        - REG-Hetero         - 2021 Feb 22
 %   FSRHbsb          - Returns the units belonging to the subset in each step of the heteroskedastic forward search                               - REG-Hetero         - 2021 Feb 22
 %   FSRHeda          - Enables to monitor several quantities in each step of the forward search                                                   - REG-Hetero         - 2021 Feb 22
 %   FSRHmdr          - Computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search - REG-Hetero         - 2021 Feb 22
 %   FSRinvmdr        - Converts values of minimum deletion residual into confidence levels                                                        - REG-Regression     - 2021 Feb 01
-%   FSRmdr           - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                 - REG-Regression     - 2021 Feb 22
+%   FSRmdr           - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                 - REG-Regression     - 2021 Mar 16
 %   FSRms            - Performs robust model selection using flexible trimming in linear regression                                               - REG-ModelSelection - 2021 Feb 22
 %   FSRr             - Forward search in linear regression reweighted                                                                             - REG-Regression     - 2021 Feb 22
 %   FSRts            - Is an automatic adaptive procedure to detect outliers in time series                                                       - REG-Regression     - 2021 Feb 22
@@ -38,7 +38,7 @@
 %   GYfilt           - Computes the Gervini-Yohai univariate outlier identifier                                                                   - UTISTAT            - 2021 Feb 01
 %   LTSts            - Extends LTS estimator to time series                                                                                       - REG-Regression     - 2021 Feb 22
 %   LTStsVarSel      - Does variable selection in the robust time series model LTSts                                                              - REG-Regression     - 2021 Feb 01
-%   LXS              - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                       - REG-Regression     - 2021 Feb 27
+%   LXS              - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                       - REG-Regression     - 2021 Mar 18
 %   mdpdR            - Allows to apply Minimum Density Power Divergence criterion to parametric regression problems                               - REG-Regression     - 2021 Feb 22
 %   mdpdReda         - Allows to monitor  Minimum Density Power Divergence criterion to parametric regression problems                            - REG-Regression     - 2021 Feb 22
 %   MMreg            - Computes MM estimator of regression coefficients                                                                           - REG-Regression     - 2021 Feb 22
@@ -57,7 +57,7 @@
 %   ScoreYJall       - Computes all the 4 score tests for YJ transformation                                                                       - REG-Transformations- 2021 Feb 28
 %   ScoreYJmle       - Computes the likelihood ratio test fof H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0                                           - REG-Transformations- 2021 Feb 22
 %   ScoreYJpn        - Computes the score test for YJ transformation for pos and neg observations                                                 - REG-Transformations- 2021 Mar 01
-%   SETARX           - Implements Threshold autoregressive models with two regimes                                                                - REG-Regression     - 2021 Mar 01
+%   SETARX           - Implements Threshold autoregressive models with two regimes                                                                - REG-Regression     - 2021 Mar 02
 %   simulateLM       - Simulates linear regression data with prespecified values of statistical indexes                                           - REG-Regression     - 2021 Feb 22
 %   simulateTS       - Simulates a time series with trend, time varying seasonal, level shift and irregular component                             - REG-Regression     - 2021 Feb 22
 %   smothr           - Produces smoothed values with constraints                                                                                  - REG-Transformations- 2021 Feb 01

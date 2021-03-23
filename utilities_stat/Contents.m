@@ -14,20 +14,10 @@
 %   FE_int_vol              - Computes the integrated variance from a diffusion process via the Fourier estimator using Dirichlet kernel                          - UTISTAT         - 2021 Mar 01
 %   FE_int_vol_Fejer        - Computes the integrated variance from a diffusion process via the Fourier estimator using Fejer kernel                              - UTISTAT         - 2021 Mar 01
 %   FE_spot_vol             - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel                          - UTISTAT         - 2021 Mar 01
-%   FE_spot_vol_FFT         - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm - UTISTAT         - 2021 Mar 01
+%   FE_spot_vol_FFT         - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm - UTISTAT         - 2021 Mar 02
 %   FowlkesMallowsIndex     - Computes the Fowlkes and Mallows index                                                                                              - UTISTAT         - 2021 Feb 01
-%   FSMbonfbound            - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                          - UTISTAT         - 2021 Feb 01
-%   FSRbonfbound            - Computes Bonferroni bounds for each step of the search (in linear regression)                                                       - UTISTAT         - 2021 Feb 01
-%   GUIconcentration        - Shows the necessary calculations to obtain the GINI concentration index in a GUI                                                    - GUI             - 2021 Feb 26
-%   GUIcov                  - Shows the necessary calculations to obtain the covariance in a GUI                                                                  - GUI             - 2021 Feb 22
-%   GUImad                  - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                                                - GUI             - 2021 Feb 26
-%   GUIpowermean            - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                                                    - GUI             - 2021 Feb 26
-%   GUIquantile             - Shows the necessary calculations to obtain $x_z$ quantile                                                                           - GUI             - 2021 Feb 22
-%   GUIregress              - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                                             - GUI             - 2021 Feb 24
-%   GUIskewness             - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI             - 2021 Feb 22
-%   GUIstd                  - Shows the necessary calculations to obtain the standard deviation in a GUI                                                          - GUI             - 2021 Feb 22
-%   GUItrimmean             - Shows the necessary calculations to obtain the trimmed mean in a GUI                                                                - GUI             - 2021 Feb 22
-%   GUIvar                  - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI             - 2021 Feb 26
+%   FSMbonfbound            - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                          - UTISTAT         - 2021 Mar 06
+%   FSRbonfbound            - Computes Bonferroni bounds for each step of the search (in linear regression)                                                       - UTISTAT         - 2021 Mar 15
 %   HAbdp                   - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT         - 2021 Feb 01
 %   HAc                     - Computes breakdown point and efficiency associated with constant c                                                                  - UTISTAT         - 2021 Feb 01
 %   HAeff                   - Finds the tuning constant that guarrantees a requested asymptotic efficiency                                                        - UTISTAT         - 2021 Feb 01
@@ -56,19 +46,19 @@
 %   inversegaminv           - Inversegampdf Inverse-gamma cumulative distribution function                                                                        - UTISTAT         - 2021 Feb 01
 %   inversegampdf           - Computes inverse-gamma probability density function                                                                                 - UTISTAT         - 2021 Feb 01
 %   kdebiv                  - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                      - UTISTAT         - 2021 Feb 01
-%   logmvnpdfFS             - Produces log of Multivariate normal probability density function (pdf)                                                              - UTISTAT         - 2021 Feb 01
+%   logmvnpdfFS             - Produces log of Multivariate normal probability density function (pdf)                                                              - UTISTAT         - 2021 Mar 02
 %   mahalCorAna             - MahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y                                                  - UTISTAT         - 2021 Feb 01
 %   mahalFS                 - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                          - UTISTAT         - 2021 Feb 01
 %   mdpd                    - Computes Minimum Distance Power Divergence statistics                                                                               - UTISTAT         - 2021 Feb 01
 %   Mscale                  - Finds the M estimator of the scale                                                                                                  - UTISTAT         - 2021 Feb 01
 %   mtR                     - Generates the same random numbers produced by R software with Mersenne Twister mt19937ar                                            - UTISTAT         - 2021 Feb 01
-%   ncpci                   - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                    - UTISTAT         - 2021 Feb 01
+%   ncpci                   - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                    - UTISTAT         - 2021 Mar 17
 %   ncx2mixtcdf             - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                         - UTISTAT         - 2021 Feb 01
 %   normBoxCox              - Computes (normalized) Box-Cox transformation                                                                                        - UTISTAT         - 2021 Feb 01
 %   normYJ                  - Computes (normalized) Yeo-Johnson transformation                                                                                    - UTISTAT         - 2021 Feb 27
 %   normYJpn                - NormYJ computes (normalized) extended Yeo-Johnson transformation                                                                    - UTISTAT         - 2021 Feb 01
 %   OPTbdp                  - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT         - 2021 Feb 01
-%   OPTc                    - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT         - 2021 Feb 01
+%   OPTc                    - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT         - 2021 Mar 02
 %   OPTeff                  - Finds the constant c which is associated to the requested efficiency                                                                - UTISTAT         - 2021 Feb 01
 %   OptimalCuttingFrequency - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT         - 2021 Mar 01
 %   OPTpsi                  - Computes psi function (derivative of rho function) for optimal weight function                                                      - UTISTAT         - 2021 Feb 01
