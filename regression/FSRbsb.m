@@ -47,16 +47,17 @@ function [Un,BB] = FSRbsb(y,X,bsb,varargin)
 %                  Example - 'nocheck',true
 %                  Data Types - boolean
 %
-%   bsbsteps :  Save the units forming subsets in selected steps. Vector.
+%   bsbsteps :  Save the units forming subsets in selected steps. Vector or
+%               empty value.
 %               It specifies for which steps of the fwd search it is
-%               necessary to save the units forming subset. If bsbsteps is
-%               0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=7530 and init=6, units forming subset are
-%               stored for
-%               m=init, 100, 200, ..., 7500.
+%               necessary to save the units forming subset. If bsbsteps
+%               is 0 we store the units forming subset in all steps. If
+%               bsbsteps=[] or omitted, the default is to store the units
+%               forming subset in all steps if n<=5000, else to store the
+%               units forming subset at steps init and steps which are
+%               multiple of 100. For example, as default, if n=753 and
+%               init=6, units forming subset are stored for m=init, 100,
+%               200, 300, 400, 500 and 600.
 %               Example - 'bsbsteps',[100 200] stores the unis forming
 %               subset in steps 100 and 200.
 %               Data Types - double
@@ -360,8 +361,10 @@ elseif bsbsteps==0
     bsbsteps=(init:n)';
     BB = NaN(n,n-init+1,'single');
 else
-    if min(bsbsteps)<init && coder.target('MATLAB')
-        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+    if coder.target('MATLAB')
+        if min(bsbsteps)<init
+            warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        end
     end
     boo=(bsbsteps>=init);
     bsbsteps=bsbsteps(boo);

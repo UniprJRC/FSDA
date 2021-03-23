@@ -31,6 +31,41 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %
 % Optional input arguments:
 %
+%
+% bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
+%               non singular X. Scalar.
+%               This options controls what to do when rank(X(bsbm,:)) is
+%               smaller then number of explanatory variables.
+%               If bsbmfullrank = 1 (default is 1) these units (whose number
+%               is say mnofullrank) are constrained to enter the search in
+%               the final n-mnofullrank steps else the search continues
+%               using as estimate of beta at step m the estimate of beta
+%               found in the previous step.
+%               Example - 'bsbmfullrank',1
+%               Data Types - double
+%
+%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
+%               which steps of the fwd search it
+%               is necessary to save the units forming subsets. If bsbsteps
+%               is 0 we store the units forming subset in all steps. If
+%               bsbsteps=[] or omitted, the default is to store the units
+%               forming subset in all steps if n<=5000, else to store the
+%               units forming subset at steps init and steps which are
+%               multiple of 100. For example, as default, if n=753 and
+%               init=6, units forming subset are stored for m=init, 100,
+%               200, 300, 400, 500 and 600.
+%               Example - 'bsbsteps',[100 200] stores the unis forming
+%               subset in steps 100 and 200.
+%               Data Types - double
+%
+%  constr :     Constrained search. Vector. r x 1 vector which contains the
+%               list of units which are forced to join the search in the
+%               last r steps. The default is constr=[].
+%                No constraint is imposed
+%               Example - 'constr',[1:10] forces the first 10 units to join
+%               the subset in the last 10 steps
+%               Data Types - double
+%
 %  init :       Search initialization. Scalar.
 %               It specifies the point where to initialize the search and
 %               start monitoring required diagnostics. If it is not
@@ -48,23 +83,17 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %                 Example - 'intercept',false
 %                 Data Types - boolean
 %
-%  plots :      Plot on the screen. Scalar. If equal to one a plot of
-%               minimum deletion residual appears  on the screen with 1%,
-%               50% and 99% confidence bands else (default) no plot is
-%               shown.
-%               Example - 'plots',1
-%               Data Types - double
-%               Remark: the plot which is produced is very simple. In order
-%               to control a series of options in this plot and in order to
-%               connect it dynamically to the other forward plots it is
-%               necessary to use function mdrplot.
-%
-%  nocheck:     Check input arguments. Boolean. If nocheck is equal to true no
-%               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
-%               column of ones for the intercept is not added. As default
-%               nocheck=false. The controls on h, alpha and nsamp still remain
-%               Example - 'nocheck',true
+% internationaltrade : criterion for updating subset. Boolean.
+%               If internationaltrade is true (default is false) residuals
+%               which have large of the final column of X (generally
+%               quantity) are reduced. Note that this guarantees that
+%               leverge units which have a large value of  X will tend to
+%               stay in the subset. This option is particularly useful in
+%               the context of international trade data where we
+%               regress value (value=price*Q) on quantity (Q). In other
+%               words, we use the residuals as if we were regressing y/X
+%               (that is price) on the vector of ones.
+%               Example - 'internationaltrade',true
 %               Data Types - boolean
 %
 %  msg  :       Level of output to display. Scalar. It controls whether to
@@ -75,39 +104,13 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               Example - 'msg',1
 %               Data Types - double
 %
-%  constr :     Constrained search. Vector. r x 1 vector which contains the
-%               list of units which are forced to join the search in the
-%               last r steps. The default is constr=''.
-%                No constraint is imposed
-%               Example - 'constr',[1:10] forces the first 10 units to join
-%               the subset in the last 10 steps
-%               Data Types - double
-%
-% bsbmfullrank :What to do in case subset at step m (say bsbm) produces a
-%               non singular X. Scalar.
-%               This options controls what to do when rank(X(bsbm,:)) is
-%               smaller then number of explanatory variables.
-%               If bsbmfullrank = 1 (default is 1) these units (whose number
-%               is say mnofullrank) are constrained to enter the search in
-%               the final n-mnofullrank steps else the search continues
-%               using as estimate of beta at step m the estimate of beta
-%               found in the previous step.
-%               Example - 'bsbmfullrank',1
-%               Data Types - double
-%
-%   bsbsteps :  Save the units forming subsets. Vector. It specifies for
-%               which steps of the fwd search it
-%               is necessary to save the units forming subsets. If bsbsteps
-%               is 0 we store the units forming subset in all steps. The
-%               default is store the units forming subset in all steps if
-%               n<=5000, else to store the units forming subset at steps
-%               init and steps which are multiple of 100. For example, as
-%               default, if n=753 and init=6,
-%               units forming subset are stored for
-%               m=init, 100, 200, 300, 400, 500 and 600.
-%               Example - 'bsbsteps',[100 200] stores the unis forming
-%               subset in steps 100 and 200.
-%               Data Types - double
+%  nocheck:     Check input arguments. Boolean. If nocheck is equal to true no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=false. The controls on h, alpha and nsamp still remain
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %threshlevoutX: threshold for high leverage units. Scalar or empty value.
 %               Threshold to bound the effect of high leverage units in the
@@ -124,19 +127,18 @@ function [mdr,Un,BB,Bols,S2] = FSRmdr(y,X,bsb,varargin)
 %               imposed.
 %               Example - 'threshlevoutX',5
 %               Data Types - double
+
 %
-% internationaltrade : criterion for updating subset. Boolean.
-%               If internationaltrade is true (default is false) residuals
-%               which have large of the final column of X (generally
-%               quantity) are reduced. Note that this guarantees that
-%               leverge units which have a large value of  X will tend to
-%               stay in the subset. This option is particularly useful in
-%               the context of international trade data where we 
-%               regress value (value=price*Q) on quantity (Q). In other
-%               words, we use the residuals as if we were regressing y/X
-%               (that is price) on the vector of ones.
-%               Example - 'internationaltrade',true
-%               Data Types - boolean
+%  plots :      Plot on the screen. Scalar. If equal to one a plot of
+%               minimum deletion residual appears  on the screen with 1%,
+%               50% and 99% confidence bands else (default) no plot is
+%               shown.
+%               Example - 'plots',1
+%               Data Types - double
+%               Remark: the plot which is produced is very simple. In order
+%               to control a series of options in this plot and in order to
+%               connect it dynamically to the other forward plots it is
+%               necessary to use function mdrplot.
 %
 %
 % Output:
@@ -476,20 +478,21 @@ end
 
 internationaltrade=false;
 
-options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
-    'constr','','bsbmfullrank',1,'bsbsteps',bsbstepdef,...
-    'threshlevoutX',[],'internationaltrade',internationaltrade);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    options=struct('intercept',true,'init',initdef,'plots',0,'nocheck',false,'msg',1,...
+        'constr',[],'bsbmfullrank',1,'bsbsteps',bsbstepdef,...
+        'threshlevoutX',[],'internationaltrade',internationaltrade);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSRmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
-
 
 if nargin<3
     error('FSDA:FSRmdr:missingInputs','Initial subset is missing');
@@ -505,7 +508,8 @@ end
 % And check if the optional user parameters are reasonable.
 
 if bsb==0
-    Ra=1; nwhile=1;
+    Xb=0;
+    Ra=true; nwhile=1;
     while and(Ra,nwhile<100)
         bsb=randsample(n,p);
         Xb=X(bsb,:);
@@ -513,7 +517,11 @@ if bsb==0
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSDA:FSRmdr:NoFullRank','Unable to randomly sample full rank matrix');
+        if coder.target('MATLAB')
+            warning('FSDA:FSRmdr:NoFullRank','Unable to randomly sample full rank matrix');
+        else
+            disp('FSDA:FSRmdr:NoFullRank','Unable to randomly sample full rank matrix');
+        end
     end
     yb=y(bsb);
 else
@@ -530,8 +538,8 @@ if  init1 <p+1
         'It is set to p+1.']);
     init1=p+1;
 elseif init1<ini0
-    fprintf(['Attention : init1 should be >= length of supplied subset. \n',...
-        'It is set equal to ' num2str(length(bsb)) ]);
+    formatSpec = 'Attention : init1 should be >= length of supplied subset. It is set equal to %.0f';
+    sprintf(formatSpec,length(bsb))
     init1=ini0;
 elseif init1>=n
     fprintf(['Attention : init1 should be smaller than n. \n',...
@@ -542,13 +550,22 @@ end
 
 msg=options.msg;
 constr=options.constr;
+% if ~isempty(constr)
+%     constr=constr(:);
+%     constr(constr>n)=[];
+% end
 bsbmfullrank=options.bsbmfullrank;
 bsbsteps=options.bsbsteps;
+if isempty(bsbsteps)
+    bsbsteps=bsbstepdef;
+end
 nocheck=options.nocheck;
 internationaltrade=options.internationaltrade;
 
 if internationaltrade == true
     weight=(X(:,end).^2);
+else
+    weight=0;
 end
 
 threshlevoutX=options.threshlevoutX;
@@ -622,11 +639,17 @@ ij=1;
 %  included.
 Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
-
+                blast=0;
+Xbb=0; resBSB=0; 
 %% Start of the forward search
 if nocheck==false && rank(Xb)~=p
-    warning('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
-    warning('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
+    if coder.target('MATLAB')
+        warning('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
+        warning('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
+    else
+        disp('FSDA:FSRmdr:NoFullRank','Supplied initial subset does not produce full rank matrix');
+        disp('FSDA:FSRmdr:NoFullRank','FS loop will not be performed');
+    end
     mdr=NaN;
     % FS loop will not be performed
 else
@@ -649,7 +672,7 @@ else
             resBSB=yb-Xb*b;
             blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters
-            if bsbmfullrank
+            if bsbmfullrank  == true
                 Xbx=Xb;
                 nclx=ncl;
                 bsbx=zeros(n,1);
@@ -677,7 +700,11 @@ else
                 bsbsing=bsbx(1:size(Xbb,1)-1);
                 
                 if msg==1
-                    warning('FSDA:FSRmdr','Rank problem in step %d:',mm);
+                    if coder.target('MATLAB')
+                        warning('FSDA:FSRmdr','Rank problem in step %d:',mm);
+                    else
+                        fprintf('FSDA:FSRmdr,Rank problem in step %.0f\n',mm);
+                    end
                     disp('Observations')
                     disp(bsbsing')
                     disp('produce a singular matrix')
@@ -690,7 +717,7 @@ else
                 return
                 
             else
-                disp(['Matrix without full rank at step m=' num2str(mm)])
+                fprintf('Matrix without full rank at step m= %.0f\n',mm)
                 disp('Estimate of \beta which is used is based on previous step with full rank')
                 b=blast;
                 % disp([mm b'])
@@ -719,7 +746,7 @@ else
                 ybtilde=yb-sum(yb)/mm;
                 S2(mm-init1+1,3)=1-(resBSB'*resBSB)/(ybtilde'*ybtilde);
                 
-                    
+                
                 if mm<n
                     mAm=Xb'*Xb;
                     
@@ -739,6 +766,8 @@ else
                     if bonflevout==true
                         unitstopenalize=(hi>threshlevoutX*p/mm);
                         hi(unitstopenalize)=threshlevoutX*p/mm;
+                    else
+                        unitstopenalize=false;
                     end
                     
                     ord = [(r(ncl,2)./(1+hi)) e(ncl)];
@@ -754,7 +783,11 @@ else
                     selmdr=min(ord(:,1));
                     
                     if S2(mm-init1+1,2)==0
-                        warning('FSDA:FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
+                        if coder.target('MATLAB')
+                            warning('FSDA:FSRmdr:ZeroS2','Value of S2 at step %d is zero, mdr is NaN',mm-init1+1);
+                        else
+                            sprintf('Value of S2 at step %.0f is zero, mdr is NaN',mm-init1+1);
+                        end
                     else
                         mdr(mm-init1+1,2)=sqrt(selmdr(1,1)/S2(mm-init1+1,2));
                     end
@@ -821,7 +854,7 @@ else
                 if ~isempty(constr) && mm<n-length(constr)-1
                     % disp(mm)
                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
-                    ncl=setdiff(ncl,constr);
+                    ncl=setdiff(ncl,constr(:));
                 else
                     ncl=ord(mm+2:n,1);    % ncl= units forming the new noclean
                 end
@@ -831,25 +864,26 @@ else
     end  % for mm=ini0:n loop
     
     % Plot minimum deletion residual with 1%, 50% and 99% envelopes
-    if options.plots==1
-        quant=[0.01;0.5;0.99];
-        % Compute theoretical envelops for minimum deletion residual based on all
-        % the observations for the above quantiles.
-        [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1);
-        plot(mdr(:,1),mdr(:,2));
-        
-        % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
-        lwdenv=2;
-        % Superimpose 50% envelope
-        line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
-        % Superimpose 1% and 99% envelope
-        line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
-        
-        xlabel('Subset size m');
-        ylabel('Monitoring of minimum deletion residual');
+    if coder.target('MATLAB')
+        if options.plots==1
+            quant=[0.01;0.5;0.99];
+            % Compute theoretical envelops for minimum deletion residual based on all
+            % the observations for the above quantiles.
+            [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1);
+            plot(mdr(:,1),mdr(:,2));
+            
+            % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
+            lwdenv=2;
+            % Superimpose 50% envelope
+            line(gmin(:,1),gmin(:,3),'LineWidth',lwdenv,'LineStyle','--','Color','g','tag','env');
+            % Superimpose 1% and 99% envelope
+            line(gmin(:,1),gmin(:,2),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+            line(gmin(:,1),gmin(:,4),'LineWidth',lwdenv,'LineStyle','--','Color',[0.2 0.8 0.4],'tag','env');
+            
+            xlabel('Subset size m');
+            ylabel('Monitoring of minimum deletion residual');
+        end
     end
-    
 end % rank check
 
 end

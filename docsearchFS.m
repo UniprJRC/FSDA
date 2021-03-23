@@ -47,7 +47,7 @@ a=ver('matlab');
 if str2double(a.Version)>7.14
     
     if isempty(namehtmlhelpfile)
-        web([docroot '/FSDA/index.html'])
+        webFS([docroot '/FSDA/index.html'])
     else
         
         [~,~,ext]=fileparts(namehtmlhelpfile);
@@ -57,7 +57,7 @@ if str2double(a.Version)>7.14
         elseif ~strcmp(ext,'.html')
             error('FSDA:docsearchFS','Wrong file extension. Extension must be html')
         end
-        web([docroot '/FSDA/' namehtmlhelpfile])
+        webFS([docroot '/FSDA/' namehtmlhelpfile])
     end
     
 else
@@ -78,7 +78,7 @@ else
         else
             outputOFHtmlHelpFile=[pathFSDAstr fsep 'helpfiles' fsep 'FSDA' filesep namehtmlhelpfile];
         end
-        web(outputOFHtmlHelpFile);
+        webFS(outputOFHtmlHelpFile);
     end
     
     

@@ -25,13 +25,13 @@ function Bbound = FSMbonfbound(n,p,varargin)
 % init :       Point where to start monitoring required diagnostics. Scalar. 
 %              Note that if bsb is supplied, init>=length(bsb). If init is not
 %              specified it will be set equal to floor(0.5*(n+p+1))+1.
-%                 Example - 'init',50 
+%                 Example - 'init',50
 %                 Data Types - double
 %
 % prob:        quantiles for which envelopes have
 %               to be computed. Vector. Vector containing 1 x k elements .
 %               The default is to produce 1 per cent, 50 per cent and 99 per cent envelopes.
-%                 Example - 'prob',[0.05 0.95] 
+%                 Example - 'prob',[0.05 0.95]
 %                 Data Types - double
 %
 %  Output:
@@ -66,7 +66,7 @@ function Bbound = FSMbonfbound(n,p,varargin)
     %% Example using default options.
     n=1000;
     p=5;
-    init=floor(0.5*(n+p+1))+1; 
+    init=floor(0.5*(n+p+1))+1;
     MMDenv = FSMenvmmd(n,p,'init',init);
     Bbound = FSMbonfbound(n,p,'init',init);
     figure;
@@ -135,7 +135,11 @@ prob=options.prob;
 distrib=options.distrib;
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
-    error('FSDA:FSMbonfbound:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    if coder.target('MATLAB')
+        error('FSDA:FSMbonfbound:WrongM0',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    else
+        error('FSDA:FSMbonfbound:WrongM0','Initial starting point of the search is greater than n-1');
+    end
 end
 
 %% Bonferroni bound generation
@@ -158,7 +162,7 @@ if strcmp(distrib,'chi2')
 else
     MinBonf = sqrt((n/(n-1)*p).*((mm-1)./(mm-p)).*finv(1-((1-probm)./(mm+1)),p,(mm-p)));
     %MinBonf = sqrt(((m-1).^2./m).*betainv(1-((1-probm)./(mm+1)),p/2,(mm-p-1)/2));
-end          
+end
 Bbound = [m MinBonf];
 end
 
