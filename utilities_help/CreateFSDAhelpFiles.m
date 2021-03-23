@@ -320,10 +320,12 @@ writetable(fileSitemap,[FSDAroot fsep 'helpfiles' fsep 'FSDAweb' fsep 'sitemap.t
     'WriteVariableNames',false);
 
 %% Step 3 Create zip file containing images of HTML files
-% zip all images files from (FSDAroot)/helpfiles/FSDA/images
+% zip all images files from (FSDAroot)/helpfiles/FSDA/images/
+% Note that last / otherwise the files inside the zip archive will have
+% subfolder images
 % into (FSDAroot)/helpfiles/FSDA/FSDAweb/images.zip
 zipfilename=[FSDAroot fsep 'helpfiles' filesep 'FSDAweb' filesep 'images.zip'];
-filenames=[FSDAroot fsep 'helpfiles' filesep 'FSDA' filesep 'images'];
+filenames=[FSDAroot fsep 'helpfiles' filesep 'FSDA' filesep 'images' filesep];
 zip(zipfilename,filenames);
 
 %% Now if all was well let us do the setup.exe
