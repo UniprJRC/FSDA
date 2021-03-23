@@ -3,7 +3,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 % Required input arguments:
 %
-% X :          Input data. Matrix. 
+% X :          Input data. Matrix.
 %               n x v data matrix; n observations and v variables. Rows of
 %               X represent observations, and columns represent variables.
 %               Missing values (NaN's) and infinite values (Inf's) are
@@ -22,7 +22,7 @@ function [X,n,p] = chkinputM(X, nnargin, vvarargin)
 %
 % Output:
 %
-% X:            Data matrix without missing and infs. Matrix. 
+% X:            Data matrix without missing and infs. Matrix.
 %               The new matrix of variables, with missing or
 %               infinite values excluded.
 % n:            Number of rows of X (observations). Scalar.  Number of
@@ -57,9 +57,17 @@ stdargin = nnargin - optargin;
 
 if nnargin > stdargin
     
-    % chklist is the vector containing the names of optional arguments
-    chklist=vvarargin(1:2:length(vvarargin));
-    
+    if coder.target('MATLAB')
+        % chklist is the vector containing the names of optional arguments
+        chklist=vvarargin(1:2:length(vvarargin));
+    else
+        chklist=cell(1,length(vvarargin)/2);
+        ij=0;
+        for i=1:2:(length(vvarargin)-1)
+            ij=ij+1;
+            chklist{ij}=vvarargin{i};
+        end
+    end
     % chkchk is the position of the option nocheck in vector chklist
     % chkchk = strmatch('nocheck',chklist,'exact');
     chkchk = find(strcmpi('nocheck',chklist));
@@ -94,7 +102,11 @@ else
     constcols = find(max(X,[],1)-min(X,[],1) == 0);
     if numel(constcols)>=1
         X(:,constcols(1:end))=[];
-        disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
+        if coder.target('MATLAB')
+            disp(['Warning: columns ' num2str(constcols) ' are constant and just col ' num2str(constcols(1)) ' has been kept!']);
+        else
+            disp('Warning: columns constant and just on of them has been kept!');
+        end
     end
     
     % p is the number of parameters to be estimated

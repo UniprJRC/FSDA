@@ -95,42 +95,13 @@ function [out , varargout] = LXS(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
-%       rew   : LXS reweighted. Scalar.
-%                If rew=1 the reweighted version of LTS (LMS) is
+%       rew   : LXS reweighted. Boolean.
+%                If rew=true the reweighted version of LTS (LMS) is
 %               used and the output quantities refer to the reweighted
 %               version
 %               else no reweighting is performed (default).
-%                 Example - 'rew',1
-%                 Data Types - double
-%
-%     conflev :  Confidence level which is
-%               used to declare units as outliers. Scalar
-%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
-%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
-%               Default value is 0.975
-%                 Example - 'conflev',0.99
-%                 Data Types - double
-%
-%       plots : Plot on the screen. Scalar or structure.
-%               If plots = 1, a plot which shows the
-%               robust residuals against index number is shown on the
-%               screen. The confidence level which is used to draw the
-%               horizontal lines associated with the bands for the
-%               residuals is as specified in input option conflev. If
-%               conflev is missing a nominal 0.975 confidence interval will
-%               be used.
-%                 Example - 'plots',1
-%                 Data Types - double
-%
-%        msg  : It controls whether to display or not messages on the screen. Boolean.
-%                If msg==true (default) messages are displayed
-%               on the screen about estimated time to compute the estimator
-%               and the warnings about
-%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
-%               'MATLAB:nearlySingularMatrix' are set to off
-%               else no message is displayed on the screen
-%               Example - 'msg',false
-%               Data Types - logical
+%                 Example - 'rew',true
+%                 Data Types - logical
 %
 %      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
 %               check is performed on matrix y and matrix X. Notice that y
@@ -141,13 +112,13 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Data Types - boolean
 %
 %        nomes:  It controls whether to display or not on the screen
-%               messages about estimated  time to compute LMS (LTS) . Scalar.
-%               If nomes is equal to 1 no message about estimated
+%               messages about estimated  time to compute LMS (LTS) . Boolean.
+%               If nomes is equal to true no message about estimated
 %               time to compute LMS (LTS) is displayed, else if nomes is
-%               equal to 0 (default), a message about estimated time is
+%               equal to false (default), a message about estimated time is
 %               displayed.
-%               Example - 'nomes',1
-%               Data Types - double
+%               Example - 'nomes',true
+%               Data Types - logical
 %
 %  bonflevoutX : remote units in the X space. Scalar or empty (default).
 %               If the design matrix X contains several high leverage units
@@ -172,6 +143,36 @@ function [out , varargout] = LXS(y,X,varargin)
 %               Data Types - double
 %
 %
+%       plots : Plot on the screen. Scalar or structure.
+%               If plots = 1, a plot which shows the
+%               robust residuals against index number is shown on the
+%               screen. The confidence level which is used to draw the
+%               horizontal lines associated with the bands for the
+%               residuals is as specified in input option conflev. If
+%               conflev is missing a nominal 0.975 confidence interval will
+%               be used.
+%                 Example - 'plots',1
+%                 Data Types - double
+%
+%     conflev :  Confidence level which is
+%               used to declare units as outliers. Scalar
+%               Usually conflev=0.95, 0.975 0.99 (individual alpha)
+%               or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous alpha).
+%               Default value is 0.975
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%
+%        msg  : It controls whether to display or not messages on the screen. Boolean.
+%                If msg==true (default) messages are displayed
+%               on the screen about estimated time to compute the estimator
+%               and the warnings about
+%               'MATLAB:rankDeficientMatrix', 'MATLAB:singularMatrix' and
+%               'MATLAB:nearlySingularMatrix' are set to off
+%               else no message is displayed on the screen
+%               Example - 'msg',false
+%               Data Types - logical
+%
+%
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
 %               needs to be followed by their value. The order of the input
@@ -182,7 +183,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %
 %  out :     A structure containing the following fields
 %
-%            out.rew  = Scalar if out.rew=1 all subsequent output refers to
+%            out.rew  = boolean. if out.rew=true all subsequent output refers to
 %                       reweighted else no reweighting is done.
 %            out.beta = Vector of beta LTS (LMS) coefficient estimates,
 %                       including the intercept when options.intercept=true.
@@ -447,11 +448,13 @@ hmin=p+1;
 
 % initialize brob which will be the vector of estimated robust regression
 % coefficients
-brob=-99;
+brob=-99*ones(p,1);
+nocheck=false;
+
 if coder.target('MATLAB')
     
     options=struct('intercept',true,'nsamp',nsampdef,'h',hdef,'bdp',...
-        bdpdef,'lms',1,'rew',0,'plots',0,'nocheck',false,'nomes',0,...
+        bdpdef,'lms',1,'rew',false,'plots',0,'nocheck',nocheck,'nomes',false,...
         'conflev',0.975,'msg',1,'yxsave',0,'bonflevoutX','');
     
     UserOptions=varargin(1:2:length(varargin));
@@ -566,22 +569,22 @@ if isempty(nsamp)
 end
 
 lms=options.lms;            % if options.lms==1 then LMS, else LTS
-if coder.target('MATLAB')
-    if ~isstruct(lms) && lms==2
-        lms=struct;
-        refsteps=3;
-        reftol=1e-6;
-        bestr=5;
-        refstepsbestr=50;
-        reftolbestr=1e-8;
-        % ij is a scalar used to ensure that the best first bestr non singular
-        % subsets are stored
-        ij=1;
-        
-        % lmsopt is associated with the message about total computing time
-        lmsopt=2;
-        
-    elseif isstruct(lms)
+if ~isstruct(lms) && lms==2
+    % lms=struct;
+    refsteps=3;
+    reftol=1e-6;
+    bestr=5;
+    refstepsbestr=50;
+    reftolbestr=1e-8;
+    % ij is a scalar used to ensure that the best first bestr non singular
+    % subsets are stored
+    ij=1;
+    
+    % lmsopt is associated with the message about total computing time
+    lmsopt=2;
+    
+elseif isstruct(lms)
+    if coder.target('MATLAB')
         lmsdef.refsteps=3;
         lmsdef.reftol=1e-6;
         lmsdef.bestr=5;
@@ -599,47 +602,39 @@ if coder.target('MATLAB')
                 lmsdef.(fld{i})=lms.(fld{i});
             end
         end
-        
         % For the options not set by the user use their default value
         lms=lmsdef;
-        
-        refsteps=lms.refsteps;
-        reftol=lms.reftol;
-        bestr=lms.bestr;
-        refstepsbestr=lms.refstepsbestr;
-        reftolbestr=lms.reftolbestr;
-        
-        bestbetas = zeros(bestr,p);
-        bestsubset = bestbetas;
-        bestscales = Inf * ones(bestr,1);
-        sworst = Inf;
-        
-        % ij is a scalar used to ensure that the best first bestr non singular
-        % subsets are stored
-        ij=1;
-        % lmsopt is associated with the message about total computing time
-        lmsopt=2;
-    else
-        % lmsopt is associated with the message about total computing time
-        if lms==1
-            lmsopt=1;
-        else
-            lmsopt=0;
-        end
     end
     
+    refsteps=lms.refsteps;
+    reftol=lms.reftol;
+    bestr=lms.bestr;
+    refstepsbestr=lms.refstepsbestr;
+    reftolbestr=lms.reftolbestr;
+    
+    bestbetas = zeros(bestr,p);
+    bestsubset = bestbetas;
+    bestscales = Inf * ones(bestr,1);
+    sworst = Inf;
+    
+    % ij is a scalar used to ensure that the best first bestr non singular
+    % subsets are stored
+    ij=1;
+    % lmsopt is associated with the message about total computing time
+    lmsopt=2;
 else
+    % lmsopt is associated with the message about total computing time
     if lms==1
         lmsopt=1;
     else
         lmsopt=0;
     end
-    
 end
+
 
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
-nomes=options.nomes;        % if options.nomes==1 no message about estimated time to compute LMS is displayed
+nomes=options.nomes;        % if options.nomes==true no message about estimated time to compute LMS is displayed
 
 if coder.target('MATLAB')
     % Get user values of warnings
@@ -663,7 +658,12 @@ end
 
 % Store the indices in varargout
 if nargout==2
-    varargout={C};
+    % if coder.target('MATLAB')
+    Ccell={C};
+    varargout=Ccell;
+    % else
+    %    varargout=C;
+    %end
 end
 
 
@@ -678,10 +678,26 @@ time=zeros(tsampling,1);
 bonflevoutX=options.bonflevoutX;
 if ~isempty(bonflevoutX)
     bonflevout=true;
-    outFSM=FSM(X(:,options.intercept+1:end),'plots',0,'bonflev',bonflevoutX,'msg',0);
-    outliers=outFSM.outliers;
+    hdef=floor(n*0.6);
+    
+    if options.intercept==true
+        Xwithoutint=X(:,2:end);
+    else
+        Xwithoutint=X;
+    end
+    v=size(Xwithoutint,2);
+    if v>1
+        critdef='md';
+    else
+        critdef ='uni';
+    end
+    
+    outFSM=FSM(Xwithoutint,'plots',0,'bonflev',bonflevoutX,...
+        'msg',0,'init',hdef,'crit',critdef,'m0',v+1,'rf',0.95);
+    outliers=outFSM.outliers(:);
 else
     bonflevout=false;
+    outliers=0;
 end
 
 %% Computation of LMS (LTS)
@@ -689,8 +705,8 @@ ttic=tic;
 bs=zeros(1,p);
 
 for i=1:nselected
-    if i <= tsampling 
-        ttic = tic; 
+    if i <= tsampling
+        ttic = tic;
     end
     
     % extract a subset of size p
@@ -772,7 +788,7 @@ for i=1:nselected
                 % sworst = the best scale among the bestr found up to now
                 sworst = max(bestscales);
                 ij = ij+1;
-                brob = 1;
+                brob(1) = 1;
             end
             
         end
@@ -782,7 +798,7 @@ for i=1:nselected
         singsub=singsub+1;
     end
     
-    if ~nomes
+    if nomes == false
         if i <= tsampling
             % sampling time until step tsampling
             time(i) = toc(ttic);
@@ -802,17 +818,19 @@ for i=1:nselected
     end
 end
 
-if brob==-99
+if brob(1)==-99
     error('FSDA:LXS:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
 else
 end
 
 if isstruct(lms)
+    
     % perform C-steps on best 'bestr' solutions, till convergence or for a
     % maximum of refstepsbestr steps using a convergence tolerance as specified
     % by scalar reftolbestr
     
     superbestscale = Inf;
+    sh0=Inf;
     
     for i=1:bestr
         tmp = IRWLSreg(y,X,bestbetas(i,:)',refstepsbestr,reftolbestr,h);
@@ -931,9 +949,9 @@ if abs(s0) > 1e-7
     
     
     %% Reweighting part
-    rew=options.rew;            % if options.rew==1 use reweighted version of LMS/LTS,
+    rew=options.rew;            % if options.rew==true use reweighted version of LMS/LTS,
     
-    if rew==1
+    if rew==true
         
         % Find new estimate of beta using only observations which have
         % weight equal to 1. Notice that new brob overwrites old brob
@@ -980,11 +998,11 @@ if abs(s0) > 1e-7
         % before reweighting.
         
         % Store information about reweighting
-        out.rew=1;
+        out.rew=true;
         
     else
         % The default is no reweighting
-        out.rew=0;
+        out.rew=false;
         
     end
     
@@ -998,7 +1016,7 @@ else % Perfect fit
     
     % Store the weights
     out.weights=weights;
-    out.rew=0;
+    out.rew=false;
     
     % s is set to 0
     s0=0;
@@ -1046,18 +1064,18 @@ if coder.target('MATLAB')
             end
         end
     end
-
-
-if options.yxsave == true
-    if options.intercept==true
-        % Store X (without the column of ones if there is an intercept)
-        out.X=X(:,2:end);
-    else
-        out.X=X;
+    
+    
+    if options.yxsave == true
+        if options.intercept==true
+            % Store X (without the column of ones if there is an intercept)
+            out.X=X(:,2:end);
+        else
+            out.X=X;
+        end
+        % Store response
+        out.y=y;
     end
-    % Store response
-    out.y=y;
-end
 end
 % Store information about the class of the object
 if lmsopt==1
@@ -1164,6 +1182,8 @@ iter        = 0;
 betadiff    = 9999;
 beta        = initialbeta;
 scale       = Inf;
+
+newbeta=beta; % Initialization for MATLAB Ccoder
 
 % update of weights moved at the end of the function
 % weights=zeros(n,1);

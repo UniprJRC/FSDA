@@ -135,7 +135,7 @@ function ci=ncpci(x,fType,df,varargin)
     % Suppose that in a contingency table of size 3-times-4 the value of%
     % the chi square test is 52. Suppose we want to compute a confidence
     % interval for the non centrality parameter of the chi^2 with
-    % (3-1)(4-1)=8 degrees of freedom.
+    % (3-1)(4-1)=6 degrees of freedom.
     ci=ncpci(52,'X2',8);
     disp('Confidence interval for the non centrality parameter')
     disp(ci)

@@ -144,16 +144,19 @@ end
 
 % Notice that prob must be a row vector
 prob=[0.01 0.5 0.99];
-options=struct('init',inisearch,'prob',prob);
 
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSRenvmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    options=struct('init',inisearch,'prob',prob);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSRenvmdr:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
 
 if nargin>2
@@ -166,7 +169,7 @@ prob=options.prob;
 
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
-    error('FSDA:FSRenvmdr:TooLargen',['Initial starting point of the search (m0=' num2str(m0) ') is greater than n-1(n-1=' num2str(n-1) ')']);
+    error('FSDA:FSRenvmdr:TooLargen','Initial starting point of the search (m0=%d) is greater than n-1 (n-1=%d)', m0, n-1);
 end
 
 %% Envelopes generation

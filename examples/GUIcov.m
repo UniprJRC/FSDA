@@ -68,13 +68,6 @@ function out = GUIcov(x,y,w)
 %}
 
 %{
-    % Example of calculation of standard deviation (using n as denominator).
-    % See page 9 of [CMR]
-    x=[427 492 445 444 476 470];
-    GUIstd(x,1)
-%}
-
-%{
     % Example 1 of weighted covariance.
     % In this example vectors x y and w are supplied. (See Covariance from Wikipedia)
     x=[  8     8     9     9];
