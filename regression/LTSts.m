@@ -16,6 +16,96 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %  Optional input arguments:
 %
+%
+%         bdp : breakdown point. Scalar. It measures the fraction of outliers
+%               the algorithm should resist. In this case any value greater
+%               than 0 but smaller or equal than 0.5 will do fine. Please
+%               specify h or bdp, but not both.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%
+%     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
+%               Confidence level which is used to declare units as
+%               outliers. Usually conflev=0.95, 0.975 0.99 (individual
+%               alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
+%               alpha). Default value is 0.975.
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%
+%  dispresults : Display results of final fit. Boolean. If dispresults is
+%               true,  labels of coefficients, estimated coefficients,
+%               standard errors, tstat and p-values are shown on the
+%               screen in a fully formatted way. The default value of
+%               dispresults is false.
+%               Example - 'dispresults',true
+%               Data Types - logical
+%
+%
+%           h : The number of observations that determined the least
+%               trimmed squares estimator. Scalar. h is an integer greater
+%               than p (number of columns of matrix X including the
+%               intercept but smaller then n. If the purpose is outlier
+%               detection than h does not have to be smaller than
+%               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
+%               that if h is supplied input argument bdp is ignored.
+%                 Example - 'h',round(n*0.75)
+%                 Data Types - double
+%
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
+% lshiftlocref: Parameters for local shift refinement. Structure.
+%               This option is used just if model.lshift is greater then 0.
+%               In order to precisely identify level shift position it is
+%               necessary to consider a local sum of squares varying the
+%               position of the level shift around the first tentative
+%               position keeping all the other parameters fixed. This
+%               structure contains the following fields:
+%               lshiftlocref.wlength = scalar greater than 0 which
+%                   identifies the length of the window. The default value
+%                   is 15, that is the tentative level shift position
+%                   varies from tl-15, tl-15, ..., tl+14, tl+15, where tl is
+%                   the best preliminary tentative level shift position.
+%              lshiftlocref.typeres = scalar which identifies the type of
+%                   residuals to consider. If typerres =1, the local
+%                   residuals sum of squares is based on huberized (scaled)
+%                   residuals (this is the default
+%                   choice) else raw residuals are used.
+%              lshiftlocref.huberc= tuning constant for Huber estimator just
+%                   in case lshiftlocref.typeres=1. The default value is 2.
+%               Example - 'lshiftlocref',lshiftlocref.typeres=2
+%               Data Types - struct
+%
+%       lts   : structure which controls a set of options of the
+%               maximization procedure. Structure. Structure with the
+%               following fields:
+%                   lts.bestr   = scalar defining number of "best betas" to
+%                               remember from the subsamples. These will be
+%                               later iterated until convergence.
+%                               The default is 20 (10 of them are the best
+%                               from previous iteration in case a level
+%                               shift is present).
+%                  lts.refsteps = scalar defining number of concentration
+%                               steps (default = 2). refsteps = 0 means
+%                               "raw-subsampling" without iterations.
+%             lts.refstepsbestr = scalar defining maximum number of refining
+%                               steps for each best subset (default=50).
+%                   lts.reftol  = scalar. Default value of tolerance for
+%                               the refining steps
+%                               The default value is 1e-6;
+%              lts.reftolbestr  = scalar. Default value of tolerance for
+%                               the refining steps for each of the best
+%                               subsets The default value is 1e-8.
+%                Example - 'lts',lts
+%                Data Types - struct
+%              Remark: if lts is an empty value all default values of
+%              structure lts will be used.
+%
 %      model :  model type. Structure. A structure which specifies the model
 %               which will be used. The model structure contains the following
 %               fields:
@@ -110,55 +200,42 @@ function [out, varargout] = LTSts(y,varargin)
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
+%        msg  : Messages on the screen. Boolean.
+%               Scalar which controls whether to display or not messages
+%               on the screen. If msg==true (default) messages are displayed on
+%               the screen about estimated time to compute the estimator
+%               and the warnings about 'MATLAB:rankDeficientMatrix',
+%               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
+%               are set to off else no message is displayed on the screen
+%               Example - 'msg',true
+%               Data Types - logical
 %
-%           h : The number of observations that determined the least
-%               trimmed squares estimator. Scalar. h is an integer greater
-%               than p (number of columns of matrix X including the
-%               intercept but smaller then n. If the purpose is outlier
-%               detection than h does not have to be smaller than
-%               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
-%               that if h is supplied input argument bdp is ignored.
-%                 Example - 'h',round(n*0.75)
-%                 Data Types - double
+%nbestindexes : position of the best solutions. Positive integer. For each
+%               tentative level shift solution, it is interesenting to
+%               understand whether best solutions of target function come
+%               from subsets associated with current level shift solution
+%               or from best solutions from previous tentative level shift
+%               position.  The indexes from 1 to lts.bestr/2 are associated
+%               with subsets just extracted. The indexes from lts.bestr/2+1
+%               to lts.bestr are associated with best solutions from
+%               previous tentative level shift. More precisely:
+%               index lts.bestr/2+1 is associated with best solution from
+%               previous tentative level shift;
+%               index lts.bestr/2+2 is associated with second best solution
+%               from previous tentative level shift;
+%               ...
+%               nbestindexes is an integer which specifies how many indexes
+%               we want to store. The default value of nbestindexes  is 3.
+%               Example - 'nbestindexes',5
+%               Data Types - double
 %
-%         bdp : breakdown point. Scalar. It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine. Please
-%               specify h or bdp, but not both.
-%                 Example - 'bdp',0.4
-%                 Data Types - double
-%
-%       lts   : structure which controls a set of options of the
-%               maximization procedure. Structure. Structure with the
-%               following fields:
-%                  lts.refsteps = scalar defining number of concentration
-%                               steps (default = 2). refsteps = 0 means
-%                               "raw-subsampling" without iterations.
-%                   lts.reftol  = scalar. Default value of tolerance for
-%                               the refining steps
-%                               The default value is 1e-6;
-%                   lts.bestr   = scalar defining number of "best betas" to
-%                               remember from the subsamples. These will be
-%                               later iterated until convergence.
-%                               The default is 20 (10 of them are the best
-%                               from previous iteration in case a level
-%                               shift is present).
-%             lts.refstepsbestr = scalar defining maximum number of refining
-%                               steps for each best subset (default=50).
-%              lts.reftolbestr  = scalar. Default value of tolerance for
-%                               the refining steps for each of the best
-%                               subsets The default value is 1e-8.
-%                Example - 'lts',lts
-%                Data Types - struct
-%              Remark: if lts is an empty value all default values of
-%              structure lts will be used.
+%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=false. The controls on h, bdp and nsamp still remain.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %       nsamp : number of subsamples to extract. Scalar or vector of length 2.
 %               Vector of length 1 or 2 which controls the number of
@@ -185,12 +262,6 @@ function [out, varargout] = LTSts(y,varargin)
 %               Remark: if nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
 %
-%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
-%                 for the refining steps inside ALS routine. The default
-%                 value is 1e-03.
-%                 Example - 'reftolALS',1e-05
-%                 Data Types - double
-%
 % refstepsALS :   Maximum iterations inside ALS. Scalar. Maximum number
 %                 of iterations inside ALS routine. Default value of
 %                 tolerance for the refining steps inside ALS routine. The
@@ -198,13 +269,47 @@ function [out, varargout] = LTSts(y,varargin)
 %                 Example - 'refstepsALS',20
 %                 Data Types - double
 %
-%     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
-%               Confidence level which is used to declare units as
-%               outliers. Usually conflev=0.95, 0.975 0.99 (individual
-%               alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
-%               alpha). Default value is 0.975.
-%                 Example - 'conflev',0.99
+%
+%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
+%                 for the refining steps inside ALS routine. The default
+%                 value is 1e-03.
+%                 Example - 'reftolALS',1e-05
 %                 Data Types - double
+%
+%SmallSampleCor:Small sample correction factor to control empirical size of
+%               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
+%               - If SmallSampleCor=1 in the reweighting step the nominal
+%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
+%                 small sample correction factor which guarrantees that the
+%                 empirical size of the test is equal to the nominal size.
+%                 Given that the correction factors were obtained through
+%                 simulation for a linear model, the number of explanatory
+%                 which is used to compute the correction factor refers to
+%                 all explanatory variables except the non linear components
+%                 in the seasonal part of the model. For example, in a model
+%                 with linear trend 4 seasonal harmonics + level shift and
+%                 second order trend in the seasonal component the number of
+%                 explanatory variables used is 11 = total number of
+%                 variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
+%                 +1 (level shift).
+%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
+%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+%                 Example - 'SmallSampleCor',3
+%                 Data Types - double
+%
+%
+%       yxsave : store X and y. Boolean. Scalar that is set to 1 to request
+%                that the response vector y and data matrix X are saved
+%                into the output structure out. 
+%                Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1
+%               Data Types - logical
 %
 %       plots : Plots on the screen. Scalar.
 %               If plots = 1, a two panel plot will be shown on the screen.
@@ -236,107 +341,6 @@ function [out, varargout] = LTSts(y,varargin)
 %               screen.
 %                 Example - 'plots',1
 %                 Data Types - double
-%
-%SmallSampleCor:Small sample correction factor to control empirical size of
-%               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
-%               - If SmallSampleCor=1 in the reweighting step the nominal
-%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
-%                 small sample correction factor which guarrantees that the
-%                 empirical size of the test is equal to the nominal size.
-%                 Given that the correction factors were obtained through
-%                 simulation for a linear model, the number of explanatory
-%                 which is used to compute the correction factor refers to
-%                 all explanatory variables except the non linear components
-%                 in the seasonal part of the model. For example, in a model
-%                 with linear trend 4 seasonal harmonics + level shift and
-%                 second order trend in the seasonal component the number of
-%                 explanatory variables used is 11 = total number of
-%                 variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
-%                 +1 (level shift).
-%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
-%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
-%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
-%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
-%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
-%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
-%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
-%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
-%                 Example - 'SmallSampleCor',3
-%                 Data Types - double
-%
-%        msg  : Messages on the screen. Scalar.
-%               Scalar which controls whether to display or not messages
-%               on the screen. If msg==1 (default) messages are displayed on
-%               the screen about estimated time to compute the estimator
-%               and the warnings about 'MATLAB:rankDeficientMatrix',
-%               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
-%               are set to off else no message is displayed on the screen
-%               Example - 'msg',1
-%               Data Types - double
-%
-%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
-%               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
-%               column of ones for the intercept is not added. As default
-%               nocheck=false. The controls on h, bdp and nsamp still remain.
-%               Example - 'nocheck',true
-%               Data Types - boolean
-%
-% lshiftlocref: Parameters for local shift refinement. Structure.
-%               This option is used just if model.lshift is greater then 0.
-%               In order to precisely identify level shift position it is
-%               necessary to consider a local sum of squares varying the
-%               position of the level shift around the first tentative
-%               position keeping all the other parameters fixed. This
-%               structure contains the following fields:
-%               lshiftlocref.wlength = scalar greater than 0 which
-%                   identifies the length of the window. The default value
-%                   is 15, that is the tentative level shift position
-%                   varies from tl-15, tl-15, ..., tl+14, tl+15, where tl is
-%                   the best preliminary tentative level shift position.
-%              lshiftlocref.typeres = scalar which identifies the type of
-%                   residuals to consider. If typerres =1, the local
-%                   residuals sum of squares is based on huberized (scaled)
-%                   residuals (this is the default
-%                   choice) else raw residuals are used.
-%              lshiftlocref.huberc= tuning constant for Huber estimator just
-%                   in case lshiftlocref.typeres=1. The default value is 2.
-%               Example - 'lshiftlocref',lshiftlocref.typeres=2
-%               Data Types - struct
-%
-%nbestindexes : position of the best solutions. Positive integer. For each
-%               tentative level shift solution, it is interesenting to
-%               understand whether best solutions of target function come
-%               from subsets associated with current level shift solution
-%               or from best solutions from previous tentative level shift
-%               position.  The indexes from 1 to lts.bestr/2 are associated
-%               with subsets just extracted. The indexes from lts.bestr/2+1
-%               to lts.bestr are associated with best solutions from
-%               previous tentative level shift. More precisely:
-%               index lts.bestr/2+1 is associated with best solution from
-%               previous tentative level shift;
-%               index lts.bestr/2+2 is associated with second best solution
-%               from previous tentative level shift;
-%               ...
-%               nbestindexes is an integer which specifies how many indexes
-%               we want to store. The default value of nbestindexes  is 3.
-%               Example - 'nbestindexes',5
-%               Data Types - double
-%
-%  dispresults : Display results of final fit. Boolean. If dispresults is
-%               true,  labels of coefficients, estimated coefficients,
-%               standard errors, tstat and p-values are shown on the
-%               screen in a fully formatted way. The default value of
-%               dispresults is false.
-%               Example - 'dispresults',true
-%               Data Types - logical
-%
-%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request
-%                that the response vector y and data matrix X are saved
-%                into the output structure out. 
-%                Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1
-%               Data Types - double
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -1107,7 +1111,7 @@ dispresultsdef=false;
 
 options=struct('intercept',true,'lts','','nsamp',nsampdef,'h',hdef,...
     'bdp',bdpdef,'plots',0,'model',modeldef,...
-    'conflev',0.975,'msg',1,'yxsave',0,...
+    'conflev',0.975,'msg',true,'yxsave',false,...
     'SmallSampleCor',2,'nocheck',false,...
     'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
     'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
@@ -1330,7 +1334,7 @@ end
 
 % Check number of subsamples to extract
 if options.nsamp>ncomb
-    if options.msg==1
+    if options.msg==true
         disp('Number of subsets to extract greater than (n p). It is set to (n p)');
     end
     options.nsamp=0;
@@ -1795,7 +1799,7 @@ for lsh=LSH
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
     
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    if lsh>0 && msg ==1
+    if lsh>0 && msg ==true
         disp(['Level shift for t=' num2str(lsh)])
     end
 end
@@ -1923,7 +1927,7 @@ end
 %Qn, Sn, std and the interquantile difference for increasing percentages
 %([0.25-0.75], [0.26-0.76], ...)
 if abs(s0) < 1e-7
-    if msg==1
+    if msg==true
         disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
     end
     [~,~,s0]=zscoreFS(residuals,'median','Qn');
@@ -2176,7 +2180,7 @@ out.weights=weights;
 
 % Store number of singular subsets
 out.singsub=singsub;
-if msg==1
+if msg==true
     if singsub/nselected>0.1
         disp('------------------------------')
         disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
@@ -2194,7 +2198,7 @@ end
 % Store response
 out.y=yin;
 
-if options.yxsave
+if options.yxsave == true
     if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=Xlin(:,2:end);
@@ -3126,7 +3130,7 @@ end
 rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
-    % if msg==1
+    % if msg==true
     disp('Warning: problem in subfunction corfactorRAW')
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
     disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
@@ -3176,7 +3180,7 @@ end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
-    %  if msg==1
+    %  if msg==true
     disp('Warning: problem in subfunction corfactorREW');
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
     disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');
