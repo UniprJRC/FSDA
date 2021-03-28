@@ -6,7 +6,7 @@ function weights = GYfilt(x,varargin)
 %  Required input arguments:
 %
 %    x:         Input vector. Vector. A vector with n elements that
-%               contains the univariate data. 
+%               contains the univariate data.
 %
 %
 %  Optional input arguments:
@@ -72,7 +72,7 @@ function weights = GYfilt(x,varargin)
 %% Beginning of code
 
 if ~isvector(x)
-    error('The data should be a vector')
+    error('FSDA:GYfilt:WrongInputOpt','The data should be a vector')
 end
 
 alphadef=0.95; % default coverage probability
@@ -80,22 +80,23 @@ centering=true;
 iterating=true;
 niterdef=10;
 
-options=struct('alpha',alphadef,'centering',centering,'iterating',iterating,'niter',niterdef);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    options=struct('alpha',alphadef,'centering',centering,'iterating',iterating,'niter',niterdef);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:GYfilt:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
-
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
-    for i=1:2:length(varargin);
+    for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
     end
 end
@@ -163,7 +164,7 @@ converge =0;
 iter =0;
 n=length(v);
 id =1:n;
-vold = v;
+% vold = v;
 while converge == 0 &&  iter < niter
     iter = iter + 1;
     v = gyfiltaux(v, alpha);
@@ -175,7 +176,8 @@ while converge == 0 &&  iter < niter
 end
 vout =nan(n,1);
 vout(id) = v;
-disp([' iter = ' num2str(iter)])
+% disp([' iter = ' num2str(iter)])
+fprintf(' iter = %.0f\n ',iter)
 end
 
 %FScategory:UTISTAT
