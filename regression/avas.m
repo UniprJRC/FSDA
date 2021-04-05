@@ -75,6 +75,25 @@ function [out]=avas(y,X,varargin)
 %           Example - 'maxit',30
 %           Data Types - double
 %
+%   scail  : Inizialing values for the regressors. Boolean. If scail is
+%           true (default value is false), a linear regression is done on
+%           the independent variables $X_1$, ...$X_{p-1}$ centered, using y
+%           standardized, getting the coefficients $b_1$, ..., $b_{p-1}$. 
+%           AVAS is scail is true takes the initial value of the transform
+%           of $X_j$ to be $b_j(X_j-mean(X_j))$, $j=1, \ldots, p-1$. This
+%           is done in order to limit the effect of the ordering of the
+%           variables on the final results. The purpose of this initial
+%           linear transformation is to let the the columns of matrix X
+%           have the same weight when predicting $y$.
+%           Note that this initialization option is always used inside the
+%           ace routine but it is set to false in AVAS or compatibility
+%           with the original fortran program of Tibshirani.
+%           See also the ADDED NOTE in the [Monotone
+%           Regression Splines in Action]: Comment.  Leo Breiman
+%           Statistical Science, Vol. 3, No. 4 (Nov., 1988), pp. 442-445.
+%           Example - 'scail',true
+%           Data Types - logical
+%
 % Output:
 %
 %         out:   structure which contains the following fields
@@ -321,6 +340,8 @@ maxit=20;
 nterm=3;
 w=ones(n,1);
 
+scail=false;
+
 % c span, alpha : super smoother parameters.
 % supermo=struct;
 
@@ -330,7 +351,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit);
+        'w',w,'maxit',maxit,'scail',scail);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -351,6 +372,7 @@ if ~isempty(UserOptions)
     w=options.w;
     nterm=options.nterm;
     maxit=options.maxit;
+    scail=options.scail;
 end
 
 if size(w,2)>1
@@ -377,13 +399,15 @@ else
     tX=bsxfun(@minus,X,meX);
 end
 
-
+if scail==true
 % Initial transformation for matrix X.
 % X is transformed so that its columns are equally weighted when predicting y.
-% Xw=tX.*sqrt(w);
-% yw=ty.*sqrt(w);
-% b=Xw\yw;
-% tX=tX.*(b');
+Xw=tX.*sqrt(w);
+yw=ty.*sqrt(w);
+b=Xw\yw;
+tX=tX.*(b');
+end
+
 % In the Fortran program vector b is found iteratively
 % (procedure using subroutine scail)
 
@@ -415,25 +439,33 @@ rsq=0;
 yspan=0;
 lfinishOuterLoop=1;
 
+seq=1:n;
 while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
     
-    % z1 contains fitted values sorted
-    z1=sum(tX,2);    % z1 is z10 in fortran program
+%     out=FSR(ty,TX);
+%       good=setdiff(seq,out.ListOut);
+    
+
+    
+    % (yhat contains fitted values and yhatsor = fitted values z1 contains fitted values sorted
+    yhat=sum(tX,2);    % yhat is z10 in fortran program
     
     % tres = vector of residuals using transformed y and transformed X
-    tres=ty-z1;
+    tres=ty-yhat;
     % If a squared residual is exactly zero leads to a problem when taking
     % logs therefore. Replace 0 with 1e-10
     tres(abs(tres)<1e-10)=1e-10;
-    % z2 = log of sqrt of transformed squared residuals
-    % z2 = log absolute values of residuals
-    z2=log(sqrt(tres.^2));
+    % logabsres = log of sqrt of transformed squared residuals
+    % logabsres = log absolute values of residuals (z2 in the Fortran
+    % program)
+    logabsres=log(sqrt(tres.^2));
     
-    [z1,ordyhat]=sort(z1);
+    [yhatord,ordyhat]=sort(yhat);
     % ztar_sorted=log(sqrt((z2-z1).^2));
-    ztar_sorted=z2(ordyhat);
-    z5=w(ordyhat);
+    logabsresOrdyhat=logabsres(ordyhat);
+    % wOrdyat = weights using the ordering based on yhat
+    wOrdyhat=w(ordyhat);
     
     % Now the residuals  are smoothed
     % smo=smothr(abs(l(pp1)),z(:,2),z(:,1),z(:,4));
@@ -443,22 +475,33 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % Smooth the log of (the sample version of) the |residuals|
     % against fitted values. Use the ordering based on fitted values.
-    [smo,yspan]=rlsmo(z1,ztar_sorted,z5,yspan);
+    [smo,yspan]=rlsmo(yhatord,logabsresOrdyhat,wOrdyhat,yspan);
     
     % z6=smo;
-    z7=exp(-smo);
+    smoothresm1Ordyhat=exp(-smo);
     % sumlog=2*n*sum(smo.*w)/sw;
-    z8=ty(ordyhat);
+    tyOrdyhat=ty(ordyhat);
     
     % Compute the variance stabilizing transformation
     % h(t)= \int_{z1_1}^t v(u)^{-0.5} du
     % z1 = yhat sorted
     % z7 reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
-    % z8 = values of ty sorted using the ordering of z1
-    z9=ctsub(z1,z7,z8);
+    % z8 = values of ty sorted using the ordering based on fitted values of z1
+    tynewOrdyhat=ctsub(yhatord,smoothresm1Ordyhat,tyOrdyhat);
     
-    sm=sum(z9.*w);
-    ty(ordyhat)=z9-sm/sw;
+    % Probably here there was a mistake in the original Fortran program
+    % because z9 (which contains values ordered using yhat) has to be
+    % weighted using z5=w(ordyhat) and not using w
+    % 23033 continue
+    %  call ctsub(n,z(1,10),z(1,7),z(1,8),z(1,9))
+    %  sm=0
+    %  do 23035 j=1,n
+    %     sm=sm+w(j)*z(j,9)
+    % 23035 continue
+
+    sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
+    % Compute updated vector ty with mean removed
+    ty(ordyhat)=tynewOrdyhat-sm/sw;
     
     sv=sum(ty.^2.*w)/sw;
     % Make sure that sv (variance of transformed y) is a positive number
@@ -468,8 +511,12 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
         return
     end
     
-    svx=sum(z1.^2.*w)/sw;
+    % TODO it is necessary to replace w with  wOrdyhat
+    svx=sum(yhatord.^2.*w)/sw;
+    % ty is the new vector of transformed values standardized. 
     ty=ty/sqrt(sv);
+    % Note that each column of tX is standardized using sqrt of mean of
+    % squared fitted values
     tX=tX/sqrt(svx);
     % Get the new transformation of X_j
     % that is backfit \hat g(y) on X_1, \ldots, X_p
@@ -477,11 +524,11 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
     % z1 contains fitted values sorted
-    z1=sum(tX,2);    % z1 is z10 in AVAS
+    yhat=sum(tX,2);    % z1 is z10 in AVAS
     
-    rr=sum(((ty-z1).^2).*w)/sw;
+    rr=sum(((ty-yhat).^2).*w)/sw;
     
-    % New value of R2
+    % rsq = new value of R2
     rsq=1-rr;
     
     % sumlog=sumlog+n*log(sv);
