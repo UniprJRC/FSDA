@@ -78,8 +78,8 @@ function [out]=avas(y,X,varargin)
 %   scail  : Inizialing values for the regressors. Boolean. If scail is
 %           true (default value is false), a linear regression is done on
 %           the independent variables $X_1$, ...$X_{p-1}$ centered, using y
-%           standardized, getting the coefficients $b_1$, ..., $b_{p-1}$. 
-%           AVAS is scail is true takes the initial value of the transform
+%           standardized, getting the coefficients $b_1$, ..., $b_{p-1}$.
+%           AVAS if scail is true takes the initial value of the transform
 %           of $X_j$ to be $b_j(X_j-mean(X_j))$, $j=1, \ldots, p-1$. This
 %           is done in order to limit the effect of the ordering of the
 %           variables on the final results. The purpose of this initial
@@ -93,6 +93,34 @@ function [out]=avas(y,X,varargin)
 %           Statistical Science, Vol. 3, No. 4 (Nov., 1988), pp. 442-445.
 %           Example - 'scail',true
 %           Data Types - logical
+%
+%   tyinitial  : Initial values for the transformed response. Missing value boolean or struct.
+%           If tyinitial is missing (default) the initial value for ty are
+%           simply the standardized values.
+%           If tyinitial is true, y is transformed using best BoxCox lambda
+%           value among the five most common values of lambda (-1, -0.5, 0,
+%           0.5, 1) and routines FSRfan.m and fanBIC.m are called.
+%           If tyinitial is a struct it is possible to specify in the
+%           fields la and family the values of lambda and the family to
+%           use. More precisely
+%           tyinitial.la = values of the lambdas to consider inside FSRfan.
+%           tyinitial.family= string which identifies the family of transformations which
+%                   must be used. Character. Possible values are 'BoxCox'
+%                   (default), 'YJ', or 'YJpn'.
+%                   The Box-Cox family of power transformations equals
+%                   $(y^{\lambda}-1)/\lambda$ for $\lambda$ not equal to zero,
+%                   and $\log(y)$ if $\lambda = 0$.
+%                   The Yeo-Johnson (YJ) transformation is the Box-Cox
+%                   transformation of $y+1$ for nonnegative values, and of
+%                   $|y|+1$ with parameter $2-\lambda$ for $y$ negative.
+%                   Remember that BoxCox can be used just
+%                   if input y is positive. Yeo-Johnson family of
+%                   transformations does not have this limitation.
+%                   If family is 'YJpn' Yeo-Johnson family is applied but in
+%                   this case it is also possible to monitor (in the output
+%                   arguments out.Scorep and out.Scoren) the score test
+%                   respectively for positive and negative observations.
+%
 %
 % Output:
 %
@@ -316,6 +344,41 @@ function [out]=avas(y,X,varargin)
 %}
 
 
+%{
+    % Example of use of option tyinitial.
+    % Generate the data.
+    rng(2000)
+    n=100;
+    X=10*rand(n,1);
+    sigma=0.1;
+    a=2;
+    b=0.3;
+    y=a+b*X+sigma*randn(n,1);
+    % The correct transformation is la=-0.5 (inverse square root)
+    la=-0.5;
+    y=normBoxCox(y,1,la,'inverse',true);
+    % call of AVAS without option tyinitial
+    subplot(2,1,1)
+    outAVAS=avas(y,X,'l',4);
+    tyfinal=outAVAS.ty;
+    out=fitlm(X,tyfinal);
+    plot(X,tyfinal,'o')
+    lsline
+    xlabel('Original x')
+    ylabel('Without option tyinitial')
+    title(['R2=' num2str(out.Rsquared.Ordinary)])
+    % call of AVAS with option tinitial set to true
+    subplot(2,1,2)
+    outAVAStyini=avas(y,X,'l',4,'tyinitial',true);
+    tyfinal=outAVAStyini.ty;
+    out=fitlm(X,tyfinal);
+    plot(X,tyfinal,'o')
+    lsline
+    xlabel('Original x')
+    ylabel('With option tyinitial')
+    title(['R2=' num2str(out.Rsquared.Ordinary)])
+%}
+
 %% Beginning of code
 
 if nargin <2
@@ -341,6 +404,7 @@ nterm=3;
 w=ones(n,1);
 
 scail=false;
+tyinitial=[];
 
 % c span, alpha : super smoother parameters.
 % supermo=struct;
@@ -351,7 +415,7 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit,'scail',scail);
+        'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -373,10 +437,59 @@ if ~isempty(UserOptions)
     nterm=options.nterm;
     maxit=options.maxit;
     scail=options.scail;
+    tyinitial=options.tyinitial;
 end
 
 if size(w,2)>1
     w=w';
+end
+
+if ~isempty(tyinitial)
+    if tyinitial ==true
+        la=[-1 -0.5 0 0.5 1];
+        if min(y)>0
+            family='BoxCox';
+        else
+            family='YJ';
+        end
+    elseif tyinitial==false
+        la=1;
+        if min(y)>0
+            family='BoxCox';
+        else
+            family='YJ';
+        end
+    elseif isstruct(tyinitial)
+        if isfield('tyinitial','la')
+            la=tyinitial.la;
+        else
+            la=[-1 -0.5 0 0.5 1];
+        end
+        if isfield('tyinitial','family')
+            family=tyinitial.family;
+        else
+            if min(y)>0
+                family='BoxCox';
+            else
+                family='YJ';
+            end
+        end
+        
+    else
+        error('FSDA:FSReda:WrongInputOpt','tyinitial can only be a missing a boolean or a struct.');
+    end
+    
+    % FSRfan and fanplot with all default options
+    [outFSR]=FSRfan(y,X,'msg',0,'la',la,'family',family,'plots',0);
+    outLA=fanBIC(outFSR,'plots',0);
+    if strcmp(family,'BoxCox')
+        y=normBoxCox(y,1,outLA.labest);
+    elseif strcmp(family,'YJ')
+        y=normYJ(y,1,outLA.labest);
+    elseif strcmp(family,'YJpn')
+        y=normYJpn(y,1,outLA.labest);
+    end
+    
 end
 
 % sw = sum of the weights
@@ -400,12 +513,12 @@ else
 end
 
 if scail==true
-% Initial transformation for matrix X.
-% X is transformed so that its columns are equally weighted when predicting y.
-Xw=tX.*sqrt(w);
-yw=ty.*sqrt(w);
-b=Xw\yw;
-tX=tX.*(b');
+    % Initial transformation for matrix X.
+    % X is transformed so that its columns are equally weighted when predicting y.
+    Xw=tX.*sqrt(w);
+    yw=ty.*sqrt(w);
+    b=Xw\yw;
+    tX=tX.*(b');
 end
 
 % In the Fortran program vector b is found iteratively
@@ -439,14 +552,14 @@ rsq=0;
 yspan=0;
 lfinishOuterLoop=1;
 
-seq=1:n;
+% seq=1:n;
 while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
     
-%     out=FSR(ty,TX);
-%       good=setdiff(seq,out.ListOut);
+    %     out=FSR(ty,TX);
+    %       good=setdiff(seq,out.ListOut);
     
-
+    
     
     % (yhat contains fitted values and yhatsor = fitted values z1 contains fitted values sorted
     yhat=sum(tX,2);    % yhat is z10 in fortran program
@@ -498,7 +611,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     %  do 23035 j=1,n
     %     sm=sm+w(j)*z(j,9)
     % 23035 continue
-
+    
     sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
     % Compute updated vector ty with mean removed
     ty(ordyhat)=tynewOrdyhat-sm/sw;
@@ -513,7 +626,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % TODO it is necessary to replace w with  wOrdyhat
     svx=sum(yhatord.^2.*w)/sw;
-    % ty is the new vector of transformed values standardized. 
+    % ty is the new vector of transformed values standardized.
     ty=ty/sqrt(sv);
     % Note that each column of tX is standardized using sqrt of mean of
     % squared fitted values
