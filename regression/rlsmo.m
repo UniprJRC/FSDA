@@ -31,7 +31,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %           interval [0, 1] which specifies the length of the local
 %           regressions. If span is 0 (default value) the fractions of
 %           observations which are considered for computing the local
-%           regerssions are roughly $cvspan=n*[0.3,0.4,0.5,0.6,0.7,1.0]$.
+%           regressions are roughly $cvspan=n*[0.3,0.4,0.5,0.6,0.7,1.0]$.
 %           The element of $cvspan$ which is associated with the smallest
 %           cross validation residual sum of squares is chosen. The
 %           smoothing procedure is called using the best value of cvspan
@@ -52,7 +52,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 %         span: length of the local regressions. Scalar. Scalar in the
 %               interval [0, 1] which specifies the length of the local
 %               regressions which has been used. For example if span=0.3
-%               approximately 30 per cent of consecutive obsrvations are
+%               approximately 30 per cent of consecutive observations are
 %               used in order to compute the local regressions.
 %
 %
@@ -69,7 +69,7 @@ function [smo,span]=rlsmo(x,y,w,span)
 % \times span)/2],1)$ to ensure that minimum length of the local
 % regression is 3. Symbol $[ \cdot ]$ denotes the integer part.
 % 
-% Parameter $cross$ is a Boolean scalar. If it is set to true it specifies
+% Parameter $cross$ is a Boolean scalar. If it is set to true, it specifies
 % that, to compute the local regression centered on unit $i$, unit $i$ must
 % be deleted. Therefore for example, 
 % [1] if $m$ is 3 and $cross$ is true, the
