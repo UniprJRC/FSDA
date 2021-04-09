@@ -88,9 +88,9 @@ function [out]=avas(y,X,varargin)
 %           Note that this initialization option is always used inside the
 %           ace routine but it is set to false in AVAS or compatibility
 %           with the original fortran program of Tibshirani.
-%           See also the ADDED NOTE in the [Monotone
-%           Regression Splines in Action]: Comment.  Leo Breiman
-%           Statistical Science, Vol. 3, No. 4 (Nov., 1988), pp. 442-445.
+%           See the ADDED NOTE in the [Monotone Regression Splines in
+%           Action]: Comment.  Leo Breiman Statistical Science, Vol. 3, No.
+%           4 (Nov., 1988), pp. 442-445.
 %           Example - 'scail',true
 %           Data Types - logical
 %
@@ -102,7 +102,7 @@ function [out]=avas(y,X,varargin)
 %           0.5, 1) and routines FSRfan.m and fanBIC.m are called.
 %           If tyinitial is a struct it is possible to specify in the
 %           fields la and family the values of lambda and the family to
-%           use. More precisely
+%           use. More precisely:
 %           tyinitial.la = values of the lambdas to consider inside FSRfan.
 %           tyinitial.family= string which identifies the family of transformations which
 %                   must be used. Character. Possible values are 'BoxCox'
@@ -120,6 +120,8 @@ function [out]=avas(y,X,varargin)
 %                   this case it is also possible to monitor (in the output
 %                   arguments out.Scorep and out.Scoren) the score test
 %                   respectively for positive and negative observations.
+%           Example - 'tyinitial',true
+%           Data Types - missing scalar, boolean or struct
 %
 %
 % Output:
@@ -552,13 +554,28 @@ rsq=0;
 yspan=0;
 lfinishOuterLoop=1;
 
-% seq=1:n;
+seq=1:n;
+rob=struct;
+rob.method='FS';
+rob.init=n*0.6;
+rob=true;
+rob=false;
+
 while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
     
-    %     out=FSR(ty,TX);
-    %       good=setdiff(seq,out.ListOut);
-    
+    if rob==true
+         out=FSR(ty,tX,'plots',0);
+        outliers=out.outliers;
+        if isnan(outliers)
+            ngood=n;
+        else
+            ngood=n-length(outliers);
+        end   
+    else
+        outliers=NaN;
+        ngood=n;
+    end
     
     
     % (yhat contains fitted values and yhatsor = fitted values z1 contains fitted values sorted
@@ -574,6 +591,10 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % program)
     logabsres=log(sqrt(tres.^2));
     
+    if ~isnan(outliers)
+        yhat(outliers)=Inf;
+    end
+    
     [yhatord,ordyhat]=sort(yhat);
     % ztar_sorted=log(sqrt((z2-z1).^2));
     logabsresOrdyhat=logabsres(ordyhat);
@@ -588,33 +609,43 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % Smooth the log of (the sample version of) the |residuals|
     % against fitted values. Use the ordering based on fitted values.
-    [smo,yspan]=rlsmo(yhatord,logabsresOrdyhat,wOrdyhat,yspan);
+    [smo,yspan]=rlsmo(yhatord(1:ngood),logabsresOrdyhat(1:ngood),wOrdyhat(1:ngood),yspan);
     
     % z6=smo;
     smoothresm1Ordyhat=exp(-smo);
     % sumlog=2*n*sum(smo.*w)/sw;
-    tyOrdyhat=ty(ordyhat);
     
-    % Compute the variance stabilizing transformation
-    % h(t)= \int_{z1_1}^t v(u)^{-0.5} du
-    % z1 = yhat sorted
-    % z7 reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
-    % z8 = values of ty sorted using the ordering based on fitted values of z1
-    tynewOrdyhat=ctsub(yhatord,smoothresm1Ordyhat,tyOrdyhat);
+%     tyOrdyhat=ty(ordyhat);
+%     
+%     % Compute the variance stabilizing transformation
+%     % h(t)= \int_{z1_1}^t v(u)^{-0.5} du
+%     % yhatord = yhat sorted (z10 in original fortran code)
+%     % smoothresm1Ordyhat= reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
+%     % tyOrdyhat = values of ty sorted using the ordering based on fitted
+%     % values (z8 n fortran code)
+%     % tynewOrdyhat (z9 in fortran code)
+%     tynewOrdyhat=ctsub(yhatord,smoothresm1Ordyhat,tyOrdyhat);
+%     
+%     % Probably here there was a mistake in the original Fortran program
+%     % because z9 (which contains values ordered using yhat) has to be
+%     % weighted using z5=w(ordyhat) and not using w
+%     % 23033 continue
+%     %  call ctsub(n,z(1,10),z(1,7),z(1,8),z(1,9))
+%     %  sm=0
+%     %  do 23035 j=1,n
+%     %     sm=sm+w(j)*z(j,9)
+%     % 23035 continue
+%     
+%     sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
+%     % Compute updated vector ty with mean removed
+%     ty(ordyhat)=tynewOrdyhat-sm/sw;
+  
+    % Compute updated transformed values
+    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty);
     
-    % Probably here there was a mistake in the original Fortran program
-    % because z9 (which contains values ordered using yhat) has to be
-    % weighted using z5=w(ordyhat) and not using w
-    % 23033 continue
-    %  call ctsub(n,z(1,10),z(1,7),z(1,8),z(1,9))
-    %  sm=0
-    %  do 23035 j=1,n
-    %     sm=sm+w(j)*z(j,9)
-    % 23035 continue
+    sm=sum(ty.*w); 
+    ty=ty-sm/sw;
     
-    sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
-    % Compute updated vector ty with mean removed
-    ty(ordyhat)=tynewOrdyhat-sm/sw;
     
     sv=sum(ty.^2.*w)/sw;
     % Make sure that sv (variance of transformed y) is a positive number
