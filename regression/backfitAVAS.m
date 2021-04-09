@@ -16,12 +16,12 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
     rsqi=rsq;
     nit=nit+1;
     
-    % Find $Z_5 = ty- tX_1 \cdots - tX_p$.
-    %  $Z_5$ is the $n \times 1$ vector which contains the residuals
+    % Find $e = ty- tX_1 \cdots - tX_p$.
+    %  $e$ is the $n \times 1$ vector which contains the residuals
     %  from transformed $y$ and transformed $X$. In what follows $Z_1,
     %  \ldots, Z_5$ are scratch variables (each of dimension $n \times
     %  1$).
-    z5=ty-sum(tX,2);
+    e=ty-sum(tX,2);
     
     % Loop through all the explanatory variables
     % and transform them
@@ -40,26 +40,26 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
         %   Z_1=  ty(M(:,i))- \sum_{j \ne i } tX_j(M(:,i)), \qquad j=1, 2, \ldots, p
         %   \]
         %    The first element of $Z_1$ is associated with the lowest value of $X_i$, the second element is associated with the second lowet value of $X_i$ ...,
-        z1=z5(ordXj)+tX(ordXj,j);
+        eplustXjOrdXj=e(ordXj)+tX(ordXj,j);
         
-        % z2 = original expl. variable X(:,j) sorted
-        z2=X(ordXj,j);
+        % xjord = original expl. variable X(:,j) sorted
+        Xjord=X(ordXj,j);
         
         % z4 = corresponding weights
-        z4=w(ordXj);
+        wOrdXj=w(ordXj);
         
         %  smo=smothr(abs(l(i)),z(:,2),z(:,1),z(:,4));
         % Find smoothed values of X(:,i)
-        smo=smothr(abs(l(j)),z2,z1,z4);
+        smoOrdXj=smothr(abs(l(j)),Xjord,eplustXjOrdXj,wOrdXj);
         
         % Weighted average of
-        sm=sum(smo.*z4)/sw;
+        sm=sum(smoOrdXj.*wOrdXj)/sw;
         % z3 = z3- mean(z3)
-        z3=smo-sm;
+        tXOrdXj=smoOrdXj-sm;
         % sv=sum(((z(:,1)-z(:,3)).^2).*w(m(:,i)));
         
         % Compute residual sum of squares
-        sv=sum(((z1-z3).^2).*z4);
+        sv=sum(((eplustXjOrdXj-tXOrdXj).^2).*wOrdXj);
         
         % Convert residual sum of squares into R2
         % Remember that y has been standardized
@@ -71,8 +71,8 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
             % rsq = the multiple R-squared value for the transformed values
             rsq=sv;
             
-            tX(ordXj,j)=z3;
-            z5(ordXj)=z1-z3;
+            tX(ordXj,j)=tXOrdXj;
+            e(ordXj)=eplustXjOrdXj-tXOrdXj;
 %         end
         
     end       % End of the loop for the explanatory variables
@@ -86,6 +86,6 @@ while lfinishInnerLoop==1 % Beginning of Inner Loop
     end
 end % End of the Inner Loop
 
-% Store new tranformed values for the exaplanatory variables
+% Store new tranformed values for the explanatory variables
 newtX=tX;
 end
