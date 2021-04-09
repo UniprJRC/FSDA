@@ -421,7 +421,7 @@ if ~isempty(UserOptions)
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSReda:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        error('FSDA:avas:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
     end
     % Check if user options are valid options
     chkoptions(options,UserOptions)
@@ -478,7 +478,7 @@ if ~isempty(tyinitial)
         end
         
     else
-        error('FSDA:FSReda:WrongInputOpt','tyinitial can only be a missing a boolean or a struct.');
+        error('FSDA:avas:WrongInputOpt','tyinitial can only be a missing a boolean or a struct.');
     end
     
     % FSRfan and fanplot with all default options
