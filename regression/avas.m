@@ -31,6 +31,12 @@ function [out]=avas(y,X,varargin)
 %
 %  Optional input arguments:
 %
+%   delrsq : termination threshold. Scalar. Iteration (in the outer loop)
+%            stops when rsq changes less than delrsq in nterm. The default
+%            value of delrsq is 0.01.
+%           Example - 'delrsq',0.001
+%           Data Types - double
+%
 %       l :  type of transformation. Vector. Vector of length p which
 %           specifies the type of transformation for the explanatory
 %           variables.
@@ -48,11 +54,10 @@ function [out]=avas(y,X,varargin)
 %           Example - 'l',[3 3 1]
 %           Data Types - double
 %
-%       w  : weights for the observations. Vector. Row or column vector of
-%           length n containing the weights associated to each
-%           observations. If w is not specified we assum $w=1$ for $i=1,
-%           2, \ldots, n$.
-%           Example - 'w',1:n
+%    maxit : maximum number of iterations for the outer loop. Scalar. The
+%            default maximum number of iterations before exiting the outer
+%            loop is 20.
+%           Example - 'maxit',30
 %           Data Types - double
 %
 %   nterm  : minimum number of consecutive iteration below the threshold
@@ -63,17 +68,41 @@ function [out]=avas(y,X,varargin)
 %           Example - 'nterm',5
 %           Data Types - double
 %
-%   delrsq : termination threshold. Scalar. Iteration (in the outer loop)
-%            stops when rsq changes less than delrsq in nterm. The default
-%            value of delrsq is 0.01.
-%           Example - 'delrsq',0.001
-%           Data Types - double
+% PredictorOrderR2 : inclusion of the variables using R2. Boolean.
+%           The default backfitting algorithm of avas (PredictorOrderR2=false)
+%           just does one
+%           iteration over the predictors, it may not find optimal
+%           transformations and it will be dependent on the order of the
+%           predictors in X. If PredictorOrderR2 in the backfitting
+%           explanatory variables become candidate for transformation
+%           depending on their R2 order of importance.
+%           Example - 'PredictorOrderR2',true
+%           Data Types - logical
 %
-%    maxit : maximum number of iterations for the outer loop. Scalar. The
-%            default maximum number of iterations before exiting the outer
-%            loop is 20.
-%           Example - 'maxit',30
-%           Data Types - double
+%   rob  : Use outlier detection in each step fo the bakfitting procedure.
+%           Boolean or struct.
+%           If rob is not specified tyinitial is set to false and no
+%           outlier detection routine is called.
+%           If rob is true, FSR routine is called to detect outliers
+%           before calling backfitting procedure and outliers are removed
+%           If rob is a struct it is possible to specify in the
+%           fields method, bdp and alphasim the values of the estiamtor to
+%           use, the breakdown point and and confidence level to use to
+%           declare the outliers.
+%           More precisely:
+%           rob.method = character which identifies the estiamtor to use.
+%               Possible values are 'FS' (Forward search estimator', 'LTS'
+%               (Least trimmed squares estimator), 'LMS' (Least median of
+%               squares), 'S' (S estimator). If this field is not specified
+%               'FS' is used.
+%           rob.bdp = a scalar in the interval (0, 0.5] which specifies
+%               breakdown point to use. If this field is not specified it is
+%               set to 0.2.
+%           rob.simalpha = simultaneous error rate one is willing to
+%               tolerate to declare the outliers. If rob.simalpha is not
+%               specified it is set to 0.01.
+%           Example - 'rob',true
+%           Data Types - boolean or struct
 %
 %   scail  : Inizialing values for the regressors. Boolean. If scail is
 %           true (default value is false), a linear regression is done on
@@ -94,8 +123,8 @@ function [out]=avas(y,X,varargin)
 %           Example - 'scail',true
 %           Data Types - logical
 %
-%   tyinitial  : Initial values for the transformed response. Missing value boolean or struct.
-%           If tyinitial is missing (default) the initial value for ty are
+%   tyinitial  : Initial values for the transformed response. Boolean or struct.
+%           If tyinitial is not specified tyinitial is set to false and the initial value for ty are
 %           simply the standardized values.
 %           If tyinitial is true, y is transformed using best BoxCox lambda
 %           value among the five most common values of lambda (-1, -0.5, 0,
@@ -121,7 +150,14 @@ function [out]=avas(y,X,varargin)
 %                   arguments out.Scorep and out.Scoren) the score test
 %                   respectively for positive and negative observations.
 %           Example - 'tyinitial',true
-%           Data Types - missing scalar, boolean or struct
+%           Data Types - boolean or struct
+%
+%       w  : weights for the observations. Vector. Row or column vector of
+%           length n containing the weights associated to each
+%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           2, \ldots, n$.
+%           Example - 'w',1:n
+%           Data Types - double
 %
 %
 % Output:
@@ -135,6 +171,9 @@ function [out]=avas(y,X,varargin)
 %      out.X  = n x p matrix containing the original X matrix.
 %      out.niter = scalar. Number of iterations which have been necessary
 %               to achieve convergence.
+%      out.outliers = k x 1 vector containing the units declared as outliers
+%           when procedure is called with input option rob set to true. If
+%           rob is false out.outliers=[].
 %
 % See also: ace.m, aceplot.m, smothr.m, supsmu.m, ctsub.m
 %
@@ -406,7 +445,9 @@ nterm=3;
 w=ones(n,1);
 
 scail=false;
-tyinitial=[];
+tyinitial=false;
+rob=false;
+PredictorOrderR2=false;
 
 % c span, alpha : super smoother parameters.
 % supermo=struct;
@@ -417,7 +458,8 @@ UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
-        'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial);
+        'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial,'rob',rob,...
+        'PredictorOrderR2',PredictorOrderR2);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -440,50 +482,111 @@ if ~isempty(UserOptions)
     maxit=options.maxit;
     scail=options.scail;
     tyinitial=options.tyinitial;
+    rob=options.rob;
 end
 
 if size(w,2)>1
     w=w';
 end
 
-if ~isempty(tyinitial)
+if islogical(tyinitial)
     if tyinitial ==true
+        callToFSRfan=true;
         la=[-1 -0.5 0 0.5 1];
         if min(y)>0
             family='BoxCox';
         else
             family='YJ';
         end
-    elseif tyinitial==false
-        la=1;
+    else
+        callToFSRfan=false;
+    end
+    
+elseif isstruct(tyinitial)
+    callToFSRfan=true;
+    if isfield('tyinitial','la')
+        la=tyinitial.la;
+    else
+        la=[-1 -0.5 0 0.5 1];
+    end
+    if isfield('tyinitial','family')
+        family=tyinitial.family;
+    else
         if min(y)>0
             family='BoxCox';
         else
             family='YJ';
         end
-    elseif isstruct(tyinitial)
-        if isfield('tyinitial','la')
-            la=tyinitial.la;
+    end
+else
+    error('FSDA:avas:WrongInputOpt','tyinitial can only be a boolean or a struct.');
+end
+
+% Initial default value of break down point
+bdpdef=0.2;
+
+if islogical(rob)
+    if rob ==true
+        robustAVAS=true;
+        % FS    ==> estimatorToUse=1 (default)
+        % LTS   ==> estimatorToUse=2
+        % LMS   ==> estimatorToUse=3
+        % S     ==> estimatorToUse=4
+        estimatorToUse=1;
+        % In this case bdp is init (point to start FS)
+        bdp=round(n*(1-bdpdef));
+        % simalpa  1 per cent simultaneous
+        simalpha=0.01;
+    else
+        robustAVAS=false;
+    end
+    
+elseif isstruct(rob)
+    robustAVAS=true;
+    
+    if isfield('rob','bdp')
+        bdp=rob.bdp;
+    else
+        bdp=bdpdef;
+    end
+    if isfield('rob','simalpha')
+        simalpha=rob.simalpha;
+    else
+        simalpha=0.01;
+    end
+    
+    if isfield('rob','method')
+        estimator=rob.method;
+        if strcmp(estimator,'FS')
+            estimatorToUse=1;
+            % FS is defined using init and not bdp this is the reason of
+            % the instruction below
+            bdp=round(n*(1-bdp));
+        elseif strcmp(estimator,'LTS')
+            estimatorToUse=2;
+        elseif strcmp(estimator,'LMS')
+            estimatorToUse=3;
+        elseif strcmp(estimator,'S')
+            estimatorToUse=4;
         else
-            la=[-1 -0.5 0 0.5 1];
-        end
-        if isfield('tyinitial','family')
-            family=tyinitial.family;
-        else
-            if min(y)>0
-                family='BoxCox';
-            else
-                family='YJ';
-            end
+            error('FSDA:avas:WrongInputOpt',['rob.method can only be '...
+                ' ''FS'', ''LTS'', ''LMS'' or ''S''']);
         end
         
     else
-        error('FSDA:avas:WrongInputOpt','tyinitial can only be a missing a boolean or a struct.');
+        estimatorToUse=1;
     end
-    
+else
+    error('FSDA:avas:WrongInputOpt','rob can only be a boolean or a struct.');
+end
+
+
+
+if callToFSRfan ==true
     % FSRfan and fanplot with all default options
-    [outFSR]=FSRfan(y,X,'msg',0,'la',la,'family',family,'plots',0);
+    [outFSR]=FSRfan(y,X,'msg',0,'la',la,'family',family,'plots',1);
     outLA=fanBIC(outFSR,'plots',0);
+    % outLA.labest=-0.5;
     if strcmp(family,'BoxCox')
         y=normBoxCox(y,1,outLA.labest);
     elseif strcmp(family,'YJ')
@@ -491,8 +594,10 @@ if ~isempty(tyinitial)
     elseif strcmp(family,'YJpn')
         y=normYJpn(y,1,outLA.labest);
     end
-    
 end
+
+seq=(1:n)';
+
 
 % sw = sum of the weights
 sw=sum(w);
@@ -548,37 +653,31 @@ iter=0;
 nt=0;
 rsq=0;
 
+
+if robustAVAS==true
+    [bsb,outliers,ngood]=robAVAS(ty,tX,estimatorToUse,bdp,simalpha);
+    sw=sum(w(bsb));
+else
+    outliers=[];
+    ngood=n;
+    bsb=seq;
+end
+
 % Call backfitting algorith to find transformed values of X
-[tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
+[tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
 
 yspan=0;
 lfinishOuterLoop=1;
 
-seq=1:n;
-rob=struct;
-rob.method='FS';
-rob.init=n*0.6;
-rob=true;
-rob=false;
-
 while lfinishOuterLoop ==1 % Beginning of Outer Loop
     iter=iter+1;
     
-    if rob==true
-         out=FSR(ty,tX,'plots',0);
-        outliers=out.outliers;
-        if isnan(outliers)
-            ngood=n;
-        else
-            ngood=n-length(outliers);
-        end   
-    else
-        outliers=NaN;
-        ngood=n;
+    if robustAVAS==true && iter>1
+        [bsb,outliers,ngood]=robAVAS(ty,tX,estimatorToUse,bdp,simalpha);
+         sw=sum(w(bsb));
     end
     
-    
-    % (yhat contains fitted values and yhatsor = fitted values z1 contains fitted values sorted
+    % (yhat contains fitted values and yhatord = fitted values sorted
     yhat=sum(tX,2);    % yhat is z10 in fortran program
     
     % tres = vector of residuals using transformed y and transformed X
@@ -591,7 +690,7 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % program)
     logabsres=log(sqrt(tres.^2));
     
-    if ~isnan(outliers)
+    if ~isempty(outliers)
         yhat(outliers)=Inf;
     end
     
@@ -609,45 +708,48 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % Smooth the log of (the sample version of) the |residuals|
     % against fitted values. Use the ordering based on fitted values.
+    % Smoothing is done for the units not declared as outliers.
     [smo,yspan]=rlsmo(yhatord(1:ngood),logabsresOrdyhat(1:ngood),wOrdyhat(1:ngood),yspan);
     
-    % z6=smo;
+    % smoothresm1Ordyhat = 1/|e_{smoothed}|= v(u)^{-0.5}
     smoothresm1Ordyhat=exp(-smo);
     % sumlog=2*n*sum(smo.*w)/sw;
     
-%     tyOrdyhat=ty(ordyhat);
-%     
-%     % Compute the variance stabilizing transformation
-%     % h(t)= \int_{z1_1}^t v(u)^{-0.5} du
-%     % yhatord = yhat sorted (z10 in original fortran code)
-%     % smoothresm1Ordyhat= reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
-%     % tyOrdyhat = values of ty sorted using the ordering based on fitted
-%     % values (z8 n fortran code)
-%     % tynewOrdyhat (z9 in fortran code)
-%     tynewOrdyhat=ctsub(yhatord,smoothresm1Ordyhat,tyOrdyhat);
-%     
-%     % Probably here there was a mistake in the original Fortran program
-%     % because z9 (which contains values ordered using yhat) has to be
-%     % weighted using z5=w(ordyhat) and not using w
-%     % 23033 continue
-%     %  call ctsub(n,z(1,10),z(1,7),z(1,8),z(1,9))
-%     %  sm=0
-%     %  do 23035 j=1,n
-%     %     sm=sm+w(j)*z(j,9)
-%     % 23035 continue
-%     
-%     sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
-%     % Compute updated vector ty with mean removed
-%     ty(ordyhat)=tynewOrdyhat-sm/sw;
-  
+    %     tyOrdyhat=ty(ordyhat);
+    %
+    %     % Compute the variance stabilizing transformation
+    %     % h(t)= \int_{\hat y_{(1)}}^t v(u)^{-0.5} du
+    %     % yhatord = yhat sorted (z10 in original fortran code)
+    %     % smoothresm1Ordyhat= reciprocal of smoothed |residuals|. z7 is v(u)^{-0.5}
+    %     % tyOrdyhat = values of ty sorted using the ordering based on fitted
+    %     % values (z8 n fortran code)
+    %     % tynewOrdyhat (z9 in fortran code)
+    %     tynewOrdyhat=ctsub(yhatord,smoothresm1Ordyhat,tyOrdyhat);
+    %
+    %     % Probably here there was a mistake in the original Fortran program
+    %     % because z9 (which contains values ordered using yhat) has to be
+    %     % weighted using z5=w(ordyhat) and not using w
+    %     % 23033 continue
+    %     %  call ctsub(n,z(1,10),z(1,7),z(1,8),z(1,9))
+    %     %  sm=0
+    %     %  do 23035 j=1,n
+    %     %     sm=sm+w(j)*z(j,9)
+    %     % 23035 continue
+    %
+    %     sm=sum(tynewOrdyhat.*w); % TODO replace w with wOrdyhat
+    %     % Compute updated vector ty with mean removed
+    %     ty(ordyhat)=tynewOrdyhat-sm/sw;
+    
     % Compute updated transformed values
     ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty);
     
-    sm=sum(ty.*w); 
+    wbsb=w(bsb);
+    sm=sum(ty(bsb).*wbsb);
+    % sw=sum(wbsb);
     ty=ty-sm/sw;
     
     
-    sv=sum(ty.^2.*w)/sw;
+    sv=sum(ty(bsb).^2.*wbsb)/sw;
     % Make sure that sv (variance of transformed y) is a positive number
     if sv<=0
         out=[];
@@ -656,7 +758,8 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     end
     
     % TODO it is necessary to replace w with  wOrdyhat
-    svx=sum(yhatord.^2.*w)/sw;
+    % sw=sum(wOrdyhat(1:ngood));
+    svx=sum(yhatord(1:ngood).^2.*wOrdyhat(1:ngood))/sw;
     % ty is the new vector of transformed values standardized.
     ty=ty/sqrt(sv);
     % Note that each column of tX is standardized using sqrt of mean of
@@ -666,13 +769,13 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % that is backfit \hat g(y) on X_1, \ldots, X_p
     % to get new tX
     
-    [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq);
-    % z1 contains fitted values sorted
+    [tX,~]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
+    % yhat contains fitted values (not sorted)
     yhat=sum(tX,2);    % z1 is z10 in AVAS
     
-    rr=sum(((ty-yhat).^2).*w)/sw;
+    rr=sum(((ty(bsb)-yhat(bsb)).^2).*wbsb)/sw;
     
-    % rsq = new value of R2
+    % rsq = new value of R2 (given that var(ty)=1)
     rsq=1-rr;
     
     % sumlog=sumlog+n*log(sv);
@@ -702,6 +805,36 @@ out.X=X;
 out.tX=tX;
 out.rsq=rsq;
 out.niter=iter;
+out.outliers=outliers;
+end
+
+function [bsb,outliers,ngood]=robAVAS(ty,tX,estimatorToUse,bdp,simalpha)
+n=length(ty);
+if estimatorToUse==1 % FS
+    if simalpha ==0.01
+        out=FSR(ty,tX,'plots',0,'msg',false,'init',bdp);
+    else
+        out=FSRr(ty,tX,'alpha',simalpha,'plots',0,'msg',false,'init',init);
+    end
+elseif estimatorToUse==2  % LTS
+    out=LXS(ty,tX,'lms',2,'conflev',1-simalpha/n,'bdp',bdp);
+elseif estimatorToUse ==3 % LMS
+    out=LXS(ty,tX,'lms',1,'conflev',1-simalpha/length(ty),'bdp',bdp);
+elseif estimatorToUse ==4 % S
+    out=Sreg(ty,tX,'conflev',1-simalpha/length(ty),'bdp',bdp);
+else
+end
+seq=(1:n)';
+outl=out.outliers;
+if any(isnan(outl)) || isempty(outl)
+    ngood=n;
+    bsb=seq;
+    outliers=[];
+else
+    ngood=n-length(outl);
+    bsb=setdiff(seq,outl);
+    outliers=outl;
+end
 end
 
 %FScategory:REG-Transformations
