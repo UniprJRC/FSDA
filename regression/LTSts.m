@@ -16,6 +16,96 @@ function [out, varargout] = LTSts(y,varargin)
 %
 %  Optional input arguments:
 %
+%
+%         bdp : breakdown point. Scalar. It measures the fraction of outliers
+%               the algorithm should resist. In this case any value greater
+%               than 0 but smaller or equal than 0.5 will do fine. Please
+%               specify h or bdp, but not both.
+%                 Example - 'bdp',0.4
+%                 Data Types - double
+%
+%     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
+%               Confidence level which is used to declare units as
+%               outliers. Usually conflev=0.95, 0.975 0.99 (individual
+%               alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
+%               alpha). Default value is 0.975.
+%                 Example - 'conflev',0.99
+%                 Data Types - double
+%
+%  dispresults : Display results of final fit. Boolean. If dispresults is
+%               true,  labels of coefficients, estimated coefficients,
+%               standard errors, tstat and p-values are shown on the
+%               screen in a fully formatted way. The default value of
+%               dispresults is false.
+%               Example - 'dispresults',true
+%               Data Types - logical
+%
+%
+%           h : The number of observations that determined the least
+%               trimmed squares estimator. Scalar. h is an integer greater
+%               than p (number of columns of matrix X including the
+%               intercept but smaller then n. If the purpose is outlier
+%               detection than h does not have to be smaller than
+%               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
+%               that if h is supplied input argument bdp is ignored.
+%                 Example - 'h',round(n*0.75)
+%                 Data Types - double
+%
+%    intercept :  Indicator for constant term. true (default) | false.
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
+% lshiftlocref: Parameters for local shift refinement. Structure.
+%               This option is used just if model.lshift is greater then 0.
+%               In order to precisely identify level shift position it is
+%               necessary to consider a local sum of squares varying the
+%               position of the level shift around the first tentative
+%               position keeping all the other parameters fixed. This
+%               structure contains the following fields:
+%               lshiftlocref.wlength = scalar greater than 0 which
+%                   identifies the length of the window. The default value
+%                   is 15, that is the tentative level shift position
+%                   varies from tl-15, tl-15, ..., tl+14, tl+15, where tl is
+%                   the best preliminary tentative level shift position.
+%              lshiftlocref.typeres = scalar which identifies the type of
+%                   residuals to consider. If typerres =1, the local
+%                   residuals sum of squares is based on huberized (scaled)
+%                   residuals (this is the default
+%                   choice) else raw residuals are used.
+%              lshiftlocref.huberc= tuning constant for Huber estimator just
+%                   in case lshiftlocref.typeres=1. The default value is 2.
+%               Example - 'lshiftlocref',lshiftlocref.typeres=2
+%               Data Types - struct
+%
+%       lts   : structure which controls a set of options of the
+%               maximization procedure. Structure. Structure with the
+%               following fields:
+%                   lts.bestr   = scalar defining number of "best betas" to
+%                               remember from the subsamples. These will be
+%                               later iterated until convergence.
+%                               The default is 20 (10 of them are the best
+%                               from previous iteration in case a level
+%                               shift is present).
+%                  lts.refsteps = scalar defining number of concentration
+%                               steps (default = 2). refsteps = 0 means
+%                               "raw-subsampling" without iterations.
+%             lts.refstepsbestr = scalar defining maximum number of refining
+%                               steps for each best subset (default=50).
+%                   lts.reftol  = scalar. Default value of tolerance for
+%                               the refining steps
+%                               The default value is 1e-6;
+%              lts.reftolbestr  = scalar. Default value of tolerance for
+%                               the refining steps for each of the best
+%                               subsets The default value is 1e-8.
+%                Example - 'lts',lts
+%                Data Types - struct
+%              Remark: if lts is an empty value all default values of
+%              structure lts will be used.
+%
 %      model :  model type. Structure. A structure which specifies the model
 %               which will be used. The model structure contains the following
 %               fields:
@@ -67,7 +157,7 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 or equal to -1, 
+%               model.lshift = scalar greater or equal than 0 or equal to -1,
 %                         or vector of positive integer values which
 %                         specifies whether it is necessary to include a
 %                         level shift component. lshift = 0 (default)
@@ -75,7 +165,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                         specifies the moment to start considering level
 %                         shifts automatically from specification of
 %                         lshift in position floor((T-1-p)/2). If lshift is
-%                         an interger greater then 0 or a vector of positive 
+%                         an interger greater then 0 or a vector of positive
 %                         integer values then it specifies the
 %                         moments where the level shift can be located. For
 %                         example if lshift =13 then the following
@@ -110,55 +200,42 @@ function [out, varargout] = LTSts(y,varargin)
 %               Using the notation of the paper RPRH we have A=1, B=1; and
 %               $\delta_1=0$.
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
+%        msg  : Messages on the screen. Boolean.
+%               Scalar which controls whether to display or not messages
+%               on the screen. If msg==true (default) messages are displayed on
+%               the screen about estimated time to compute the estimator
+%               and the warnings about 'MATLAB:rankDeficientMatrix',
+%               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
+%               are set to off else no message is displayed on the screen
+%               Example - 'msg',true
+%               Data Types - logical
 %
-%           h : The number of observations that determined the least
-%               trimmed squares estimator. Scalar. h is an integer greater
-%               than p (number of columns of matrix X including the
-%               intercept but smaller then n. If the purpose is outlier
-%               detection than h does not have to be smaller than
-%               [0.5*(T+p+1)]. The default value of h is [0.75*T]. Note
-%               that if h is supplied input argument bdp is ignored.
-%                 Example - 'h',round(n*0.75)
-%                 Data Types - double
+%nbestindexes : position of the best solutions. Positive integer. For each
+%               tentative level shift solution, it is interesenting to
+%               understand whether best solutions of target function come
+%               from subsets associated with current level shift solution
+%               or from best solutions from previous tentative level shift
+%               position.  The indexes from 1 to lts.bestr/2 are associated
+%               with subsets just extracted. The indexes from lts.bestr/2+1
+%               to lts.bestr are associated with best solutions from
+%               previous tentative level shift. More precisely:
+%               index lts.bestr/2+1 is associated with best solution from
+%               previous tentative level shift;
+%               index lts.bestr/2+2 is associated with second best solution
+%               from previous tentative level shift;
+%               ...
+%               nbestindexes is an integer which specifies how many indexes
+%               we want to store. The default value of nbestindexes  is 3.
+%               Example - 'nbestindexes',5
+%               Data Types - double
 %
-%         bdp : breakdown point. Scalar. It measures the fraction of outliers
-%               the algorithm should resist. In this case any value greater
-%               than 0 but smaller or equal than 0.5 will do fine. Please
-%               specify h or bdp, but not both.
-%                 Example - 'bdp',0.4
-%                 Data Types - double
-%
-%       lts   : structure which controls a set of options of the
-%               maximization procedure. Structure. Structure with the
-%               following fields:
-%                  lts.refsteps = scalar defining number of concentration
-%                               steps (default = 2). refsteps = 0 means
-%                               "raw-subsampling" without iterations.
-%                   lts.reftol  = scalar. Default value of tolerance for
-%                               the refining steps
-%                               The default value is 1e-6;
-%                   lts.bestr   = scalar defining number of "best betas" to
-%                               remember from the subsamples. These will be
-%                               later iterated until convergence.
-%                               The default is 20 (10 of them are the best
-%                               from previous iteration in case a level
-%                               shift is present).
-%             lts.refstepsbestr = scalar defining maximum number of refining
-%                               steps for each best subset (default=50).
-%              lts.reftolbestr  = scalar. Default value of tolerance for
-%                               the refining steps for each of the best
-%                               subsets The default value is 1e-8.
-%                Example - 'lts',lts
-%                Data Types - struct
-%              Remark: if lts is an empty value all default values of
-%              structure lts will be used.
+%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
+%               check is performed on matrix y and matrix X. Notice that y
+%               and X are left unchanged. In other words the additioanl
+%               column of ones for the intercept is not added. As default
+%               nocheck=false. The controls on h, bdp and nsamp still remain.
+%               Example - 'nocheck',true
+%               Data Types - boolean
 %
 %       nsamp : number of subsamples to extract. Scalar or vector of length 2.
 %               Vector of length 1 or 2 which controls the number of
@@ -185,12 +262,6 @@ function [out, varargout] = LTSts(y,varargin)
 %               Remark: if nsamp=0 all subsets will be extracted.
 %               They will be (n choose p).
 %
-%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
-%                 for the refining steps inside ALS routine. The default
-%                 value is 1e-03.
-%                 Example - 'reftolALS',1e-05
-%                 Data Types - double
-%
 % refstepsALS :   Maximum iterations inside ALS. Scalar. Maximum number
 %                 of iterations inside ALS routine. Default value of
 %                 tolerance for the refining steps inside ALS routine. The
@@ -198,13 +269,47 @@ function [out, varargout] = LTSts(y,varargin)
 %                 Example - 'refstepsALS',20
 %                 Data Types - double
 %
-%     conflev : Confidence level. Scalar. Scalar between 0 and 1 containing
-%               Confidence level which is used to declare units as
-%               outliers. Usually conflev=0.95, 0.975 0.99 (individual
-%               alpha) or 1-0.05/n, 1-0.025/n, 1-0.01/n (simultaneous
-%               alpha). Default value is 0.975.
-%                 Example - 'conflev',0.99
+%
+%  reftolALS  :   Tolerance inside ALS. Scalar. Tolerance value of tolerance
+%                 for the refining steps inside ALS routine. The default
+%                 value is 1e-03.
+%                 Example - 'reftolALS',1e-05
 %                 Data Types - double
+%
+%SmallSampleCor:Small sample correction factor to control empirical size of
+%               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
+%               - If SmallSampleCor=1 in the reweighting step the nominal
+%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
+%                 small sample correction factor which guarrantees that the
+%                 empirical size of the test is equal to the nominal size.
+%                 Given that the correction factors were obtained through
+%                 simulation for a linear model, the number of explanatory
+%                 which is used to compute the correction factor refers to
+%                 all explanatory variables except the non linear components
+%                 in the seasonal part of the model. For example, in a model
+%                 with linear trend 4 seasonal harmonics + level shift and
+%                 second order trend in the seasonal component the number of
+%                 explanatory variables used is 11 = total number of
+%                 variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
+%                 +1 (level shift).
+%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
+%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
+%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
+%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
+%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
+%                 Example - 'SmallSampleCor',3
+%                 Data Types - double
+%
+%
+%       yxsave : store X and y. Boolean. Scalar that is set to 1 to request
+%                that the response vector y and data matrix X are saved
+%                into the output structure out.
+%                Default is 0, i.e. no saving is done.
+%               Example - 'yxsave',1
+%               Data Types - logical
 %
 %       plots : Plots on the screen. Scalar.
 %               If plots = 1, a two panel plot will be shown on the screen.
@@ -236,107 +341,6 @@ function [out, varargout] = LTSts(y,varargin)
 %               screen.
 %                 Example - 'plots',1
 %                 Data Types - double
-%
-%SmallSampleCor:Small sample correction factor to control empirical size of
-%               the test.  Scalar equal to 1 or 2 (default) or 3 or 4.
-%               - If SmallSampleCor=1 in the reweighting step the nominal
-%                 threshold based on $\chi^2_{0.99}$ is multiplied by the
-%                 small sample correction factor which guarrantees that the
-%                 empirical size of the test is equal to the nominal size.
-%                 Given that the correction factors were obtained through
-%                 simulation for a linear model, the number of explanatory
-%                 which is used to compute the correction factor refers to
-%                 all explanatory variables except the non linear components
-%                 in the seasonal part of the model. For example, in a model
-%                 with linear trend 4 seasonal harmonics + level shift and
-%                 second order trend in the seasonal component the number of
-%                 explanatory variables used is 11 = total number of
-%                 variables -2 = 2 (linear trend) + 8 (4 seasonal harmonics)
-%                 +1 (level shift).
-%               - If SmallSampleCor =2 Gervini and Yohai procedure is called
-%                 with 'iterating' false and 'alpha' 0.99 is invoked, that is:
-%                 weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
-%               - If SmallSampleCor =3 Gervini and Yohai procedure  called
-%                 with 'iterating' true and 'alpha' 0.99 is invoked, that is:
-%                 weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
-%               - If SmallSampleCor =4  $\chi^2_{0.99}$ threshold is used that is:
-%                 weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
-%                 Example - 'SmallSampleCor',3
-%                 Data Types - double
-%
-%        msg  : Messages on the screen. Scalar.
-%               Scalar which controls whether to display or not messages
-%               on the screen. If msg==1 (default) messages are displayed on
-%               the screen about estimated time to compute the estimator
-%               and the warnings about 'MATLAB:rankDeficientMatrix',
-%               'MATLAB:singularMatrix' and 'MATLAB:nearlySingularMatrix'
-%               are set to off else no message is displayed on the screen
-%               Example - 'msg',1
-%               Data Types - double
-%
-%      nocheck: Check input arguments. Boolean. If nocheck is equal to true no
-%               check is performed on matrix y and matrix X. Notice that y
-%               and X are left unchanged. In other words the additioanl
-%               column of ones for the intercept is not added. As default
-%               nocheck=false. The controls on h, bdp and nsamp still remain.
-%               Example - 'nocheck',true
-%               Data Types - boolean
-%
-% lshiftlocref: Parameters for local shift refinement. Structure.
-%               This option is used just if model.lshift is greater then 0.
-%               In order to precisely identify level shift position it is
-%               necessary to consider a local sum of squares varying the
-%               position of the level shift around the first tentative
-%               position keeping all the other parameters fixed. This
-%               structure contains the following fields:
-%               lshiftlocref.wlength = scalar greater than 0 which
-%                   identifies the length of the window. The default value
-%                   is 15, that is the tentative level shift position
-%                   varies from tl-15, tl-15, ..., tl+14, tl+15, where tl is
-%                   the best preliminary tentative level shift position.
-%              lshiftlocref.typeres = scalar which identifies the type of
-%                   residuals to consider. If typerres =1, the local
-%                   residuals sum of squares is based on huberized (scaled)
-%                   residuals (this is the default
-%                   choice) else raw residuals are used.
-%              lshiftlocref.huberc= tuning constant for Huber estimator just
-%                   in case lshiftlocref.typeres=1. The default value is 2.
-%               Example - 'lshiftlocref',lshiftlocref.typeres=2
-%               Data Types - struct
-%
-%nbestindexes : position of the best solutions. Positive integer. For each
-%               tentative level shift solution, it is interesenting to
-%               understand whether best solutions of target function come
-%               from subsets associated with current level shift solution
-%               or from best solutions from previous tentative level shift
-%               position.  The indexes from 1 to lts.bestr/2 are associated
-%               with subsets just extracted. The indexes from lts.bestr/2+1
-%               to lts.bestr are associated with best solutions from
-%               previous tentative level shift. More precisely:
-%               index lts.bestr/2+1 is associated with best solution from
-%               previous tentative level shift;
-%               index lts.bestr/2+2 is associated with second best solution
-%               from previous tentative level shift;
-%               ...
-%               nbestindexes is an integer which specifies how many indexes
-%               we want to store. The default value of nbestindexes  is 3.
-%               Example - 'nbestindexes',5
-%               Data Types - double
-%
-%  dispresults : Display results of final fit. Boolean. If dispresults is
-%               true,  labels of coefficients, estimated coefficients,
-%               standard errors, tstat and p-values are shown on the
-%               screen in a fully formatted way. The default value of
-%               dispresults is false.
-%               Example - 'dispresults',true
-%               Data Types - logical
-%
-%       yxsave : store X and y. Scalar. Scalar that is set to 1 to request
-%                that the response vector y and data matrix X are saved
-%                into the output structure out. 
-%                Default is 0, i.e. no saving is done.
-%               Example - 'yxsave',1
-%               Data Types - double
 %
 %       Remark: The user should only give the input arguments that have to
 %               change their default value. The name of the input arguments
@@ -1051,7 +1055,7 @@ function [out, varargout] = LTSts(y,varargin)
 
 %}
 
-%% Beginning of code 
+%% Beginning of code
 
 % Input parameters checking
 
@@ -1064,7 +1068,7 @@ T = length(yin);
 % seq is the vector which will contain linear time trend
 seq   = (1:T)';
 one   = ones(T,1);
-zerT1 = zeros(T,1);
+zerT1 = false(T,1);
 
 if nargin<1
     error('FSDA:LTSts:MissingInputs','Input time series is missing');
@@ -1105,13 +1109,6 @@ nbestindexesdef=3;
 % dispresultsdef Boolean about display results.
 dispresultsdef=false;
 
-options=struct('intercept',true,'lts','','nsamp',nsampdef,'h',hdef,...
-    'bdp',bdpdef,'plots',0,'model',modeldef,...
-    'conflev',0.975,'msg',1,'yxsave',0,...
-    'SmallSampleCor',2,'nocheck',false,...
-    'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
-    'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
-    'dispresults',dispresultsdef);
 
 
 %% User options
@@ -1122,60 +1119,74 @@ singsub=0;
 
 % initialize brob which will be the vector of estimated robust regression
 % coefficients
-brob=-99;
+brob=-99*ones(T,1);
 chktrim=1;
 
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
+if coder.target('MATLAB')
+    options=struct('intercept',true,'lts','','nsamp',nsampdef,'h',hdef,...
+        'bdp',bdpdef,'plots',0,'model',modeldef,...
+        'conflev',0.975,'msg',true,'yxsave',false,...
+        'SmallSampleCor',2,'nocheck',false,...
+        'reftolALS',reftolALSdef,'refstepsALS',refstepsALSdef,...
+        'lshiftlocref',lshiftlocrefdef,'nbestindexes',nbestindexesdef,...
+        'dispresults',dispresultsdef);
     
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:LTSts3:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:LTSts3:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        
+        % Check if all the specified optional arguments were present in
+        % structure options Remark: the nocheck option has already been dealt
+        % by routine chkinputR
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        end
+        
+        % Extract the names of the optional arguments
+        chklist=varargin(1:2:length(varargin));
+        
+        % Check whether the user has selected both h and bdp.
+        chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
+        if chktrim ==3
+            error('FSDA:LTSts:TooManyArgs','Both input arguments bdp and h are provided. Only one is required.')
+        end
     end
     
-    % Check if all the specified optional arguments were present in
-    % structure options Remark: the nocheck option has already been dealt
-    % by routine chkinputR
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:LTSts:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
-    end
-    
-    % Extract the names of the optional arguments
-    chklist=varargin(1:2:length(varargin));
-    
-    % Check whether the user has selected both h and bdp.
-    chktrim=sum(strcmp(chklist,'h')+2*strcmp(chklist,'bdp'));
-    if chktrim ==3
-        error('FSDA:LTSts:TooManyArgs','Both input arguments bdp and h are provided. Only one is required.')
-    end
-    
-    % Write in structure 'options' the options chosen by the user
-    for i=1:2:length(varargin)
-        options.(varargin{i})=varargin{i+1};
-    end
 end
+% Write in structure 'options' the options chosen by the user
+for i=1:2:length(varargin)
+    options.(varargin{i})=varargin{i+1};
+end
+
 
 % Default values for the optional parameters are set inside structure
 % 'options'
 
-if ~isequal(options.model,modeldef)
-    fld=fieldnames(options.model);
-    
-    % Check if user options inside options.model are valid options
-    chkoptions(modeldef,fld)
-    for i=1:length(fld)
-        modeldef.(fld{i})=options.model.(fld{i});
+if coder.target('MATLAB')
+    if ~isequal(options.model,modeldef)
+        fld=fieldnames(options.model);
+        
+        % Check if user options inside options.model are valid options
+        chkoptions(modeldef,fld)
+        for i=1:length(fld)
+            modeldef.(fld{i})=options.model.(fld{i});
+        end
     end
+    
+    model = modeldef;
+else
+    model=options.model;
 end
 
-model = modeldef;
-
 % Get model parameters
-trend    = model.trend;       % get kind of  trend
 s        = model.s;           % get periodicity of time series
+trend    = model.trend;       % get kind of  trend
 seasonal = model.seasonal;    % get number of harmonics
 lshift   = model.lshift;      % get level shift
 
@@ -1185,7 +1196,7 @@ nbestindexes=options.nbestindexes;
 
 % Check if the optional user parameters are valid.
 if s <=0
-    error('FSDA:LTSts:WrongInput',['s=' num2str(s) 'is the periodicity of the time series (cannot be negative)'])
+    error('FSDA:LTSts:WrongInput','s= %.0f is the periodicity of the time series (cannot be negative or 0)',s)
 end
 
 if isempty(intersect(trend,0:3))
@@ -1206,17 +1217,20 @@ end
 ntrend = size(Xtrend,2);
 
 % seasonal component
+yhatseaso=0;
 if seasonal >0
-    sstring=num2str(seasonal);
+    sstring=sprintf('%.0f',seasonal);
+    % sstring=num2str(seasonal); TODO
     if seasonal>100
-        varampl=str2double(sstring(1));
-        seasonal=str2double(sstring(2:3));
+        varampl=real(str2double(sstring(1)));
+        seasonal=real(str2double(sstring(2:3)));
     else
         varampl=0;
     end
     
     if seasonal < 1 || seasonal >floor(s/2)
-        error('FSDA:LTSts:WrongInput',['Seasonal component must be an integer between 1 and ' num2str(floor(s/2))])
+        stoprint=floor(s/2);
+        error('FSDA:LTSts:WrongInput','Seasonal component must be an integer between 1 and %.0f', stoprint)
     end
     
     Xseaso=zeros(T,seasonal*2);
@@ -1232,7 +1246,6 @@ if seasonal >0
 else
     nseaso=0;
     varampl=0;
-    yhatseaso=0;
     Xseaso=[];
 end
 
@@ -1241,6 +1254,7 @@ X = model.X;
 % Order of the autoregressive component
 
 ARp=model.ARp;
+ARp=ARp(1);
 if ARp>6
     disp('Number of autoregressive component is too big and can create model instability: it is set to 6');
     ARp=6;
@@ -1285,7 +1299,7 @@ p=pini+varampl+lshiftYN*2;
 %Being mm the length of LSH = (lshift+1):(T-lshift), mm-p>0 can be written as:
 %(T-lshift)-(lshift+1) > p -->  2*lshift < T-1-p  --> lshift < (T-1-p)/2
 
-if length(lshift)==1 && lshift==-1   
+if length(lshift)==1 && lshift==-1
     lshift=floor((T-1-p)/2);
 end
 % indexes of linear part of seasonal component
@@ -1305,6 +1319,7 @@ end
 % of nchoosek. One may also use the approximation
 % floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(pini+1))+0.5)
 ncomb=bc(T,pini);
+
 
 % And check if the optional user parameters are reasonable.
 
@@ -1326,11 +1341,13 @@ elseif chktrim==2
     
     nalpha=floor(T*(1-bdp));
     options.h=nalpha;
+else
+    bdp=-99;
 end
 
 % Check number of subsamples to extract
 if options.nsamp>ncomb
-    if options.msg==1
+    if options.msg==true
         disp('Number of subsets to extract greater than (n p). It is set to (n p)');
     end
     options.nsamp=0;
@@ -1340,7 +1357,6 @@ end
 
 
 h=floor(options.h);         % Number of data points on which estimates are based
-plots=options.plots;        % Plot of residuals equal to 1
 nsamp=options.nsamp;        % Number of subsets to extract
 nsampsubsequentsteps=round(nsamp/2);
 
@@ -1350,7 +1366,15 @@ if varampl>0
     % Convergence criteria inside ALS loop
     reftolALS=options.reftolALS;
     refstepsALS=options.refstepsALS;
-    verLess2016b=verLessThanFS(9.1);
+    if coder.target('MATLAB')
+        verLess2016b=verLessThanFS(9.1);
+    else
+        verLess2016b=false;
+    end
+else
+    verLess2016b=false;
+    reftolALS=0;
+    refstepsALS=0;
 end
 
 constr=0;
@@ -1363,27 +1387,28 @@ if ~isstruct(lts) && isempty(lts)
     reftolbestr=1e-8;
     
 elseif isstruct(lts)
-    ltsdef.refsteps=2;
-    ltsdef.reftol=1e-6;
-    ltsdef.bestr=20;
-    ltsdef.refstepsbestr=50;
-    ltsdef.reftolbestr=1e-8;
-    
-    % Control the appearance of the trajectories to be highlighted
-    if ~isequal(lts,ltsdef)
+    if coder.target('MATLAB')
+        ltsdef.refsteps=2;
+        ltsdef.reftol=1e-6;
+        ltsdef.bestr=20;
+        ltsdef.refstepsbestr=50;
+        ltsdef.reftolbestr=1e-8;
         
-        fld=fieldnames(lts);
-        
-        % Check if user options inside options.fground are valid options
-        chkoptions(ltsdef,fld)
-        for i=1:length(fld)
-            ltsdef.(fld{i})=lts.(fld{i});
+        % Control the appearance of the trajectories to be highlighted
+        if ~isequal(lts,ltsdef)
+            
+            fld=fieldnames(lts);
+            
+            % Check if user options inside options.fground are valid options
+            chkoptions(ltsdef,fld)
+            for i=1:length(fld)
+                ltsdef.(fld{i})=lts.(fld{i});
+            end
         end
+        
+        % For the options not set by the user use their default value
+        lts=ltsdef;
     end
-    
-    % For the options not set by the user use their default value
-    lts=ltsdef;
-    
     refsteps=lts.refsteps;
     reftol=lts.reftol;
     bestr=lts.bestr;
@@ -1397,15 +1422,17 @@ end
 conflev=options.conflev;    % Confidence level which is used for outlier detection
 msg=options.msg;            % Scalar which controls the messages displayed on the screen
 
-% Get user values of warnings
-warnrank=warning('query','MATLAB:rankDeficientMatrix');
-warnsing=warning('query','MATLAB:singularMatrix');
-warnnear=warning('query','MATLAB:nearlySingularMatrix');
-% Set them to off inside this function at the end of the file they will be
-% restored to previous values
-warning('off','MATLAB:rankDeficientMatrix');
-warning('off','MATLAB:singularMatrix');
-warning('off','MATLAB:nearlySingularMatrix');
+if coder.target('MATLAB')
+    % Get user values of warnings
+    warnrank=warning('query','MATLAB:rankDeficientMatrix');
+    warnsing=warning('query','MATLAB:singularMatrix');
+    warnnear=warning('query','MATLAB:nearlySingularMatrix');
+    % Set them to off inside this function at the end of the file they will be
+    % restored to previous values
+    warning('off','MATLAB:rankDeficientMatrix');
+    warning('off','MATLAB:singularMatrix');
+    warning('off','MATLAB:nearlySingularMatrix');
+end
 
 if lshiftYN==1
     % If a level shift is present, it is necessary to
@@ -1456,7 +1483,7 @@ NumScale2ind=zeros(nbestindexes,lLSH);
 
 % Weights = units forming subset for the solution associated to the minimum
 % scale for each value of LSH
-Weights=zeros(T,lLSH);
+Weights=false(T,lLSH);
 
 brobLSH=zeros(p,lLSH);
 
@@ -1498,8 +1525,28 @@ factor=1/sqrt(1-2*(T/h)*a.*normpdf(a));
 % Initialize 2D or 3D array which stores indexes of extracted
 % subsets for each tentative level shift position
 if nargout>1
-    varargout=cell(lLSH,1);
+    Ccell=cell(lLSH,1);
+    % Initialization of Ccell is necessary for MATLAB C coder
+    zerlSH=zeros(T,pini);
+    for i=1:lLSH
+        Ccell{i}=zerlSH;
+    end
 end
+
+if ~coder.target('MATLAB')
+    bestyhattoadd=zeros(pini,pini);
+    bestbetastoadd=bestyhattoadd;
+    bestsubsettoadd=bestyhattoadd;
+    ncombLSH=0;
+    bsb=0;
+    ibest=0;
+    yhatrob=0;
+    weightsst=false;
+    posLS=0;
+    Likloc=0;
+    Xlin=0;
+end
+
 
 
 for lsh=LSH
@@ -1532,7 +1579,8 @@ for lsh=LSH
     if lsh>0
         
         [Cini,nselected] = subsets(nsamp,T-1,pini+1,ncombLSH,msg);
-        C=[lsh*ones(nselected,1) zeros(nselected,pini+1,'int16')];
+        
+        C=[lsh*ones(nselected,1) zeros(nselected,pini+1)];
         
         
         % Make sure that observation lsh is always included in the subset
@@ -1560,7 +1608,7 @@ for lsh=LSH
     
     % Store indexes of extracted subsets if nargout is greater than 1
     if nargout>1
-        varargout{ilsh}=Cini;
+        Ccell{ilsh}=Cini;
     end
     
     % yhatall= matrix which will contain fitted values for each extracted
@@ -1608,7 +1656,7 @@ for lsh=LSH
         Xfinal=[Xsel Xlshift];
         % Preliminary OLS estimates (including tentative level shift) based
         % just on the units forming subset
-        bsb=index;
+        bsb=index(:);
         betaini=Xfinal(bsb,:)\yin(bsb);
         
         % Check if betaini contains NaN
@@ -1699,7 +1747,7 @@ for lsh=LSH
         end
     end
     
-    if brob==-99
+    if brob(1)==-99
         error('FSDA:LTSts:NoFullRank','No subset had full rank. Please increase the number of subsets or check your design matrix X')
     else
     end
@@ -1795,8 +1843,8 @@ for lsh=LSH
     NumScale2ind(:,ilsh)=numscale2ssorind(1:nbestindexes);
     
     WEIibest10sum(:,ilsh)=sum(WEIibestrdiv2,2);
-    if lsh>0 && msg ==1
-        disp(['Level shift for t=' num2str(lsh)])
+    if lsh>0 && msg ==true
+        fprintf('Level shift for t=%.0f\n',lsh)
     end
 end
 
@@ -1804,7 +1852,7 @@ end
 % prouduce the double wedge plot, see function wedgeplot for more details)
 out.RES = RES;
 
-Weimod=Weights;
+Weimod=double(Weights);
 for j=1:size(Weimod,2)
     boo=Weimod(:,j)==1;
     Weimod(boo,j)=seq(boo);
@@ -1850,26 +1898,26 @@ if  lsh>0
     else
         huberc=2;
     end
-   
+    
     tloc=bstar(end)-k:bstar(end)+k;
     % Reduce width of tloc dinamically
     LSHmin=min(LSH);
     LSHmax=max(LSH);
     % make sure that tloc is in the range LSHmin and LSHmax
     while (max(tloc)>LSHmax  || min(tloc)<LSHmin )
-        if k==0 
+        if k==0
             break
         end
         k=k-1;
-            tloc=bstar(end)-k:bstar(end)+k;
+        tloc=bstar(end)-k:bstar(end)+k;
     end
-     
-
-    bsb=tloc;
+    
+    
+    bsb=tloc(:);
     Likloc=[tloc' zeros(length(tloc),3)];
     ij=0;
     
-    for j=tloc
+    for j=tloc(1):tloc(end)
         ij=ij+1;
         btmp=bstar;
         btmp(end)=j;
@@ -1885,10 +1933,10 @@ if  lsh>0
     end
     % Use Huberized residual sum of squares to find minimum
     [~,locmin]=min(Likloc(:,typeres+1));
-    finalLS=Likloc(locmin,1);
-    Xlshift=[zeros(finalLS-1,1);ones(T-finalLS+1,1)];
+    posLS=Likloc(locmin,1);
+    Xlshift=[zeros(posLS-1,1);ones(T-posLS+1,1)];
     brobfinal=bstar;
-    brobfinal(end)=finalLS;
+    brobfinal(end)=posLS;
 else
     brobfinal= brobbest;
 end
@@ -1923,7 +1971,7 @@ end
 %Qn, Sn, std and the interquantile difference for increasing percentages
 %([0.25-0.75], [0.26-0.76], ...)
 if abs(s0) < 1e-7
-    if msg==1
+    if msg==true
         disp('Attention: there was an exact fit. Robust estimate of s^2 is <1e-7')
     end
     [~,~,s0]=zscoreFS(residuals,'median','Qn');
@@ -1952,7 +2000,7 @@ stdres = residuals/s0;
 if SmallSampleCor==1
     plinear=pini+lshiftYN;
     robest='LTS';
-    eff='';
+    eff=[];
     rhofunc='';
     sizesim=0;
     Tallis=1;
@@ -1962,7 +2010,7 @@ if SmallSampleCor==1
         Ttouse=T;
     end
     
-    if ~exist('bdp','var')
+    if bdp==-99
         bdp=1-options.h/T;
     end
     thresh=RobRegrSize(Ttouse,plinear,robest,rhofunc,bdp,eff,sizesim,Tallis);
@@ -1970,9 +2018,9 @@ if SmallSampleCor==1
     weights = abs(stdres)<=sqrt(chi2inv(0.99,1))*extracoeff;
     
 elseif  SmallSampleCor==2
-    weights=GYfilt(stdres,'iterating',false,'alpha',0.99);
+    weights=GYfilt(stdres,'iterating',false,'alpha',0.99,'centering',true,'niter',10);
 elseif  SmallSampleCor==3
-    weights=GYfilt(stdres,'iterating',true,'alpha',0.99);
+    weights=GYfilt(stdres,'iterating',true,'alpha',0.99,'centering',true,'niter',10);
 elseif SmallSampleCor==4
     weights = abs(stdres)<=sqrt(chi2inv(0.99,1));
 else
@@ -2050,22 +2098,34 @@ else % model is non linear because there is time varying amplitude in seasonal c
     weights=false(T,1);
     weights(bsb)=true;
     
-    if lshiftYN==1
-        Xlshiftf=Xlshift(bsb);
-        [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+    if coder.target('MATLAB')
+        
+        if lshiftYN==1
+            Xlshiftf=Xlshift(bsb);
+            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
+        else
+            [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            %
+            % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
+            % Note that MSE*inv(J'*J) = covB
+        end
+        
+        % yfitFS = likyhat(betaout,Xtrendf);
+        % nans=false(length(yfitFS),1);
+        % sqweights=ones(length(yfitFS),1);
+        % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
+        % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
     else
-        [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-        %
-        % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-        % Note that MSE*inv(J'*J) = covB
+        % TODO nlinfit not supported by MATLAB C Coder
+        if lshiftYN==1
+            Xlshiftf=Xlshift(bsb);
+            betaout= brobfinal(1:end-1);
+        else
+            betaout=brobfinal;
+        end
+        covB=eye/length(betaout);
+        MSE=1;
     end
-    
-    % yfitFS = likyhat(betaout,Xtrendf);
-    % nans=false(length(yfitFS),1);
-    % sqweights=ones(length(yfitFS),1);
-    % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
-    % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
-    
     invXX=covB/MSE;
     
     % Now compute again vector yhat using final vector betaout
@@ -2085,7 +2145,11 @@ out.B=B;
 
 if lsh>0
     % Store position of level shift
-    out.posLS=finalLS;
+    out.posLS=posLS;
+else
+    if ~coder.target('MATLAB')
+        out.posLS=[];
+    end
 end
 
 % Computation of reweighted residuals.
@@ -2176,10 +2240,13 @@ out.weights=weights;
 
 % Store number of singular subsets
 out.singsub=singsub;
-if msg==1
+if msg==true
     if singsub/nselected>0.1
+        percexcl=100*singsub/nselected;
         disp('------------------------------')
-        disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        % disp(['Warning: Number of subsets without full rank equal to ' num2str(100*singsub/nselected) '%'])
+        fprintf('Warning: Number of subsets without full rank equal to %.1f%%\n',percexcl)
+        
     end
 end
 % Store information about the class of the object
@@ -2189,17 +2256,25 @@ out.class='LTSts';
 if lsh>0
     % Store local improvement of the likelihood
     out.Likloc=Likloc;
+else
+    if ~coder.target('MATLAB')
+        out.Likloc=0;
+    end
 end
 
 % Store response
 out.y=yin;
 
-if options.yxsave
+if options.yxsave == true
     if options.intercept==true
         % Store X (without the column of ones if there is an intercept)
         out.X=Xlin(:,2:end);
     else
         out.X=Xlin;
+    end
+else
+    if ~coder.target('MATLAB')
+        out.X=[];
     end
 end
 
@@ -2207,229 +2282,288 @@ out.invXX=invXX;
 
 dispresults=options.dispresults;
 
-b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
-b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
-    'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
-    'b_cos5'; 'b_sin5'; 'b_cos6'};
-b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
-b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+% b_trend = {'b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'};
+% b_seaso = {'b_cos1'; 'b_sin1'; 'b_cos2'; 'b_sin2'; ...
+%     'b_cos3'; 'b_sin3'; 'b_cos4'; 'b_sin4'; ...
+%     'b_cos5'; 'b_sin5'; 'b_cos6'};
+% b_AR =    {'b_AR1'; 'b_AR2'; 'b_AR3'; 'b_AR4'; 'b_AR5'; 'b_AR6'};
+% b_X  =    {'b_X1'; 'b_X2'; 'b_X3'; 'b_X4'; 'b_X5'; 'b_X6'};
+% b_varampl = {'b_varampl'; 'b_varamp2'; 'b_varamp3'};
+% b_lshift  = {'b_lshift' ; 't_lshift'};
+%
+% if ARp>0
+%      b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
+% else
+%     b_expl=b_X;
+% end
+%
+% if seasonal>0
+%     if 2*seasonal==s
+%         lab=[b_trend(1:trend+1); b_seaso];
+%     else
+%         lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
+%     end
+% else
+%     lab=b_trend(1:trend+1);
+% end
+%
+% if nexpl>0
+%     lab=[lab;b_expl(1:nexpl)];
+% end
+% if varampl>0
+%     lab=[lab;b_varampl(1:varampl)];
+%     posvarampl=length(lab)-varampl+1:length(lab);
+% else
+%     posvarampl=[];
+% end
+% if lshiftYN==1
+%     lab=[lab; b_lshift(1)];
+% end
+
+
+b_trend = ['b_trend1'; 'b_trend2'; 'b_trend3'; 'b_trend4'];
+b_seaso =['b_cos1  '; 'b_sin1  '; 'b_cos2  '; 'b_sin2  '; ...
+    'b_cos3  '; 'b_sin3  '; 'b_cos4  '; 'b_sin4  '; ...
+    'b_cos5  '; 'b_sin5  '; 'b_cos6  '];
+b_AR =    ['b_AutoR1'; 'b_AutoR2'; 'b_AutoR3'; 'b_AutoR4'; 'b_AutoR5'; 'b_AutoR6'];
+b_X  =    ['b_explX1'; 'b_explX2'; 'b_explX3'; 'b_explX4'; 'b_explX5'; 'b_explX6'];
+b_varampl = ['b_varaml'; 'b_varam2'; 'b_varam3'];
+b_lshift  = ['b_lshift' ; 't_lshift'];
+
+% Code generation does not support string arrays
+% b_trend = ["b_trend1"; "b_trend2"; "b_trend3"; "b_trend4"];
+% b_seaso = ["b_cos1"; "b_sin1"; "b_cos2"; "b_sin2"; ...
+%     "b_cos3"; "b_sin3"; "b_cos4"; "b_sin4"; ...
+%     "b_cos5"; "b_sin5"; "b_cos6"];
+% b_AR =    ["b_AR1"; "b_AR2"; "b_AR3"; "b_AR4"; "b_AR5"; "b_AR6"];
+% b_X  =    ["b_X1"; "b_X2"; "b_X3"; "b_X4"; "b_X5"; "b_X6"];
+% b_varampl = ["b_varampl"; "b_varamp2"; "b_varamp3"];
+% b_lshift  = ["b_lshift" ; "t_lshift"];
+
 if ARp>0
-    b_expl=[b_AR(1:ARp); b_X(1:nexpl-ARp)];
+    b_expl=[b_AR(1:ARp,:); b_X(1:nexpl-ARp,:)];
 else
     b_expl=b_X;
 end
 
-b_varampl = {'b_varampl'; 'b_varamp2'; 'b_varamp3'};
-b_lshift  = {'b_lshift' ; 't_lshift'};
-
 if seasonal>0
     if 2*seasonal==s
-        lab=[b_trend(1:trend+1); b_seaso];
+        lab=[b_trend(1:trend+1,:); b_seaso];
     else
-        lab=[b_trend(1:trend+1); b_seaso(1:2*seasonal)];
+        lab=[b_trend(1:trend+1,:); b_seaso(1:2*seasonal,:)];
     end
 else
-    lab=b_trend(1:trend+1);
+    lab=b_trend(1:trend+1,:);
 end
 
 if nexpl>0
-    lab=[lab;b_expl(1:nexpl)];
+    lab=[lab;b_expl(1:nexpl,:)];
 end
 if varampl>0
-    lab=[lab;b_varampl(1:varampl)];
+    lab=[lab;b_varampl(1:varampl,:)];
     posvarampl=length(lab)-varampl+1:length(lab);
 else
     posvarampl=[];
 end
 if lshiftYN==1
-    lab=[lab; b_lshift(1)];
+    lab=[lab; b_lshift(1,:)];
 end
 
-if verLessThan ('matlab','8.2.0')
-else
-    % Store matrix B in table format (with labels for rows and columns)
-    out.Btable=array2table(out.B,'RowNames',lab,'VariableNames',{'Coeff','SE','t','pval'});
-end
+% if verLessThan ('matlab','8.2.0')
+% else
+% Store matrix B in table format (with labels for rows and columns)
+out.Btable=array2table(B,'RowNames',string(lab),'VariableNames',{'Coeff','SE','t','pval'});
+% end
 
 if dispresults
-    bhat=out.B(:,1);
-    se=out.B(:,2);
-    tstat=out.B(:,3);
-    pval=out.B(:,4);
-    if verLessThan ('matlab','8.2.0')
-        disp('           Coeff.     SE         t-stat       p-values');
-        disp( [char(lab) num2str([bhat se tstat pval])]);
+    if coder.target('MATLAB')
+        disp(out.Btable)
     else
-        disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
+        
+        %         bhat=out.B(:,1);
+        %         se=out.B(:,2);
+        %         tstat=out.B(:,3);
+        %         pval=out.B(:,4);
+        %         %         disp('           Coeff.     SE         t-stat       p-values');
+        %         fprintf('%s%.3f',lab,bhat)
+        %     if verLessThan ('matlab','8.2.0')
+        %         disp('           Coeff.     SE         t-stat       p-values');
+        %         disp( [char(lab) num2str([bhat se tstat pval])]);
+        %     else
+        % disp([table(lab) table(bhat) table(se) table(tstat) table(pval)]);
+        %     end
     end
     if lshiftYN==1
-        disp(['Level shift position t=' num2str(out.posLS)])
+        fprintf('Level shift position t=%.0f\n',posLS)
     end
 end
 
 %% Create plots
 
-% plots = 1 generates a figure with two panels: one with the time series
-% and another with the residuals against index number; plots =2 produces
-% also a number of other informative plots; else no plot is produced.
-if plots>=1
+if coder.target('MATLAB')
+    plots=options.plots;        % Plot of residuals equal to 1
     
-    % some general plot settings
-    vlt15 = verLessThan('matlab', '7.15');
-    clr = 'bkrgmcy';
-    syb = {'-','--','-.',':','-','--','-.'};
-    FontSize    = 14;
-    SizeAxesNum = 14;
-    
-    % slightly increase the range of the time series axis values
-    mine = min(yin(:));
-    maxe = max(yin(:));
-    delta = (maxe-mine)*0.1;
-    yaxlim = [mine - delta ; maxe + delta];
-    % the next check is introduced because if the two elements of Ylim are
-    % the same (which happens if the series is constant), the set (gca)
-    % some lines below produce errors.
-    if yaxlim(1) == yaxlim(2)
-        yaxlim(2)=yaxlim(2)+0.01*yaxlim(2);
-    end
-    % Time series + fitted values
-    figure
-    htmp = subplot(2,1,1);
-    plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
-    hold('on');
-    plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
-    
-    set(htmp,'Tag','LTSts:ts');
-    %xlabel('Time','FontSize',FontSize);
-    ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
-    if ~vlt15
-        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
-    else
-        set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
-    end
-    xtickval = get(htmp,'XTick');
-    xticklab = get(htmp,'XTickLabel');
-    set(htmp,'XTickMode','manual');
-    drawnow;
-    
-    % mark outliers with their severity
-    if ~isempty(residuals)
-        seq = 1:T;
-        quant = sqrt(chi2inv(conflev,1));
-        resboo=out.residuals(out.outliers);
-        th=8;resboo(abs(resboo)>th)=th;
-        %Rescale residuals in the interval [0 3]
-        sizeout=3*(abs(resboo)-quant)/(th-quant);
-        for i=1:length(sizeout)
-            plot(seq(out.outliers(i)),yin(out.outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+    % plots = 1 generates a figure with two panels: one with the time series
+    % and another with the residuals against index number; plots =2 produces
+    % also a number of other informative plots; else no plot is produced.
+    if plots>=1
+        
+        % some general plot settings
+        vlt15 = verLessThan('matlab', '7.15');
+        clr = 'bkrgmcy';
+        syb = {'-','--','-.',':','-','--','-.'};
+        FontSize    = 14;
+        SizeAxesNum = 14;
+        
+        % slightly increase the range of the time series axis values
+        mine = min(yin(:));
+        maxe = max(yin(:));
+        delta = (maxe-mine)*0.1;
+        yaxlim = [mine - delta ; maxe + delta];
+        % the next check is introduced because if the two elements of Ylim are
+        % the same (which happens if the series is constant), the set (gca)
+        % some lines below produce errors.
+        if yaxlim(1) == yaxlim(2)
+            yaxlim(2)=yaxlim(2)+0.01*yaxlim(2);
         end
+        % Time series + fitted values
+        figure
+        htmp = subplot(2,1,1);
+        plot(yin, 'Color',clr(1),'LineStyle',syb{1},'LineWidth',1);
+        hold('on');
+        plot(yhat,'Color',clr(2),'LineStyle',syb{2},'LineWidth',1);
+        
+        set(htmp,'Tag','LTSts:ts');
+        %xlabel('Time','FontSize',FontSize);
+        ylabel('Real and fitted values','FontSize',FontSize,'interpreter','none');
+        if ~vlt15
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on','BoxStyle','full');
+        else
+            set(gca,'FontSize',SizeAxesNum,'Ylim' , yaxlim,'Box','on');
+        end
+        xtickval = get(htmp,'XTick');
+        xticklab = get(htmp,'XTickLabel');
+        set(htmp,'XTickMode','manual');
+        drawnow;
+        
+        % mark outliers with their severity
+        if ~isempty(residuals)
+            seq = 1:T;
+            quant = sqrt(chi2inv(conflev,1));
+            resboo=out.residuals(out.outliers);
+            th=8;resboo(abs(resboo)>th)=th;
+            %Rescale residuals in the interval [0 3]
+            sizeout=3*(abs(resboo)-quant)/(th-quant);
+            for i=1:length(sizeout)
+                plot(seq(out.outliers(i)),yin(out.outliers(i),1),'x','LineWidth',sizeout(i),'Color','r', 'MarkerFaceColor','k');
+            end
+        end
+        
+        % plot the vertical line of the level shift position and the associated
+        % label on the X axis
+        if isfield(out,'posLS') && ~isempty(out.posLS)
+            line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
+            text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+        end
+        
+        % Index plot of robust residuals
+        h2=subplot(2,1,2);
+        laby='Robust lts residuals';
+        labx='Index number';
+        resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
+        drawnow;
+        set(get(gca,'Xlabel'),'interpreter','none');
+        set(get(gca,'Ylabel'),'interpreter','none');
+        if ~vlt15
+            set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
+        else
+            set(h2,'FontSize',SizeAxesNum,'Box','on');
+        end
+        set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
     end
     
-    % plot the vertical line of the level shift position and the associated
-    % label on the X axis
-    if isfield(out,'posLS') && ~isempty(out.posLS)
-        line(out.posLS*ones(2,1) , yaxlim , 'LineStyle' , ':' , 'LineWidth' , 1.5 , 'Color' , 'k');
-        text(out.posLS , yaxlim(1) , num2str(out.posLS) , 'HorizontalAlignment' , 'Center' , 'VerticalAlignment' ,  'Top');
+    if plots==2 && lsh>0
+        
+        % Values of the target function for each tentative level shift position
+        figure;
+        boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline');
+        % boxplot uses text to put the labels on the X axes labeling, therefore
+        % we have to use findobj here to fix the font size
+        txt = findobj(gca,'Type','text');
+        %set(gca,'XTickLabel',{' '}); % this would delete all x labels
+        nx = numel(txt);
+        if nx > 20
+            txt2 = txt(1:mod(nx,20):nx,:);
+            delete(txt(setdiff(1:nx,1:mod(nx,20):nx),:));
+        end
+        set(txt2,'FontSize',SizeAxesNum,'VerticalAlignment', 'Middle');
+        hold('on');
+        plot(numscale2LSH(:,2));
+        set(gca,'Fontsize',SizeAxesNum);
+        xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+        title('Target function values','interpreter','none','FontSize',FontSize+2);
+        ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
+        
+        % Level Shift local refinement
+        figure;
+        sb1 = subplot(2,1,1);
+        plot(Likloc(:,1),Likloc(:,2));
+        %xlabel('Position of level shift','FontSize',FontSize);
+        ylabel('Raw residuals','FontSize',FontSize,'interpreter','none');
+        set(gca,'Fontsize',SizeAxesNum);
+        subplot(2,1,2);
+        plot(Likloc(:,1),Likloc(:,3));
+        xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+        ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','none');
+        set(gca,'Fontsize',SizeAxesNum);
+        title(sb1,'Level Shift local refinement','interpreter','none','FontSize',FontSize+2);
+        
+        %     plot(LSH,NumScale2ind','o')
+        %     set(gca,'FontSize',1)
+        %     ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'])
+        %     xlabel('Position of level shift')
+        
+        % Best solutions
+        figure;
+        one=ones(lLSH,1);
+        for j=1:nbestindexes
+            text(LSH,NumScale2ind(j,:)',num2str(j*one),'FontSize',12-j*1.5);
+        end
+        xlim([LSH(1) LSH(end)]);
+        ylim([1 bestr]);
+        ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'],'FontSize',FontSize,'interpreter','none');
+        xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+        set(gca,'Fontsize',SizeAxesNum);
+        hold('on');
+        plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5);
+        title('Best solutions','interpreter','none','FontSize',FontSize+2);
+        
+        % units forming best h-subset
+        figure;
+        plot(LSH,Weimod','ko','MarkerSize',4);
+        xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
+        ylabel('Index number','FontSize',FontSize,'interpreter','none');
+        title('o = units forming best h-subset','interpreter','none','FontSize',FontSize+2);
+        set(gca,'Ytick',10:10:T,'Fontsize',SizeAxesNum);
+        
+        % Frequency of inclusion inside subset
+        figure;
+        subplot(2,1,1);
+        bar(WEIisum(:,locmin)/nselected);
+        title({'Frequency of inclusion in the h subset:' , [' after ' num2str(refsteps) ' iterations']},'interpreter','none','FontSize',FontSize+2);
+        %ylabel('Frequency','FontSize',FontSize);
+        %xlabel('Index number','FontSize',FontSize);
+        set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
+        
+        subplot(2,1,2);
+        
+        bar(WEIibest10sum(:,locmin)/size(bestyhatall,2));
+        title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','none','FontSize',FontSize+2);
+        %ylabel('Frequency','FontSize',FontSize);
+        xlabel('Index number','FontSize',FontSize,'interpreter','none');
+        set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
     end
-    
-    % Index plot of robust residuals
-    h2=subplot(2,1,2);
-    laby='Robust lts residuals';
-    labx='Index number';
-    resindexplot(out.residuals,'conflev',conflev,'laby',laby,'labx',labx,'numlab',out.outliers,'h',h2,'title','');
-    drawnow;
-    set(get(gca,'Xlabel'),'interpreter','none');
-    set(get(gca,'Ylabel'),'interpreter','none');
-    if ~vlt15
-        set(h2,'FontSize',SizeAxesNum,'Box','on','BoxStyle','full');
-    else
-        set(h2,'FontSize',SizeAxesNum,'Box','on');
-    end
-    set(h2,'XTick',xtickval,'XTickLabel',xticklab,'XTickMode','manual');
 end
-
-if plots==2 && lsh>0
-    
-    % Values of the target function for each tentative level shift position
-    figure;
-    boxplot(ALLnumscale2(:,1:end),LSH(1:end)','labelorientation','inline');
-    % boxplot uses text to put the labels on the X axes labeling, therefore
-    % we have to use findobj here to fix the font size
-    txt = findobj(gca,'Type','text');
-    %set(gca,'XTickLabel',{' '}); % this would delete all x labels
-    nx = numel(txt);
-    if nx > 20
-        txt2 = txt(1:mod(nx,20):nx,:);
-        delete(txt(setdiff(1:nx,1:mod(nx,20):nx),:));
-    end
-    set(txt2,'FontSize',SizeAxesNum,'VerticalAlignment', 'Middle');
-    hold('on');
-    plot(numscale2LSH(:,2));
-    set(gca,'Fontsize',SizeAxesNum);
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
-    title('Target function values','interpreter','none','FontSize',FontSize+2);
-    ylim([min(ALLnumscale2(:)), prctile(ALLnumscale2(:),90)]);
-    
-    % Level Shift local refinement
-    figure;
-    sb1 = subplot(2,1,1);
-    plot(Likloc(:,1),Likloc(:,2));
-    %xlabel('Position of level shift','FontSize',FontSize);
-    ylabel('Raw residuals','FontSize',FontSize,'interpreter','none');
-    set(gca,'Fontsize',SizeAxesNum);
-    subplot(2,1,2);
-    plot(Likloc(:,1),Likloc(:,3));
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
-    ylabel('Huber rho residuals','FontSize',FontSize,'interpreter','none');
-    set(gca,'Fontsize',SizeAxesNum);
-    title(sb1,'Level Shift local refinement','interpreter','none','FontSize',FontSize+2);
-    
-    %     plot(LSH,NumScale2ind','o')
-    %     set(gca,'FontSize',1)
-    %     ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'])
-    %     xlabel('Position of level shift')
-    
-    % Best solutions
-    figure;
-    one=ones(lLSH,1);
-    for j=1:nbestindexes
-        text(LSH,NumScale2ind(j,:)',num2str(j*one),'FontSize',12-j*1.5);
-    end
-    xlim([LSH(1) LSH(end)]);
-    ylim([1 bestr]);
-    ylabel(['Indexes of the best ' num2str(nbestindexes) ' solutions'],'FontSize',FontSize,'interpreter','none');
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
-    set(gca,'Fontsize',SizeAxesNum);
-    hold('on');
-    plot([LSH(1) LSH(end)],bestrdiv2*ones(2,1)+0.5);
-    title('Best solutions','interpreter','none','FontSize',FontSize+2);
-    
-    % units forming best h-subset
-    figure;
-    plot(LSH,Weimod','ko','MarkerSize',4);
-    xlabel('Position of level shift','FontSize',FontSize,'interpreter','none');
-    ylabel('Index number','FontSize',FontSize,'interpreter','none');
-    title('o = units forming best h-subset','interpreter','none','FontSize',FontSize+2);
-    set(gca,'Ytick',10:10:T,'Fontsize',SizeAxesNum);
-    
-    % Frequency of inclusion inside subset
-    figure;
-    subplot(2,1,1);
-    bar(WEIisum(:,locmin)/nselected);
-    title({'Frequency of inclusion in the h subset:' , [' after ' num2str(refsteps) ' iterations']},'interpreter','none','FontSize',FontSize+2);
-    %ylabel('Frequency','FontSize',FontSize);
-    %xlabel('Index number','FontSize',FontSize);
-    set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
-    
-    subplot(2,1,2);
-    
-    bar(WEIibest10sum(:,locmin)/size(bestyhatall,2));
-    title(['among the ' num2str(size(bestyhatall,2)) ' best subsets'],'interpreter','none','FontSize',FontSize+2);
-    %ylabel('Frequency','FontSize',FontSize);
-    xlabel('Index number','FontSize',FontSize,'interpreter','none');
-    set(gca,'Xtick',1:10:T,'Fontsize',SizeAxesNum);
-end
-
 
 % Part of the code to find the F test for the final harmonic of the seasonal
 % component part
@@ -2493,11 +2627,20 @@ if seasonal<6
             varampl=0;
         end
         
-        if lshiftYN==1
-            Xlshiftf=Xlshift(bsb);
-            [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic(1:end-1)));
+        if coder.target('MATLAB')
+            if lshiftYN==1
+                Xlshiftf=Xlshift(bsb);
+                [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic(1:end-1)));
+            else
+                [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic));
+            end
         else
-            [betaout,~,~,~,~,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(selWithoutLastHarmonic));
+            % TODO nlinfit not supported by MATLAB C Coder
+            if lshiftYN==1
+                betaout= brobfinal(selWithoutLastHarmonic(1:end-1));
+            else
+                betaout=brobfinal(selWithoutLastHarmonic);
+            end
         end
         
         
@@ -2515,20 +2658,26 @@ else
     % In presence of 6 harmonics, the last one is just made up of a single
     % variable, therefore the p value is just the p value of the assocaited
     % t-stat
-    pval=out.B(ntrend+nseaso,4);
+    pval=B(ntrend+nseaso,4);
 end
 out.LastHarmonicPval=pval;
 
 if lshiftYN==1
-    lsdet=FSRinvmdr([length(LSH) abs(out.B(end,3))],p-1);
+    lsdet=FSRinvmdr([length(LSH) abs(B(end,3))],p-1);
     LevelShiftPval=1-lsdet(1,2);
     out.LevelShiftPval=LevelShiftPval;
+else
+    if ~coder.target('MATLAB')
+        out.LevelShiftPval=[];
+    end
 end
 
-% Restore the previous state of the warnings
-warning(warnrank.state,'MATLAB:rankDeficientMatrix');
-warning(warnsing.state,'MATLAB:singularMatrix');
-warning(warnnear.state,'MATLAB:nearlySingularMatrix');
+if coder.target('MATLAB')
+    % Restore the previous state of the warnings
+    warning(warnrank.state,'MATLAB:rankDeficientMatrix');
+    warning(warnsing.state,'MATLAB:singularMatrix');
+    warning(warnnear.state,'MATLAB:nearlySingularMatrix');
+end
 
 % check about the y global variable
 if ~isequal(yin,yin)
@@ -2892,6 +3041,7 @@ end
         
         
         % Initialize parameters for the refining steps loop
+        exitfl      =0;   newbeta=0; numscale2=0; % MATLAC C coder initialization
         iter        = 0;
         betadiff    = 9999;
         if lshiftYN==1
@@ -3072,7 +3222,7 @@ end
         % for the units associated with the units formig subset from  final
         % iteration 0 for the other units.
         weights=zerT1;
-        weights(bsb)=1;
+        weights(bsb)=true;
         %outIRWLS.weights=weights;
         
         % exitfl = the exit flag to be stored in outIRWLS.exiflag
@@ -3083,6 +3233,9 @@ end
         
     end
 
+if nargout>1
+    varargout=Ccell;
+end
 end
 
 %% corfactorRAW function
@@ -3119,14 +3272,15 @@ else
 end
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
-end
-if 0.875 < alpha && alpha < 1
+elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+else
+    fp_alpha_n=1;
 end
 rawcorfac=1/fp_alpha_n;
 if rawcorfac <=0 || rawcorfac>50
     rawcorfac=1;
-    % if msg==1
+    % if msg==true
     disp('Warning: problem in subfunction corfactorRAW')
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rawcorfac)])
     disp('Given that this value is clearly wrong we put it equal to 1 (no correction)')
@@ -3169,14 +3323,15 @@ else
 end
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
-end
-if 0.875 < alpha && alpha < 1
+elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
+else
+    fp_alpha_n=1;
 end
 rewcorfac=1/fp_alpha_n;
 if rewcorfac <=0 || rewcorfac>50
     rewcorfac=1;
-    %  if msg==1
+    %  if msg==true
     disp('Warning: problem in subfunction corfactorREW');
     disp(['Correction factor for covariance matrix based on simulations found =' num2str(rewcorfac)]);
     disp('Given that this value is clearly wrong we put it equal to 1 (no correction)');

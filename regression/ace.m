@@ -89,6 +89,9 @@ function [out]=ace(y,X,varargin)
 %      out.X  = n x p matrix containing the original X matrix.
 %      out.niter = scalar. Number of iterations which have been necessary
 %               to achieve convergence.
+%      out.outliers = k x 1 vector containing the units declared as outliers
+%           when procedure is called with input option rob set to true. If
+%           rob is false out.outliers=[].
 %
 % See also: aceplot.m, smothr.m, supsmu.m
 %
@@ -342,6 +345,7 @@ out.X=X;
 out.tX=tX;
 out.rsq=rsq;
 out.niter=iter;
+out.outliers=[];
 end
 
 %FScategory:REG-Transformations

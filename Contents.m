@@ -23,7 +23,7 @@
 %   aceplot                      - Produces the aceplot to visualize the results of ace                                                                                - VIS-Reg             - 2021 Feb 01
 %   add2spm                      - Adds objects (personalized clickable multilegends and text labels) to the scatter plot matrix                                       - VIS-Mult            - 2021 Feb 01
 %   add2yX                       - Adds objects (personalized clickable multilegends and text labels) to the yXplot                                                    - VIS-Reg             - 2021 Feb 01
-%   addt                         - Produces the t test for an additional explanatory variable                                                                          - REG-Regression      - 2021 Feb 26
+%   addt                         - Produces the t test for an additional explanatory variable                                                                          - REG-Regression      - 2021 Mar 16
 %   avas                         - Computes additivity and variance stabilization for regression                                                                       - REG-Transformations - 2021 Feb 01
 %   barnardtest                  - Barnard's unconditional test                                                                                                        - MULT-Categorical    - 2021 Feb 01
 %   barVariableWidth             - Produces a bar plot with different widths and colors for each bar                                                                   - VIS-Reg             - 2021 Feb 19
@@ -65,44 +65,44 @@
 %   FE_int_vol                   - Computes the integrated variance from a diffusion process via the Fourier estimator using Dirichlet kernel                          - UTISTAT             - 2021 Mar 01
 %   FE_int_vol_Fejer             - Computes the integrated variance from a diffusion process via the Fourier estimator using Fejer kernel                              - UTISTAT             - 2021 Mar 01
 %   FE_spot_vol                  - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel                          - UTISTAT             - 2021 Mar 01
-%   FE_spot_vol_FFT              - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm - UTISTAT             - 2021 Mar 01
+%   FE_spot_vol_FFT              - Estimates the instantaneous variance of a diffusion process by the Fourier estimator with Dirichlet kernel, using the FFT algorithm - UTISTAT             - 2021 Mar 02
 %   findDir                      - Finds recursively all directories in root                                                                                           - UTIGEN              - 2021 Feb 01
 %   findFile                     - Finds recursively all files in root                                                                                                 - UTIGEN              - 2021 Feb 01
 %   forecastTS                   - Forecast for a time series with trend, time varying seasonal, level shift and irregular component                                   - REG-Regression      - 2021 Feb 22
 %   FowlkesMallowsIndex          - Computes the Fowlkes and Mallows index                                                                                              - UTISTAT             - 2021 Feb 01
 %   FSCorAnaeda                  - Performs forward search in correspondence analysis with exploratory data analysis purposes                                          - MULT-Multivariate   - 2021 Feb 01
 %   FSCorAnaenvmmd               - Computes the empirical envelopes of Minimum MD outside subset during the search                                                     - MULT-Multivariate   - 2021 Feb 01
-%   FSM                          - Computes forward search estimator in multivariate analysis                                                                          - MULT-Multivariate   - 2021 Feb 01
-%   FSMbonfbound                 - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                          - UTISTAT             - 2021 Feb 01
-%   FSMbsb                       - Gives the units belonging to subset at step(s) msel of the forward search                                                           - MULT-Multivariate   - 2021 Feb 01
+%   FSM                          - Computes forward search estimator in multivariate analysis                                                                          - MULT-Multivariate   - 2021 Mar 15
+%   FSMbonfbound                 - Computes Bonferroni bounds for each step of the  search (in mult analysis)                                                          - UTISTAT             - 2021 Mar 06
+%   FSMbsb                       - Gives the units belonging to subset at step(s) msel of the forward search                                                           - MULT-Multivariate   - 2021 Mar 18
 %   FSMeda                       - Performs forward search in multivariate analysis with exploratory data analysis purposes                                            - MULT-Multivariate   - 2021 Feb 01
 %   FSMedaeasy                   - Is exactly equal to FSMeda but it is much less efficient                                                                            - MULT-Multivariate   - 2021 Feb 01
-%   FSMenvmmd                    - Computes the theoretical envelopes of Minimum MD outside subset during the search                                                   - MULT-Multivariate   - 2021 Feb 01
+%   FSMenvmmd                    - Computes the theoretical envelopes of Minimum MD outside subset during the search                                                   - MULT-Multivariate   - 2021 Mar 07
 %   FSMfan                       - Computes confirmatory lrt of a suggested transformation                                                                             - MULT-Transformations- 2021 Feb 01
 %   FSMinvmmd                    - Converts values of minimum Mahalanobis distance into confidence levels                                                              - MULT-Multivariate   - 2021 Feb 01
-%   FSMmmd                       - Monitors minMD                                                                                                                      - MULT-Multivariate   - 2021 Feb 01
+%   FSMmmd                       - Monitors minMD                                                                                                                      - MULT-Multivariate   - 2021 Mar 16
 %   FSMmmdeasy                   - Is exactly equal to FSMmmd but it is much less efficient                                                                            - MULT-Multivariate   - 2021 Feb 01
 %   FSMmmdrs                     - Performs random start monitoring of minimum Mahalanobis distance                                                                    - CLUS-RobClaMULT     - 2021 Feb 01
 %   FSMtra                       - Computes MLE of transformation parameters                                                                                           - MULT-Transformations- 2021 Feb 01
-%   FSR                          - Computes forward search estimator in linear regression                                                                              - REG-Regression      - 2021 Feb 22
+%   FSR                          - Computes forward search estimator in linear regression                                                                              - REG-Regression      - 2021 Mar 17
 %   FSRaddt                      - Produces t deletion tests for each explanatory variable                                                                             - REG-ModelSelection  - 2021 Feb 22
 %   FSRB                         - Gives an automatic outlier detection procedure in Bayesian linear regression                                                        - REG-Bayes           - 2021 Feb 22
 %   FSRBbsb                      - Returns the units belonging to the subset in each step of the Bayesian forward search                                               - REG-Regression      - 2021 Feb 22
 %   FSRBeda                      - Enables to monitor several quantities in each step of the Bayesian search                                                           - REG-Bayes           - 2021 Feb 22
 %   FSRBmdr                      - Computes minimum deletion residual and other basic linear regression quantities in each step of the Bayesian search                 - REG-Bayes           - 2021 Feb 22
-%   FSRbonfbound                 - Computes Bonferroni bounds for each step of the search (in linear regression)                                                       - UTISTAT             - 2021 Feb 01
+%   FSRbonfbound                 - Computes Bonferroni bounds for each step of the search (in linear regression)                                                       - UTISTAT             - 2021 Mar 15
 %   FSRBr                        - Bayesian forward search in linear regression reweighted                                                                             - REG-Bayes           - 2021 Feb 22
-%   FSRbsb                       - Returns the units belonging to the subset in each step of the forward search                                                        - REG-Regression      - 2021 Feb 26
+%   FSRbsb                       - Returns the units belonging to the subset in each step of the forward search                                                        - REG-Regression      - 2021 Mar 16
 %   FSRcp                        - Monitors Cp and AIC for all models of interest of size smallp                                                                       - REG-ModelSelection  - 2021 Feb 22
 %   FSReda                       - Enables to monitor several quantities in each step of the forward search                                                            - REG-Regression      - 2021 Feb 22
-%   FSRenvmdr                    - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                                    - REG-Regression      - 2021 Feb 01
-%   FSRfan                       - Monitors the values of the score test statistic for each lambda                                                                     - REG-Transformations - 2021 Feb 28
+%   FSRenvmdr                    - Computes the theoretical envelopes of Minimum Deletion Residual outside subset during the search                                    - REG-Regression      - 2021 Mar 15
+%   FSRfan                       - Monitors the values of the score test statistic for each lambda                                                                     - REG-Transformations - 2021 Mar 05
 %   FSRH                         - Gives an automatic outlier detection procedure in heteroskedastic linear regression                                                 - REG-Hetero          - 2021 Feb 22
 %   FSRHbsb                      - Returns the units belonging to the subset in each step of the heteroskedastic forward search                                        - REG-Hetero          - 2021 Feb 22
 %   FSRHeda                      - Enables to monitor several quantities in each step of the forward search                                                            - REG-Hetero          - 2021 Feb 22
 %   FSRHmdr                      - Computes minimum deletion residual and other basic linear regression quantities in each step of the heteroskedastic search          - REG-Hetero          - 2021 Feb 22
 %   FSRinvmdr                    - Converts values of minimum deletion residual into confidence levels                                                                 - REG-Regression      - 2021 Feb 01
-%   FSRmdr                       - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                          - REG-Regression      - 2021 Feb 22
+%   FSRmdr                       - Computes minimum deletion residual and other basic linear regression quantities in each step of the search                          - REG-Regression      - 2021 Mar 16
 %   FSRmdrrs                     - Performs random start monitoring of minimum deletion residual                                                                       - CLUS-RobClaREG      - 2021 Feb 01
 %   FSRms                        - Performs robust model selection using flexible trimming in linear regression                                                        - REG-ModelSelection  - 2021 Feb 22
 %   FSRr                         - Forward search in linear regression reweighted                                                                                      - REG-Regression      - 2021 Feb 22
@@ -112,16 +112,16 @@
 %   funnelchart                  - Displays a funnel chart                                                                                                             - VIS-Mult            - 2021 Feb 01
 %   genSigmaGPCM                 - Generates covariance matrix for the 14 Gaussian Parsimonious Clustering Models                                                      - CLUS-RobClaMULT     - 2021 Feb 01
 %   GowerIndex                   - Computes matrix of similarity indexes using Gower metric                                                                            - CLUS-RobClaMULT     - 2021 Feb 01
-%   GUIconcentration             - Shows the necessary calculations to obtain the GINI concentration index in a GUI                                                    - GUI                 - 2021 Feb 26
-%   GUIcov                       - Shows the necessary calculations to obtain the covariance in a GUI                                                                  - GUI                 - 2021 Feb 22
-%   GUImad                       - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                                                - GUI                 - 2021 Feb 26
-%   GUIpowermean                 - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                                                    - GUI                 - 2021 Feb 26
-%   GUIquantile                  - Shows the necessary calculations to obtain $x_z$ quantile                                                                           - GUI                 - 2021 Feb 22
-%   GUIregress                   - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                                             - GUI                 - 2021 Feb 24
-%   GUIskewness                  - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI                 - 2021 Feb 22
-%   GUIstd                       - Shows the necessary calculations to obtain the standard deviation in a GUI                                                          - GUI                 - 2021 Feb 22
-%   GUItrimmean                  - Shows the necessary calculations to obtain the trimmed mean in a GUI                                                                - GUI                 - 2021 Feb 22
-%   GUIvar                       - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI                 - 2021 Feb 26
+%   GUIconcentration             - Shows the necessary calculations to obtain the GINI concentration index in a GUI                                                    - GUI                 - 2021 Mar 17
+%   GUIcov                       - Shows the necessary calculations to obtain the covariance in a GUI                                                                  - GUI                 - 2021 Mar 17
+%   GUImad                       - Shows the necessary calculations to obtain MAD, S_M or S_Me in a GUI                                                                - GUI                 - 2021 Mar 17
+%   GUIpowermean                 - Shows the necessary calculations to obtain the power (generalized) mean in a GUI                                                    - GUI                 - 2021 Mar 17
+%   GUIquantile                  - Shows the necessary calculations to obtain $x_z$ quantile                                                                           - GUI                 - 2021 Mar 17
+%   GUIregress                   - Shows the necessary calculations to obtain simple linear regression statistics in a GUI                                             - GUI                 - 2021 Mar 17
+%   GUIskewness                  - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI                 - 2021 Mar 17
+%   GUIstd                       - Shows the necessary calculations to obtain the standard deviation in a GUI                                                          - GUI                 - 2021 Mar 17
+%   GUItrimmean                  - Shows the necessary calculations to obtain the trimmed mean in a GUI                                                                - GUI                 - 2021 Mar 17
+%   GUIvar                       - Shows the necessary calculations to obtain the variance in a GUI                                                                    - GUI                 - 2021 Mar 17
 %   GYfilt                       - Computes the Gervini-Yohai univariate outlier identifier                                                                            - UTISTAT             - 2021 Feb 01
 %   HAbdp                        - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT             - 2021 Feb 01
 %   HAc                          - Computes breakdown point and efficiency associated with constant c                                                                  - UTISTAT             - 2021 Feb 01
@@ -155,12 +155,12 @@
 %   isfunction                   - Checks if a function exists                                                                                                         - UTIGEN              - 2021 Feb 01
 %   kdebiv                       - Computes (and optionally plots) a kernel smoothing estimate for bivariate data                                                      - UTISTAT             - 2021 Feb 01
 %   levfwdplot                   - Plots the trajectories of leverage along the search                                                                                 - VIS-Reg             - 2021 Feb 01
-%   lexunrank                    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations                        - UTICOMB             - 2021 Feb 01
+%   lexunrank                    - Gives the the $k$-combination of $n$ elements of position $N$ in the lexicographic order of all combinations                        - UTICOMB             - 2021 Mar 13
 %   lga                          - Performs linear grouping analysis                                                                                                   - CLUS-RobClaREG      - 2021 Feb 01
-%   logmvnpdfFS                  - Produces log of Multivariate normal probability density function (pdf)                                                              - UTISTAT             - 2021 Feb 01
+%   logmvnpdfFS                  - Produces log of Multivariate normal probability density function (pdf)                                                              - UTISTAT             - 2021 Mar 02
 %   LTSts                        - Extends LTS estimator to time series                                                                                                - REG-Regression      - 2021 Feb 22
 %   LTStsVarSel                  - Does variable selection in the robust time series model LTSts                                                                       - REG-Regression      - 2021 Feb 01
-%   LXS                          - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                                - REG-Regression      - 2021 Feb 27
+%   LXS                          - Computes the Least Median of Squares (LMS) or Least Trimmed Squares (LTS) estimators                                                - REG-Regression      - 2021 Mar 18
 %   mahalCorAna                  - MahalFS computes Mahalanobis distances (in squared units) for each row of matrix Y                                                  - UTISTAT             - 2021 Feb 01
 %   mahalFS                      - Computes Mahalanobis distances (in squared units) for each row of matrix Y                                                          - UTISTAT             - 2021 Feb 01
 %   makecontentsfileFS           - Extends Matlab function makecontentsfile                                                                                            - UTIHELP             - 2021 Feb 01
@@ -189,14 +189,14 @@
 %   mve                          - Computes Minimum volume ellipsoid                                                                                                   - MULT-Multivariate   - 2021 Feb 01
 %   mveeda                       - Monitors Minimum volume ellipsoid for a series of values of bdp                                                                     - MULT-Multivariate   - 2021 Feb 01
 %   nchoosekFS                   - Returns the Binomial coefficient or matrix containing all combinations                                                              - UTICOMB             - 2021 Feb 01
-%   ncpci                        - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                    - UTISTAT             - 2021 Feb 01
+%   ncpci                        - Non centrality parameter confidence interval (taken from effect_of_size_toolbox)                                                    - UTISTAT             - 2021 Mar 17
 %   ncx2mixtcdf                  - Cumulative distribution function (cdf) of a linear combination of non-central chi-square (+ sigma * N(0,1))                         - UTISTAT             - 2021 Feb 01
 %   normBoxCox                   - Computes (normalized) Box-Cox transformation                                                                                        - UTISTAT             - 2021 Feb 01
 %   normYJ                       - Computes (normalized) Yeo-Johnson transformation                                                                                    - UTISTAT             - 2021 Feb 27
 %   normYJpn                     - NormYJ computes (normalized) extended Yeo-Johnson transformation                                                                    - UTISTAT             - 2021 Feb 01
 %   openMatlabFileFromHTML       - Enables to put in HTML an hypertextual link to a specific MATLAB file                                                               - UTIGEN              - 2021 Feb 01
 %   OPTbdp                       - Finds the constant c associated to the supplied breakdown point                                                                     - UTISTAT             - 2021 Feb 01
-%   OPTc                         - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT             - 2021 Feb 01
+%   OPTc                         - Computes breakdown point and efficiency associated with constant c for Optimal rho function                                         - UTISTAT             - 2021 Mar 02
 %   OPTeff                       - Finds the constant c which is associated to the requested efficiency                                                                - UTISTAT             - 2021 Feb 01
 %   OptimalCuttingFrequency      - Computes the optimal cutting frequency for the Fourier estimator of integrated variance                                             - UTISTAT             - 2021 Mar 01
 %   OPTpsi                       - Computes psi function (derivative of rho function) for optimal weight function                                                      - UTISTAT             - 2021 Feb 01
@@ -234,7 +234,7 @@
 %   regressts                    - Computes estimates of regression parameters for a time series models                                                                - REG-Regression      - 2021 Feb 22
 %   removeExtraSpacesLF          - Removes extra spaces and selected carriage returns from input string                                                                - UTIGEN              - 2021 Feb 01
 %   repDupValWithMean            - Replaces values of y which have non unique elements in vector x with local means                                                    - UTIGEN              - 2021 Feb 01
-%   resfwdplot                   - Plots the trajectories of the monitored scaled (squared) residuals                                                                  - VIS-Reg             - 2021 Feb 01
+%   resfwdplot                   - Plots the trajectories of the monitored scaled (squared) residuals                                                                  - VIS-Reg             - 2021 Mar 11
 %   resindexplot                 - Plots the residuals from a regression analysis versus index number or any other variable                                            - VIS-Reg             - 2021 Feb 01
 %   restrdeter                   - Computes determinant restriction                                                                                                    - CLUS-RobClaMULT     - 2021 Feb 01
 %   restrdeterGPCM               - Applies determinat restrictions for the 14 GPCM                                                                                     - CLUS-RobClaMULT     - 2021 Feb 01
@@ -263,7 +263,7 @@
 %   ScoreYJmle                   - Computes the likelihood ratio test fof H_0=lambdaP=lambdaP0 and lambdaN=lambdaN0                                                    - REG-Transformations - 2021 Feb 22
 %   ScoreYJpn                    - Computes the score test for YJ transformation for pos and neg observations                                                          - REG-Transformations - 2021 Mar 01
 %   SDest                        - Computes Stahel-Donoho robust estimator of dispersion-location                                                                      - MULT-Multivariate   - 2021 Feb 01
-%   SETARX                       - Implements Threshold autoregressive models with two regimes                                                                         - REG-Regression      - 2021 Mar 01
+%   SETARX                       - Implements Threshold autoregressive models with two regimes                                                                         - REG-Regression      - 2021 Mar 02
 %   shuffling                    - Does a random permutation of the elements of input vector                                                                           - UTICOMB             - 2021 Feb 01
 %   simdataset                   - Simulates and-or contaminates a dataset given the parameters of a finite mixture model with Gaussian components                     - CLUS-MixSim         - 2021 Feb 01
 %   simdatasetreg                - Simulates a regression dataset given the parameters of a mixture regression model                                                   - CLUS-MixSim         - 2021 Feb 01
@@ -277,7 +277,7 @@
 %   spmplot                      - Produces an interactive scatterplot matrix with boxplots or histograms on the main diagonal and possibly robust bivariate contours  - VIS-Mult            - 2021 Feb 01
 %   Sreg                         - Computes S estimators in linear regression                                                                                          - REG-Regression      - 2021 Feb 22
 %   Sregeda                      - Computes S estimators in linear regression for a series of values of bdp                                                            - REG-Regression      - 2021 Feb 22
-%   subsets                      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements                                    - UTICOMB             - 2021 Feb 27
+%   subsets                      - Creates a matrix of indexes where rows are distinct p-subsets extracted from a set of n elements                                    - UTICOMB             - 2021 Mar 13
 %   suplabel                     - Places text as a title, xlabel, or ylabel on a group of subplots                                                                    - UTIGEN              - 2021 Feb 01
 %   supsmu                       - Smooths scatterplots using Friedman's supersmoother algorithm                                                                       - REG-Transformations - 2021 Mar 01
 %   tabulateFS                   - Creates frequency table of unique values of x, excluding possible 0 counts                                                          - UTISTAT             - 2021 Feb 01
@@ -307,9 +307,9 @@
 %   twdcdf                       - Computes the cumulative distribution function of the Tweedie distribution                                                           - UTISTAT             - 2021 Feb 01
 %   twdpdf                       - Twopdf computes the probability density function of the Tweedie distribution                                                        - UTISTAT             - 2021 Mar 01
 %   twdrnd                       - Generates random variates from the Tweedie distribution                                                                             - UTISTAT             - 2021 Feb 01
-%   unibiv                       - Has the purpose of detecting univariate and bivariate outliers                                                                      - MULT-Multivariate   - 2021 Feb 01
+%   unibiv                       - Has the purpose of detecting univariate and bivariate outliers                                                                      - MULT-Multivariate   - 2021 Mar 06
 %   upperfracpos                 - Positions two figures on the upper part of the screen                                                                               - UTIGEN              - 2021 Feb 01
-%   verLessThanFS                - Compares version of MATLAB to specified version number                                                                              - UTIGEN              - 2021 Feb 01
+%   verLessThanFS                - Compares version of MATLAB to specified version number                                                                              - UTIGEN              - 2021 Mar 06
 %   vervaatrnd                   - Simulates random variates from the Vervaat perpetuity distribution                                                                  - UTISTAT             - 2021 Feb 01
 %   vervaatsim                   - Returns a Vervaat perpetuity                                                                                                        - UTISTAT             - 2021 Feb 01
 %   vervaatxdf                   - Returns the pdf and cdf of a Vervaat perpetuity                                                                                     - UTISTAT             - 2021 Feb 01

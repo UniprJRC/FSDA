@@ -27,13 +27,38 @@ function [out]=FSR(y,X,varargin)
 %
 % Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false.
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
+% bsbmfullrank : Dealing with singular X matrix. Boolean. This option tells
+%                 how to behave in case subset at step m
+%                 (say bsbm) produces a singular X. In other words,
+%                 this options controls what to do when rank(X(bsbm,:)) is
+%                 smaller then number of explanatory variables. If
+%                 bsbmfullrank =true (default) these units (whose number is
+%                 say mnofullrank) are constrained to enter the search in
+%                 the final n-mnofullrank steps else the search continues
+%                 using as estimate of beta at step m the estimate of beta
+%                 found in the previous step.
+%               Example - 'bsbmfullrank',false
+%               Data Types - logical
+%
+%      bonflev  : Signal to use to identify outliers. Scalar or empty value (default).
+%               Option to be used if the distribution of the data is
+%                 strongly non normal and, thus, the general signal
+%                 detection rule based on consecutive exceedances cannot be
+%                 used. In this case bonflev can be:
+%                 - a scalar smaller than 1 which specifies the confidence
+%                   level for a signal and a stopping rule based on the
+%                   comparison of the minimum MD with a
+%                   Bonferroni bound. For example if bonflev=0.99 the
+%                   procedure stops when the trajectory exceeds for the
+%                   first time the 99% bonferroni bound.
+%                 - A scalar value greater than 1. In this case the
+%                   procedure stops when the residual trajectory exceeds
+%                   for the first time this value.
+%                 Default value is '', which means to rely on general rules
+%                 based on consecutive exceedances.
+%               Example - 'bonflev',0.99
+%               Data Types - double
+%
 %
 %           h   : The number of observations that have determined the least
 %                 trimmed squares estimator. Scalar. h is an integer
@@ -46,13 +71,23 @@ function [out]=FSR(y,X,varargin)
 %                 Example - 'h',round(n*0,75)
 %                 Data Types - double
 %
-%       nsamp   : Number of subsamples which will be extracted to find the
-%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
-%                 They will be (n choose p).
-%                 If the number of all possible subset is <1000 the
-%                 default is to extract all subsets otherwise just 1000.
-%                 Example - 'nsamp',1000
-%                 Data Types - double
+%       init    : Search initialization. Scalar. It specifies the initial
+%                 subset size to start monitoring exceedances of minimum
+%                 deletion residual, if init is not specified it set equal
+%                 to:
+%                   p+1, if the sample size is smaller than 40;
+%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
+%               Example - 'init',100 starts monitoring from step m=100
+%               Data Types - double
+%
+%    intercept :  Indicator for constant term. true (default) | false.
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %
 %       lms     : Criterion to use to find the initial
 %                 subset to initialize the search. Scalar,  vector or structure.
@@ -86,48 +121,15 @@ function [out]=FSR(y,X,varargin)
 %                 Example - 'lms',1
 %                 Data Types - double
 %
-%       plots   : Plot on the screen. Scalar.
-%                 If plots=1 (default) the plot of minimum deletion
-%                 residual with envelopes based on n observations and the
-%                 scatterplot matrix with the outliers highlighted is
-%                 produced.
-%                 If plots=2 the user can also monitor the intermediate
-%                 plots based on envelope superimposition.
-%                 Else no plot is produced.
-%                 Example - 'plots',1
-%                 Data Types - double
 %
-%        tag    : tags to the plots which are created. 
-%                 character or cell array of characters.
-%                 This option enables to add a tag to the plots which are
-%                 created. The default tag names are:
-%                 fsr_mdrplot for the plot of mdr based on all the
-%                 observations;
-%                 fsr_yXplot for the plot of y against each column of X
-%                 with the outliers highlighted;
-%                 fsr_resuperplot for the plot of resuperimposed envelopes. The
-%                 first plot with 4 panel of resuperimposed envelopes has
-%                 tag fsr_resuperplot1, the second  fsr_resuperplot2 ...
-%                 If tag is character or a cell of characters of length 1,
-%                 it is possible to specify the tag for the plot of mdr
-%                 based on all the observations;
-%                 If tag is a cell of length 2 it is possible to control
-%                 both the tag for the plot of mdr based on all the
-%                 observations and the tag for the yXplot with outliers
-%                 highlighted.
-%                 If tag is a cell of length 3 the third element specifies
-%                 the names of the plots of resuperimposed envelopes.
-%                 Example - 'tag',{'plmdr' 'plyXplot'};
-%                 Data Types - char or cell
+%       msg    :  Level of output to display. Boolean. It controls whether
+%                 to display or not messages on the screen
+%                 If msg==true (default) messages are displayed on the screen about
+%                   step in which signal took place
+%                 else no message is displayed on the screen.
+%               Example - 'msg',false
+%               Data Types - logical
 %
-%       init    : Search initialization. Scalar. It specifies the initial
-%                 subset size to start monitoring exceedances of minimum
-%                 deletion residual, if init is not specified it set equal
-%                 to:
-%                   p+1, if the sample size is smaller than 40;
-%                   min(3*p+1,floor(0.5*(n+p+1))), otherwise.
-%               Example - 'init',100 starts monitoring from step m=100
-%               Data Types - double
 %
 %       nocheck : Check input arguments. Boolean. If nocheck is equal to
 %                 true no check is performed on matrix y and matrix X.
@@ -137,100 +139,13 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'nocheck',true
 %               Data Types - double
 %
-%    bivarfit : Superimpose bivariate least square lines. Character. This option adds
-%                 one or more least squares lines, based on
-%                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
-%                 bivarfit = ''
-%                   is the default: no line is fitted.
-%                 bivarfit = '1'
-%                   fits a single ols line to all points of each bivariate
-%                   plot in the scatter matrix y|X.
-%                 bivarfit = '2'
-%                   fits two ols lines: one to all points and another to
-%                   the group of the genuine observations. The group of the
-%                   potential outliers is not fitted.
-%                 bivarfit = '0'
-%                   fits one ols line to each group. This is useful for the
-%                   purpose of fitting mixtures of regression lines.
-%                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits
-%                   an ols line to a specific group, the one with
-%                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
-%                   of mixtures.
-%               Example - 'bivarfit','2'
-%               Data Types - char
-%
-%       multivarfit : Superimpose multivariate least square lines. Character.
-%                 This option adds one or more least square lines, based on
-%                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
-%                 multivarfit = ''
-%                   is the default: no line is fitted.
-%                 multivarfit = '1'
-%                   fits a single ols line to all points of each bivariate
-%                   plot in the scatter matrix y|X. The line added to the
-%                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the
-%                   coefficient of Xi in the multivariate regression and
-%                   avconst is the effect of all the other explanatory
-%                   variables different from Xi evaluated at their centroid
-%                   (that is overline{y}'C))
-%                 multivarfit = '2'
-%                   equal to multivarfit ='1' but this time we also add the
-%                   line based on the group of unselected observations
-%                   (i.e. the normal units).
-%               Example - 'multivarfit','1'
-%               Data Types - char
-%
-%      labeladd : Add outlier labels in plot. Character. If this option is
-%                 '1',  we label the outliers with the
-%                 unit row index in matrices X and y. The default value is
-%                 labeladd='', i.e. no label is added.
-%               Example - 'labeladd','1'
-%               Data Types - char
-%
-%       nameX  : Add variable labels in plot. Cell array of strings. Cell
-%                 array of strings of length p containing the labels of
-%                 the variables of the regression dataset. If it is empty
-%                 (default) the sequence X1, ..., Xp will be created
-%                 automatically
-%               Example - 'nameX',{'NameVar1','NameVar2'}
-%               Data Types - cell
-%
-%       namey  :  Add response label. Character. String containing the
-%                 label of the response
-%               Example - 'namey','NameOfResponse'
-%               Data Types - char
-%
-%       ylim   :  Control y scale in plot. Vector. Vector with two elements
-%                 controlling minimum and maximum on the y axis.
-%                 Default value is '' (automatic scale)
-%               Example - 'ylim',[0,10] sets the minimum value to 0 and the
-%               max to 10 on the y axis
-%               Data Types - double
-%
-%       xlim   : Control x scale in plot. Vector. Vector with two elements
-%               minimum and maximum on the x axis. Default value is ''
-%               (automatic scale)
-%               Example - 'xlim',[0,10] sets the minimum value to 0 and the
-%               max to 10 on the x axis
-%               Data Types - double
-%
-%      bonflev  : Signal to use to identify outliers. Scalar. Option to be
-%                used if the distribution of the data is
-%                 strongly non normal and, thus, the general signal
-%                 detection rule based on consecutive exceedances cannot be
-%                 used. In this case bonflev can be:
-%                 - a scalar smaller than 1 which specifies the confidence
-%                   level for a signal and a stopping rule based on the
-%                   comparison of the minimum MD with a
-%                   Bonferroni bound. For example if bonflev=0.99 the
-%                   procedure stops when the trajectory exceeds for the
-%                   first time the 99% bonferroni bound.
-%                 - A scalar value greater than 1. In this case the
-%                   procedure stops when the residual trajectory exceeds
-%                   for the first time this value.
-%                 Default value is '', which means to rely on general rules
-%                 based on consecutive exceedances.
-%               Example - 'bonflev',0.99
-%               Data Types - double
+%       nsamp   : Number of subsamples which will be extracted to find the
+%                 robust estimator. Scalar. If nsamp=0 all subsets will be extracted.
+%                 They will be (n choose p).
+%                 If the number of all possible subset is <1000 the
+%                 default is to extract all subsets otherwise just 1000.
+%                 Example - 'nsamp',1000
+%                 Data Types - double
 %
 %  threshoutX  : threshold to bound the effect of high leverage units.
 %                empty value (default) or scalar or structure.
@@ -269,35 +184,126 @@ function [out]=FSR(y,X,varargin)
 %               Example - 'threshoutX',1
 %               Data Types - double
 %
-%       msg    :  Level of output to display. Scalar. It controls whether
-%                 to display or not messages on the screen
-%                 If msg==1 (default) messages are displayed on the screen about
-%                   step in which signal took place
-%                 else no message is displayed on the screen.
-%               Example - 'msg',1
-%               Data Types - double
-%
-% bsbmfullrank : Dealing with singluar X matrix. Scalar. This option tells
-%                 how to behave in case subset at step m
-%                 (say bsbm) produces a singular X. In other words,
-%                 this options controls what to do when rank(X(bsbm,:)) is
-%                 smaller then number of explanatory variables. If
-%                 bsbmfullrank =1 (default) these units (whose number is
-%                 say mnofullrank) are constrained to enter the search in
-%                 the final n-mnofullrank steps else the search continues
-%                 using as estimate of beta at step m the estimate of beta
-%                 found in the previous step.
-%               Example - 'bsbmfullrank',1
-%               Data Types - double
-%
-%     weak:     Indicator to use a different decision rule to detect 
-%               the signal and flag outliers. false (default) | true. 
-%               If weak=false default FSRcore values are used, 
+%     weak:     Indicator to use a different decision rule to detect
+%               the signal and flag outliers. false (default) | true.
+%               If weak=false default FSRcore values are used,
 %               if weak=true 'stronger' quantiles are used  as a
 %               decision rule to trim outliers and VIOM outliers
 %				are the ones entering the Search after the first signal.
 %               Example - 'weak',true
-%               Data Types - boolean
+%               Data Types - logical
+%
+%       plots   : Plot on the screen. Scalar.
+%                 If plots=1 (default) the plot of minimum deletion
+%                 residual with envelopes based on n observations and the
+%                 scatterplot matrix with the outliers highlighted is
+%                 produced.
+%                 If plots=2 the user can also monitor the intermediate
+%                 plots based on envelope superimposition.
+%                 Else no plot is produced.
+%                 Example - 'plots',1
+%                 Data Types - double
+%
+%    bivarfit : Superimpose bivariate least square lines. Character. This option adds
+%                 one or more least squares lines, based on
+%                 SIMPLE REGRESSION of y on Xi, to the plots of y|Xi.
+%                 bivarfit = ''
+%                   is the default: no line is fitted.
+%                 bivarfit = '1'
+%                   fits a single ols line to all points of each bivariate
+%                   plot in the scatter matrix y|X.
+%                 bivarfit = '2'
+%                   fits two ols lines: one to all points and another to
+%                   the group of the genuine observations. The group of the
+%                   potential outliers is not fitted.
+%                 bivarfit = '0'
+%                   fits one ols line to each group. This is useful for the
+%                   purpose of fitting mixtures of regression lines.
+%                 bivarfit = 'i1' or 'i2' or 'i3' etc. fits
+%                   an ols line to a specific group, the one with
+%                   index 'i' equal to 1, 2, 3 etc. Again, useful in case
+%                   of mixtures.
+%               Example - 'bivarfit','2'
+%               Data Types - char
+%
+%      labeladd : Add outlier labels in plot. Character. If this option is
+%                 '1',  we label the outliers with the
+%                 unit row index in matrices X and y. The default value is
+%                 labeladd='', i.e. no label is added.
+%               Example - 'labeladd','1'
+%               Data Types - char
+%
+%       multivarfit : Superimpose multivariate least square lines. Character.
+%                 This option adds one or more least square lines, based on
+%                 MULTIVARIATE REGRESSION of y on X, to the plots of y|Xi.
+%                 multivarfit = ''
+%                   is the default: no line is fitted.
+%                 multivarfit = '1'
+%                   fits a single ols line to all points of each bivariate
+%                   plot in the scatter matrix y|X. The line added to the
+%                   scatter plot y|Xi is avconst + Ci*Xi, where Ci is the
+%                   coefficient of Xi in the multivariate regression and
+%                   avconst is the effect of all the other explanatory
+%                   variables different from Xi evaluated at their centroid
+%                   (that is overline{y}'C))
+%                 multivarfit = '2'
+%                   equal to multivarfit ='1' but this time we also add the
+%                   line based on the group of unselected observations
+%                   (i.e. the normal units).
+%               Example - 'multivarfit','1'
+%               Data Types - char
+%
+%
+%       nameX  : Add variable labels in plot. Cell array of strings. Cell
+%                 array of strings of length p containing the labels of
+%                 the variables of the regression dataset. If it is empty
+%                 (default) the sequence X1, ..., Xp will be created
+%                 automatically
+%               Example - 'nameX',{'NameVar1','NameVar2'}
+%               Data Types - cell
+%
+%       namey  :  Add response label. Character. String containing the
+%                 label of the response
+%               Example - 'namey','NameOfResponse'
+%               Data Types - char
+%
+%        tag    : tags to the plots which are created.
+%                 character or cell array of characters.
+%                 This option enables to add a tag to the plots which are
+%                 created. The default tag names are:
+%                 fsr_mdrplot for the plot of mdr based on all the
+%                 observations;
+%                 fsr_yXplot for the plot of y against each column of X
+%                 with the outliers highlighted;
+%                 fsr_resuperplot for the plot of resuperimposed envelopes. The
+%                 first plot with 4 panel of resuperimposed envelopes has
+%                 tag fsr_resuperplot1, the second  fsr_resuperplot2 ...
+%                 If tag is character or a cell of characters of length 1,
+%                 it is possible to specify the tag for the plot of mdr
+%                 based on all the observations;
+%                 If tag is a cell of length 2 it is possible to control
+%                 both the tag for the plot of mdr based on all the
+%                 observations and the tag for the yXplot with outliers
+%                 highlighted.
+%                 If tag is a cell of length 3 the third element specifies
+%                 the names of the plots of resuperimposed envelopes.
+%                 Example - 'tag',{'plmdr' 'plyXplot'};
+%                 Data Types - char or cell
+%
+%       xlim   : Control x scale in plot. Vector. Vector with two elements
+%               minimum and maximum on the x axis. Default value is ''
+%               (automatic scale)
+%               Example - 'xlim',[0,10] sets the minimum value to 0 and the
+%               max to 10 on the x axis
+%               Data Types - double
+%
+%       ylim   :  Control y scale in plot. Vector. Vector with two elements
+%                 controlling minimum and maximum on the y axis.
+%                 Default value is '' (automatic scale)
+%               Example - 'ylim',[0,10] sets the minimum value to 0 and the
+%               max to 10 on the y axis
+%               Data Types - double
+%
 %
 % Output:
 %
@@ -341,7 +347,7 @@ function [out]=FSR(y,X,varargin)
 % out.VIOMout = m x 1 vector containing the list of the units declared as
 %               VIOM outliers or NaN if they are not present.
 %               This field is present only if weak = true.
-% out.ListCl  = (n-m) x 1 vector of non-outlying units. 
+% out.ListCl  = (n-m) x 1 vector of non-outlying units.
 %               This field is present only if weak = true.
 %
 % See also: FSReda, LXS.m
@@ -464,7 +470,7 @@ function [out]=FSR(y,X,varargin)
     X=randn(n,p);
     y=randn(n,1);
     kk=33;
-    % shift contamination of the first 6 units of the response
+    % shift contamination of the first 33 units of the response
     y(1:kk)=y(1:kk)+6;
     nameX={'age', 'salary', 'position'};
     namey='salary';
@@ -533,7 +539,7 @@ function [out]=FSR(y,X,varargin)
     FSRoutw = FSR(y, X, 'intercept', false, ...
         'init', floor(n/2)-1, 'msg', 0, 'plots', 1, 'weak', true);
     trim_FSR =  FSRoutw.outliers;
-    down_FSR =  FSRoutw.outliersVIOM;
+    down_FSR =  FSRoutw.VIOMout;
     clean_FSR = FSRoutw.ListCl;
     % plotting
     figure
@@ -544,8 +550,8 @@ function [out]=FSR(y,X,varargin)
     drawnow
     clb = clickableMultiLegend(gca, 'Location', 'northeast');
     set(clb,'FontSize',12);
-    xlabel(xla); 
-    ylabel(yla); 
+    xlabel(xla);
+    ylabel(yla);
     box
     cascade
 %}
@@ -575,27 +581,28 @@ else
 end
 % ini0=init;
 
-% tag 
+% tag
 tagdef='pl_fsr';
-
-options=struct('h',hdef,...
-    'nsamp',nsampdef,'lms',1,'plots',1,...
-    'init',init,...
-    'labeladd','','bivarfit','','multivarfit','',...
-    'xlim','','ylim','','nameX','','namey','',...
-    'msg',1,'nocheck',false,'intercept',true,'bonflev','',...
-    'bsbmfullrank',1,'threshoutX','','weak',false,'tag',tagdef);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+if coder.target('MATLAB')
+    
+    options=struct('h',hdef,...
+        'nsamp',nsampdef,'lms',1,'plots',1,...
+        'init',init,...
+        'labeladd','','bivarfit','','multivarfit','',...
+        'xlim','','ylim','','nameX','','namey','',...
+        'msg',1,'nocheck',false,'intercept',true,'bonflev','',...
+        'bsbmfullrank',1,'threshoutX','','weak',false,'tag',tagdef);
+    
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
     end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
 end
-
 
 % Write in structure 'options' the options chosen by the user
 if nargin > 2
@@ -645,16 +652,17 @@ elseif threshoutX == 1
     threshlevoutX=10;
     
 else
-    error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalr equal to 1 or a struct.');
+    error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalar equal to 1 or a struct.');
 end
 
 
 
 %% Start of the forward search
 
-seq=1:n;
+seq=(1:n)';
 
 iter=0;
+mdr=0; % Initialization necessary for MATLAB C-Coder
 
 % Use as initial subset the one supplied by the user or the best according
 % to LMS or LTS
@@ -671,7 +679,8 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     
     % Compute Minimum Deletion Residual for each step of the search
     [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',true,...
-        'msg',msg,'threshlevoutX',threshlevoutX,'intercept',intercept);
+        'msg',msg,'threshlevoutX',threshlevoutX,'intercept',intercept,...
+        'bsbsteps',[],'internationaltrade',false);
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
@@ -698,25 +707,50 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
-    [out]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg,'bonflevoutX',bonflevoutX, 'intercept',intercept);
+    [outLXS]=LXS(y,X,'lms',lms,'h',h,'nsamp',nsamp,'nocheck',true,'msg',msg,...
+        'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
+        'conflev',0.975,'rew',false,'yxsave',false);
     
-    if out.scale==0
+    if outLXS.scale==0
         disp('More than half of the observations produce a linear model with a perfect fit')
         % Just return the outliers found by LXS
         %out.ListOut=out.outliers;
         %return
     end
     
-    bs=out.bs;
-    mdr=0;
-    constr='';
+    bs=outLXS.bs(:);
+    % Necessary for MATLAb C Coder initialization
+    % Initialize constr as a column vector of variable size whose elements
+    % are greater than n is such a way that no unit is constrained to enter the final steps 
+    constr=((n+1):2*n)';
     
+    if coder.target('MATLAB')
+        bsbstepdef=[];
+    else
+        if n<40
+            initdef=p+1;
+        else
+            initdef=min(3*p+1,floor(0.5*(n+p+1)));
+        end
+        if n<=5000
+            bsbstepdef = 0;
+        else
+            iniseq=100:100:100*floor(n/100);
+            iniseq=iniseq(iniseq>initdef);
+            bsbstepdef = [initdef iniseq];
+        end
+    end
     
-    while size(mdr,2)<2 && iter <6
+    % Matlab C Coder initializations.
+    Un=0; bb=0; Bols=0; S2=0;
+    mdrFlag=true;
+    while mdrFlag==true && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
         [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',true,...
-            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,'threshlevoutX',threshlevoutX,'intercept',intercept);
+            'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,...
+            'threshlevoutX',threshlevoutX,'intercept',intercept,...
+            'bsbsteps',bsbstepdef,'internationaltrade',false);
         
         % If FSRmdr runs without problems mdr has two columns. In the second
         % column it contains the value of the minimum deletion residual
@@ -735,16 +769,32 @@ else % initial subset is not supplied by the user
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
-                out.ListOut = setdiff(seq,mdr);
-                
+                out.ListOut = setdiff(seq,mdr(:))';
+                    if ~coder.target('MATLAB')
+                        varsize=ceil(n/1000000);
+                        out.outliers=NaN(1,varsize);
+                        out.mdr=mdr;
+                        out.Un=NaN(varsize,11);
+                        out.nout=NaN(varsize,varsize);
+                        out.beta=NaN(varsize,1);
+                        out.scale=NaN;
+                        out.mdag=NaN(varsize,varsize);
+                        out.ListCl=NaN(1,varsize);
+                        out.VIOMout=NaN(1,varsize);
+                        out.fittedvalues=[];
+                        out.residuals=[];
+                        out.class='FSR';
+                    end
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
                 % restart LXS without the units forming
                 % initial subset
-                bsb=setdiff(seq,out.bs);
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg,'intercept',intercept);
-                bs=bsb(out.bs);
+                bsb=setdiff(seq,outLXS.bs(:));
+                [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
+                    'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
+                    'conflev',0.975,'rew',false,'yxsave',false);
+                bs=bsb(outLXS.bs(:));
                 
                 
             else
@@ -752,11 +802,15 @@ else % initial subset is not supplied by the user
                 % SET OF OBSERVATIONS CONSTR <n/2  WHICH PRODUCED A SINGULAR
                 % MATRIX. IN THIS CASE NEW LXS IS BASED ON  n-constr OBSERVATIONS
                 iter=iter+1;
-                bsb=setdiff(seq,mdr);
-                constr=mdr;
-                [out]=LXS(y(bsb),X(bsb,:),'lms',lms,'nsamp',nsamp,'nocheck',true,'msg',msg,'intercept',intercept);
-                bs=bsb(out.bs);
+                bsb=setdiff(seq,mdr(:));
+                constr=mdr(:);
+                [outLXS]=LXS(y(bsb),X(bsb,:),'h',h','lms',lms,'nsamp',nsamp,'nocheck',true,...
+                    'msg',msg,'intercept',intercept,'bonflevoutX',bonflevoutX, 'intercept',intercept,'nomes',true,...
+                    'conflev',0.975,'rew',false,'yxsave',false);
+                bs=bsb(outLXS.bs);
             end
+        else
+            mdrFlag=false;
         end
     end
     
@@ -784,11 +838,13 @@ INP.Bcoeff=Bols;
 INP.S2=S2(:,1:2);
 INP.weak = weak;
 %% Call core function which computes exceedances to thresholds of mdr
-[out]=FSRcore(INP,'',options);
-
+[outPREL]=FSRcore(INP,'',options);
+out=outPREL;
 % compute and store in output structure the S robust scaled residuals
-out.fittedvalues = X*out.beta;
-out.residuals    = (y-out.fittedvalues)/out.scale;
+fittedvalues=X*outPREL.beta;
+scale=outPREL.scale;
+out.fittedvalues = fittedvalues;
+out.residuals    = (y-fittedvalues)/scale;
 
 out.class  =  'FSR';
 end
