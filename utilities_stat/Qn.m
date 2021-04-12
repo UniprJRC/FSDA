@@ -177,7 +177,7 @@ end
         % factor to make the estimator unbiased for finite samples (see p. 10
         % of Croux and Rousseeuw, 1992) or
         % http://www.google.it/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0CDUQFjAA&url=http%3A%2F%2Fwww.researchgate.net%2Fpublication%2F228595593_Time-efficient_algorithms_for_two_highly_robust_estimators_of_scale%2Ffile%2F79e4150f52c2fcabb0.pdf&ei=ZCE5U_qHIqjU4QTMuIHwAQ&usg=AFQjCNERh4HiLgtkUGF1w4JU1380xhvKhA&bvm=bv.63808443,d.bGE
-
+        dn=0;
         switch n
             case 1
                 error('FSDA:Qn:TooSmalln','Sample size too small');

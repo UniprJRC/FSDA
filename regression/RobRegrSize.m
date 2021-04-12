@@ -7,7 +7,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %  Required input arguments:
 %
 %           n : sample size. Scalar integer.
-%               Number of units of the regression dataset. 
+%               Number of units of the regression dataset.
 %               REMARK - simulations have been done for
 %               n=50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500.
 %               For other values of n the threhold are found by
@@ -209,7 +209,7 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 
 %{
     % Additional Example 3.
-    % Find the threshold for S estimator and hyperbolic rho function, 
+    % Find the threshold for S estimator and hyperbolic rho function,
     % use Tallis correction to infer
     % a threshold for bdp equal to 0.3 (simultaneous size)
     n=100;
@@ -226,11 +226,13 @@ function thresh=RobRegrSize(n,p,robest,rhofunc,bdp,eff,sizesim,Tallis)
 %% Beginning of code
 
 if nargin <2
-        error('FSDA:RobRegrSize:missingInputs','n and/or p are missing');
-
+    error('FSDA:RobRegrSize:missingInputs','n and/or p are missing');
+    
 else
     if p>20
-        warning('FSDA:RobRegrSize:Wrongp','The number of variables is too large to produce reliable estimates')
+        if coder.target('MATLAB')
+            warning('FSDA:RobRegrSize:Wrongp','The number of variables is too large to produce reliable estimates')
+        end
     end
     
     if n<50 || n>500
@@ -244,8 +246,10 @@ else
         end
         
         if n>500 && p>10
-            warning('FSDA:RobRegrSize:Wrongn','Simulations have been done for n in the range [50 500] and p<=10')
-            warning('FSDA:RobRegrSize:Wrongn','The resulting interpolated factors may produce a conservative test')
+            if coder.target('MATLAB')
+                warning('FSDA:RobRegrSize:Wrongn','Simulations have been done for n in the range [50 500] and p<=10')
+                warning('FSDA:RobRegrSize:Wrongn','The resulting interpolated factors may produce a conservative test')
+            end
             n=500;
         end
         
@@ -278,11 +282,13 @@ else
 end
 
 % Check
-   if (strcmp(robest,'LTS') || strcmp(robest,'LTSr')) && ~isempty(rhofunc) 
-       warning('FSDA:RobRegrSize:WrongEstimator','Robust estimator which has been chosen is of the LTS form')
-       warning('FSDA:RobRegrSize:WrongEstimator','Therefore rho function is set to empty')
-       rhofunc='';
-   end     
+if (strcmp(robest,'LTS') || strcmp(robest,'LTSr')) && ~isempty(rhofunc)
+    if coder.target('MATLAB')
+        warning('FSDA:RobRegrSize:WrongEstimator','Robust estimator which has been chosen is of the LTS form')
+        warning('FSDA:RobRegrSize:WrongEstimator','Therefore rho function is set to empty')
+    end
+    rhofunc='';
+end
 
 if nargin <4 || (isempty(rhofunc) && (strcmp(robest,'S')  || strcmp(robest,'MM')))
     rhofunc='ST';
@@ -328,20 +334,24 @@ else
             corr=sqrt(T05/Tuser);
         end
     else
-         if bdp<0.25
+        if bdp<0.25
             disp('Simulations have been done for bdp=.25 and bdp=0.5')
             disp('The resulting interpolated factors may produce a conservative test')
-            warning('FSDA:RobRegrSize:WrongBdp','Please use input option Tallis if you want to use a recalibrated threshold')
-         end
-
+            if coder.target('MATLAB')
+                warning('FSDA:RobRegrSize:WrongBdp','Please use input option Tallis if you want to use a recalibrated threshold')
+            end
+        end
+        
         corr=1;
     end
     
 end
 
 if nargin<6 || isempty(eff)
-    eff=0.90;
-    if eff<0.6 || eff>=1
+    effToUse=0.90;
+else
+    effToUse=eff;
+    if effToUse<0.6 || effToUse>=1
         error('FSDA:RobRegrSize:WrongEff','eff must be a number in the interval [0.6-(1-epsilon)]')
     end
 end
@@ -359,28 +369,28 @@ effchk=[0.85 0.9 0.95];
 %% Extract from mat file the information in order to find the proper threshold
 if strcmp(robest,'MM')==1
     % If efficiency is the one supplied by the user
-    if intersect(eff,effchk)==eff
+    if intersect(effToUse,effchk)==effToUse
         % If the weight function is ST than it is necessary to take an
         % average of the threholds for all the weight function for a given
         % value of efficiency
         % posint is the boolean vector which contains the position
         % associated to the required efficiency
         if strcmp(rhofunc,'ST')
-            if eff==0.85
+            if effToUse==0.85
                 posint=strncmpi(labest,'MMeff085',8);
-            elseif eff==0.90
+            elseif effToUse==0.90
                 posint=strncmpi(labest,'MMeff090',8);
-            elseif eff==0.95
+            elseif effToUse==0.95
                 posint=intersect(labest,'MMeff095',8);
             end
         else
             % If the weight function is not equal to ST than it is
             % necessary to extract the position inside the MAT file
             % associated to the supplied weight function
-            namefile1=[robest 'eff0' num2str(100*eff) rhofunc];
+            namefile1=[robest 'eff0' num2str(100*effToUse) rhofunc];
             namefile2='';
         end
-    elseif  eff<0.85
+    elseif  effToUse<0.85
         % If the used wants to have an effiency smaller than 0.85 then the
         % correction for eff=0.85 is used
         if strcmp(rhofunc,'ST')
@@ -389,7 +399,7 @@ if strcmp(robest,'MM')==1
             namefile1=[robest 'eff085'  rhofunc];
             namefile2='';
         end
-    elseif  eff>0.85 && eff <0.9
+    elseif  effToUse>0.85 && effToUse <0.9
         if strcmp(rhofunc,'ST')
             posint1=strncmpi(labest,'MMeff085',8);
             posint2=strncmpi(labest,'MMeff090',8);
@@ -403,7 +413,7 @@ if strcmp(robest,'MM')==1
             namefile2=[robest 'eff090'  rhofunc];
         end
         
-    elseif  eff>0.90 && eff <0.95
+    elseif  effToUse>0.90 && effToUse <0.95
         if strcmp(rhofunc,'ST')
             posint1=strncmpi(labest,'MMeff090',8);
             posint2=strncmpi(labest,'MMeff095',8);
@@ -470,7 +480,7 @@ elseif strcmp(robest,'S')==1
             end
             posint=posint1 | posint2;
         else
-             
+            
             if Tallis==1
                 if bdp<0.375
                     namefile1=[robest 'bdp025'  rhofunc];
@@ -513,7 +523,8 @@ elseif strcmp(robest,'LTSr')==1  % LTS reweighted
 else % RAW LTS
     % If breakdown point is the one supplied by the user
     if intersect(bdp,bdpchk)==bdp
-        namefile1=[robest 'bdp0' num2str(100*bdp) rhofunc];
+        % namefile1=[robest 'bdp0' num2str(100*bdp) rhofunc];
+        namefile1=[robest 'bdp0' sprintf('%.0f',100*bdp) rhofunc];
         namefile2='';
         
     elseif  bdp<0.25
@@ -545,20 +556,33 @@ pp=2:10;
 % third dimension = estimator
 
 % Select the slices of third dimenson of mat file which have to be used
+posint1=0;
+posint2=0;
 
 if strcmp(rhofunc,'ST')
     % in this case Boolean vector posint has already been calculated
 else
-    [~,posint1]=intersect(labest,namefile1);
-    [~,posint2]=intersect(labest,namefile2);
+    if coder.target('MATLAB')
+        [~,posint1]=intersect(labest,namefile1);
+        [~,posint2]=intersect(labest,namefile2);
+    else
+        for iii=1:length(labest)
+            if strcmp(labest{iii},namefile1)
+                posint1=iii;
+            end
+            if strcmp(labest{iii},namefile2)
+                posint2=iii;
+            end
+        end
+    end
     posint=[posint1 posint2];
 end
 
 if sizesim==1
-    MAT=load('Sim_ThreshSm');
+    MAT=coder.load('Sim_ThreshSm');
     THsel=mean(MAT.ThreshAllSmsim(:,:,posint),3);
 else
-    MAT=load('Ind_ThreshSm');
+    MAT=coder.load('Ind_ThreshSm');
     THsel=mean(MAT.ThreshAllSmind(:,:,posint),3);
 end
 

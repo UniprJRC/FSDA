@@ -14,19 +14,22 @@ function a=ctsub(x,y,z)
 % Required input arguments:
 %
 %    x   :      Predictor variable sorted. Vector. Vector of length n
-%               containing ordered abscissa values.
+%               containing ordered abscissa values. Note that the length of
+%               x must be equal to the length of y.
 %               Note that the x values are assumed non decreasing.
 %    y  :       Response variable. Vector. Vector of length n
-%               containing ordinate values.
-%    z  :       Upper limits of integration. Vector. Vector of length n
-%               containing the upper integration limits.
+%               containing ordinate values.  Note that the length of
+%               x must be equal to the length of y.
+%    z  :       Upper limits of integration. Vector. Vector of length k
+%               containing the upper integration limits. Note that
+%               length(z) is not necessarily equal to length(x).
 %
 %  Optional input arguments:
 %
 % Output:
 %
 %    a   :      Result of numerical integration. Vector.  Vector of length
-%               n containing the results of the n numerical integrations. 
+%               $k$ containing the results of the $k$ numerical integrations. 
 %               The $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is 
 %               equal to:
 %               \[
@@ -136,15 +139,110 @@ function a=ctsub(x,y,z)
     plot(x,a)
     title('Transformed data after the variance stabilizing transformation')
 %}
-    
+
+
+%{
+    %% Example of application of routine ctsub inside AVAS.
+    % Generate the data
+    rng(2000)
+    la=0;
+    n=100;
+    X=10*rand(n,1);
+    sigma=0.1;
+    a=2;
+    b=0.3;
+    y=a+b*X+sigma*randn(n,1);
+    % The correct transformation is log
+    y=normBoxCox(y,1,la,'inverse',true);
+    % Data standardization
+    y=zscore(y);
+    X=zscore(X);
+    out=fitlm(X,y);
+    yhat=out.Fitted;
+    res=y-yhat;
+    figure
+    nr=2;
+    nc=3;
+
+    subplot(nr,nc,1)
+    plot(X,y,'o')
+    hold('on')
+    [xsor,ordx]=sort(X);
+    yordx=yhat(ordx);
+    plot(xsor,yordx)
+    xlabel('Original x (standardized)')
+    ylabel('Original y (standardized)')
+
+    title(['R2=' num2str(out.Rsquared.Ordinary)])
+
+    subplot(nr,nc,2)
+    [yhatsor,ordyhat]=sort(yhat);
+    % Residuals sorted using the indexes of sorted fitted values
+    resordyhat=res(ordyhat);
+    yordyhat=y(ordyhat);
+
+    scatter(yhatsor,resordyhat)
+    xlabel('Sorted fitted values')
+    ylabel('Residuals (e) in correspondence of sorted fitted values')
+
+    % z2 = log abs value of the residuals
+    % ztar_sorted = log abs value of the residuals (sorted using ordering based on yhat)
+    z2=log(sqrt(res.^2));
+    ztar_sorted=z2(ordyhat);
+
+    % Smooth the log of (the sample version of) the |residuals|
+    % against fitted values. Use the ordering based on fitted values.
+    [smo,yspan]=rlsmo(yhatsor,ztar_sorted);
+    scatter(yhatsor,ztar_sorted)
+    hold('on')
+    plot(yhatsor,smo)
+    xlabel('Sorted fitted values')
+    ylabel('log |e| and smoothed values')
+
+    subplot(nr,nc,3)
+    z7=exp(-smo);
+    plot(yhatsor,z7)
+    xlabel('Sorted fitted values')
+    ylabel('exp(-(log |e| smoothed)=smoothed 1/|e| ')
+
+
+    subplot(nr,nc,4)
+    z7=exp(-smo);
+    ytnew=ctsub(yhatsor,z7,yordyhat);
+    plot(yhatsor,ytnew,'o')
+    xlabel('Sorted fitted values')
+    ylabel('Transformed y (after integration)')
+
+    tynew=y;
+    tynew(ordyhat)=ytnew;
+
+    subplot(nr,nc,5)
+    tynew=zscore(tynew);
+    plot(y,tynew,'o')
+    xlabel('Original y')
+    ylabel('Transformed y (standardized)')
+    refline(1,0)
+
+    subplot(nr,nc,6)
+    outAVASOneIteration=fitlm(X,tynew);
+    yhatt=outAVASOneIteration.Fitted;
+    plot(X,tynew,'o')
+    hold('on')
+    plot(xsor,yhatt(ordx))
+    xlabel('Original x (standardized)')
+    ylabel('Transformed y (standardized) and fitted values')
+    title(['R2=' num2str(outAVASOneIteration.Rsquared.Ordinary)])
+%}
+
 % Note that trapz([1/3 pi],[sin(1/3) sin(pi)]) =
 % ctsub([1/3 pi],[sin(1/3) sin(pi)],[[1/3 pi]])
 
 
 %% Beginning of code
-n =length(z);
-a =zeros(n,1);
-for i=1:n
+n =length(x);
+lz=length(z);
+a =zeros(lz,1);
+for i=1:lz
     
     if(z(i)<= x(1))
         a(i) =(z(i)-x(1))*y(1);

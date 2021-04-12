@@ -315,7 +315,7 @@ if nargin<4
             maxx=n-1;
             calls=calls+maxx-kk+1;
         else
-            maxx = x+kk-2;
+            maxx = x(1)+kk-2;
             calls=calls+maxx-kk+2;
         end
         

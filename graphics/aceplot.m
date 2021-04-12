@@ -18,12 +18,15 @@ function aceplot(out,varargin)
 %               the last iteration of the outer loop.
 %      out.y  = n x 1 vector containing the original y values.
 %      out.X  = n x p matrix containing the original X matrix.
+%      out.outliers= k x 1 vector containing the units declared as outliers
+%               when avas has been called with option rob set to trye.
 %                 Data Types - struct
 %
 % Optional input arguments:
 %
 %    highlight : units to highliight in the plot. Vector. Vector contaning
 %               the numbers associate to the units to highlight in the plots.
+%               The default is to highlight the units inside out.outliers.    
 %                 Example - 'highlight',1:10
 %                 Data Types - double
 %
@@ -99,7 +102,7 @@ function aceplot(out,varargin)
 
 %% Beginning of code
 
-highlight=[];
+highlight=out.outliers;
 ylimy=[];
 if nargin >1
     UserOptions=varargin(1:2:length(varargin));

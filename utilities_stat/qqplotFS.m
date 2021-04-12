@@ -17,24 +17,6 @@ function Y=qqplotFS(res,varargin)
 %
 %  Optional input arguments:
 %
-%    intercept :  Indicator for constant term. true (default) | false. 
-%                 Indicator for the constant term (intercept) in the fit,
-%                 specified as the comma-separated pair consisting of
-%                 'Intercept' and either true to include or false to remove
-%                 the constant term from the model.
-%                 Example - 'intercept',false
-%                 Data Types - boolean
-%
-%    X :        Predictor variables. Matrix. Data matrix of explanatory
-%               variables (also called 'regressors')
-%               of dimension (n x p-1). Rows of X represent observations, and
-%               columns represent variables. This is the matrix which has
-%               been used to produce stdentized residuals.
-%               If this optional argument is
-%               missing we take as matrix X the column of ones.
-%                   Example - 'X',randn(n,3)
-%                   Data Types - double
-%
 %     conflev :  Confidence level which is
 %               used to compute confidence bands of studentized residuals. Scalar
 %               Usually conflev=0.95, 0.975 0.99 (individual alpha)
@@ -43,10 +25,28 @@ function Y=qqplotFS(res,varargin)
 %                 Example - 'conflev',0.99
 %                 Data Types - double
 %
+%    intercept :  Indicator for constant term. true (default) | false. 
+%                 Indicator for the constant term (intercept) in the fit,
+%                 specified as the comma-separated pair consisting of
+%                 'Intercept' and either true to include or false to remove
+%                 the constant term from the model.
+%                 Example - 'intercept',false
+%                 Data Types - boolean
+%
 %     nsimul :  number of simulations to compute the envelopes. Scalar. The
 %               default value is 1000.
 %               Example - 'nsimul',300
 %               Data Types - double
+%
+%    X :        Predictor variable. Matrix. Data matrix of explanatory
+%               variables (also called 'regressors')
+%               of dimension (n x p-1). Rows of X represent observations, and
+%               columns represent variables. This is the matrix which has
+%               been used to produce stdentized residuals.
+%               If this optional argument is
+%               missing we take as matrix X the column of ones.
+%                   Example - 'X',randn(n,3)
+%                   Data Types - double
 %
 %       plots : Plot on the screen. Scalar.
 %               If plots = 1, a plot which shows the
@@ -59,6 +59,14 @@ function Y=qqplotFS(res,varargin)
 %                 Example - 'plots',1
 %                 Data Types - double
 %
+%               h : the axis handle of a figure where to send the qqplot.
+%                   This can be used to host the qqplot in a subplot of a
+%                   complex figure formed by different panels (for example a panel
+%                   with qqplot from a classical ols estimator and another
+%                   with qqplot from a robust regression).
+%                   Example -'h',h1 where h1=subplot(2,1,1)
+%                   Data Types - Axes object (supplied as a scalar)
+%
 %       tag     :   handle of the plot which is about to be created.
 %                   Character. The default is to use tag 'pl_qq'. Notice
 %                   that if the program finds a plot which has a tag equal
@@ -67,13 +75,6 @@ function Y=qqplotFS(res,varargin)
 %                   window else a new window is created Example -
 %                   'tag','mytag' Data Types - char
 %
-%               h : the axis handle of a figure where to send the qqplot.
-%                   This can be used to host the qqplot in a subplot of a
-%                   complex figure formed by different panels (for example a panel
-%                   with qqplot from a classical ols estimator and another
-%                   with qqplot from a robust regression).
-%                   Example -'h',h1 where h1=subplot(2,1,1)
-%                   Data Types - Axes object (supplied as a scalar)%
 % Output:
 %
 %       Y:  matrix with raws data on which the plot is based. n-by-3 matrix.

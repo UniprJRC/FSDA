@@ -22,12 +22,6 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %
 % Optional input arguments:
 %
-% init :       Point where to start monitoring required diagnostics. Scalar.
-%              Note that if bsb is supplied, init>=length(bsb). If init is not
-%              specified it will be set equal to floor(n*0.6).
-%                 Example - 'init',50
-%                 Data Types - double
-%
 %   bsbsteps :  Save the units forming subsets in selected steps. Vector.
 %               It specifies for which steps of the fwd search it is
 %               necessary to save the units forming subset. If bsbsteps is
@@ -42,7 +36,26 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               subset in steps 100 and 200.
 %               Data Types - double
 %
-% plots :     Plot on the screen. Scalar.  
+% init :       Point where to start monitoring required diagnostics. Scalar.
+%              Note that if bsb is supplied, init>=length(bsb). If init is not
+%              specified it will be set equal to floor(n*0.6).
+%                 Example - 'init',50
+%                 Data Types - double
+%
+%  msg  :   It controls whether to display or not messages
+%               about great interchange on the screen. Boolean.
+%               If msg==true (default) messages are displyed on the screen
+%               else no message is displayed on the screen
+%                 Example - 'msg',false
+%                 Data Types - logical
+%
+% nocheck :   It controls whether to perform checks on matrix Y. Scalar.
+%             If nocheck is equal to 1 no check is performed on matrix Y.
+%             As default nocheck=0.
+%                 Example - 'nocheck',1
+%                 Data Types - double
+%
+% plots :     Plot on the screen. Scalar.
 %               If plots=1, a plot of the monitoring of minMD among
 %               the units not belonging to the subset is produced on the
 %               screen with 1 per cent, 50 per cent and 99 per cent confidence bands
@@ -50,17 +63,6 @@ function [Un,BB] = FSMbsb(Y,bsb,varargin)
 %               Example - 'plots',0
 %               Data Types - double
 %
-%  msg  :   It controls whether to display or not messages
-%               about great interchange on the screen. Scalar.
-%               If msg==1 (default) messages are displyed on the screen
-%               else no message is displayed on the screen
-%                 Example - 'msg',0
-%                 Data Types - double
-% nocheck :   It controls whether to perform checks on matrix Y. Scalar. 
-%             If nocheck is equal to 1 no check is performed on matrix Y. 
-%             As default nocheck=0.    
-%                 Example - 'nocheck',1
-%                 Data Types - double
 %
 % Remark:       The user should only give the input arguments that have to
 %               change their default value.
@@ -209,21 +211,26 @@ initdef=floor(n*0.6);
 
 bsbstepdef='';
 
-options=struct('init',initdef,'plots',0,'msg',1,'nocheck',0,'bsbsteps',bsbstepdef);
 
 if nargin<2
     error('FSDA:FSMbsb:missingInputs','Initial subset is missing')
 end
 
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:FSMbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
-    end
-    % Check if user options are valid options
-    chkoptions(options,UserOptions)
+if coder.target('MATLAB')
+    options=struct('init',initdef,'plots',0,'msg',true,'nocheck',0,'bsbsteps',bsbstepdef);
     
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSMbsb:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+end
+
+if nargin>2
     % Write in structure 'options' the options chosen by the user
     for i=1:2:length(varargin)
         options.(varargin{i})=varargin{i+1};
@@ -232,7 +239,7 @@ end
 
 % And check if the optional user parameters are reasonable.
 if bsb==0
-    Ra=1; nwhile=1;
+    Ra=true; nwhile=1;
     while and(Ra,nwhile<100)
         % Extract a random sample of size v+1
         bsb=randsample(n,v+1);
@@ -241,7 +248,11 @@ if bsb==0
         nwhile=nwhile+1;
     end
     if nwhile==100
-        warning('FSDA:FSMbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        if coder.target('MATLAB')
+            warning('FSDA:FSMbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        else
+            disp('FSDA:FSMbsb:NoFullRank','Unable to randomly sample full rank matrix');
+        end
     end
 else
 end
@@ -256,34 +267,39 @@ percn=.85*n;
 % which must be taken in order to find new subset
 nrepmin=10;
 
-
-if n<32768
-    bsb=int16(bsb);
-    seq=int16((1:n)');
-    minMDindex=zeros(1,1,'int16');
-    
-    % unitadd and bsbradd will be vectors which contain the k units which
-    % are added using k repeated minima. More precisely the units which
-    % were not in the previous subset are included in vector unitadd, those
-    % which were in the previous subset are included in vector bsbradd
-    unitadd=zeros(nrepmin,1,'int16');
-    bsbradd=unitadd;
-    
-    
+if coder.target('MATLAB')
+    if n<32768
+        bsb=int16(bsb);
+        seq=int16((1:n)');
+        minMDindex=zeros(1,1,'int16');
+        
+        % unitadd and bsbradd will be vectors which contain the k units which
+        % are added using k repeated minima. More precisely the units which
+        % were not in the previous subset are included in vector unitadd, those
+        % which were in the previous subset are included in vector bsbradd
+        unitadd=zeros(nrepmin,1,'int16');
+        bsbradd=unitadd;
+        
+        
+    else
+        bsb=int32(bsb);
+        seq=int32((1:n)');
+        minMDindex=zeros(1,1,'int32');
+        
+        % unitadd and bsbradd will be vectors which contain the k units which
+        % are added using k repeated minima. More precisely the units which
+        % were not in the previous subset are included in vector unitadd, those
+        % which were in the previous subset are included in vector bsbradd
+        unitadd=zeros(nrepmin,1,'int32');
+        bsbradd=unitadd;
+        
+    end
 else
-    bsb=int32(bsb);
-    seq=int32((1:n)');
-    minMDindex=zeros(1,1,'int32');
-    
-    % unitadd and bsbradd will be vectors which contain the k units which
-    % are added using k repeated minima. More precisely the units which
-    % were not in the previous subset are included in vector unitadd, those
-    % which were in the previous subset are included in vector bsbradd
-    unitadd=zeros(nrepmin,1,'int32');
+    seq=(1:n)';
+    minMDindex=zeros(1,1);
+    unitadd=zeros(nrepmin,1);
     bsbradd=unitadd;
-    
 end
-
 zeron1=false(n,1);
 
 % Initialization of the n x 1 Boolean vector which contains a true in
@@ -292,6 +308,17 @@ bsbT=zeron1;
 bsbT(bsb)=true;
 
 
+% Initialization for Matlab coder
+if ~coder.target('MATLAB')
+    rankgap=0;
+    S=zeros(v,v);
+    meoldbsb=zeros(1,v);
+    oldbsbT=bsbT;
+    bsbr=zeros(n,1);
+    unitout=bsbr;
+    bsbriniT=bsbT;
+    bsbrini=bsbr;
+end
 
 ini0=length(bsb);
 
@@ -305,9 +332,13 @@ if  init1 <v+1
     fprintf('%s\n',mess);
     init1=v+1;
 elseif init1<ini0
-    mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
-        'It is set equal to ' num2str(length(bsb)) ]);
-    fprintf('%s\n',mess);
+    if coder.target('MATLAB')
+        mess=sprintf(['Attention : init1 should be >= length of supplied subset. \n',...
+            'It is set equal to ' num2str(length(bsb)) ]);
+        fprintf('%s\n',mess);
+    else
+        disp('Attention : init1 should be >= length of supplied subset. It is set equal to size of supplied subset')
+    end
     init1=ini0;
 elseif init1>=n
     mess=sprintf(['Attention : init1 should be smaller than n. \n',...
@@ -324,21 +355,37 @@ if isempty(bsbsteps)
     % Default for vector bsbsteps which indicates for which steps of the fwd
     % search units forming subset have to be saved
     if n<=5000
-        bsbsteps = init1:1:n;
+        bsbsteps = (init1:1:n)';
     else
-        bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)];
+        bsbsteps = [init1 init1+100-mod(init1,100):100:100*floor(n/100)]';
     end
-    BB = NaN(n,length(bsbsteps),'single');
+    if coder.target('MATLAB')
+        BB = NaN(n,length(bsbsteps),'single');
+    else
+        BB = NaN(n,length(bsbsteps));
+    end
 elseif bsbsteps==0
-    bsbsteps=init1:n;
-    BB = NaN(n,n-init1+1,'single');
+    bsbsteps=(init1:n)';
+    if coder.target('MATLAB')
+        BB = NaN(n,n-init1+1,'single');
+    else
+        BB = NaN(n,n-init1+1);
+    end
 else
     if min(bsbsteps)<init1
-        warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        if coder.target('MATLAB')
+            warning('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        else
+            disp('FSDA:FSMbsb:WrongInit','It is impossible to monitor the subset for values smaller than init');
+        end
     end
     bsbsteps=bsbsteps(bsbsteps>=init1);
     
-    BB = NaN(n,length(bsbsteps),'single');
+    if coder.target('MATLAB')
+        BB = NaN(n,length(bsbsteps),'single');
+    else
+        BB = NaN(n,length(bsbsteps));
+    end
 end
 
 %  Un is a Matrix whose 2nd column:11th col contain the unit(s) just
@@ -347,13 +394,21 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
 % unit is the vector which will contain the units which enter subset at each
 % step. It is initialized as a vector of zeros
-unit=zeros(ini0,1,'int16');
+if coder.target('MATLAB')
+    unit=zeros(ini0,1,'int16');
+else
+    unit=zeros(ini0,1);
+end
 lunit=length(unit);
 
 % If the subset Y(bsb,:) is not full rank or a column is constant, then we
 % return as output an empty structure.
 if (rank(Y(bsb,:))<v) || min(max(Y(bsb,:)) - min(Y(bsb,:))) == 0
-    warning('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank matrix');
+    if coder.target('MATLAB')
+        warning('FSDA:FSMbsb:NoFullRank','The supplied initial subset does not produce a full rank matrix');
+    else
+        disp('FSDA:FSMmmd:NoFullRank','The supplied initial subset does not produce a full rank matrix');
+    end
     disp('FS loop will not be performed')
     Un=NaN;
     BB=NaN;
@@ -374,7 +429,7 @@ else
         % If required, store units forming subset at each step
         if (mm>=init1)
             
-            if intersect(mm,bsbsteps)==mm
+            if intersect(mm,bsbsteps(:))==mm
                 if mm<=percn
                     BB(bsb,ij)=bsb;
                 else
@@ -431,9 +486,11 @@ else
                 if mm>percn || rankgap>nrepmin
                     % oldbsbT = units which were in previous subset
                     % bsbT = units which are in current subset
-                    bsbr=oldbsbT & bsbT;
+                    bsbrT=oldbsbT & bsbT;
+                    mibsbr=sum(Y(bsbrT,:),1)/(mm-1-lunitout);
+                else
+                    mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
                 end
-                mibsbr=sum(Y(bsbr,:),1)/(mm-1-lunitout);
                 
                 zi=sqrt(lunitout*(mm-1-lunitout)/(mm-1))*(mi-mibsbr);
                 Szi=S*zi';
@@ -488,7 +545,11 @@ else
                 [~,R]=qr(Ym(bsb,:),0);
             end
             if sum(isinf(S(:)))>0
-                warning('FSDA:FSMmmd:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                if coder.target('MATLAB')
+                    warning('FSDA:FSMbsb:NoFullRank',['Subset at step mm= ' num2str(mm) ' is not full rank matrix']);
+                else
+                    disp('FSDA:FSMbsb:NoFullRank','Subset at step mm is not full rank matrix');
+                end
                 disp('FS loop will not be performed')
                 
                 Un=NaN;
@@ -710,14 +771,16 @@ else
         end
     end
 end
-plots=options.plots;
-if plots==1
-    % Create the 'monitoring units plot'
-    figure;
-    plot(bsbsteps,BB','bx')
-    xlabel('Subset size m');
-    ylabel('Monitoring units plot');
-end
 
+if coder.target('MATLAB')
+    plots=options.plots;
+    if plots==1
+        % Create the 'monitoring units plot'
+        figure;
+        plot(bsbsteps,BB','bx')
+        xlabel('Subset size m');
+        ylabel('Monitoring units plot');
+    end
+end
 end
 %FScategory:MULT-Multivariate

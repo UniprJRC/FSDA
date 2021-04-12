@@ -118,14 +118,14 @@ function [out]=FSRfan(y,X,varargin)
 %                 Data Types - double
 %
 %         msg   : Level of output to display. Boolean.
-%                   scalar which controls whether to display or not
-%                   messages on the screen. Scalar.
+%                   Boolean scalar which controls whether to display or not
+%                   messages on the screen.
 %                   If msg==true (default) messages are
 %                   displayed on the screen about estimated time to compute
-%                   the LMS (LTS) for each value of lamabda else no message
+%                   the LMS (LTS) for each value of lambda else no message
 %                   is displayed on the screen
 %                  Example - 'msg',false
-%                  Data Types - double
+%                  Data Types - logical
 %
 %       nocheck :   Check input arguments. Boolean.
 %                   If nocheck is equal to true no check is performed
@@ -704,16 +704,18 @@ end
 
 % Specify where to send the output of the current procedure if options plot
 % =1
-if plo==1
-    h1=findobj('-depth',1,'tag',tag);
-    if (~isempty(h1))
-        clf(h1);
-        figure(h1)
-        axes;
-    else
-        figure;
-        % include specified tag in the current plot
-        set(gcf,'tag',tag);
+if coder.target('MATLAB')
+    if plo==1
+        h1=findobj('-depth',1,'tag',tag);
+        if (~isempty(h1))
+            clf(h1);
+            figure(h1)
+            axes;
+        else
+            figure;
+            % include specified tag in the current plot
+            set(gcf,'tag',tag);
+        end
     end
 end
 
@@ -741,13 +743,13 @@ Unlai = cat(2 , (init+1:n)' , NaN(n-init,10));
 lla=length(la);
 Un=cell(lla,1);
 if coder.target('MATLAB')
-% For code generation, before you use a cell array element, you must assign
-% a value to it. When you use cell to create a variable-size cell array,
-% for example, cell(1,n), MATLAB® assigns an empty matrix to each element.
-% However, for code generation, the elements are unassigned. For code
-% generation, after you use cell to create a variable-size cell array, you
-% must assign all elements of the cell array before any use of the cell
-% array.
+    % For code generation, before you use a cell array element, you must assign
+    % a value to it. When you use cell to create a variable-size cell array,
+    % for example, cell(1,n), MATLAB® assigns an empty matrix to each element.
+    % However, for code generation, the elements are unassigned. For code
+    % generation, after you use cell to create a variable-size cell array, you
+    % must assign all elements of the cell array before any use of the cell
+    % array.
     for i=1:lla
         Un{i,1}=Unlai;
     end

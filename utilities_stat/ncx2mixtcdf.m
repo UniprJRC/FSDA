@@ -31,8 +31,19 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %               containing the k non centrality parameters
 %               of the k non central chi2 distributions
 %
-%
 % Optional input arguments:
+%
+%   lim :       Number of intergration terms. Scalar. Scalar which defines
+%               maximum number of integration terms.
+%               The default value of lim is 10000
+%               Example - 'lim',100000
+%               Data Types - double
+%
+% Remark:       The user should only give the input arguments that have to
+%               change their default value.
+%               The name of the input arguments needs to be followed by
+%               their value. The order of the input arguments is of no
+%               importance.
 %
 % sigma :       standard deviation of N(0,1). Scalar. Coefficient
 %               associated with standard deviation of the
@@ -42,23 +53,11 @@ function [qfval,varargout]= ncx2mixtcdf(c,n,lb,nc,varargin)
 %               Example - 'sigma',1
 %               Data Types - double
 %
-%   lim :       Number of intergration terms. Scalar. Scalar which defines
-%               maximum number of integration terms.
-%               The default value of lim is 10000
-%               Example - 'lim',100000
-%               Data Types - double
-%
 %   tol :       Tolerance. Scalar.
 %               Scalar which controls the tolerance. The default value of
 %               tolerance is 1e-09
 %               Example - 'tol',1e-10
 %               Data Types - double
-%
-% Remark:       The user should only give the input arguments that have to
-%               change their default value.
-%               The name of the input arguments needs to be followed by
-%               their value. The order of the input arguments is of no
-%               importance.
 %
 % Output:
 %
