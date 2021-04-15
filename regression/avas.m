@@ -3,7 +3,7 @@ function [out]=avas(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('avas')">Link to the help page for this function</a>
 %
-%   This function differs from ace in that it uses a (nonparametric)
+%   This function differs from ace because it uses a (nonparametric)
 %   variance-stabilizing transformation for the response variable.
 %
 %
@@ -40,7 +40,8 @@ function [out]=avas(y,X,varargin)
 %       l :  type of transformation. Vector. Vector of length p which
 %           specifies the type of transformation for the explanatory
 %           variables.
-%           l(j)=1 => j-th variable assumes orderable values.
+%           l(j)=1 => j-th variable assumes orderable values and any
+%                   transformation (also non monotone) is allowed.
 %           l(j)=2 => j-th variable assumes circular (periodic) values
 %                 in the range (0.0,1.0) with period 1.0.
 %           l(j)=3 => j-th variable transformation is to be monotone.
@@ -79,18 +80,18 @@ function [out]=avas(y,X,varargin)
 %           Example - 'PredictorOrderR2',true
 %           Data Types - logical
 %
-%   rob  : Use outlier detection in each step fo the bakfitting procedure.
+%   rob  : Use outlier detection in each step of the backfitting procedure.
 %           Boolean or struct.
-%           If rob is not specified tyinitial is set to false and no
+%           If rob is not specified rob is set to false and no
 %           outlier detection routine is called.
 %           If rob is true, FSR routine is called to detect outliers
-%           before calling backfitting procedure and outliers are removed
-%           If rob is a struct it is possible to specify in the
-%           fields method, bdp and alphasim the values of the estiamtor to
+%           before calling backfitting procedure and outliers are removed.
+%           If rob is a struct, it is possible to specify in the
+%           fields method, bdp and alphasim the values of the estimator to
 %           use, the breakdown point and and confidence level to use to
 %           declare the outliers.
 %           More precisely:
-%           rob.method = character which identifies the estiamtor to use.
+%           rob.method = character which identifies the estimator to use.
 %               Possible values are 'FS' (Forward search estimator', 'LTS'
 %               (Least trimmed squares estimator), 'LMS' (Least median of
 %               squares), 'S' (S estimator). If this field is not specified
@@ -124,8 +125,8 @@ function [out]=avas(y,X,varargin)
 %           Data Types - logical
 %
 %   tyinitial  : Initial values for the transformed response. Boolean or struct.
-%           If tyinitial is not specified tyinitial is set to false and the initial value for ty are
-%           simply the standardized values.
+%           If tyinitial is not specified tyinitial is set to false and the
+%           initial value for ty are simply the standardized values.
 %           If tyinitial is true, y is transformed using best BoxCox lambda
 %           value among the five most common values of lambda (-1, -0.5, 0,
 %           0.5, 1) and routines FSRfan.m and fanBIC.m are called.
@@ -483,6 +484,7 @@ if ~isempty(UserOptions)
     scail=options.scail;
     tyinitial=options.tyinitial;
     rob=options.rob;
+    PredictorOrderR2=options.PredictorOrderR2;
 end
 
 if size(w,2)>1
@@ -504,12 +506,12 @@ if islogical(tyinitial)
     
 elseif isstruct(tyinitial)
     callToFSRfan=true;
-    if isfield('tyinitial','la')
+    if isfield(tyinitial,'la')
         la=tyinitial.la;
     else
         la=[-1 -0.5 0 0.5 1];
     end
-    if isfield('tyinitial','family')
+    if isfield(tyinitial,'family')
         family=tyinitial.family;
     else
         if min(y)>0
@@ -544,18 +546,18 @@ if islogical(rob)
 elseif isstruct(rob)
     robustAVAS=true;
     
-    if isfield('rob','bdp')
+    if isfield(rob,'bdp')
         bdp=rob.bdp;
     else
         bdp=bdpdef;
     end
-    if isfield('rob','simalpha')
+    if isfield(rob,'simalpha')
         simalpha=rob.simalpha;
     else
         simalpha=0.01;
     end
     
-    if isfield('rob','method')
+    if isfield(rob,'method')
         estimator=rob.method;
         if strcmp(estimator,'FS')
             estimatorToUse=1;
@@ -574,6 +576,9 @@ elseif isstruct(rob)
         end
         
     else
+            % FS is defined using init and not bdp this is the reason of
+            % the instruction below
+            bdp=round(n*(1-bdp));
         estimatorToUse=1;
     end
 else
@@ -663,7 +668,7 @@ else
     bsb=seq;
 end
 
-% Call backfitting algorith to find transformed values of X
+% Call backfitting algorithm to find transformed values of X
 [tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
 
 yspan=0;
@@ -777,7 +782,6 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % rsq = new value of R2 (given that var(ty)=1)
     rsq=1-rr;
-    
     % sumlog=sumlog+n*log(sv);
     % rnew=sumlog+rr;
     
