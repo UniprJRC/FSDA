@@ -1,4 +1,4 @@
-function a=ctsub(x,y,z)
+function a=ctsub(x,y,z,RectAreaOutside)
 %ctsub computes numerical integration from x(1) to z(i) of y=f(x).
 %
 %<a href="matlab: docsearchFS('ctsub')">Link to the help page for this function</a>
@@ -8,8 +8,8 @@ function a=ctsub(x,y,z)
 % computes the (approximate) integral using the trapezoidal rule
 % \[
 % a_i = \int_{x_1}^{z_i} f(x) dx
-% \]   
-% For further details see "more about".  
+% \]
+% For further details see the section More About.
 %
 % Required input arguments:
 %
@@ -26,19 +26,38 @@ function a=ctsub(x,y,z)
 %
 %  Optional input arguments:
 %
+% RectAreaOutside : strategy for evaluating $z$ points that lie outside the domain of $x$.
+%                   Boolean. This options specifies the
+%                   hypothesis to assume for the cases in which $z(i)<x(1)$ or
+%                   $z(i)>x(n)$. If this argument is omitted or it is
+%                   true we assume a rectangular hypothesis (default). In other
+%                   words, we assume that below x(1) the function is
+%                   constant and equal to y(1). Similarly, we assume that
+%                   beyond x(n) the function is constant and equal to y(n).
+%                   Therefore for example for if $z(i)<min(x)$ the result of
+%                   the integral is  $a(i) =(z(i)-x(1))*y(1)$ (rectangular hypothesis).
+%                   If this argument is false we assume that the $y$
+%                   coordinate  $z(i)$ is equal to mean(y).
+%                   Therefore for example for if $z(i)<min(x)$ the result of
+%                   the integral is  $a(i) =(z(i)-x(1))*(y(1)+mean(y))/2$
+%                   (trapezoidal hypothesis).
+%               Example - true
+%               Data Types - logical
+%
+%
 % Output:
 %
 %    a   :      Result of numerical integration. Vector.  Vector of length
-%               $k$ containing the results of the $k$ numerical integrations. 
-%               The $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is 
+%               $k$ containing the results of the $k$ numerical integrations.
+%               The $i$-th element of $a_i$ with $i=1, 2, \ldots, n$ is
 %               equal to:
 %               \[
 %               a_i =
 %               \int_{x_1}^{z_i} f(x) dx
-%               \]   
+%               \]
 %
 % More About:
-% 
+%
 % This function estimates the integral of Y via the trapezoidal method.
 % For a function defined $y=f(x)$ with $n$ pairs  $(x_1,y_1)$ $\ldots$
 % $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$,
@@ -54,14 +73,15 @@ function a=ctsub(x,y,z)
 % +0.5 (z_i-x_i) \left\{ 2y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} \right\}
 %  \end{equation}
 % The last term of the equation is the area of the trapezoid with
-% coordinates $(x_i, y_i)$,$(z_i, f(z_i))$  and 
+% coordinates $(x_i, y_i)$,$(z_i, f(z_i))$  and
 % \[
-% f(z_i)=y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} 
+% f(z_i)=y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i}
 % \]
 % is found by linear interpolation.
-% 
-% If $z_i>x_n$ the function for $x > x_n$ is assumed constant and equal to
-% $y_n$ therefore to the expression of $a_i$ computed as described above we
+%
+% If RectAreaOutside is omitted or is true, 
+% when $z_i>x_n$ the function for $x >x_n$ is assumed constant and equal to
+% $y_n$ therefore, to the expression of $a_i$ computed as described above, we
 % must add $(z_i-x_n) y_n$.
 % On the other hand, if $z_i<x_1$ the function for $x<x_1$ is assumed
 % constant and equal to $y_1$ therefore $a_i$ is computed as:
@@ -69,16 +89,18 @@ function a=ctsub(x,y,z)
 % a_i = -(x_1-z_i) y_1
 % \]
 % Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
-%
+% On the other hand, if RectAreaOutside is false when $z_i>x_n$ or when  $z_i<x_1$, 
+% we assume $f(z_i)=\sum_{i=1}^n y_i/n$. 
+% 
 % This routine in called in every step of the outer loop by function avas.m
 % in order to compute a new set of transformed values for the response
 % which have approximately constant variance.
 % Inside avas, the $x$ coordinates are the fitted values ordered, the $y$
 % coordinates are the reciprocal of the smoothed absolute values of
 % residuals sorted using the ordering of fitted values, while the upper
-% values of the range of integration are given by the elements of vector
-% $ty$ sorted using the ordering of fitted values. The output is the new
-% vector $ty$ with the elements ordered using $ordyhat$. 
+% values of the range of integration are given by the elements vector
+% of transformed values in the previous iteration. The output is the new
+% vector of transformed values $ty$.
 %
 % See also: avas, rlsmo
 %
@@ -234,18 +256,49 @@ function a=ctsub(x,y,z)
     title(['R2=' num2str(outAVASOneIteration.Rsquared.Ordinary)])
 %}
 
+%{
+    % Example of use of option RectAreaOutside.
+    n=10;
+    x=(1:n)';
+    y=3*ones(n,1);
+    y(10)=5;
+    y(1)=1;
+    % The overall area in the interval [1 10] is equal to 27
+    disp(['Overall area: ' num2str(ctsub(x,y,10))])
+    disp('Area when x=11 using the rectangular hypothesis Hp:f(11)=5')
+    disp(ctsub(x,y,11,true))
+    disp('Area when x=11 using the trapezoidal hypothesis Hp:f(11)=3')
+    disp(ctsub(x,y,11,false))
+%}
+
 % Note that trapz([1/3 pi],[sin(1/3) sin(pi)]) =
 % ctsub([1/3 pi],[sin(1/3) sin(pi)],[[1/3 pi]])
-
 
 %% Beginning of code
 n =length(x);
 lz=length(z);
 a =zeros(lz,1);
+
+if nargin<4
+    RectAreaOutside=true;
+end
+
+if RectAreaOutside==false
+    if any(z<x(1) | z>x(n))
+        meany=sum(y)/n;
+    end
+end
+
 for i=1:lz
     
     if(z(i)<= x(1))
-        a(i) =(z(i)-x(1))*y(1);
+        if RectAreaOutside==true
+            a(i) =(z(i)-x(1))*y(1);
+        else
+            a(i) =(z(i)-x(1))*(y(1) +meany)/2;
+            % The one below would have been the triangular hypothesis
+            % a(i) =(z(i)-x(1))*y(1)/2;
+        end
     else
         j =1;
         a(i) =0;
@@ -259,9 +312,14 @@ for i=1:lz
         if z(i) <= x(n)
             a(i) = a(i)+.5*(z(i)-x(j-1))*(2*y(j-1)+(z(i)-x(j-1))*(y(j)-y(j-1))/(x(j)-x(j-1)));
         else
-            a(i) =a(i)+(z(i)-x(n))*y(n);
+            if RectAreaOutside==true
+                a(i) =a(i)+(z(i)-x(n))*y(n);
+            else
+                a(i) =a(i)+(z(i)-x(n))*(y(n)+meany)/2;
+            end
         end
     end
+end
 end
 %FScategory:UTISTAT
 
