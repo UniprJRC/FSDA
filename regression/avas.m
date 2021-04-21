@@ -3,7 +3,7 @@ function [out]=avas(y,X,varargin)
 %
 %<a href="matlab: docsearchFS('avas')">Link to the help page for this function</a>
 %
-%   This function differs from ace in that it uses a (nonparametric)
+%   This function differs from ace because it uses a (nonparametric)
 %   variance-stabilizing transformation for the response variable.
 %
 %
@@ -40,17 +40,20 @@ function [out]=avas(y,X,varargin)
 %       l :  type of transformation. Vector. Vector of length p which
 %           specifies the type of transformation for the explanatory
 %           variables.
-%           l(j)=1 => j-th variable assumes orderable values.
+%           l(j)=1 => j-th variable assumes orderable values and any
+%                   transformation (also non monotone) is allowed.
 %           l(j)=2 => j-th variable assumes circular (periodic) values
 %                 in the range (0.0,1.0) with period 1.0.
 %           l(j)=3 => j-th variable transformation is to be monotone.
 %           l(j)=4 => j-th variable transformation is to be linear.
 %           l(j)=5 => j-th variable assumes categorical (unorderable) values.
-%           j =1, 2, \ldots, p+1.
+%           j =1, 2,..., p+1.
 %           The default value of l is a vector of ones of length p,
-%           that is the procedure assumes that both the explanatory
-%           variables and the response have orderable values. Note that in
-%           avas procedure the reponse is always transformed
+%           that is the procedure assumes that all the explanatory
+%           variables have orderable values (and therefore can be
+%           transformed non monothonically).
+%           Note that in avas procedure the response is always transformed
+%           (in a monothonic way).
 %           Example - 'l',[3 3 1]
 %           Data Types - double
 %
@@ -63,34 +66,60 @@ function [out]=avas(y,X,varargin)
 %   nterm  : minimum number of consecutive iteration below the threshold
 %           to terminate the outer loop. Positive scalar. This value
 %           specifies how many consecutive iterations below the threshold
-%           it is necesasry to have to declare convergence in the outer
+%           it is necessary to have to declare convergence in the outer
 %           loop. The default value of nterm is 3.
 %           Example - 'nterm',5
 %           Data Types - double
 %
-% PredictorOrderR2 : inclusion of the variables using R2. Boolean.
-%           The default backfitting algorithm of avas (PredictorOrderR2=false)
+% PredictorOrderR2 : inclusion of the variables using $R^2$. Boolean.
+%           The default backfitting algorithm of AVAS (PredictorOrderR2=false)
 %           just does one
 %           iteration over the predictors, it may not find optimal
 %           transformations and it will be dependent on the order of the
-%           predictors in X. If PredictorOrderR2 in the backfitting
-%           explanatory variables become candidate for transformation
-%           depending on their R2 order of importance.
+%           predictors in X. If (PredictorOrderR2=true), in the backfitting algorithm
+%           the explanatory variables become candidate for transformation
+%           depending on their $R^2$ order of importance.
 %           Example - 'PredictorOrderR2',true
 %           Data Types - logical
 %
-%   rob  : Use outlier detection in each step fo the bakfitting procedure.
+% RectAreaOutside : strategy for evaluating points that lie outside the
+%           domain of fitted values inside the routine which computes the variance stabilizing
+%           transformation (ctsub).
+%           Boolean. This options specifies the hypothesis to assume in the
+%           cases in which $\widehat{ty}_i^{old}<\hat y_{(1)}$ or
+%           $\widehat{ty}^{old}>\hat y_{n-k}$ where $\hat y_{(1)}$, ...,
+%           $\hat y_{(n-k)}$ are the fitted values sorted of the $n-k$
+%           units which have not been declared as outliers and
+%           $\widehat{ty}_i^{old}$ is the transformed value for unit $i$
+%           from previous iteration ($i=1, \ldots, n$).
+%           If this option is omitted or if RectAreaOutside is true
+%           (default), we assume a rectangulat hypothesis. In
+%           other words, we assume that below $\hat y_{(1)}$ the function
+%           $1/|e_1|, \ldots,  1/|e_{n-k}|$, is constant and equal to $1/|e_1|$, 
+%           $|e_1|, \ldots, |e_{n-k}|$ are the smoothed residuals
+%           corresponding to ordered fitted values.
+%           Similarly, we assume that beyond $\hat y_{n-k}$ the function is
+%           constant and equal to $1/|e_{n-k}|$. If RectAreaOutside is
+%           false we assume that below $\hat y_{(1)}$ or above $\hat
+%           y_{(n-k)}$  the function is constant and equal to the mean of
+%           $\sum_{j=1}^{n-k} 1/(|e_j| (n-k))$ (trapezoidal hypothesis).
+%           Additional details are given in the More About section of this
+%           file.
+%               Example - 'RectAreaOutside',true
+%               Data Types - logical
+%
+%   rob  : Use outlier detection in each step of the backfitting procedure.
 %           Boolean or struct.
-%           If rob is not specified tyinitial is set to false and no
+%           If rob is not specified rob is set to false and no
 %           outlier detection routine is called.
 %           If rob is true, FSR routine is called to detect outliers
-%           before calling backfitting procedure and outliers are removed
-%           If rob is a struct it is possible to specify in the
-%           fields method, bdp and alphasim the values of the estiamtor to
+%           before calling backfitting procedure and outliers are removed.
+%           If rob is a struct, it is possible to specify in the
+%           fields method, bdp and alphasim the values of the estimator to
 %           use, the breakdown point and and confidence level to use to
 %           declare the outliers.
 %           More precisely:
-%           rob.method = character which identifies the estiamtor to use.
+%           rob.method = character which identifies the estimator to use.
 %               Possible values are 'FS' (Forward search estimator', 'LTS'
 %               (Least trimmed squares estimator), 'LMS' (Least median of
 %               squares), 'S' (S estimator). If this field is not specified
@@ -108,14 +137,14 @@ function [out]=avas(y,X,varargin)
 %           true (default value is false), a linear regression is done on
 %           the independent variables $X_1$, ...$X_{p-1}$ centered, using y
 %           standardized, getting the coefficients $b_1$, ..., $b_{p-1}$.
-%           AVAS if scail is true takes the initial value of the transform
+%           If scail is true, AVAS takes the initial value of the transform
 %           of $X_j$ to be $b_j(X_j-mean(X_j))$, $j=1, \ldots, p-1$. This
 %           is done in order to limit the effect of the ordering of the
 %           variables on the final results. The purpose of this initial
 %           linear transformation is to let the the columns of matrix X
 %           have the same weight when predicting $y$.
 %           Note that this initialization option is always used inside the
-%           ace routine but it is set to false in AVAS or compatibility
+%           ACE routine but it is set to false in AVAS or compatibility
 %           with the original fortran program of Tibshirani.
 %           See the ADDED NOTE in the [Monotone Regression Splines in
 %           Action]: Comment.  Leo Breiman Statistical Science, Vol. 3, No.
@@ -124,8 +153,8 @@ function [out]=avas(y,X,varargin)
 %           Data Types - logical
 %
 %   tyinitial  : Initial values for the transformed response. Boolean or struct.
-%           If tyinitial is not specified tyinitial is set to false and the initial value for ty are
-%           simply the standardized values.
+%           If tyinitial is not specified tyinitial is set to false and the
+%           initial value for ty are simply the standardized values.
 %           If tyinitial is true, y is transformed using best BoxCox lambda
 %           value among the five most common values of lambda (-1, -0.5, 0,
 %           0.5, 1) and routines FSRfan.m and fanBIC.m are called.
@@ -174,6 +203,94 @@ function [out]=avas(y,X,varargin)
 %      out.outliers = k x 1 vector containing the units declared as outliers
 %           when procedure is called with input option rob set to true. If
 %           rob is false out.outliers=[].
+%
+%
+% More About:
+% In what follows we recall the techinque of the variance stabilizing
+% transformation which is at the root of the avas routine.
+% Let $ X $ be a random variable, with $ E[X]=\mu $ and $ \mathrm{Var}[X]=\sigma^2 $.
+% Define $ Y=g(X) $, where $g$ is a regular function. A first-order Taylor
+% approximation for $Y=g(x)$ is
+% \[
+% Y=g(X)\approx g(\mu)+g'(\mu)(X-\mu).
+% \]
+% Then
+% \[
+% E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2. 
+% \]
+% 
+% Consider now a random variable $ X $ such that $ E[X]=\mu $ and $
+% \mathrm{Var}[X]=h(\mu) $. Notice the relation between the variance and
+% the mean, which implies, for example, heteroskedasticity in a linear
+% model. The goal is to find a function $ g $ such that $ Y=g(X) $ has a
+% variance independent (at least approximately) of its expectation.
+% 
+% Imposing the condition $ \mathrm{Var}[Y]\approx
+% h(\mu)g'(\mu)^2=\mathrm{constant} $,  equality implies the differential
+% equation
+% \[
+% \frac{dg}{d\mu}=\frac{C}{\sqrt{h(\mu)}}.
+% \]
+% 
+% This ordinary differential equation has, by separation of variables, the solution
+% \[
+% g(\mu)=\int \frac{Cd\mu}{\sqrt{h(\mu)}}.
+% \] 
+% % Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilising transformation for $W$ is given by
+% \[
+% h(t)=\int^t \frac{1}{\sqrt{v(u)}}.
+% \]
+% The constant $C = 1$ due to the standardization of the variance of $W$. 
+% In our context  $\frac{1}{\sqrt{v(u)}}$ corresponds to vector of the
+% reciprocal of the absolute values of the smoothed residuals sorted using
+% the ordering based on fitted values of the regression model which uses
+% the explanatory variables possibly transformed. The $x$ coordinates of
+% the function to integrate are the fitted values sorted.
+% 
+% As concerns the range of integration it goes from
+% $\hat y_{(1)}$ the smallest fitted value, to $\widehat{ty}_i^{old}$.
+% Therefore the lower extreme of integration is fixed for all $n$ integrals.
+% The upper extremes of integration are given by the elements of
+% transformed response values from previous iteration (say
+% $\widehat{ty}_i^{old}$), corresponding to ordered fitted values.
+% The output of the integration is a new set of transformed values
+% $\widehat{ty}^{new}$.
+% 
+% 
+% In summary, the trick is that,  there is not just one integral, but there
+% are $n$ integrals. Th $i$-th integral which is defined as
+% \[
+%  \widehat{ty}_i^{new}= \int_{\hat y_{(1)}}^{\widehat{ty}_i^{old}} \frac{1}{|e_i|} d \hat y
+% \]
+% produces a new updated value for the transformed response
+% $\widehat{ty}_i$ associated with $\hat y_{(i)}$ the $i$-th ordered fitted
+% value. Note that the old transformed value from previous iteration was
+% the upper extreme of integration.
+% 
+% The estimate of $g$ is strictly increasing because it is the integral of
+% a positive function (reciprocal of the absolute values of the residuals).
+% 
+% The computation of the $n$ integrals is done by the trapezoidal rule and
+% is detailed in routine ctsub.m.
+% 
+% ${\it Remark}$: It may happen that at a particular iteration of the AVAS
+% procedure using $\widehat{ty}$ and $\widehat{tX}$, $n-m$ units are declared as outliers. In
+% this case the fit, the residuals and the associated smoothed values are
+% computed using just $n-k$ observations.
+% Therefore the function to integrate has coordinates
+% \[
+% (\hat y_{(1)}, 1/|e_1|) , (\hat y_{(2)}, 1/|e_2|), \ldots, (\hat y_{(n-k)}, 1/|e_{n-k}|)
+% \]
+% where $\hat y_{(j)}$ is the $j$-th order statistic $j=1, 2, \ldots, n-k$
+% among the fitted values (associated to non outlying observations) and
+% $1/e_j$ is the reciprocal of the corresponding smoothed residual. Notice
+% that $e_j$ is not the residual for unit $j$ but it is the residuals which
+% corresponds to the $j$-th ordered fitted value $\hat y_{(j)}$. In order
+% to have a new estimate of $\widehat{ty}^{new}$, we can still solve $n$
+% integrals. If in the upper extreme of integration, we plug in the $n$ old
+% values of $\widehat{ty}^{old}$ (including the outliers) we have the
+% vector of length $n$ of the new estimates of transformed values
+% $\widehat{ty}^{new}$.
 %
 % See also: ace.m, aceplot.m, smothr.m, supsmu.m, ctsub.m
 %
@@ -448,6 +565,7 @@ scail=false;
 tyinitial=false;
 rob=false;
 PredictorOrderR2=false;
+RectAreaOutside=true;
 
 % c span, alpha : super smoother parameters.
 % supermo=struct;
@@ -459,7 +577,7 @@ if ~isempty(UserOptions)
     
     options=struct('l',l,'delrsq',delrsq,'nterm',nterm,...
         'w',w,'maxit',maxit,'scail',scail,'tyinitial',tyinitial,'rob',rob,...
-        'PredictorOrderR2',PredictorOrderR2);
+        'PredictorOrderR2',PredictorOrderR2,'RectAreaOutside',RectAreaOutside);
     
     % Check if number of supplied options is valid
     if length(varargin) ~= 2*length(UserOptions)
@@ -483,6 +601,8 @@ if ~isempty(UserOptions)
     scail=options.scail;
     tyinitial=options.tyinitial;
     rob=options.rob;
+    PredictorOrderR2=options.PredictorOrderR2;
+    RectAreaOutside=options.RectAreaOutside;
 end
 
 if size(w,2)>1
@@ -504,12 +624,12 @@ if islogical(tyinitial)
     
 elseif isstruct(tyinitial)
     callToFSRfan=true;
-    if isfield('tyinitial','la')
+    if isfield(tyinitial,'la')
         la=tyinitial.la;
     else
         la=[-1 -0.5 0 0.5 1];
     end
-    if isfield('tyinitial','family')
+    if isfield(tyinitial,'family')
         family=tyinitial.family;
     else
         if min(y)>0
@@ -544,18 +664,18 @@ if islogical(rob)
 elseif isstruct(rob)
     robustAVAS=true;
     
-    if isfield('rob','bdp')
+    if isfield(rob,'bdp')
         bdp=rob.bdp;
     else
         bdp=bdpdef;
     end
-    if isfield('rob','simalpha')
+    if isfield(rob,'simalpha')
         simalpha=rob.simalpha;
     else
         simalpha=0.01;
     end
     
-    if isfield('rob','method')
+    if isfield(rob,'method')
         estimator=rob.method;
         if strcmp(estimator,'FS')
             estimatorToUse=1;
@@ -574,6 +694,9 @@ elseif isstruct(rob)
         end
         
     else
+            % FS is defined using init and not bdp this is the reason of
+            % the instruction below
+            bdp=round(n*(1-bdp));
         estimatorToUse=1;
     end
 else
@@ -663,7 +786,7 @@ else
     bsb=seq;
 end
 
-% Call backfitting algorith to find transformed values of X
+% Call backfitting algorithm to find transformed values of X
 [tX,rsq]=backfitAVAS(ty,tX,X,w,M,l,rsq,maxit,sw,p,delrsq,bsb,outliers,PredictorOrderR2);
 
 yspan=0;
@@ -677,7 +800,8 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
          sw=sum(w(bsb));
     end
     
-    % (yhat contains fitted values and yhatord = fitted values sorted
+    % (yhat contains fitted values and yhatord = fitted values sorted)
+    % These vectors have length n
     yhat=sum(tX,2);    % yhat is z10 in fortran program
     
     % tres = vector of residuals using transformed y and transformed X
@@ -690,11 +814,12 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     % program)
     logabsres=log(sqrt(tres.^2));
     
+    yhatmod=yhat;
     if ~isempty(outliers)
-        yhat(outliers)=Inf;
+        yhatmod(outliers)=Inf;
     end
     
-    [yhatord,ordyhat]=sort(yhat);
+    [yhatord,ordyhat]=sort(yhatmod);
     % ztar_sorted=log(sqrt((z2-z1).^2));
     logabsresOrdyhat=logabsres(ordyhat);
     % wOrdyat = weights using the ordering based on yhat
@@ -740,9 +865,10 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     %     % Compute updated vector ty with mean removed
     %     ty(ordyhat)=tynewOrdyhat-sm/sw;
     
-    % Compute updated transformed values
-    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty);
     
+    % Compute updated transformed values
+    ty=ctsub(yhatord(1:ngood),smoothresm1Ordyhat(1:ngood),ty,RectAreaOutside);
+
     wbsb=w(bsb);
     sm=sum(ty(bsb).*wbsb);
     % sw=sum(wbsb);
@@ -777,7 +903,6 @@ while lfinishOuterLoop ==1 % Beginning of Outer Loop
     
     % rsq = new value of R2 (given that var(ty)=1)
     rsq=1-rr;
-    
     % sumlog=sumlog+n*log(sv);
     % rnew=sumlog+rr;
     
