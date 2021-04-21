@@ -1,4 +1,4 @@
-function ysmo=repDupValWithMean(x,y,consec)
+function ysmo=repDupValWithMean(x,y,varargin)
 %repDupValWithMean replaces values of y which have non unique elements in vector x with local means
 %
 %<a href="matlab: docsearchFS('repDupValWithMean')">Link to the help function</a>
@@ -28,6 +28,12 @@ function ysmo=repDupValWithMean(x,y,consec)
 %               Example - false
 %               Data Types - Boolean
 %
+%       w  : weights for the observations. Vector. Row or column vector of
+%           length n containing the weights associated to each
+%           observations. If w is not specified we assum $w=1$ for $i=1,
+%           2, \ldots, n$.
+%           Example - 'w',1:n
+%           Data Types - double
 %
 %
 % Output:
@@ -104,7 +110,7 @@ function ysmo=repDupValWithMean(x,y,consec)
 %}
 
 %{
-    %% Case 3: x is non ordered and third argument consec is true.
+    %% Case 3: x is non ordered and optional argument consec is true.
     % Note that in this case x is not ordered therefore if the function is
     % called with the third argument consec equal to true, this function
     % computes the average of the elements of y which correspond to
@@ -112,7 +118,7 @@ function ysmo=repDupValWithMean(x,y,consec)
     x=[8.2; 1.0; 1.0; 6.0; 7.0; 10.0; 1.0; 1.0; 1.0; 8.2];
     % y is a vector containing any real number.
     y=(11:20)';
-    ysmo=repDupValWithMean(x,y,true);
+    ysmo=repDupValWithMean(x,y,'consec',true);
     disp(['      x   '   '      y   ' '      ysmo  '])
     disp([x y ysmo])
     % Elements 2 and 3 of x are equal and consecutive therefore
@@ -216,12 +222,64 @@ function ysmo=repDupValWithMean(x,y,consec)
 %}
 
 
+%{
+   % Case 4: x is already ordered and weights are supplied.
+    % Note that in this case x is ordered therefore the average between
+    % consecutive values which are equal or the average of equal values is
+    % the same.
+    x=[ones(5,1); 6; 7; 8.2; 8.2; 10];
+    % y is a vector containing any real number.
+    y=(1:10)';
+    w=(21:30)';
+    ysmo=repDupValWithMean(x,y,'w',w);
+    disp(['      x   '   '      y   ' '     w' '      ysmo  '])
+    disp([x y w ysmo])
+    % The first 5 elements of ysmo are equal to sum(y(1:5).*w(1:5))/sum(w(1:5))
+    % because the corresponding elements of x share the same value.
+    % The elements in position 8 and 9 of ysmo are equal to
+    % sum(y(8:9).*w(8:9))/sum(w(8:9)) because the corresponding elements of x
+    % share the same value.
+    % All the other elements of vector ysmo are equal to y.
+%}
+
 %% Beginning of code
 
-if nargin==3 && consec == true
+w=[];
+consec=false;
+
+if nargin > 2
+options=struct('w',w,'consec',consec);
+
+UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:FSR:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        % Check if user options are valid options
+        chkoptions(options,UserOptions)
+    end
+    
+    % Write in structure 'options' the options chosen by the user
+    
+    for i=1:2:length(varargin)
+        options.(varargin{i})=varargin{i+1};
+    end
+
+
+consec=options.consec;
+w=options.w(:);
+end
+
+if consec == true
     isSortedx = true;
 else
     isSortedx = issorted(x);
+end
+
+n=length(x);
+if isempty(w)
+    w=ones(n,1);
 end
 
 % Determine if y is a row vector.
@@ -237,6 +295,7 @@ if isSortedx == true
 else
     [Sortx, indSortx] = sort(x);
     y=y(indSortx);
+    w=w(indSortx);
 end
 
 % Implementation without loops using diff, cumsum and accumarray
@@ -246,14 +305,12 @@ groupsSortA = [true; groupsSortA];
 idx = cumsum(groupsSortA);  % Lists position, starting at 1.
 % The above lines can be replaced by the slower instruction
 % [~,~,idx]=unique(x);
-% Compute the mean of the values of vector y which have duplicate values in
+% Compute the (weighted) mean of the values of vector y which have duplicate values in
 % vector x
-b=accumarray(idx,y,[],@mean);
+% b=accumarray(idx,y,[],@mean);
+b=accumarray(idx,1:n,[],@(x)sum(y(x) .* w(x)./ sum(w(x))));
+
 ysmo=b(idx);
-
-
-
-
 
 if isSortedx==false
     invIndSortX = indSortx;
