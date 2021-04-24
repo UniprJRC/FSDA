@@ -175,10 +175,16 @@ function out  = ctlcurves(Y, varargin)
 %               bands.valSolution   = boolean which specifies if it is
 %                   necessary to perform an outlier detection procedure on
 %                   the components which have been found using optimalK and
-%                   optminal alpha. If bands.valSolution is true then units
+%                   optimal alpha. If bands.valSolution is true then units
 %                   detected as outliers in each component are assigned to
 %                   the noise group. If bands.valSolution is false
 %                   (deafult) or it is not present nothing is done.
+%             bands.LRtest =  Likelihood ratio test. Boolean. If
+%                   bands.LTtest is true (default) the
+%                   difference between the obj function for two consecutive
+%                   values of k given a particular value of alpha is computed.
+%                   The relative time in which this difference is greater than
+%                   the bootstrap difference is stored in out.pvalLRtest.
 %                 Example - 'bands',true
 %                 Data Types - logical | struct
 %
@@ -284,60 +290,85 @@ function out  = ctlcurves(Y, varargin)
 %                 Example - 'cshape',10
 %                 Data Types - single | double
 %
-%       Remark: The user should only give the input arguments that have to
-%               change their default value. The name of the input arguments
-%               needs to be followed by their value. The order of the input
-%               arguments is of no importance.
 %
 %
 %  Output:
 %
 %         out:   structure which contains the following fields:
 %
-%                out.CLACLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
-%                   classification likelihood. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
-%
-%                out.CLACLAtable = same output of CLACLA but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.IDXCLA = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the classification model. This output is present only
-%                   if 'whichIC' is 'CLACLA' or 'whichIC' is 'ALL'.
-%
-%                out.MIXMIX = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the penalized
-%                   mixture likelihood. This output is present only if
-%                   'whichIC' is 'MIXMIX' or 'whichIC' is 'ALL'.
-%
-%                out.MIXMIXtable = same output of MIXMIX but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.MIXCLA = matrix of size 5-times-8 if kk and cc are not
-%                   specififed else it is a matrix of size length(kk)-times
-%                   length(cc) containinig the value of the ICL. This
-%                   output is present only if 'whichIC' is 'MIXCLA' or
-%                   'whichIC' is 'ALL'.
-%
-%                out.MIXCLAtable = same output of MIXCLA but in MATLAB
-%                   table format (this field is present only if your MATLAB
-%                   version is not<2013b).
-%
-%                out.IDXMIX = cell of size 5-times-8 if kk and cc are not
-%                   specififed else it is a cell of size length(kk)-times
-%                   length(cc). Each element of the cell is a vector of
-%                   length n containinig the assignment of each unit using
-%                   the mixture model. This output is present only if
-%                   'whichIC' is 'MIXMIX', 'MIXCLA' or 'ALL'.
-%
+%                out.Mu = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the centroids for each
+%                       value of k and each value of alpha. More precisely,
+%                       suppose kk=1:4 and alpha=[0 0.05 0.1], out.Mu{2,3}
+%                       is a matrix with two rows and v columns containing
+%                       the estimates of the centroids obtained when
+%                       alpha=0.1.
+%            out.Sigma = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the covariance matrices
+%                       for each value of k and each value of alpha. More
+%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                       out.Sigma{2,3} is a 3D  array of size v-by-v-by-2
+%                       containing the estimates of the covariance matrices
+%                       obtained when alpha=0.1.
+%            out.Pi   = cell of size length(kk)-by-length(alpha)
+%                       containing the estimate of the group proportions
+%                       for each value of k and each value of alpha. More
+%                       precisely, suppose kk=1:4 and alpha=[0 0.05 0.1],
+%                       out.Pi{2,3} is a 3D  array of size v-by-v-by-2
+%                       containing the estimates of the covariance matrices
+%                       obtained when alpha=0.1.
+%            out.IDX   = cell of size length(kk)-by-length(alpha)
+%                       containing the final assignment for each value of k
+%                       and each value of alpha. More precisely, suppose
+%                       kk=1:4 and alpha=[0 0.05 0.1], out.IDX{2,3} is a
+%                       vector of length(n) containing the containinig the
+%                       assignment of each unit obtained when alpha=0.1.
+%                       Elements equal to zero denote unassigned units.
+%           out.CTL    = matrix of size length(kk)-by-length(alpha)
+%                       containing the values of the trimmed likelihood
+%                       curves for each value of k and each value of alpha.
+%      out.BandsCTL    = 3D array of size
+%                       length(kk)-by-length(alpha)-by-nsimul containing
+%                       the nsimul replicates of out.CTL. This output is
+%                       present only if input option bands is true or is a
+%                       struct.
+%         out.likLB    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the lower confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha. This output is present only if
+%                       input option bands is true or is a struct.
+%         out.likUB    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the upper confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha. This output is present only if
+%                       input option bands is true or is a struct.
+%         out.lik050    =  matrix of size length(kk)-by-length(alpha)
+%                       containing the central confidence bands of the
+%                       trimmed likelihood curves for each value of k and
+%                       each value of alpha. This output is present only if
+%                       input option bands is true or is a struct.
+%            out.idx  = n-by-1 vector containing assignment of each unit to
+%                       each of the k groups in correspodence of
+%                       Optimalalpha and OptimalK. Cluster names are
+%                       integer numbers from 1 to k. 0 indicates trimmed
+%                       observations. This output is present only if input
+%                       option bands is true or is a struct.
+%        out.Optimalalpha = scalar, optimal value of trimming. This
+%                       output is present only if optional input argument is
+%                       true.
+%           out.OptimalK = scalar, optimal number of clusters, stored
+%                        as a positive integer value. This output is present
+%                       only if optional input argument is true.
+%           out.TentSol  = matrix with size m-by 3. Details of the ordered
+%                          solutions where there was intersection between
+%                          two consecutive trimmed likelihood curves. First
+%                          column contains the value of k, second column
+%                          the value of alpha and third column the index
+%                          associated to the best value of alpha.
+%        out.pvalLRtest =  table with size length(kk)-1-times-length(alpha)
+%                           which stores the relative frequency in which
+%                           the Likelihood ratio test is greater than the
+%                           corresponding bootstrap test.
 %                out.kk = vector containing the values of k (number of
 %                       components) which have been considered. This  vector
 %                       is equal to input optional argument kk if kk had been
@@ -345,7 +376,7 @@ function out  = ctlcurves(Y, varargin)
 %                out.alpha = vector containing the values of the trimming
 %                       level which have been considered. This
 %                       vector is equal to input optional argument alpha.
-%         out.restractor = scalar containing the restriction factor
+%         out.restrfactor = scalar containing the restriction factor
 %                       which has been used to compute tclust.
 %                out.Y  = Original data matrix Y. The field is present if
 %                       option Ysave is set to 1.
@@ -365,17 +396,18 @@ function out  = ctlcurves(Y, varargin)
 % Escudero et al. 2011). This routine adds confidence bands in order to
 % provide an automatic criterion in order to choose k and alpha. Optimal
 % trimming level is chosen as the smallest value of alpha such that the
-% bands for two consecutive values of k intersect.
+% bands for two consecutive values of k intersect and computes a bootstrap
+% test for two consecutive values of k given alpha.
 %
 %
-% See also tclust, tclustICsol, tclustICplot
+% See also ctlcurves
 %
 %
 % References:
 %
-% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar, A.
+% Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar A.,
 % (2011), "Exploring the number of groups in robust model-based
-% clustering." Statistics and Computing, Vol. 21, pp. 585599.
+% clustering." Statistics and Computing, Vol. 21, pp. 585-599.
 %
 % Copyright 2008-2021.
 % Written by FSDA team
@@ -419,6 +451,8 @@ function out  = ctlcurves(Y, varargin)
     bands.nsimul=20;
     % Exclude the units detected as outliers for each group.
     bands.valSolution=true;
+    % Do not compute the bootstrap likelihood ratio test
+    bands.LRtest=false;
     out=ctlcurves(Y,'bands',bands,'kk',1:3,'alpha',0:0.02:0.1);
     % Show final classification.
     spmplot(Y,out.idx);
@@ -473,6 +507,7 @@ cshape=10^10;
 restrfactor=100;
 mixt=0;
 bands=true;
+LRtest=true;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -528,7 +563,6 @@ if ~isempty(UserOptions)
     % Make sure vectors kk and alphaTtrim are sorted.
     kk=sort(kk);
     alphaTrim=sort(alphaTrim);
-    
 end
 
 
@@ -599,6 +633,7 @@ for k=1:lkk  % loop for different values of k (number of groups)
         
         % Store objective function
         CTLVal(k,j) = outtc.obj;
+        
     end
     if msg==1
         disp(['k=' num2str(seqk)])
@@ -622,27 +657,34 @@ out.CTL=CTLVal;
 if ComputeBands==true
     
     if isstruct(bands)
-        fbands=fieldnames(bands);
         
-        d=find(strcmp('conflev',fbands));
-        if d>0
+        if isfield(bands,'conflev')
             gamma=(1-bands.conflev)/2;
         end
         
-        d=find(strcmp('nsimul',fbands));
-        if d>0
+        if isfield(bands,'nsimul')
             nsimul=bands.nsimul;
         end
         
-        d=find(strcmp('valSolution',fbands));
-        if d>0
+        if isfield(bands,'valSolution')
             valSolution=bands.valSolution;
         end
+        
+        if isfield(bands,'LRtest')
+            LRtest=bands.LRtest;
+        end
+        
     end
     
     % BandsCTL is a 3D array which will contain the replicates for the
     % solutions
     BandsCTL=zeros(lkk,lalpha,nsimul);
+    if LRtest==true
+        BandsCTLtest=zeros(lkk-1,lalpha,nsimul);
+    end
+    % maxk = maximum allowed vector for k
+    maxk=kk(end);
+    
     for k=1:lkk  % loop for different values of k (number of groups)
         
         
@@ -650,6 +692,11 @@ if ComputeBands==true
         seqk=kk(k);
         CnsampAllk=CnsampAll{seqk};
         gRandNumbForNiniAllk=gRandNumbForNiniAll{seqk};
+        
+        if LRtest==true && seqk<maxk
+            CnsampAllkplus1=CnsampAll{seqk+1};
+            gRandNumbForNiniAllkplus1=gRandNumbForNiniAll{seqk+1};
+        end
         
         if msg==1
             disp(['Bands k=' num2str(seqk)])
@@ -676,6 +723,13 @@ if ComputeBands==true
                     'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
                     'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllk,'cshape',cshape);
                 
+                if LRtest==true  && seqk<maxk
+                    outtcSIMkplus1=tclust(Ysim,seqk+1,alphaTrimj,restrfactor,'nsamp',CnsampAllkplus1,'plots',0,'msg',0,'mixt',mixt, ...
+                        'restrtype',restr,'nocheck',1,'refsteps',refsteps,'equalweights',equalweights,...
+                        'reftol',reftol,'RandNumbForNini',gRandNumbForNiniAllkplus1,'cshape',cshape);
+                    BandsCTLtest(k,j,zz)=outtcSIMkplus1.obj-outtcSIM.obj
+                end
+                
                 BandsCTL(k, j, zz) = outtcSIM.obj;
             end
         end
@@ -696,39 +750,9 @@ if ComputeBands==true
     out.likLB=likLB;
     out.lik050=lik050;
     out.likUB=likUB;
-    conv=0;
     
-    for j = 1:length(kk)-1
-        alphaBest='';
-        for jalpha =1:size(likUB,2)
-            if (likUB(j,jalpha) > likLB(j+1,jalpha) &&  lik050(j+1,jalpha)> lik050(j,jalpha)) || ...
-                    (likLB(j,jalpha) < likUB(j+1,jalpha) &&  lik050(j+1,jalpha) < lik050(j,jalpha))
-                % Find best trimming level
-                alphaBest = alphaTrim(jalpha);
-                break
-            else
-            end
-            
-        end
-        
-        if ~isempty(alphaBest)
-            alphafin = alphaBest;
-            kfin = j;
-            conv = 1;
-            break
-        end
-    end
-    
-    
-    if conv == 1
-        idxOptimal=IDX{kfin,jalpha};
-    else
-        disp('No intersection among the curves has been found for the selected trimming levels and number of groups')
-        disp('Please increase k or alpha')
-        alphafin=max(alphaTrim);
-        kfin=max(kk);
-        idxOptimal = IDX{end, end};
-    end
+    % Call routine which computes the best tentative solutions.
+    [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk);
     
     if valSolution == true
         % Validate the groups
@@ -753,6 +777,7 @@ if ComputeBands==true
     out.idx=idxOptimal;
     out.Optimalalpha=alphafin;
     out.OptimalK=kk(kfin);
+    out.TentSol=TentSol;
     % Store best classification
 end
 
@@ -761,9 +786,44 @@ if cleanpool==true
     delete(gcp);
 end
 
+
+if LRtest==true && ComputeBands ==true
+    % Valus of the difference between target function using k+1 and k
+    tobs= out.CTL(2:end,:)-out.CTL(1:end-1,:);
+    tboot=BandsCTLtest;
+    tbootGTtobs=sum(tboot>tobs,3)/nsimul;
+    tbootGTtobsf=tbootGTtobs;
+    
+    varnam=strcat('alpha=',string(alphaTrim'));
+    rownam=strcat('k=',string((kk(1:end-1)')),'_vs_k=',string((kk(2:end)')));
+    out.pvalLRtest=array2table(tbootGTtobsf,'VariableNames',varnam,'RowNames',rownam);
+    
+end
+
+% thresh=0.05;
+% for j=1:lalpha
+%     nextj=false;
+%     for i=1:lkk-1
+%         if tbootGTtobs(i,j)>thresh
+%             tbootGTtobsf(i+1:end,j)=NaN;
+%             nextj=true;
+%         end
+%         if nextj==true
+%             break
+%         end
+%     end
+%
+% end
+
+out.kk=kk;
+out.alpha=alphaTrim;
+out.restrfactor=restrfactor;
+out.Y=Y;
+
 %% Plot section
 
 if plots==1
+    figure
     if ComputeBands==1
         linetype1 = {'-.','-.','-.','-.','-.'};
         color = {'r','g','b','c','k'};
@@ -787,13 +847,60 @@ if plots==1
     set(gca,'XTick',alphaTrim);
 end
 
-
-out.kk=kk;
-out.alpha=alphaTrim;
-out.restrfactor=restrfactor;
-out.Y=Y;
-
-
 end
 
+function [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk)
+conv=0;
+% First column of TentSol will contain the value of k while the second
+% column the associated trimming level
+% Third column is the index of the elment of alpha containing the best
+% optimal trimming level
+TentSol=zeros(lkk-1,3);
+jj=1;
+
+for j = 1:lkk-1
+    alphaBest='';
+    for jalpha =1:size(likUB,2)
+        if (likUB(j,jalpha) > likLB(j+1,jalpha) &&  lik050(j+1,jalpha)> lik050(j,jalpha)) || ...
+                (likLB(j,jalpha) < likUB(j+1,jalpha) &&  lik050(j+1,jalpha) < lik050(j,jalpha))
+            % Find best trimming level
+            alphaBest = alphaTrim(jalpha);
+            break
+        else
+        end
+        
+    end
+    
+    if ~isempty(alphaBest)
+        %             alphafin = alphaBest;
+        %             kfin = j;
+        TentSol(jj,:)=[j alphaBest, jalpha];
+        jj=jj+1;
+        % conv = 1;
+        % break
+    end
+end
+if TentSol(1,1)>0
+    conv=1;
+    TentSol=TentSol(1:jj-1,:);
+    kfin=TentSol(1,1);
+    jalpha=TentSol(1,3);
+    alphafin=TentSol(1,2);
+else
+    TentSol=NaN;
+end
+
+
+if conv == 1
+    idxOptimal=IDX{kfin,jalpha};
+else
+    disp('No intersection among the curves has been found for the selected trimming levels and number of groups')
+    disp('Please increase k or alpha')
+    alphafin=max(alphaTrim);
+    kfin=max(kk);
+    idxOptimal = IDX{end, end};
+end
+end
+
+%FScategory:CLUS-RobClaMULT
 
