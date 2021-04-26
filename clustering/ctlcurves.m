@@ -696,6 +696,10 @@ if ComputeBands==true
         if LRtest==true && seqk<maxk
             CnsampAllkplus1=CnsampAll{seqk+1};
             gRandNumbForNiniAllkplus1=gRandNumbForNiniAll{seqk+1};
+        else
+            % parfor  needs that these variables are initialized
+            CnsampAllkplus1=1;
+            gRandNumbForNiniAllkplus1=1;
         end
         
         if msg==1
@@ -752,7 +756,7 @@ if ComputeBands==true
     out.likUB=likUB;
     
     % Call routine which computes the best tentative solutions.
-    [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk);
+    [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk,kk);
     
     if valSolution == true
         % Validate the groups
@@ -825,8 +829,8 @@ out.Y=Y;
 if plots==1
     figure
     if ComputeBands==1
-        linetype1 = {'-.','-.','-.','-.','-.'};
-        color = {'r','g','b','c','k'};
+        linetype1 = repmat({'-.','-.','-.','-.','-.'},1,10);
+        color = repmat({'r','g','b','c','k'},1,10);
         LineWidth = 1;
         hold('on')
         for i = 1:length(kk)
@@ -849,7 +853,7 @@ end
 
 end
 
-function [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk)
+function [TentSol,kfin,alphafin,idxOptimal]=findOptimalSolutions(likUB,likLB,lik050,IDX,alphaTrim,lkk,kk)
 conv=0;
 % First column of TentSol will contain the value of k while the second
 % column the associated trimming level
@@ -872,12 +876,8 @@ for j = 1:lkk-1
     end
     
     if ~isempty(alphaBest)
-        %             alphafin = alphaBest;
-        %             kfin = j;
         TentSol(jj,:)=[j alphaBest, jalpha];
         jj=jj+1;
-        % conv = 1;
-        % break
     end
 end
 if TentSol(1,1)>0
