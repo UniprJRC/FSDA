@@ -482,8 +482,6 @@ function [out, varargout] = LTSts(y,varargin)
 %                       \end{eqnarray}
 % out.LastHarmonicPval = combined p value for the two coefficients of the
 %                        last harmonic (this p value comes from an F test).
-% out.LastHarmonicPval = combined p value for the two coefficients of the
-%                        last harmonic (this p value comes from an F test).
 % out.LevelShiftPval  =  p value of the level shift which takes into
 %                       account (this pvalue comes from Bonferronization to
 %                       take it account that if you impose a level shift,
