@@ -2567,7 +2567,8 @@ end
 % component part
 bsb=bsbModSel;
 
-if seasonal<6
+pval=[];
+if seasonal>0 && seasonal<6
     % selWithoutLastHarmonic = indexes of the linear part of the model after excluding the last harmonic
     selWithoutLastHarmonic=[1:ntrend+nseaso-2 ntrend+nseaso+1:size(Xsel,2)];
     
@@ -2652,7 +2653,7 @@ if seasonal<6
     v2=(length(bsb)-p);
     denFtest=s2full/v2;
     pval=1-fcdf(numFtest/denFtest,v1,v2);
-else
+elseif seasonal>0
     % In presence of 6 harmonics, the last one is just made up of a single
     % variable, therefore the p value is just the p value of the assocaited
     % t-stat
