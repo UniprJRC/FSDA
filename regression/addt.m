@@ -14,7 +14,7 @@ function [out]=addt(y,X,w,varargin)
 %           Missing values (NaN's) and infinite values (Inf's) are allowed,
 %           since observations (rows) with missing or infinite values will
 %           automatically be excluded from the computations.
-%       w:  added variable. Vector. n-x-1 vector containing the additional
+%       w:  added variable. Vector. n-times-1 vector containing the additional
 %           explanatory variable whose t test must be computed.
 %
 % Optional input arguments:
@@ -152,7 +152,7 @@ if nargin<3
 end
 
 % Insert code for intercept
-la=1;
+la=[];
 units=[]';
 textlab=false;
 FontSize=10;
