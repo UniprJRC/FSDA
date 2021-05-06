@@ -393,7 +393,7 @@ function [outFORE] = forecastTS(outEST,varargin)
     model=struct;
     model.trend=1;              % linear trend
     model.s=12;                 % monthly time series
-    model.seasonal=[];          % no seasonal component
+    model.seasonal=0;          % no seasonal component
     model.lshift=10;            % search for level shift
     out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 
