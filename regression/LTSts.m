@@ -122,9 +122,10 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.seasonal = scalar (integer specifying number of
 %                        frequencies, i.e. harmonics, in the seasonal
 %                        component. Possible values for seasonal are
-%                        $1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
-%                        For example:
-%                        if seasonal =1 (default) we have:
+%                        $0,1, 2, ..., [s/2]$, where $[s/2]=floor(s/2)$.
+%                        If seasonal =0 we assume there is no seasonal
+%                        component.
+%                        If seasonal =1 (default) we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 sin ( 2 \pi t/s)$;
 %                        if seasonal =2 we have:
 %                        $\beta_1 \cos( 2 \pi t/s) + \beta_2 \sin ( 2 \pi t/s)
