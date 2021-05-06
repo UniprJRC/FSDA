@@ -1542,7 +1542,6 @@ if ~coder.target('MATLAB')
     weightsst=false;
     posLS=0;
     Likloc=0;
-    Xlin=0;
 end
 
 
@@ -2102,8 +2101,8 @@ else % model is non linear because there is time varying amplitude in seasonal c
             Xlshiftf=Xlshift(bsb);
             [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal(1:end-1));
         else
+            Xlshiftf=0;
             [betaout,~,Xlin,covB,MSE,~]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
-            %
             % [betaout,R,J,covB,MSE,ErrorModelInfo]  = nlinfit(Xtrendf,yf,@likyhat,brobfinal);
             % Note that MSE*inv(J'*J) = covB
         end
@@ -2113,16 +2112,25 @@ else % model is non linear because there is time varying amplitude in seasonal c
         % sqweights=ones(length(yfitFS),1);
         % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
         % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
-    else
-        % TODO nlinfit not supported by MATLAB C Coder
+    else  % MATLAB CCODER PART nlinfit replaced by lsqcurvefit
+         optionsLSQcurvefit = optimoptions('lsqcurvefit','Algorithm','Levenberg-Marquardt');
         if lshiftYN==1
             Xlshiftf=Xlshift(bsb);
-            betaout= brobfinal(1:end-1);
+            ub=Inf(length(brobfinal)-1,1);
+            lb=-ub;
+            [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal(1:end-1),Xtrendf,yf,lb,ub,optionsLSQcurvefit);
         else
-            betaout=brobfinal;
+             Xlshiftf=0;
+            % [betaoutCHK,resnorm,residual,exitflag,output,lambda,XlinCHK]= lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf);
+            ub=Inf(length(brobfinal),1);
+            lb=-ub;
+            [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf,lb,ub,optionsLSQcurvefit);
         end
         covB=eye/length(betaout);
         MSE=1;
+        %         MSE=(residuals'*residuals)/length(betaout);
+        %         covB=MSE*inv(XlinCHK'*XlinCHK)*MSE;
+        
     end
     invXX=covB/MSE;
     
