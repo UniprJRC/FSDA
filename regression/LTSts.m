@@ -158,27 +158,35 @@ function [out, varargout] = LTSts(y,varargin)
 %               model.X  =  matrix of size T-by-nexpl containing the
 %                         values of nexpl extra covariates which are likely
 %                         to affect y.
-%               model.lshift = scalar greater or equal than 0 or equal to -1,
-%                         or vector of positive integer values which
-%                         specifies whether it is necessary to include a
-%                         level shift component. lshift = 0 (default)
-%                         implies no level shift component. lshift = -1
-%                         specifies the moment to start considering level
-%                         shifts automatically from specification of
-%                         lshift in position floor((T-1-p)/2). If lshift is
-%                         an interger greater then 0 or a vector of positive
-%                         integer values then it specifies the
-%                         moments where the level shift can be located. For
-%                         example if lshift =13 then the following
-%                         additional parameters are estimated
-%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
-%                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
-%                          is an integer which assumes values 13.
-%                          T-13. If lshift =[13 20] then the following
-%                         additional parameters are estimated
-%                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
-%                          $\beta_{LS1}$ is a real number and $\beta_{LS2}$
-%                          is an integer which assumes values 13 or 20.
+%               model.lshift = scalar or vector associated to level shift
+%                       component. lshift=0 (default) implies no level
+%                       shift component.
+%                       If model.lshift is vector of positive integers,
+%                         then it is associated to the positions of level
+%                         shifts which have to be considered. The most
+%                         significant one is included in the fitted model.
+%                         For example if model.lshift =[13 20 36] a
+%                         tentative level shift is imposed in position
+%                         $t=13$, $t=20$ and $t=36$. The most significant
+%                         among these positions in included in the final
+%                         model. In other words, the following extra
+%                         parameters are added to the final model:
+%                         $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
+%                         $\beta_{LS1}$ is a real number (associated with
+%                         the magnitude of the level shift) and
+%                         $\beta_{LS2}$ is an integer which assumes values
+%                         13, 20 or 36 and and $I$ denotes the indicator
+%                         function.
+%                         As a particular case, if model.lshift =13 then a
+%                         level shift in position $t=13$ is added to the
+%                         model. In other words the following additional
+%                         parameters are added: $\beta_{LS1}* I(t \geq 13)$
+%                         where $\beta_{LS1}$ is a real number and $I$
+%                         denotes the indicator function.
+%                       If lshift = -1 tentative level shifts are
+%                         considered for positions $p+1,p+2, ..., T-p$ and
+%                         the most significant one is included in the final
+%                         model.
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
@@ -392,19 +400,19 @@ function [out, varargout] = LTSts(y,varargin)
 %                       that the design matrix is full rank.
 %                       out.bs can be used to initialize the forward
 %                       search.
-%         out.Hsubset = matrix of size T-by-(T-2*lshift)
+%         out.Hsubset = matrix of size T-by-r
 %                       containing units forming best H subset for each
-%                       tentative level shift which is considered.
-%                       Units belonging to
-%                       subset are given with their row number, units not
-%                       belonging to subset have missing values
-%                       ( Remark: T-2*lshift = length((lshift+1):(T-lshift)) )
+%                       tentative level shift which is considered. r is
+%                       number of tentative level shift positions whicha re
+%                       considered. For example if model.lshift=[13 21 40]
+%                       r is equal to 3. Units belonging to subset are
+%                       given with their row number, units not belonging to
+%                       subset have missing values
 %                       This output is present just if input option
-%                       model.lshift>0.
+%                       model.lshift is not equal to 0.
 %           out.posLS = scalar associated with best tentative level shift
-%                       position.
-%                       This output is present just if input option
-%                       model.lshift>0.
+%                       position. This output is present just if input
+%                       option model.lshift is not equal to 0.
 %     out.numscale2 = matrix of size lts.bestr-by-(T-2*lshift) containing
 %                       (in the columns) the values of the lts.bestr smallest
 %                       values of the target function. Target function = truncated
@@ -421,7 +429,7 @@ function [out, varargout] = LTSts(y,varargin)
 %                       index lts.bestr/2+2 is associated with best solution
 %                       from previous tentative level shift.
 %                       This output is present just if input option
-%                       model.lshift>0.
+%                       model.lshift is not equal to 0.
 %         out.Likloc  = matrix of size (2*lshiftlocref.wlength+1)-by-3
 %                       containing local sum of squares of residuals in
 %                       order to decide best position of level shift:
@@ -429,14 +437,14 @@ function [out, varargout] = LTSts(y,varargin)
 %                       2nd col = local sum of squares of huberized residuals;
 %                       3rd col = local sum of squares of raw residuals.
 %                       This output is present just if input option
-%                       model.lshift>0.
+%                       model.lshift is not equal to 0.
 %             out.RES = Matrix of size T-by-(T-lshift) containing scaled
 %                       residuals for all the T units of the original time
 %                       series monitored in steps lshift+1, lshift+2, ...,
 %                       T-lshift, where lshift+1 is the first tentative
 %                       level shift position, lshift +2 is the second level
 %                       shift position, and so on. This output is present
-%                       just if input option model.lshift>0.
+%                       just if input option model.lshift is not equal to 0.
 %            out.yhat = vector of fitted values after final (NLS=non linear
 %                       least squares) step.
 %                       $ (\hat \eta_1, \hat \eta_2, \ldots, \hat \eta_T)'$
@@ -545,21 +553,21 @@ function [out, varargout] = LTSts(y,varargin)
     % Simulated data with linear trend and level shift.
     % No seasonal component.
     rng('default')
-    n=45;
+    T=45;
     a=1;
     b=0.8;
     sig=1;
-    seq=(1:n)';
-    y=a+b*seq+sig*randn(n,1);
+    seq=(1:T)';
+    y=a+b*seq+sig*randn(T,1);
     % Add a level shift in the simulated series
-    y(round(n/2):end)=y(round(n/2):end)+10;
+    y(round(T/2):end)=y(round(T/2):end)+10;
     % model with a linear trend, non seasonal and level shift
     model=struct;
     model.trend=1;
     model.seasonal=0;
     % Potential level shift position is investigated in positions:
-    % t=10, t=11, ..., t=T-10.
-    model.lshift=11:n-10;
+    % t=11, t=12, ..., t=T-10.
+    model.lshift=11:T-10;
     out=LTSts(y,'model',model,'plots',1);
     % Using the notation of the paper RPRH: A=1, B=1, G=0 and $\delta_1>0$.
     str=strcat('A=1, B=0, G=0, $\delta_2=',num2str(out.posLS),'$');
@@ -1293,14 +1301,12 @@ end
 p=pini+varampl+lshiftYN*2;
 
 
-%automatic specification of lshift which takes into account the fact that
-%at line 217 of FSRinvmdr the degrees of freedom mm-p must be positive.
-%Being mm the length of LSH = (lshift+1):(T-lshift), mm-p>0 can be written as:
-%(T-lshift)-(lshift+1) > p -->  2*lshift < T-1-p  --> lshift < (T-1-p)/2
-
+% if lshift=-1, then tentative level shifts are considered for positions
+% p+1, p+2, ..., T-p-1
 if length(lshift)==1 && lshift==-1
-    lshift=floor((T-1-p)/2);
+    lshift=(p+1):(T-p);
 end
+
 % indexes of linear part of seasonal component
 if seasonal <6
     indlinsc=(trend+2):(trend+1+seasonal*2);
