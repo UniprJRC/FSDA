@@ -249,22 +249,23 @@ function [out, varargout] = LTSts(y,varargin)
 %       nsamp : number of subsamples to extract. Scalar or vector of length 2.
 %               Vector of length 1 or 2 which controls the number of
 %               subsamples which will be extracted to find the robust
-%               estimator. If lshift>0 then nsamp(1) controls the number of
-%               subsets which have to be extracted to find the solution for
-%               t=lshift. nsamp(2) controls the number of subsets which
-%               have to be extracted to find the solution for t=lshift+1,
-%               lshift+2, ..., T-lshift.
+%               estimator. If lshift is not equal to 0 then nsamp(1)
+%               controls the number of subsets which have to be extracted
+%               to find the solution for t=lshift(1). nsamp(2) controls the
+%               number of subsets which have to be extracted to find the
+%               solution for t=lshift(2), lshift(3), ..., lshift(end).
 %               Note that nsamp(2) is generally smaller than nsamp(1)
 %               because in order to compute the best solution for
-%               t=lshift+1, lshift+2, ..., T-lshift, we use the lts.bestr/2
-%               best solutions from previous t (after shifting by one the
+%               t=lshift(2), lshift(3), ..., lshift(end), we use the lts.bestr/2
+%               best solutions from previous t (after shifting the
 %               position of the level shift in the estimator of beta). If
-%               lshift is >0 the default value of nsamp is (500 250). If
-%               lshift is >0 and nsamp is supplied as a scalar the default
-%               is to extract [nsamp/2] subsamples for t=lshift+1,
-%               lshift+2, ... Therefore, for example, in order to extract
-%               600 subsamples for t=lshift and 300 subsamples for t=
-%               lshift+1 ... you can use nsamp =600 or nsamp=[600 300].
+%               lshift is a vector of positive integers the default value
+%               of nsamp is (500 250). If
+%               lshift is a vector of positive integers and nsamp is supplied as a scalar the default
+%               is to extract [nsamp/2] subsamples for t=lshift(1),
+%               lshift(2), ... Therefore, for example, in order to extract
+%               600 subsamples for t=lshift(1) and 300 subsamples for t=
+%               lshift(2) ... you can use nsamp =600 or nsamp=[600 300].
 %               The default value of nsamp is 1000;
 %                 Example - 'nsamp',500
 %                 Data Types - double
