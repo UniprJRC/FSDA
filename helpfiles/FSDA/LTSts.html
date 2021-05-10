@@ -427,13 +427,13 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre>
                 _________    _________    ________    __________
 
     b_trend1       115.27       4.5051      25.586    2.0728e-26
-    b_trend2        1.592      0.27465      5.7965    9.1325e-07
-    b_cos1        -2.8294       3.9154    -0.72265        0.4741
-    b_sin1        -12.419       4.6909     -2.6475      0.011544
+    b_trend2        1.592      0.27465      5.7965    9.1326e-07
+    b_cos1        -2.8294       3.9153    -0.72265        0.4741
+    b_sin1        -12.419       4.6909     -2.6475      0.011543
     b_cos2        -9.0708       4.6584     -1.9472      0.058559
     b_sin2        -22.604       4.7099     -4.7992    2.2402e-05
-    b_varaml    -0.015796    0.0042445     -3.7215    0.00060891
-    b_lshift      -112.62       7.6319     -14.756    8.9212e-18
+    b_varaml    -0.015796    0.0042445     -3.7215    0.00060896
+    b_lshift      -112.62       7.6319     -14.756    8.9213e-18
 
 Level shift position t=27
                   Coeff         SE           t          pval   
@@ -640,22 +640,22 @@ Summary of the exceedances
                          to affect y.</p></td></tr><tr valign="top"><td><code>lshift</code></td><td><p><p>scalar or vector associated to level shift
                        component. lshift=0 (default) implies no level
                        shift component.</p> <p>
-                         If model.lshift is vector of positive integers,
+                       If model.lshift is vector of positive integers,
                          then it is associated to the positions of level
                          shifts which have to be considered. The most
                          significant one is included in the fitted model.</p> <p>
-                         For example if model.lshift =[13 20 36] a tentative
-                         level shift is imposed in position $t=13$, $t=20$ and
-                         $t=36$. The most significant among these positions
-                         in included in the final model. In other words,                         
-                         the following extra parameters are added to the
-                         final model:</p> <p>
-                          $\beta_{LS1}* I(t \geq beta_{LS2})$ where
-                          $\beta_{LS1}$ is a real number (associated with
-                          the magnitude of the level shift) and
-                          $\beta_{LS2}$ is an integer which assumes values
-                          13, 20 or 36 and and $I$ denotes the indicator
-                          function.</p> <p>
+                         For example if model.lshift =[13 20 36] a
+                         tentative level shift is imposed in position
+                         $t=13$, $t=20$ and $t=36$. The most significant
+                         among these positions in included in the final
+                         model. In other words, the following extra
+                         parameters are added to the final model:</p> <p>
+                         $\beta_{LS1}* I(t \geq \beta_{LS2})$ where
+                         $\beta_{LS1}$ is a real number (associated with
+                         the magnitude of the level shift) and
+                         $\beta_{LS2}$ is an integer which assumes values
+                         13, 20 or 36 and and $I$ denotes the indicator
+                         function.</p> <p>
                          As a particular case, if model.lshift =13 then a
                          level shift in position $t=13$ is added to the
                          model. In other words the following additional
@@ -663,9 +663,9 @@ Summary of the exceedances
                          where $\beta_{LS1}$ is a real number and $I$
                          denotes the indicator function.</p> <p>
                        If lshift = -1 tentative level shifts are
-                       considered for positions $p+1,p+2, ..., T-p$ and
-                       the most significant one is included in the final
-                       model.</p><p>
+                         considered for positions $p+1,p+2, ..., T-p$ and
+                         the most significant one is included in the final
+                         model.</p><p>
                        In the paper RPRH $\beta_{LS1}$ is denoted with
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
                        with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>scalar greater or equal than 0 which
@@ -716,22 +716,23 @@ Summary of the exceedances
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nocheck',true
 </code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>boolean</code></p></div></div><div class="expandableContent"><div id="inputarg_nsamp" class="clearfix"></div><h3 id="input_argument_namevalue_nsamp" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>nsamp</code> &#8212;number of subsamples to extract.</span></a><span class="example_desc">scalar | vector of length 2.</span></span></h3><div class="collapse">	<p><p>Vector of length 1 or 2 which controls the number of
                subsamples which will be extracted to find the robust
-               estimator. If lshift&gt;0 then nsamp(1) controls the number of
-               subsets which have to be extracted to find the solution for
-               t=lshift. nsamp(2) controls the number of subsets which
-               have to be extracted to find the solution for t=lshift+1,
-               lshift+2, ..., T-lshift.</p> <p>
+               estimator. If lshift is not equal to 0 then nsamp(1)
+               controls the number of subsets which have to be extracted
+               to find the solution for t=lshift(1). nsamp(2) controls the
+               number of subsets which have to be extracted to find the
+               solution for t=lshift(2), lshift(3), ..., lshift(end).</p> <p>
                Note that nsamp(2) is generally smaller than nsamp(1)
                because in order to compute the best solution for
-               t=lshift+1, lshift+2, ..., T-lshift, we use the lts.bestr/2
-               best solutions from previous t (after shifting by one the
+               t=lshift(2), lshift(3), ..., lshift(end), we use the lts.bestr/2
+               best solutions from previous t (after shifting the
                position of the level shift in the estimator of beta). If
-               lshift is &gt;0 the default value of nsamp is (500 250). If
-               lshift is &gt;0 and nsamp is supplied as a scalar the default
-               is to extract [nsamp/2] subsamples for t=lshift+1,
-               lshift+2, ... Therefore, for example, in order to extract
-               600 subsamples for t=lshift and 300 subsamples for t=
-               lshift+1 ... you can use nsamp =600 or nsamp=[600 300].</p> <p>
+               lshift is a vector of positive integers the default value
+               of nsamp is (500 250). If
+               lshift is a vector of positive integers and nsamp is supplied as a scalar the default
+               is to extract [nsamp/2] subsamples for t=lshift(1),
+               lshift(2), ... Therefore, for example, in order to extract
+               600 subsamples for t=lshift(1) and 300 subsamples for t=
+               lshift(2) ... you can use nsamp =600 or nsamp=[600 300].</p> <p>
                The default value of nsamp is 1000;</p> <p>
                                 Remark: if nsamp=0 all subsets will be extracted.</p> <p>
                They will be (n choose p).</p><p>
