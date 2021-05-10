@@ -186,7 +186,9 @@ function [out, varargout] = LTSts(y,varargin)
 %                       If lshift = -1 tentative level shifts are
 %                         considered for positions $p+1,p+2, ..., T-p$ and
 %                         the most significant one is included in the final
-%                         model.
+%                         model ($p$ is the total number of parameters in
+%                         the fitted model). Note that lshift=-1 is not
+%                         supported for C-coder translation.
 %                       In the paper RPRH $\beta_{LS1}$ is denoted with
 %                       symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
 %                       with symbol $\delta_2$.
@@ -1296,16 +1298,19 @@ pini=ntrend+nseaso+nexpl;
 % varampl = number of parameters involving time varying trend,
 % + 2 additional parameters if there is a level shift component
 lshiftYN=0;
-if length(lshift)>1 || lshift==-1 || lshift>0
+if lshift(1)~=0
     lshiftYN=1;
 end
 p=pini+varampl+lshiftYN*2;
 
 
-% if lshift=-1, then tentative level shifts are considered for positions
-% p+1, p+2, ..., T-p-1
-if length(lshift)==1 && lshift==-1
-    lshift=(p+1):(T-p);
+% lshift=-1 is not valid in MATLAB C coder
+if coder.target('MATLAB')
+    % if lshift=-1, then tentative level shifts are considered for positions
+    % p+1, p+2, ..., T-p-1
+    if length(lshift)==1 && lshift==-1
+        lshift=(p+1):(T-p);
+    end
 end
 
 % indexes of linear part of seasonal component
@@ -2121,14 +2126,14 @@ else % model is non linear because there is time varying amplitude in seasonal c
         % fdiffstep=1.0e-05*0.6655*ones(length(betaout),1);
         % J = getjacobianFS(betaout,fdiffstep,@likyhat,yfitFS,nans,sqweights);
     else  % MATLAB CCODER PART nlinfit replaced by lsqcurvefit
-         optionsLSQcurvefit = optimoptions('lsqcurvefit','Algorithm','Levenberg-Marquardt');
+        optionsLSQcurvefit = optimoptions('lsqcurvefit','Algorithm','Levenberg-Marquardt');
         if lshiftYN==1
             Xlshiftf=Xlshift(bsb);
             ub=Inf(length(brobfinal)-1,1);
             lb=-ub;
             [betaout,~,~,~,~,~,Xlin] = lsqcurvefit(@likyhat,brobfinal(1:end-1),Xtrendf,yf,lb,ub,optionsLSQcurvefit);
         else
-             Xlshiftf=0;
+            Xlshiftf=0;
             % [betaoutCHK,resnorm,residual,exitflag,output,lambda,XlinCHK]= lsqcurvefit(@likyhat,brobfinal,Xtrendf,yf);
             ub=Inf(length(brobfinal),1);
             lb=-ub;
