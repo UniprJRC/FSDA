@@ -1,4 +1,4 @@
-function h  = carbikeplot(RelSol,varargin)
+function [h,varargout]  = carbikeplot(RelSol,varargin)
 %carbikeplot produces the carbike plot to find best relevant clustering solutions
 %
 %<a href="matlab: docsearchFS('carbikeplot')">Link to the help function</a>
@@ -102,6 +102,15 @@ function h  = carbikeplot(RelSol,varargin)
 %         h:   graphics handle to the plot. Graphics handle. Graphics
 %               handle which is produced on the screen.
 %
+%  Optional Output:
+%
+%     area : RelSol x 2 array reporting information on the relevance of 
+%            the RelSol solutions. Each row corresponds to a solution for a
+%            given $k$. The value of $k$ is in the first column. The area
+%            of the "car" rectangle of that $k$ solution is in the second
+%            column. The bigger the area, the better the solution (in terms
+%            of relevance and stability). This is a rule of thumb that can
+%            be used to select the optimal solutions in a semi-automatic way.
 %
 %
 % See also: carbikeplotGPCM, tclustIC, tclustregIC, tclust, tclustICsol, tclustreg
@@ -167,7 +176,7 @@ function h  = carbikeplot(RelSol,varargin)
     disp('Best solutions using MIXMIX')
     [outMIXMIX]=tclustICsol(out,'whichIC','MIXMIX','plots',0,'NumberOfBestSolutions',6);
     % Produce the car-bike plot
-    carbikeplot(outMIXMIX)
+    [h , sol_areas] = carbikeplot(outMIXMIX)
 %}
 
 
@@ -332,5 +341,12 @@ if cloop==false
     set(gca,'XDir','reverse')
 end
 h=gcf;
+
+% Store the area of the solutions in varargout
+nnargout=nargout;
+if nnargout==2
+    varargout={[cell2mat(ICbs(:,1)),area']};
+end
+
 end
 %FScategory:VIS-Clu
