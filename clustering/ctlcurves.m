@@ -75,6 +75,8 @@ function out  = ctlcurves(Y, varargin)
 %                   Example - 'mixt',1
 %                   Data Types - single | double
 %
+%
+%
 %  restrfactor: Restriction factor. Scalar. Positive scalar which
 %               constrains the allowed differences
 %               among group scatters. Larger values imply larger differences of
@@ -185,6 +187,17 @@ function out  = ctlcurves(Y, varargin)
 %                   values of k given a particular value of alpha is computed.
 %                   The relative time in which this difference is greater than
 %                   the bootstrap difference is stored in out.pvalLRtest.
+%   bands.outliersFromUniform = way of generating the outliers in the bootstrap
+%                   replicates. Boolean. If outliersFromUniform is true
+%                   (default) the outliers are generated using the uniform
+%                   distribution in such a way that their squared Mahalanobis
+%                   distance from the centroids of each
+%                   existing group is larger then the quantile 1-0.999 of
+%                   the Chi^2 distribution with p degrees of freedom. For
+%                   additional details see input option noiseunits of
+%                   simdataset. If outliersFromUniform is false the outliers
+%                   are the units which have been trimmed after applying
+%                   tclust for the particular combination of values of k and alpha.
 %                 Example - 'bands',true
 %                 Data Types - logical | struct
 %
@@ -508,6 +521,7 @@ restrfactor=100;
 mixt=0;
 bands=true;
 LRtest=true;
+outliersFromUniform=true;
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -674,6 +688,10 @@ if ComputeBands==true
             LRtest=bands.LRtest;
         end
         
+        if isfield(bands,'outliersFromUniform')
+            outliersFromUniform=bands.outliersFromUniform;
+        end
+        
     end
     
     % BandsCTL is a 3D array which will contain the replicates for the
@@ -686,7 +704,6 @@ if ComputeBands==true
     maxk=kk(end);
     
     for k=1:lkk  % loop for different values of k (number of groups)
-        
         
         % Extract what depends just on k
         seqk=kk(k);
@@ -717,10 +734,21 @@ if ComputeBands==true
             alphaTrimj=alphaTrim(j);
             ngood=round(n*(1-alphaTrimj));
             nout=n-ngood;
+            % if outliersFromUniform is false the outliers in the replicate
+            % samples are the units which have been trimmed
+            if outliersFromUniform == false
+                Yadd=Y(IDX{k,j}==0,:);
+            end
+            
             parfor (zz = 1:nsimul, numpool)
-                [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
-                if size(Ysim,1)<n
-                    Yadd=repmat(Ysim(end,:),n-size(Ysim,1),1);
+                if outliersFromUniform == true
+                    [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', nout);
+                    if size(Ysim,1)<n
+                        Yadd1=repmat(Ysim(end,:),n-size(Ysim,1),1);
+                        Ysim=[Ysim;Yadd1];
+                    end
+                else
+                    [Ysim]=simdataset(ngood, Pitrue, Mutrue, Sigmatrue,'noiseunits', 0);
                     Ysim=[Ysim;Yadd];
                 end
                 outtcSIM=tclust(Ysim,seqk,alphaTrimj,restrfactor,'nsamp',CnsampAllk,'plots',0,'msg',0,'mixt',mixt, ...
