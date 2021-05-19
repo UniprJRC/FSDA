@@ -734,6 +734,51 @@ function [out, varargout] = tclustreg(y,X,k,restrfact,alphaLik,alphaX,varargin)
     disp('can recover the real structure of the data')
 %}
 
+%{
+    % tclustreg of fishery with commonslope.
+    clear all; close all;
+    load fishery;
+    X = fishery{:,:};
+    % some jittering might be useful if there are many duplicated units
+    X = X + 10^(-8) * abs(randn(677,2));
+
+    % Take the log of both variables
+    y1 = log(X(:,end));
+    X1 = log(X(:,1:end-1));
+
+
+    % tclustreg without commonslope and right number of groups
+    rng(12345);
+
+    % common parameters: number of groupos overestimated
+    k = 5 ; restrfact = 50; alpha1 = 0.04 ; alpha2 = 0.01;
+
+
+    outlog = tclustreg(y1,X1,3,restrfact,alpha1,alpha2,'intercept',1,'commonslope',false,'mixt',0);
+    title({'TCLUST-REG on log without commonslope and k=3 (right number)',...
+        ['estimated prices: ' num2str(exp(outlog.bopt(1,:)))] , ...
+        ['estimated slopes: ' num2str(outlog.bopt(2,:))] });
+    xlim([-5 5]);
+
+    % tclustreg without commonslope
+    rng(12345);
+    outlogcsn = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'commonslope',false,'mixt',0);
+    title({'TCLUST-REG on log without commonslope and k=5 (overestimated)',...
+        ['estimated prices: ' num2str(exp(outlogcsn.bopt(1,:)))] , ...
+        ['estimated slopes: ' num2str(outlogcsn.bopt(2,:))] });
+    xlim([-5 5]);
+
+    % tclustreg with commonslope 
+    rng(12345);
+    outlogcsy = tclustreg(y1,X1,k,restrfact,alpha1,alpha2,'intercept',1,'commonslope',true,'mixt',0);
+    title({'TCLUST-REG on log with commonslope and k=5 (overestimated)',...
+        ['estimated prices: ' num2str(exp(outlogcsy.bopt(1,:)))] , ...
+        ['estimated slopes: ' num2str(outlogcsy.bopt(2,:))] });
+    xlim([-5 5]);
+
+    cascade;
+%}
+
 %% Beginning of code
 % Control variables, tolerances and internal flags
 % warning('off');
@@ -1393,7 +1438,6 @@ else
         out.NlogLmixt=[];
         
     end
-    
     
     %% Generate plots
     

@@ -1223,6 +1223,8 @@ elseif plots==1
     name={'gscatter' 'monitor'};
     alphasel=alpha;
     ylimy='';
+else
+    name = '';
 end
 
 d=find(strcmp('monitor',name));
