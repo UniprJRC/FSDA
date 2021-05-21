@@ -96,7 +96,10 @@ function [h,varargout]  = carbikeplot(RelSol,varargin)
 %                 Example - 'SpuriousSolutions',false
 %                 Data Types - single | double
 %
-%
+% minCarHeight       :minimum height of the rectangles in the carbike plot.
+%                   Integer. It can take values in the interval (0 1). Default value 0.1.
+%                 Example - 'minCarHeight',0.3
+%                 Data Types - single | double
 %  Output:
 %
 %         h:   graphics handle to the plot. Graphics handle. Graphics
@@ -188,9 +191,9 @@ if ~isstruct(RelSol)
 end
 
 SpuriousSolutions=false;
-
+minCarHeight=0.1;
 if nargin>1
-    options=struct('SpuriousSolutions',SpuriousSolutions);
+    options=struct('SpuriousSolutions',SpuriousSolutions,'minCarHeight',minCarHeight);
     
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
@@ -220,6 +223,7 @@ if nargin>1
     end
     
     SpuriousSolutions=options.SpuriousSolutions;
+    minCarHeight = options.minCarHeight;
     
 end
 
@@ -319,8 +323,8 @@ for i=1:numsol
             maxindstablec=find(cORalpha==max(ICbs{i,4}));
         end
         
-        area(i) = ((maxindc-minindc)*(0.5*(1- i/numsol))) / (numsol*maxindc);
-        hr(i)   = rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- i/numsol)+eps],'facecolor','w','Curvature',[0.2 0.2]);
+        area(i) = ((maxindc-minindc)*(0.5*(1- min([(1 - minCarHeight), i/numsol])))) / (numsol*maxindc);
+        hr(i)   = rectangle('position',[minindc kbest maxindc-minindc+eps 0.5*(1- min([(1 - minCarHeight), i/numsol]))+eps],'facecolor','w','Curvature',[0.2 0.2]);
         rectangle('position',[cORalphabest-0.25 kbest 0.5 0.5],'facecolor','w','Curvature',[1 1])
         minl=min([minindc minindstablec]);
         rectangle('position',[minl kbest max([maxindc maxindstablec])-minl+eps eps],'facecolor','w');
