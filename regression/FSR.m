@@ -309,10 +309,10 @@ function [out]=FSR(y,X,varargin)
 %
 %         out:   structure which contains the following fields
 %
-% out.ListOut  = k x 1 vector containing the list of the units declared as
+% out.ListOut  = row vector containing the list of the units declared as
 %                outliers or NaN if the sample is homogeneous
 % out.outliers = out.ListOut. This field is added for homogeneity with the
-%                other robust estimators.
+%                other robust estimators and is equal to out.ListOut.
 % out.beta   =  p-by-1 vector containing the estimated regression
 %               parameters (in step n-k).
 % out.scale  =  scalar containing the estimate of the scale (sigma).
