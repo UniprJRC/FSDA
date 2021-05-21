@@ -204,9 +204,9 @@ function [out , varargout] = LXS(y,X,varargin)
 %                       otherwise sum(out.weights) can be greater than h
 %               out.h = The number of observations that have determined the
 %                       LTS (LMS) estimator, i.e. the value of h.
-%        out.outliers = vector containing the list of the units declared
+%        out.outliers = row vector containing the list of the units declared
 %                       as outliers using confidence level specified in
-%                       input scalar conflev
+%                       input scalar conflev.
 %         out.conflev = confidence level which is used to declare outliers.
 %                       Remark: scalar out.conflev will be used
 %                       to draw the horizontal lines (confidence bands) in the plots
@@ -428,7 +428,7 @@ function [out , varargout] = LXS(y,X,varargin)
 nnargin=nargin;
 vvarargin=varargin;
 [y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
-seq=(1:n)';
+seq=(1:n);
 
 %% User options
 
