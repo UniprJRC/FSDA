@@ -830,10 +830,16 @@ if isstruct(lms)
     % maximum of refstepsbestr steps using a convergence tolerance as specified
     % by scalar reftolbestr
     
-    superbestscale = Inf;
-    sh0=Inf;
+    tmp = IRWLSreg(y,X,bestbetas(1,:)',refstepsbestr,reftolbestr,h);
+    % sh0 = superbestscale
+    sh0 = tmp.numscale2rw;
+    % brob = superbestbeta
+    brob = tmp.betarw;
+    % bs = superbestsubset, units forming best subset according to fastlts
+    bs = bestsubset(1,:);
+    superbestscale=sh0;
     
-    for i=1:bestr
+    for i=2:bestr
         tmp = IRWLSreg(y,X,bestbetas(i,:)',refstepsbestr,reftolbestr,h);
         
         if tmp.numscale2rw < superbestscale
@@ -1271,21 +1277,20 @@ if p > 2
     coeffic_875=A_875\y_875;
     fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
     fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
+elseif p == 2
+    fp_500_n=1-(exp(0.673292623522027)*1)/n^0.691365864961895;
+    fp_875_n=1-(exp(0.446537815635445)*1)/n^1.06690782995919;
 else
-    if p == 2
-        fp_500_n=1-(exp(0.673292623522027)*1)/n^0.691365864961895;
-        fp_875_n=1-(exp(0.446537815635445)*1)/n^1.06690782995919;
-    end
-    if p == 1
-        fp_500_n=1-(exp(0.262024211897096)*1)/n^0.604756680630497;
-        fp_875_n=1-(exp(-0.351584646688712)*1)/n^1.01646567502486;
-    end
+    fp_500_n=1-(exp(0.262024211897096)*1)/n^0.604756680630497;
+    fp_875_n=1-(exp(-0.351584646688712)*1)/n^1.01646567502486;
 end
+
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
 elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
 else
+    fp_alpha_n=0; %#ok<NASGU> % Initialization necessary for MATLAB C-coder
     error('FSDA:LXS:WrongBdp','Condition 1-alpha>=0.5 not respected')
 end
 
@@ -1323,16 +1328,14 @@ if p > 2
     coeffic_875=A_875\y_875;
     fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
     fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
+elseif p == 2
+    fp_500_n=1-(exp(3.11101712909049)*1)/n^1.91401056721863;
+    fp_875_n=1-(exp(0.79473550581058)*1)/n^1.10081930350091;
 else
-    if p == 2
-        fp_500_n=1-(exp(3.11101712909049)*1)/n^1.91401056721863;
-        fp_875_n=1-(exp(0.79473550581058)*1)/n^1.10081930350091;
-    end
-    if p == 1
-        fp_500_n=1-(exp(1.11098143415027)*1)/n^1.5182890270453;
-        fp_875_n=1-(exp(-0.66046776772861)*1)/n^0.88939595831888;
-    end
+    fp_500_n=1-(exp(1.11098143415027)*1)/n^1.5182890270453;
+    fp_875_n=1-(exp(-0.66046776772861)*1)/n^0.88939595831888;
 end
+
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
 elseif 0.875 < alpha && alpha < 1
