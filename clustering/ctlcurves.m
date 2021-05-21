@@ -738,6 +738,8 @@ if ComputeBands==true
             % samples are the units which have been trimmed
             if outliersFromUniform == false
                 Yadd=Y(IDX{k,j}==0,:);
+            else
+                Yadd=[];
             end
             
             parfor (zz = 1:nsimul, numpool)
