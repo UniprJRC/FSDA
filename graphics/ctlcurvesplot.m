@@ -9,8 +9,8 @@ function ctlcurvesplot(outCTL,varargin)
 %   the likelihood ratio tests for testing k vs k+1 given alpha.
 %   The plot enables interaction in the sense that, if option
 %   databrush has been activated, it is possible to click on a point in the
-%   plot and to see the associated classification in the scatter plot
-%   matrix.
+%   plot of the ctlcurves and to see the associated classification in the
+%   scatter plot matrix.
 %
 %  Required input arguments:
 %
@@ -852,7 +852,7 @@ end
         
         
         if isempty(row)
-            output_txt{1}=['no IC x,y' num2str(x1) '' num2str(y1)] ;
+            output_txt{1}=['no ctl x,y' num2str(x1) '' num2str(y1)] ;
         else
             output_txt=cell(4,1);
             
@@ -927,8 +927,6 @@ else
     idxOptimal = IDX{end, end};
 end
 end
-
-
 %FScategory:VIS-Clu
 
 
