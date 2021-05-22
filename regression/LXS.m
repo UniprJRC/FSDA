@@ -229,7 +229,7 @@ function [out , varargout] = LXS(y,X,varargin)
 %                       formed by units 2, 5 and 20.
 %
 %
-% See also FSReda, Sreg, MMreg
+% See also FSReda, Sreg, MMreg, LTSts
 %
 % References:
 %
