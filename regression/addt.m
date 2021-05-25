@@ -145,11 +145,13 @@ function [out]=addt(y,X,w,varargin)
 %
 %% Beginning of code
 
-% User options
-
 if nargin<3
     error('FSDA:addt:missingInputs','A required input argument is missing.')
 end
+
+nnargin=nargin;
+vvarargin=varargin;
+[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 % Insert code for intercept
 la=[];
@@ -188,10 +190,6 @@ if nargin > 3
     end
 end
 %% t test for an additional explanatory variable
-
-nnargin=nargin;
-vvarargin=varargin;
-[y,X,n,p] = chkinputR(y,X,nnargin,vvarargin);
 
 [~, R] = qr(X,0);
 E = X/R;
