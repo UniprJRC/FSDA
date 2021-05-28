@@ -138,17 +138,42 @@ document.write(divsbefore);
         2013. It is a bivariate dataset of 200 observations. It presents two
         parallel components without contamination.</td>
       </tr>
+
+      <tr valign="top">
+        <td bgcolor="#F2F2F2"><tt>wine</tt></td>
+        <td bgcolor="#F2F2F2">
+      Data from the machine learning repository. A chemical analysis of 178 
+      Italian wines from three different cultivars yielded 13 measurements. This 
+      dataset is often used to test and compare the performance of various 
+      classification algorithms. There are 3 classes. Additional information can 
+      be found in
+      <a href="http://www.radwin.org/michael/1996/12/11/wine-recognition-dataset/">
+      Wine recognition dataset</a>.</td>
+      </tr>
+  
     <tr valign="top">
-      <td bgcolor="#F2F2F2"><tt>wine</tt></td>
+      <td bgcolor="#F2F2F2"><tt>fakenews_v</tt></td>
       <td bgcolor="#F2F2F2">
-	  Data from the machine learning repository. A chemical analysis of 178 
-	  Italian wines from three different cultivars yielded 13 measurements. This 
-	  dataset is often used to test and compare the performance of various 
-	  classification algorithms. There are 3 classes. Additional information can 
-	  be found in
-	  <a href="http://www.radwin.org/michael/1996/12/11/wine-recognition-dataset/">
-	  Wine recognition dataset</a>.</td>
+        Data from the Convolutional Neural Network (CNN) embeddings
+        representation of 1697 tweets, including 1287 trues and 412 fakes, which
+        have been used for validation purposes by a novel procedure on
+        disinformation detection (see reference).  The dataset lists in sequence
+        the trues and the fakes, as reflected by the grouping variable in the
+        first column (1=trues, 2 = fakes). The CNN embeddings consist of 300
+        variables. RobPCA (in the form described by Hubert et al, 2005) was run
+        on the CNN embeddings to reduce the dimensionality of the problem, and
+        fakenews_v contains therefore the first 5 scores returned by robPCA that
+        were found to explain more than 70% of the total variance. The second
+        column reports an indicator on potential outliers found by the robPCA.
+        (1=good units, 0 = outliers). </td>
     </tr>
+
+    <tr valign="top">
+      <td bgcolor="#F2F2F2"><tt>fakenews_t</tt></td>
+      <td bgcolor="#F2F2F2">
+        The same as fakenews_v, but fakenews_t is used for testing. It includes 1700 tweets divided in 1294 trues and 406 fakes. </td>
+    </tr>
+
   </tbody>
 </table>
 
