@@ -4,7 +4,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %<a href="matlab: docsearchFS('tabledisp')">Link to the help function</a>
 %
 %  tabledisp displays a table or o bi-dimensional array in the MATLAB
-%  command line or in a uitable.
+%  command line or in a uitable and also in an excel file.
 %
 %  Required input arguments:
 %
@@ -60,7 +60,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 % Examples:
 
 %{
-    %% Dispay a table in MATLAB annotations
+    %% Dispay a table in MATLAB annotations.
     % load a generic dataset
     load patients;
     % put it in a table
@@ -84,7 +84,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %}
 
 %{
-    %% Dispay an array in a MATLAB annotation, with 6 digits of precision
+    %% Dispay an array in a MATLAB annotation, with 6 digits of precision.
     % generate data
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
@@ -102,7 +102,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %}
 
 %{
-    % Dispay an array in a MATLAB annotation, and save it in a specific file
+    % Dispay an array in a MATLAB annotation, and save it in a specific file.
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
     [latex_string , disp_string] = tabledisp(X,2,'myfile.txt');
@@ -110,9 +110,10 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %}
 
 %{
-    % Save an array in a excel file
+    % Save an array in a excel file.
     X = randn(10,5);
     % and run tabledisp on them with the specification of the precision
+    % An excel file named tabledisp_excel.xlsx is created in the current folder.
     [latex_string , disp_string] = tabledisp(X,2,'excel');
 
 %}
