@@ -86,7 +86,7 @@ function [latex_string , disp_string] = tabledisp(T, precision, filename)
 %{
     %% Dispay an array in a MATLAB annotation, with 6 digits of precision
     % generate data
-    X = randn(10,5);
+    X = 1000*randn(10,5);
     % and run tabledisp on them with the specification of the precision
     [latex_string , disp_string] = tabledisp(X,6);
 
@@ -271,11 +271,16 @@ end
 %% Apply comma as thousands separator.
     function formatted_number = digitGouping(number)
         [intPart , decPart]   = strtok(num2str(number),'.');
+        ordermag = floor(log(abs(number))./log(10));
         intPart = intPart(end:-1:1);
         intPart = [sscanf(intPart,'%c',[3,inf])' repmat(',',ceil(length(intPart)/3),1)]';
         intPart = intPart(:)';
         intPart = deblank(intPart(1:(end-1)));
-        formatted_number = [intPart(end:-1:1) decPart];
+        if ordermag == 2
+            formatted_number = strrep([intPart(end:-1:1) decPart],',','');
+        else
+            formatted_number = [intPart(end:-1:1) decPart];
+        end
     end
 
 end
