@@ -8,16 +8,24 @@ function result = verLessThanFS(vernumber)
 % checks the version of MATLAB and calls directly the relevant built in
 % functions. The number containing the MATLAB version is cached for better
 % performance. In order words, the first time verLessThanFS is called the
-% number associated to the MATLAB version is stored in persistent variable
-% named cachedMatlabVerFS
+% vector with two numbers associated to the MATLAB version is stored in
+% persistent variable named cachedMatlabVerFS.
 %
 %
 % Required input arguments:
 %
-% vernumber :  version of MATLAB to test. double.
+% vernumber :  version of MATLAB to test. scalar double or character or vector of doubles.
 %               Number containing the version of MATLAB to test again
-%               current version.
-%               Example - 8.3
+%               current version. If version is a character, it must be in
+%               the format major.minor.revision or major.minor.
+%               If version is a scalar double what is before the full stop is
+%               the major revision and the FIRST number after the full stop
+%               is the minor revision. If version is a vector of doubles
+%               the first element is the major revision and the second
+%               element is the minor revision.
+%               REMARK: Note that this function only considers major
+%               and minor version and not the revision version.
+%               Example - 8.3 or [8 3] or '8.3'
 %               Data Types - double
 %
 %
@@ -28,7 +36,7 @@ function result = verLessThanFS(vernumber)
 %
 %    result : True or false. Boolean. result is true if the current version of
 %               version of MATLAB is older than the
-%               version specified by vernumber, and false otherwise. 
+%               version specified by vernumber, and false otherwise.
 %
 %
 %  See also verLessThan.m
@@ -49,12 +57,39 @@ function result = verLessThanFS(vernumber)
 %
 %{
     % Test whether the current version is older than MATLAB version 8.4.
+    % In this case the input argument is a scalar double
     numbertotest = 8.4;
     out=verLessThanFS(numbertotest);
-    if out == true 
+    if out == true
         disp(['current version is older than ' num2str(numbertotest)]);
     else
         disp(['current version is not older than ' num2str(numbertotest)]);
+    end
+%}
+
+%{
+    % In this case the input argument is a vector with two elements 
+    % Test whether the current version is older than MATLAB version 9.10.
+    % Note that when the minor revision to test is greater than 2 it is necessary 
+    % to use a vector with two elements.
+    numbertotest = [9 10];
+    out=verLessThanFS(numbertotest);
+    if out == true
+        disp(['current version is older than ' num2str(numbertotest)]);
+    else
+        disp(['current version is not older than ' num2str(numbertotest)]);
+    end
+%}
+
+%{
+    % Test whether the current version is older than MATLAB version 9.12
+    % In this case the input argument is a vector with two elements 
+    numbertotest = '9.11';
+    out=verLessThanFS(numbertotest);
+    if out == true
+        disp(['current version is older than ' num2str(numbertotest)]);
+    else
+        disp(['current version is not oder than ' num2str(numbertotest)]);
     end
 %}
 
@@ -73,21 +108,42 @@ if isempty(cachedMatlabVerFS)
     currentFName =[matlabroot filesep 'toolbox' filesep 'matlab' filesep 'general' filesep 'Contents.m'];
     fid = fopen(currentFName,'r');
     fgets(fid);
-    % get the line containing the line '% MATLAB Version X.X (RXXXX) dd-MMM-yyyy 
+    % get the line containing the line '% MATLAB Version X.X (RXXXX) dd-MMM-yyyy
     charMatlabversion = fgets(fid);
     fclose(fid);
     % MATLAB version is in positions 18:21
     charMatlabversion = charMatlabversion(18:21);
-    doubleMatlabversion=str2double(charMatlabversion);
+    doubleMatlabversion = getParts(charMatlabversion);
     cachedMatlabVerFS = doubleMatlabversion;
 else
-      doubleMatlabversion=cachedMatlabVerFS;
+    doubleMatlabversion=cachedMatlabVerFS;
 end
 
-if  doubleMatlabversion<vernumber
-    result =true;
+if isnumeric(vernumber)
+    if isscalar(vernumber)
+        numberToTest(1)=floor(vernumber);
+        str = num2str(vernumber,'%0.1f'); 
+        str = str(find(str=='.')+1:end); %// keep only digits after decimal point
+        numberToTest(2)=str2double(str);
+    else
+        numberToTest=vernumber;
+    end
 else
-    result = false;
+    numberToTest=getParts(vernumber);
 end
+
+if numberToTest(1) ~= doubleMatlabversion(1)     % major version
+    result = doubleMatlabversion(1) <numberToTest(1);
+else                                  % minor version
+    result = doubleMatlabversion(2) < numberToTest(2);
 end
+
+
+function parts = getParts(V)
+parts = sscanf(V, '%d.%d.%d')';
+if length(parts) < 3
+    parts(3) = 0; % zero-fills to 3 elements
+end
+
+
 %FScategory:UTIGEN
