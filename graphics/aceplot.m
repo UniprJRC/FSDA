@@ -26,7 +26,7 @@ function aceplot(out,varargin)
 %
 %    highlight : units to highliight in the plot. Vector. Vector contaning
 %               the numbers associate to the units to highlight in the plots.
-%               The default is to highlight the units inside out.outliers.    
+%               The default is to highlight the units inside out.outliers.
 %                 Example - 'highlight',1:10
 %                 Data Types - double
 %
@@ -94,7 +94,7 @@ function aceplot(out,varargin)
     p=size(X,2);
     ycont=y;
     listout=[17 53 30];
-    ycont(listout)=1; 
+    ycont(listout)=1;
     l=[4*ones(p,1); 1];
     outAC= ace(ycont,X,'l',l);
     aceplot(outAC,'highlight',listout)
@@ -169,7 +169,10 @@ for j=1:p
     subplot(nr,nc,j)
     plot(X(:,j),tX(:,j),'o')
     R=rug(0.03);
-    delete(R.yRug)
+    try
+        delete(R.yRug)
+    catch
+    end
     jstr=num2str(j);
     ylabel(['Transformed X' jstr])
     xlabel(['X' jstr])
