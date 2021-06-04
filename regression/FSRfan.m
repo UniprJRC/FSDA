@@ -255,7 +255,7 @@ function [out]=FSRfan(y,X,varargin)
 %       ylimy   :  Minimum and maximum of the y axis. Vector.
 %                   Default value for ylimy(1)=max(min(score_test),-20).
 %                   Default value for ylimy(2)=min(max(score_test),20).
-%                   Example - 'ylimx',[0 1]
+%                   Example - 'ylimy',[0 1]
 %                   Data Types - double
 %
 %  Output:
@@ -682,6 +682,8 @@ if nargin > 2
         labx=options.labx;
         laby=options.laby;
         titl=options.titl;
+        ylimy=options.ylimy;
+        xlimx=options.xlimx;
     end
 end
 
