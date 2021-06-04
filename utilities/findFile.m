@@ -109,7 +109,7 @@ function list = findFile(root,varargin)
 %{
     % find the location of help file gplotmatrix.html.
     pathdocroot=docroot;
-    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrixee.html');
+    pathExtHelpFile=findFile(pathdocroot,'InclFiles','gplotmatrix.html');
 %}
 
 %% Beginning of code
