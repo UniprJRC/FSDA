@@ -337,12 +337,6 @@ function [out]=FSR(y,X,varargin)
 %               of particular quantiles.
 %               First row contains quantiles 1 99 99.9 99.99 99.999.
 %               Second row contains the frequency distribution.
-% out.constr  = This output is produced only if the search found at a
-%               certain step X is a singular matrix. In this case the
-%               search runs in a constrained mode, that is including the
-%               units which produced a non singular matrix in the last n-constr
-%               steps. out.constr is a vector which contains the list of
-%               units which produced a singular X matrix
 % out.class  =  'FSR'.
 % out.VIOMout = m x 1 vector containing the list of the units declared as
 %               VIOM outliers or NaN if they are not present.
