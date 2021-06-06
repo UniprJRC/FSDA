@@ -451,11 +451,13 @@ function out  = ctlcurves(Y, varargin)
     % bands is passed as a false boolean. No bands are shown.
     bands=false;
     Y=load('geyser2.txt');
-    out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands);
+    % Just use a very small sumber of subsets for speed reasons.
+    rng(100)
+    out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands,'nsamp',nsamp);
 %}
 
 %{
-    %% bands passed as struct.
+    %% option bands passed as struct.
     % load the M5 data.
     Y=load('M5data.txt');
     Y=Y(:,1:2);
@@ -466,7 +468,10 @@ function out  = ctlcurves(Y, varargin)
     bands.valSolution=true;
     % Do not compute the bootstrap likelihood ratio test
     bands.LRtest=false;
-    out=ctlcurves(Y,'bands',bands,'kk',1:3,'alpha',0:0.02:0.1);
+    % Just use a very small sumber of subsets for speed reasons.
+    nsamp=20;
+    rng(100)
+    out=ctlcurves(Y,'bands',bands,'kk',2:4,'alpha',0:0.02:0.1,'nsamp',nsamp);
     % Show final classification.
     spmplot(Y,out.idx);
 %}
@@ -479,7 +484,9 @@ function out  = ctlcurves(Y, varargin)
     n=200;
     Y = MixSim(k, v, 'MaxOmega',0.01);
     [Y]=simdataset(n, Y.Pi, Y.Mu, Y.S, 'noiseunits', 10);
-    out=ctlcurves(Y,'plots',0,'kk',4:6);
+    % Just use a very small sumber of subsets for speed reasons.
+    nsamp=10;
+    out=ctlcurves(Y,'plots',0,'kk',4:6,'nsamp',nsamp);
     spmplot(Y,out.idx);
 %}
 
