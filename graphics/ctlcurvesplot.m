@@ -227,7 +227,7 @@ function ctlcurvesplot(outCTL,varargin)
 %{
     %% ctcurves and Portofino plot for the Gyeser data with all default options.
     Y=load('geyser2.txt');
-    outCTl=ctlcurves(Y,'plots',false)
+    outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
     ctlcurvesplot(outCTl);
 %}
 
@@ -239,7 +239,7 @@ function ctlcurvesplot(outCTL,varargin)
     Y=load('geyser2.txt');
     databrush=struct;
     databrush.selectionmode='Rect';
-    outCTl=ctlcurves(Y,'plots',false)
+    outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
     ctlcurvesplot(outCTl,'databrush',databrush);
 %}
 
@@ -251,7 +251,7 @@ function ctlcurvesplot(outCTL,varargin)
     Y=load('geyser2.txt');
     databrush=struct;
     databrush.persist='on';
-    outCTl=ctlcurves(Y,'plots',false)
+    outCTl=ctlcurves(Y,'plots',false,'nsamp',20)
     ctlcurvesplot(outCTl,'databrush',databrush);
 %}
 
