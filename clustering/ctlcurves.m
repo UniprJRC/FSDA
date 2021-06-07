@@ -439,7 +439,9 @@ function out  = ctlcurves(Y, varargin)
     rng('default')
     rng(10)
     Y=load('geyser2.txt');
-    out=ctlcurves(Y);
+    % Just use a very small sumber of subsets for speed reasons.
+    nsamp=10;
+    out=ctlcurves(Y,'nsamp',nsamp);
     % Show the automatic classification
     spmplot(Y,out.idx);
 %}
@@ -453,6 +455,7 @@ function out  = ctlcurves(Y, varargin)
     Y=load('geyser2.txt');
     % Just use a very small sumber of subsets for speed reasons.
     rng(100)
+    nsamp=10;
     out=ctlcurves(Y,'alpha',alpha,'kk',2:4,'bands',bands,'nsamp',nsamp);
 %}
 
@@ -485,7 +488,7 @@ function out  = ctlcurves(Y, varargin)
     Y = MixSim(k, v, 'MaxOmega',0.01);
     [Y]=simdataset(n, Y.Pi, Y.Mu, Y.S, 'noiseunits', 10);
     % Just use a very small sumber of subsets for speed reasons.
-    nsamp=10;
+    nsamp=5;
     out=ctlcurves(Y,'plots',0,'kk',4:6,'nsamp',nsamp);
     spmplot(Y,out.idx);
 %}
