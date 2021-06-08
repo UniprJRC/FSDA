@@ -12,13 +12,12 @@ if strcmp(PersonalvalueDOC,'WEB')
     disp('It is necessary in Home|Preferences to set ''Documentation Location''')
     disp('to ''Installed Locally''')
     warning('FSDA:webFS:Wrongloc','Please change Documentation Location in order to view HTML FSDA documentation')
-    
 %     % Change in a temporary way the user option to INSTALLED
 %     s.matlab.help.DocCenterLocation21a.PersonalValue='INSTALLED';
 %     web(varargin{:});
 %     % Restore previous option
 %     s.matlab.help.DocCenterLocation21a.PersonalValue=PersonalvalueDOC;
 %  com.mathworks.mlservices.MLHelpServices.setDocCenterDomain('');
-  web(varargin{:});
 end
+  web(varargin{:});
 end
