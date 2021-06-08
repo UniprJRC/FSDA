@@ -107,46 +107,38 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %  Optional input arguments:
 %
-%       nsamp : Number of subsamples to extract.
-%               Scalar or matrix.
-%               If nsamp is a scalar it contains the number of subsamples
-%               which will be extracted. If nsamp=0
-%               all subsets will be extracted.
-%               Remark - if the number of all possible subset is <300 the
-%               default is to extract all subsets, otherwise just 300
-%               If nsamp is a matrix it contains in the rows the indexes of
-%               the subsets which have to be extracted. nsamp in this case
-%               can be conveniently generated  by function subsets. nsamp can
-%               have k columns or k*(v+1) columns. If nsamp has k columns
-%               the k initial centroids each iteration i are given by
-%               X(nsamp(i,:),:) and the covariance matrices are equal to the
-%               identity.
-%               If nsamp has k*(v+1) columns the initial centroids and covariance
-%               matrices in iteration i are computed as follows:
-%               X1=X(nsamp(i,:),:);
-%               mean(X1(1:v+1,:)) contains the initial centroid for group  1;
-%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;
-%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2;
-%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2;
-%               ...;
-%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k;
-%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k.
-%               REMARK - if nsamp is not a scalar option option below
-%               startv1 is ignored. More precisely, if nsamp has k columns
-%               startv1=0 elseif nsamp has k*(v+1) columns option startv1
-%               =1.
-%                 Example - 'nsamp',1000
-%                 Data Types - double
 %
-%    refsteps : Number of refining iterations. Scalar. Number of refining
-%               iterations in each subsample. Default is 15.
-%               refsteps = 0 means "raw-subsampling" without iterations.
-%                 Example - 'refsteps',10
-%                 Data Types - single | double
-%
-%     reftol  : Tolerance for the refining steps. Scalar.
-%               The default value is 1e-14;
-%                 Example - 'reftol',1e-05
+%       cshape  : constraint to apply to the shape matrices. Scalar greater or
+%               equal 1. This options only works is 'restrtype' is 'deter'.
+%               When restrtype is deter the default value of the "shape"
+%               constraint (as defined below) applied to each group is
+%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
+%               (virtually) affine equivariant. In other words, the
+%               decomposition or the
+%               $j$-th scatter matrix $\Sigma_j$ is
+%               \[
+%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
+%               \]
+%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
+%               diagonal matrix with $|\Gamma_j|=1$ and with elements
+%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
+%               the eigenvalues of the $\Sigma_j$ matrix) and
+%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
+%               known as "shape" matrices, because they determine the shape of the
+%               fitted cluster components. The following $k$
+%               constraints are then imposed on the shape matrices:
+%               \[
+%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
+%                   c_{shape}, \text{ for } j=1,...,k,
+%               \]
+%               In particular, if we are ideally searching for spherical
+%               clusters it is necessary to set  $c_{shape}=1$. Models with
+%               variable volume and spherical clusters are handled with
+%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
+%               The $restrfactor=cshape=1$ case yields a very constrained
+%               parametrization because it implies spherical clusters with
+%               equal volumes.
+%                 Example - 'cshape',10
 %                 Data Types - single | double
 %
 %equalweights : Cluster weights in the concentration and assignment steps.
@@ -174,6 +166,20 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               term
 %                 Example - 'equalweights',true
 %                 Data Types - Logical
+%
+%
+%        msg  : Level of output to display. Scalar.
+%               Scalar which controls whether to display or not messages
+%               on the screen.
+%               If msg=0 nothing is displayed on the screen.
+%               If msg=1 (default) messages are displayed
+%               on the screen about estimated time to compute the
+%               estimator.
+%               If msg=2 detailed messages are displayed. For example the
+%               information at iteration level, and or the number of
+%               subsets in which there was no convergence.
+%                   Example - 'msg',1
+%                   Data Types - single | double
 %
 %       mixt  : Mixture modelling or crisp assignment. Scalar.
 %               Option mixt specifies whether mixture modelling or crisp
@@ -215,6 +221,104 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %               associated with the largest h numbers are untrimmed.
 %                   Example - 'mixt',1
 %                   Data Types - single | double
+%
+%      nocheck: Check input arguments. Scalar.
+%               If nocheck is equal to 1 no check is performed on
+%               matrix Y.
+%               As default nocheck=0.
+%                   Example - 'nocheck',1
+%                   Data Types - single | double
+%
+%       nsamp : Number of subsamples to extract.
+%               Scalar or matrix.
+%               If nsamp is a scalar it contains the number of subsamples
+%               which will be extracted. If nsamp=0
+%               all subsets will be extracted.
+%               Remark - if the number of all possible subset is <300 the
+%               default is to extract all subsets, otherwise just 300
+%               If nsamp is a matrix it contains in the rows the indexes of
+%               the subsets which have to be extracted. nsamp in this case
+%               can be conveniently generated  by function subsets. nsamp can
+%               have k columns or k*(v+1) columns. If nsamp has k columns
+%               the k initial centroids each iteration i are given by
+%               X(nsamp(i,:),:) and the covariance matrices are equal to the
+%               identity.
+%               If nsamp has k*(v+1) columns the initial centroids and covariance
+%               matrices in iteration i are computed as follows:
+%               X1=X(nsamp(i,:),:);
+%               mean(X1(1:v+1,:)) contains the initial centroid for group  1;
+%               cov(X1(1:v+1,:)) contains the initial cov matrix for group 1;
+%               mean(X1(v+2:2*v+2,:)) contains the initial centroid for group 2;
+%               cov((v+2:2*v+2,:)) contains the initial cov matrix for group 2;
+%               ...;
+%               mean(X1((k-1)*v+1:k*(v+1))) contains the initial centroids for group k;
+%               cov(X1((k-1)*v+1:k*(v+1))) contains the initial cov matrix for group k.
+%               REMARK - if nsamp is not a scalar option option below
+%               startv1 is ignored. More precisely, if nsamp has k columns
+%               startv1=0 elseif nsamp has k*(v+1) columns option startv1
+%               =1.
+%                 Example - 'nsamp',1000
+%                 Data Types - double
+%
+% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
+%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
+%                random numbers which are used to initialize the
+%                proportions of the groups. This option is effective just
+%                if nsamp is a matrix which contains pre-extracted
+%                subsamples. The purpose of this option is to enable to
+%                user to replicate the results in case routine tclust is
+%                called using a parfor instruction (as it happens for
+%                example in routine IC, where tclust is called through a
+%                parfor for different values of the restriction factor).
+%                The default value of RandNumbForNini is empty that is
+%                random numbers from uniform are used.
+%                   Example - 'RandNumbForNini',''
+%                   Data Types - single | double
+%
+%    refsteps : Number of refining iterations. Scalar. Number of refining
+%               iterations in each subsample. Default is 15.
+%               refsteps = 0 means "raw-subsampling" without iterations.
+%                 Example - 'refsteps',10
+%                 Data Types - single | double
+%
+%     reftol  : Tolerance for the refining steps. Scalar.
+%               The default value is 1e-14;
+%                 Example - 'reftol',1e-05
+%                 Data Types - single | double
+%
+%     restrtype : type of restriction. Character. The type of restriction to
+%               be applied on the cluster scatter
+%               matrices. Valid values are 'eigen' (default), or 'deter'.
+%               eigen implies restriction on the eigenvalues while deter
+%               implies restriction on the determinants. If restrtype is
+%               'deter' it is also possible to specify  through optional
+%               parameter cshape the constraint to apply to the shape
+%               matrices. Note that this option is ignored if input
+%               parameter restrfactor is a struct.
+%                 Example - 'restrtype','deter'
+%                 Data Types - char
+%
+%      startv1: How to initialize centroids and covariance matrices. Boolean.
+%               If startv1 is true then initial centroids and covariance
+%               matrices are based on (v+1) observations randomly chosen,
+%               else each centroid is initialized taking a random row of
+%               input data matrix and covariance matrices are initialized
+%               with identity matrices. The default value of startv1 is true.
+%               Remark 1 - in order to start with a routine which is in the
+%               required parameter space, restrictions are
+%               immediately applied.
+%               Remark 2 - option startv1 is used just if nsamp is a scalar
+%               (see for more details the help associated with nsamp).
+%                   Example - 'startv1',false
+%                   Data Types - logical
+%
+%       Ysave : Save original input matrix. Boolean. Set Ysave to true to
+%               request that the input matrix Y
+%               is saved into the output structure out. Default is false, id
+%               est no saving is done.
+%                 Example - 'Ysave',true
+%                 Data Types - logical
+%
 %
 % plots    :    Plot on the screen. Scalar or character or structure.
 %
@@ -282,108 +386,6 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %                          overlaying phase, considering them as outliers.
 %                   Example - 'plots', 1
 %                   Data Types - single | double | character | struct
-%
-%        msg  : Level of output to display. Scalar.
-%               Scalar which controls whether to display or not messages
-%               on the screen.
-%               If msg=0 nothing is displayed on the screen.
-%               If msg=1 (default) messages are displayed
-%               on the screen about estimated time to compute the
-%               estimator.
-%               If msg=2 detailed messages are displayed. For example the
-%               information at iteration level, and or the number of
-%               subsets in which there was no convergence.
-%                   Example - 'msg',1
-%                   Data Types - single | double
-%
-%      nocheck: Check input arguments. Scalar.
-%               If nocheck is equal to 1 no check is performed on
-%               matrix Y.
-%               As default nocheck=0.
-%                   Example - 'nocheck',1
-%                   Data Types - single | double
-%
-%      startv1: How to initialize centroids and covariance matrices. Scalar.
-%               If startv1 is 1 then initial centroids and covariance
-%               matrices are based on (v+1) observations randomly chosen,
-%               else each centroid is initialized taking a random row of
-%               input data matrix and covariance matrices are initialized
-%               with identity matrices. The default value of startv1 is 1.
-%               Remark 1 - in order to start with a routine which is in the
-%               required parameter space, eigenvalue restrictions are
-%               immediately applied.
-%               Remark 2 - option startv1 is used just if nsamp is a scalar
-%               (see for more details the help associated with nsamp).
-%                   Example - 'startv1',1
-%                   Data Types - single | double
-%
-% RandNumbForNini: Pre-extracted random numbers to initialize proportions.
-%                Matrix. Matrix with size k-by-size(nsamp,1) containing the
-%                random numbers which are used to initialize the
-%                proportions of the groups. This option is effective just
-%                if nsamp is a matrix which contains pre-extracted
-%                subsamples. The purpose of this option is to enable to
-%                user to replicate the results in case routine tclust is
-%                called using a parfor instruction (as it happens for
-%                example in routine IC, where tclust is called through a
-%                parfor for different values of the restriction factor).
-%                The default value of RandNumbForNini is empty that is
-%                random numbers from uniform are used.
-%                   Example - 'RandNumbForNini',''
-%                   Data Types - single | double
-%
-%     restrtype : type of restriction. Character. The type of restriction to
-%               be applied on the cluster scatter
-%               matrices. Valid values are 'eigen' (default), or 'deter'.
-%               eigen implies restriction on the eigenvalues while deter
-%               implies restriction on the determinants. If restrtype is
-%               'deter' it is also possible to specify  through optional
-%               parameter cshape the constraint to apply to the shape
-%               matrices. Note that this option is ignored if input
-%               parameter restrfactor is a struct.
-%                 Example - 'restrtype','deter'
-%                 Data Types - char
-%
-%       cshape  : constraint to apply to the shape matrices. Scalar greater or
-%               equal 1. This options only works is 'restrtype' is 'deter'.
-%               When restrtype is deter the default value of the "shape"
-%               constraint (as defined below) applied to each group is
-%               fixed to $c_{shape}=10^{10}$, to ensure the procedure is
-%               (virtually) affine equivariant. In other words, the
-%               decomposition or the
-%               $j$-th scatter matrix $\Sigma_j$ is
-%               \[
-%               \Sigma_j=\lambda_j^{1/v} \Omega_j \Gamma_j \Omega_j'
-%               \]
-%               where $\Omega_j$ is an orthogonal matrix of eigenvectors, $\Gamma_j$ is a
-%               diagonal matrix with $|\Gamma_j|=1$ and with elements
-%               $\{\gamma_{j1},...,\gamma_{jv}\}$ in its diagonal (proportional to
-%               the eigenvalues of the $\Sigma_j$ matrix) and
-%               $|\Sigma_j|=\lambda_j$. The $\Gamma_j$ matrices are commonly
-%               known as "shape" matrices, because they determine the shape of the
-%               fitted cluster components. The following $k$
-%               constraints are then imposed on the shape matrices:
-%               \[
-%               \frac{\max_{l=1,...,v} \gamma_{jl}}{\min_{l=1,...,v} \gamma_{jl}}\leq
-%                   c_{shape}, \text{ for } j=1,...,k,
-%               \]
-%               In particular, if we are ideally searching for spherical
-%               clusters it is necessary to set  $c_{shape}=1$. Models with
-%               variable volume and spherical clusters are handled with
-%               'restrtype' 'deter', $1<restrfactor<\infty$ and $cshape=1$.
-%               The $restrfactor=cshape=1$ case yields a very constrained
-%               parametrization because it implies spherical clusters with
-%               equal volumes.
-%                 Example - 'cshape',10
-%                 Data Types - single | double
-%
-%       Ysave : Save original input matrix. Scalar. Set Ysave to 1 to
-%               request that the input matrix Y
-%               is saved into the output structure out. Default is 0, id
-%               est no saving is done.
-%                 Example - 'Ysave',1
-%                 Data Types - single | double
-%
 %
 %  Output:
 %
@@ -480,7 +482,7 @@ function [out , varargout]  = tclust(Y,k,alpha,restrfactor,varargin)
 %
 %
 %              out.Y  = Original data matrix Y. The field is present only
-%                       if option Ysave is set to 1.
+%                       if option Ysave is set to true.
 %
 %  Optional Output:
 %
@@ -845,7 +847,7 @@ verLess2016b=verLessThanFS(9.1);
 % User options
 % startv1def = default value of startv1 =1, initialization using covariance
 % matrices based on v+1 units
-startv1def=1;
+startv1def=true;
 
 if nargin>4
     % Check whether option nsamp exists
@@ -869,9 +871,9 @@ if nargin>4
             % then the procedure is initialized using identity matrices
             % else using covariance matrices based on the (v+1)*k units
             if ncolC==v
-                startv1=0;
+                startv1=false;
             elseif ncolC==k*(v+1)
-                startv1=1;
+                startv1=true;
             else
                 disp('If nsamp is not a scalar it must have v or k*(v+1) columns')
                 disp('Please generate nsamp using')
@@ -921,7 +923,7 @@ if NoPriorSubsets ==1
     % Remark: startv1 must be immediately checked because the calculation of
     % ncomb is immediately affected.
     
-    if startv1 ==1
+    if startv1 ==true
         ncomb=bc(n,k*(v+1));
     else
         % If the number of all possible subsets is <300 the default is to extract
@@ -974,7 +976,7 @@ cshape=10^10;
 
 
 options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
-    'msg',1,'Ysave',0,'refsteps',refstepsdef,'equalweights',false,...
+    'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
     'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen','cshape',cshape);
 
 UserOptions=varargin(1:2:length(varargin));
@@ -1117,7 +1119,7 @@ end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
 if NoPriorSubsets ==1
-    if startv1 ==1 && k*(v+1) < n
+    if startv1 ==true && k*(v+1) < n
         [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
     else
         [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
@@ -1226,7 +1228,7 @@ for i=1:nselected
         disp(['Iteration ' num2str(i)])
     end
     
-    if startv1 ==1
+    if startv1 ==true
         if NoPriorNini==1
             randk=rand(k,1);
         else
@@ -2149,7 +2151,7 @@ out.h=h;
 
 out.fullsol=fullsol;
 
-if options.Ysave
+if options.Ysave == true
     % Store original data matrix
     out.Y=Y;
 end
