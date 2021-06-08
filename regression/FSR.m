@@ -148,7 +148,7 @@ function [out]=FSR(y,X,varargin)
 %                 Data Types - double
 %
 %  threshoutX  : threshold to bound the effect of high leverage units.
-%                empty value (default) or scalar or structure.
+%                empty value (default) or scalar equal to 1 or structure.
 %               If the design matrix X contains several high leverage units
 %               (that is units which are very far from the bulk of the
 %               data), it may happen that the best subset of LXS may include some
