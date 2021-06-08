@@ -510,7 +510,7 @@ function [out]=FSR(y,X,varargin)
     xylim=axis;
     ylabel('mdr')
     title('FS without bound on the leverage')
-    % threshoutX is passed s astructure
+    % threshoutX is passed as astructure
     threshoutX=struct;
     threshoutX.threshlevoutX=5;
     % Use the instruction below if you wish to change the confidence level to
