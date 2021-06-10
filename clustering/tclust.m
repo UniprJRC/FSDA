@@ -835,60 +835,80 @@ elseif v<=250
         (k==9  && v<=60)   || ...
         (k==10 && v<=50);
 else
-    use_restreigen = 0;
+    use_restreigen = false;
 end
 
-% callmex is a Boolean which is equal to true if the mex file exists
-callmex=existFS('DfM');
-% verLess2016b is true if current version is smaller than 2016b
-verLess2016b=verLessThanFS(9.1);
-
+if coder.target('MATLAB')
+    % callmex is a Boolean which is equal to true if the mex file exists
+    callmex=existFS('DfM');
+    % verLess2016b is true if current version is smaller than 2016b
+    verLess2016b=verLessThanFS(9.1);
+else
+    callmex=false;
+    verLess2016b=false;
+end
 
 % User options
 % startv1def = default value of startv1 =1, initialization using covariance
 % matrices based on v+1 units
 startv1def=true;
 
-if nargin>4
-    % Check whether option nsamp exists
-    chknsamp = strcmp(varargin,'nsamp');
+if coder.target('MATLAB')
     
-    % if the sum below is greater than 0 option nsamp exists
-    if sum(chknsamp)>0
-        nsamp=cell2mat(varargin(find(chknsamp)+1));
+    if nargin>4
+        % Check whether option nsamp exists
+        chknsamp = strcmp(varargin,'nsamp');
         
-        % Check if options nsamp is a scalar
-        if ~isscalar(nsamp)
-            % if nsamp is not a scalar, it is a matrix which contains in
-            % the rows the indexes of the subsets which have to be
-            % extracted
-            C=nsamp;
-            [nsampdef,ncolC]=size(C);
-            % The number of rows of nsamp (matrix C) is the number of
-            % subsets which have to be extracted
-            nselected=nsampdef;
-            % If the number of columns of nsamp (matrix C) is equal to v
-            % then the procedure is initialized using identity matrices
-            % else using covariance matrices based on the (v+1)*k units
-            if ncolC==v
-                startv1=false;
-            elseif ncolC==k*(v+1)
-                startv1=true;
+        % if the sum below is greater than 0 option nsamp exists
+        if sum(chknsamp)>0
+            nsamp=cell2mat(varargin(find(chknsamp)+1));
+            
+            % Check if options nsamp is a scalar
+            if ~isscalar(nsamp)
+                % if nsamp is not a scalar, it is a matrix which contains in
+                % the rows the indexes of the subsets which have to be
+                % extracted
+                C=nsamp;
+                [nsampdef,ncolC]=size(C);
+                % The number of rows of nsamp (matrix C) is the number of
+                % subsets which have to be extracted
+                nselected=nsampdef;
+                % If the number of columns of nsamp (matrix C) is equal to v
+                % then the procedure is initialized using identity matrices
+                % else using covariance matrices based on the (v+1)*k units
+                if ncolC==v
+                    startv1=false;
+                elseif ncolC==k*(v+1)
+                    startv1=true;
+                else
+                    disp('If nsamp is not a scalar it must have v or k*(v+1) columns')
+                    disp('Please generate nsamp using')
+                    disp('nsamp=subsets(number_desired_subsets,n,k) or')
+                    disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
+                    error('FSDA:tclust:WrongNsamp','Wrong number of columns in matrix nsamp')
+                end
+                NoPriorSubsets=0;
             else
-                disp('If nsamp is not a scalar it must have v or k*(v+1) columns')
-                disp('Please generate nsamp using')
-                disp('nsamp=subsets(number_desired_subsets,n,k) or')
-                disp('nsamp=subsets(number_desired_subsets,n,(v+1)*k)')
-                error('FSDA:tclust:WrongNsamp','Wrong number of columns in matrix nsamp')
+                % If nsamp is a scalar it simply contains the number of subsets
+                % which have to be extracted. In this case NoPriorSubsets=1
+                NoPriorSubsets=1;
+                
+                % In this case (nsamp is a scalar) we check whether the user has supplied option
+                % startv1
+                chkstartv1 = strcmp(varargin,'startv1');
+                if sum(chkstartv1)>0
+                    startv1= cell2mat(varargin(find(chkstartv1)+1));
+                else
+                    startv1=startv1def;
+                end
             end
-            NoPriorSubsets=0;
         else
-            % If nsamp is a scalar it simply contains the number of subsets
-            % which have to be extracted. In this case NoPriorSubsets=1
+            % If option nsamp is not supplied then for sure there are no prior
+            % subsets
             NoPriorSubsets=1;
             
-            % In this case (nsamp is a scalar) we check whether the user has supplied option
-            % startv1
+            % In this case (options nsamp does not exist) we check whether the
+            % user has supplied option startv1
             chkstartv1 = strcmp(varargin,'startv1');
             if sum(chkstartv1)>0
                 startv1= cell2mat(varargin(find(chkstartv1)+1));
@@ -897,59 +917,50 @@ if nargin>4
             end
         end
     else
-        % If option nsamp is not supplied then for sure there are no prior
-        % subsets
+        % if nargin ==4 for use the user has not supplied prior subsets.
+        % Default value of startv1 is used
         NoPriorSubsets=1;
-        
-        % In this case (options nsamp does not exist) we check whether the
-        % user has supplied option startv1
-        chkstartv1 = strcmp(varargin,'startv1');
-        if sum(chkstartv1)>0
-            startv1= cell2mat(varargin(find(chkstartv1)+1));
-        else
-            startv1=startv1def;
-        end
+        startv1=startv1def;
     end
-else
-    % if nargin ==4 for use the user has not supplied prior subsets.
-    % Default value of startv1 is used
-    NoPriorSubsets=1;
-    startv1=startv1def;
-end
-
-% If the user has not specified prior subsets (nsamp is not a scalar) than
-% according the value of startv1 we have a different value of ncomb
-if NoPriorSubsets ==1
-    % Remark: startv1 must be immediately checked because the calculation of
-    % ncomb is immediately affected.
     
-    if startv1 ==true
-        ncomb=bc(n,k*(v+1));
-    else
-        % If the number of all possible subsets is <300 the default is to extract
-        % all subsets otherwise just 300.
-        % Notice that we use bc, a fast version of nchoosek. One may also use the
-        % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
-        ncomb=bc(n,k);
+    % If the user has not specified prior subsets (nsamp is not a scalar) than
+    % according the value of startv1 we have a different value of ncomb
+    if NoPriorSubsets ==1
+        % Remark: startv1 must be immediately checked because the calculation of
+        % ncomb is immediately affected.
+        
+        if startv1 ==true
+            ncomb=bc(n,k*(v+1));
+        else
+            % If the number of all possible subsets is <300 the default is to extract
+            % all subsets otherwise just 300.
+            % Notice that we use bc, a fast version of nchoosek. One may also use the
+            % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
+            ncomb=bc(n,k);
+        end
+        nsampdef=min(300,ncomb);
     end
-    nsampdef=min(300,ncomb);
-end
-
-refstepsdef=15;
-reftoldef=1e-5;
-
-% tolrestreigen = tolerance to use in function restreigen
-tolrestreigen=1e-08;
-
-% Default
-if nargin<3
-    alpha=0.05;
-    warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
-else
-    if isempty(alpha)
+    
+    
+    
+    % Default
+    if nargin<3
         alpha=0.05;
         warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
+    else
+        if isempty(alpha)
+            alpha=0.05;
+            warning('FSDA:tclust:Wrongalpha','You have not specified alpha: it is set to 0.05 by default');
+        end
     end
+    
+    if nargin<4
+        restrfactor=12;
+        warning('FSDA:tclust:Wrongrestrfact','You have not specified restrfactor: it is set to 12 by default');
+    end
+    
+else
+    
 end
 
 % Fix alpha equal to the trimming size
@@ -958,12 +969,6 @@ end
 if alpha<0
     error('FSDA:tclust:WrongAlpha','alpha must a scalar in the interval [0 0.5] or an integer specifying the number of units to trim')
 end
-
-if nargin<4
-    restrfactor=12;
-    warning('FSDA:tclust:Wrongrestrfact','You have not specified restrfactor: it is set to 12 by default');
-end
-
 % h = number of untrimmed units
 if alpha>=1
     h=n-floor(alpha);
@@ -971,33 +976,44 @@ else
     h=fix(n*(1-alpha));
 end
 
+refstepsdef=15;
+reftoldef=1e-5;
+
+% tolrestreigen = tolerance to use in function restreigen
+tolrestreigen=1e-08;
+
 % cshape. Constraint on the shape matrices inside each group which works only if restrtype is 'deter'
 cshape=10^10;
 
-
-options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
-    'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
-    'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen','cshape',cshape);
-
-UserOptions=varargin(1:2:length(varargin));
-if ~isempty(UserOptions)
+if coder.target('MATLAB')
     
+    options=struct('nsamp',nsampdef,'RandNumbForNini','','plots',0,'nocheck',0,...
+        'msg',1,'Ysave',false,'refsteps',refstepsdef,'equalweights',false,...
+        'reftol',reftoldef,'mixt',0,'startv1',startv1def,'restrtype','eigen','cshape',cshape);
     
-    % Check if number of supplied options is valid
-    if length(varargin) ~= 2*length(UserOptions)
-        error('FSDA:tclust:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+    UserOptions=varargin(1:2:length(varargin));
+    if ~isempty(UserOptions)
+        
+        % Check if number of supplied options is valid
+        if length(varargin) ~= 2*length(UserOptions)
+            error('FSDA:tclust:WrongInputOpt','Number of supplied options is invalid. Probably values for some parameters are missing.');
+        end
+        
+        % Check if all the specified optional arguments were present
+        % in structure options
+        % Remark: the nocheck option has already been dealt by routine
+        % chkinputR
+        inpchk=isfield(options,UserOptions);
+        WrongOptions=UserOptions(inpchk==0);
+        if ~isempty(WrongOptions)
+            disp(strcat('Non existent user option found->', char(WrongOptions{:})))
+            error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
+        end
     end
-    
-    % Check if all the specified optional arguments were present
-    % in structure options
-    % Remark: the nocheck option has already been dealt by routine
-    % chkinputR
-    inpchk=isfield(options,UserOptions);
-    WrongOptions=UserOptions(inpchk==0);
-    if ~isempty(WrongOptions)
-        disp(strcat('Non existent user option found->', char(WrongOptions{:})))
-        error('FSDA:tclust:NonExistInputOpt','In total %d non-existent user options found.', length(WrongOptions));
-    end
+else
+    ncomb=1000; % TODO
+    NoPriorSubsets=1;
+    startv1=true;
 end
 
 if nargin > 4
@@ -1009,59 +1025,61 @@ if nargin > 4
     
     % And check if the optional user parameters are reasonable.
     
-    % Check number of subsamples to extract
-    if isscalar(options.nsamp) && options.nsamp>ncomb
-        disp('Number of subsets to extract greater than (n k). It is set to (n k)');
-        options.nsamp=0;
-    elseif  options.nsamp<0
-        error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+    if coder.target('MATLAB')
+        % Check number of subsamples to extract
+        if isscalar(options.nsamp) && options.nsamp>ncomb
+            disp('Number of subsets to extract greater than (n k). It is set to (n k)');
+            options.nsamp=0;
+        elseif  options.nsamp<0
+            error('FSDA:tclust:WrongNsamp','Number of subsets to extract must be 0 (all) or a positive number');
+        end
     end
 end
 
 % is restrfactor is a struct then restriction is GPCM
 if isstruct(restrfactor)
+    restrfactorSTRUCT=restrfactor;
     restrnum=3;
     usepreviousest=false;
-    optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
-        'maxiterR','','tolR','','shw',100,'shb',50,...
-        'cdet',100,'zerotol','','pars','','k','','v','','tol','',...
-        'msg','','usepreviousest',usepreviousest);
-    chkoptions(optionspa,fieldnames(restrfactor))
-    
-    if ~isfield(restrfactor,'shw')
-        restrfactor.shw=100;
+    if coder.target('MATLAB')
+        optionspa=struct('maxiterDSR','','tolDSR','','maxiterS','','tolS','', ...
+            'maxiterR','','tolR','','shw',100,'shb',50,...
+            'cdet',100,'zerotol','','pars','','k','','v','','tol','',...
+            'msg','','usepreviousest',usepreviousest,'userepmat',2,'sortsh',1);
+        chkoptions(optionspa,fieldnames(restrfactorSTRUCT))
+        if ~isfield(restrfactorSTRUCT,'shw')
+            restrfactorSTRUCT.shw=100;
+        end
+        if ~isfield(restrfactorSTRUCT,'shb')
+            restrfactorSTRUCT.shb=50;
+        end
+        if ~isfield(restrfactorSTRUCT,'cdet')
+            restrfactorSTRUCT.cdet=100;
+        end
+        
+        if ~isfield(restrfactorSTRUCT,'usepreviousest')
+            restrfactorSTRUCT.usepreviousest=usepreviousest;
+        end
+        
+        if verLess2016b ==true
+            restrfactorSTRUCT.userepmat=1;
+        else
+            restrfactorSTRUCT.userepmat=2;
+        end
     end
-    if ~isfield(restrfactor,'shb')
-        restrfactor.shb=50;
-    end
-    if ~isfield(restrfactor,'cdet')
-        restrfactor.cdet=100;
-    end
-    
-    if ~isfield(restrfactor,'usepreviousest')
-        restrfactor.usepreviousest=usepreviousest;
-    end
-
-    if verLess2016b ==true
-        restrfactor.userepmat=1;
-    else
-        restrfactor.userepmat=2;
-    end
-    
     restrGPCM=true;
     nocheckpa=true;
     
-    if restrfactor.cdet==1
-        restrfactor.pars(1)='E';
+    if restrfactorSTRUCT.cdet==1
+        restrfactorSTRUCT.pars(1)='E';
     end
-    if restrfactor.shb==1 
-            restrfactor.pars(2)='E';
+    if restrfactorSTRUCT.shb==1
+        restrfactorSTRUCT.pars(2)='E';
     end
-    
-    
     
 else
     restrGPCM=false;
+    nocheckpa=false;
     % Check restriction factor
     if restrfactor<1
         disp('Restriction factor smaller than 1. It is set to 1 (maximum contraint==>spherical groups)');
@@ -1080,7 +1098,7 @@ else
     elseif strcmp(restr,'deter')==1
         restrnum=2;
         cshape=options.cshape;
-        restrfactor=[restrfactor cshape];
+        restrfactor=[restrfactor(1); cshape];
     else
         error('FSDA:tclust:Wrongrestr','Wrong restriction');
     end
@@ -1090,7 +1108,6 @@ end
 % Default values for the optional
 % parameters are set inside structure 'options'
 
-plots=options.plots;        % Plot of the resulting classification
 nsamp=options.nsamp;        % Number of subsets to extract
 equalweights=options.equalweights;    % Specify if assignment must take into account the size of the groups
 
@@ -1112,9 +1129,11 @@ msg=options.msg;            % Scalar which controls the messages displayed on th
 
 mixt=options.mixt;         % if options.mixt==1 mixture model is assumed
 
-if mixt>=1 && equalweights == true
-    warning('FSDA:tclust:WrongEqualWeights','option equalweights must be different from 1 if mixture model approach is assumed')
-    warning('FSDA:tclust:WrongEqualWeights','options equalweights is reset to 0')
+if coder.target('MATLAB')
+    if mixt>=1 && equalweights == true
+        warning('FSDA:tclust:WrongEqualWeights','option equalweights must be different from 1 if mixture model approach is assumed')
+        warning('FSDA:tclust:WrongEqualWeights','options equalweights is reset to 0')
+    end
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
@@ -1184,15 +1203,30 @@ U=sigmaini;
 % fullsol = vector which stores value of the objective function in each
 % iteration
 fullsol=zeros(nselected,1);
-
-verMatlab=verLessThan('matlab','8.2.0');
-
-if verMatlab ==1
-    userepmat=0;
+if coder.target('MATLAB')
+    verMatlab=verLessThan('matlab','8.2.0');
+    
+    if verMatlab ==1
+        userepmat=0;
+    else
+        userepmat=1;
+    end
 else
+    % Inizialization requested by MATLAB C-coder
     userepmat=1;
+    index=1:k; 
+    groupind=zeros(n,1);
+    autovalues=zeros(v,k);
+    log_lh=zeros(h,k);
+    indold=zeros(n,1);
+    postprobold=zeros(n,k);
+    muopt=zeros(k,v);
+    nopt=zeros(k,1);
+    assignedmixt=zeros(h,1);
+    idxmixt=zeros(n,1);
+    NlogLmixt=0;
+    bs=zeros(1,k);
 end
-
 if msg == 1
     switch mixt
         case 0
@@ -1216,6 +1250,7 @@ end
 
 
 %%  Random starts
+tstart=tic;
 for i=1:nselected
     
     if msg==1
@@ -1225,7 +1260,8 @@ for i=1:nselected
     end
     
     if msg == 2
-        disp(['Iteration ' num2str(i)])
+        % disp(['Iteration ' num2str(i)])
+        fprintf('Iteration %.0f\n', i);
     end
     
     if startv1 ==true
@@ -1260,52 +1296,54 @@ for i=1:nselected
                 % Eigenvalue eigenvector decomposition for group j
                 [Uj,Lambdaj] = eig(sigmaini(:,:,j));
                 % Store eigenvectors and eigenvalues of group j
-                U(:,:,j)=Uj;
-                Lambda_vk(:,j)=diag(Lambdaj);
+                U(:,:,j)=real(Uj);
+                Lambda_vk(:,j)=real(diag(Lambdaj)); % real is necessary for MATLAB coder
             end
         end
-        
-        if restrnum==1
-            % Restriction on the eigenvalues
-            
-            Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
-            
-            % Check first if the eigenvalues do not satisy the constraint 
-            if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor   
-                if use_restreigen
-                    autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+        if restrGPCM == false
+            if restrnum==1
+                % Restriction on the eigenvalues
+                
+                Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
+                
+                % Check first if the eigenvalues do not satisy the constraint
+                if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor
+                    if use_restreigen
+                        autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                    else
+                        autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                    end
                 else
-                    autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
+                    autovalues = Lambda_vk;
+                end
+                
+                % Covariance matrices are reconstructed keeping into account the
+                % constraints on the eigenvalues
+                for j=1:k
+                    sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                    
+                    % Alternative code: in principle more efficient but slower
+                    % because diag is a built in function
+                    % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
+                end
+            elseif restrnum==2
+                Lambda_vk(Lambda_vk<0)=0;
+                % Restrictions on the determinants
+                autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
+                
+                % Covariance matrices are reconstructed keeping into account the
+                % constraints on the determinants
+                for j=1:k
+                    sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
+                    
+                    % Alternative code: in principle more efficient but slower
+                    % because diag is a built in function
+                    % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
                 end
             else
-                autovalues = Lambda_vk;
             end
-            
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints on the eigenvalues
-            for j=1:k
-                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                
-                % Alternative code: in principle more efficient but slower
-                % because diag is a built in function
-                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            end
-        elseif restrnum==2
-            Lambda_vk(Lambda_vk<0)=0;
-            % Restrictions on the determinants
-            autovalues=restrdeter(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
-            
-            % Covariance matrices are reconstructed keeping into account the
-            % constraints on the determinants
-            for j=1:k
-                sigmaini(:,:,j) = U(:,:,j)*diag(autovalues(:,j))* (U(:,:,j)');
-                
-                % Alternative code: in principle more efficient but slower
-                % because diag is a built in function
-                % sigmaini(:,:,j) = bsxfun(@times,U(:,:,j),autovalues(:,j)') * (U(:,:,j)');
-            end
-        elseif restrnum==3
-            [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);
+        else
+            [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactorSTRUCT,nocheckpa);
         end
         
     else
@@ -1328,8 +1366,8 @@ for i=1:nselected
     iter=0;
     mudiff=1e+15;
     
-    postprob=0;
-    ind=0;
+    postprob=zeros(n,k);
+    ind=zeros(n,1);
     
     % refsteps "concentration" steps will be carried out
     while ( (mudiff > reftol) && (iter < refsteps) )
@@ -1471,8 +1509,8 @@ for i=1:nselected
                         [Uj,Lambdaj] = eig(sigmaini(:,:,j));
                         
                         % Store eigenvectors and eigenvalues of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(:,j)=diag(Lambdaj);
+                        U(:,:,j)=real(Uj);
+                        Lambda_vk(:,j)=real(diag(Lambdaj));
                     end
                 else
                     sigmaini(:,:,j)=ey;
@@ -1530,8 +1568,8 @@ for i=1:nselected
                         % Eigenvalue eigenvector decomposition for group j
                         [Uj,Lambdaj] = eig(sigmaini(:,:,j));
                         % Store eigenvectors and eigenvalues of group j
-                        U(:,:,j)=Uj;
-                        Lambda_vk(:,j)=diag(Lambdaj);
+                        U(:,:,j)=real(Uj);
+                        Lambda_vk(:,j)=real(diag(Lambdaj));
                     end
                 else
                     sigmaini(:,:,j)=ey;
@@ -1554,15 +1592,15 @@ for i=1:nselected
             
             Lambda_vk(Lambda_vk<0)=0; % check on negative eigenvalues
             
-            % Check first if the eigenvalues do not satisy the constraint 
-            if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor   
+            % Check first if the eigenvalues do not satisy the constraint
+            if  abs(max(Lambda_vk,[],'all') / min(Lambda_vk,[],'all')) > restrfactor
                 if use_restreigen
                     autovalues = restreigen(Lambda_vk,niini,restrfactor,tolrestreigen,userepmat);
                 else
                     autovalues = restreigeneasy(Lambda_vk,niini,restrfactor,tolrestreigen);
                 end
             else
-                 autovalues = Lambda_vk;
+                autovalues = Lambda_vk;
             end
             
         elseif restrnum==2
@@ -1599,10 +1637,10 @@ for i=1:nselected
             % Alternative code based on gpuArrary
             % sigmainichk1=pagefun(@mtimes, gpuArray(sigmainichk), gpuArray(Ut));
         else
-            if restrfactor.usepreviousest ==true
-                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa,lmd, OMG);
+            if restrfactorSTRUCT.usepreviousest ==true
+                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactorSTRUCT,nocheckpa,lmd, OMG);
             else
-                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactor,nocheckpa);   
+                [sigmaini,lmd, OMG]=restrSigmaGPCM(sigmaini,niini,restrfactorSTRUCT,nocheckpa);
             end
         end
         % Calculus of the objective function (E-step)
@@ -1713,7 +1751,9 @@ notconver=noconv/nselected;
 if msg==2
     if notconver>0.1
         disp('------------------------------')
-        disp(['Warning: Number of subsets without convergence equal to ' num2str(100*notconver) '%'])
+        % disp(['Warning: Number of subsets without convergence equal to ' num2str(100*notconver) '%'])
+        percexcl=100*notconver;
+        fprintf('Warning: Number of subsets without convergence equal to %.1f%%\n',percexcl)
     end
 end
 
@@ -1856,14 +1896,18 @@ else
     out.idx=idx;
 end
 
-% siz = matrix of size k x 3,
-% 1st col = sequence from 0 to k
-% 2nd col = number of observations in each cluster
-% 3rd col = percentage of observations in each cluster
-% sum(out.siz(:,2))=n
-% sum(out.siz(:,3))=100
-siz=tabulate(out.idx);
-out.siz=siz;
+
+if coder.target('MATLAB')
+    
+    % siz = matrix of size k x 3,
+    % 1st col = sequence from 0 to k
+    % 2nd col = number of observations in each cluster
+    % 3rd col = percentage of observations in each cluster
+    % sum(out.siz(:,2))=n
+    % sum(out.siz(:,3))=100
+    siz=tabulate(out.idx);
+    out.siz=siz;
+end
 
 % Store n x k matrix containing posterior probability
 % of each row from each component (cluster)
@@ -1894,7 +1938,7 @@ for j=1:k
         if restrGPCM==false
             % disp(['group' num2str(j) num2str(covj)])
             %         try
-            [~,values] = eigs(covj);
+            [~,values] = eig(covj);
             %         catch
             %             jj=100;
             %         end
@@ -1920,73 +1964,72 @@ for j=1:k
 end
 
 
-
-%% Empirical quantities stored when there is no convergence
-
-% unique ID found which are not outliers
-UniqID = unique(idx(idx>0));
-
-if length(UniqID) ~= k
-    % Compute the empirical statistics when the algorithm does not reach
-    % convergence (i.e. some cluster are missing)
+if coder.target('MATLAB')
     
-    % initialize muemp and sigmaemp
-    muemp    = nan(size(muopt));
-    sigmaemp = nan(v,v,k);
+    %% Empirical quantities stored when there is no convergence
     
-    % iterate for each cluster found
-    for j=1:length(UniqID)
+    % unique ID found which are not outliers
+    UniqID = unique(idx(idx>0));
+    
+    if length(UniqID) ~= k
+        % Compute the empirical statistics when the algorithm does not reach
+        % convergence (i.e. some cluster are missing)
         
-        % assign the jj-th cluster ID
-        jj = UniqID(j);
+        % initialize muemp and sigmaemp
+        muemp    = nan(size(muopt));
+        sigmaemp = nan(v,v,k);
         
-        if sum(idx==jj)>1
-            % when more than one unit is in the jj-th cluster
-            muemp(jj,:)      = mean(Y(idx==jj,:));
-            sigmaemp(:,:,jj) = cov(Y(idx==jj,:));
-        else
-            % when one unit is in the jj-th cluster
-            muemp(jj,:)      = Y(idx==jj,:);
-            sigmaemp(:,:,jj) = 0;
+        % iterate for each cluster found
+        for j=1:length(UniqID)
+            
+            % assign the jj-th cluster ID
+            jj = UniqID(j);
+            
+            if sum(idx==jj)>1
+                % when more than one unit is in the jj-th cluster
+                muemp(jj,:)      = mean(Y(idx==jj,:));
+                sigmaemp(:,:,jj) = cov(Y(idx==jj,:));
+            else
+                % when one unit is in the jj-th cluster
+                muemp(jj,:)      = Y(idx==jj,:);
+                sigmaemp(:,:,jj) = 0;
+            end
         end
+        
+        % restore apropriate order of the ID
+        realID = 1:k;                           % searched clusters
+        NanGroups = ~ismember(realID, UniqID);  % missing clusters
+        % initialize idxemp
+        idxemp = idx;
+        % order the clusters found
+        for i = 1:k-sum(NanGroups)
+            posChang = idx==UniqID(i);
+            UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i)));
+            idxemp(posChang) = UniqID(i);
+        end
+        
+        % put NaN at the end of muopt, sigmaopt, siz
+        muemp = [muemp(~NanGroups,:); muemp(NanGroups,:)];
+        sigmaemp = cat(3, sigmaemp(:,:,~NanGroups), sigmaemp(:,:,NanGroups));
+        % Store empirical centroids, covariance matrices, mixing proportions
+        % and ID
+        emp = struct;
+        emp.idxemp = idxemp;
+        emp.muemp = muemp;
+        emp.sigmaemp = sigmaemp;
+        
+        sizemp=tabulate(idxemp);
+        misSiz = k-length(UniqID) ; % missing rows in siz
+        sizemp = [sizemp; nan(misSiz, 3)];
+        emp.sizemp = sizemp;
+        % save the structure in the structure out
+        out.emp = emp;
+        
+    else
+        % assign empty structure when convergence is obtained
+        out.emp = 0;
     end
-    
-    % restore apropriate order of the ID
-    realID = 1:k;                           % searched clusters
-    NanGroups = ~ismember(realID, UniqID);  % missing clusters
-    % initialize idxemp
-    idxemp = idx;
-    % order the clusters found
-    for i = 1:k-sum(NanGroups)
-        posChang = idx==UniqID(i);
-        UniqID(i) = UniqID(i) - sum(NanGroups(1:UniqID(i)));
-        idxemp(posChang) = UniqID(i);
-    end
-    
-    % put NaN at the end of muopt, sigmaopt, siz
-    muemp = [muemp(~NanGroups,:); muemp(NanGroups,:)];
-    sigmaemp = cat(3, sigmaemp(:,:,~NanGroups), sigmaemp(:,:,NanGroups));
-    sizemp=tabulate(idxemp);
-    misSiz = k-length(UniqID) ; % missing rows in siz
-    sizemp = [sizemp; nan(misSiz, 3)];
-    
-    % Store empirical centroids, covariance matrices, mixing proportions
-    % and ID
-    emp = struct;
-    emp.idxemp = idxemp;
-    emp.muemp = muemp;
-    emp.sigmaemp = sigmaemp;
-    emp.sizemp = sizemp;
-    
-    % save the structure in the structure out
-    out.emp = emp;
-    
-else
-    % assign zero to the field when convergence is obtained
-    emp = 0;
-    out.emp = emp;
 end
-
 
 %% Compute INFORMATION CRITERIA
 % add to npar the number of free covariance parameters
@@ -1999,7 +2042,7 @@ if restrGPCM==false
         error('FSDA:tclust:WrongModel','Just eigenvalue and determinant restriction')
     end
 else
-    modeltype=restrfactor.pars;
+    modeltype=restrfactorSTRUCT.pars;
     if strcmp(modeltype,'EII')
         detpar=1;
         shapepar=0;
@@ -2007,7 +2050,7 @@ else
         % nParam=npar+1;
         
     elseif strcmp(modeltype,'VII')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar=0;
         rotpar=0;
         % nParam=npar+k;
@@ -2019,7 +2062,7 @@ else
         % nParam=npar+v;
         
     elseif strcmp(modeltype,'VEI')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar=v-1;
         rotpar=0;
         % nParam=npar+k+v-1;
@@ -2027,12 +2070,12 @@ else
     elseif strcmp(modeltype,'EVI')
         detpar=1;
         rotpar=0;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         % nParam=npar+1+k*(v-1);
         
     elseif strcmp(modeltype,'VVI')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0;
         % nParam=npar+k*v;
         
@@ -2043,7 +2086,7 @@ else
         % nParam=npar+0.5*v*(v+1);
         
     elseif strcmp(modeltype,'VEE')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= (v-1);
         rotpar=0.5*v*(v-1);
         % nParam=npar+k+v-1+0.5*v*(v-1);
@@ -2051,7 +2094,7 @@ else
         
     elseif strcmp(modeltype,'EVE')
         detpar=1;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*v*(v-1);
         % nParam=npar+1+k*(v-1)+0.5*v*(v-1);
         
@@ -2062,26 +2105,26 @@ else
         % nParam=npar+v+0.5*k*v*(v-1);
         
     elseif strcmp(modeltype,'VVE')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*v*(v-1);
         % nParam=npar+k*v+0.5*v*(v-1);
         
     elseif strcmp(modeltype,'VEV')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
         shapepar= v-1;
         rotpar=0.5*k*v*(v-1);
         % nParam=npar+k+v-1+0.5*k*v*(v-1);
         
     elseif strcmp(modeltype,'EVV')
         detpar=1;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*k*v*(v-1);
         % nParam=npar+1+k*(v-1) +0.5*k*v*(v-1);
         
     elseif strcmp(modeltype,'VVV')
-        detpar=(k-1)*(1- 1/(restrfactor.cdet^(1/v)))+1;
-        shapepar= (v-1)*( 1- 1/restrfactor.shw)* ( (k-1)*( 1- 1/restrfactor.shb) +1 );
+        detpar=(k-1)*(1- 1/(restrfactorSTRUCT.cdet^(1/v)))+1;
+        shapepar= (v-1)*( 1- 1/restrfactorSTRUCT.shw)* ( (k-1)*( 1- 1/restrfactorSTRUCT.shb) +1 );
         rotpar=0.5*k*v*(v-1);
         %  nParam=npar+0.5*k*v*(v+1);
         
@@ -2105,30 +2148,43 @@ if mixt>0
     out.MIXMIX=MIXMIX;
     out.MIXCLA=MIXCLA;
     out.NlogL= 2*NlogLmixt;
+    if ~coder.target('MATLAB')
+        out.CLACLA=[];
+    end
 else
     % CLACLA = BIC which uses parameters estimated using the classification
     % likelihood and the maximized classification likelihood as goodness of fit
     % measure (New New)
     CLACLA  = 2*NlogL +nParam*logh;
-    
-    out.CLACLA=CLACLA;
+    if ~coder.target('MATLAB')
+        out.MIXMIX=[];
+        out.MIXCLA=[];
+    end
     out.NlogL=2*NlogL;
+    out.CLACLA=CLACLA;
 end
 
 
 % Store the fraction of subsamples without convergence.
 out.notconver=notconver;
 alp=alpha>0;
-if msg==1
-    if size(siz,1)<k+alp
-        disp(['Number of supplied clusters =' num2str(k)])
-        disp(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
-        warning('FSDA:tclust:WrongKObtained','The total number of estimated clusters is smaller than the number supplied')
+if coder.target('MATLAB')
+    if msg==1
+        if size(siz,1)<k+alp
+            disp(['Number of supplied clusters =' num2str(k)])
+            disp(['Number of estimated clusters =' num2str(size(siz,1)-alp)])
+            warning('FSDA:tclust:WrongKObtained','The total number of estimated clusters is smaller than the number supplied')
+        end
     end
-end
-
-if min(out.siz((1+alp):end,2)< n*0.02)
-    warning('FSDA:tclust:TooSmallNj','Clusters with size < n * 0.02 found - try reducing k')
+    
+    
+    if min(out.siz((1+alp):end,2)< n*0.02)
+        warning('FSDA:tclust:TooSmallNj','Clusters with size < n * 0.02 found - try reducing k')
+    end
+    
+    if vopt==-1e+25
+        warning('FSDA:tclust:NoConvergence','The result is artificially constrained due to restr.fact = 1')
+    end
 end
 
 % Store units forming initial subset which gave rise to the optimal
@@ -2137,11 +2193,6 @@ out.bs=bs;
 
 % Store value of the objective function (maximized trimmed log likelihood)
 out.obj=vopt;
-
-if out.obj==-1e+25
-    warning('FSDA:tclust:NoConvergence','The result is artificially constrained due to restr.fact = 1')
-end
-
 
 out.equalweights=equalweights;
 
@@ -2154,102 +2205,108 @@ out.fullsol=fullsol;
 if options.Ysave == true
     % Store original data matrix
     out.Y=Y;
-end
-
-
-%% Create plots
-
-% Plot the groups. Depending on v (univariate, bivariate, multivariate),
-% we generate different plot types.
-if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % integer equal to 1 or structure
-        ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
-        (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
-    
-    % The following statement is necessary because if mixt>0
-    % idx was called idxmixt;
-    idx=out.idx;
-    
-    % change the ID used if empirical values are evaluated
-    if isstruct(emp)
-        idx = idxemp;
-    end
-    
-    if v==1
-        
-        % Univariate case: plot the histogram
-        figure;
-        histFS(Y,length(Y),idx);
-        
-    elseif v>=2
-        
-        % Bivariate plot, optionally with confidence ellipses, density
-        % countours or bivariate boxplot
-        
-        % extract char or struct fro the cell if needed
-        if iscell(plots)
-            plots = cell2mat(plots);
-        end
-        
-        % define what to superimpose on the plot
-        if ischar(plots)
-            overlay.type = plots;
-        elseif isstruct(plots)
-            overlay = plots;
-        elseif plots==1
-            % if plots=1 do not add anything to the scatter plot
-            overlay ='';
-        end
-        
-        % exclude outliers if present (when plots is char or struct)
-        if any(idx<=0) && ~isempty(overlay)
-            overlay.include = true(length(unique(idx)), 1);
-            overlay.include(unique(idx)<=0) = false;
-        end
-        
-        % differentiate for bivariate and multivariate data
-        if v==2
-            undock = [2 1];
-        else
-            undock = '';
-        end
-        
-        % show axes label
-        plo.labeladd=1;
-        
-        % use black color for outliers (i.e. k is the first color, used for group 0)
-        if any(idx==0)
-            plo.clr = 'kbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcy';
-            plo.clr = plo.clr(1:length(unique(idx)));
-        end
-        
-        % Add Labels Names
-        % [To Enhance if used we lose the labels' order, it needs to
-        % change on the spmplot call idx with id]
-        % id=cellstr(num2str(idx));
-        % id(idx==0)=cellstr('Trimmed units');
-        
-        % bivariate scatter
-        figure;
-        spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
-        
-    end
-    
-    
-    % add title
-    if restrGPCM==false
-        str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
-    else
-        str=restrfactor.pars;
-        % str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$','GPCM');
-    end
-    title(str,'Interpreter','Latex'); % , 'fontsize', 14
-    
-elseif isscalar(plots) && plots == 0
-    % does anything
 else
-    warning('FSDA:tclust:WrongInp','The parameter ''plots'' is not valid.');
+    if ~coder.target('MATLAB')
+        out.Y=0;
+    end
 end
 
+if coder.target('MATLAB')
+    
+    %% Create plots
+    plots=options.plots;        % Plot of the resulting classification
+    
+    % Plot the groups. Depending on v (univariate, bivariate, multivariate),
+    % we generate different plot types.
+    if  isstruct(plots) || (~iscell(plots) && isscalar(plots) && plots==1) || ... % integer equal to 1 or structure
+            ((ischar(plots) || iscell(plots)) && max(strcmp(plots,{'contourf','contour','surf','mesh','ellipse','boxplotb'}))) || ... % char or cell of one of the specified string
+            (iscell(plots) && isstruct(cell2mat(plots))) % cell containing a structure
+        
+        % The following statement is necessary because if mixt>0
+        % idx was called idxmixt;
+        idx=out.idx;
+        
+        % change the ID used if empirical values are evaluated
+        if isstruct(emp)
+            idx = idxemp;
+        end
+        
+        if v==1
+            
+            % Univariate case: plot the histogram
+            figure;
+            histFS(Y,length(Y),idx);
+            
+        elseif v>=2
+            
+            % Bivariate plot, optionally with confidence ellipses, density
+            % countours or bivariate boxplot
+            
+            % extract char or struct fro the cell if needed
+            if iscell(plots)
+                plots = cell2mat(plots);
+            end
+            
+            % define what to superimpose on the plot
+            if ischar(plots)
+                overlay.type = plots;
+            elseif isstruct(plots)
+                overlay = plots;
+            elseif plots==1
+                % if plots=1 do not add anything to the scatter plot
+                overlay ='';
+            end
+            
+            % exclude outliers if present (when plots is char or struct)
+            if any(idx<=0) && ~isempty(overlay)
+                overlay.include = true(length(unique(idx)), 1);
+                overlay.include(unique(idx)<=0) = false;
+            end
+            
+            % differentiate for bivariate and multivariate data
+            if v==2
+                undock = [2 1];
+            else
+                undock = '';
+            end
+            
+            % show axes label
+            plo.labeladd=1;
+            
+            % use black color for outliers (i.e. k is the first color, used for group 0)
+            if any(idx==0)
+                plo.clr = 'kbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcykbrmgcy';
+                plo.clr = plo.clr(1:length(unique(idx)));
+            end
+            
+            % Add Labels Names
+            % [To Enhance if used we lose the labels' order, it needs to
+            % change on the spmplot call idx with id]
+            % id=cellstr(num2str(idx));
+            % id(idx==0)=cellstr('Trimmed units');
+            
+            % bivariate scatter
+            figure;
+            spmplot(Y, 'group', idx, 'plo', plo, 'undock', undock, 'overlay', overlay);
+            
+        end
+        
+        
+        % add title
+        if restrGPCM==false
+            str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$',restrfactor(1));
+        else
+            str=restrfactorSTRUCT.pars;
+            % str = sprintf('%d groups found by tclust for %s=%.2f and %s= %0.f', sum(unique(idx)>0),'$\alpha$',alpha,'$c$','GPCM');
+        end
+        title(str,'Interpreter','Latex'); % , 'fontsize', 14
+        
+    elseif isscalar(plots) && plots == 0
+        % does anything
+    else
+        warning('FSDA:tclust:WrongInp','The parameter ''plots'' is not valid.');
+    end
+end
 
 end
 %FScategory:CLUS-RobClaMULT

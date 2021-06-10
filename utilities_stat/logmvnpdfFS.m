@@ -70,7 +70,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 %                 Data Types - single | double
 %
 %     callmex  : call or not mex function to compute the result. Boolean.
-%               Boolean which controls whether to call or not the mex function. 
+%               Boolean which controls whether to call or not the mex function.
 %                 Example - 'callmex',false
 %                 Data Types - boolean
 %
@@ -103,7 +103,7 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
      mu = [1 1]; Sigma = [.9 .4; .4 .3];
      y = logmvnpdfFS(X, mu, Sigma);
 %}
-     
+
 %{
      % Comparison with mvnpdf.
      % In this example we check the agreement of the results with MATLAB
@@ -349,7 +349,11 @@ function y = logmvnpdfFS(X, Mu, Sigma, X0, eyed, n, d, msg, callmex)
 if nargin==3
     % verLess2016b is a boolean which is true if current version is less then
     % 2016b
-    verLess2016b=verLessThanFS(9.1);
+    if coder.target('MATLAB')
+        verLess2016b=verLessThanFS(9.1);
+    else
+        verLess2016b=false;
+    end
     
     if verLess2016b ==true
         % Deviations from Mu using Matlab function bsxfun.
@@ -363,8 +367,8 @@ if nargin==3
     
 else
     if nargin<9
-    % callmex is a Boolean which is equal to true if the mex file exists
-    callmex=existFS('DfM');
+        % callmex is a Boolean which is equal to true if the mex file exists
+        callmex=existFS('DfM');
     end
     
     if callmex==true
@@ -373,9 +377,13 @@ else
         % d = number of variables (input parameter of function DfM)
         DfM(X,Mu,X0,n,d);
     else
-        % verLess2016b is a boolean which is true if current version is less then
-        % 2016b
-        verLess2016b=verLessThanFS(9.1);
+        if coder.target('MATLAB')
+            % verLess2016b is a boolean which is true if current version is less then
+            % 2016b
+            verLess2016b=verLessThanFS(9.1);
+        else
+            verLess2016b=false;
+        end
         
         if verLess2016b ==false
             X0=X-Mu;
@@ -389,9 +397,11 @@ end
 % Take Choleski of Sigma
 [Sigma,err] = chol(Sigma);
 if err ~= 0
+    if coder.target('MATLAB')
     if nargin<8 || (nargin ==8 && msg==1)
         warning('FSDA:logmvnpdfFS:BadMatrixSigma','Cholesky of Sigma is impossible');
         warning('FSDA:logmvnpdfFS:BadMatrixSigma','-Inf output is returned');
+    end
     end
     y=  -Inf;
 else
