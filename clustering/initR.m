@@ -74,6 +74,8 @@ else
     % The common rotation matrix is formed by the eigenvectors of the
     % pooled within-group covariance matrix Sw
     [V,eigunsorted]= eig(Sw);
+    V=real(V);
+    eigunsorted=real(eigunsorted);
     % Sort eigenvalues from largest to smallest and reorder the columns
     % of the matrix of eigenvectors accordingly
     [~,ordeig]=sort(diag(eigunsorted),'descend');

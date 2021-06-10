@@ -55,11 +55,11 @@ for j=1:k
 end
 
 [V,eigunsorted]= eig(Sigma);
-diageigunsorted=diag(abs(eigunsorted));
+diageigunsorted=diag(abs(real(eigunsorted)));
 [~,ordeig]=sort(diageigunsorted,'descend');
 % First column of V is first eigenvector associated to largest
 % eigenvalue ....
-V=V(:,ordeig);
+V=real(V(:,ordeig));
 
 % old instruction to remove
 % V=fliplr(V);

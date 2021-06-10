@@ -423,7 +423,11 @@ end
 
 d=max(strcmp('userepmat',fpa));
 if d==0
-    verLess2016b=verLessThanFS(9.1);
+    if coder.target('MATLAB')
+        verLess2016b=verLessThanFS(9.1);
+    else
+        verLess2016b=false;
+    end
     if verLess2016b == true
         pa.userepmat=1;
     else
@@ -456,6 +460,12 @@ if strcmp(pars(2),'E')
 end
 
 %% Initialization part
+
+if ~coder.target('MATLAB')
+    Wk=zeros(v,v,k);
+    wk=zeros(k,1);
+    GAMfc=zeros(v,k);
+end
 if strcmp(pars(3),'E')
     % In the common principal components case it is necessary to find
     % initial values for OMG (rotation), and lmd (unconstrained
@@ -483,12 +493,14 @@ if strcmp(pars(3),'E')
     % wk(j) contains largest eigenvalue of Wk(:,:,j)
     % These two matrices will be used inside routine cpcV
     if (strcmp(pars,'VVE') || strcmp(pars,'EVE'))
-        Wk=zeros(v,v,k);
-        wk=zeros(k,1);
+        if coder.target('MATLAB')
+            Wk=zeros(v,v,k);
+            wk=zeros(k,1);
+        end
         sumnini=sum(niini);
         for j=1:k
             Wk(:,:,j)  = (niini(j) /sumnini)  * SigmaB(:,:,j);
-            wk(j) = max(eig(Wk(:,:,j)));
+            wk(j) = max(real(eig(Wk(:,:,j))));
         end
     end
 elseif  strcmp(pars(3),'V')
@@ -499,12 +511,12 @@ elseif  strcmp(pars(3),'V')
         % Find initial (and final value for OMG)
         for j=1:k
             [V,eigunsorted]= eig(SigmaB(:,:,j));
-            diageigunsorted=diag(abs(eigunsorted));
+            diageigunsorted=diag(abs(real(eigunsorted)));
             % Sort eigenvalues from largest to smallest and reorder the columns
             % of the matrix of eigenvectors accordingly
             [~,ordeig]=sort(diageigunsorted,'descend');
             V=V(:,ordeig);
-            OMG(:,:,j)=V;
+            OMG(:,:,j)=real(V);
             
             if strcmp(pars(1),'V')
                 % lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
@@ -539,8 +551,8 @@ GAM=ones(v,k);
 % end
 
 OMGold=OMG(:,:,1);
-GAMold=9999;
-lmdold=GAMold;
+GAMold=9999*GAM(:);
+lmdold=999*ones(k,1);
 
 %% Beginning of iterative process
 

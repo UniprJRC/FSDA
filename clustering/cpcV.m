@@ -73,10 +73,11 @@ iter=0;
 % the element of matrix Omega2D in two consecutive iterations
 diffOMG = Inf;
 
+F=zeros(v,v);
+Omega2Dold=F;
 while ( (diffOMG > tolR) && (iter < maxiterR) )
     iter=iter+1;
     
-    F=0;
     for j=1:k
         GAMjinv=diag(1./(GAMc(:,j)));
         F=F+(1/lmdc(j)^(1/v)) * GAMjinv * (Omega2D') * Wk(:,:,j)...
