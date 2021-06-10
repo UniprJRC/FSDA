@@ -87,19 +87,19 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 nfore=36;
 StartDate=[1949 1];
 conflev=0.999; % Wide confidence level for the forecast
-outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">         lab           bhat         se        tstat         pval    
-    _____________    ________    ________    ________    ___________
+outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">                 Coeff         SE          t           pval    
+                ________    ________    ________    ___________
 
-    {'b_trend1' }      315.87      5.1388      61.468    4.6562e-100
-    {'b_trend2' }       2.787    0.038712      71.993    5.4912e-109
-    {'b_cos1'   }       2.515      3.3193     0.75768        0.44997
-    {'b_sin1'   }      1.2431      1.6427     0.75678        0.45051
-    {'b_cos2'   }    0.062504     0.12609     0.49572         0.6209
-    {'b_sin2'   }     -1.4392      1.9004    -0.75734        0.45017
-    {'b_cos3'   }    -0.59234     0.78919    -0.75056        0.45423
-    {'b_sin3'   }     0.24437     0.33753     0.72401        0.47032
-    {'b_varampl'}     -0.2321     0.29285    -0.79255        0.42944
-    {'b_lshift' }     -241.96      6.1276     -39.487     1.1144e-75
+    b_trend1      315.87      5.1388      61.468    4.6562e-100
+    b_trend2       2.787    0.038712      71.993    5.4912e-109
+    b_cos1         2.515      3.3193     0.75768        0.44997
+    b_sin1        1.2431      1.6427     0.75678        0.45051
+    b_cos2      0.062504     0.12609     0.49572         0.6209
+    b_sin2       -1.4392      1.9004    -0.75734        0.45017
+    b_cos3      -0.59234     0.78919    -0.75056        0.45423
+    b_sin3       0.24437     0.33753     0.72401        0.47032
+    b_varaml     -0.2321     0.29285    -0.79255        0.42944
+    b_lshift     -241.96      6.1276     -39.487     1.1144e-75
 
 Level shift position t=10
 </pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_2'><img vspace="5" hspace="5" src="images\forecastTS_10.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_11.png" alt=""> </a></p></div></div><div id="Extraexample_3" class="example_module expandableContent"><div id="ExtraExample_3"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li><img alt="" src="images_help/M.gif" style="width: 12px; height: 12px"> Contaminated airline data (2).</li></span></a></span></h3><div class="collapse"><p><div class="programlisting"><div class="codeinput"><pre class="matlab-code">close all
@@ -124,19 +124,19 @@ y(1:20)=y(1:20)+200;
 model=struct;
 model.trend=1;              % linear trend
 model.s=12;                 % monthly time series
-model.seasonal=[];          % no seasonal component
+model.seasonal=0;          % no seasonal component
 model.lshift=10;            % search for level shift
 out=LTSts(y,'model',model,'plots',1,'dispresults',true,'msg',0);
 % 3 years forecasts
 nfore=36;
 StartDate=[1949 1];
 conflev=0.999; % Wide confidence level for the forecast
-outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">        lab          bhat         se        tstat        pval   
-    ____________    _______    ________    _______    __________
+outFORE=forecastTS(out,'model',model,'nfore',nfore,'StartDate',StartDate,'conflev',conflev);</pre></div></div><pre class="codeoutput">                 Coeff        SE          t          pval   
+                _______    ________    _______    __________
 
-    {'b_trend1'}     318.56      12.143     26.234    4.1665e-56
-    {'b_trend2'}     2.4871    0.096914     25.663    5.4488e-55
-    {'b_lshift'}    -229.59      14.512    -15.821    4.6764e-33
+    b_trend1     318.56      12.143     26.234    4.1665e-56
+    b_trend2     2.4871    0.096914     25.663    5.4488e-55
+    b_lshift    -229.59      14.512    -15.821    4.6764e-33
 
 Level shift position t=10
 </pre><a href='http://rosa.unipr.it/fsda/forecastTS.html#ExtraExample_3'><img vspace="5" hspace="5" src="images\forecastTS_12.png" alt="Click here for the graphical output of this example (link to Ro.S.A. website)"> <img vspace="5" hspace="5" src="images\forecastTS_13.png" alt=""> </a></p></div></div><div id="Extraexample_4" class="example_module expandableContent"><div id="ExtraExample_4"></div><h3 class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="example_title"><li>Example with simulated data.</li></span></a></span></h3><div class="collapse"><p>
@@ -225,19 +225,19 @@ out=LTSts(y,'model',model,'plots',1,'dispresults',true);
 % Note that in this case all the 120 values of Xall are supplied and
 % the number of forecasts is 20
 model.X=Xall;
-forecastTS(out,'model',model,'nfore',20)</pre></div></div><pre class="codeoutput">         lab           bhat          se        tstat         pval   
-    _____________    _________    ________    ________    __________
+forecastTS(out,'model',model,'nfore',20)</pre></div></div><pre class="codeoutput">                  Coeff         SE          t           pval   
+                _________    ________    ________    __________
 
-    {'b_trend1' }       1082.5      1905.7     0.56801       0.57144
-    {'b_trend2' }        137.1      81.629      1.6796      0.096506
-    {'b_cos1'   }      -513.87      636.73    -0.80704       0.42177
-    {'b_sin1'   }        612.4      678.81     0.90216       0.36938
-    {'b_cos2'   }      -1925.1      1501.6      -1.282       0.20313
-    {'b_sin2'   }      -2776.4        2084     -1.3322       0.18615
-    {'b_AR1'    }      0.24976    0.079246      3.1517     0.0022053
-    {'b_AR2'    }      0.61635    0.077048      7.9996    4.0843e-12
-    {'b_X1'     }      -1.9556      8.8835    -0.22014       0.82626
-    {'b_varampl'}    -0.058666    0.033078     -1.7736       0.07952
+    b_trend1       1082.5      1905.7     0.56801       0.57144
+    b_trend2        137.1      81.629      1.6796      0.096506
+    b_cos1        -513.87      636.73    -0.80704       0.42177
+    b_sin1          612.4      678.81     0.90216       0.36938
+    b_cos2        -1925.1      1501.6      -1.282       0.20313
+    b_sin2        -2776.4        2084     -1.3322       0.18615
+    b_AutoR1      0.24976    0.079246      3.1517     0.0022053
+    b_AutoR2      0.61635    0.077048      7.9996    4.0843e-12
+    b_explX1      -1.9556      8.8835    -0.22014       0.82626
+    b_varaml    -0.058666    0.033078     -1.7736       0.07952
 
 
 ans = 

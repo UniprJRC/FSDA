@@ -3,8 +3,8 @@
  computes the (approximate) integral using the trapezoidal rule
  \[
  a_i = \int_{x_1}^{z_i} f(x) dx
- \]   
- For further details see "more about".</P><h2>More About</h2><P>
+ \]
+ For further details see the section More About.</P><h2>More About</h2><P>
  This function estimates the integral of Y via the trapezoidal method.
  For a function defined $y=f(x)$ with $n$ pairs  $(x_1,y_1)$ $\ldots$
  $(x_n,y_n)$, with $x_1 \leq x_2 \leq, \ldots, \leq x_n$,
@@ -20,14 +20,15 @@
  +0.5 (z_i-x_i) \left\{ 2y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} \right\}
   \end{equation}
  The last term of the equation is the area of the trapezoid with
- coordinates $(x_i, y_i)$,$(z_i, f(z_i))$  and 
+ coordinates $(x_i, y_i)$,$(z_i, f(z_i))$  and
  \[
- f(z_i)=y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i} 
+ f(z_i)=y_i+(z_i-x_i) \frac{y_{i+1}-y_i}{x_{i+1}-x_i}
  \]
  is found by linear interpolation.
- 
- If $z_i&gt;x_n$ the function for $x &gt; x_n$ is assumed constant and equal to
- $y_n$ therefore to the expression of $a_i$ computed as described above we
+
+ If RectAreaOutside is omitted or is true, 
+ when $z_i&gt;x_n$ the function for $x &gt;x_n$ is assumed constant and equal to
+ $y_n$ therefore, to the expression of $a_i$ computed as described above, we
  must add $(z_i-x_n) y_n$.
  On the other hand, if $z_i&lt;x_1$ the function for $x&lt;x_1$ is assumed
  constant and equal to $y_1$ therefore $a_i$ is computed as:
@@ -35,16 +36,18 @@
  a_i = -(x_1-z_i) y_1
  \]
  Note that $a_i$ in this last case (if $y_1$ is positive) becomes negative.
-
+ On the other hand, if RectAreaOutside is false when $z_i&gt;x_n$ or when  $z_i&lt;x_1$, 
+ we assume $f(z_i)=\sum_{i=1}^n y_i/n$. 
+ 
  This routine in called in every step of the outer loop by function avas.m
  in order to compute a new set of transformed values for the response
  which have approximately constant variance.
  Inside avas, the $x$ coordinates are the fitted values ordered, the $y$
  coordinates are the reciprocal of the smoothed absolute values of
  residuals sorted using the ordering of fitted values, while the upper
- values of the range of integration are given by the elements of vector
- $ty$ sorted using the ordering of fitted values. The output is the new
- vector $ty$ with the elements ordered using $ordyhat$. 
+ values of the range of integration are given by the elements vector
+ of transformed values in the previous iteration. The output is the new
+ vector of transformed values $ty$.
 
 </P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression,
  "Journal of the American Statistical Association", Vol. 83, 394-405.</P></html>
