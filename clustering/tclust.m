@@ -1214,7 +1214,7 @@ if coder.target('MATLAB')
 else
     % Inizialization requested by MATLAB C-coder
     userepmat=1;
-    index=1:k; 
+    index=1:k;
     groupind=zeros(n,1);
     autovalues=zeros(v,k);
     log_lh=zeros(h,k);
@@ -1965,7 +1965,6 @@ end
 
 
 if coder.target('MATLAB')
-    
     %% Empirical quantities stored when there is no convergence
     
     % unique ID found which are not outliers
@@ -2011,23 +2010,25 @@ if coder.target('MATLAB')
         % put NaN at the end of muopt, sigmaopt, siz
         muemp = [muemp(~NanGroups,:); muemp(NanGroups,:)];
         sigmaemp = cat(3, sigmaemp(:,:,~NanGroups), sigmaemp(:,:,NanGroups));
+        sizemp=tabulate(idxemp);
+        misSiz = k-length(UniqID) ; % missing rows in siz
+        sizemp = [sizemp; nan(misSiz, 3)];
+        
         % Store empirical centroids, covariance matrices, mixing proportions
         % and ID
         emp = struct;
         emp.idxemp = idxemp;
         emp.muemp = muemp;
         emp.sigmaemp = sigmaemp;
-        
-        sizemp=tabulate(idxemp);
-        misSiz = k-length(UniqID) ; % missing rows in siz
-        sizemp = [sizemp; nan(misSiz, 3)];
         emp.sizemp = sizemp;
+        
         % save the structure in the structure out
         out.emp = emp;
         
     else
-        % assign empty structure when convergence is obtained
-        out.emp = 0;
+        % assign zero to the field when convergence is obtained
+        emp = 0;
+        out.emp = emp;
     end
 end
 
