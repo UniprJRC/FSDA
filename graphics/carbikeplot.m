@@ -182,7 +182,18 @@ function [h,varargout]  = carbikeplot(RelSol,varargin)
     [h , sol_areas] = carbikeplot(outMIXMIX)
 %}
 
-
+%{
+    % car-bike plot for the flea data.
+    XX=load('flea.txt');
+    Y=XX(:,1:end-1);
+    nsamp=100;
+    out=tclustIC(Y,'cleanpool',false,'plots',0,'alpha',0.1,'nsamp',nsamp);
+    % Find the best solutions using as Information criterion CLACLA
+    disp('Best solutions using CLACLA')
+    [outCLACLA]=tclustICsol(out,'whichIC','CLACLA','plots',0,'NumberOfBestSolutions',6);
+    % Produce the car-bike plot
+    carbikeplot(outCLACLA);
+%}
 
 %% Beginning of code
 
