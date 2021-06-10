@@ -128,7 +128,7 @@ outNoLevConstr=FSR(yall,Xall,'msg',0,'ylim',[0 5]);
 xylim=axis;
 ylabel('mdr')
 title('FS without bound on the leverage')
-% threshoutX is passed s astructure
+% threshoutX is passed as astructure
 threshoutX=struct;
 threshoutX.threshlevoutX=5;
 % Use the instruction below if you wish to change the confidence level to
@@ -289,7 +289,7 @@ cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExamp
                  If the number of all possible subset is &lt;1000 the
                  default is to extract all subsets otherwise just 1000.</p><p>
                  </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'nsamp',1000
-</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_threshoutX" class="clearfix"></div><h3 id="input_argument_namevalue_threshoutX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>threshoutX</code> &#8212;threshold to bound the effect of high leverage units.</span></a><span class="example_desc">empty value (default) | scalar | structure.</span></span></h3><div class="collapse">	<p><p>If the design matrix X contains several high leverage units
+</code></p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div><div class="expandableContent"><div id="inputarg_threshoutX" class="clearfix"></div><h3 id="input_argument_namevalue_threshoutX" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>threshoutX</code> &#8212;threshold to bound the effect of high leverage units.</span></a><span class="example_desc">empty value (default) | scalar equal to 1 | structure.</span></span></h3><div class="collapse">	<p><p>If the design matrix X contains several high leverage units
                (that is units which are very far from the bulk of the
                data), it may happen that the best subset of LXS may include some
                of these units, or it may happen that these units have a
@@ -412,9 +412,9 @@ cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExamp
                  controlling minimum and maximum on the y axis.</p> <p>
                  Default value is '' (automatic scale)
                </p></p>	<p class="description_valueexample">       <strong>Example: </strong><code> 'ylim',[0,10] sets the minimum value to 0 and the
-</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>k x 1 vector containing the list of the units declared as
+</code>               max to 10 on the y axis</p>	<p class="datatypelist"><strong>Data Types: </strong><code>double</code></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><h2 id="OutputArgs" >Output Arguments</h2><div class="expandableContent"><div class="arguments"><div class="output_argument_container"><p class="switch"><a class="expandAllLink" href="javascript:void(0);">expand all</a></p><div class="expandableContent"><div id="outputarg_out" class="clearfix"></div><h3 id="output_argument_out" class="expand"><span><a href="javascript:void(0);" style="display: block;" title="Expand/Collapse"><span class="argument_name"><code>out</code> &#8212; description</span></a><span class="example_desc">Structure</span></span></h3><div class="collapse"><p>Structure which contains the following fields<table border="2" cellpadding="4" cellspacing="0" class="body"><colgroup><col width="20%"><col width="80%"></colgroup><thead><tr valign="top"><th valign="top">Value</th><th valign="top">Description</th></tr></thead><tr valign="top"><td><code>ListOut</code></td><td><p>row vector containing the list of the units declared as
                 outliers or NaN if the sample is homogeneous</p></td></tr><tr valign="top"><td><code>outliers</code></td><td><p>out.ListOut. This field is added for homogeneity with the
-                other robust estimators.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression
+                other robust estimators and is equal to out.ListOut.</p></td></tr><tr valign="top"><td><code>beta</code></td><td><p>p-by-1 vector containing the estimated regression
                parameters (in step n-k).</p></td></tr><tr valign="top"><td><code>scale</code></td><td><p>scalar containing the estimate of the scale (sigma).</p></td></tr><tr valign="top"><td><code>residuals</code></td><td><p>n x 1 vector containing the estimates of the robust
                 scaled residuals.</p></td></tr><tr valign="top"><td><code>fittedvalues</code></td><td><p>n x 1 vector containing the fitted values.</p></td></tr><tr valign="top"><td><code>mdr</code></td><td><p>(n-init) x 2 matrix
                1st col = fwd search index
@@ -430,12 +430,7 @@ cascade</pre></div></div><a href='http://rosa.unipr.it/fsda/FSR.html#ExtraExamp
                of the search.</p></p></td></tr><tr valign="top"><td><code>nout</code></td><td><p><p>2 x 5 matrix containing the number of times mdr went out
                of particular quantiles.</p> <p>
                First row contains quantiles 1 99 99.9 99.99 99.999.</p><p>
-               Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>constr</code></td><td><p>This output is produced only if the search found at a
-               certain step X is a singular matrix. In this case the
-               search runs in a constrained mode, that is including the
-               units which produced a non singular matrix in the last n-constr
-               steps. out.constr is a vector which contains the list of
-               units which produced a singular X matrix</p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSR'.</p></td></tr><tr valign="top"><td><code>VIOMout</code></td><td><p><p>m x 1 vector containing the list of the units declared as
+               Second row contains the frequency distribution.</p></p></td></tr><tr valign="top"><td><code>class</code></td><td><p>'FSR'.</p></td></tr><tr valign="top"><td><code>VIOMout</code></td><td><p><p>m x 1 vector containing the list of the units declared as
                VIOM outliers or NaN if they are not present.</p> <p>
                This field is present only if weak = true.</p></p></td></tr><tr valign="top"><td><code>ListCl</code></td><td><p><p>(n-m) x 1 vector of non-outlying units.</p> <p>
                This field is present only if weak = true.</p></p></td></tr></table></p></div></div></div></div></div></div><div class="ref_sect" itemprop="content"><div class="bibliography"><h2 id="References">References</h2> <div><p>Riani, M., Atkinson, A.C. and Cerioli, A. (2009), Finding an unknown

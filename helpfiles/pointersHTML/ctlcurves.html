@@ -1,0 +1,24 @@
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>ctlcurves</title> <meta content="refpage" name="chunktype"><meta content="function:ctlcurves " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="ctlcurves Computes Classification Trimmed Likelihood Curves" itemprop="description" name="description" /><h1 itemprop="title">ctlcurves</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/ctlcurves.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/ctlcurves.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/ctlcurves.html">http://rosa.unipr.it/FSDA/ctlcurves.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: ctlcurves</em></p><P>ctlcurves</P><P>Computes Classification Trimmed Likelihood Curves</P><h2>Description</h2><P>ctlcurves applies tclust several times on a given dataset while
+   parameters alpha and k are altered. The resulting object gives an idea
+   of the optimal trimming level and number of clusters considering a
+   particular dataset.</P><h2>More About</h2><P>
+ These curves show the values of the trimmed classification
+ (log)-likelihoods when altering the trimming proportion alpha and the
+ number of clusters k. The careful examination of these curves provides
+ valuable information for choosing these parameters in a clustering
+ problem. For instance, an appropriate k to be chosen is one that we do
+ not observe a clear increase in the trimmed classification likelihood
+ curve for k with respect to the k+1 curve for almost all the range of
+ alpha values. Moreover, an appropriate choice of parameter alpha may be
+ derived by determining where an initial fast increase of the trimmed
+ classification likelihood curve stops for the final chosen k (Garcia
+ Escudero et al. 2011). This routine adds confidence bands in order to
+ provide an automatic criterion in order to choose k and alpha. Optimal
+ trimming level is chosen as the smallest value of alpha such that the
+ bands for two consecutive values of k intersect and computes a bootstrap
+ test for two consecutive values of k given alpha.
+
+
+</P><h2>References</h2><P>Garcia-Escudero, L.A.; Gordaliza, A.; Matran, C. and Mayo-Iscar A., (2011), 
+ "Exploring the number of groups in robust model-based
+ clustering." Statistics and Computing, Vol. 21, pp. 585-599.</P></html>

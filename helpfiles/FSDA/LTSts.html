@@ -427,13 +427,13 @@ title(findobj(gcf,'Tag','FSRts:ts'),'P17049075, FS with default conflev');</pre>
                 _________    _________    ________    __________
 
     b_trend1       115.27       4.5051      25.586    2.0728e-26
-    b_trend2        1.592      0.27465      5.7965    9.1326e-07
-    b_cos1        -2.8294       3.9153    -0.72265        0.4741
-    b_sin1        -12.419       4.6909     -2.6475      0.011543
+    b_trend2        1.592      0.27465      5.7965    9.1325e-07
+    b_cos1        -2.8294       3.9154    -0.72265        0.4741
+    b_sin1        -12.419       4.6909     -2.6475      0.011544
     b_cos2        -9.0708       4.6584     -1.9472      0.058559
     b_sin2        -22.604       4.7099     -4.7992    2.2402e-05
-    b_varaml    -0.015796    0.0042445     -3.7215    0.00060896
-    b_lshift      -112.62       7.6319     -14.756    8.9213e-18
+    b_varaml    -0.015796    0.0042445     -3.7215    0.00060891
+    b_lshift      -112.62       7.6319     -14.756    8.9212e-18
 
 Level shift position t=27
                   Coeff         SE           t          pval   
@@ -665,7 +665,9 @@ Summary of the exceedances
                        If lshift = -1 tentative level shifts are
                          considered for positions $p+1,p+2, ..., T-p$ and
                          the most significant one is included in the final
-                         model.</p><p>
+                         model ($p$ is the total number of parameters in
+                         the fitted model). Note that lshift=-1 is not
+                         supported for C-coder translation.</p><p>
                        In the paper RPRH $\beta_{LS1}$ is denoted with
                        symbol $\delta_1$, while, $\beta_{LS2}$ is denoted
                        with symbol $\delta_2$.</p></p></td></tr><tr valign="top"><td><code>ARp</code></td><td><p><p>scalar greater or equal than 0 which
@@ -835,7 +837,7 @@ Summary of the exceedances
                         out.posLS.</p> <p>
                        2nd col = standard errors;</p> <p>
                        3rd col = t-statistics;</p><p>
-                       4th col = p values.</p></p></td></tr><tr valign="top"><td><code>Btable</code></td><td><p>same thing out.B but n table format.</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
+                       4th col = p values.</p></p></td></tr><tr valign="top"><td><code>Btable</code></td><td><p>same thing as out.B but in table format.</p></td></tr><tr valign="top"><td><code>h</code></td><td><p>The number of observations that have determined the
                        initial LTS estimator, i.e. the value of h.</p></td></tr><tr valign="top"><td><code>bs</code></td><td><p><p>Vector containing the units with the smallest p+k
                        squared residuals before the reweighting step,
                        where p is the total number of the parameters in

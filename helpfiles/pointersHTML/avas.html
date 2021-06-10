@@ -1,3 +1,89 @@
-<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>avas</title> <meta content="refpage" name="chunktype"><meta content="function:avas " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="avas Computes additivity and variance stabilization for regression" itemprop="description" name="description" /><h1 itemprop="title">avas</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/avas.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/avas.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/avas.html">http://rosa.unipr.it/FSDA/avas.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: avas</em></p><P>avas</P><P>Computes additivity and variance stabilization for regression</P><h2>Description</h2><P>This function differs from ace in that it uses a (nonparametric)
-   variance-stabilizing transformation for the response variable.</P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression,
+<!DOCTYPE HTML> <html itemscope="" xmlns="http://www.w3.org/1999/xhtml"> <head> <title>avas</title> <meta content="refpage" name="chunktype"><meta content="function:avas " itemprop="refentity" name="refentity"><meta content="fcn" itemprop="pagetype" name="toctype"><meta content="ref/function" itemprop="infotype" name="infotype" /><meta content="avas Computes additivity and variance stabilization for regression" itemprop="description" name="description" /><h1 itemprop="title">avas</h1><script type="text/javascript"><!--   function Redirect() {var l = document.getElementById('link');l.click();   }   setTimeout('Redirect()', 400);//--></script></head> <a href="matlab:webFS([docrootFS '/FSDA/avas.html'])"; target="_top" id="link">Link to formatted HTML documentation in Mathworks style of '/FSDA/avas.html'</a> <P>If redirecting does not work you can see the proper HTML documentation of this page in Mathworks style at the web address of the Robust Statistics Academy of the University of Parma (RoSA)<P> <a href="http://rosa.unipr.it/FSDA/avas.html">http://rosa.unipr.it/FSDA/avas.html</a></P><hr /><p style="background-color:#A9CCE3 "><em>Syllabus page indexed by builddocsearchdb for function: avas</em></p><P>avas</P><P>Computes additivity and variance stabilization for regression</P><h2>Description</h2><P>This function differs from ace because it uses a (nonparametric)
+   variance-stabilizing transformation for the response variable.</P><h2>More About</h2><P>In what follows we recall the techinque of the variance stabilizing
+ transformation which is at the root of the avas routine.
+ Let $ X $ be a random variable, with $ E[X]=\mu $ and $ \mathrm{Var}[X]=\sigma^2 $.
+ Define $ Y=g(X) $, where $g$ is a regular function. A first-order Taylor
+ approximation for $Y=g(x)$ is
+ \[
+ Y=g(X)\approx g(\mu)+g'(\mu)(X-\mu).
+ \]
+ Then
+ \[
+ E[Y]=g(\mu)\; \mbox{and} \; \mathrm{Var}[Y]=\sigma^2g'(\mu)^2. 
+ \]
+ 
+ Consider now a random variable $ X $ such that $ E[X]=\mu $ and $
+ \mathrm{Var}[X]=h(\mu) $. Notice the relation between the variance and
+ the mean, which implies, for example, heteroskedasticity in a linear
+ model. The goal is to find a function $ g $ such that $ Y=g(X) $ has a
+ variance independent (at least approximately) of its expectation.
+ 
+ Imposing the condition $ \mathrm{Var}[Y]\approx
+ h(\mu)g'(\mu)^2=\mathrm{constant} $,  equality implies the differential
+ equation
+ \[
+ \frac{dg}{d\mu}=\frac{C}{\sqrt{h(\mu)}}.
+ \]
+ 
+ This ordinary differential equation has, by separation of variables, the solution
+ \[
+ g(\mu)=\int \frac{Cd\mu}{\sqrt{h(\mu)}}.
+ \] 
+  Tibshirani (JASA, p.395) has a random variable $W$ with $ E[W]=u $ and $\mathrm{Var}[W]=v(u)$. The variance stabilising transformation for $W$ is given by
+ \[
+ h(t)=\int^t \frac{1}{\sqrt{v(u)}}.
+ \]
+ The constant $C = 1$ due to the standardization of the variance of $W$. 
+ In our context  $\frac{1}{\sqrt{v(u)}}$ corresponds to vector of the
+ reciprocal of the absolute values of the smoothed residuals sorted using
+ the ordering based on fitted values of the regression model which uses
+ the explanatory variables possibly transformed. The $x$ coordinates of
+ the function to integrate are the fitted values sorted.
+ 
+ As concerns the range of integration it goes from
+ $\hat y_{(1)}$ the smallest fitted value, to $\widehat{ty}_i^{old}$.
+ Therefore the lower extreme of integration is fixed for all $n$ integrals.
+ The upper extremes of integration are given by the elements of
+ transformed response values from previous iteration (say
+ $\widehat{ty}_i^{old}$), corresponding to ordered fitted values.
+ The output of the integration is a new set of transformed values
+ $\widehat{ty}^{new}$.
+ 
+ 
+ In summary, the trick is that,  there is not just one integral, but there
+ are $n$ integrals. Th $i$-th integral which is defined as
+ \[
+  \widehat{ty}_i^{new}= \int_{\hat y_{(1)}}^{\widehat{ty}_i^{old}} \frac{1}{|e_i|} d \hat y
+ \]
+ produces a new updated value for the transformed response
+ $\widehat{ty}_i$ associated with $\hat y_{(i)}$ the $i$-th ordered fitted
+ value. Note that the old transformed value from previous iteration was
+ the upper extreme of integration.
+ 
+ The estimate of $g$ is strictly increasing because it is the integral of
+ a positive function (reciprocal of the absolute values of the residuals).
+ 
+ The computation of the $n$ integrals is done by the trapezoidal rule and
+ is detailed in routine ctsub.m.
+ 
+ ${\it Remark}$: It may happen that at a particular iteration of the AVAS
+ procedure using $\widehat{ty}$ and $\widehat{tX}$, $n-m$ units are declared as outliers. In
+ this case the fit, the residuals and the associated smoothed values are
+ computed using just $n-k$ observations.
+ Therefore the function to integrate has coordinates
+ \[
+ (\hat y_{(1)}, 1/|e_1|) , (\hat y_{(2)}, 1/|e_2|), \ldots, (\hat y_{(n-k)}, 1/|e_{n-k}|)
+ \]
+ where $\hat y_{(j)}$ is the $j$-th order statistic $j=1, 2, \ldots, n-k$
+ among the fitted values (associated to non outlying observations) and
+ $1/e_j$ is the reciprocal of the corresponding smoothed residual. Notice
+ that $e_j$ is not the residual for unit $j$ but it is the residuals which
+ corresponds to the $j$-th ordered fitted value $\hat y_{(j)}$. In order
+ to have a new estimate of $\widehat{ty}^{new}$, we can still solve $n$
+ integrals. If in the upper extreme of integration, we plug in the $n$ old
+ values of $\widehat{ty}^{old}$ (including the outliers) we have the
+ vector of length $n$ of the new estimates of transformed values
+ $\widehat{ty}^{new}$.
+
+</P><h2>References</h2><P>Tibshirani R. (1987), Estimating optimal transformations for regression,
  "Journal of the American Statistical Association", Vol. 83, 394-405.</P></html>
