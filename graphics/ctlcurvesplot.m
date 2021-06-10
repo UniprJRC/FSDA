@@ -131,6 +131,15 @@ function ctlcurvesplot(outCTL,varargin)
 %                   Example - 'tag','myplot1'
 %                   Data Types - char
 %
+%         conflev : confidence level of the bands. Empty value (default) or scalar.
+%                   Scalar in the interval (0 1) which contains
+%                   the confidence level of the bands.
+%                   The default is to use the confidence level taken from
+%                   ctlcurves.m (that is 50 per cent confidence
+%                   level).
+%                   Example - 'conflev',0.9
+%                   Data Types - double
+%
 %   datatooltip :   interactive clicking. Empty value (default) or
 %                   structure. The default is datatooltip=''.
 %                   If datatooltip = 1, the user can select with the
