@@ -55,6 +55,7 @@ function S=genSigmaGPCM(v, k, pa)
 %               the restriction which has to be applied to the ordered elements of
 %               the shape matrices across groups. This field is used
 %               just if pa.exactrestriction is true.
+%               Data Types - struct
 %
 %
 %  Optional input arguments:
