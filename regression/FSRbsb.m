@@ -268,6 +268,7 @@ end
 % otherwise the following message appears
 % Variable 'Xb' is not fully defined on some execution paths.
 Xb=X(1:p,:);
+nocheck=options.nocheck;
 
 if bsb==0
     Ra=true; nwhile=1;
@@ -284,6 +285,17 @@ if bsb==0
     end
     yb=y(bsb);
 else
+    if nocheck==false
+        % check that the values inside bsb are admissible
+        if max(bsb)>n
+           error('FSDA:FSRbsb:Wrongbsb','maximum number inside bsb must not be greater than n');
+        elseif min(bsb)<1
+           error('FSDA:FSRbsb:Wrongbsb','minimum number inside bsb must not be smaller than 1');
+        elseif any(mod(bsb,1))
+            error('FSDA:FSRbsb:Wrongbsb','bsb must only contain integer values');
+        else
+        end
+    end
     Xb=X(bsb,:);
     yb=y(bsb);
 end
