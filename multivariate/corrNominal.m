@@ -122,12 +122,26 @@ function out=corrNominal(N, varargin)
 %                        The range of Cramer index is [0, 1]. A Cramer's V in
 %                        the range of [0, 0.3] is considered as weak,
 %                        [0.3,0.7] as medium and > 0.7 as strong.
-%                        In order to compute the confidence interval for
-%                        this index we first find a confidence interval for
-%                        the non centrality parameter $\Delta$ of the
+%                        The way in which the confidence interval for
+%                        this index is specified in input option conflimMethodCramerV.
+%                        If conflimMethodCramerV is 'ncchisq', 'ncchisqadj'
+%                        we first find a confidence interval for the non
+%                        centrality parameter $\Delta$ of the
 %                        $\chi^2$ distribution with $df=(I-1)(J-1)$ degrees of
 %                        freedom. (see Smithson (2003); pp. 39-41) $[\Delta_L
-%                        \Delta_U]$. A confidence interval for $\Delta$ is
+%                        \Delta_U]$. If input option conflimMethodCramerV is 
+%                        'ncchisq', confidence interval for $\Delta$ is
+%                        transformed into one for $V$ by the following
+%                        transformation
+%                        \[
+%                        V_L=\sqrt{\frac{\Delta_L }{n \min[(I-1),(J-1)]}}
+%                        \]
+%                        and
+%                        \[
+%                        V_U=\sqrt{\frac{\Delta_U }{n \min[(I-1),(J-1)]}}
+%                        \]
+%                        If input option conflimMethodCramerV is 
+%                        'ncchisqadj', confidence interval for $\Delta$ is
 %                        transformed into one for $V$ by the following
 %                        transformation
 %                        \[
@@ -269,10 +283,6 @@ function out=corrNominal(N, varargin)
 %
 % Acknowledgements:
 %
-% In order to find the confidence interval for the non centrality parameter
-% of the Chi-squared distribution we use routine ncpci from the Effect Size
-% Toolbox. [Code by Harald Hentschke (University of T�bingen) and
-% Maik St�ttgen (University of Bochum)].
 %
 % Copyright 2008-2021.
 % Written by FSDA team
