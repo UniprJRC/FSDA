@@ -75,6 +75,19 @@ function out=corrNominal(N, varargin)
 %               Example - 'conflev',0.99
 %               Data Types - double
 %
+%  conflimMethodCramerV:   method to compute confidence interval for CramerV.
+%               Character. 
+%               Character which identifies the method to use to compute the
+%               confidence interval for Cramer index. Default value is
+%               'ncchisq'. Possible values are 'ncchisq', 'ncchisqadj',
+%               'fisher' or 'fisheradj'; 'ncchisq' uses the non central
+%               chi2. 'ncchisq' uses the non central chi2 adjusted for the
+%               degrees of fredom. 'fisher' uses the Fisher
+%               z-transformation and 'fisheradj' uses the fisher
+%               z-transformation and bias correction.
+%               Example - 'conflimMethodCramerV','fisheradj'
+%               Data Types - character
+%
 %  Output:
 %
 %         out:   structure which contains the following fields:
@@ -324,7 +337,7 @@ function out=corrNominal(N, varargin)
     out=corrNominal(X,'datamatrix',true);
 %}
 
-%{ 
+%{
     % Example of option datamatrix combined with X defined as table.
     % Initial contingency matrix (2D array).
     N=[75   126
@@ -349,6 +362,29 @@ function out=corrNominal(N, varargin)
     % call function corrNominal using first argument as input data matrix
     % in table format and option datamatrix set to true
     out=corrNominal(Xtable,'datamatrix',true);
+%}
+
+%{
+    %% Example: compare confidence interval for Cramer V.
+    % Use the 4 possible methods
+    method={'ncchisq', 'ncchisqadj', 'fisher' 'fisheradj'};
+    % Use a contingency table referred to type of job vs wine delivery
+    rownam={'Butcher' 'Carpenter' 'Carter' 'Farmer' 'Hunter' 'Miller' 'Taylor'};
+    colnam={'Wine not delivered' 'Wine delivered'};
+    N=[85 9
+        214  56
+        212  19
+        100  17
+        139  15
+        109  16
+        172  29];
+    Ntable=array2table(N,'RowNames',rownam,'VariableNames',colnam);
+    ConfintV=zeros(4,2);
+    for i=1:4
+        out=corrNominal(Ntable,'conflimMethodCramerV',method{i});
+        ConfintV(i,:)=out.ConfLimtable{'CramerV',3:4};
+    end
+    disp(array2table(ConfintV,'RowNames',method,'VariableNames',{'Lower' 'Upper'}))
 %}
 
 %% Beginning of code
@@ -397,9 +433,11 @@ end
 dispresults=true;
 NoStandardErrors=false;
 conflev=0.95;
+    conflimMethodCramerV='ncchisq';
 
 options=struct('Lr',{Lr},'Lc',{Lc},'datamatrix',false,...
-    'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,'conflev',conflev);
+    'dispresults',dispresults,'NoStandardErrors',NoStandardErrors,...
+    'conflev',conflev,'conflimMethodCramerV',conflimMethodCramerV);
 
 UserOptions=varargin(1:2:length(varargin));
 if ~isempty(UserOptions)
@@ -424,7 +462,7 @@ if ~isempty(UserOptions)
     conflev=options.conflev;
     Lr  = options.Lr;
     Lc  = options.Lc;
-    
+    conflimMethodCramerV=options.conflimMethodCramerV;
 end
 
 % Extract labels for rows and columns
@@ -547,9 +585,33 @@ else
     df=(I-1)*(J-1);
     k=min(I,J);
     
+    
+    if strcmp(conflimMethodCramerV,'ncchisq')
+        [LoC]=lochi(Chi2,df,conflev);
+        [HoC]=hichi(Chi2,df,conflev);
+        ncpConfInt=[LoC(1) HoC(1)];
+        ConfIntCramerV=sqrt((ncpConfInt)/(n*(k-1)));
+    elseif  strcmp(conflimMethodCramerV,'ncchisqadj')
+        [LoC]=lochi(Chi2,df,conflev);
+        [HoC]=hichi(Chi2,df,conflev);
+        ncpConfInt=[LoC(1) HoC(1)];
+        ConfIntCramerV=sqrt((ncpConfInt+df)/(n*(k-1)));
+    elseif  strcmp(conflimMethodCramerV,'fisher')
+        se = 1/sqrt(n - 3) * norminv(1 - (1 - conflev)/2);
+        ConfIntCramerV = tanh(atanh(CramerV) + [-se, se]);
+    elseif  strcmp(conflimMethodCramerV,'fisheradj')
+        se = 1/sqrt(n - 3) * norminv(1 - (1 - conflev)/2);
+        adj = 0.5 * CramerV/(n - 1);
+        ConfIntCramerV = tanh(atanh(CramerV) + [-se, se] +adj);
+    else
+        error('FSDA:CorrNominal:WrongInputOptforConfIntCramerV','Possible values are ''ncchisq'' ''ncchisqadj'' ''fisher'' ''fisheradj''');
+    end
+    ConfIntCramerV(1)=max([0 ConfIntCramerV(1)]);
+    ConfIntCramerV(2)=min([1 ConfIntCramerV(2)]);
+    
     % use external routine ncpci to find confidence interval
-    ncpConfInt=ncpci(Chi2,'X2',df,'confLevel',conflev);
-    ConfIntCramerV=sqrt((ncpConfInt+df)/(n*(k-1)));
+    % ncpConfInt=ncpci(Chi2,'X2',df,'confLevel',conflev);
+    % ConfIntCramerV=sqrt((ncpConfInt+df)/(n*(k-1)));
     
     % Store confidence intervals
     seCramerV=(CramerV-ConfIntCramerV(1))/talpha;
@@ -654,28 +716,6 @@ if verMatlab ==0
     out.TestIndtable=TestIndtable;
 end
 
-% if dispresults == true
-%
-%     if NoStandardErrors == false
-%         disp('Goodmand and Kruskal lambda')
-%         disp(GKlambdayx)
-%         disp('tau index')
-%         disp(tauyx)
-%         disp('Uncertainty coefficient of Theil')
-%         disp(Hyx)
-%
-%
-%     else
-%
-%
-%         % TODO
-%
-%     end
-%
-% else
-%     % TODO
-% end
-
 if dispresults == true
     
     disp('Chi2 index')
@@ -720,4 +760,57 @@ if dispresults == true
 end
 
 end
+
+% lochi compute lower confidence interval of chi2
+function [Lochi] = lochi(chival,df,conf)
+ulim = 1 - (1 - conf)/2;
+lc =[0.001, chival/2, chival];
+while ncx2cdf(chival,df,lc(1)) < ulim
+    if chi2cdf(chival, df) < ulim
+        Lochi=[0, chi2cdf(chival, df)];
+        return
+    else
+        lc =[lc(1)/4, lc(1), lc(3)];
+    end
+end
+
+diff = 1;
+while (diff > 1e-05)
+    if ncx2cdf(chival,df,lc(2))  < ulim
+        lc = [lc(1), (lc(1) + lc(2))/2, lc(2)];
+    else
+        lc = [lc(2), (lc(2) + lc(3))/2, lc(3)];
+    end
+    diff = abs(ncx2cdf(chival,df,lc(2)) - ulim);
+    % disp(diff)
+    ucdf = ncx2cdf(chival,df,lc(2));
+end
+Lochi=[lc(2), ucdf];
+end
+
+% hichi computes upper confidence interval of chi2
+function [Hichi] = hichi(chival,df,conf)
+uc =[chival, 2 * chival, 3 * chival];
+llim =  (1 - conf)/2;
+while ncx2cdf(chival,df,uc(1)) < llim
+    uc=[uc(1)/4, uc(1), uc(3)];
+end
+while ncx2cdf(chival,df,uc(3)) > llim
+    uc=[uc(1), uc(3), uc(3)+chival];
+end
+
+diff = 1;
+while (diff > 1e-05)
+    if ncx2cdf(chival,df,uc(2))  < llim
+        uc = [uc(1), (uc(1) + uc(2))/2, uc(2)];
+    else
+        uc = [uc(2), (uc(2) + uc(3))/2, uc(3)];
+    end
+    diff = abs(ncx2cdf(chival,df,uc(2)) - llim);
+    % disp(diff)
+    lcdf = ncx2cdf(chival,df,uc(2));
+end
+Hichi=[uc(2), lcdf];
+end
+
 %FScategory:MULT-Categorical
