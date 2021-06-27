@@ -1290,8 +1290,10 @@ if 0.5 <= alpha && alpha <= 0.875
 elseif 0.875 < alpha && alpha < 1
     fp_alpha_n=fp_875_n+(1-fp_875_n)/0.125*(alpha-0.875);
 else
-    fp_alpha_n=0; %#ok<NASGU> % Initialization necessary for MATLAB C-coder
-    error('FSDA:LXS:WrongBdp','Condition 1-alpha>=0.5 not respected')
+    fp_alpha_n=1; % Initialization necessary for MATLAB C-coder
+    if coder.target('MATLAB')
+        error('FSDA:LXS:WrongBdp','Condition 1-alpha>=0.5 not respected')
+    end
 end
 
 rawcorfac=1/fp_alpha_n;
@@ -1328,14 +1330,15 @@ if p > 2
     coeffic_875=A_875\y_875;
     fp_500_n=1-(exp(coeffic_500(1))*1)/n^coeffic_500(2);
     fp_875_n=1-(exp(coeffic_875(1))*1)/n^coeffic_875(2);
-elseif p == 2
-    fp_500_n=1-(exp(3.11101712909049)*1)/n^1.91401056721863;
-    fp_875_n=1-(exp(0.79473550581058)*1)/n^1.10081930350091;
 else
-    fp_500_n=1-(exp(1.11098143415027)*1)/n^1.5182890270453;
-    fp_875_n=1-(exp(-0.66046776772861)*1)/n^0.88939595831888;
+    if p == 2
+        fp_500_n=1-(exp(3.11101712909049)*1)/n^1.91401056721863;
+        fp_875_n=1-(exp(0.79473550581058)*1)/n^1.10081930350091;
+    else
+        fp_500_n=1-(exp(1.11098143415027)*1)/n^1.5182890270453;
+        fp_875_n=1-(exp(-0.66046776772861)*1)/n^0.88939595831888;
+    end
 end
-
 if 0.5 <= alpha && alpha <= 0.875
     fp_alpha_n=fp_500_n+(fp_875_n-fp_500_n)/0.375*(alpha-0.5);
 elseif 0.875 < alpha && alpha < 1
