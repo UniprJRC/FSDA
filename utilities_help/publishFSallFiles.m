@@ -154,7 +154,7 @@ FileWithFullPath=which('docsearchFS.m');
 
 evalCode=true;
 write2file=true;
-Display='none';
+% Display='none';
 ErrWrngSeeAlso=true;
 msg=true;
 
