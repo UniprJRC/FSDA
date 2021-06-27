@@ -177,7 +177,7 @@ end
 vout =nan(n,1);
 vout(id) = v;
 % disp([' iter = ' num2str(iter)])
-fprintf(' iter = %.0f\n ',iter)
+% fprintf(' iter = %.0f\n ',iter)
 end
 
 %FScategory:UTISTAT
