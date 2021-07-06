@@ -231,8 +231,11 @@ dimsor=kv*2;
 
 
 % d1 is like dsor but contains an additional element which is larger than the largest element of dsor
-d1=dsor;
-d1(dimsor+1)=d1(dimsor)*2;
+%d1=dsor;
+%d1(dimsor+1)=d1(dimsor)*2;
+
+dtmp=dsor;
+d1=[dtmp,dtmp(dimsor)*2];
 
 % d2 is like dsor but contains an additional element which smaller than the smallest element of dsor
 d2=[0,dsor];
