@@ -845,7 +845,7 @@ if coder.target('MATLAB')
     verLess2016b=verLessThanFS(9.1);
 else
     callmex=false;
-    verLess2016b=false;
+    verLess2016b=true;
 end
 
 % User options
@@ -1011,9 +1011,10 @@ if coder.target('MATLAB')
         end
     end
 else
-    ncomb=1000; % TODO
-    NoPriorSubsets=1;
-    startv1=true;
+    
+    % ncomb=1000; % TODO
+    % NoPriorSubsets=1;
+    % startv1=true;
 end
 
 if nargin > 4
@@ -1115,6 +1116,47 @@ refsteps=options.refsteps;
 reftol=options.reftol;
 
 RandNumbForNini=options.RandNumbForNini;
+
+if ~coder.target('MATLAB')
+         niinistart=repmat(floor(h/k),k,1);
+   
+    if ~isscalar(nsamp)
+        % if nsamp is not a scalar, it is a matrix which contains in
+        % the rows the indexes of the subsets which have to be
+        % extracted
+        [nselected,ncolC]=size(nsamp);
+        % The number of rows of nsamp is the number of
+        % subsets which have to be extracted
+        
+        % If the number of columns of nsamp  is equal to v
+        % then the procedure is initialized using identity matrices
+        % else using covariance matrices based on the (v+1)*k units
+        if ncolC==v
+            startv1=false;
+        elseif ncolC==k*(v+1)
+            startv1=true;
+        else
+            error('FSDA:tclust:WrongCdimension','if nsamp is a matrix it must have v or k*(v+1) cols')
+        end
+        NoPriorSubsets=0;
+        ncomb=-1000; % MATLAB coder initialization
+    else
+        startv1=options.startv1;
+        
+        if startv1 ==true
+            ncomb=bc(n,k*(v+1));
+        else
+            % If the number of all possible subsets is <300 the default is to extract
+            % all subsets otherwise just 300.
+            % Notice that we use bc, a fast version of nchoosek. One may also use the
+            % approximation floor(exp(gammaln(n+1)-gammaln(n-p+1)-gammaln(p+1))+0.5)
+            ncomb=bc(n,k);
+        end
+        NoPriorSubsets=1;
+        nselected=nsamp(1);
+    end
+end
+
 if isempty(RandNumbForNini)
     NoPriorNini=1;
 else
@@ -1137,13 +1179,15 @@ if coder.target('MATLAB')
 end
 
 %% Combinatorial part to extract the subsamples (if not already supplied by the user)
-if NoPriorSubsets ==1
+if NoPriorSubsets ==1 % nsamp 
     if startv1 ==true && k*(v+1) < n
         [C,nselected] = subsets(nsamp,n,k*(v+1),ncomb,msg);
     else
         [C,nselected] = subsets(nsamp,n,k,ncomb,msg);
         niinistart=repmat(floor(h/k),k,1);
     end
+else
+    C=nsamp;
 end
 
 % Store the indices in varargout
@@ -1532,7 +1576,7 @@ for i=1:nselected
                 Ytrij=Ytri(groupj,:);
                 
                 % Means of group j
-                cini(j,:)=sum(Ytrij)/niini(j);
+                cini(j,:)=sum(Ytrij,1)/niini(j);
                 
                 % niini=sum(Ytri(:,v+1)==j);
                 if niini(j)>0
