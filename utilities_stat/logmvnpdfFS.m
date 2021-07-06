@@ -382,7 +382,7 @@ else
             % 2016b
             verLess2016b=verLessThanFS(9.1);
         else
-            verLess2016b=false;
+            verLess2016b=true;
         end
         
         if verLess2016b ==false
