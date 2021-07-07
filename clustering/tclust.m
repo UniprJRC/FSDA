@@ -1270,6 +1270,8 @@ else
     idxmixt=zeros(n,1);
     NlogLmixt=0;
     bs=zeros(1,k);
+    lmd=zeros(1,k);
+    OMG=zeros(v,v,k);
 end
 if msg == 1
     switch mixt
