@@ -46,6 +46,7 @@ if strcmp(pars(1),'V')
     for j=1:k
         % lmd(j)=exp(log(det(SigmaB(:,:,j)))/v);
         lmd(j) = (det(SigmaB(:,:,j))) ^ (1 / v);
+        % lmd(j) = real(complex(det(SigmaB(:,:,j)))^complex(1/v));
     end
 else
     lmd = ones(1,k);
