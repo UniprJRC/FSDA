@@ -236,10 +236,10 @@ end
 bsbstepdef='';
 
 if coder.target('MATLAB')
-    
+
     options=struct('intercept',true,'init',init,'nocheck',false,'plots',0,...
         'bsbsteps',bsbstepdef,'msg',true);
-    
+
     UserOptions=varargin(1:2:length(varargin));
     if ~isempty(UserOptions)
         % Check if number of supplied options is valid
@@ -249,7 +249,7 @@ if coder.target('MATLAB')
         % Check if user options are valid options
         chkoptions(options,UserOptions)
     end
-    
+
 end
 
 if nargin<3
@@ -288,9 +288,9 @@ else
     if nocheck==false
         % check that the values inside bsb are admissible
         if max(bsb)>n
-           error('FSDA:FSRbsb:Wrongbsb','maximum number inside bsb must not be greater than n');
+            error('FSDA:FSRbsb:Wrongbsb','maximum number inside bsb must not be greater than n');
         elseif min(bsb)<1
-           error('FSDA:FSRbsb:Wrongbsb','minimum number inside bsb must not be smaller than 1');
+            error('FSDA:FSRbsb:Wrongbsb','minimum number inside bsb must not be smaller than 1');
         elseif any(mod(bsb,1))
             error('FSDA:FSRbsb:Wrongbsb','bsb must only contain integer values');
         else
@@ -363,10 +363,18 @@ if isempty(bsbsteps)
     else
         bsbsteps = [init init+100-mod(init,100):100:100*floor(n/100)]';
     end
-    BB = NaN(n,length(bsbsteps),'single');
+    if coder.target('MATLAB')
+        BB = NaN(n,length(bsbsteps),'single');
+    else
+        BB = NaN(n,length(bsbsteps));
+    end
 elseif bsbsteps==0
     bsbsteps=(init:n)';
-    BB = NaN(n,n-init+1,'single');
+    if coder.target('MATLAB')
+        BB = NaN(n,n-init+1,'single');
+    else
+        BB = NaN(n,n-init+1);
+    end
 else
     if coder.target('MATLAB')
         if min(bsbsteps)<init
@@ -375,8 +383,11 @@ else
     end
     boo=(bsbsteps>=init);
     bsbsteps=bsbsteps(boo);
-    
-    BB = NaN(n,length(bsbsteps),'single');
+    if coder.target('MATLAB')
+        BB = NaN(n,length(bsbsteps),'single');
+    else
+        BB = NaN(n,length(bsbsteps));
+    end
 end
 
 boobsbsteps=false(n,1);
@@ -401,17 +412,17 @@ else
     % ij = index which is linked with the columns of matrix BB. During the
     % search every time a subset is stored inside matrix BB ij icreases by one
     ij=1;
-    
+
     for mm = ini0:n
         % if n>200 show every 100 steps the fwd search index
         if n>200 && msg== true
-            
+
             if  seq100boo(mm) == true
                 % OLD CODE if length(intersect(mm,seq100))==1
                 disp(['m=' int2str(mm)]);
             end
         end
-        
+
         % Store units belonging to the subset
         if (mm>=init)
             if boobsbsteps(mm)==true
@@ -421,7 +432,7 @@ else
                 ij=ij+1;
             end
         end
-        
+
         % Compute beta coefficients using subset
         if nocheck==true
             NoRankProblem=true;
@@ -429,7 +440,7 @@ else
             rankXb=rank(Xb);
             NoRankProblem=(rankXb == p);
         end
-        
+
         if NoRankProblem  % rank is ok
             b = Xb\yb;
             blast=b;
@@ -439,39 +450,39 @@ else
                 warning('FSDA:FSRbsb:NoFullRank','Rank problem in step %d: Beta coefficients are used from the most recent correctly computed step',mm);
             end
         end
-        
+
         % e= vector of residual for all units using b estimated using subset
         e=y-X*b;
-        
+
         r(:,2)=e.^2;
-        
+
         if mm<n
-            
+
             % store units forming old subset in vector oldbsb
             oldbsbT=bsbT;
-            
+
             % order the r_i and include the smallest among the units forming
             % the group of potential outliers
             % ord=sortrows(r,2);
             [~,ord]=sort(r(:,2));
-            
+
             % bsb= units forming the new subset
             bsb=ord(1:(mm+1),1);
-            
+
             bsbT=zeron1;
             bsbT(bsb)=true;
-            
-            
+
+
             Xb=X(bsb,:);  % subset of X
             yb=y(bsb);    % subset of y
-            
+
             if mm>=init
-                
+
                 % unit = vector containing units which just entered subset;
                 % unit=setdiff(bsb,oldbsb);
                 % new instruction to find unit
                 unit=seq(bsbT & ~oldbsbT);
-                
+
                 % If the interchange involves more than 10 units, store only the
                 % first 10.
                 if length(unit)<=10
@@ -480,11 +491,11 @@ else
                     disp(['Warning: interchange greater than 10 when m=' int2str(mm)]);
                     Un(mm-init+1,2:end)=unit(1:10);
                 end
-                
+
             end
         end
     end
-    
+
     if coder.target('MATLAB')
         plots=options.plots;
         if  plots==1
