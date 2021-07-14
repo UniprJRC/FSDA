@@ -176,7 +176,7 @@ function [out]=fanBIC(outFSRfan,varargin)
     load('loyalty.txt');
     y=loyalty(:,4);
     X=loyalty(:,1:3);
-    % la = vector contanining the grid of values to use for the
+    % la = vector containing the grid of values to use for the
     % transformation parameter
     la=-1:0.1:1;
     [outFSRfan]=FSRfan(y,X,'la',la,'msg',0,'plots',0);
