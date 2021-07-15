@@ -436,7 +436,7 @@ if ~isempty(bonflev)
     % declarations necessary for MATLAB C coder
     istep =0; 
     c99=0; c999=0; c9999=0;  c99999=0; c001=0; c50=0;
-    gmin=0; NoFalseSig=true; mdag=0; ii=0; gmin1=0; nout=0; 
+    gmin=0; NoFalseSig=true; mdag=0; ii=0; gmin1=0; nout=zeros(n,5); 
 else
     % declaration necessary for C coder
     bonfthresh=0;  mdag=0; ii=0; gmin1=0;
@@ -1394,7 +1394,9 @@ out.Un=Un;
 if isempty(bonflev)
     out.nout=nout;
 else
-    out.nout =NaN;
+    if ~coder.target('MATLAB')
+        out.nout =[];
+    end
 end
 out.class  =  'FSM';
 
