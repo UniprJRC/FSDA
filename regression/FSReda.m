@@ -660,6 +660,13 @@ if wREML == true
 	% REML estimated weights matrix
 	wt = RES;
 end
+
+% opts is a structure which contains the options to use in linsolve
+opts=struct;
+opts.RECT = true;
+opts.LT =false;
+opts.UT =false;
+
 %% Start of the forward search
 if nocheck==false && rank(Xb)~=p
     warning('FSDA:FSReda:NoFullRank','The provided initial subset does not form full rank matrix');
@@ -674,14 +681,19 @@ else
             end
         end
         
-        if nocheck==true
-            NoRankProblem=true;
+        % Implicitly control the rank of Xb checking the condition number
+        % for inversion (which in the case of a rectangular matrix is
+        % nothing but the rank)
+        % Old instruction was b=Xb\yb;
+        [b,condNumber]=linsolve(Xb,yb,opts);
+        % disp([mm condNumber])
+        if condNumber<p
+            NoRankProblem =false;
         else
-            NoRankProblem=(rank(Xb) == p);
+            NoRankProblem =true;
         end
         
         if NoRankProblem  % rank is ok
-            b=Xb\yb;
             resBSB=yb-Xb*b;
             blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters

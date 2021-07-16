@@ -789,12 +789,13 @@ seq100boo(seq100)=true;
 
 binit=zeros(p,lla);
 
-% Preextract subsample once and for all for all values of lambda;
-% if lla>1
 [nsampArray] = subsets(nsamp,n,p);
-% else
-%     nsampArray=nsamp;
-% end
+
+% opts is a structure which contains the options to use in linsolve
+opts=struct;
+opts.RECT = true;
+opts.LT =false;
+opts.UT =false;
 
 % loop over the values of \lambda
 for i=1:lla
@@ -900,15 +901,19 @@ for i=1:lla
                 
             end
             
-            if nocheck==true
-                NoRankProblem=true;
+            % Implicitly control the rank of Xb checking the condition number
+            % for inversion (which in the case of a rectangular matrix is
+            % nothing but the rank)
+            % Old instruction was b=Xb\yb;
+            [b,condNumber]=linsolve(Xb,zb,opts);
+            % disp([mm condNumber])
+            if condNumber<p
+                NoRankProblem =false;
             else
-                % Compute b using transformed vector zb
-                NoRankProblem=(rank(Xb) == p);
+                NoRankProblem =true;
             end
             
             if NoRankProblem  % rank is ok
-                b=Xb\zb;
                 blast=b;   % Store correctly computed b for the case of rank problem
             else   % number of independent columns is smaller than number of parameters
                 if coder.target('MATLAB')
