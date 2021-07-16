@@ -641,6 +641,14 @@ Un = cat(2 , (init1+1:n)' , NaN(n-init1,10));
 
 blast=0;
 Xbb=0; resBSB=0;
+
+% opts is a structure which contains the options to use in linsolve
+opts=struct;
+opts.RECT = true;
+opts.LT =false;
+opts.UT =false;
+
+
 %% Start of the forward search
 if nocheck==false && rank(Xb)~=p
     if coder.target('MATLAB')
@@ -653,6 +661,7 @@ if nocheck==false && rank(Xb)~=p
     mdr=NaN;
     % FS loop will not be performed
 else
+    
     for mm=ini0:n
         % if n>5000 show every 500 steps the fwd search index
         if msg==1 && n>5000
@@ -661,14 +670,19 @@ else
             end
         end
         
-        if nocheck==true
-            NoRankProblem=true;
+        % Implicitly control the rank of Xb checking the condition number
+        % for inversion (which in the case of a rectangular matrix is
+        % nothing but the rank)
+        % Old instruction was b=Xb\yb;
+        [b,condNumber]=linsolve(Xb,yb,opts);
+        % disp([mm condNumber])
+        if condNumber<p
+            NoRankProblem =false;
         else
-            NoRankProblem=(rank(Xb) == p);
+            NoRankProblem =true;
         end
         
         if NoRankProblem  % rank is ok
-            b=Xb\yb;
             resBSB=yb-Xb*b;
             blast=b;   % Store correctly computed b for the case of rank problem
         else   % number of independent columns is smaller than number of parameters
@@ -760,6 +774,7 @@ else
                     
                     % mmX=inv(mAm);
                     % hi = sum((Xncl*mmX).*Xncl,2);
+                    
                     hi=sum((Xncl/mAm).*Xncl,2);
                     %hiall=sum((X/mAm).*X,2);
                     
@@ -792,7 +807,7 @@ else
                             sprintf('Value of S2 at step %.0f is zero, mdr is NaN',mm-init1+1);
                         end
                     else
-                        mdr(mm-init1+1,2)=sqrt(selmdr(1,1)/S2(mm-init1+1,2));
+                        mdr(mm-init1+1,2)=sqrt(abs(selmdr(1,1))/S2(mm-init1+1,2));
                     end
                 end  %if mm<n
             end   %~RankProblem
@@ -874,6 +889,18 @@ else
             % the observations for the above quantiles.
             [gmin] = FSRenvmdr(n,p,'prob',quant,'init',init1);
             plot(mdr(:,1),mdr(:,2));
+            
+            yl2=max(mdr(:,2));
+            % Set upper limit to 20 of the plot if it is greater
+            if yl2>20
+                if msg
+                    % Inform the user about automatic upper limit
+                    warning('FSDA:FSRmdr:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+                end
+                % yl2=20;
+                ylim([0 20])
+            end
+            
             
             % Superimpose 1%, 99%, 99.9% envelopes based on all the observations
             lwdenv=2;
