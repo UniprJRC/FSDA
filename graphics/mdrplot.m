@@ -418,9 +418,9 @@ function [brushedUnits, BrushedUnits]=mdrplot(out,varargin)
     databrush.persist='on';
     databrush.selectionmode='Rect'
     % outV is the vector of all selected units during brushing
-    % outM is a matrix, each column contains the groups of selected units 
+    % outM is a matrix, each column contains the groups of selected units
     % at each brushing action
-    [outV, outM]=mdrplot(out,'databrush',databrush)   
+    [outV, outM]=mdrplot(out,'databrush',databrush)
 %}
 
 %% Beginning of code
@@ -449,6 +449,16 @@ xlimx=[xl1 xl2];
 % Default limits for y axis
 yl1=min(mdr(:,2));
 yl2=max(mdr(:,2))*1.1;
+
+% Set upper limit to 20 of the plot if it is greater
+if yl2>20
+    if msg
+        % Inform the user about automatic upper limit
+        warning('FSDA:mdrplot:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
+    end
+    yl2=20;
+end
+
 ylimy=[yl1 yl2];
 
 % Default quantiles to compute the envelopes
@@ -1096,7 +1106,7 @@ if ~isempty(options.databrush) || isstruct(options.databrush)
         end
         
     end % close loop associated with but
-        brushedUnits=brushcum;
+    brushedUnits=brushcum;
 end % close options.databrush
 
     function output_txt = mdrplotLbl(~,event_obj,out)
