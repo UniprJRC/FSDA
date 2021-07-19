@@ -142,10 +142,11 @@ else
     inisearch=min(3*p+1,floor(0.5*(n+p+1)));
 end
 
-% Notice that prob must be a row vector
-prob=[0.01 0.5 0.99];
 
 if coder.target('MATLAB')
+    % Notice that prob must be a row vector
+    prob=[0.01 0.5 0.99];
+    
     options=struct('init',inisearch,'prob',prob);
     
     UserOptions=varargin(1:2:length(varargin));
@@ -166,7 +167,6 @@ if nargin>2
 end
 m0=options.init;
 prob=options.prob;
-
 % Check that the initial subset size is not greater than n-1
 if m0>n-1
     error('FSDA:FSRenvmdr:TooLargen','Initial starting point of the search (m0=%d) is greater than n-1 (n-1=%d)', m0, n-1);
@@ -176,11 +176,13 @@ end
 
 % Make sure that prob is a row vector.
 if size(prob,1)>1
-    prob=prob';
+    probf=prob';
+else
+    probf=prob;
 end
 
-lp = length(prob);
-prob = 1-prob;
+lp = length(probf);
+probf = 1-probf;
 
 
 % m = column vector which contains fwd search index.
@@ -191,7 +193,7 @@ lm=length(m);
 mm = repmat(m,1,lp);
 
 % finv finds the inverse of the F distribution.
-quant=finv(repmat(prob,lm,1),2*(n-mm),2*(mm+1));
+quant=finv(repmat(probf,lm,1),2*(n-mm),2*(mm+1));
 
 
 % from the equivalence with Incomplete beta distribution.

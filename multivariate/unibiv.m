@@ -17,13 +17,16 @@ function [fre]=unibiv(Y,varargin)
 %
 % Optional input arguments:
 %
-%           rf  :  It specifies the confidence
-%                  level of the robust bivariate ellipses. Scalar. 0<rf<1.
-%                  The default value is 0.95 that is the outer contour in
-%                  presence of normality for each ellipse should leave
-%                  outside 5% of the values.
-%                 Example - 'rf',0.99
+%
+%       madcoef :  scaled MAD. Scalar. Coefficient which is used to scale MAD
+%                   coefficient to have a robust estimate of dispersion.  The
+%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1.
+%                 Example - 'madcoef',2
 %                 Data Types - double
+%                   Remark: if mad =median(y-median(y))=0 then the interquartile
+%                   range is used. If also the interquartile range is 0
+%                   than the MD (mean absolute deviation) is used.  In
+%                   other words MD=mean(abs(y-mean(Y))
 %
 %      robscale :   how to compute dispersion. Scalar. It specifies the
 %                   statistical indexes to use to compute the dispersion of
@@ -44,6 +47,15 @@ function [fre]=unibiv(Y,varargin)
 %                   around the univariate medians.
 %                 Example - 'robscale',2
 %                 Data Types - double
+%
+%           rf  :  It specifies the confidence
+%                  level of the robust bivariate ellipses. Scalar. 0<rf<1.
+%                  The default value is 0.95 that is the outer contour in
+%                  presence of normality for each ellipse should leave
+%                  outside 5% of the values.
+%                 Example - 'rf',0.99
+%                 Data Types - double
+%
 %
 %         plots :   Plot on the screen. Scalar. It specifies whether it is
 %                   necessary to produce a plot
@@ -75,17 +87,6 @@ function [fre]=unibiv(Y,varargin)
 %                   in the same window else a new window is created.
 %                 Example - 'tag','new_tag'
 %                 Data Types - char
-%
-%       madcoef :  scaled MAD. Scalar. Coefficient which is used to scale MAD
-%                   coefficient to have a robust estimate of dispersion.  The
-%                   default is 1.4815 so that 1.4815*MAD(N(0,1))=1.
-%                 Example - 'madcoef',2
-%                 Data Types - double
-%                   Remark: if mad =median(y-median(y))=0 then the interquartile
-%                   range is used. If also the interquartile range is 0
-%                   than the MD (mean absolute deviation) is used.  In
-%                   other words MD=mean(abs(y-mean(Y))
-%
 %
 % Output:
 %

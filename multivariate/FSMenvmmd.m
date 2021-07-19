@@ -24,13 +24,13 @@ function [MMDenv] = FSMenvmmd(n,v,varargin)
 %                 Example - 'prob',[0.05 0.95]
 %                 Data Types - double
 %
-%   scaled:  It indicates how to compute the envelopes. Scalar.
-%               If scaled>0 the envelopes are produced for
+%   scaled:  It indicates how to compute the envelopes. Boolean.
+%               If scaled=true0 the envelopes are produced for
 %               scaled Mahalanobis distances (no consistency factor is
 %               applied) else the traditional consistency factor is applied
 %               (this is the default)
-%                 Example - 'scaled',0
-%                 Data Types - double
+%                 Example - 'scaled',false
+%                 Data Types - logical
 %
 %
 % Output:
@@ -147,7 +147,8 @@ inisearch=floor(n*0.6);
 
 % Note that prob must be a row vector
 prob=[0.01 0.5 0.99];
-options=struct('init',inisearch,'prob',prob,'scaled',0);
+scaled=false;
+options=struct('init',inisearch,'prob',prob,'scaled',scaled);
 
 if coder.target('MATLAB')
     
@@ -217,7 +218,7 @@ MinSca= sqrt(cor.*finv(q,v, mm-v));
 
 % Compute Tallis correction factor based on the chi^2 distribution
 % mm/n is the percentage of observations inside subset if scaled is not equal to 1.
-if scaled > 0
+if scaled ==true
     corr=1;
 else
     a=chi2inv(mm/n,v);
