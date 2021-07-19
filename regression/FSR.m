@@ -649,7 +649,32 @@ else
     error('FSDA:FSR:WrongInputOpt','threshoutX can be empty a scalar equal to 1 or a struct.');
 end
 
+    % Necessary for MATLAb C Coder initialization
+    % Initialize constr as a column vector of variable size whose elements
+    % are greater than n is such a way that no unit is constrained to enter the final steps
+    constr=((n+1):2*n)';
+    mdrFlag=true;
 
+if coder.target('MATLAB')
+    bsbstepdef=[];
+else
+    if n<40
+        initdef=p+1;
+    else
+        initdef=min(3*p+1,floor(0.5*(n+p+1)));
+    end
+    if n<=5000
+        bsbstepdef = 0;
+    else
+        iniseq=100:100:100*floor(n/100);
+        iniseq=iniseq(iniseq>initdef);
+        bsbstepdef = [initdef iniseq];
+    end
+    
+    
+    % Matlab C Coder initializations.
+    Un=0; bb=0; Bols=0; S2=0;
+end
 
 %% Start of the forward search
 
@@ -673,31 +698,50 @@ if length(lms)>1 || (isstruct(lms) && isfield(lms,'bsb'))
     
     % Compute Minimum Deletion Residual for each step of the search
     [mdr,Un,bb,Bols,S2] = FSRmdr(y,X,bs,'init',init,'plots',0,'nocheck',true,...
-        'msg',msg,'threshlevoutX',threshlevoutX,'intercept',intercept,...
-        'bsbsteps',[],'internationaltrade',false);
+        'msg',msg,'constr',constr,'bsbmfullrank',bsbmfullrank,...
+        'threshlevoutX',threshlevoutX,'intercept',intercept,...
+        'bsbsteps',bsbstepdef,'internationaltrade',false);
+    
     
     if size(mdr,2)<2
         if length(mdr)>=n/2
             disp('More than half of the observations produce a singular X matrix')
             disp('X is badly defined')
             disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
-            out.ListOut  = setdiff(seq,mdr);
+            out.ListOut  = setdiff(seq,mdr(:,1));
         else
             disp('Bad starting point which produced a singular matrix, please restart the search from a different starting point or use option bsbmfullrank=0 ')
-            
         end
         
-        out.ListOut=NaN;
-        out.outliers=NaN;
-        out.mdr = NaN;
-        out.Un  = NaN;
-        out.nout= NaN;
-        out.beta=NaN;
-        out.scale=NaN;
-        out.fittedvalues=NaN;
-        out.residuals=NaN;
-        out.class='FSR';
-        return
+        if ~coder.target('MATLAB')
+            varsize=ceil(n/1000000);
+            out.ListOut=NaN(1,varsize);
+            out.outliers=NaN(1,varsize);
+            out.mdr=NaN(1,varsize);
+            out.Un=NaN(varsize,11);
+            out.nout=NaN(varsize,varsize);
+            out.beta=NaN(varsize,1);
+            out.scale=NaN;
+            out.mdag=NaN(varsize,varsize);
+            out.ListCl=NaN(1,varsize);
+            out.VIOMout=NaN(1,varsize);
+            out.fittedvalues=[];
+            out.residuals=[];
+            out.class='FSR';
+            return
+        else
+            out.ListOut=NaN;
+            out.outliers=NaN;
+            out.mdr = NaN;
+            out.Un  = NaN;
+            out.nout= NaN;
+            out.beta=NaN;
+            out.scale=NaN;
+            out.fittedvalues=NaN;
+            out.residuals=NaN;
+            out.class='FSR';
+            return
+        end
     end
 else % initial subset is not supplied by the user
     % Find initial subset to initialize the search
@@ -713,31 +757,7 @@ else % initial subset is not supplied by the user
     end
     
     bs=outLXS.bs(:);
-    % Necessary for MATLAb C Coder initialization
-    % Initialize constr as a column vector of variable size whose elements
-    % are greater than n is such a way that no unit is constrained to enter the final steps 
-    constr=((n+1):2*n)';
     
-    if coder.target('MATLAB')
-        bsbstepdef=[];
-    else
-        if n<40
-            initdef=p+1;
-        else
-            initdef=min(3*p+1,floor(0.5*(n+p+1)));
-        end
-        if n<=5000
-            bsbstepdef = 0;
-        else
-            iniseq=100:100:100*floor(n/100);
-            iniseq=iniseq(iniseq>initdef);
-            bsbstepdef = [initdef iniseq];
-        end
-    end
-    
-    % Matlab C Coder initializations.
-    Un=0; bb=0; Bols=0; S2=0;
-    mdrFlag=true;
     while mdrFlag==true && iter <6
         % Compute Minimum Deletion Residual for each step of the search
         % The instruction below is surely executed once.
@@ -763,22 +783,22 @@ else % initial subset is not supplied by the user
                 disp('More than half of the observations produce a singular X matrix')
                 disp('If you wish to run the procedure using for updating the values of beta of the last step in which there was full rank use option bsbmfullrank=0')
                 
-                out.ListOut = setdiff(seq,mdr(:))';
-                    if ~coder.target('MATLAB')
-                        varsize=ceil(n/1000000);
-                        out.outliers=NaN(1,varsize);
-                        out.mdr=mdr;
-                        out.Un=NaN(varsize,11);
-                        out.nout=NaN(varsize,varsize);
-                        out.beta=NaN(varsize,1);
-                        out.scale=NaN;
-                        out.mdag=NaN(varsize,varsize);
-                        out.ListCl=NaN(1,varsize);
-                        out.VIOMout=NaN(1,varsize);
-                        out.fittedvalues=[];
-                        out.residuals=[];
-                        out.class='FSR';
-                    end
+                out.ListOut = setdiff(seq,mdr(:,1))';
+                if ~coder.target('MATLAB')
+                    varsize=ceil(n/1000000);
+                    out.outliers=NaN(1,varsize);
+                    out.mdr=mdr;
+                    out.Un=NaN(varsize,11);
+                    out.nout=NaN(varsize,varsize);
+                    out.beta=NaN(varsize,1);
+                    out.scale=NaN;
+                    out.mdag=NaN(varsize,varsize);
+                    out.ListCl=NaN(1,varsize);
+                    out.VIOMout=NaN(1,varsize);
+                    out.fittedvalues=[];
+                    out.residuals=[];
+                    out.class='FSR';
+                end
                 return
             elseif isnan(mdr(1,1))
                 % INITIAL SUBSET WAS NOT FULL RANK
