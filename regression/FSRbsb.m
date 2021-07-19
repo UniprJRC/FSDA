@@ -417,7 +417,7 @@ if nocheck==false && rank(Xb)~=p
     Un=NaN;
 else
     % ij = index which is linked with the columns of matrix BB. During the
-    % search every time a subset is stored inside matrix BB ij icreases by one
+    % search every time a subset is stored inside matrix BB ij increases by one
     ij=1;
     
     for mm = ini0:n
