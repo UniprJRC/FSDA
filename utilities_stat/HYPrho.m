@@ -28,7 +28,7 @@ function rhoHYP = HYPrho(u, cktuning)
 %  Output:
 %
 %
-%   rhoHYP :     rho function for hyperbolic tangent estimator. Vector. 
+%   rhoHYP :     rho function for hyperbolic tangent estimator. Vector.
 %                n x 1 vector which contains the hyperbolic rho
 %                associated to the residuals or Mahalanobis distances for
 %                the n units of the sample.
@@ -42,7 +42,7 @@ function rhoHYP = HYPrho(u, cktuning)
 % estimate. This leads to the Hyperbolic Tangent $\rho$
 % function, which, for suitable constants $c$, $k$, $A$, $B$ and
 % $d$, is defined as
-% 
+%
 %
 % \[
 %  HYPrho(u) =
@@ -50,7 +50,7 @@ function rhoHYP = HYPrho(u, cktuning)
 %  \begin{array}{cc}
 %   	 u^2/2 &	        |u| \leq d, \\
 %   d^2/2 -2 \frac{A}{B} \log  \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} } (c - |u|) \right] \right\} & \\
-%                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\		        	
+%                          +2 \frac{A}{B}\log \left\{  \cosh \left[ 0.5\sqrt{\frac{(k - 1)  B^2}{A}}(c -d)\right] \right\} &  \\
 %                &                               d \leq |u| <  c, \\
 %                 d^2/2 +2 \frac{A}{B} \log \left\{ \cosh \left[ 0.5 \sqrt{ \frac{(k - 1)  B^2}{A} }(c -d) \right] \right\}	 &
 %                                                        |u| \geq c. \\
@@ -106,7 +106,7 @@ function rhoHYP = HYPrho(u, cktuning)
     c=2.158325031399727
     k=4;
     A=0.000162707412432;
-    B=0.006991738279441   
+    B=0.006991738279441
     d=0.016982948780061
     x=-8:0.001:8;
     rhoHYP=HYPrho(x,[c,k,A,B,d]);
@@ -122,23 +122,25 @@ c = cktuning(1);
 k=cktuning(2);
 
 if length(cktuning)>2
-
-        A=cktuning(3);
-        B=cktuning(4);
-        d=cktuning(5);
-
-    if ((A < 0) || (B < A) || (B>1))
-        disp('A must be >=0')
-        disp('B must be >=A')
-        disp('B must be <=1')
-        disp(['B=' num2str(B) ' and A=' num2str(A)])
-        error('FSDA:HYPpsi:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator:')
-    else   
-    end
     
+    A=cktuning(3);
+    B=cktuning(4);
+    d=cktuning(5);
+        if ((A < 0) || (B < A) || (B>1))
+            disp('A must be >=0')
+            disp('B must be >=A')
+            disp('B must be <=1')
+            % disp(['B=' num2str(B) ' and A=' num2str(A)])
+            % error('FSDA:HYPpsi:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator:')
+          error('FSDA:HYPrho:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator: A=%f,B=%f', A,B);
+        end
 else
-    % Find parameters A, B and d using routine HYPck
-    [A,B,d]=HYPck(c,k);
+    if coder.target('MATLAB')
+        % Find parameters A, B and d using routine HYPck
+        [A,B,d]=HYPck(c,k);
+    else
+        A=1; B=1; d=1; % necessary for MATLAB coder initialization
+    end
     
     % For example if c=4 and k=5
     %     A = 0.857044;

@@ -18,14 +18,14 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %               psifunc.class = string identyfing the rho (psi) function to use.
 %                    Admissible values for class are 'bisquare' (TB),
 %                    'optimal', (OPT) 'hyperbolic' (HYP), 'hampel' (HA)
-%                    'power divergence' (PD) 
+%                    'power divergence' (PD)
 %               psifunc.c1 = consistency factor (and other parameters)
 %                   associated to required breakdown point or nominal
 %                   efficiency.
 %                   More precisely, psifunc.c1(1) contains consistency
 %                   factor associated to required breakdown point or
 %                   nominal efficiency psifunc.c1(2:end) contain other
-%                   parameters associated with the rho (psi) function. 
+%                   parameters associated with the rho (psi) function.
 %                   For example, if psifunc.class='hampel', c1(2:4) must
 %                   contain parameters (a, b and c) of Hampel rho function.
 %               psifunc.kc1= Expectation of rho associated with c1 to get a
@@ -38,23 +38,23 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %
 %    initialsc: scalar. The initial estimate of the scale.
 %               If not defined, scaled MAD of vector |u| is used.
-%               Example - 'initialsc',0.34 
+%               Example - 'initialsc',0.34
 %               Data Types - double
 %
 %     tol     : scalar. The tolerance for controlling convergence.
 %               If not defined, tol is fixed to 1e-7.
-%               Example - 'tol',1e-10 
+%               Example - 'tol',1e-10
 %               Data Types - double
 %
 %     maxiter : scalar. Maximum number of iterations to find the scale.
 %               If not defined, maxiter is fixed to 200.
-%               Example - 'maxiter',100 
+%               Example - 'maxiter',100
 %               Data Types - double
 %
 %  Output:
 %
 %  sc : M-estimate of the scale. Scalar.
-%       Robust M estimate of scale. 
+%       Robust M estimate of scale.
 %       This routine is called by Taureg.m and Sreg.m
 %
 % More About:
@@ -107,7 +107,7 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 %}
 
 %{
-    % Estimate of scale using Hampel rho function. 
+    % Estimate of scale using Hampel rho function.
     % M estimate of the scale using Hampel rho function with a
     % value of c associated to a breakdown point of 0.5
     psifunc=struct;
@@ -178,8 +178,10 @@ function sc = Mscale(u, psifunc, initialsc, tol, maxiter)
 c=psifunc.c1;
 kc=psifunc.kc1;
 
-XXrho=strcat(psifunc.class,'rho');
-hrho=str2func(XXrho);
+if coder.target('MATLAB')
+    XXrho=strcat(psifunc.class,'rho');
+    hrho=str2func(XXrho);
+end
 
 % M-estimator of scale using the requested rho function.
 
@@ -200,13 +202,35 @@ end
 loop = 0;
 err = 1;
 while  (( loop < maxiter ) && (err > tol))
-    % scale step: see equation 7.119 of Huber and Ronchetti, p. 176
-    % scalenew = scaleold *(1/n)*\sum  \rho(u_i/scaleold) / kc
-    % scnew = sc*sqrt( mean(TBrho(u/sc,c)) / kc);
-    scnew = sc*sqrt( mean( feval(hrho,u/sc,c)) /kc);
-
     
-    % Note that when there is convergence 
+    if coder.target('MATLAB')
+        % scale step: see equation 7.119 of Huber and Ronchetti, p. 176
+        % scalenew = scaleold *(1/n)*\sum  \rho(u_i/scaleold) / kc
+        % scnew = sc*sqrt( mean(TBrho(u/sc,c)) / kc);
+        scnew = sc*sqrt( mean( feval(hrho,u/sc,c)) /kc);
+    else
+        if strcmp(psifunc.class,'TB')
+            scnew = sc*sqrt( mean(TBrho(u/sc,c)) / kc);
+            
+        elseif strcmp(psifunc.class,'OPT')
+            scnew = sc*sqrt( mean(OPTrho(u/sc,c)) / kc);
+            
+        elseif strcmp(psifunc.class,'HA')
+            scnew = sc*sqrt( mean(HArho(u/sc,c)) / kc);
+            
+        elseif strcmp(psifunc.class,'HYP')
+            scnew = sc*sqrt( mean(HYPrho(u/sc,c)) / kc);
+            
+        elseif strcmp(psifunc.class,'PD')
+            scnew = sc*sqrt( mean(PDrho(u/sc,c)) / kc);
+            
+        else
+            error('rho function not supported by code generation')
+        end
+        
+    end
+    
+    % Note that when there is convergence
     % sqrt( mean(TBrho(u/sc,c)) / kc) tends to 1 (from below)
     % disp([loop sc sqrt( mean(TBrho(u/sc,c)) / kc)])
     
