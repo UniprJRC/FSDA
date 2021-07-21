@@ -68,9 +68,9 @@ function w = HYPwei(u, cktuning)
 % References:
 %
 %
-% Hampel, F.R., Rousseeuw, P.J. and Ronchetti, E. (1981), 
+% Hampel, F.R., Rousseeuw, P.J. and Ronchetti, E. (1981),
 % The Change-of-Variance Curve and Optimal Redescending M-Estimators,
-% "Journal of the American Statistical Association", Vol. 76, 
+% "Journal of the American Statistical Association", Vol. 76,
 % pp. 643-648. [HRR]
 %
 % Copyright 2008-2021.
@@ -112,15 +112,17 @@ if length(cktuning)>2
         disp('A must be >=0')
         disp('B must be >=A')
         disp('B must be <=1')
-        disp(['B=' num2str(B) ' and A=' num2str(A)])
-        error('FSDA:HYPpsi:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator:')
-    else
+        % disp(['B=' num2str(B) ' and A=' num2str(A)])
+        % error('FSDA:HYPpsi:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator:')
+        error('FSDA:HYPwei:WrongAorB','Illegal choice of parameters in hyperbolic tangent estimator: A=%f,B=%f', A,B);
     end
-    
 else
-    % Find parameters A, B and d using routine HYPck
-    [A,B,d]=HYPck(c,k);
-    
+    if coder.target('MATLAB')
+        % Find parameters A, B and d using routine HYPck
+        [A,B,d]=HYPck(c,k);
+    else
+        A=1; B=1; d=1; % necessary for MATLAB coder initialization
+    end
     % For example if c=4 and k=5
     %     A = 0.857044;
     %     B = 0.911135;

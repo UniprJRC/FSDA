@@ -31,12 +31,12 @@ function ctun = HAbdp(bdp,p,abc)
 %
 % Function HApsi transforms vector u as follows.
 %  \[
-%  HApsi(u)  = \left\{   
+%  HApsi(u)  = \left\{
 %  \begin{array}{cc}
 %    u & |u| <= a                                       \\
 %    a \times sign(u) & a <= |u| < b                    \\
 %    a \frac{c-|u|}{c-b} \times sign(u) & b <= |u| <  c \\
-%    0 & |u| >= c 
+%    0 & |u| >= c
 %  \end{array} \right.
 % \]
 %
@@ -45,9 +45,9 @@ function ctun = HAbdp(bdp,p,abc)
 %                   $c$= ctun *param(3).
 %
 %             The default is
-%                   $a$= 2*ctun. 
-%                   $b$= 4*ctun. 
-%                   $c$= 8*ctun. 
+%                   $a$= 2*ctun.
+%                   $b$= 4*ctun.
+%                   $c$= 8*ctun.
 %
 %	It is necessary to have 0 <= a <= b <= c
 %
@@ -92,9 +92,9 @@ function ctun = HAbdp(bdp,p,abc)
 
 if (nargin >2)
     if ((abc(1) < 0) || (abc(2) < abc(1)) || (abc(3) < abc(2)))
-        error('FSDA:HAbdp:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
-            num2str(abc) ]')
-        
+        error('FSDA:HAbdp:WrongAbc','Illegal choice of parameters in Hampel: %f,%f,%f', abc(1),abc(2),abc(3));
+        %  error('FSDA:HAbdp:WrongAbc',[' illegal choice of parameters in Hampel: ' ...
+        %      num2str(abc) ]')
     end
     a0 = abc(1);
     b0 = abc(2);
@@ -171,7 +171,7 @@ while abs(Erho1-1)>eps
     
     Erho= Erhoa+Erhoab+Erhobc+Erhoc;
     
-    Erho1=Erho/(phic*bdp);
+    Erho1=real(Erho)/(phic*bdp);
     
     step=step/2;
     if Erho1>1

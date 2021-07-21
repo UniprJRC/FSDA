@@ -99,10 +99,11 @@ function w = HAwei(u, ctuning)
 
 
 if length(ctuning)>1
-    
+   
     if ((ctuning(2) < 0) || (ctuning(3) < ctuning(2)) || (ctuning(4) < ctuning(3)))
-        error('FSDA:HAwei:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...
-            num2str(ctuning(2:4)) ]')
+%         error('FSDA:HAwei:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...
+%             num2str(ctuning(2:4)) ]')
+        error('FSDA:HAwei:WrongAbc','Illegal choice of parameters in Hampel: %f,%f,%f', ctuning(2),ctuning(3),ctuning(4));
     end
     a =  ctuning(2)*ctuning(1);
     b =  ctuning(3)*ctuning(1);

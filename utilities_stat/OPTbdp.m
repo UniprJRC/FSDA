@@ -95,7 +95,7 @@ while abs(Erho1-1)>eps
           -(11.664./c^6)*v*(v+2)*(v+4)*(gammainc(b,(v+6)/2) -gammainc(a,(v+6)/2) )+...
           +(4.0375./c^8)*v*(v+2)*(v+4)*(v+6)*(gammainc(b,(v+8)/2) -gammainc(a,(v+8)/2) )+...
           +(1-gammainc(b,v/2));
-    Erho1=(Erho/bdp);
+    Erho1=(real(Erho)/bdp);
     
     step=step/2;
     if Erho1>1

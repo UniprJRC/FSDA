@@ -19,7 +19,7 @@ function rhoHA = HArho(u, ctuning)
 %                ctuning(3) = paramter b of Hampel rho (psi) function
 %                ctuning(4) = paramter c of Hampel rho (psi) function
 %                Remark: if length(ctuning)==1 values of a, b and c will be
-%                set to a=2*ctuning b=4*ctuning c=4*ctuning 
+%                set to a=2*ctuning b=4*ctuning c=4*ctuning
 %                With these choices, if ctuning=1  the
 %                resulting influence function is nearly identical to the
 %                biweight with parameter 8.
@@ -40,12 +40,12 @@ function rhoHA = HArho(u, ctuning)
 % Function HArho transforms vector u as follows
 %
 %  \[
-%  HArho(u)  = \left\{   
+%  HArho(u)  = \left\{
 %  \begin{array}{cc}
 %    \frac{u^2}{2} & |u| \leq a                                       \\
 %    a \times |u| -0.5 a^2 & a \leq |u| < b                    \\
 %    ab-0.5a^2+0.5(c-b)a \left[ 1- \left( \frac{c-|u|}{c-b}\right)^2 \right]  & b \leq |u| <  c \\
-%    ab-0.5a^2+0.5(c-b)a & |u| \geq c 
+%    ab-0.5a^2+0.5(c-b)a & |u| \geq c
 %  \end{array} \right.
 % \]
 %
@@ -54,9 +54,9 @@ function rhoHA = HArho(u, ctuning)
 %                   $c$= ctun *ctuning(4).
 %
 %             The default is
-%                   $a$= 2*ctun. 
-%                   $b$= 4*ctun. 
-%                   $c$= 8*ctun. 
+%                   $a$= 2*ctun.
+%                   $b$= 4*ctun.
+%                   $c$= 8*ctun.
 %
 %	It is necessary to have 0 <= a <= b <= c
 %
@@ -96,7 +96,7 @@ function rhoHA = HArho(u, ctuning)
 
 %{
 
-    % Hampel rho function using a redescending slope of -1/3. 
+    % Hampel rho function using a redescending slope of -1/3.
     x=-9:0.1:9;
     rhoHA=HArho(x,[1,1.5,3.5,8]);
     plot(x,rhoHA)
@@ -109,10 +109,10 @@ function rhoHA = HArho(u, ctuning)
 
 
 if length(ctuning)>1
-    
     if ((ctuning(2) < 0) || (ctuning(3) < ctuning(2)) || (ctuning(4) < ctuning(3)))
-        error('FSDA:HArho:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...
-            num2str(ctuning(2:4)) ]')
+        % error('FSDA:HArho:WrongAbc',[' Illegal choice of parameters in Hampel: ' ...
+        %   num2str(ctuning(2:4)) ]')
+        error('FSDA:HArho:WrongAbc','Illegal choice of parameters in Hampel: %f,%f,%f', ctuning(2),ctuning(3),ctuning(4));
     end
     a =  ctuning(2)*ctuning(1);
     b =  ctuning(3)*ctuning(1);
@@ -127,8 +127,8 @@ rhoHA = ones(size(u));
 absu=abs(u);
 
 
-% 0.5* u^2,		   |u| <=a 
-rhoHA(absu<=a) = 0.5*u(absu<=a).^2; 
+% 0.5* u^2,		   |u| <=a
+rhoHA(absu<=a) = 0.5*u(absu<=a).^2;
 
 
 % a/|u|,		 a <= |u| < b,
