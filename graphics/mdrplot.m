@@ -452,10 +452,8 @@ yl2=max(mdr(:,2))*1.1;
 
 % Set upper limit to 20 of the plot if it is greater
 if yl2>20
-    if msg
         % Inform the user about automatic upper limit
         warning('FSDA:mdrplot:TooLargeUpperylim','Upper limit of y axis of the mdr forward plot set to 20')
-    end
     yl2=20;
 end
 
